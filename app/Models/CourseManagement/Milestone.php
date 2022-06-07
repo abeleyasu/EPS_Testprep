@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models\CourseManagement;
+
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Milestone extends Model
+{
+    use HasFactory, softDeletes;
+
+    protected $fillable = [
+        'name',
+        'description',
+        'content',
+        'user_type',
+        'duration',
+        'order',
+        'status',
+        'added_by',
+        'content_category_id',
+        'published'
+    ];
+
+    public function hasTags() {
+        return $this->hasMany(ModelTag::class);
+    }
+
+    public function modules() {
+        return $this->hasMany(Module::class);
+    }
+
+    public function tags() {
+        return Tag::select('tags.id','tags.name')
+            ->join('model_has_tags', 'tags.id','model_has_tags.tag_id')
+            ->join('milestones','model_has_tags.model_id','milestones.id')
+            ->where([
+                ['model_has_tags.model_id', $this->id],
+                ['model_has_tags.model_type', get_class($this)]
+            ])->get();
+    }
+}

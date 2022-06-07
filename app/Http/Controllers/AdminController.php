@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+use Hash;
+
+class AdminController extends Controller
+{
+    public function dashboard(){
+        return view('admin.dashboard');
+    }
+    
+    public function userList(){
+        $users = User::where('role', 'standard_user')->get();
+        return view('admin.user-list', ['users' => $users]);
+    }
+    
+    public function showEditUser(Request $request, $id){
+        $user = User::where('role', 'standard_user')->find($id);
+
+        if($user)
+            return view('admin.edit-user', ['user' => $user]);
+        else
+            return redirect(route('admin-user-list'));
+    }
+
+    public function updateUser(Request $request){
+        $request->validate([
+            'first_name' => ['required', 'min:3'],
+            'last_name' => ['required', 'min:3'],
+            'phone' => ['required', 'numeric'],
+            'password' => ['required', 'min:6'],
+        ]);
+
+        $user = User::find($request->id);
+        $user->name = $request->first_name." ".$request->last_name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->phone = $request->phone;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect(route('admin-user-list'));
+    }
+
+    public function showCreateUser(){
+        return view('admin.create-user');
+    }
+
+    public function createUser(Request $request){
+        $request->validate([
+            'first_name' => ['required', 'min:3'],
+            'last_name' => ['required', 'min:3'],
+            'email' => ['required', 'email', 'unique:users'],
+            'phone' => ['required', 'numeric'],
+            'password' => ['required', 'min:6'],
+        ]);
+
+        $user = User::create([
+            'name' => $request->first_name." ".$request->last_name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+            'role' => 'standard_user',
+        ]);
+
+        return redirect(route('admin-user-list'));
+    }
+
+    public function deleteUser(Request $request){
+        User::find($request->id)->delete();
+        return "success";
+    }
+}

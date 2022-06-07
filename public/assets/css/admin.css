@@ -1,0 +1,10 @@
+.grid-inner {
+    opacity: 0;
+}
+.grid-inner:hover {
+    opacity: 1;
+}
+
+.pointer{
+    cursor: pointer;
+}
