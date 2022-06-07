@@ -1,7 +1,7 @@
-<p align="center"><a href="https://www.cpsdev.xyz" target="_blank" style="color: red"><h3>CPS (College Prep System)</h3></a></p>
+<p align="center"><a href="https://www.cpsdev.xyz" target="_blank" style="color: red"><h1>CPS (College Prep System)</h1></a></p>
 
 <p align="center">
- <h6 style="color:blue">CPS is College Prep System, it is an e-learning web application we are building based on laravel</h6>
+ <h3 style="color:blue">CPS is College Prep System, it is an e-learning web application we are building based on laravel and Vue frameworks</h3>
 </p>
 
 ## About This Project
