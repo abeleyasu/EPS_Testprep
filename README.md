@@ -1,10 +1,7 @@
-<p align="center"><a href="https://www.cpsdev.xyz" target="_blank">CPS(College Prep System)</a></p>
+<p align="center"><a href="https://www.cpsdev.xyz" target="_blank" style="color: red"><h3>CPS (College Prep System)</h3></a></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+ <h6 style="color:blue">CPS is College Prep System, it is an e-learning web application we are building based on laravel</h6>
 </p>
 
 ## About This Project
