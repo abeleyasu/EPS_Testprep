@@ -37,6 +37,8 @@
                         <tr>
                             <th>Title</th>
                             <th class="">Description</th>
+                            <th class="">Content</th>
+                            <th class="">Milestone</th>
                              <th >Action</th>
                         </tr>
                     </thead>
@@ -46,6 +48,12 @@
                             <td class="fw-semibold fs-sm">{{$module->title}}</td>
                             <td class="fs-sm">
                                 {!! $module->description !!}
+                            </td>
+                            <td class="fs-sm">
+                                {!! $module->content !!}
+                            </td>
+                            <td class="fs-sm">
+                                {!! $module->name !!}
                             </td>
                             <td>
                                 <div class="btn-group">

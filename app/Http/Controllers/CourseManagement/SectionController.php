@@ -22,7 +22,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = Section::orderBy('order')->get();
+        $sections = Section::join('modules','sections.module_id','=','modules.id')->get(['sections.*','modules.title as moduletitle']);
         return view('admin.courses.sections.index', compact('sections'));
     }
 

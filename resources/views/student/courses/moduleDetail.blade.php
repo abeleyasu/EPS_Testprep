@@ -137,7 +137,7 @@
                     <h3><b>Sections</b></h3>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
-                    <ul class="timeline">
+                    <ul class="timeline" style="position:inherit;">
                         @foreach($module->sections as $section)
                         <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
                             style="margin-left: 10%">

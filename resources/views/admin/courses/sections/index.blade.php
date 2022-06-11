@@ -36,6 +36,7 @@
                         <tr>
                             <th>Title</th>
                             <th class="">Description</th>
+                            <th class="">Module</th>
                              <th >Action</th>
                         </tr>
                     </thead>
@@ -46,6 +47,7 @@
                             <td class="fs-sm">
                                 {!! $section->description !!}
                             </td>
+                            <td class=""> {!! $section->moduletitle !!}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('sections.edit', ['section' => $section->id])}}"

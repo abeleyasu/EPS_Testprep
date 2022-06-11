@@ -138,7 +138,7 @@
                     <h3><b>Sections</b></h3>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
-                    <ul class="timeline">
+                    <ul class="timeline" style="position:inherit;">
 
                     </ul><!-- End -->
 

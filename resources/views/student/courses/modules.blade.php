@@ -53,6 +53,8 @@
                 <div class="block block-rounded">
                     <div class="block-content fs-sm">
                         @foreach($milestone->modules as $key => $module)
+
+                            
                         <!-- Introduction -->
                         <table class="table table-borderless table-vcenter">
                             <tbody>
@@ -60,6 +62,36 @@
                                 <th style="width: 50px;"></th>
                                 <th>
                                     <a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a>
+                                </th>
+
+                                <th>
+                                    @php
+                                    
+                                        $all_tasks = $module->tasks();
+                                        $completion_percent = 0;
+                                        if($all_tasks->count() > 0) {
+                                        $tasks = $all_tasks->unique('id');
+                                        $user_tasks = $all_tasks->filter(function($item) {
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        });
+
+                                        $user_tasks= $user_tasks->count() > 0?
+                                        array_map(function ($item){
+                                            return $item['id'];
+                                        },$user_tasks->toArray())
+                                        :
+                                        [];
+                                        $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                        }
+                                        @endphp
+                            
+                                    <div class="progress" style="background:#c4c5c7;">
+                                                <div class="progress-bar "
+                                                     style="background-color: blue; width: {{$completion_percent}}%"
+                                                     role="progressbar"
+                                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                            </div>
+                                          
                                 </th>
                                 <th class="text-end">
                                     <span class="text-muted">
@@ -76,6 +108,36 @@
                                     <a class="fw-medium"
                                        href="{{ route('sections.detail',['section'=>$section->id]) }}">
                                         {{$key+1}}.{{$section_key+1}} {{ $section->title }}</a>
+                                </td>
+                                <td>
+                                @php
+                                $all_tasks = $section->taskStatus();
+                                    $completion_percent = 0;
+                                    if($all_tasks->count() > 0) {
+                                    $tasks = $all_tasks->unique('id');
+                                    $user_tasks = $all_tasks->filter(function($item) {
+                                        return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                    });
+
+                                    $user_tasks= $user_tasks->count() > 0?
+                                    array_map(function ($item){
+                                        return $item['id'];
+                                    },$user_tasks->toArray())
+                                    :
+                                    [];
+                                    $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                    }
+                                
+
+                                    
+
+                                @endphp
+                                <div class="progress" style="background:#c4c5c7;">
+                                                <div class="progress-bar "
+                                                     style="background-color: blue; width: {{$completion_percent}}%"
+                                                     role="progressbar"
+                                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                            </div>
                                 </td>
                                 <td class="text-end text-muted">
 

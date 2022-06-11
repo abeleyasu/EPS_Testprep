@@ -125,7 +125,7 @@
                     </div>
                     <h3><b>Modules</b></h3>
                     <!-- Timeline -->
-                    <ul class="timeline">
+                    <ul class="timeline" style="position:inherit;">
                         @foreach($milestone->modules as $module)
                         <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
                             style="margin-left: 10%">

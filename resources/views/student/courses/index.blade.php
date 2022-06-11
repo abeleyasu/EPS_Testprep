@@ -151,7 +151,7 @@
                                     </div>
                                     @endif
                                     <div class="item item-2x item-circle bg-white-10 py-3 my-3 mx-auto">
-                    {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
+                                    {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
                                     </div>
                                     <div class="fs-sm text-white-75">
                                         {{ $milestone->modules->count() }} modules
@@ -162,19 +162,67 @@
                                         {{ $milestone->name }}
                                     </h4>
                                     <div class="fs-sm text-muted">{{ $milestone->created_at->format( 'M d, Y') }}</div>
+                                    @if($milestone->modules)
+                                        @foreach($milestone->modules as $module)
+                                        @php
+                                    
+                                        $all_tasks = $module->tasks();
+                                        $completion_percent = 0;
+                                        if($all_tasks->count() > 0) {
+                                        $tasks = $all_tasks->unique('id');
+                                        $user_tasks = $all_tasks->filter(function($item) {
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        });
+
+                                        $user_tasks= $user_tasks->count() > 0?
+                                        array_map(function ($item){
+                                            return $item['id'];
+                                        },$user_tasks->toArray())
+                                        :
+                                        [];
+                                        $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                        }
+                                        @endphp
+
+                                        @if($all_tasks->count() > 0 && isset($tasks))
+                                        @if($all_tasks->count() == 1)
+                                        <div class="progress" style="display:none;">
+                                                            <div class="progress-bar "
+                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
+                                                                role="progressbar"
+                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                                        </div>
+                                        @else
+                                        <div class="progress">
+                                                            <div class="progress-bar "
+                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
+                                                                role="progressbar"
+                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                                        </div>
+                                        @endif
+                                            
+
+                                                    
+                                        @endif
+                                    @endforeach
+                                @endif
+                                
                                 </div>
                             </a>
                         </div>
                         <!-- END Course -->
                     @endforeach
-                    </div>
+                </div>
 
-            </div>
+        </div>
+    
+    
+    
     </div>
 
     <div class="block-content block-content-full table-view">
    
-    <ul class="timeline">
+    <ul class="timeline" style="position:inherit;">
                     @foreach($milestones as $key => $milestone)
                         <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
                             style="margin-left: 10%">
@@ -186,7 +234,7 @@
 
                             </div>
                             
-                            <ul class="timeline">
+                            <ul class="timeline" style="position:inherit;">
                         @foreach($milestone->modules as $module)
                         <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
                             style="margin-left: 10%">

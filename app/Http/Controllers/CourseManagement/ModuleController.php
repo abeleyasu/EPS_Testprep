@@ -18,7 +18,7 @@ class ModuleController extends Controller
 
     public function index()
     {
-        $modules = Module::orderBy('order')->get();
+        $modules = Module::join('milestones','milestones.id','=','modules.milestone_id')->orderBy('order')->get(['modules.*','milestones.name']);
 
         return view('admin.courses.modules.index', compact('modules'));
     }

@@ -58,9 +58,11 @@
                                 @foreach($milestone->modules as $module)
                                     <div class="card mb-2">
                                         <div class="card-body row">
+                                        
                                             <div class="col-9">
-                                                {{ $module->title }}
+                                            <a href="/admin/course-management/modules/{{$module->id}}/edit" target="__blank"> {{ $module->title }}</a>
                                             </div>
+                                        
                                             <div class="col-3">
                                                 <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
                                                     <i class="fa-solid fa-arrow-down"></i>
@@ -70,15 +72,17 @@
 
                                                 @foreach($module->sections as $section)
                                                     <div class="my-3">
-                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span> {!! $section->title !!}
+                                                        
+                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span> <a href="/admin/course-management/sections/{{$section->id}}/edit" target="__blank">{!! $section->title !!}</a>
                                                         <span class="float-end">
                                                             <button type="button" class="btn btn-success btn-sm mx-3" onclick="showSectionDetail({{$section->id}})">
                                                                 <i class="fa-solid fa-arrow-down"></i>
                                                             </button>
                                                             <span class="badge bg-success">sections</span>
                                                         </span>
+                                                        </a>
                                                         @foreach($section->tasks as $task)
-                                                            <div class="mx-6 my-2 collapse hide section-detail{{$section->id}}"><i class="fa-solid fa-list"></i>  {!! $task->title !!}
+                                                            <div class="mx-6 my-2 collapse hide section-detail{{$section->id}}"><i class="fa-solid fa-list"></i> <a href="/admin/course-management/tasks/{{$task->id}}/edit" target="__blank"> {!! $task->title !!}
                                                                 <span class="text-center badge bg-danger ml-4">tasks</span>
                                                             </div>
                                                         @endforeach

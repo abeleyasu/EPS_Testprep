@@ -36,16 +36,19 @@
                         <tr>
                             <th>Title</th>
                             <th class="">Description</th>
+                            <th class="">Section</th>
                              <th >Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        
                         @foreach($tasks as $task)
                         <tr>
                             <td class="fw-semibold fs-sm">{{$task->title}}</td>
                             <td class="fs-sm">
                                 {!! $task->description !!}
                             </td>
+                            <td>{{$task->sectiontitle}}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('tasks.edit', ['task' => $task->id])}}"

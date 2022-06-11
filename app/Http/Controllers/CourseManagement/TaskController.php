@@ -22,7 +22,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('created_at', 'desc')->get();
+        $tasks = Task::join('sections','tasks.section_id','=','sections.id')->get(['tasks.*','sections.title as sectiontitle']);
         return view('admin.courses.tasks.index', compact('tasks'));
     }
 
