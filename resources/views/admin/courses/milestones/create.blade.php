@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 
 @section('title', 'Admin Dashboard : Milestone')
+<!-- <script src="../ckeditor.js"></script>
+<script src="js/sample.js"></script>
+<link rel="stylesheet" href="css/samples.css">
+<link rel="stylesheet" href="toolbarconfigurator/lib/codemirror/neo.css"> -->
+
 
 @section('page-style')
     <style>
@@ -465,12 +470,22 @@
         }
 
         $(document).ready(function(){
+
+
+            
             let ckeditorFull = document.querySelector('#js-ckeditor-desc:not(.js-ckeditor-enabled)');
             let taskCK = document.querySelector('#js-ckeditor-task:not(.js-ckeditor-enabled)');
 
             // Init full text editor
             if (ckeditorFull) {
-                CKEDITOR.replace('js-ckeditor-desc');
+                //CKEDITOR.replace('js-ckeditor-desc');
+                CKEDITOR.replace( 'js-ckeditor-desc', {
+                customConfig: '/assets/js/plugins/ckeditor/config.js',
+                
+            });
+                //ckeditorFull.appendChild( editor.ui.view.toolbar.element );
+                //window.editor = editor;
+                ckeditorFull.extraPlugins = "justify";
 
                 // Add .js-ckeditor-enabled class to tag it as activated
                 ckeditorFull.classList.add('js-ckeditor-enabled');
