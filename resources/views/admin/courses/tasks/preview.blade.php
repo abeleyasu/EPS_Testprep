@@ -1,6 +1,6 @@
-.@extends('layouts.user')
+.@extends('layouts.preview')
 
-@section('title', 'Student - Public High School Dashboard : Courses')
+@section('title', 'Student Dashboard : Courses')
 
 @section('page-style')
 
@@ -100,11 +100,11 @@
             <form action="{{ route('tasks.change_status',['task'=>$task->id]) }}" method="post">
                 @csrf
                 @if($task->authTaskStatus() && $task->authTaskStatus()->status == 1)
-                <button type="submit" class="btn btn-primary float-end btn-sm" >
+                <button type="button" class="btn btn-primary float-end btn-sm" >
                     Mark InComplete
                 </button>
                     @else
-                    <button type="submit" class="btn btn-success float-end btn-sm" >
+                    <button type="button" class="btn btn-success float-end btn-sm" >
                         Mark Complete
                     </button>
                     @endif
@@ -124,17 +124,17 @@
 					@foreach($gettasks as $tkey => $gettask)
 						@if ($task->id == $gettask->id)
 							@if ($tkey>0)
-								<a href="{{ route('tasks.detail',['task'=>$previouModId]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Task
 								</a>	
 							@endif
 							@if ($tkey ==0 && count($gettasks)>1)
-								<a href="{{ route('tasks.detail',['task'=>$gettasks[1]->id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Task
 									</a>
 							@endif
 							@if ($lastItem == $tkey)
-								<a href="{{ route('sections.show-detail',['section'=>$gettask->section_id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
 								</a>
 							@endif
@@ -145,7 +145,7 @@
 					@endphp	
 						@if ($nextExist>0)
 							@php $nextExist =0; @endphp
-							<a href="{{ route('tasks.detail',['task'=>$gettask->id]) }}" class="btn w-25 btn-alt-success">
+							<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Task
 								</a>
 						@endif

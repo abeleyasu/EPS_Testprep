@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Student Dashboard : Courses')
+@section('title', 'Student - Public High School Dashboard : Courses')
 
 @section('page-style')
     <!-- Stylesheets -->

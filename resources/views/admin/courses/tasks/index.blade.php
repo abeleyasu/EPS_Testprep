@@ -35,20 +35,46 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th class="">Description</th>
-                            <th class="">Section</th>
+                            <th>Description</th>
+                            <th>Milestone</th>
+                            <th>Module</th>
+                            <th>Section</th>
+                            <th>Position</th>
                              <th >Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
                         @foreach($tasks as $task)
                         <tr>
                             <td class="fw-semibold fs-sm">{{$task->title}}</td>
                             <td class="fs-sm">
-                                {!! $task->description !!}
+								@php 
+								$stringLen = strlen($task->description);								 
+								@endphp
+								
+								@if ($stringLen > 150)
+									@php $convetStr = substr($task->description, 0, 150); @endphp
+									{{$convetStr}}...
+								@else
+									{!! $task->description !!}
+								@endif
+                                
                             </td>
-                            <td>{{$task->sectiontitle}}</td>
+							<td>{{$task->section->module->milestone->name}}</td>
+							<td>{{$task->section->module->title}}</td>
+							<td>{{$task->section->title}}</td>
+							<td>
+								@php $positioncount = 0; $taskPosition=1; @endphp
+								@foreach($tasks as $pkey => $positionTask)
+									@if ($task->section->id == $positionTask->section->id)
+										@php $positioncount++; @endphp	
+										@if ($task->id == $positionTask->id)
+											@php $taskPosition=$positioncount; @endphp	
+										@endif
+									@endif
+								@endforeach
+								{{$taskPosition}}/{{$positioncount}}
+							</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('tasks.edit', ['task' => $task->id])}}"
@@ -56,6 +82,14 @@
                                        data-bs-toggle="tooltip"
                                        title="Edit Task">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </a>
+									<a href="{{route('tasks.preview', ['task' => $task->id])}}"
+                                       class="btn btn-sm btn-alt-secondary"
+                                       data-bs-toggle="tooltip"
+                                       title="Preview Task"
+									   target="_blank"
+									   >
+                                        <i class="fa fa-fw fa-eye"></i>
                                     </a>
                                     <button type="button"
                                             class="btn btn-sm btn-alt-secondary delete-task"

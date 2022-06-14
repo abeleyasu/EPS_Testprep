@@ -1,6 +1,6 @@
-@extends('layouts.user')
+@extends('layouts.preview')
 
-@section('title', 'Student - Public High School Dashboard : Courses')
+@section('title', 'Student Dashboard : Courses')
 
 @section('page-style')
 
@@ -156,17 +156,17 @@
 					@foreach($getSections as $skey => $getSection)
 						@if ($section->id == $getSection->id)
 							@if ($skey>0)
-								<a href="{{ route('sections.show-detail',['section'=>$previouSecId]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Section
 								</a>	
 							@endif
 							@if ($skey ==0 && count($getSections)>1)
-								<a href="{{ route('sections.show-detail',['section'=>$getSections[1]->id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
 								</a>
 							@endif
 							@if ($lastItem == $skey)
-								<a href="{{ route('modules.detail',['module'=>$getSection->module_id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
 								</a>
 							@endif
@@ -176,7 +176,7 @@
 					@endphp	
 						@if ($nextExist>0)
 							@php $nextExist =0; @endphp
-							<a href="{{ route('sections.show-detail',['section'=>$getSection->id]) }}" class="btn w-25 btn-alt-success">
+							<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
 							</a>
 						@endif
@@ -231,7 +231,7 @@
                                                             </form>
                                                         </div>
                                                         <div class="col">
-                                                            <a href="{{ route('tasks.detail',['task'=>$task->id]) }}">
+                                                            <a href="javascript:;">
                                                             {!! $task->title !!}
                                                             </a>
                                                         </div>

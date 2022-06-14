@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Student Dashboard : Courses')
+@section('title', 'Student - Public High School Dashboard : Courses')
 
 @section('page-style')
 
@@ -137,7 +137,7 @@
                     <h3><b>Sections</b></h3>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
-                    <ul class="timeline" style="position:inherit;">
+                    <ul class="timeline">
                         @foreach($module->sections as $section)
                         <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
                             style="margin-left: 10%">

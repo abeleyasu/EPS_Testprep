@@ -36,9 +36,8 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th class="">Description</th>
-                            <th class="">Content</th>
-                            <th class="">Milestone</th>
+                            <th>Description</th>
+                            <th>MileStone</th>
                              <th >Action</th>
                         </tr>
                     </thead>
@@ -47,18 +46,26 @@
                         <tr>
                             <td class="fw-semibold fs-sm">{{$module->title}}</td>
                             <td class="fs-sm">
-                                {!! $module->description !!}
+                                
+								@php 
+								$stringLen = strlen($module->description);								 
+								@endphp
+								
+								@if ($stringLen > 150)
+									@php $convetStr = substr($module->description, 0, 150); @endphp
+									{{$convetStr}}...
+								@else
+									{!! $module->description !!}
+								@endif
                             </td>
-                            <td class="fs-sm">
-                                {!! $module->content !!}
-                            </td>
-                            <td class="fs-sm">
-                                {!! $module->name !!}
-                            </td>
+							<td>{{$module->milestone->name}}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('modules.edit', ['module' => $module->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Milestone">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </a>
+									<a href="{{ route('modules.preview',['module' => $module->id]) }}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Milestone">
+                                        <i class="fa fa-fw fa-eye"></i>
                                     </a>
                                     <button type="button"
                                             class="btn btn-sm btn-alt-secondary delete-module"

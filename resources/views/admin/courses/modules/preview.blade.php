@@ -1,6 +1,6 @@
-@extends('layouts.user')
+@extends('layouts.preview')
 
-@section('title', 'Student - Public High School Dashboard : Courses')
+@section('title', 'Student Dashboard : Courses')
 
 
 @section('page-style')
@@ -181,17 +181,17 @@
 					@foreach($getModules as $mokey => $getModule)
 						@if ($module->id == $getModule->id)
 							@if ($mokey>0)
-								<a href="{{ route('modules.detail',['module'=>$previouModId]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Module
 								</a>	
 							@endif
 							@if ($mokey ==0 && count($getModules)>1)
-								<a href="{{ route('modules.detail',['module'=>$getModules[1]->id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
 									</a>
 							@endif
 							@if ($lastItem == $mokey)
-								<a href="{{ route('courses.detail',['milestone' => $getModule->milestone_id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milstone
 								</a>
 							@endif
@@ -202,7 +202,7 @@
 					@endphp	
 						@if ($nextExist>0)
 							@php $nextExist =0; @endphp
-							<a href="{{ route('modules.detail',['module'=>$getModule->id]) }}" class="btn w-25 btn-alt-success">
+							<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
 								</a>
 						@endif
@@ -261,7 +261,7 @@
                         $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="margin-left: 10%">
                                 <div class="row" id="row-${i.id}">
                                     <div class="col-9">
-                                        <a href="/user/sections/${i.id}/show-detail">${i.title}</a>
+                                        <a href="javascript:;">${i.title}</a>
                                     </div>
                                     <div class="col-3">
                                         <button type="button" class="btn  btn-sm float-end" onclick="showDetail(${i.id})">
