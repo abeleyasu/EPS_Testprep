@@ -6,6 +6,7 @@ use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserRole;
 use Auth;
 use Hash;
 use Illuminate\Support\Facades\Password;
@@ -14,7 +15,8 @@ use Illuminate\Support\Str;
 class AuthController extends Controller
 {
     public function showSignUp(){
-        return view('signup');
+		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
+        return view('signup',compact('usersRoles'));
     }
 
     public function userSignUp(Request $request){
@@ -34,7 +36,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'role' => 'standard_user',
+            'role' => $request->role,
         ]);
 
         if($user){
@@ -59,7 +61,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            if($user->isAdmin())
+            if($user->role ==1)
                 return redirect()->intended(route('admin-dashboard'));
             elseif($user->isUser())
                 return redirect()->intended(route('user-dashboard'));

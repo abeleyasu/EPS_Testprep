@@ -15,6 +15,9 @@
                     <div class="block block-rounded">
                         <div class="block-header block-header-default">
                             <h3 class="block-title">Edit Task</h3>
+							<a target="_blank" class="btn w-25 btn-alt-success" href="{{ route('tasks.preview',['task' => $task->id]) }}">
+								<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
+							</a>
                         </div>
                         <div class="block-content block-content-full">
 

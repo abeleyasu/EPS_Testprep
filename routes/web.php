@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
+use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -49,10 +50,17 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::post('/edit_user', [AdminController::class, 'updateUser'])->name('admin-update-user');
     Route::post('/delete_user', [AdminController::class, 'deleteUser'])->name('admin-delete-user');
     Route::group(['prefix' => 'course-management'], function () {
+        Route::resource('courseslist', CourseController::class);
+		Route::post('courseslist/{course}/courseupdate', [CourseController::class, 'courseupdate'])->name('courseslist.courseupdate');
+		Route::get('courseslist/{course}/preview', [MilestoneController::class, 'preview'])->name('courseslist.preview');
         Route::resource('milestones', MilestoneController::class);
+        Route::get('milestones/{milestone}/preview', [MilestoneController::class, 'preview'])->name('milestones.preview');
         Route::resource('modules', ModuleController::class);
+		Route::get('modules/{module}/preview', [ModuleController::class, 'preview'])->name('modules.preview');
         Route::resource('sections', SectionController::class);
+		Route::get('sections/{section}/preview', [SectionController::class, 'preview'])->name('sections.preview');
         Route::resource('tasks', TaskController::class);
+		Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
     });
     Route::resource('tags', TagController::class);
     Route::resource('content-categories', ContentCategoryController::class);
@@ -61,6 +69,7 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
 //User Routes
 Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
+    Route::get('/resume', [UserController::class, 'resume'])->name('resume');
     Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
     Route::get('/courses/{milestone}/detail', [MilestoneController::class, 'show'])->name('courses.detail');
     Route::get('/modules/{module}/detail', [ModuleController::class, 'show'])->name('modules.detail');

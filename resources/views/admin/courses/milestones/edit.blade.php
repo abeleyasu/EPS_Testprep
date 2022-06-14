@@ -16,6 +16,9 @@
                     <div class="block block-rounded">
                         <div class="block-header block-header-default">
                             <h3 class="block-title">Edit Milestone</h3>
+							<a target="_blank" class="btn w-25 btn-alt-success" href="{{ route('milestones.preview',['milestone' => $milestone->id]) }}">
+								<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
+							</a>
                         </div>
                         <div class="block-content block-content-full">
                             <div class="mb-2">
@@ -54,15 +57,16 @@
                                 @enderror
                             </div>
                             @if(count($milestone->modules) > 0)
+								<div class="modelprehead">
                                 <h3>MILESTONES MODULES</h3>
+							
+								</div>
                                 @foreach($milestone->modules as $module)
                                     <div class="card mb-2">
                                         <div class="card-body row">
-                                        
                                             <div class="col-9">
-                                            <a href="/admin/course-management/modules/{{$module->id}}/edit" target="__blank"> {{ $module->title }}</a>
+                                                {{ $module->title }}
                                             </div>
-                                        
                                             <div class="col-3">
                                                 <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
                                                     <i class="fa-solid fa-arrow-down"></i>
@@ -72,17 +76,15 @@
 
                                                 @foreach($module->sections as $section)
                                                     <div class="my-3">
-                                                        
-                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span> <a href="/admin/course-management/sections/{{$section->id}}/edit" target="__blank">{!! $section->title !!}</a>
+                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span> {!! $section->title !!}
                                                         <span class="float-end">
                                                             <button type="button" class="btn btn-success btn-sm mx-3" onclick="showSectionDetail({{$section->id}})">
                                                                 <i class="fa-solid fa-arrow-down"></i>
                                                             </button>
                                                             <span class="badge bg-success">sections</span>
                                                         </span>
-                                                        </a>
                                                         @foreach($section->tasks as $task)
-                                                            <div class="mx-6 my-2 collapse hide section-detail{{$section->id}}"><i class="fa-solid fa-list"></i> <a href="/admin/course-management/tasks/{{$task->id}}/edit" target="__blank"> {!! $task->title !!}
+                                                            <div class="mx-6 my-2 collapse hide section-detail{{$section->id}}"><i class="fa-solid fa-list"></i>  {!! $task->title !!}
                                                                 <span class="text-center badge bg-danger ml-4">tasks</span>
                                                             </div>
                                                         @endforeach
@@ -132,10 +134,10 @@
                                 <label for="type" class="form-label">Content Category:</label>
                                 <select name="content_category" class="form-control">
                                     @foreach($contentCategories as $cat)
-                                        <option value="{{ $cat->value }}"
+                                        <option value="{{ $cat->id }}"
                                         @if($cat->id ==$milestone->content_category_id)
                                         selected
-                                        @endif>{{ $cat->title }}</option>
+                                        @endif >{{ $cat->title }}</option>
                                     @endforeach
                                 </select>
                                 @error('user_type')
@@ -146,7 +148,13 @@
                             <div class="mb-2">
                                 <label for="type" class="form-label">User Type:</label>
                                 <select name="user_type" class="form-control">
-                                    <option value="student">Student</option>
+									@foreach($usersRoles as $usersRole)
+										<option value="{{$usersRole->id}}"
+										
+                                        @if($milestone->user_type ==$usersRole->id)
+                                        selected
+                                        @endif >{{$usersRole->name}}</option>
+									@endforeach
                                 </select>
                                 @error('user_type')
                                 <div class="invalid-feedback">{{$message}}</div>
@@ -349,7 +357,8 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
-        var order = 0;
+        var order = '{{ $milestone->order }}';
+        var currentMile = '{{ $milestone->id }}';
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
         });
@@ -395,8 +404,8 @@
             });
         }
 
-        function saveOrder() {
-            $('#order').val(order);
+        function saveOrder() { 
+			$('#order').val(order);		
             myModal.hide();
         }
 
@@ -470,7 +479,7 @@
                     method: 'post',
                     data:data,
                     success: (res) => {
-
+						order = data.new_index;						
                     },
                     error: () => {
                         alert('Something went wrong')
@@ -478,7 +487,6 @@
                 });
             }
         },);
-
 
     </script>
 @endsection

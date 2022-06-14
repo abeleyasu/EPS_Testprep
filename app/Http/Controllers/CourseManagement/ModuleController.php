@@ -18,7 +18,7 @@ class ModuleController extends Controller
 
     public function index()
     {
-        $modules = Module::join('milestones','milestones.id','=','modules.milestone_id')->orderBy('order')->get(['modules.*','milestones.name']);
+        $modules = Module::orderBy('order')->get();
 
         return view('admin.courses.modules.index', compact('modules'));
     }
@@ -66,7 +66,7 @@ class ModuleController extends Controller
                 ]);
             }
         }
-        return redirect()->route('modules.index')->with('success', 'Module created successfully');
+        return redirect()->route('modules.edit',['module'=>$module->id])->with('success', 'Module created successfully');
     }
 
 
@@ -78,7 +78,10 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        return view('student.courses.moduleDetailNew',compact('module'));
+		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
+		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+		
+        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone'));
     }
 
     /**
@@ -235,5 +238,25 @@ class ModuleController extends Controller
         return response()->json([
             'message' => 'module ordered successfully'
         ],200);
+    }
+	/**
+     * Show the form for editing the specified resource.
+     *
+     * @param Module $module
+     * @return \Illuminate\Http\Response
+     */
+    public function preview(Module $module)
+    {
+        $tags = Tag::all();
+        $module_tags = ModelTag::where([
+            ['model_id', $module->id],
+            ['model_type', get_class($module)]
+        ])->pluck('tag_id')->toArray();
+		
+		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
+		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+		
+        return view('admin.courses.modules.preview', compact('module',
+            'milestone','tags', 'module_tags','getModules'));
     }
 }

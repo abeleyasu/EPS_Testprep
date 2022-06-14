@@ -1,6 +1,6 @@
-@extends('layouts.user')
+@extends('layouts.preview')
 
-@section('title', 'Student - Public High School Dashboard : Courses')
+@section('title', 'Student Dashboard : Courses')
 
 @section('page-style')
 
@@ -26,7 +26,7 @@
         </div>
         <!-- END Hero Content -->
 
-        <!-- Navigation -->
+          <!-- Navigation -->
         <div class="bg-body-extra-light">
             <div class="content content-boxed py-3">
                 <nav aria-label="breadcrumb">
@@ -52,6 +52,7 @@
             </div>
         </div>
         <!-- END Navigation -->
+		
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row">
@@ -64,12 +65,12 @@
 					@foreach($getMilestones as $mkey => $getMilestone)
 						@if ($milestone->id == $getMilestone->id)
 							@if ($mkey>0)
-								<a href="{{ route('courses.detail',['milestone' => $previouMileId]) }}" class="btn w-25 btn-alt-success btnminwidth">
+								<a href="javascript:;" class="btn w-25 btn-alt-success btnminwidth">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Milestone
 								</a>	
 							@endif
 							@if ($mkey ==0 && count($getMilestones)>1)
-								<a href="{{ route('modules.detail',['module'=>$getMilestones[1]->id]) }}" class="btn w-25 btn-alt-success btnminwidth">
+								<a href="javascript:;" class="btn w-25 btn-alt-success btnminwidth">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
 								</a>
 							@endif
@@ -79,7 +80,7 @@
 					@endphp	
 						@if ($nextExist>0)
 							@php $nextExist =0; @endphp
-							<a href="{{ route('courses.detail',['milestone' => $getMilestone->id]) }}" class="btn w-25 btn-alt-success btnminwidth">
+							<a href="javascript:;" class="btn w-25 btn-alt-success btnminwidth">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milestone
 								</a>
 						@endif
@@ -99,7 +100,7 @@
 							<div class="card mb-2">
 								<div class="card-body row">
 									<div class="col-9 colapHead">
-										<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a>
+										<a href="javascript:;">{{$key+1}}. {{ $module->title }}</a>
 									</div>
 									<div class="col-3">
 										<button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
@@ -110,7 +111,7 @@
 
 										@foreach($module->sections as $section_key => $section)
 											<div class="my-3">
-												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
+												<span class="mx-4"><a href="javascript:;"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
 												
 											</div>
 										@endforeach

@@ -60,6 +60,14 @@
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
                         <span class="nav-main-link-name">Course Management</span>
                     </a>
+					<ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['courseslist.index','courseslist.create','courseslist.edit']) ? 'active' : ''}}"
+                               href="{{route('courseslist.index')}}">
+                                <span class="nav-main-link-name">Courses</span>
+                            </a>
+                        </li>
+                    </ul>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
                             <a class="nav-main-link {{Route::is(['milestones.index','milestones.create','milestones.edit']) ? 'active' : ''}}"

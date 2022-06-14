@@ -8,8 +8,10 @@ use App\Models\CourseManagement\Section;
 use App\Models\CourseManagement\Task;
 use App\Models\ModelTag;
 use App\Models\Tag;
+use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CourseManagement\MilestoneRequest;
 
 use App\Models\CourseManagement\Milestone;
@@ -47,13 +49,13 @@ class MilestoneController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-
+    {		
+        $usersRoles = UserRole::where('slug','!=','super_admin')->get();		
 //        $milestones = Milestone::orderBy('order')->get();
         $tags = Tag::all();
         $sections = Section::all();
         $contentCategories = ContentCategory::all();
-        return view('admin.courses.milestones.create', compact('tags','sections', 'contentCategories'));
+        return view('admin.courses.milestones.create', compact('tags','sections', 'contentCategories','usersRoles'));
     }
 
     /**
@@ -64,7 +66,6 @@ class MilestoneController extends Controller
      */
     public function store(MilestoneRequest $request)
     {
-
         $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
 
         $order = $request->order;
@@ -96,7 +97,7 @@ class MilestoneController extends Controller
                 ]);
             }
         }
-        return redirect()->route('milestones.index')->with('success', 'Milestone created successfully');
+        return redirect('admin/course-management/milestones/'.$milestone->id.'/edit')->with('success', 'Milestone created successfully');
     }
 
     /**
@@ -107,7 +108,9 @@ class MilestoneController extends Controller
      */
     public function show(Milestone $milestone)
     {
-        return view('student.courses.modules',compact('milestone'));
+		$getMilestones = Milestone::where('published', true)->orderBy('id')->get();
+		
+        return view('student.courses.modules',compact('milestone','getMilestones'));
     }
 
     /**
@@ -127,8 +130,10 @@ class MilestoneController extends Controller
             ['model_type', get_class($milestone)]
         ])->pluck('tag_id')->toArray();
         $contentCategories = ContentCategory::all();
+		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
+		
         return view('admin.courses.milestones.edit',
-            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories'));
+            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','usersRoles'));
     }
 
     /**
@@ -227,9 +232,33 @@ class MilestoneController extends Controller
         $milestone = Milestone::findorfail($id);
         $milestone->order = $new_order;
         $milestone->save();
+        /*$milestone->update(['order'=> $new_order]);*/
         $this->reorderOnUpdate($old_order, $new_order, $id);
         return response()->json(
             ['message' => 'reordered successfully'],200
         );
+    }
+	
+	/**
+     * Show the form for preview the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function preview($id)
+    {
+
+        $tags = Tag::all();
+        $milestone = Milestone::findorfail($id);
+        $sections = Section::all();
+        $milestone_tags = ModelTag::where([
+            ['model_id', $milestone->id],
+            ['model_type', get_class($milestone)]
+        ])->pluck('tag_id')->toArray();
+        $contentCategories = ContentCategory::all();
+		
+		$getMilestones = Milestone::orderby('id')->get();
+        return view('admin.courses.milestones.preview',
+            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','getMilestones'));
     }
 }
