@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Student - Public High School Dashboard : Courses')
+@section('title', 'Student Dashboard : Courses')
 
 @section('page-style')
     <!-- Stylesheets -->
@@ -18,14 +18,12 @@
 * ==========================================
 *
 */
-
         /* Timeline holder */
         ul.timeline {
             list-style-type: none;
             position: relative;
             padding-left: 1.5rem;
         }
-
         /* Timeline vertical line */
         ul.timeline:before {
             content: ' ';
@@ -38,13 +36,9 @@
             z-index: 400;
             border-radius: 1rem;
         }
-
         li.timeline-item {
             margin: 20px 0;
         }
-
-
-
         /* Timeline item circle marker */
         li.timeline-item::before {
             content: ' ';
@@ -64,7 +58,6 @@
             width: 28px;
             height: 28px;
         }
-
         .round label {
             background-color: #fff;
             border: 1px solid #ccc;
@@ -76,7 +69,6 @@
             top: 0;
             width: 28px;
         }
-
         .round label:after {
             border: 2px solid #fff;
             border-top: none;
@@ -90,7 +82,6 @@
             transform: rotate(-45deg);
             width: 12px;
         }
-
         .round input[type="checkbox"] {
             position: relative;
             z-index: 9;
@@ -98,12 +89,10 @@
             width: 100%;
             height: 100%;
         }
-
         .round input[type="checkbox"]:checked+label {
             background-color: #66bb6a;
             border-color: #66bb6a;
         }
-
         .round input[type="checkbox"]:checked+label:after {
             opacity: 1;
         }
@@ -125,8 +114,7 @@
                     </div>
                     <h3><b>Modules</b></h3>
                     <!-- Timeline -->
-					
-                    <ul class="timeline">
+                    <ul class="timeline" style="position:inherit;">
                         @foreach($milestone->modules as $module)
                         <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
                             style="margin-left: 10%">
@@ -143,7 +131,6 @@
 
 
                                 @php
-
                                     $all_tasks = $module->tasks();
                                     $completion_percent = 0;
                                     if($all_tasks->count() > 0) {
@@ -151,7 +138,6 @@
                                     $user_tasks = $all_tasks->filter(function($item) {
                                         return $item->user_id == auth()->id() &&  $item->complete ==1;
                                     });
-
                                     $user_tasks= $user_tasks->count() > 0?
                                     array_map(function ($item){
                                         return $item['id'];
@@ -228,12 +214,9 @@
 @section('user-script')
 
     <script>
-
-
         function showDetail(id) {
             $('.milestone-detail'+id).collapse('toggle')
         }
-
         function changeStatus(id) {
             $('#task-status-form-'+id).submit();
         }
