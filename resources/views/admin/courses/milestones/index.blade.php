@@ -58,7 +58,7 @@
                         <tr>
                             <td class="fw-semibold fs-sm">{{$milestone->name}}</td>
                             <td class="fs-sm">
-                                {!! $milestone->description !!} 
+                                {!! $milestone->description !!}
                             </td>
                             <td>
                                 <div class="btn-group">
