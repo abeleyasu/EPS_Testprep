@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard : Milestone')
+@section('title', 'Admin Dashboard : Course')
 
 @section('page-style')
     <style>
@@ -15,19 +15,20 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <!-- Dynamic Table Full -->
-        <form action="{{route('milestones.store')}}" method="POST">
+        <form action="{{route('courseslist.courseupdate', ['course'=>$course->id])}}" method="POST">
+
             @csrf
         <div class="row">
             <div class="col-xl-8">
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Add Milestone</h3>
+                        <h3 class="block-title">Edit Course</h3>
                     </div>
                     <div class="block-content block-content-full">
                                 <div class="mb-2">
                                     <label for="name" class="form-label">Title:</label>
                                     <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('name') ? 'is-invalid' : ''}}"
-                                     id="name" name="name" placeholder="Title" value="{{old('name')}}" required>
+                                     id="name" name="name" placeholder="Title" value="{{$course->title}}" required>
                                     @error('name')
                                     <div class="invalid-feedback">{{$message}}</div>
                                     @enderror
@@ -40,70 +41,12 @@
                                     {{$errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description"
                                               placeholder="Description"
                                               >
-                                    {{ old('description') }}</textarea>
+                                    {!! $course->description !!}</textarea>
                                     @error('description')
                                     <div class="invalid-feedback">{{$message}}</div>
                                     @enderror
                                 </div>
-                                <div class="mb-2">
-                                    <label for="content" class="form-label">Content:</label>
 
-
-                                    <textarea id="js-ckeditor" name="content" class=" form-control form-control-lg form-control-alt
-                                    {{$errors->has('description') ? 'is-invalid' : ''}}" id="content" name="content"
-                                              placeholder="Milestone Description"
-                                              required>
-                                    {{ old('content') }}</textarea>
-                                    @error('content')
-                                    <div class="invalid-feedback">{{$message}}</div>
-                                    @enderror
-                                </div>
-
-        {{--                        @if(count($milestones) > 0)--}}
-        {{--                            <h3>MILESTONES SECTIONS</h3>--}}
-        {{--                            @foreach($milestones as $milestone)--}}
-        {{--                                <div class="card mb-2">--}}
-        {{--                                <div class="card-body row">--}}
-        {{--                                    <div class="col-9">--}}
-        {{--                                        {{ $milestone->name }}--}}
-        {{--                                    </div>--}}
-        {{--                                    <div class="col-3">--}}
-        {{--                                        <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">--}}
-        {{--                                            <i class="fa-solid fa-arrow-down"></i>--}}
-        {{--                                        </button> <span class="badge bg-primary">milestone</span>--}}
-        {{--                                    </div>--}}
-        {{--                                    <div class="col-12 collapse hide milestone-detail{{$milestone->id}}">--}}
-
-        {{--                                            @foreach($milestone->sections as $section)--}}
-        {{--                                                <div class="my-3">--}}
-        {{--                                                    <span class="mx-4"><i class="fa-solid fa-list"></i> </span> {!! $section->title !!}--}}
-        {{--                                                    <span class="float-end">--}}
-        {{--                                                            <button type="button" class="btn btn-success btn-sm mx-3" onclick="showSectionDetail({{$section->id}})">--}}
-        {{--                                                                <i class="fa-solid fa-arrow-down"></i>--}}
-        {{--                                                            </button>--}}
-        {{--                                                        <span class="badge bg-success">sections</span>--}}
-        {{--                                                    </span>--}}
-        {{--                                                    @foreach($section->tasks as $task)--}}
-
-        {{--                                                            <div class="mx-6 my-2 collapse hide section-detail{{$section->id}}"><i class="fa-solid fa-list"></i>  {!! $task->title !!}--}}
-
-        {{--                                                                <span class="text-center badge bg-danger ml-4">tasks</span>--}}
-        {{--                                                            </div>--}}
-
-        {{--                                                    @endforeach--}}
-        {{--                                                </div>--}}
-
-        {{--                                            @endforeach--}}
-
-        {{--                                                <button type="button" class="btn w-100 btn-alt-light text-center"--}}
-        {{--                                                        data-bs-toggle="modal" data-bs-target="#modal-block-large">--}}
-        {{--                                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Task--}}
-        {{--                                                </button>--}}
-        {{--                                        </div>--}}
-        {{--                                    </div>--}}
-        {{--                                </div>--}}
-        {{--                            @endforeach--}}
-        {{--                        @endif--}}
 
 
 
@@ -113,7 +56,7 @@
                                     <i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
                                 </button>-->
                                 <button type="submit" class="btn w-25 btn-alt-success">
-                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Milestone
+                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i> update Course
                                 </button>
                             </div>
                         </div>
@@ -138,89 +81,6 @@
                         </div>
                     </div>
 
-                    <div class="block block-rounded">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Settings</h3>
-                        </div>
-                        <div class="block-content block-content-full">
-                            <div class="mb-2">
-                                <label for="type" class="form-label">Content Category:</label>
-                                <select name="content_category" class="form-control">
-                                    @foreach($contentCategories as $cat)
-                                        <option value="{{ $cat->id }}"> {{ $cat->title }}</option>
-                                    @endforeach
-                                </select>
-                                @error('user_type')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-2">
-                                <label for="type" class="form-label">User Type:</label>
-                                <select name="user_type" class="form-control">
-									@foreach($usersRoles as $usersRole)
-										<option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
-									@endforeach
-                                </select>
-                                @error('user_type')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-2">
-                                <label for="duration" class="form-label">Duration</label>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <input type="number" min="0" name="hour" class=" form-control" id="hour">
-                                    </div>
-                                    <label class="col-2 form-label">hours</label>
-                                    <div class="col-3">
-                                        <input type="number" min="0" name="minute" class="form-control" id="minute" onkeydown="calculateTime(this)">
-                                    </div>
-                                    <label class="col-2 form-label">minutes</label>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label" for="order">Order</label>
-
-                                <div class="input-group mb-3">
-                                    <input type="number" readonly class="form-control" name="order" value="0"
-                                        id="order"/>
-                                    <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label" for="tags">Tags</label>
-                                <input type="text" maxlength="30"
-                                    id="tag"
-                                    placeholder="add tag" class="form-control" onkeypress="addTag(event)"/>
-
-                                <div class="row items-push mt-2 tag-div">
-                                    @if($tags && count($tags) > 0)
-                                    @foreach($tags as $tag)
-                                    <div class="col">
-                                        <div class="form-check form-block">
-                                            <input class="form-check-input" type="checkbox" value="{{$tag->id}}" id="example-checkbox-block{{$tag->id}}" name="tags[]">
-                                            <label class="form-check-label label-check" for="example-checkbox-block{{$tag->id}}">
-                                                <span class="d-block fs-sm text-muted">{{$tag->name}}</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label" for="status">Status</label>
-
-                                <select name="status" class="form-control">
-                                    <option value="paid">Paid</option>
-                                    <option value="unpaid">Unpaid</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </form>
@@ -298,9 +158,7 @@
                                     <label for="name" class="form-label">Section:</label>
                                     <select class=" form-control {{$errors->has('section_id') ? 'is-invalid' : ''}}"
                                             name="section_id" required >
-                                        @foreach($sections as $section)
-                                            <option value="{{$section->id}}">{{ $section->title }}</option>
-                                        @endforeach
+                                        
                                     </select>
 
                                     @error('title')
@@ -333,22 +191,7 @@
                                     <label class="form-label" for="tags">Tags</label>
 
                                     <div class="row items-push mt-2 tag-div">
-                                        @if($tags && count($tags) > 0)
-                                            @foreach($tags as $tag)
-                                                <div class="col">
-                                                    <div class="form-check form-block">
-                                                        <input class="form-check-input"
-                                                               type="checkbox" value="{{$tag->id}}"
-                                                               name="tags[]"
-                                                               id="example-checkbox-block-{{$tag->id}}"
-                                                        >
-                                                        <label class="form-check-label label-check" for="example-checkbox-block-{{$tag->id}}">
-                                                            <span class="d-block fs-sm text-muted">{{$tag->name}}</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @endif
+                                        
                                     </div>
                                 </div>
 

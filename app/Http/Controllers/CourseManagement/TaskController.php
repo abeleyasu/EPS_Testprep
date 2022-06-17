@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CRUD;
 use App\Http\Requests\CourseManagement\TaskRequest;
 use App\Models\CourseManagement\Section;
+use App\Models\CourseManagement\Milestone;
+use App\Models\CourseManagement\Module;
 use App\Models\CourseManagement\Task;
 use App\Models\CourseManagement\UserTaskStatus;
 use App\Models\ModelTag;
@@ -22,7 +24,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::join('sections','tasks.section_id','=','sections.id')->get(['tasks.*','sections.title as sectiontitle']);
+        $tasks = Task::orderBy('created_at', 'desc')->get();
         return view('admin.courses.tasks.index', compact('tasks'));
     }
 
@@ -72,11 +74,28 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('student.courses.taskDetail',compact('task'));
+		$gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
+		
+		$milestone = array();
+		$module = array();
+		$section = array();
+		$section = Section::where('id',$task->section_id)->orderBy('id')->first();
+	
+		if($section){
+			$module = Module::where('id', $section->module_id)->orderBy('order')->first();	
+		}
+		
+		if($module){
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+		}
+		
+        return view('student.courses.taskDetail',compact('task','gettasks', 'section', 'module', 'milestone'));
     }
     public function showDetail($id)
     {
         $task = Task::findorfail($id);
+		
+		
         return view('student.courses.taskDetail',compact('task'));
     }
 
@@ -172,5 +191,29 @@ class TaskController extends Controller
         return response()->json([
             'message' => 'Status Changed Successfully'
         ],200);
+    }
+	/**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\CourseManagement\Task  $task
+     * @return \Illuminate\Http\Response
+     */
+    public function preview(Task $task)
+    {
+        $gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
+		
+		$milestone = array();
+		$module = array();
+		$section = array();
+		$section = Section::where('id',$task->section_id)->orderBy('id')->first();
+	
+		if($section){
+			$module = Module::where('id', $section->module_id)->orderBy('order')->first();	
+		}
+		
+		if($module){
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+		}
+        return view('admin.courses.tasks.preview', compact('task','gettasks', 'section', 'module', 'milestone'));
     }
 }

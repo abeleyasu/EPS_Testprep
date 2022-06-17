@@ -21,8 +21,13 @@ class Role
             return redirect(route('home'));
 
         $user = Auth::user();
-        if($user->role == $role)
-            return $next($request);
+		if($role == 'super_admin'){
+			if($user->role == 1)
+				return $next($request);	
+		}else{
+			if($user->role !='' && $user->role != 1)
+				return $next($request);	
+		}
         
         return redirect(route('home'));
     }

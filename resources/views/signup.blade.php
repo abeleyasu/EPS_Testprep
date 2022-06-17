@@ -71,6 +71,15 @@
                                                 <div class="invalid-feedback">{{$message}}</div>
                                                 @enderror
                                             </div>
+											<div class="mb-4">
+                                                <select name="role" class="form-control form-control-lg form-control-alt">
+													<option>Select User Role</option>
+													@foreach($usersRoles as $usersRole)
+														<option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
+													@endforeach
+												</select>
+                                            </div>
+											
                                             <div class="mb-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input {{$errors->has('terms') ? 'is-invalid' : ''}}" type="checkbox" id="terms" name="terms">

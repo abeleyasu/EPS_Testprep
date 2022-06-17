@@ -35,8 +35,9 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th class="">Description</th>
-                            <th class="">Module</th>
+                            <th>Description</th>
+                            <th>Milestone</th>
+                            <th>Module</th>
                              <th >Action</th>
                         </tr>
                     </thead>
@@ -45,9 +46,19 @@
                         <tr>
                             <td class="fw-semibold fs-sm">{{$section->title}}</td>
                             <td class="fs-sm">
-                                {!! $section->description !!}
+								@php 
+								$stringLen = strlen($section->description);								 
+								@endphp
+								
+								@if ($stringLen > 150)
+									@php $convetStr = substr($section->description, 0, 150); @endphp
+									{{$convetStr}}...
+								@else
+									{!! $section->description !!}
+								@endif
                             </td>
-                            <td class=""> {!! $section->moduletitle !!}</td>
+							<td>{{$section->module->milestone->name}}</td>
+							<td>{{$section->module->title}}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('sections.edit', ['section' => $section->id])}}"
@@ -55,6 +66,13 @@
                                        data-bs-toggle="tooltip"
                                        title="Edit Section">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </a>
+									<a href="{{route('sections.preview', ['section' => $section->id])}}"
+                                       class="btn btn-sm btn-alt-secondary"
+									   target="_blank"
+                                       data-bs-toggle="tooltip"
+                                       title="Preview Section">
+                                        <i class="fa fa-fw fa-eye"></i>
                                     </a>
                                     <button type="button"
                                             class="btn btn-sm btn-alt-secondary delete-section"

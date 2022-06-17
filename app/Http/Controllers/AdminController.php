@@ -13,12 +13,12 @@ class AdminController extends Controller
     }
     
     public function userList(){
-        $users = User::where('role', 'standard_user')->get();
+        $users = User::where('role','!=', 1)->get();
         return view('admin.user-list', ['users' => $users]);
     }
     
     public function showEditUser(Request $request, $id){
-        $user = User::where('role', 'standard_user')->find($id);
+        $user = User::where('role','!=', 1)->find($id);
 
         if($user)
             return view('admin.edit-user', ['user' => $user]);
@@ -65,7 +65,6 @@ class AdminController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'role' => 'standard_user',
         ]);
 
         return redirect(route('admin-user-list'));

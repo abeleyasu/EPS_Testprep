@@ -22,7 +22,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections = Section::join('modules','sections.module_id','=','modules.id')->get(['sections.*','modules.title as moduletitle']);
+        $sections = Section::orderBy('order')->get();
         return view('admin.courses.sections.index', compact('sections'));
     }
 
@@ -83,7 +83,16 @@ class SectionController extends Controller
     public function showDetail($id)
     {
         $section = Section::findorfail($id);
-        return view('student.courses.sectionDetail',compact('section'));
+		$milestone = array();
+		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
+		
+		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
+		
+		if($module){
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+		}
+		
+        return view('student.courses.sectionDetail',compact('section', 'getSections','module','milestone'));
     }
 
     /**
@@ -260,5 +269,29 @@ class SectionController extends Controller
             'data' => $sectionData
         ],200);
     }
-
+	/**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\CourseManagement\Section  $section
+     * @return \Illuminate\Http\Response
+     */
+    public function preview(Section $section)
+    {
+		$milestone = array();
+		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
+		
+		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
+		
+		if($module){
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+		}
+        
+        $tags = Tag::all();
+        $section_tags = ModelTag::where([
+            ['model_id', $section->id],
+            ['model_type', get_class($section)]
+        ])->pluck('tag_id')->toArray();
+		
+        return view('admin.courses.sections.preview', compact('section', 'getSections', 'module','tags', 'section_tags', 'milestone'));
+    }
 }

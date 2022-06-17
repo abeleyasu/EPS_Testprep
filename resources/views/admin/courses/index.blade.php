@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard : Milestones')
+@section('title', 'Admin Dashboard : Courses')
 
 @section('page-style')
     <!-- Stylesheets -->
@@ -23,7 +23,7 @@
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">
-                    Milestones
+                    Courses
                     <span class="btn-group" style="margin-left: 40%">
                         <button class="btn grid-btn"
                                 data-bs-toggle="tooltip"
@@ -39,8 +39,8 @@
                         </button>
                     </span>
                 </h3>
-                <a href="{{ route('milestones.create')}}" class="btn btn-sm btn-primary">
-                    <i class="fa fa-plus" ></i> New Milestone
+                <a href="{{ route('courseslist.create')}}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus" ></i> New Course
                 </a>
             </div>
             <div class="block-content block-content-full table-view">
@@ -54,30 +54,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($milestones as $milestone)
+                        @foreach($courses as $course)
                         <tr>
-                            <td class="fw-semibold fs-sm">{{$milestone->name}}</td>
+                            <td class="fw-semibold fs-sm">{{$course->title}}</td>
                             <td class="fs-sm">
-                                {!! $milestone->description !!}
+                                {!! $course->description !!}
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{route('milestones.preview', ['milestone' => $milestone->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Milestone">
+                                    <!--<a href="{{route('courseslist.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
                                         <i class="fa fa-fw fa-eye"></i>
-                                    </a>
-									<a href="{{route('milestones.edit', ['milestone' => $milestone->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Milestone">
+                                    </a>-->
+									<a href="{{route('courseslist.edit', ['courseslist' => $course->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
                                     <button type="button"
-                                            class="btn btn-sm btn-alt-secondary delete-milestone"
-                                            data-id="{{$milestone->id}}"
+                                            class="btn btn-sm btn-alt-secondary delete-course"
+                                            data-id="{{$course->id}}"
                                             data-bs-toggle="tooltip"
-                                            title="Delete Milestone"
-                                            onclick="deleteItem({{ $milestone->id }})"
+                                            title="Delete Course"
+                                            onclick="deleteItem({{ $course->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
-                                    <form id="delete-form-{{$milestone->id}}" action="{{ route('milestones.destroy',$milestone->id) }}" method="POST" style="display: none;">
+                                    <form id="delete-form-{{$course->id}}" action="{{ route('courseslist.destroy',$course->id) }}" method="POST" style="display: none;">
                                         @method('DELETE')
                                         {{ csrf_field() }}
                                     </form>
@@ -92,29 +92,29 @@
             </div>
             <div class="row grid-view px-2">
 
-                @foreach($milestones as $milestone)
+                @foreach($courses as $course)
                     <div class=" col-md-3 my-2 col-sm-6">
                         <div class="card">
                             <div class="card-body bg-default">
                                 <div class="opacity-0" style="min-height: 200px" onmouseover="addOpacity(this)" onmouseout="removeOpacity(this)">
 
                                     <div class="btn-group float-end">
-										<a href="{{route('milestones.preview', ['milestone' => $milestone->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Milestone">
+										<!--<a href="{{route('courseslist.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
 											<i class="fa fa-fw fa-eye"></i>
-										</a>
-                                        <a href="{{route('milestones.edit', ['milestone' => $milestone->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Milestone">
+										</a>-->
+                                        <a href="{{route('courseslist.edit', ['courseslist' => $course->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                             <i class="fa fa-fw fa-pencil-alt"></i>
                                         </a>
                                         <button type="button"
-                                                class="btn btn-sm btn-alt-secondary delete-milestone"
-                                                data-id="{{$milestone->id}}"
+                                                class="btn btn-sm btn-alt-secondary delete-course"
+                                                data-id="{{$course->id}}"
                                                 data-bs-toggle="tooltip"
-                                                title="Delete Milestone"
-                                                onclick="deleteItem({{ $milestone->id }})"
+                                                title="Delete Course"
+                                                onclick="deleteItem({{ $course->id }})"
                                         >
                                             <i class="fa fa-fw fa-times"></i>
                                         </button>
-                                        <form id="delete-form-{{$milestone->id}}" action="{{ route('milestones.destroy',$milestone->id) }}" method="POST" style="display: none;">
+                                        <form id="delete-form-{{$course->id}}" action="{{ route('milestones.destroy',$course->id) }}" method="POST" style="display: none;">
                                             @method('DELETE')
                                             {{ csrf_field() }}
                                         </form>
@@ -123,9 +123,9 @@
                                 </div>
                             </div>
                             <h5>
-                                {{ $milestone->name }}
+                                {{ $course->title }}
                             </h5>
-                            <span class="text-end"> {{ $milestone->created_at->diffForHumans() }}</span>
+                            <span class="text-end"> {{ $course->created_at->diffForHumans() }}</span>
                         </div>
                     </div>
                 @endforeach
