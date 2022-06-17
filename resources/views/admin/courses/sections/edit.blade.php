@@ -16,9 +16,9 @@
                     <div class="block block-rounded">
                         <div class="block-header block-header-default">
                             <h3 class="block-title">Edit section</h3>
-							<a target="_blank" class="btn w-25 btn-alt-success" href="{{ route('sections.preview',['section' => $section->id]) }}">
-								<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
-							</a>
+                            <a target="_blank" class="btn w-25 btn-alt-success" href="{{ route('sections.preview',['section' => $section->id]) }}">
+                                <i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
+                            </a>
                         </div>
                         <div class="block-content block-content-full">
                             <div class="mb-2">
@@ -48,7 +48,7 @@
                                 <div class="card mb-2">
                                 @foreach($section->tasks as $task)
 
-                                <div class="mx-6 my-2 section-detail{{$section->id}}"><i class="fa-solid fa-list"></i>  {!! $task->title !!}
+                                <div class="mx-6 my-2 section-detail{{$section->id}}"><i class="fa-solid fa-list"></i><a href="/admin/course-management/tasks/{{$task->id}}/edit" target="__blank">  {!! $task->title !!}</a>
 
                                     <span class="text-center badge bg-danger ml-4">tasks</span>
                                 </div>
