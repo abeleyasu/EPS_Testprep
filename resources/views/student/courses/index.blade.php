@@ -184,7 +184,7 @@
                                         }
                                         @endphp
 
-                                        @if($all_tasks->count() > 0 && isset($tasks))
+                                        
                                         @if($all_tasks->count() == 1)
                                         <div class="progress" style="display:none;">
                                                             <div class="progress-bar "
@@ -203,7 +203,7 @@
                                             
 
                                                     
-                                        @endif
+                                       
                                     @endforeach
                                 @endif
                                 
