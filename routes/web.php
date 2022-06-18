@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\ContentCategoryController;
+use App\Http\Controllers\PassagesController;
 use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
 use App\Http\Controllers\CourseManagement\TaskController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\QuizTagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -63,7 +65,10 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
 		Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
     });
     Route::resource('tags', TagController::class);
+    Route::resource('quiztags', QuizTagController::class);
     Route::resource('content-categories', ContentCategoryController::class);
+    Route::resource('passages', PassagesController::class);
+    Route::get('passages/{passage}/preview', [PassagesController::class, 'preview'])->name('passages.preview');
 });
 
 //User Routes
