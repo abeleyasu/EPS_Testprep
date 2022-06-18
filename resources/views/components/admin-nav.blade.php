@@ -117,7 +117,7 @@
                         </li>
                     </ul>
                 </li>                   
-                <li class="nav-main-item">
+                <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit'])) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
                         <span class="nav-main-link-name">Quiz Management</span>
@@ -125,15 +125,15 @@
 					<ul class="nav-main-submenu">
                         <li class="nav-main-item">
                             <a class="nav-main-link"
-                               href="">
+                               href="#">
                                 <span class="nav-main-link-name">Quizzes</span>
                             </a>
                         </li>
                     </ul>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
+                        <li class="nav-main-item {{Route::is(['passages.index','passages.create','passages.edit']) ? 'active' : ''}}">
                             <a class="nav-main-link"
-                               href="">
+                               href="{{route('passages.index')}}">
                                 <span class="nav-main-link-name">Passages</span>
                             </a>
                         </li>
@@ -141,29 +141,28 @@
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
                             <a class="nav-main-link"
-                               href="">
+                               href="#">
                                 <span class="nav-main-link-name">Questions</span>
                             </a>
                         </li>
                     </ul>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
+                        <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit'])) ? 'open' : ''}}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
-                                <i class="nav-main-link-icon fa-solid fa-file"></i>
                                 <span class="nav-main-link-name">General Settings</span>
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
                                     <a class="nav-main-link"
-                                    href="">
+                                    href="#">
                                         <span class="nav-main-link-name">Categories</span>
                                     </a>
                                 </li>
                             </ul>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item">
+                                <li class="nav-main-item {{Route::is(['quiztags.index','quiztags.create','quiztags.edit']) ? 'active' : ''}}">
                                     <a class="nav-main-link"
-                                    href="">
+                                    href="{{route('quiztags.index')}}">
                                         <span class="nav-main-link-name">Tags</span>
                                     </a>
                                 </li>
@@ -171,7 +170,7 @@
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
                                     <a class="nav-main-link"
-                                    href="">
+                                    href="#">
                                         <span class="nav-main-link-name">Types</span>
                                     </a>
                                 </li>
