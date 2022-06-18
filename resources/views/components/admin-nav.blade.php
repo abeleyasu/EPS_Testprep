@@ -53,9 +53,9 @@
                     </ul>
                 </li>
                 <li class="nav-main-item {{(Route::is(['milestones.index','milestones.create','milestones.edit',
-                'sections.index','sections.create','sections.edit','tasks.index','tasks.create','tasks.edit',
-                'modules.index','modules.create','modules.edit','tags.index','tags.create','tags.edit',
-                'content-categories.index','content-categories.create','content-categories.edit'])) ? 'open' : ''}}">
+                    'sections.index','sections.create','sections.edit','tasks.index','tasks.create','tasks.edit',
+                    'modules.index','modules.create','modules.edit','tags.index','tags.create','tags.edit',
+                    'content-categories.index','content-categories.create','content-categories.edit'])) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
                         <span class="nav-main-link-name">Course Management</span>
@@ -116,7 +116,69 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li>                   
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon fa-solid fa-file"></i>
+                        <span class="nav-main-link-name">Quiz Management</span>
+                    </a>
+					<ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"
+                               href="">
+                                <span class="nav-main-link-name">Quizzes</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"
+                               href="">
+                                <span class="nav-main-link-name">Passages</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link"
+                               href="">
+                                <span class="nav-main-link-name">Questions</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                <i class="nav-main-link-icon fa-solid fa-file"></i>
+                                <span class="nav-main-link-name">General Settings</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"
+                                    href="">
+                                        <span class="nav-main-link-name">Categories</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"
+                                    href="">
+                                        <span class="nav-main-link-name">Tags</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link"
+                                    href="">
+                                        <span class="nav-main-link-name">Types</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li> 
+                    </ul>
+                </li>                   
             </ul>
         </div>
         <!-- END Side Navigation -->
