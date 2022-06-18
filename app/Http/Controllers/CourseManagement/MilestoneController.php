@@ -8,6 +8,7 @@ use App\Models\CourseManagement\Section;
 use App\Models\CourseManagement\Task;
 use App\Models\ModelTag;
 use App\Models\Tag;
+
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
@@ -131,6 +132,7 @@ class MilestoneController extends Controller
         ])->pluck('tag_id')->toArray();
         $contentCategories = ContentCategory::all();
 		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
+        
 		
         return view('admin.courses.milestones.edit',
             compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','usersRoles'));

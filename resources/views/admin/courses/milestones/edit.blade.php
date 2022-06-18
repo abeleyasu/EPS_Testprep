@@ -130,8 +130,10 @@
                             <h3 class="block-title">Settings</h3>
                         </div>
                         <div class="block-content block-content-full">
+                        
+
                             <div class="mb-2">
-                                <label for="type" class="form-label">Content Category:</label>
+                                <label for="type" class="form-label">Select Course:</label>
                                 <select name="content_category" class="form-control">
                                     @foreach($contentCategories as $cat)
                                         <option value="{{ $cat->id }}"
