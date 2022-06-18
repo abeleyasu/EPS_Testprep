@@ -75,9 +75,18 @@ class SectionController extends Controller
      * @param  \App\Models\CourseManagement\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show($id)
     {
-        return view('student.courses.sectionDetail',compact('section'));
+        $section = Section::findorfail($id);
+		$milestone = array();
+		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
+		
+		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
+		
+		if($module){
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+		}
+        return view('student.courses.sectionDetail',compact('section', 'getSections','module','milestone'));
     }
 
     public function showDetail($id)

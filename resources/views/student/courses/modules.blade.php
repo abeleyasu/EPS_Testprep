@@ -98,9 +98,36 @@
 						@foreach($milestone->modules as $key => $module)
 							<div class="card mb-2">
 								<div class="card-body row">
-									<div class="col-9 colapHead">
+									<div class="col-6 colapHead" style="float:left;">
 										<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a>
 									</div>
+                                           
+                                    @php
+                                    
+                                    $all_tasks = $module->tasks();
+                                    $completion_percent = 0;
+                                    if($all_tasks->count() > 0) {
+                                    $tasks = $all_tasks->unique('id');
+                                    $user_tasks = $all_tasks->filter(function($item) {
+                                        return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                    });
+                                    $user_tasks= $user_tasks->count() > 0?
+                                    array_map(function ($item){
+                                        return $item['id'];
+                                    },$user_tasks->toArray())
+                                    :
+                                    [];
+                                    $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                    }
+                                    @endphp
+                                    <div class="col-3">
+                                    <div class="progress" style="background:#c4c5c7;">
+                                            <div class="progress-bar "
+                                                 style="background-color: blue; width: {{$completion_percent}}%"
+                                                 role="progressbar"
+                                                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                    </div>
+                                    </div>
 									<div class="col-3">
 										<button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
 											<i class="fa-solid fa-arrow-down"></i>
@@ -110,7 +137,38 @@
 
 										@foreach($module->sections as $section_key => $section)
 											<div class="my-3">
-												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
+                                                
+                                        @php
+                                        $all_tasks = $section->taskStatus();
+                                            $completion_percent = 0;
+                                            if($all_tasks->count() > 0) {
+                                            $tasks = $all_tasks->unique('id');
+                                            $user_tasks = $all_tasks->filter(function($item) {
+                                                return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                            });
+                                            $user_tasks= $user_tasks->count() > 0?
+                                            array_map(function ($item){
+                                                return $item['id'];
+                                            },$user_tasks->toArray())
+                                            :
+                                            [];
+                                            $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                            }
+                                        
+                                            
+                                        @endphp
+                                            
+												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} 
+                                                <div class="col-3" style="float:right;"> 
+                                                <div class="progress" style="background:#c4c5c7;">
+                                                       
+                                                <div class="progress-bar "
+                                                            style="background-color: blue; width: {{$completion_percent}}%"
+                                                            role="progressbar"
+                                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                                </div>
+                                        </div>
+                                        </a>
 												
 											</div>
 										@endforeach

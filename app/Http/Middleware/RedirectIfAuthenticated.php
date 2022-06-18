@@ -28,6 +28,7 @@ class RedirectIfAuthenticated
         }*/
 
         if(Auth::check() && Auth::user()->isAdmin())
+        //echo 'here';die;
             return redirect(route('admin-dashboard'));
         if(Auth::check() && Auth::user()->isUser())
             return redirect(route('user-dashboard'));
