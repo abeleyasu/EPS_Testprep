@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Student Dashboard : Courses')
+@section('title', 'Student - Public High School Dashboard : Courses')
 
 
 @section('page-style')
@@ -14,12 +14,14 @@
 * ==========================================
 *
 */
+
         /* Timeline holder */
         ul.timeline {
             list-style-type: none;
             position: relative;
             padding-left: 1.5rem;
         }
+
         /* Timeline vertical line */
         ul.timeline:before {
             content: ' ';
@@ -32,9 +34,13 @@
             z-index: 400;
             border-radius: 1rem;
         }
+
         li.timeline-item {
             margin: 20px 0;
         }
+
+
+
         /* Timeline item circle marker */
         li.timeline-item::before {
             content: ' ';
@@ -54,6 +60,7 @@
             width: 28px;
             height: 28px;
         }
+
         .round label {
             background-color: #fff;
             border: 1px solid #ccc;
@@ -65,6 +72,7 @@
             top: 0;
             width: 28px;
         }
+
         .round label:after {
             border: 2px solid #fff;
             border-top: none;
@@ -78,6 +86,7 @@
             transform: rotate(-45deg);
             width: 12px;
         }
+
         .round input[type="checkbox"] {
             position: relative;
             z-index: 9;
@@ -85,10 +94,12 @@
             width: 100%;
             height: 100%;
         }
+
         .round input[type="checkbox"]:checked+label {
             background-color: #66bb6a;
             border-color: #66bb6a;
         }
+
         .round input[type="checkbox"]:checked+label:after {
             opacity: 1;
         }
@@ -116,18 +127,98 @@
         </div>
     </div>
     <!-- END Hero Content -->
-
+	<div class="bg-body-extra-light">
+		<div class="content content-boxed py-3">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb breadcrumb-alt">
+					<li class="breadcrumb-item">
+						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
+					</li>					
+					<li class="breadcrumb-item">
+						<a class="link-fx text-dark" href="{{ route('courses.detail',['milestone' => $module->milestone_id]) }}">
+						@php
+							$stringLen = strlen($milestone->name);
+						@endphp
+						@if ($stringLen>25)
+							@php $convetStr = substr($milestone->name, 0, 25); @endphp
+							{{$convetStr}}...
+						@else
+							{{ $milestone->name }}
+						@endif		
+						
+						</a>
+					</li>
+						
+					<li class="breadcrumb-item" aria-current="page">
+						<a class="link-fx" href="javascript:;">
+							@php
+								$stringLen1 = strlen($module->title);
+							@endphp
+							@if ($stringLen1>30)
+								@php $convetStr1 = substr($module->title, 0, 25); @endphp
+								{{$convetStr1}}...
+							@else
+								{{ $module->title }}
+							@endif			
+									
+						</a>
+					</li>
+				</ol>
+			</nav>
+		</div>
+	</div>
 
         <div class=" py-5">
 
             <div class="row" style="width: 99%">
                 <div class="col-lg-9 col-md-9 col-sm-12 mx-auto">
+					@php
+						$previouMileId=0;
+						$nextExist =0;
+						$lastItem = count($getModules)-1;
+					@endphp
+					@foreach($getModules as $mokey => $getModule)
+						@if ($module->id == $getModule->id)
+							@if ($mokey>0)
+								<a href="{{ route('modules.detail',['module'=>$previouModId]) }}" class="btn w-25 btn-alt-success">
+									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Module
+								</a>	
+							@endif
+							@if ($mokey ==0 && count($getModules)>1)
+								<a href="{{ route('modules.detail',['module'=>$getModules[1]->id]) }}" class="btn w-25 btn-alt-success">
+										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
+									</a>
+							@endif
+							@if ($lastItem == $mokey)
+								<a href="{{ route('courses.detail',['milestone' => $getModule->milestone_id]) }}" class="btn w-25 btn-alt-success">
+										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milstone
+								</a>
+							@endif
 
+						@endif
+					@php 
+						$previouModId = $getModule->id; 
+					@endphp	
+						@if ($nextExist>0)
+							@php $nextExist =0; @endphp
+							<a href="{{ route('modules.detail',['module'=>$getModule->id]) }}" class="btn w-25 btn-alt-success">
+									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
+								</a>
+						@endif
+						@if ($module->id == $getModule->id)
+							@if ($mokey>0)
+								@php
+									$nextExist =1;
+								@endphp	
+							@endif
+						@endif
+						
+					@endforeach	
 
                     <h3><b>Sections</b></h3>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
-                    <ul class="timeline" style="position:inherit;">
+                    <ul class="timeline">
 
                     </ul><!-- End -->
 
@@ -144,13 +235,16 @@
 @section('user-script')
 
     <script>
+
         var module_id = '{{ $module->id }}';
         var user = '{{ auth()->id() }}';
         var first_time = true;
         $(document).ready(() => {
             populateTasks();
         });
+
         function populateTasks() {
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -161,6 +255,7 @@
                 success: (res) => {
                     $('.timeline').empty();
                     res.data.forEach(i => {
+
                         
                         $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="margin-left: 10%">
                                 <div class="row" id="row-${i.id}">
@@ -186,6 +281,7 @@
                                                           role="progressbar"
                                                           aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                  </div>
+
                                               </div>
                                               <div class="col-4">
                                                   Task Complete ${i.completion_rate} %
@@ -193,6 +289,7 @@
                                   </div>
                             </div>
                             <div class="col-12 collapse hide section-detail${i.id}">
+
                             </div>`).appendTo(`#row-${i.id}`);
                             let _data = typeof i.tasks === 'object' ? Object.values(i.tasks) : i.tasks;
                             _data.forEach((task) => {
@@ -212,13 +309,17 @@
                             })
                         }
                     });
+
                 }
             });
         }
+
         function showDetail(id ) {
             $('.section-detail'+id).collapse('toggle');
         }
+
         function changeStatus(task, section) {
+
             if(first_time) {
                 first_time = false;
                 $.ajax({
@@ -236,6 +337,7 @@
                     }
                 });
             }
+
         }
     </script>
 @endsection
