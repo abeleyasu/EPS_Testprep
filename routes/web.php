@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContentCategoryController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\PassagesController;
 use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
@@ -52,6 +53,8 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::post('/edit_user', [AdminController::class, 'updateUser'])->name('admin-update-user');
     Route::post('/delete_user', [AdminController::class, 'deleteUser'])->name('admin-delete-user');
     Route::group(['prefix' => 'course-management'], function () {
+        Route::resource('courses', CoursesController::class);
+        Route::post('courses/{course}/courseupdate', [CoursesController::class, 'courseupdate'])->name('courses.courseupdate');
         Route::resource('courseslist', CourseController::class);
 		Route::post('courseslist/{course}/courseupdate', [CourseController::class, 'courseupdate'])->name('courseslist.courseupdate');
 		Route::get('courseslist/{course}/preview', [MilestoneController::class, 'preview'])->name('courseslist.preview');
@@ -67,6 +70,7 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::resource('tags', TagController::class);
     Route::resource('quiztags', QuizTagController::class);
     Route::resource('content-categories', ContentCategoryController::class);
+    
     Route::resource('passages', PassagesController::class);
     Route::get('passages/{passage}/preview', [PassagesController::class, 'preview'])->name('passages.preview');
 });

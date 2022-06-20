@@ -102,7 +102,7 @@
 										<!--<a href="{{route('courseslist.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
 											<i class="fa fa-fw fa-eye"></i>
 										</a>-->
-                                        <a href="{{route('courseslist.edit', ['courseslist' => $course->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
+                                        <a href="/admin/course-management/courses/{{$course->id}}/edit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                             <i class="fa fa-fw fa-pencil-alt"></i>
                                         </a>
                                         <button type="button"

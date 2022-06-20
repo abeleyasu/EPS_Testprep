@@ -15,7 +15,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <!-- Dynamic Table Full -->
-        <form action="{{route('courseslist.courseupdate', ['course'=>$course->id])}}" method="POST">
+        <form action="{{route('courses.courseupdate', ['course'=>$course->id])}}" method="POST">
 
             @csrf
         <div class="row">

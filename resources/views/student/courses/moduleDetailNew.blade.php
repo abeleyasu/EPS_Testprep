@@ -127,7 +127,7 @@
                     <h3><b>Sections</b></h3>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
-                    <ul class="timeline" style="position:inherit;">
+                    <ul class="timeline" style="position:inherit;padding-left:0px;">
 
                     </ul><!-- End -->
 
@@ -162,8 +162,8 @@
                     $('.timeline').empty();
                     res.data.forEach(i => {
                         
-                        $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="margin-left: 10%">
-                                <div class="row" id="row-${i.id}">
+                        $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="">
+                        ${i.id} <div class="row" id="row-${i.id}">
                                     <div class="col-9">
                                         <a href="/user/sections/${i.id}/show-detail">${i.title}</a>
                                     </div>
@@ -178,7 +178,7 @@
                             // $(`task-head-${i.id}`)?.remove();
                             // $(`section-detail${i.id}`)?.remove();
                             $(`<div class="col-12" id="task-head-${i.id}">
-                                  <div class="row mt-5">
+                                  <div class="row">
                                              <div class=" col-8">
                                                  <div class="progress">
                                                      <div class="progress-bar "
@@ -196,7 +196,7 @@
                             </div>`).appendTo(`#row-${i.id}`);
                             let _data = typeof i.tasks === 'object' ? Object.values(i.tasks) : i.tasks;
                             _data.forEach((task) => {
-                                $(`<div class="mx-6 my-2">
+                                $(`<div class="my-2" style="margin-left:15px;">
                                       <div class="row">
                                           <div class="round" onclick="changeStatus(${task.id},${i.id})" >
                                               <input type="checkbox" id="checkbox${task.id}" ${Object.values(i.user_tasks).includes(task.id)?'checked':''}/>

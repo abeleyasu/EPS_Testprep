@@ -15,7 +15,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <!-- Dynamic Table Full -->
-        <form action="{{route('courseslist.store')}}" method="POST">
+        <form action="{{route('courses.store')}}" method="POST">
             @csrf
         <div class="row">
             <div class="col-xl-8">
