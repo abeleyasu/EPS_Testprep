@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\UserController;
+use \App\Http\Controllers\QuizManagemet\QuestionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,8 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     
     Route::resource('passages', PassagesController::class);
     Route::get('passages/{passage}/preview', [PassagesController::class, 'preview'])->name('passages.preview');
+    // questions
+    Route::resource('questions', QuestionsController::class);
 });
 
 //User Routes
