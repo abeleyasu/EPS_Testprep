@@ -116,7 +116,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>                   
+                </li>
                 <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit'])) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
@@ -140,8 +140,8 @@
                     </ul>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link"
-                               href="#">
+                            <a class="nav-main-link {{Route::is(['questions.index','questions.create','questions.edit']) ? 'active' : ''}}"
+                               href="{{route('questions.index')}}">
                                 <span class="nav-main-link-name">Questions</span>
                             </a>
                         </li>
@@ -175,9 +175,9 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li> 
+                        </li>
                     </ul>
-                </li>                   
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

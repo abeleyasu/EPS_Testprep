@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('option');
             $table->string('image',100)->nullable();
             $table->boolean('is_correct')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

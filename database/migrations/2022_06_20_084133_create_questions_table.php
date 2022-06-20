@@ -24,6 +24,7 @@ return new class extends Migration
                 ->onDelete('cascade');*/ // uncomment it when passages table is done
             $table->integer('passage_id')->default(0); // remove it when passages table is done
             $table->tinyInteger('order')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
