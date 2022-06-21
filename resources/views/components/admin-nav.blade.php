@@ -116,8 +116,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit'])) ? 'open' : ''}}">
+                </li>                   
+                <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit','categories.index','categories.create','categories.edit'])) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
                         <span class="nav-main-link-name">Quiz Management</span>
@@ -131,8 +131,8 @@
                         </li>
                     </ul>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item {{Route::is(['passages.index','passages.create','passages.edit']) ? 'active' : ''}}">
-                            <a class="nav-main-link"
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['passages.index','passages.create','passages.edit']) ? 'active' : ''}}"
                                href="{{route('passages.index')}}">
                                 <span class="nav-main-link-name">Passages</span>
                             </a>
@@ -147,21 +147,21 @@
                         </li>
                     </ul>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit'])) ? 'open' : ''}}">
+                        <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','categories.index','categories.create','categories.edit'])) ? 'open' : ''}}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                 <span class="nav-main-link-name">General Settings</span>
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link"
-                                    href="#">
+                                    <a class="nav-main-link {{Route::is(['categories.index','categories.create','categories.edit']) ? 'active' : ''}}"
+                                    href="{{route('categories.index')}}">
                                         <span class="nav-main-link-name">Categories</span>
                                     </a>
                                 </li>
                             </ul>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item {{Route::is(['quiztags.index','quiztags.create','quiztags.edit']) ? 'active' : ''}}">
-                                    <a class="nav-main-link"
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is(['quiztags.index','quiztags.create','quiztags.edit']) ? 'active' : ''}}"
                                     href="{{route('quiztags.index')}}">
                                         <span class="nav-main-link-name">Tags</span>
                                     </a>
