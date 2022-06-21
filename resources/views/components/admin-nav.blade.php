@@ -62,8 +62,8 @@
                     </a>
 					<ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is(['courseslist.index','courseslist.create','courseslist.edit']) ? 'active' : ''}}"
-                               href="{{route('courseslist.index')}}">
+                            <a class="nav-main-link {{Route::is(['courses.index','courses.create','courses.edit']) ? 'active' : ''}}"
+                               href="/admin/course-management/courses">
                                 <span class="nav-main-link-name">Courses</span>
                             </a>
                         </li>
@@ -140,8 +140,8 @@
                     </ul>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link"
-                               href="#">
+                            <a class="nav-main-link {{Route::is(['questions.index','questions.create','questions.edit']) ? 'active' : ''}}"
+                               href="{{route('questions.index')}}">
                                 <span class="nav-main-link-name">Questions</span>
                             </a>
                         </li>
@@ -175,9 +175,9 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li> 
+                        </li>
                     </ul>
-                </li>                   
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->
