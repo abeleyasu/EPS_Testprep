@@ -121,9 +121,6 @@
 
             <div class="row" style="width: 99%">
                 <div class="col-lg-9 col-md-9 col-sm-12 mx-auto">
-
-
-                    <h3><b>Sections</b></h3>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
                     <ul class="timeline" style="position:inherit;">
