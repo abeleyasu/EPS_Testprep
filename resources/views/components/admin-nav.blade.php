@@ -131,8 +131,8 @@
                         </li>
                     </ul>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item {{Route::is(['passages.index','passages.create','passages.edit']) ? 'active' : ''}}">
-                            <a class="nav-main-link"
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['passages.index','passages.create','passages.edit']) ? 'active' : ''}}"
                                href="{{route('passages.index')}}">
                                 <span class="nav-main-link-name">Passages</span>
                             </a>
@@ -152,16 +152,16 @@
                                 <span class="nav-main-link-name">General Settings</span>
                             </a>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item {{Route::is(['categories.index','categories.create','categories.edit']) ? 'active' : ''}}">
-                                    <a class="nav-main-link"
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is(['categories.index','categories.create','categories.edit']) ? 'active' : ''}}"
                                     href="{{route('categories.index')}}">
                                         <span class="nav-main-link-name">Categories</span>
                                     </a>
                                 </li>
                             </ul>
                             <ul class="nav-main-submenu">
-                                <li class="nav-main-item {{Route::is(['quiztags.index','quiztags.create','quiztags.edit']) ? 'active' : ''}}">
-                                    <a class="nav-main-link"
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is(['quiztags.index','quiztags.create','quiztags.edit']) ? 'active' : ''}}"
                                     href="{{route('quiztags.index')}}">
                                         <span class="nav-main-link-name">Tags</span>
                                     </a>
