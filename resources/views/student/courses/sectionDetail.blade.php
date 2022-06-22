@@ -214,10 +214,10 @@
                                 @endphp
                                 @if($all_tasks->count() > 0 && isset($tasks))
 
-                                <div class=" milestone-detail{{$section->id}}">
+                                <div class=" milestone-detail{{$section->id}}" style="margin-left:11px;">
                                             @foreach($tasks as $task)
 
-                                                <div class="mx-6 my-2 section-detail{{$section->id}}">
+                                                <div class="my-2 section-detail{{$section->id}}">
                                                     <div class="row">
                                                         <div class="round" onclick="changeStatus({{ $task->id }})" >
                                                             <input type="checkbox" id="checkbox{{$task->id}}"

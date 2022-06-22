@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Courses extends Model
+class Category extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'title',
-        'description',
-        'published'
+        'name',
+        'time'
     ];
+    public function SubCategory() {
+        return $this->belongsTo(SubCategory::class);
+    }
 }

@@ -72,7 +72,8 @@
                             <div class="card mb-2">
                                 <div class="card-body py-2 my-2">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" value="true" id="published" name="published">
+                                    <input class="form-check-input" type="checkbox" value="true" id="published" name="published"
+                                        @if($course->published) checked @endif>
                                         <label class="form-check-label" for="published"></label>
                                         <label><b>Published</b></label>
                                     </div>

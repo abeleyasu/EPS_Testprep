@@ -1,13 +1,15 @@
-@extends('layouts.preview')
+@extends('layouts.admin')
 
-@section('title', 'Admin Dashboard : Courses')
+@section('title', 'Admin Dashboard : Passages')
 
 @section('page-style')
-
-
+    <style>
+        .label-check{
+            padding:4px;
+        }
+    </style>
 @endsection
-
-@section('user-content')
+@section('admin-content')
 
     <!-- Main Container -->
     <main id="main-container">
@@ -41,11 +43,11 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row">
-            <div class="col-xl-4">
+            <div class="col-xl-5">
                 <h3>Title</h3>
                 {{ $passage->title}}
             </div>
-            <div class="col-xl-4">
+            <div class="col-xl-7">
                 <h3>Description</h3>
                 {!! $passage->description !!}
             </div>
@@ -57,7 +59,6 @@
 
 @section('user-script')
 
-@endsection
 <script>
 function showDetail(id) {
             $('.milestone-detail'+id).collapse('toggle')
@@ -67,3 +68,4 @@ function showDetail(id) {
         }
 
 </script>
+@endsection

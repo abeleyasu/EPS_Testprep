@@ -21,6 +21,16 @@
             position: relative;
             padding-left: 1.5rem;
         }
+        .number_count {
+        height: 45px;
+        width: 45px;
+        background-color: #1f2937;
+        border-radius: 50%;
+        display: inline-block;
+        color: #fff;
+        font-size: 24px;
+        line-height: 44px;
+        }
 
         /* Timeline vertical line */
         ul.timeline:before {
@@ -215,7 +225,7 @@
 						
 					@endforeach	
 
-                    <h3><b>Sections</b></h3>
+                    
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
                     <ul class="timeline" style="position:inherit;padding-left:0px;">
@@ -258,8 +268,9 @@
 
                         
                         $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="">
-                        ${i.id} <div class="row" id="row-${i.id}">
-                                    <div class="col-9">
+                         <div class="row" id="row-${i.id}">
+                                    <div class="col-1 number_count">${i.id}</div>
+                                    <div class="col-8">
                                         <a href="/user/sections/${i.id}/show-detail">${i.title}</a>
                                     </div>
                                     <div class="col-3">
@@ -274,8 +285,9 @@
                             // $(`section-detail${i.id}`)?.remove();
                             $(`<div class="col-12" id="task-head-${i.id}">
                                   <div class="row">
+                                  <div class=" col-0"></div>
                                              <div class=" col-8">
-                                                 <div class="progress">
+                                                 <div class="progress" style="margin-left:45px;">
                                                      <div class="progress-bar "
                                                           style="background-color: lightgray; width: ${i.completion_rate}%"
                                                           role="progressbar"
@@ -283,7 +295,7 @@
                                                  </div>
 
                                               </div>
-                                              <div class="col-4">
+                                              <div class="col-3">
                                                   Task Complete ${i.completion_rate} %
                                               </div>
                                   </div>

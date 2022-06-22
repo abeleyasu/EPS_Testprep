@@ -17,9 +17,16 @@ class CoursesController extends Controller
     }
     public function store(Request $request)
     {
+        $published = $request->published;
+        if($published == 'true'){
+            $published = 1;
+        }else{
+            $published = 0; 
+        }
         $course = Courses::create([
             'title' => $request->name,
-            'description' => $request->description
+            'description' => $request->description,
+            'published'=>$published
         ]);
 		return redirect('admin/course-management/courses/'.$course->id.'/edit')->with('success', 'Milestone created successfully');
     }
@@ -31,11 +38,18 @@ class CoursesController extends Controller
 	}
     public function courseupdate(Request $request, $id)
     {
+        $published = $request->published;
+        if($published == 'true'){
+            $published = 1;
+        }else{
+            $published = 0; 
+        }
 		$course = Courses::findorfail($id);
         
         $course->update([
             'title' => $request->name,
-            'description' => $request->description
+            'description' => $request->description,
+            'published'=>$published
         ]);
 
         //return redirect()->route('courses.index')->with('success', 'Milestone updated successfully');

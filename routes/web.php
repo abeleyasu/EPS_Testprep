@@ -7,6 +7,8 @@ use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
 use App\Http\Controllers\CourseManagement\TaskController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\QuizTagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -69,11 +71,15 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
 		Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
     });
     Route::resource('tags', TagController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::post('categories/update_data/{id}', [CategoryController::class, 'update_data'])->name('categories.update_data');
+    Route::resource('sub_categories', SubCategoryController::class);
     Route::resource('quiztags', QuizTagController::class);
     Route::resource('content-categories', ContentCategoryController::class);
     
     Route::resource('passages', PassagesController::class);
     Route::get('passages/{passage}/preview', [PassagesController::class, 'preview'])->name('passages.preview');
+    // Route::put('categories/{category}/', [CategoryController::class])->name('categories');
     // questions
     Route::resource('questions', QuestionsController::class);
 });
