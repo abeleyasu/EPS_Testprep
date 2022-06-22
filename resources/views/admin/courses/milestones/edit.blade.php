@@ -134,12 +134,12 @@
 
                             <div class="mb-2">
                                 <label for="type" class="form-label">Select Course:</label>
-                                <select name="content_category" class="form-control">
-                                    @foreach($contentCategories as $cat)
-                                        <option value="{{ $cat->id }}"
-                                        @if($cat->id ==$milestone->content_category_id)
+                                <select name="course" class="form-control">
+                                    @foreach($courses as $course)
+                                        <option value="{{ $course->id }}"
+                                        @if($course->id ==$milestone->course_id)
                                         selected
-                                        @endif >{{ $cat->title }}</option>
+                                        @endif >{{ $course->title }}</option>
                                     @endforeach
                                 </select>
                                 @error('user_type')

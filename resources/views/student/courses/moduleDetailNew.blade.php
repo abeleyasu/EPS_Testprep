@@ -226,6 +226,7 @@
 					@endforeach	
 
                     
+                    <p>{!! $module->description !!}</p>
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
                     <ul class="timeline" style="position:inherit;padding-left:0px;">

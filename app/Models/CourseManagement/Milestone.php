@@ -21,6 +21,7 @@ class Milestone extends Model
         'status',
         'added_by',
         'content_category_id',
+        'course_id',
         'published'
     ];
 

@@ -62,6 +62,14 @@
             {{$description}}
             
             </div>
+
+            <div class="block-content" style="margin-bottom:20px;">
+                @php
+                $content = strip_tags($milestone->content);
+                @endphp
+            {{$content}}
+            
+            </div>
             
             <div class="col-xl-8">
                 <!-- Lessons -->

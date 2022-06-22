@@ -8,7 +8,7 @@ use App\Models\CourseManagement\Section;
 use App\Models\CourseManagement\Task;
 use App\Models\ModelTag;
 use App\Models\Tag;
-
+use App\Models\Courses;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
@@ -56,7 +56,8 @@ class MilestoneController extends Controller
         $tags = Tag::all();
         $sections = Section::all();
         $contentCategories = ContentCategory::all();
-        return view('admin.courses.milestones.create', compact('tags','sections', 'contentCategories','usersRoles'));
+        $courses = $courses = Courses::all();
+        return view('admin.courses.milestones.create', compact('tags','sections','courses', 'contentCategories','usersRoles'));
     }
 
     /**
@@ -86,7 +87,7 @@ class MilestoneController extends Controller
             'order' => $request->get('order'),
             'status' => $request->get('status'),
             'added_by' => auth()->id(),
-            'content_category_id' => $request->content_category,
+            'course_id' => $request->select_course,
             'published' => $request->get('published') ? true : false
         ]);
         if($request->tags) {
@@ -131,11 +132,12 @@ class MilestoneController extends Controller
             ['model_type', get_class($milestone)]
         ])->pluck('tag_id')->toArray();
         $contentCategories = ContentCategory::all();
+        $courses = Courses::all();
 		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
         
 		
         return view('admin.courses.milestones.edit',
-            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','usersRoles'));
+            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','courses','usersRoles'));
     }
 
     /**
@@ -162,7 +164,7 @@ class MilestoneController extends Controller
             'order' => $request->get('order'),
             'status' => $request->get('status'),
 //            'added_by' => auth()->id(),
-            'content_category_id' => $request->content_category,
+            'course_id' => $request->course,
             'published' => $request->get('published') ? true : false
         ]);
 
