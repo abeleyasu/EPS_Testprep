@@ -63,7 +63,7 @@
 						</a>
 					</li>						
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('sections.show-detail',['section'=>$task->id]) }}">
+						<a class="link-fx text-dark" href="{{ route('sections.show-detail',['section'=>$section->id]) }}">
 						@php
 							$stringLen2 = strlen($section->title);
 							
