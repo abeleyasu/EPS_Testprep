@@ -223,89 +223,49 @@
                             </div>
                             
                             <ul class="timeline" style="position:inherit;">
-                        @foreach($milestone->modules as $module)
-                        <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
-                            style="margin-left: 10%">
+                            @if($milestone->modules)
+                                        @foreach($milestone->modules as $module)
+                                        @php
+                                    
+                                        $all_tasks = $module->tasks();
+                                        $completion_percent = 0;
+                                        if($all_tasks->count() > 0) {
+                                        $tasks = $all_tasks->unique('id');
+                                        $user_tasks = $all_tasks->filter(function($item) {
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        });
+                                        $user_tasks= $user_tasks->count() > 0?
+                                        array_map(function ($item){
+                                            return $item['id'];
+                                        },$user_tasks->toArray())
+                                        :
+                                        [];
+                                        $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                        }
+                                        @endphp
 
-                            <div class="row">
-                            <div class="col-9">
-                                {{ $module->title }}
-                            </div>
-                            <div class="col-3">
-                                <button type="button" class="btn  btn-sm float-end" onclick="showDetail({{$module->id}})">
-                                    <i class="fa-solid fa-arrow-down"></i>
-                                </button>
-                            </div>
-
-
-                                @php
-                                    $all_tasks = $module->tasks();
-                                    $completion_percent = 0;
-                                    if($all_tasks->count() > 0) {
-                                    $tasks = $all_tasks->unique('id');
-                                    $user_tasks = $all_tasks->filter(function($item) {
-                                        return $item->user_id == auth()->id() &&  $item->complete ==1;
-                                    });
-                                    $user_tasks= $user_tasks->count() > 0?
-                                    array_map(function ($item){
-                                        return $item['id'];
-                                    },$user_tasks->toArray())
-                                    :
-                                    [];
-                                    $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
-                                    }
-                                @endphp
-                                @if($all_tasks->count() > 0 && isset($tasks))
-                                <div class="col-12">
-                                    <div class="row mt-5">
-                                        <div class=" col-8">
-                                            <div class="progress">
-                                                <div class="progress-bar "
-                                                     style="background-color: lightgray; width: {{$completion_percent}}%"
-                                                     role="progressbar"
-                                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-4">
-                                            Task Complete {{ $completion_percent }}%
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 collapse hide milestone-detail{{$module->id}}">
-
-
-
-
-
-                                            @foreach($tasks as $task)
-
-                                                <div class="mx-6 my-2 section-detail{{$module->id}}">
-                                                    <div class="row">
-                                                        <div class="round" onclick="changeStatus({{ $task->id }})" >
-                                                            <input type="checkbox" id="checkbox{{$task->id}}"
-                                                                   @if(in_array($task->id,$user_tasks))checked
-                                                                   @endif/>
-                                                            <label for="checkbox{{$task->id}}"></label>
-                                                            <form action="{{ route('tasks.change_status',['task'=>$task->id])}}" style="display: none"
-                                                                  id="task-status-form-{{$task->id}}" method="post">
-                                                                @csrf
-                                                                <input type="hidden" value="{{$milestone->id}}" name="course_id" />
-                                                            </form>
+                                        @if($all_tasks->count() > 0 && isset($tasks))
+                                        @if($all_tasks->count() == 1)
+                                        <div class="progress" style="display:none;">
+                                                            <div class="progress-bar "
+                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
+                                                                role="progressbar"
+                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
                                                         </div>
-                                                        <div class="col">{!! $task->title !!}</div>
-                                                    </div>
+                                        @else
+                                        <div class="progress">
+                                                            <div class="progress-bar "
+                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
+                                                                role="progressbar"
+                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                                        </div>
+                                        @endif
+                                            
 
-                                                </div>
-
-                                            @endforeach
-
-                                </div>
-
+                                                    
+                                        @endif
+                                    @endforeach
                                 @endif
-                            </div>
-                        </li>
-                        @endforeach
 
                     </ul><!-- End --> 
                             </div>
