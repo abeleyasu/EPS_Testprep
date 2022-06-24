@@ -57,17 +57,17 @@
         <div class="row">
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                $description = strip_tags($milestone->description);
+                echo $description = $milestone->description;
                 @endphp
-            {{$description}}
+            
             
             </div>
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                $content = strip_tags($milestone->content);
+                echo $content = strip_tags($milestone->content);
                 @endphp
-            {{$content}}
+            
             
             </div>
             

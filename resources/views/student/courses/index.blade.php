@@ -152,11 +152,14 @@
                                     </h4>
                                     <div class="fs-sm text-muted">{{ $milestone->created_at->format( 'M d, Y') }}</div>
                                     @if($milestone->modules)
+                                    @php
+                                    $completion_percent = []; 
+                                    @endphp
                                         @foreach($milestone->modules as $module)
                                         @php
                                     
                                         $all_tasks = $module->tasks();
-                                        $completion_percent = 0;
+                                       
                                         if($all_tasks->count() > 0) {
                                         $tasks = $all_tasks->unique('id');
                                         $user_tasks = $all_tasks->filter(function($item) {
@@ -168,31 +171,35 @@
                                         },$user_tasks->toArray())
                                         :
                                         [];
-                                        $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                        $completion_percent[] = floor(count($user_tasks)/$tasks->count() * 100);
                                         }
                                         @endphp
 
-                                        @if($all_tasks->count() > 0 && isset($tasks))
-                                        @if($all_tasks->count() == 1)
-                                        <div class="progress" style="display:none;">
-                                                            <div class="progress-bar "
-                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
-                                                                role="progressbar"
-                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
-                                                        </div>
-                                        @else
-                                        <div class="progress">
-                                                            <div class="progress-bar "
-                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
-                                                                role="progressbar"
-                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
-                                                        </div>
-                                        @endif
-                                            
-
-                                                    
-                                        @endif
+                                        
                                     @endforeach
+
+                                    @php
+                                    
+                                        $totalmodule = count($completion_percent);
+                                        if($totalmodule > 0){
+                                            $summodule = 0;
+                                        foreach($completion_percent as $percentage){
+                                            $summodule += $percentage;
+                                        }
+                                        $avgpercentage = floor($summodule/$totalmodule);
+                                        
+                                       
+                                        
+                                    @endphp
+                                    <div class="progress">
+                                        <div class="progress-bar "
+                                            style="background-color: #db3954; width: {{$avgpercentage}}%"
+                                            role="progressbar"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$avgpercentage}}%</div>
+                                    </div>
+                                    @php
+                                    }
+                                    @endphp
                                 @endif
                                 
                                 </div>
@@ -224,11 +231,13 @@
                             
                             <ul class="timeline" style="position:inherit;">
                             @if($milestone->modules)
-                                        @foreach($milestone->modules as $module)
+                            @php
+                            $completion_percent = [];
+                            @endphp
+                                    @foreach($milestone->modules as $module)
                                         @php
                                     
                                         $all_tasks = $module->tasks();
-                                        $completion_percent = 0;
                                         if($all_tasks->count() > 0) {
                                         $tasks = $all_tasks->unique('id');
                                         $user_tasks = $all_tasks->filter(function($item) {
@@ -240,31 +249,12 @@
                                         },$user_tasks->toArray())
                                         :
                                         [];
-                                        $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                        $completion_percent[] = floor(count($user_tasks)/$tasks->count() * 100);
                                         }
                                         @endphp
-
-                                        @if($all_tasks->count() > 0 && isset($tasks))
-                                        @if($all_tasks->count() == 1)
-                                        <div class="progress" style="display:none;">
-                                                            <div class="progress-bar "
-                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
-                                                                role="progressbar"
-                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
-                                                        </div>
-                                        @else
-                                        <div class="progress">
-                                                            <div class="progress-bar "
-                                                                style="background-color: #db3954; width: {{$completion_percent}}%"
-                                                                role="progressbar"
-                                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
-                                                        </div>
-                                        @endif
-                                            
-
-                                                    
-                                        @endif
                                     @endforeach
+
+                                    
                                 @endif
 
                     </ul><!-- End --> 

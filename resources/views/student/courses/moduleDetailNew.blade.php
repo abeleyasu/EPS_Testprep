@@ -265,12 +265,13 @@
                 method: 'post',
                 success: (res) => {
                     $('.timeline').empty();
+                    var j = 1;
                     res.data.forEach(i => {
 
                         
                         $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="">
                          <div class="row" id="row-${i.id}">
-                                    <div class="col-1 number_count">${i.id}</div>
+                                    <div class="col-1 number_count">`+j+`</div>
                                     <div class="col-8">
                                         <a href="/user/sections/${i.id}/show-detail">${i.title}</a>
                                     </div>
@@ -321,6 +322,7 @@
                                   </div>`).appendTo(`.section-detail${i.id}`);
                             })
                         }
+                        j++;
                     });
 
                 }
