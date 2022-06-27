@@ -47,7 +47,19 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-2">
+                                <label for="content" class="form-label">Content:</label>
 
+
+                                <textarea id="js-ckeditor" name="content" class=" form-control form-control-lg form-control-alt
+                            {{$errors->has('description') ? 'is-invalid' : ''}}" id="content" name="content"
+                                            placeholder="Milestone Description"
+                                            required>
+                                    {!! $course->content !!}</textarea>
+                                @error('content')
+                                <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>   
 
 
                             <div class="col-md-12 col-xl-12 mb-4">
@@ -81,7 +93,78 @@
                             </div>
                         </div>
                     </div>
+                    <div class="block block-rounded">
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">Settings</h3>
+                            </div>
+                            <div class="block-content block-content-full">
+                                <div class="mb-2">
+                                    <label for="type" class="form-label">User Type:</label>
+                                    <select name="user_type" class="form-control">
+                                        @foreach($usersRoles as $usersRole)
+                                            <option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('user_type')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-2">
+                                    <label for="duration" class="form-label">Duration</label>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <input type="number" min="0" name="hour" class=" form-control" id="hour">
+                                        </div>
+                                        <label class="col-2 form-label">hours</label>
+                                        <div class="col-3">
+                                            <input type="number" min="0" name="minute" class="form-control" id="minute" onkeydown="calculateTime(this)">
+                                        </div>
+                                        <label class="col-2 form-label">minutes</label>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="order">Order</label>
 
+                                    <div class="input-group mb-3">
+                                        <input type="number" readonly class="form-control" name="order" value="0"
+                                            id="order"/>
+                                        <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="tags">Tags</label>
+                                    <input type="text" maxlength="30"
+                                        id="tag"
+                                        placeholder="add tag" class="form-control" onkeypress="addTag(event)"/>
+
+                                    <div class="row items-push mt-2 tag-div">
+                                        @if($tags && count($tags) > 0)
+                                        @foreach($tags as $tag)
+                                        <div class="col">
+                                            <div class="form-check form-block">
+                                                <input class="form-check-input" type="checkbox" value="{{$tag->id}}" id="example-checkbox-block{{$tag->id}}" name="tags[]">
+                                                <label class="form-check-label label-check" for="example-checkbox-block{{$tag->id}}">
+                                                    <span class="d-block fs-sm text-muted">{{$tag->name}}</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label" for="status">Status</label>
+
+                                    <select name="status" class="form-control">
+                                        <option value="paid">Paid</option>
+                                        <option value="unpaid">Unpaid</option>
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
                 </div>
             </div>
         </form>

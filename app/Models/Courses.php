@@ -13,6 +13,12 @@ class Courses extends Model
     protected $fillable = [
         'title',
         'description',
-        'published'
+        'published',
+        'content',
+        'user_type',
+        'duration',
+        'order',
+        'status'
+
     ];
 }

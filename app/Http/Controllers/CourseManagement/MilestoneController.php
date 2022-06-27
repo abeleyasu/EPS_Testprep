@@ -39,9 +39,17 @@ class MilestoneController extends Controller
 
     public function studentIndex()
     {
-        $milestones = Milestone::where('published', true)->orderBy('order')->get();
+        $courses = Courses::where('published', true)->orderBy('order')->get();
+        foreach($courses as $course){
+            $courseid = $course->id;
+            $totalmilestone = 0;
+            if($courseid){
+                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
+                $totalmilestone = count($coursemilestones);
+            }
+        }
 
-        return view('student.courses.index', compact('milestones'));
+        return view('student.courses.index', compact('courses','totalmilestone'));
     }
 
     /**

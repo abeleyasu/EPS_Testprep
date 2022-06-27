@@ -104,7 +104,7 @@
 <main id="main-container">
 <div class="block-header block-header-default">
                 <h3 class="block-title">
-                    Courses
+                    Milestones
                     <span class="btn-group" style="margin-left: 40%">
                         <button class="btn grid-btn"
                                 data-bs-toggle="tooltip"
@@ -127,15 +127,14 @@
         <div class="content content-boxed">
 
                 <div class="row items-push py-4">
-                    @foreach($courses as $key => $course)
+                    @foreach($milestones as $key => $milestone)
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
-                            
-                            <a class="block block-rounded block-link-pop h-100 mb-0" href="{{ route('courses.milestone',['course' => $course->id]) }}">
+                            <a class="block block-rounded block-link-pop h-100 mb-0" href="{{ route('milestone.detail',['milestone' => $milestone->id]) }}">
 
                                 <div class="block-content block-content-full text-center {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}">
 
-                                    @if($course->status == 'paid')
+                                    @if($milestone->status == 'paid')
                                     <div class="btn-group float-end ">
                                         <span class="badge bg-dark">Paid</span>
                                     </div>
@@ -143,19 +142,66 @@
                                     <div class="item item-2x item-circle bg-white-10 py-3 my-3 mx-auto">
                                     {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
                                     </div>
-                                    @php
-                                    
-                                    @endphp
                                     <div class="fs-sm text-white-75">
-                                         {{$totalmilestone}} milestones
+                                        {{ $milestone->modules->count() }} modules
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
                                     <h4 class="h5 mb-1">
-                                        {{ $course->title }}
+                                        {{ $milestone->name }}
                                     </h4>
-                                    <div class="fs-sm text-muted">{{ $course->created_at->format( 'M d, Y') }}</div>
+                                    <div class="fs-sm text-muted">{{ $milestone->created_at->format( 'M d, Y') }}</div>
+                                    @if($milestone->modules)
+                                    @php
+                                    $completion_percent = []; 
+                                    @endphp
+                                        @foreach($milestone->modules as $module)
+                                        @php
                                     
+                                        $all_tasks = $module->tasks();
+                                       
+                                        if($all_tasks->count() > 0) {
+                                        $tasks = $all_tasks->unique('id');
+                                        $user_tasks = $all_tasks->filter(function($item) {
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        });
+                                        $user_tasks= $user_tasks->count() > 0?
+                                        array_map(function ($item){
+                                            return $item['id'];
+                                        },$user_tasks->toArray())
+                                        :
+                                        [];
+                                        $completion_percent[] = floor(count($user_tasks)/$tasks->count() * 100);
+                                        }
+                                        @endphp
+
+                                        
+                                    @endforeach
+
+                                    @php
+                                    
+                                        $totalmodule = count($completion_percent);
+                                        if($totalmodule > 0){
+                                            $summodule = 0;
+                                        foreach($completion_percent as $percentage){
+                                            $summodule += $percentage;
+                                        }
+                                        $avgpercentage = floor($summodule/$totalmodule);
+                                        
+                                       
+                                        
+                                    @endphp
+                                    <div class="progress">
+                                        <div class="progress-bar "
+                                            style="background-color: #db3954; width: {{$avgpercentage}}%"
+                                            role="progressbar"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$avgpercentage}}%</div>
+                                    </div>
+                                    @php
+                                    }
+                                    @endphp
+                                @endif
+                                
                                 </div>
                             </a>
                         </div>
@@ -169,8 +215,56 @@
     
     </div>
 
- 
+    <div class="block-content block-content-full table-view">
    
+    <ul class="timeline" style="position:inherit;">
+                    @foreach($milestones as $key => $milestone)
+                        <li class="timeline-item bg-white rounded ml-3 p-4 shadow"
+                            style="margin-left: 10%">
+
+                            <div class="row">
+                            <div class="col-9">
+                                <a href="{{ route('milestone.detail',['milestone' => $milestone->id]) }}">{{ $milestone->name }}</a>
+                                <div class="fs-sm text-muted">{{ $milestone->created_at->format( 'M d, Y') }}</div>
+
+                            </div>
+                            
+                            <ul class="timeline" style="position:inherit;">
+                            @if($milestone->modules)
+                            @php
+                            $completion_percent = [];
+                            @endphp
+                                    @foreach($milestone->modules as $module)
+                                        @php
+                                    
+                                        $all_tasks = $module->tasks();
+                                        if($all_tasks->count() > 0) {
+                                        $tasks = $all_tasks->unique('id');
+                                        $user_tasks = $all_tasks->filter(function($item) {
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        });
+                                        $user_tasks= $user_tasks->count() > 0?
+                                        array_map(function ($item){
+                                            return $item['id'];
+                                        },$user_tasks->toArray())
+                                        :
+                                        [];
+                                        $completion_percent[] = floor(count($user_tasks)/$tasks->count() * 100);
+                                        }
+                                        @endphp
+                                    @endforeach
+
+                                    
+                                @endif
+
+                    </ul><!-- End --> 
+                            </div>
+                        </li>
+                        @endforeach
+
+                    </ul><!-- End -->
+    </div>
+    <!-- END Page Content -->
 </main>
 <!-- END Main Container -->
 @endsection

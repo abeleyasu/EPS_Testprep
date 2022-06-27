@@ -101,7 +101,7 @@
 					</li>
 					
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.detail',['milestone' => $milestone->id]) }}">
+						<a class="link-fx text-dark" href="{{ route('milestone.detail',['milestone' => $milestone->id]) }}">
 							@php
 								$stringLen = strlen($milestone->name);
 							@endphp

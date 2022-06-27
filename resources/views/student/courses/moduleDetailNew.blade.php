@@ -145,7 +145,7 @@
 						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
 					</li>					
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.detail',['milestone' => $module->milestone_id]) }}">
+						<a class="link-fx text-dark" href="{{ route('milestone.detail',['milestone' => $module->milestone_id]) }}">
 						@php
 							$stringLen = strlen($milestone->name);
 						@endphp

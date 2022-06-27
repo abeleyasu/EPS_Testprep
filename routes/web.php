@@ -89,7 +89,9 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
     Route::get('/resume', [UserController::class, 'resume'])->name('resume');
     Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
-    Route::get('/courses/{milestone}/detail', [MilestoneController::class, 'show'])->name('courses.detail');
+    Route::get('/courses/{course}/detail', [CoursesController::class, 'show'])->name('courses.detail');
+    Route::get('/courses/{course}/milestone', [CoursesController::class, 'UserCourseDetail'])->name('courses.milestone');
+    Route::get('/milestone/{milestone}/detail', [MilestoneController::class, 'show'])->name('milestone.detail');
     Route::get('/modules/{module}/detail', [ModuleController::class, 'show'])->name('modules.detail');
     Route::get('/sections/{section}/detail', [SectionController::class, 'show'])->name('sections.detail');
     Route::get('/sections/{section}/show-detail', [SectionController::class, 'showDetail'])->name('sections.show-detail');
