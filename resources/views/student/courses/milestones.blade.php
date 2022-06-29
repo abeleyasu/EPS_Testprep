@@ -154,17 +154,22 @@
                                     @if($milestone->modules)
                                     @php
                                     $completion_percent = []; 
+                                    $totaltask = 0;
+                                    $completedtask = 0;
                                     @endphp
                                         @foreach($milestone->modules as $module)
                                         @php
                                     
                                         $all_tasks = $module->tasks();
+                                        $totalmoduletask = count($all_tasks);
+                                        $totaltask += $totalmoduletask;
                                        
                                         if($all_tasks->count() > 0) {
                                         $tasks = $all_tasks->unique('id');
                                         $user_tasks = $all_tasks->filter(function($item) {
                                             return $item->user_id == auth()->id() &&  $item->complete ==1;
                                         });
+                                        $completedtask += count($user_tasks);
                                         $user_tasks= $user_tasks->count() > 0?
                                         array_map(function ($item){
                                             return $item['id'];
@@ -191,11 +196,20 @@
                                        
                                         
                                     @endphp
+                                    
                                     <div class="progress">
                                         <div class="progress-bar "
                                             style="background-color: #db3954; width: {{$avgpercentage}}%"
                                             role="progressbar"
                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$avgpercentage}}%</div>
+                                    </div>
+                                    <br />
+                                    <p>Module Progress</p>
+                                    <div class="progress">
+                                        <div class="progress-bar "
+                                        style="background-color: #db3954; width: {{$avgpercentage}}%"
+                                            role="progressbar"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completedtask}}/{{$totaltask}}</div>
                                     </div>
                                     @php
                                     }
@@ -232,12 +246,15 @@
                             <ul class="timeline" style="position:inherit;">
                             @if($milestone->modules)
                             @php
+                            $totaltask = 0;
                             $completion_percent = [];
                             @endphp
                                     @foreach($milestone->modules as $module)
                                         @php
                                     
                                         $all_tasks = $module->tasks();
+                                        $totalmoduletask = count($all_tasks);
+                                        $totaltask += $totalmoduletask;
                                         if($all_tasks->count() > 0) {
                                         $tasks = $all_tasks->unique('id');
                                         $user_tasks = $all_tasks->filter(function($item) {

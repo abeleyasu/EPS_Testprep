@@ -39,7 +39,7 @@
                         </button>
                     </span>
                 </h3>
-                <a href="{{ route('courseslist.create')}}" class="btn btn-sm btn-primary">
+                <a href="{{ route('courses.create')}}" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus" ></i> New Course
                 </a>
             </div>

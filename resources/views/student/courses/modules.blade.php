@@ -80,7 +80,7 @@
 					@foreach($getMilestones as $mkey => $getMilestone)
 						@if ($milestone->id == $getMilestone->id)
 							@if ($mkey>0)
-								<a href="{{ route('courses.detail',['milestone' => $previouMileId]) }}" class="btn w-30 btn-alt-success btnminwidth">
+								<a href="{{ route('milestone.detail',['milestone' => $previouMileId]) }}" class="btn w-30 btn-alt-success btnminwidth">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Milestone
 								</a>	
 							@endif
@@ -95,7 +95,7 @@
 					@endphp	
 						@if ($nextExist>0)
 							@php $nextExist =0; @endphp
-							<a href="{{ route('courses.detail',['milestone' => $getMilestone->id]) }}" class="btn w-25 btn-alt-success btnminwidth">
+							<a href="{{ route('milestone.detail',['milestone' => $getMilestone->id]) }}" class="btn w-25 btn-alt-success btnminwidth">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milestone
 								</a>
 						@endif
@@ -130,12 +130,16 @@
                                     @php
                                     
                                     $all_tasks = $module->tasks();
+                                    
+                                    $moduletask = count($all_tasks);
                                     $completion_percent = 0;
                                     if($all_tasks->count() > 0) {
                                     $tasks = $all_tasks->unique('id');
+
                                     $user_tasks = $all_tasks->filter(function($item) {
                                         return $item->user_id == auth()->id() &&  $item->complete ==1;
                                     });
+                                    $completedtask = count($user_tasks);
                                     $user_tasks= $user_tasks->count() > 0?
                                     array_map(function ($item){
                                         return $item['id'];
@@ -145,7 +149,7 @@
                                     $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
                                     }
                                     @endphp
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom:20px;">
                                         <div class="col-7" style="float:left;">
                                             <div class="progress" style="background:#c4c5c7;">
                                                     <div class="progress-bar "
@@ -156,6 +160,21 @@
                                         </div>
                                         <div class="col-4" style="float:left;margin-left:20px;">
                                             <b>{{$completion_percent}}% Task Complete</b>
+                                        </div>    
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="col-7" style="float:left;">
+                                            <div class="progress" style="background:#c4c5c7;">
+                                                    <div class="progress-bar "
+                                                        style="background-color: blue; width: {{$completion_percent}}%"
+                                                        role="progressbar"
+                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4" style="float:left;margin-left:20px;">
+                                            <b>{{$completedtask}}/{{$moduletask}} Task Complete</b>
                                         </div>    
                                     </div>
                                     
