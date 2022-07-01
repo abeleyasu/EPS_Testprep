@@ -14,6 +14,7 @@ use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\CourseManagement\MilestoneRequest;
+use App\Models\CourseManagement\Module;
 
 use App\Models\CourseManagement\Milestone;
 
@@ -118,8 +119,10 @@ class MilestoneController extends Controller
      */
     public function show(Milestone $milestone)
     {
-		$getMilestones = Milestone::where('published', true)->orderBy('id')->get();
-		
+        //echo $milestone->id;
+		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
+        
+        
         return view('student.courses.modules',compact('milestone','getMilestones'));
     }
 

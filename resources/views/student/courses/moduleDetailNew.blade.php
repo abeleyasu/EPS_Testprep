@@ -200,7 +200,7 @@
 									</a>
 							@endif
 							@if ($lastItem == $mokey)
-								<a href="{{ route('courses.detail',['milestone' => $getModule->milestone_id]) }}" class="btn w-25 btn-alt-success">
+								<a href="" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milstone
 								</a>
 							@endif

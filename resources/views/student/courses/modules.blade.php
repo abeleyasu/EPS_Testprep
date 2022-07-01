@@ -131,15 +131,19 @@
                                     
                                     $all_tasks = $module->tasks();
                                     
-                                    $moduletask = count($all_tasks);
+                                    
                                     $completion_percent = 0;
+                                    $completedtask = 0;
+                                    $moduletask = 0;
                                     if($all_tasks->count() > 0) {
                                     $tasks = $all_tasks->unique('id');
-
+                                    $moduletask = count($tasks);
+                                    
                                     $user_tasks = $all_tasks->filter(function($item) {
                                         return $item->user_id == auth()->id() &&  $item->complete ==1;
                                     });
                                     $completedtask = count($user_tasks);
+                                    
                                     $user_tasks= $user_tasks->count() > 0?
                                     array_map(function ($item){
                                         return $item['id'];
@@ -187,6 +191,7 @@
                                         @php
                                         $all_tasks = $section->taskStatus();
                                             $completion_percent = 0;
+                                            $all_tasks->count();
                                             if($all_tasks->count() > 0) {
                                             $tasks = $all_tasks->unique('id');
                                             $user_tasks = $all_tasks->filter(function($item) {
@@ -243,7 +248,7 @@
 
                 <!-- Course Info -->
                 <div class="block block-rounded">
-                    <div class="block-header block-header-default text-center">
+                    <div class="block-header block-0-default text-center">
                         <h3 class="block-title">About This Course</h3>
                     </div>
                     <div class="block-content">

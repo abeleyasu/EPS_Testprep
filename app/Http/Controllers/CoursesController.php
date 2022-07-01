@@ -103,9 +103,12 @@ class CoursesController extends Controller
     {		
         //$usersRoles = UserRole::where('slug','!=','super_admin')->get();		
         $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->get();
+        $totalmilestones = count($milestones);
+        $course = Courses::orderBy('order')->where('id','=',$course)->get();
+        
         $tags = Tag::all();
         $sections = Section::all();
         
-        return view('student.courses.milestones', compact('tags','milestones'));
+        return view('student.courses.milestones', compact('tags','milestones','course','totalmilestones'));
     }
 }
