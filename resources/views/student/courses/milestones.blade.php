@@ -120,7 +120,7 @@
                                         },$user_tasks->toArray())
                                         :
                                         [];
-                                        $completion_percent[] = floor(count($user_tasks)/$tasks->count() * 100);
+                                        
                                         }
                                         @endphp
 
@@ -128,35 +128,29 @@
                                     @endforeach
 
                                     @php
+                                    if($totaltask){
+                                        $completion_percent = floor(($completedtask * 100)/$totaltask);
+                                    }else{
+                                        $completion_percent = 0; 
+                                    }
                                     
-                                        $totalmodule = count($completion_percent);
-                                        if($totalmodule > 0){
-                                            $summodule = 0;
-                                        foreach($completion_percent as $percentage){
-                                            $summodule += $percentage;
-                                        }
-                                        $avgpercentage = floor($summodule/$totalmodule);
-                                        
-                                       
-                                        
                                     @endphp
+                                   
                                     <div class="progress">
                                         <div class="progress-bar "
-                                            style="background-color: blue; margin-left:-12px; width: {{$avgpercentage}}%"
+                                            style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
                                             role="progressbar"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$avgpercentage}}%</div>
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
                                     </div>
                                     <br />
                                     <p>Module Progress</p>
                                     <div class="progress">
                                         <div class="progress-bar "
-                                        style="background-color: blue; margin-left:-12px; width: {{$avgpercentage}}%"
+                                        style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
                                             role="progressbar"
                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completedtask}}/{{$totaltask}}</div>
                                     </div>
-                                    @php
-                                    }
-                                    @endphp
+                                    
                                 @endif
                                     
 								</div>
@@ -169,6 +163,48 @@
                     
                 <!-- END Lessons -->
             </div>
+            <div class="col-xl-4">
+                <div class="block block-rounded">
+                        <div class="block-header block-0-default text-center">
+                            <h3 class="block-title">About This Course</h3>
+                        </div>
+                        <div class="block-content">
+                            <table class="table table-striped table-borderless fs-sm">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-fw fa-book me-1"></i>
+                                        {{ $milestone->modules->count() }} modules
+                                    </td>
+                                </tr>
+    {{--                            <tr>--}}
+    {{--                                <td>--}}
+    {{--                                    <i class="fa fa-fw fa-clock me-1"></i> 3 hours--}}
+    {{--                                </td>--}}
+    {{--                            </tr>--}}
+    {{--                            <tr>--}}
+    {{--                                <td>--}}
+    {{--                                    <i class="fa fa-fw fa-heart me-1"></i> 16850 Favorites--}}
+    {{--                                </td>--}}
+    {{--                            </tr>--}}
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-fw fa-calendar me-1"></i> {{ $milestone->created_at->diffForHumans() }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-fw fa-tags me-1"></i>
+                                        @foreach($milestone->tags() as $tag)
+                                            <a class="fw-semibold link-fx text-primary" href="javascript:void(0)">{{ $tag->name }}</a>,
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
     
     <!-- END Page Content -->
     </main>
