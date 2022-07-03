@@ -88,9 +88,9 @@
 										    <h3 style="line-height:0px;"><a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a></h3>
                                         </div>
                                         <div class="col-1" style="float:left;">
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">
-											<i class="fa-solid fa-arrow-down"></i>
-										</button>
+                                       <!-- <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">
+											 <i class="fa-solid fa-arrow-down"></i> 
+										</button> -->
                                         </div>
                                     </div>
                                            
@@ -143,6 +143,7 @@
                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
                                     </div>
                                     <br />
+                                    <br />
                                     <p>Module Progress</p>
                                     <div class="progress">
                                         <div class="progress-bar "
@@ -160,7 +161,7 @@
 						@endforeach
 								
 								
-                    
+                     
                 <!-- END Lessons -->
             </div>
             <div class="col-xl-4">
