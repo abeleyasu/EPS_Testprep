@@ -211,14 +211,14 @@
                                             
 												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} 
                                                 <div class="col-3" style="float:right;"> 
-                                                <div class="progress" style="background:#c4c5c7;">
+                                               <!-- <div class="progress" style="background:#c4c5c7;">
                                                        
-                                                <div class="progress-bar "
+                                                 <div class="progress-bar "
                                                             style="background-color: blue; width: {{$completion_percent}}%"
                                                             role="progressbar"
                                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
-                                                </div>
-                                        </div>
+                                                </div> 
+                                        </div>-->
                                         </a>
 												
 											</div>
