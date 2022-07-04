@@ -120,7 +120,7 @@
                                         <div class="col-11" style="float:left;">
 										    <h3 style="line-height:0px;"><a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a></h3>
                                         </div>
-                                        <div class="col-1" style="float:left;">
+                                        <div class="col-1" style="float:left; margin-top:-12px;">
                                         <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
 											<i class="fa-solid fa-arrow-down"></i>
 										</button>
@@ -209,19 +209,9 @@
                                             
                                         @endphp
                                             
-												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} 
-                                                <div class="col-3" style="float:right;"> 
-                                               <!-- <div class="progress" style="background:#c4c5c7;">
-                                                       
-                                                 <div class="progress-bar "
-                                                            style="background-color: blue; width: {{$completion_percent}}%"
-                                                            role="progressbar"
-                                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
-                                                </div> 
-                                        </div>-->
-                                        </a>
+												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a></span>
 												
-											</div>
+										</div>	
 										@endforeach
 									</div>
 								</div>
@@ -304,8 +294,7 @@
 {{--                </a>--}}
                 <!-- END About Instructor -->
             </div>
-        </div>
-    </div>
+        
     <!-- END Page Content -->
     </main>
 @endsection
