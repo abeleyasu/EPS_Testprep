@@ -246,6 +246,15 @@
 @section('user-script')
 
     <script>
+        function ObjectLength( object ) {
+            var length = 0;
+            for( var key in object ) {
+                if( object.hasOwnProperty(key) ) {
+                    ++length;
+                }
+            }
+            return length;
+        };
 
         var module_id = '{{ $module->id }}';
         var user = '{{ auth()->id() }}';
@@ -267,6 +276,9 @@
                     $('.timeline').empty();
                     var j = 1;
                     res.data.forEach(i => {
+                        var completedtask =  ObjectLength(i.user_tasks);
+                        var totaltask =  ObjectLength(i.tasks);
+                        console.log('i',i);
 
                         
                         $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="">
@@ -299,6 +311,24 @@
                                               </div>
                                               <div class="col-3">
                                                   Task Complete ${i.completion_rate} %
+                                              </div>
+                                  </div>
+                            </div>
+
+                            <div class="col-12" id="task-head-${i.id}">
+                                  <div class="row">
+                                  <div class=" col-0"></div>
+                                             <div class=" col-8">
+                                                 <div class="progress" style="margin-left:45px;">
+                                                     <div class="progress-bar "
+                                                          style="background-color: lightgray; width: ${i.completion_rate}%"
+                                                          role="progressbar"
+                                                          aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                 </div>
+
+                                              </div>
+                                              <div class="col-3">
+                                                 ${completedtask}/${totaltask} Task Complete
                                               </div>
                                   </div>
                             </div>

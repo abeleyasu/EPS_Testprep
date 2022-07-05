@@ -144,9 +144,11 @@
                                     $completion_percent = 0;
                                     if($all_tasks->count() > 0) {
                                     $tasks = $all_tasks->unique('id');
+                                    $totaltask = count($tasks);
                                     $user_tasks = $all_tasks->filter(function($item) {
                                         return $item->user_id == auth()->id() &&  $item->complete ==1;
                                     });
+                                    $completedtask = $user_tasks->count();
                                     $user_tasks= $user_tasks->count() > 0?
                                     array_map(function ($item){
                                         return $item['id'];
@@ -173,6 +175,24 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-12">
+                                    <div class="row mt-5">
+                                        <div class=" col-8">
+                                            <div class="progress">
+                                                <div class="progress-bar "
+                                                     style="background-color: lightgray; width: {{$completion_percent}}%"
+                                                     role="progressbar"
+                                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-4">
+                                         {{$completedtask}}/{{$totaltask}}   Task Complete 
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-12 collapse hide milestone-detail{{$section->id}}">
                                             @foreach($tasks as $task)
 

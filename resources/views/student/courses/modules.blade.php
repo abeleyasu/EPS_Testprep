@@ -110,8 +110,33 @@
 					@endforeach				
                 
                     
-                        
 						@foreach($milestone->modules as $key => $module)
+
+                        @php
+                        $completedsection = 0;
+                        $totaltasks = 0;
+                        @endphp
+                        @foreach($module->sections as $section_key => $section)
+                        @php
+                        $all_tasks = $section->taskStatus();
+                            $completion_percent = 0;
+                            $all_tasks->count();
+                            if($all_tasks->count() > 0) {
+                            $tasks = $all_tasks->unique('id');
+                            $sectiontask =  count($tasks);
+                            $totaltasks += 1;
+                            $user_tasks = $all_tasks->filter(function($item) {
+                                return $item->user_id == auth()->id() &&  $item->complete ==1;
+                            });
+                            $sectioncompletedtask =  $user_tasks->count();
+                            if($sectiontask == $sectioncompletedtask){
+                                $completedsection += 1;
+                            }
+                            }
+                                            
+                                                
+                        @endphp
+                        @endforeach
                         <div class="block block-rounded">
                             <div class="block-content fs-sm">
 							<div class="mb-2">
@@ -178,13 +203,13 @@
                                         </div>
 
                                         <div class="col-4" style="float:left;margin-left:20px;">
-                                            <b>{{$completedtask}}/{{$moduletask}} Task Complete</b>
+                                            <b>{{$completedsection}}/{{$totaltasks}} Section Complete</b>
                                         </div>    
                                     </div>
                                     
 									
 									<div class="col-12 collapse hide milestone-detail{{$module->id}}">
-
+                                        
 										@foreach($module->sections as $section_key => $section)
 											<div class="my-3">
                                                 
@@ -194,9 +219,11 @@
                                             $all_tasks->count();
                                             if($all_tasks->count() > 0) {
                                             $tasks = $all_tasks->unique('id');
+                                            $sectiontask =  count($tasks);
                                             $user_tasks = $all_tasks->filter(function($item) {
                                                 return $item->user_id == auth()->id() &&  $item->complete ==1;
                                             });
+                                            $sectioncompletedtask =  $user_tasks->count();
                                             $user_tasks= $user_tasks->count() > 0?
                                             array_map(function ($item){
                                                 return $item['id'];
@@ -239,7 +266,7 @@
                 <!-- Course Info -->
                 <div class="block block-rounded">
                     <div class="block-header block-0-default text-center">
-                        <h3 class="block-title">About This Course</h3>
+                        <h3 class="block-title">About This Milestone</h3>
                     </div>
                     <div class="block-content">
                         <table class="table table-striped table-borderless fs-sm">

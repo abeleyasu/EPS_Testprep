@@ -95,24 +95,33 @@
                                     </div>
                                            
                                     @if($milestone->modules)
+                                    
                                     @php
+                                    $totalmodules =  count($milestone->modules);
                                     $completion_percent = []; 
                                     $totaltask = 0;
                                     $completedtask = 0;
+                                    $completedmodule = 0;
                                     @endphp
                                         @foreach($milestone->modules as $module)
+                                        
                                         @php
-                                    
+                                         
                                         $all_tasks = $module->tasks();
                                         $totalmoduletask = count($all_tasks);
                                        
                                        
                                         if($all_tasks->count() > 0) {
                                         $tasks = $all_tasks->unique('id');
+                                        $moduletask =  count($tasks);
                                         $totaltask += count($tasks);
                                         $user_tasks = $all_tasks->filter(function($item) {
                                             return $item->user_id == auth()->id() &&  $item->complete ==1;
                                         });
+                                          $completemoduletask =  count($user_tasks);
+                                        if($moduletask == $completemoduletask){
+                                             $completedmodule += 1;
+                                        }
                                         $completedtask += count($user_tasks);
                                         $user_tasks= $user_tasks->count() > 0?
                                         array_map(function ($item){
@@ -149,7 +158,7 @@
                                         <div class="progress-bar "
                                         style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
                                             role="progressbar"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completedtask}}/{{$totaltask}}</div>
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completedmodule}}/{{$totalmodules}}</div>
                                     </div>
                                     
                                 @endif
