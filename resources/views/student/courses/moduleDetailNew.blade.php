@@ -143,7 +143,10 @@
 				<ol class="breadcrumb breadcrumb-alt">
 					<li class="breadcrumb-item">
 						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
-					</li>					
+					</li>
+                    <li class="breadcrumb-item">
+                            <a class="link-fx text-dark" href="/user/courses/{{$course[0]->id}}/milestone">{{$course[0]->title}}</a>
+                        </li>					
 					<li class="breadcrumb-item">
 						<a class="link-fx text-dark" href="{{ route('milestone.detail',['milestone' => $module->milestone_id]) }}">
 						@php

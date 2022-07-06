@@ -122,8 +122,16 @@ class MilestoneController extends Controller
         //echo $milestone->id;
 		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
         
+        if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }
+      
         
-        return view('student.courses.modules',compact('milestone','getMilestones'));
+        
+        return view('student.courses.modules',compact('milestone','getMilestones','course'));
     }
 
     /**

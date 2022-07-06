@@ -11,6 +11,7 @@ use App\Models\CourseManagement\Section;
 use App\Models\ModelTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Models\Courses;
 
 class ModuleController extends Controller
 {
@@ -80,8 +81,14 @@ class ModuleController extends Controller
     {
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+        if($milestone){
+            
+            $courseid = $milestone->course_id;
+            $course = Courses::where('id','=',$courseid)->get();
+            //print_r($course);
+        }
 		
-        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone'));
+        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone','course'));
     }
 
     /**

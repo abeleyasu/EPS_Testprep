@@ -11,6 +11,7 @@ use App\Models\CourseManagement\Section;
 use App\Models\ModelTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Models\Courses;
 
 class SectionController extends Controller
 {
@@ -84,9 +85,15 @@ class SectionController extends Controller
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
 		
 		if($module){
-			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+            if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }			
 		}
-        return view('student.courses.sectionDetail',compact('section', 'getSections','module','milestone'));
+        return view('student.courses.sectionDetail',compact('section', 'getSections','module','milestone','course'));
     }
 
     public function showDetail($id)
@@ -98,10 +105,16 @@ class SectionController extends Controller
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
 		
 		if($module){
-			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+            if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }			
 		}
 		
-        return view('student.courses.sectionDetail',compact('section', 'getSections','module','milestone'));
+        return view('student.courses.sectionDetail',compact('section', 'getSections','module','milestone','course'));
     }
 
     /**
