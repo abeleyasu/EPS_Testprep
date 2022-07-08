@@ -18,7 +18,8 @@ class Courses extends Model
         'user_type',
         'duration',
         'order',
-        'status'
+        'status',
+        'coverimage'
 
     ];
 }

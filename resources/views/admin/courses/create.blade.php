@@ -15,7 +15,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <!-- Dynamic Table Full -->
-        <form action="{{route('courses.store')}}" method="POST">
+        <form action="{{route('courses.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
         <div class="row">
             <div class="col-xl-8">
@@ -55,6 +55,14 @@
                                               placeholder="Milestone Description"
                                               required>
                                     {{ old('content') }}</textarea>
+                                    @error('content')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="content" class="form-label">Upload Cover Image</label>
+                                    <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
                                     @error('content')
                                     <div class="invalid-feedback">{{$message}}</div>
                                     @enderror

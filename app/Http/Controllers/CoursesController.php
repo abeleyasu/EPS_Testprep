@@ -37,6 +37,16 @@ class CoursesController extends Controller
         }else{
             $published = 0; 
         }
+
+       
+        $filename = '';
+        if($request->file('course_cover_image')){
+            
+            $file= $request->file('course_cover_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file->move(('public/Image'), $filename);
+           
+        }
         $course = Courses::create([
             'title' => $request->name,
             'description' => $request->description,
@@ -45,7 +55,8 @@ class CoursesController extends Controller
             'user_type' => $request->get('user_type'),
             'duration' => $duration,
             'order' => $request->get('order'),
-            'status' => $request->get('status')
+            'status' => $request->get('status'),
+            'coverimage' =>$filename
         ]);
 		return redirect('admin/course-management/courses/'.$course->id.'/edit')->with('success', 'Milestone created successfully');
     }
@@ -68,11 +79,19 @@ class CoursesController extends Controller
             $published = 0; 
         }
 		$course = Courses::findorfail($id);
-        
+        $filename = '';
+        if($request->file('course_cover_image')){
+            
+            $file= $request->file('course_cover_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file->move(('public/Image'), $filename);
+           
+        }
         $course->update([
             'title' => $request->name,
             'description' => $request->description,
-            'published'=>$published
+            'published'=>$published,
+            'coverimage'=>$filename
         ]);
 
         //return redirect()->route('courses.index')->with('success', 'Milestone updated successfully');

@@ -15,7 +15,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <!-- Dynamic Table Full -->
-        <form action="{{route('courses.courseupdate', ['course'=>$course->id])}}" method="POST">
+        <form action="{{route('courses.courseupdate', ['course'=>$course->id])}}" method="POST" enctype="multipart/form-data">
 
             @csrf
         <div class="row">
@@ -60,7 +60,13 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>   
-
+                            <div class="mb-2">
+                                    <label for="content" class="form-label">Upload Cover Image</label>
+                                    <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
+                                    @error('content')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                    @enderror
+                                </div>
 
                             <div class="col-md-12 col-xl-12 mb-4">
                                 <!--<button type="button" class="btn w-25 btn-alt-success"
