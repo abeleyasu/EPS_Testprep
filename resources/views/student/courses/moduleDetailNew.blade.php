@@ -318,23 +318,6 @@
                                   </div>
                             </div>
 
-                            <div class="col-12" id="task-head-${i.id}">
-                                  <div class="row">
-                                  <div class=" col-0"></div>
-                                             <div class=" col-8">
-                                                 <div class="progress" style="margin-left:45px;">
-                                                     <div class="progress-bar "
-                                                          style="background-color: lightgray; width: ${i.completion_rate}%"
-                                                          role="progressbar"
-                                                          aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                 </div>
-
-                                              </div>
-                                              <div class="col-3">
-                                                 ${completedtask}/${totaltask} Task Complete
-                                              </div>
-                                  </div>
-                            </div>
                             <div class="col-12 collapse hide section-detail${i.id}">
 
                             </div>`).appendTo(`#row-${i.id}`);

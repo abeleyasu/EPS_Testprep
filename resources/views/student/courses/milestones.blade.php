@@ -145,21 +145,31 @@
                                     }
                                     
                                     @endphp
-                                   
-                                    <div class="progress">
-                                        <div class="progress-bar "
-                                            style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
-                                            role="progressbar"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completion_percent}}%</div>
+                                   <div class="col-8">
+                                        <div class="progress">
+                                            <div class="progress-bar "
+                                                style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
+                                                role="progressbar"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                    <p>{{$completion_percent}}% Task Complete</p>
                                     </div>
                                     <br />
                                     <br />
-                                    <p>Module Progress</p>
-                                    <div class="progress">
-                                        <div class="progress-bar "
-                                        style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
-                                            role="progressbar"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$completedmodule}}/{{$totalmodules}}</div>
+                                    <div class="col-8">
+                                        <p>task progress and module progress</p>
+                                        <div class="progress">
+                                            <div class="progress-bar "
+                                            style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
+                                                role="progressbar"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <br /><br />
+                                    <p>{{$completedmodule}}/{{$totalmodules}} Module progress</p>
                                     </div>
                                     
                                 @endif
