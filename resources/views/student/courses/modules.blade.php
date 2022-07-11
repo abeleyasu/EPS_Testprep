@@ -182,6 +182,8 @@
                                     [];
                                     $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
                                     }
+
+                                    $sectionpercentage = ($completedsection*100)/$totaltasks;
                                     @endphp
                                     <div class="col-12" style="margin-bottom:20px;">
                                         <div class="col-7" style="float:left;">
@@ -201,7 +203,7 @@
                                         <div class="col-7" style="float:left;">
                                             <div class="progress" style="background:#c4c5c7;">
                                                     <div class="progress-bar "
-                                                        style="background-color: blue; width: {{$completion_percent}}%"
+                                                        style="background-color: blue; width: {{$sectionpercentage}}%"
                                                         role="progressbar"
                                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
