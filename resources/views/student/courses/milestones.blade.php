@@ -158,8 +158,8 @@
                                     </div>
                                     <br />
                                     <br />
+                                    @if($completedmodule > 0)
                                     <div class="col-8">
-                                        <p>task progress and module progress</p>
                                         <div class="progress">
                                             <div class="progress-bar "
                                             style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
@@ -168,9 +168,10 @@
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <br /><br />
+                                        
                                     <p>{{$completedmodule}}/{{$totalmodules}} Module progress</p>
                                     </div>
+                                    @endif
                                     
                                 @endif
                                     
