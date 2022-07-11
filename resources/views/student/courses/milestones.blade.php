@@ -158,7 +158,7 @@
                                     </div>
                                     <br />
                                     <br />
-                                    @if($completedmodule > 0)
+                                    
                                     <div class="col-8">
                                         <div class="progress">
                                             <div class="progress-bar "
@@ -171,7 +171,7 @@
                                         
                                     <p>{{$completedmodule}}/{{$totalmodules}} Module progress</p>
                                     </div>
-                                    @endif
+                                    
                                     
                                 @endif
                                     
