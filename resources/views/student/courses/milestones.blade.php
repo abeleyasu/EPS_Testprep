@@ -138,6 +138,7 @@
                                     @endforeach
 
                                     @php
+                                    $modulepercentage = ($completedmodule*100)/$totalmodules;
                                     if($totaltask){
                                         $completion_percent = floor(($completedtask * 100)/$totaltask);
                                     }else{
@@ -162,7 +163,7 @@
                                     <div class="col-8">
                                         <div class="progress">
                                             <div class="progress-bar "
-                                            style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
+                                            style="background-color: blue; margin-left:-12px; width: {{$modulepercentage}}%"
                                                 role="progressbar"
                                                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
