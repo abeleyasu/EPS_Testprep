@@ -12,6 +12,9 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'ckeditor_wiris';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'justify';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'font';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'richcombo';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'imageuploader';
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
@@ -31,11 +34,11 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
-	config.removeButtons = 'Underline,Subscript,Superscript';
+	//config.removeButtons = 'Underline,Subscript,Superscript';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
 
 	// Simplify the dialog windows.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
+	//config.removeDialogTabs = 'image:advanced;link:advanced';
 };
