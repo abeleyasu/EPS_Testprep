@@ -210,7 +210,7 @@
                                         </div>
 
                                         <div class="col-4" style="float:left;margin-left:20px;">
-                                            <b>{{$completedsection}}/{{$totaltasks}} Task Progress</b>
+                                            <b>{{$completedsection}}/{{$totaltasks}} Section Complete</b>
                                         </div>    
                                     </div>
                                     
