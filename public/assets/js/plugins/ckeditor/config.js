@@ -14,7 +14,8 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'justify';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'font';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'richcombo';
-	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'imageuploader';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadimage';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadwidget';
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
@@ -37,6 +38,15 @@ CKEDITOR.editorConfig = function( config ) {
 	//config.removeButtons = 'Underline,Subscript,Superscript';
 
 	// Set the most common block elements.
+	config.font_names =
+    'Arial/Arial, Helvetica, sans-serif;' +
+    'Times New Roman/Times New Roman, Times, serif;' +
+    'Verdana'+
+	'Cinzel;'+
+	'Montserrat';
+
+	config.font_names = 'Arial;Times New Roman;Verdana;Cinzel;Montserrat';
+
 	config.format_tags = 'p;h1;h2;h3;pre';
 
 	// Simplify the dialog windows.
