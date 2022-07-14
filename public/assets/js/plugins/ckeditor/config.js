@@ -16,6 +16,10 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'richcombo';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadimage';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadwidget';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'ckeditor-gwf-plugin';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'colorbutton';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'html5video';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'widget';
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
@@ -38,14 +42,8 @@ CKEDITOR.editorConfig = function( config ) {
 	//config.removeButtons = 'Underline,Subscript,Superscript';
 
 	// Set the most common block elements.
-	config.font_names =
-    'Arial/Arial, Helvetica, sans-serif;' +
-    'Times New Roman/Times New Roman, Times, serif;' +
-    'Verdana'+
-	'Cinzel;'+
-	'Montserrat';
-
-	config.font_names = 'Arial;Times New Roman;Verdana;Cinzel;Montserrat';
+	
+	config.font_names = 'GoogleWebFonts';
 
 	config.format_tags = 'p;h1;h2;h3;pre';
 

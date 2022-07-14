@@ -138,12 +138,15 @@
                                     @endforeach
 
                                     @php
-                                    $modulepercentage = ($completedmodule*100)/$totalmodules;
-                                    if($totaltask){
-                                        $completion_percent = floor(($completedtask * 100)/$totaltask);
-                                    }else{
-                                        $completion_percent = 0; 
+                                    if($totalmodules >0){
+                                        $modulepercentage = ($completedmodule*100)/$totalmodules;
+                                        if($totaltask){
+                                            $completion_percent = floor(($completedtask * 100)/$totaltask);
+                                        }else{
+                                            $completion_percent = 0; 
+                                        }
                                     }
+                                    
                                     
                                     @endphp
                                    <div class="col-8">
