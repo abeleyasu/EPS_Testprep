@@ -2,7 +2,10 @@
  * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
-
+ CKEDITOR.replace( 'editor1', {
+    filebrowserBrowseUrl: '/browser/browse.php',
+    filebrowserUploadUrl: '/uploader/upload.php'
+});
 CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here.
 	// For complete reference see:
@@ -14,12 +17,16 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'justify';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'font';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'richcombo';
-	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadimage';
-	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadwidget';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'ckeditor-gwf-plugin';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'colorbutton';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'html5video';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'widget';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'filebrowser';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'imageuploader';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'dialog';
+	
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'popup';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'filetools';
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
@@ -42,6 +49,7 @@ CKEDITOR.editorConfig = function( config ) {
 	//config.removeButtons = 'Underline,Subscript,Superscript';
 
 	// Set the most common block elements.
+	config.imageUploadUrl = '/uploader/upload.php?type=Images';
 	
 	config.font_names = 'GoogleWebFonts';
 
