@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CourseManagement;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContentCategory;
+use App\Models\Courses;
 use App\Models\CourseManagement\Section;
 use App\Models\CourseManagement\Task;
 use App\Models\CourseManagement\Milestone;
@@ -27,11 +28,17 @@ class CourseController extends Controller
 
         return view('admin.courses.index', compact('courses'));
     }
+	public function all() {
+        return response()->json([
+            'data' => Courses::orderBy('order')->get()
+        ],200);
+    }
 	/**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
+	 
     public function create()
     {
 		$tags = Tag::all();

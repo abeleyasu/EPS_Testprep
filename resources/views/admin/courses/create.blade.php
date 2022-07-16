@@ -385,7 +385,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/api/milestones/all`,
+                url: `/api/courses/all`,
                 method: 'post',
                 success: (res) => {
                     res.data.forEach(i => {
@@ -394,7 +394,7 @@
                             '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                             '<i class="fa-solid fa-grip-vertical"></i>\n' +
                             '</span>\n' +
-                            '<button class="btn btn-primary" value="'+i.id+'">'+i.name+'</button>\n' +
+                            '<button class="btn btn-primary" value="'+i.id+'">'+i.title+'</button>\n' +
                             '</div>').appendTo('#listWithHandle');
                     });
 

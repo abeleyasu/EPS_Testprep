@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' =>'api'],function() {
     Route::post('tags',[TagController::class,'storeJson']);
+    Route::post('courses/all',[CourseController::class,'all']);
     Route::post('modules/{id}/sections',[SectionController::class,'sectionsByModule']);
 //    Route::post('modules/{id}/reorder',[SectionController::class,'sectionsByModule']);
     Route::post('modules/{id}/reorder',[ModuleController::class,'reorder']);

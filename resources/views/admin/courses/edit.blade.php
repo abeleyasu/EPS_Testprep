@@ -135,7 +135,7 @@
                                     <label class="form-label" for="order">Order</label>
 
                                     <div class="input-group mb-3">
-                                        <input type="number" readonly class="form-control" name="order" value="0"
+                                        <input type="number" readonly class="form-control" name="order" value="{{ $course->order }}"
                                             id="order"/>
                                         <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
                                             <i class="fa-solid fa-check"></i>
@@ -364,7 +364,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/api/milestones/all`,
+                url: `/api/courses/all`,
                 method: 'post',
                 success: (res) => {
                     res.data.forEach(i => {
@@ -373,7 +373,7 @@
                             '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                             '<i class="fa-solid fa-grip-vertical"></i>\n' +
                             '</span>\n' +
-                            '<button class="btn btn-primary" value="'+i.id+'">'+i.name+'</button>\n' +
+                            '<button class="btn btn-primary" value="'+i.id+'">'+i.title+'</button>\n' +
                             '</div>').appendTo('#listWithHandle');
                     });
 
