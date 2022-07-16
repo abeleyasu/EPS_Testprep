@@ -259,7 +259,7 @@ class SectionController extends Controller
     }
 
     public function sectionJson($id) {
-        $sections = Section::where('module_id', $id)->orderBy('order')->get();
+        $sections = Section::where('module_id', $id)->where('published',1)->orderBy('order')->get();
         $user = \request('user_id');
         $sectionData = [];
         foreach ($sections as $section) {

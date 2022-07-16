@@ -190,6 +190,7 @@
                      
                 <!-- END Lessons -->
             </div>
+			@if(isset($milestone))
             <div class="col-xl-4">
                 <div class="block block-rounded">
                         <div class="block-header block-0-default text-center">
@@ -232,7 +233,7 @@
                         </div>
                     </div>
                 </div>
-    
+			@endif;
     <!-- END Page Content -->
     </main>
 @endsection
