@@ -77,6 +77,7 @@ class TaskController extends Controller
     {
 		$gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
 		
+		$course = array();
 		$milestone = array();
 		$module = array();
 		$section = array();
@@ -94,7 +95,15 @@ class TaskController extends Controller
                 $course = Courses::where('id','=',$courseid)->get();
                 //print_r($course);
             }				
+				
+			
 		}
+		if($milestone){
+            
+            $courseid = $milestone->course_id;
+            $course = Courses::where('id','=',$courseid)->get();
+            //print_r($course);
+        }
 		
         return view('student.courses.taskDetail',compact('task','gettasks', 'section', 'module', 'milestone','course'));
     }

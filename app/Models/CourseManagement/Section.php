@@ -27,6 +27,7 @@ class Section extends Model
         $tasks = Task::select('tasks.*','user_task_statuses.status as complete', 'user_task_statuses.user_id')
             ->join('sections', 'section_id', 'sections.id')
             ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
+			->where('tasks.published',1)
             ->where('sections.id', $this->id)->get();
         return $tasks;
     }

@@ -16,12 +16,12 @@ class CoursesController extends Controller
 {
     public function index()
     {
-        $courses = Courses::orderBy('updated_at')->get();
+        $courses = Courses::orderBy('order')->get();
         foreach($courses as $course){
             $courseid = $course->id;
             $totalmilestone = 0;
             if($courseid){
-                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
+                $coursemilestones = Milestone::orderBy('order')->where('course_id','=',$courseid)->get();
                 $totalmilestone = count($coursemilestones);
             }
         }
@@ -87,13 +87,23 @@ class CoursesController extends Controller
             $file->move(('public/Image'), $filename);
            
         }
+		$content = '';
+		if($request->get('content')){
+			$content = $request->get('content');
+		}
+		$duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
         $course->update([
             'title' => $request->name,
             'description' => $request->description,
             'published'=>$published,
-            'coverimage'=>$filename
-        ]);
-
+            'coverimage'=>$filename,
+			'content' => $content,
+            'user_type' => $request->get('user_type'),
+            'duration' => $duration,
+            'order' => $request->get('order'),
+            'status' => $request->get('status'),
+        ]);                 
+            
         //return redirect()->route('courses.index')->with('success', 'Milestone updated successfully');
         return Redirect::back()->withErrors(['msg' => 'The Message']);
     }
@@ -121,9 +131,11 @@ class CoursesController extends Controller
     public function UserCourseDetail($course)
     {		
         //$usersRoles = UserRole::where('slug','!=','super_admin')->get();		
-        $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->get();
-        
-        $totalmilestones = $milestones->count();
+        $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->where('published',1)->get();
+        $totalmilestones = 0;
+		if($milestones){
+			$totalmilestones = $milestones->count();
+		}        
         $course = Courses::orderBy('order')->where('id','=',$course)->get();
         
         $tags = Tag::all();
