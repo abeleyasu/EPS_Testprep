@@ -139,6 +139,7 @@
 
                                     @php
                                     $completion_percent = 0; 
+									$modulepercentage = 0;
                                     if($totalmodules >0){
                                         $modulepercentage = ($completedmodule*100)/$totalmodules;
                                         if($totaltask){

@@ -182,8 +182,11 @@
                                     [];
                                     $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
                                     }
-
-                                    $sectionpercentage = ($completedsection*100)/$totaltasks;
+									$sectionpercentage = 0;
+									if($totaltasks>0){
+										$sectionpercentage = ($completedsection*100)/$totaltasks;	
+									}
+                                    
                                     @endphp
                                     <div class="col-12" style="margin-bottom:20px;">
                                         <div class="col-7" style="float:left;">
