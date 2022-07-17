@@ -15,10 +15,18 @@ trait CRUD
 {
 
     public function createFromRequest(Model $model, Request $request) {
-
+        
+        
         $fillableFields = ($model)->getFillable();
         $fillable_key_value = $request->only($fillableFields);
-
+        if($request->files->get('course_cover_image')){
+            
+            $file= $request->files->get('course_cover_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file->move(('public/Image'), $filename);
+            $fillable_key_value['coverimage'] = $filename;
+        }
+        
 
         return $model->create($fillable_key_value);
 
@@ -28,6 +36,13 @@ trait CRUD
 
         $fillableFields = ($model)->getFillable();
         $fillable_key_value = $request->only($fillableFields);
+        if($request->files->get('course_cover_image')){
+            
+            $file= $request->files->get('course_cover_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file->move(('public/Image'), $filename);
+            $fillable_key_value['coverimage'] = $filename;
+        }
 
         $model->update($fillable_key_value);
         return $model;

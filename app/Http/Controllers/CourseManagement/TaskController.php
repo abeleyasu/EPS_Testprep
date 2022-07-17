@@ -13,6 +13,7 @@ use App\Models\CourseManagement\UserTaskStatus;
 use App\Models\ModelTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Models\Courses;
 
 class TaskController extends Controller
 {
@@ -86,10 +87,16 @@ class TaskController extends Controller
 		}
 		
 		if($module){
-			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
+			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+            if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }				
 		}
 		
-        return view('student.courses.taskDetail',compact('task','gettasks', 'section', 'module', 'milestone'));
+        return view('student.courses.taskDetail',compact('task','gettasks', 'section', 'module', 'milestone','course'));
     }
     public function showDetail($id)
     {

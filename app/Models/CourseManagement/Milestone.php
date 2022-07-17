@@ -22,6 +22,7 @@ class Milestone extends Model
         'added_by',
         'content_category_id',
         'course_id',
+        'coverimage',
         'published'
     ];
 

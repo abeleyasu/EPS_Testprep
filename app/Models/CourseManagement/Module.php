@@ -19,6 +19,7 @@ class Module extends Model
         'status',
         'added_by',
         'milestone_id',
+        'coverimage',
         'published'
     ];
 

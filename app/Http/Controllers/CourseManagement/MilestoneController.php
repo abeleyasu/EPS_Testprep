@@ -86,7 +86,13 @@ class MilestoneController extends Controller
         else {
             $this->reorderOnCreate($order);
         }
-
+        if($request->file('course_cover_image')){
+            
+            $file= $request->file('course_cover_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file->move(('public/Image'), $filename);
+           
+        }
         $milestone = Milestone::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -97,6 +103,7 @@ class MilestoneController extends Controller
             'status' => $request->get('status'),
             'added_by' => auth()->id(),
             'course_id' => $request->select_course,
+            'coverimage'=>$filename,
             'published' => $request->get('published') ? true : false
         ]);
         if($request->tags) {
@@ -172,7 +179,13 @@ class MilestoneController extends Controller
         $milestone = Milestone::findorfail($id);
 
         $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
-
+        if($request->file('course_cover_image')){
+            
+            $file= $request->file('course_cover_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file->move(('public/Image'), $filename);
+           
+        }
 //        $this->reorderOnUpdate($milestone->order, $request->order, $id);
         $milestone->update([
             'name' => $request->name,
@@ -184,6 +197,7 @@ class MilestoneController extends Controller
             'status' => $request->get('status'),
 //            'added_by' => auth()->id(),
             'course_id' => $request->course,
+            'coverimage' => $filename,
             'published' => $request->get('published') ? true : false
         ]);
 

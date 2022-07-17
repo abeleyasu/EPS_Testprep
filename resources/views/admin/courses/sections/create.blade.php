@@ -13,7 +13,7 @@
 <!-- Main Container -->
 <main id="main-container">
     <!-- Page Content -->
-    <form action="{{route('sections.store')}}" method="POST">
+    <form action="{{route('sections.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="content content-boxed">
             <div class="row">
@@ -45,6 +45,16 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
+                            <div class="mb-2">
+                                <div class="holder">
+                                    <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
+                                </div>
+                                    <label for="content" class="form-label">Upload Cover Image</label>
+                                    <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
+                                    @error('content')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                    @enderror
+                                </div>
                             <div class="col-md-6 col-xl-5 mb-4">
                                 <button type="submit" class="btn w-100 btn-alt-success">
                                     <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Section
@@ -171,6 +181,21 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
+         $(document).ready(()=>{
+      $('#course_cover_image').change(function(){
+        const file = this.files[0];
+        console.log(file);
+        if (file){
+          let reader = new FileReader();
+          reader.onload = function(event){
+            console.log(event.target.result);
+            $('#imgPreview').attr('src', event.target.result);
+            $('#imgPreview').show();
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+    });
         var order = 0;
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false

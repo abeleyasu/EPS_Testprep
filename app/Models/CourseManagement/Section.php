@@ -14,6 +14,7 @@ class Section extends Model
         'module_id',
         'order',
         'status',
+        'coverimage',
         'published'
     ];
 

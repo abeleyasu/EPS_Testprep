@@ -124,7 +124,7 @@
 
     <!-- Hero Content -->
     <div class="bg-image"   >
-        <div class="bg-primary">
+        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$module->coverimage}})">
             <div class="float-start">Module</div>
             <div class="content content-full text-center py-7 pb-5">
                 <h1 class="h2 text-white mb-2">

@@ -15,7 +15,7 @@
 
     <!-- Hero Content -->
     <div class="bg-image"   >
-        <div class="bg-primary">
+        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$task->coverimage}})">
             <div class="float-start">
                 <button class="btn " style="background-color: grey">Task</button>
             </div>
@@ -36,7 +36,7 @@
 						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
 					</li>					
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.detail',['milestone' => $milestone->id]) }}">
+						<a class="link-fx text-dark" href="/user/courses/{{$course[0]->id}}/milestone">
 						@php
 							$stringLen = strlen($milestone->name);							
 						@endphp

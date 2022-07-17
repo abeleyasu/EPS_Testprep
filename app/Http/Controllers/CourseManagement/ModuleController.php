@@ -45,9 +45,9 @@ class ModuleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ModuleRequest $request)
+    public function store(Request $request)
     {
-
+        
         $request->request->add(['added_by' => auth()->id()]);
 
         $order = $request->order;
@@ -56,8 +56,9 @@ class ModuleController extends Controller
         } else {
             $this->reorderOnCreate($request);
         }
-
+       
         $module = $this->createFromRequest(app('App\Models\CourseManagement\Module'),$request);
+        
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -129,6 +130,8 @@ class ModuleController extends Controller
 //                $this->reorderOnCreate($request);
 //            }
 //        }
+
+        
 
         $request->request->add(['published' => $request->published ? true : false]);
 

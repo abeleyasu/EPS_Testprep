@@ -8,7 +8,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <!-- Dynamic Table Full -->
-        <form action="{{route('milestones.update',$milestone->id)}}" method="POST">
+        <form action="{{route('milestones.update',$milestone->id)}}" method="POST" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="row">
@@ -56,6 +56,17 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
+
+                            <div class="mb-2">
+                                <div class="holder">
+                                    <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
+                                </div>
+                                    <label for="content" class="form-label">Upload Cover Image</label>
+                                    <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
+                                    @error('content')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                    @enderror
+                                </div>
                             @if(count($milestone->modules) > 0)
 								<div class="modelprehead">
                                 <h3>MILESTONES MODULES</h3>
@@ -359,6 +370,21 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
+         $(document).ready(()=>{
+      $('#course_cover_image').change(function(){
+        const file = this.files[0];
+        console.log(file);
+        if (file){
+          let reader = new FileReader();
+          reader.onload = function(event){
+            console.log(event.target.result);
+            $('#imgPreview').attr('src', event.target.result);
+            $('#imgPreview').show();
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+    });
         var order = '{{ $milestone->order }}';
         var currentMile = '{{ $milestone->id }}';
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {

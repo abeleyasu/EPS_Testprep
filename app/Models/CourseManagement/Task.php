@@ -14,6 +14,7 @@ class Task extends Model
         'section_id',
         'title',
         'description',
+        'coverimage',
         'published'
     ];
 
