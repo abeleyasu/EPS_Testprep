@@ -70,16 +70,36 @@
                                     <div class="invalid-feedback">{{$message}}</div>
                                     @enderror
                                 </div>
+							<div class="row">
+							    <h4>Course MileStones</h4>
+                                <div class="card mb-2">
+                                @foreach($milestones as $milestone)
 
-                            <div class="col-md-12 col-xl-12 mb-4">
+                                <div class="mx-6 my-2 milestone-detail{{$milestone->id}}"><i class="fa-solid fa-list"></i><a href="/admin/course-management/milestones/{{$milestone->id}}/edit" target="__blank">  {!! $milestone->name !!}</a>
+                                    <span class="text-center badge bg-danger ml-4">Milestone</span>
+                                </div>
+
+                                @endforeach
+                                   
+                                </div>
+							</div>
+                            <div class="row">
                                 <!--<button type="button" class="btn w-25 btn-alt-success"
                                         onclick="previewMilestone()">
                                     <i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
                                 </button>-->
-                                <button type="submit" class="btn w-25 btn-alt-success">
-                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i> update Course
-                                </button>
+								<div class="col-md-6 col-xl-6">
+									<button type="submit" class="btn btn-alt-success">
+										<i class="fa fa-fw fa-plus me-1 opacity-50"></i> update Course
+									</button>
+								</div>	
+								<div class="col-md-6 col-xl-6 text-end">	
+									<a href="{{ route('milestones.create')}}" class="btn btn-sm btn-primary">
+										<i class="fa fa-plus" ></i> New Milestone
+									</a>
+								</div>
                             </div>
+							
                         </div>
                     </div>
                 </div>

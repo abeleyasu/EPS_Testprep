@@ -63,12 +63,12 @@ class CoursesController extends Controller
     public function edit($id)
     {
         $usersRoles = UserRole::where('slug','!=','super_admin')->get();		
-//        $milestones = Milestone::orderBy('order')->get();
+        $milestones = Milestone::where('course_id',$id)->orderBy('order')->get();
         $tags = Tag::all();
         $sections = Section::all();
 		$course = Courses::findorfail($id);
 		return view('admin.courses.edit',
-            compact('course','tags','sections','usersRoles'));
+            compact('course','tags','sections','usersRoles','milestones'));
 	}
     public function courseupdate(Request $request, $id)
     {
