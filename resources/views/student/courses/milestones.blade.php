@@ -15,7 +15,7 @@
     <main id="main-container">
         <!-- Hero Content -->
         <div class="bg-image"   >
-            <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$course[0]->coverimage}});background-repeat: no-repeat;background-position: center;">
+            <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$course[0]->coverimage}});background-repeat: no-repeat;background-position: center; background-size: cover">
                 <div class="content content-full text-center py-7 pb-5">
                     <h1 class="h2 text-white mb-2">
                         {{ $course[0]->title}}
