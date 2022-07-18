@@ -15,7 +15,7 @@
 
     <!-- Hero Content -->
     <div class="bg-image"   >
-        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$task->coverimage}})">
+        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$task->coverimage}}); background-repeat: no-repeat;background-position: center;">
             <div class="float-start">
                 <button class="btn " style="background-color: grey">Task</button>
             </div>

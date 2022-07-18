@@ -79,7 +79,7 @@
 
     <!-- Hero Content -->
     <div class="bg-image"   >
-        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$section->coverimage}})">
+        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$section->coverimage}}); background-repeat: no-repeat;background-position: center;">
             <div class="float-start">Section</div>
             <div class="content content-full text-center py-7 pb-5">
                 <h1 class="h2 text-white mb-2">
