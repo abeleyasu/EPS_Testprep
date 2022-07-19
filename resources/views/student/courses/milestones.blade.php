@@ -15,10 +15,10 @@
     <main id="main-container">
         <!-- Hero Content -->
         <div class="bg-image"   >
-            <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$course[0]->coverimage}});background-repeat: no-repeat;background-position: center; background-size: cover">
+            <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$course->coverimage}});background-repeat: no-repeat;background-position: center; background-size: cover">
                 <div class="content content-full text-center py-7 pb-5">
                     <h1 class="h2 text-white mb-2">
-                        {{ $course[0]->title}}
+                        {{ $course->title}}
                     </h1>
                     <h2 class="h4 fw-normal text-white-75">
                         {{ $totalmilestones }} milestones
@@ -38,13 +38,13 @@
                         <li class="breadcrumb-item" aria-current="page">
                             <a class="link-fx" href="">
 							@php
-								$stringLen = strlen($course[0]->title);
+								$stringLen = strlen($course->title);
 							@endphp
 							@if ($stringLen>30)
-								@php $convetStr = substr($course[0]->title, 0, 25); @endphp
+								@php $convetStr = substr($course->title, 0, 25); @endphp
 								{{$convetStr}}...
 							@else
-								{{$course[0]->title}}
+								{{$course->title}}
 							@endif			
 							</a>
                         </li>
@@ -59,7 +59,7 @@
         <div class="row">
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $description = $course[0]->description;
+                echo $description = $course->description;
                 @endphp
             
             
@@ -67,7 +67,7 @@
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($course[0]->content);
+                echo $content = strip_tags($course->content);
                 @endphp
             
             
@@ -76,10 +76,15 @@
             <div class="col-xl-8">
                 <!-- Lessons -->
 								
-                
+						@php 
+						 $totalMilestone=0;
+						@endphp
                     
                         
 						@foreach($milestones as $milestone)
+						@php 
+						 $totalMilestone=$totalMilestone+1;
+						@endphp
                         <div class="block block-rounded">
                             <div class="block-content fs-sm">
 							<div class="mb-2">
@@ -203,7 +208,7 @@
                                 <tr>
                                     <td>
                                         <i class="fa fa-fw fa-book me-1"></i>
-                                        {{ $milestone->modules->count() }} modules
+                                        {{ $totalMilestone }} MileStones
                                     </td>
                                 </tr>
     {{--                            <tr>--}}
@@ -218,7 +223,7 @@
     {{--                            </tr>--}}
                                 <tr>
                                     <td>
-                                        <i class="fa fa-fw fa-calendar me-1"></i> {{ $milestone->created_at->diffForHumans() }}
+                                        <i class="fa fa-fw fa-calendar me-1"></i> {{ $course->created_at->diffForHumans() }}
                                     </td>
                                 </tr>
                                 <tr>

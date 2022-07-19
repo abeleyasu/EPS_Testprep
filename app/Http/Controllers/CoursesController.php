@@ -17,15 +17,15 @@ class CoursesController extends Controller
     public function index()
     {
         $courses = Courses::orderBy('order')->get();
+		$totalmilestone = [];
         foreach($courses as $course){
             $courseid = $course->id;
-            $totalmilestone = 0;
+            
             if($courseid){
                 $coursemilestones = Milestone::orderBy('order')->where('course_id','=',$courseid)->get();
-                $totalmilestone = count($coursemilestones);
+                $totalmilestone[$courseid] = count($coursemilestones);
             }
         }
-
         return view('admin.courses.index', compact('courses','totalmilestone'));
     }
     public function store(Request $request)
@@ -136,7 +136,7 @@ class CoursesController extends Controller
 		if($milestones){
 			$totalmilestones = $milestones->count();
 		}        
-        $course = Courses::orderBy('order')->where('id','=',$course)->get();
+        $course = Courses::orderBy('order')->where('id','=',$course)->first();
         
         $tags = Tag::all();
         $sections = Section::all();

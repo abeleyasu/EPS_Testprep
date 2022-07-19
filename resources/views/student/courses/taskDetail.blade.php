@@ -163,9 +163,11 @@
 						@endif
 						
 					@endforeach	
-				<div class="block-content" style="margin-bottom:20px;">
-					{!! $task->description !!}            
-				
+				<div class="block block-rounded">	
+					<div class="block-content" style="margin-bottom:20px;">
+						{!! $task->description !!}            
+					
+					</div>
 				</div>
 			</div>
 			

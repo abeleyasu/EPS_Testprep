@@ -147,7 +147,7 @@
                                     
                                     @endphp
                                     <div class="fs-sm text-white-75">
-                                         {{$totalmilestone}} milestones
+                                         {{$totalmilestone[$course->id]}} milestones
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
