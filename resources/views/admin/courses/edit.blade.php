@@ -52,8 +52,8 @@
 
 
                                 <textarea id="js-ckeditor" name="content" class=" form-control form-control-lg form-control-alt
-                            {{$errors->has('description') ? 'is-invalid' : ''}}" id="content" name="content"
-                                            placeholder="Milestone Description"
+                            {{$errors->has('content') ? 'is-invalid' : ''}}" id="content" name="content"
+                                            placeholder="Milestone content"
                                             required>
                                     {!! $course->content !!}</textarea>
                                 @error('content')

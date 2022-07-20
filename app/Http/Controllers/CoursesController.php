@@ -30,6 +30,16 @@ class CoursesController extends Controller
     }
     public function store(Request $request)
     {
+		$validated = $request->validate([
+			'name' => 'required',
+			'description' => 'required',
+			'content' => 'required',
+			'user_type' => 'required',
+			'order' => 'required',
+			'status' => 'required',
+		]);
+		
+		
         $published = $request->published;
         $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
         if($published == 'true'){
