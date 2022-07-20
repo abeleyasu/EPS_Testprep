@@ -127,16 +127,16 @@
                             $completion_percent = 0;
                             $all_tasks->count();
                             if($all_tasks->count() > 0) {
-                            $tasks = $all_tasks->unique('id');
-                            $sectiontask =  count($tasks);
-                            $totaltasks += 1;
-                            $user_tasks = $all_tasks->filter(function($item) {
-                                return $item->user_id == auth()->id() &&  $item->complete ==1;
-                            });
-                            $sectioncompletedtask =  $user_tasks->count();
-                            if($sectiontask == $sectioncompletedtask){
-                                $completedsection += 1;
-                            }
+								$tasks = $all_tasks->unique('id');
+								$sectiontask =  count($tasks);
+								$totaltasks += 1;
+								$user_tasks = $all_tasks->filter(function($item) {
+									return $item->user_id == auth()->id() &&  $item->complete ==1;
+								});
+								$sectioncompletedtask =  $user_tasks->count();
+								if($sectiontask == $sectioncompletedtask){
+									$completedsection += 1;
+								}
                             }
                                             
                                                 
@@ -340,11 +340,11 @@
 
 @endsection
 <script>
-function showDetail(id) {
-            $('.milestone-detail'+id).collapse('toggle')
-        }
-        function showSectionDetail(id) {
-            $('.section-detail'+id).collapse('toggle')
-        }
+	function showDetail(id) {
+				$('.milestone-detail'+id).collapse('toggle')
+			}
+	function showSectionDetail(id) {
+		$('.section-detail'+id).collapse('toggle')
+	}
 
 </script>

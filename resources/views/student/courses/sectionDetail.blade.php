@@ -67,7 +67,15 @@
         .round input[type="checkbox"]:checked+label:after {
             opacity: 1;
         }
-
+		.dispalytask_list{
+			font-size: 17px;
+			text-transform:uppercase;
+			display:flex;
+			line-height: 27px;
+		}
+		.dispalytask_list .round {
+			margin-right:10px;
+		}
     </style>
 
 @endsection
@@ -146,11 +154,24 @@
 			</nav>
 		</div>
 	</div>
+	<div class="content content-boxed">
+        <div class="row">
+			<div class="block-content" style="margin-bottom:20px;">
+                @php
+                echo $description = $section->description;
+                @endphp
+            
+            
+            </div>
 
-        <div class=" py-5">
-
-            <div class="row" style="width: 99%">
-                <div class="col-lg-9 col-md-9 col-sm-12 mx-auto">
+            <div class="block-content" style="margin-bottom:20px;">
+                @php
+                echo $content = strip_tags($section->content);
+                @endphp            
+            
+            </div>
+		
+			<div class="col-xl-8">
 					@php
 						$previouMileId=0;
 						$nextExist =0;
@@ -174,84 +195,149 @@
 								</a>
 							@endif
 						@endif
-					@php 
-						$previouSecId = $getSection->id; 
-					@endphp	
-						@if ($nextExist>0)
-							@php $nextExist =0; @endphp
-							<a href="{{ route('sections.show-detail',['section'=>$getSection->id]) }}" class="btn w-25 btn-alt-success">
-									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
-							</a>
-						@endif
-						@if ($section->id == $getSection->id)
-							@if ($skey>0)
-								@php
-									$nextExist =1;
-								@endphp	
+						@php 
+							$previouSecId = $getSection->id; 
+						@endphp	
+							@if ($nextExist>0)
+								@php $nextExist =0; @endphp
+								<a href="{{ route('sections.show-detail',['section'=>$getSection->id]) }}" class="btn w-25 btn-alt-success">
+										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
+								</a>
 							@endif
-						@endif
-						
+							@if ($section->id == $getSection->id)
+								@if ($skey>0)
+									@php
+										$nextExist =1;
+									@endphp	
+								@endif
+							@endif
+							
 					@endforeach	
+					
+					@php
 
-                    <p>{!! $section->description !!}</p>
+						$all_tasks = $section->taskStatus();
+						$completion_percent = 0;
+						if($all_tasks->count() > 0) {
+						$tasks = $all_tasks->unique('id');
+						$user_tasks = $all_tasks->filter(function($item) {
+							return $item->user_id == auth()->id() &&  $item->complete ==1;
+						});
 
+						$user_tasks= $user_tasks->count() > 0?
+						array_map(function ($item){
+							return $item['id'];
+						},$user_tasks->toArray())
+						:
+						[];
+						$completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+						}
+					@endphp
+					@if($all_tasks->count() > 0 && isset($tasks))
+					@foreach($tasks as $key=>$task)
+						<div class="block block-rounded">
+								<div class="block-content fs-sm">
+								<div class="mb-2">
+									<div class="card-body row">
+										<div class="col-12 colapHead" >
+											<div class="col-11" style="float:left;">
+												<div class="dispalytask_list">
+												<div class="round" onclick="changeStatus({{ $task->id }})" >
+													<input type="checkbox" id="checkbox{{$task->id}}"
+														   @if(in_array($task->id,$user_tasks))checked
+														   @endif/>
+													<label for="checkbox{{$task->id}}"></label>
+													<form action="{{ route('tasks.change_status',['task'=>$task->id])}}" style="display: none"
+														  id="task-status-form-{{$task->id}}" method="post">
+														@csrf
+														<input type="hidden" value="{{$section->module->milestone->id}}" name="course_id" />
+													</form>
+												</div>
+												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}">
+												{{ $task->title }}
+												</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					@endforeach
+					@endif
+			</div>
+			<div class="col-xl-4">
+				<!-- Subscribe -->
+{{--                <div class="block block-rounded">--}}
+{{--                    <div class="block-content">--}}
+{{--                        <a class="btn btn-primary w-100 mb-2" href="javascript:void(0)">Subscribe from $9/month</a>--}}
+{{--                        <p class="fs-sm text-center">--}}
+{{--                            or <a class="link-effect fw-medium" href="javascript:void(0)">buy this course for $28</a>--}}
+{{--                        </p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+                <!-- END Subscribe -->
 
-                                @php
+                <!-- Course Info -->
+                <div class="block block-rounded">
+                    <div class="block-header block-0-default text-center">
+                        <h3 class="block-title">About This Section</h3>
+                    </div>
+                    <div class="block-content">
+                        <table class="table table-striped table-borderless fs-sm">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-book me-1"></i>
+                                    {{ $section->tasks->count() }} tasks
+                                </td>
+                            </tr>
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <i class="fa fa-fw fa-clock me-1"></i> 3 hours--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <i class="fa fa-fw fa-heart me-1"></i> 16850 Favorites--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-calendar me-1"></i> {{ $section->created_at->diffForHumans() }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-tags me-1"></i>
+                                    @foreach($section->tags() as $tag)
+                                        <a class="fw-semibold link-fx text-primary" href="javascript:void(0)">{{ $tag->name }}</a>,
+                                    @endforeach
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END Course Info -->
 
-                                    $all_tasks = $section->taskStatus();
-                                    $completion_percent = 0;
-                                    if($all_tasks->count() > 0) {
-                                    $tasks = $all_tasks->unique('id');
-                                    $user_tasks = $all_tasks->filter(function($item) {
-                                        return $item->user_id == auth()->id() &&  $item->complete ==1;
-                                    });
-
-                                    $user_tasks= $user_tasks->count() > 0?
-                                    array_map(function ($item){
-                                        return $item['id'];
-                                    },$user_tasks->toArray())
-                                    :
-                                    [];
-                                    $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
-                                    }
-                                @endphp
-                                @if($all_tasks->count() > 0 && isset($tasks))
-
-                                <div class=" milestone-detail{{$section->id}}" style="margin-left:11px;">
-                                            @foreach($tasks as $task)
-
-                                                <div class="my-2 section-detail{{$section->id}}">
-                                                    <div class="row">
-                                                        <div class="round" onclick="changeStatus({{ $task->id }})" >
-                                                            <input type="checkbox" id="checkbox{{$task->id}}"
-                                                                   @if(in_array($task->id,$user_tasks))checked
-                                                                   @endif/>
-                                                            <label for="checkbox{{$task->id}}"></label>
-                                                            <form action="{{ route('tasks.change_status',['task'=>$task->id])}}" style="display: none"
-                                                                  id="task-status-form-{{$task->id}}" method="post">
-                                                                @csrf
-                                                                <input type="hidden" value="{{$section->module->milestone->id}}" name="course_id" />
-                                                            </form>
-                                                        </div>
-                                                        <div class="col">
-                                                            <a href="{{ route('tasks.detail',['task'=>$task->id]) }}">
-                                                            {!! $task->title !!}
-                                                            </a>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            @endforeach
-
-                                </div>
-
-                                @endif
-                            </div>
-            </div>
-        </div>
-
-
+                <!-- About Instructor -->
+{{--                <a class="block block-rounded block-link-shadow" href="javascript:void(0)">--}}
+{{--                    <div class="block-header block-header-default text-center">--}}
+{{--                        <h3 class="block-title">About The Instructor</h3>--}}
+{{--                    </div>--}}
+{{--                    <div class="block-content block-content-full text-center">--}}
+{{--                        <div class="push">--}}
+{{--                            <img class="img-avatar" src="assets/media/avatars/avatar11.jpg" alt="">--}}
+{{--                        </div>--}}
+{{--                        <div class="fw-semibold mb-1">Jose Parker</div>--}}
+{{--                        <div class="fs-sm text-muted">Front-end Developer</div>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
+                <!-- END About Instructor -->
+			</div>
+		</div>
+	</div>	
     <!-- END Page Content -->
 </main>
 <!-- END Main Container -->
