@@ -18,7 +18,7 @@ if(isset($_COOKIE['sy_lang'])) {
 } else {
     $load_lang_code = "en";
 }
-echo "here";die;
+
 // including lang files
 switch ($load_lang_code) {
     case "en":

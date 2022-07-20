@@ -474,17 +474,18 @@
 
             // Init full text editor
             if (ckeditorFull) {
-                CKEDITOR.replace( 'js-ckeditor-desc', {
-                customConfig: '/assets/js/plugins/ckeditor/config.js',
-                
-            });
+                CKEDITOR.replace( 'js-ckeditor-desc');
 
                 // Add .js-ckeditor-enabled class to tag it as activated
                 ckeditorFull.classList.add('js-ckeditor-enabled');
+               
             }
             // Init full text editor
             if (taskCK) {
-                CKEDITOR.replace('js-ckeditor-task');
+                CKEDITOR.replace('js-ckeditor-task',{
+                    filebrowserBrowseUrl : '/browse.php',
+                    filebrowserUploadUrl : '/upload.php'
+                });
 
                 // Add .js-ckeditor-enabled class to tag it as activated
                 taskCK.classList.add('js-ckeditor-enabled');

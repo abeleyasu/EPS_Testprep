@@ -500,7 +500,7 @@
 
             // Init full text editor
             if (ckeditorFull) {
-                CKEDITOR.replace('js-ckeditor-desc');
+                CKEDITOR.replace( 'js-ckeditor-desc');
 
                 // Add .js-ckeditor-enabled class to tag it as activated
                 ckeditorFull.classList.add('js-ckeditor-enabled');
