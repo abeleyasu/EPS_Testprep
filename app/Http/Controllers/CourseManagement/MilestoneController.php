@@ -127,6 +127,9 @@ class MilestoneController extends Controller
     public function show(Milestone $milestone)
     {
         //echo $milestone->id;
+		if($milestone->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
         
         if($milestone){

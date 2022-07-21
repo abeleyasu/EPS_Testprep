@@ -189,7 +189,7 @@
 
                                     <select name="status" class="form-control">
                                         <option value="paid">Paid</option>
-                                        <option value="unpaid">Unpaid</option>
+                                        <option value="unpaid" @php if($course->status == 'unpaid'){ echo 'selected';} @endphp >Unpaid</option>
                                     </select>
                                 </div>
                             </div>

@@ -148,7 +148,14 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3 style="line-height:0px;"><a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a></h3>
+										    <h3 style="line-height:0px;">
+																					
+											@if($module->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{$key+1}}. {{ $module->title }}</a>
+											@else
+											<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a>
+											@endif
+											</h3>
                                         </div>
                                         <div class="col-1" style="float:left; margin-top:-12px;">
                                         <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
@@ -246,7 +253,14 @@
                                             
                                         @endphp
                                             
-												<span class="mx-4"><a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a></span>
+												<span class="mx-4">
+																								
+												@if($section->status == 'paid')
+													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
+												@else
+												<a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a>
+												@endif
+												</span>
 												
 										</div>	
 										@endforeach

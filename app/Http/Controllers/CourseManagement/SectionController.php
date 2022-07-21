@@ -79,6 +79,9 @@ class SectionController extends Controller
     public function show($id)
     {
         $section = Section::findorfail($id);
+		if($section->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$milestone = array();
 		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
 		

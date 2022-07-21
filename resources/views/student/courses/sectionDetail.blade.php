@@ -241,7 +241,18 @@
 									<div class="card-body row">
 										<div class="col-12 colapHead" >
 											<div class="col-11" style="float:left;">
+											@if($task->status == 'paid')
 												<div class="dispalytask_list">
+												<div class="round" >
+													<input type="checkbox">
+													<label for="checkbox{{$task->id}}"></label>
+												</div>
+												<a href="javascript:;" class="font-grayed" >
+												{{ $task->title }}
+												</a>
+												</div>
+											@else
+											<div class="dispalytask_list">
 												<div class="round" onclick="changeStatus({{ $task->id }})" >
 													<input type="checkbox" id="checkbox{{$task->id}}"
 														   @if(in_array($task->id,$user_tasks))checked
@@ -257,6 +268,8 @@
 												{{ $task->title }}
 												</a>
 												</div>
+											@endif
+												
 											</div>
 										</div>
 									</div>

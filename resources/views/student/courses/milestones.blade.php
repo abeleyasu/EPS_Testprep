@@ -91,7 +91,14 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3 style="line-height:0px;"><a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a></h3>
+										    <h3 style="line-height:0px;">
+											@if($milestone->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
+											@else
+											<a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a>
+											@endif
+											
+											</h3>
                                         </div>
                                         <div class="col-1" style="float:left;">
                                        <!-- <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">

@@ -130,6 +130,7 @@ class CoursesController extends Controller
 
     public function show($course)
     {		
+		
         $usersRoles = UserRole::where('slug','!=','super_admin')->get();		
 //        $milestones = Milestone::orderBy('order')->get();
         $tags = Tag::all();
@@ -140,13 +141,16 @@ class CoursesController extends Controller
 
     public function UserCourseDetail($course)
     {		
+		$course = Courses::orderBy('order')->where('id','=',$course)->first();
+        if($course->status == 'paid'){
+			return redirect(route('home'));
+		}
         //$usersRoles = UserRole::where('slug','!=','super_admin')->get();		
         $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->where('published',1)->get();
         $totalmilestones = 0;
 		if($milestones){
 			$totalmilestones = $milestones->count();
 		}        
-        $course = Courses::orderBy('order')->where('id','=',$course)->first();
         
         $tags = Tag::all();
         $sections = Section::all();

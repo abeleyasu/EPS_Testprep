@@ -80,6 +80,9 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
+		if($module->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
         if($milestone){

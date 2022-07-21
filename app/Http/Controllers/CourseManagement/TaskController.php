@@ -75,6 +75,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+		if($task->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
 		
 		$course = array();

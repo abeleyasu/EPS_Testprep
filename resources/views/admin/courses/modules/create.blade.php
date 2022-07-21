@@ -139,6 +139,14 @@
 
                                 
                             </div>
+							<div class="mb-2">
+                                <label class="form-label" for="status">Status</label>
+
+                                <select name="status" class="form-control">
+                                    <option value="paid">Paid</option>
+                                    <option value="unpaid">Unpaid</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
