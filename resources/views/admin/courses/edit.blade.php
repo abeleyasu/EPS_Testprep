@@ -23,6 +23,9 @@
                 <div class="block block-rounded">
                     <div class="block-header block-header-default">
                         <h3 class="block-title">Edit Course</h3>
+						<a target="_blank" class="btn w-25 btn-alt-success" href="{{ route('courses.preview',['course' => $course->id]) }}">
+								<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
+							</a>
                     </div>
                     <div class="block-content block-content-full">
                                 <div class="mb-2">
@@ -172,14 +175,18 @@
                                     <div class="row items-push mt-2 tag-div">
                                         @if($tags && count($tags) > 0)
                                         @foreach($tags as $tag)
-                                        <div class="col">
-                                            <div class="form-check form-block">
-                                                <input class="form-check-input" type="checkbox" value="{{$tag->id}}" id="example-checkbox-block{{$tag->id}}" name="tags[]">
-                                                <label class="form-check-label label-check" for="example-checkbox-block{{$tag->id}}">
-                                                    <span class="d-block fs-sm text-muted">{{$tag->name}}</span>
-                                                </label>
+                                        	<div class="col">
+                                                <div class="form-check form-block">
+                                                    <input class="form-check-input"
+                                                        type="checkbox" value="{{$tag->id}}"
+                                                        name="tags[]"
+                                                        id="example-checkbox-block{{$tag->id}}"
+                                                    @if(in_array($tag->id,$course_tags)) checked @endif>
+                                                    <label class="form-check-label label-check" for="example-checkbox-block{{$tag->id}}">
+                                                        <span class="d-block fs-sm text-muted">{{$tag->name}}</span>
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div>
                                         @endforeach
                                         @endif
                                     </div>

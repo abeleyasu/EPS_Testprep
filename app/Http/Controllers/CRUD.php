@@ -25,7 +25,9 @@ trait CRUD
             $filename= date('YmdHi').$file->getClientOriginalName();
             $file->move(('public/Image'), $filename);
             $fillable_key_value['coverimage'] = $filename;
-        }
+        }else{
+			$fillable_key_value['coverimage'] = '';
+		}
         
 
         return $model->create($fillable_key_value);

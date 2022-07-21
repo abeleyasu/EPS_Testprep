@@ -300,9 +300,11 @@ class SectionController extends Controller
      * @param  \App\Models\CourseManagement\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function preview(Section $section)
+    public function preview($id)
     {
 		$milestone = array();
+		$course=[];
+		$section = Section::findorfail($id);
 		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
 		
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
@@ -310,13 +312,18 @@ class SectionController extends Controller
 		if($module){
 			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
 		}
-        
+        if($milestone){
+            
+			$courseid = $milestone->course_id;
+			$course = Courses::where('id','=',$courseid)->get();
+			//print_r($course);
+		}
         $tags = Tag::all();
         $section_tags = ModelTag::where([
             ['model_id', $section->id],
             ['model_type', get_class($section)]
         ])->pluck('tag_id')->toArray();
 		
-        return view('admin.courses.sections.preview', compact('section', 'getSections', 'module','tags', 'section_tags', 'milestone'));
+        return view('admin.courses.sections.preview', compact('section', 'getSections', 'module','tags', 'section_tags', 'milestone','course'));
     }
 }

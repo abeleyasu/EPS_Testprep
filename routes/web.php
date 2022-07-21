@@ -61,7 +61,7 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
         Route::resource('courseslist', CourseController::class);
        // Route::post('courseslist', CourseController::class);
 		Route::post('courseslist/{course}/courseupdate', [CourseController::class, 'courseupdate'])->name('courseslist.courseupdate');
-		Route::get('courseslist/{course}/preview', [MilestoneController::class, 'preview'])->name('courseslist.preview');
+		Route::get('courses/{course}/preview', [CourseController::class, 'preview'])->name('courses.preview');
         Route::resource('milestones', MilestoneController::class);
         Route::get('milestones/{milestone}/preview', [MilestoneController::class, 'preview'])->name('milestones.preview');
         Route::resource('modules', ModuleController::class);

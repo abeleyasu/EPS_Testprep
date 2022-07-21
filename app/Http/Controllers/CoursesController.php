@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Courses;
 use Redirect;
 use App\Models\Tag;
+use App\Models\ModelTag;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\CourseManagement\Section;
@@ -26,6 +27,7 @@ class CoursesController extends Controller
                 $totalmilestone[$courseid] = count($coursemilestones);
             }
         }
+		
         return view('admin.courses.index', compact('courses','totalmilestone'));
     }
     public function store(Request $request)
@@ -68,6 +70,15 @@ class CoursesController extends Controller
             'status' => $request->get('status'),
             'coverimage' =>$filename
         ]);
+		if($request->tags) {
+            foreach ($request->tags as $tag) {
+                ModelTag::create([
+                    'model_id' => $course->id,
+                    'model_type' => get_class($course),
+                    'tag_id' => $tag
+                ]);
+            }
+        }
 		return redirect('admin/course-management/courses/'.$course->id.'/edit')->with('success', 'Milestone created successfully');
     }
     public function edit($id)
@@ -77,8 +88,12 @@ class CoursesController extends Controller
         $tags = Tag::all();
         $sections = Section::all();
 		$course = Courses::findorfail($id);
+		$course_tags = ModelTag::where([
+            ['model_id', $course->id],
+            ['model_type', get_class($course)]
+        ])->pluck('tag_id')->toArray();
 		return view('admin.courses.edit',
-            compact('course','tags','sections','usersRoles','milestones'));
+            compact('course','tags', 'course_tags', 'sections','usersRoles','milestones'));
 	}
     public function courseupdate(Request $request, $id)
     {
@@ -113,7 +128,19 @@ class CoursesController extends Controller
             'order' => $request->get('order'),
             'status' => $request->get('status'),
         ]);                 
-            
+        if($request->tags) {
+            ModelTag::where([
+                ['model_id', $course->id],
+                ['model_type', get_class($course)]
+            ])->delete();
+            foreach ($request->tags as $tag) {
+                ModelTag::create([
+                    'model_id' => $course->id,
+                    'model_type' => get_class($course),
+                    'tag_id' => $tag
+                ]);
+            }
+        }    
         //return redirect()->route('courses.index')->with('success', 'Milestone updated successfully');
         return Redirect::back()->withErrors(['msg' => 'The Message']);
     }
@@ -141,17 +168,17 @@ class CoursesController extends Controller
 
     public function UserCourseDetail($course)
     {		
-		$course = Courses::orderBy('order')->where('id','=',$course)->first();
-        if($course->status == 'paid'){
-			return redirect(route('home'));
-		}
+		
         //$usersRoles = UserRole::where('slug','!=','super_admin')->get();		
         $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->where('published',1)->get();
         $totalmilestones = 0;
 		if($milestones){
 			$totalmilestones = $milestones->count();
 		}        
-        
+        $course = Courses::orderBy('order')->where('id','=',$course)->first();
+        if($course->status == 'paid'){
+			return redirect(route('home'));
+		}
         $tags = Tag::all();
         $sections = Section::all();
         

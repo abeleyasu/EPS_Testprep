@@ -115,4 +115,17 @@ class CourseController extends Controller
         $course->delete();
         return redirect()->route('courseslist.index')->with('success', 'Course delete successfully');
 	}
+	public function preview($id){
+		$milestones = Milestone::orderBy('order')->where('course_id','=',$id)->where('published',1)->get();
+        $totalmilestones = 0;
+		if($milestones){
+			$totalmilestones = $milestones->count();
+		}        
+        $course = Courses::orderBy('order')->where('id','=',$id)->first();
+        
+        $tags = Tag::all();
+        $sections = Section::all();
+		
+		return view('admin.courses.preview', compact('tags','milestones','course','totalmilestones'));
+	}	
 }

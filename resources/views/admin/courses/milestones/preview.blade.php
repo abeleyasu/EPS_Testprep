@@ -1,6 +1,6 @@
 @extends('layouts.preview')
 
-@section('title', 'Student Dashboard : Courses')
+@section('title', 'Student - Public High School Dashboard : Courses')
 
 @section('page-style')
 
@@ -13,7 +13,7 @@
     <main id="main-container">
         <!-- Hero Content -->
         <div class="bg-image"   >
-            <div class="bg-primary">
+            <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$milestone->coverimage}}); background-repeat: no-repeat;background-position: center; background-size: cover;">
                 <div class="content content-full text-center py-7 pb-5">
                     <h1 class="h2 text-white mb-2">
                         {{ $milestone->name }}
@@ -26,16 +26,21 @@
         </div>
         <!-- END Hero Content -->
 
-          <!-- Navigation -->
+        <!-- Navigation -->
         <div class="bg-body-extra-light">
             <div class="content content-boxed py-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
-                            <a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
+                            <a class="link-fx text-dark" href="javascript:;">Courses</a>
                         </li>
+
+                        <li class="breadcrumb-item">
+                            <a class="link-fx text-dark" href="javascript:;">{{$course[0]->title}}</a>
+                        </li>
+
                         <li class="breadcrumb-item" aria-current="page">
-                            <a class="link-fx" href="">
+                            <a class="link-fx" href="javascript:;">
 							@php
 								$stringLen = strlen($milestone->name);
 							@endphp
@@ -52,10 +57,25 @@
             </div>
         </div>
         <!-- END Navigation -->
-		
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row">
+            <div class="block-content" style="margin-bottom:20px;">
+                @php
+                echo $description = $milestone->description;
+                @endphp
+            
+            
+            </div>
+
+            <div class="block-content" style="margin-bottom:20px;">
+                @php
+                echo $content = strip_tags($milestone->content);
+                @endphp
+            
+            
+            </div>
+            
             <div class="col-xl-8">
                 <!-- Lessons -->
 				@php
@@ -65,7 +85,7 @@
 					@foreach($getMilestones as $mkey => $getMilestone)
 						@if ($milestone->id == $getMilestone->id)
 							@if ($mkey>0)
-								<a href="javascript:;" class="btn w-25 btn-alt-success btnminwidth">
+								<a href="javascript:;" class="btn w-30 btn-alt-success btnminwidth">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Milestone
 								</a>	
 							@endif
@@ -93,36 +113,166 @@
 						@endif
 						
 					@endforeach				
-                <div class="block block-rounded">
-                    <div class="block-content fs-sm">
-					
+                
+                    
 						@foreach($milestone->modules as $key => $module)
-							<div class="card mb-2">
-								<div class="card-body row">
-									<div class="col-9 colapHead">
-										<a href="javascript:;">{{$key+1}}. {{ $module->title }}</a>
-									</div>
-									<div class="col-3">
-										<button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
-											<i class="fa-solid fa-arrow-down"></i>
-										</button> <span class="badge bg-primary">module</span>
-									</div>
-									<div class="col-12 collapse hide milestone-detail{{$module->id}}">
 
+                        @php
+                        $completedsection = 0;
+                        $totaltasks = 0;
+                        @endphp
+                        @foreach($module->sections as $section_key => $section)
+                        @php
+                        $all_tasks = $section->taskStatus();
+                            $completion_percent = 0;
+                            $all_tasks->count();
+                            if($all_tasks->count() > 0) {
+								$tasks = $all_tasks->unique('id');
+								$sectiontask =  count($tasks);
+								$totaltasks += 1;
+								$user_tasks = $all_tasks->filter(function($item) {
+									return $item->user_id == auth()->id() &&  $item->complete ==1;
+								});
+								$sectioncompletedtask =  $user_tasks->count();
+								if($sectiontask == $sectioncompletedtask){
+									$completedsection += 1;
+								}
+                            }
+                                            
+                                                
+                        @endphp
+                        @endforeach
+                        <div class="block block-rounded">
+                            <div class="block-content fs-sm">
+							<div class="mb-2">
+								<div class="card-body row">
+									<div class="col-12 colapHead" >
+                                        <div class="col-11" style="float:left;">
+										    <h3 style="line-height:0px;">
+																					
+											@if($module->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{$key+1}}. {{ $module->title }}</a>
+											@else
+											<a href="javascript:;">{{$key+1}}. {{ $module->title }}</a>
+											@endif
+											</h3>
+                                        </div>
+                                        <div class="col-1" style="float:left; margin-top:-12px;">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">
+											<i class="fa-solid fa-arrow-down"></i>
+										</button>
+                                        </div>
+                                    </div>
+                                           
+                                    @php
+                                    
+                                    $all_tasks = $module->tasks();
+                                    
+                                    
+                                    $completion_percent = 0;
+                                    $completedtask = 0;
+                                    $moduletask = 0;
+                                    if($all_tasks->count() > 0) {
+                                    $tasks = $all_tasks->unique('id');
+                                    $moduletask = count($tasks);
+                                    
+                                    $user_tasks = $all_tasks->filter(function($item) {
+                                        return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                    });
+                                    $completedtask = count($user_tasks);
+                                    
+                                    $user_tasks= $user_tasks->count() > 0?
+                                    array_map(function ($item){
+                                        return $item['id'];
+                                    },$user_tasks->toArray())
+                                    :
+                                    [];
+                                    $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                    }
+									$sectionpercentage = 0;
+									if($totaltasks>0){
+										$sectionpercentage = ($completedsection*100)/$totaltasks;	
+									}
+                                    
+                                    @endphp
+                                    <div class="col-12" style="margin-bottom:20px;">
+                                        <div class="col-7" style="float:left;">
+                                            <div class="progress" style="background:#c4c5c7;">
+                                                    <div class="progress-bar "
+                                                        style="background-color: blue; width: {{$completion_percent}}%"
+                                                        role="progressbar"
+                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4" style="float:left;margin-left:20px;">
+                                            <b>{{$completion_percent}}% Task Complete</b>
+                                        </div>    
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="col-7" style="float:left;">
+                                            <div class="progress" style="background:#c4c5c7;">
+                                                    <div class="progress-bar "
+                                                        style="background-color: blue; width: {{$sectionpercentage}}%"
+                                                        role="progressbar"
+                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4" style="float:left;margin-left:20px;">
+                                            <b>{{$completedsection}}/{{$totaltasks}} Section Complete</b>
+                                        </div>    
+                                    </div>
+                                    
+									
+									<div class="col-12 collapse hide milestone-detail{{$module->id}}">
+                                        
 										@foreach($module->sections as $section_key => $section)
 											<div class="my-3">
-												<span class="mx-4"><a href="javascript:;"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
+                                                
+                                        @php
+                                        $all_tasks = $section->taskStatus();
+                                            $completion_percent = 0;
+                                            $all_tasks->count();
+                                            if($all_tasks->count() > 0) {
+                                            $tasks = $all_tasks->unique('id');
+                                            $sectiontask =  count($tasks);
+                                            $user_tasks = $all_tasks->filter(function($item) {
+                                                return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                            });
+                                            $sectioncompletedtask =  $user_tasks->count();
+                                            $user_tasks= $user_tasks->count() > 0?
+                                            array_map(function ($item){
+                                                return $item['id'];
+                                            },$user_tasks->toArray())
+                                            :
+                                            [];
+                                            $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                            }
+                                        
+                                            
+                                        @endphp
+                                            
+												<span class="mx-4">
+																								
+												@if($section->status == 'paid')
+													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
+												@else
+												<a href="javascript:;"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a>
+												@endif
+												</span>
 												
-											</div>
+										</div>	
 										@endforeach
 									</div>
 								</div>
 							</div>
+                            </div>
+                        </div>
 						@endforeach
 								
 								
-                    </div>
-                </div>
+                    
                 <!-- END Lessons -->
             </div>
             <div class="col-xl-4">
@@ -139,8 +289,8 @@
 
                 <!-- Course Info -->
                 <div class="block block-rounded">
-                    <div class="block-header block-header-default text-center">
-                        <h3 class="block-title">About This Course</h3>
+                    <div class="block-header block-0-default text-center">
+                        <h3 class="block-title">About This Milestone</h3>
                     </div>
                     <div class="block-content">
                         <table class="table table-striped table-borderless fs-sm">
@@ -195,8 +345,7 @@
 {{--                </a>--}}
                 <!-- END About Instructor -->
             </div>
-        </div>
-    </div>
+        
     <!-- END Page Content -->
     </main>
 @endsection
@@ -205,11 +354,11 @@
 
 @endsection
 <script>
-function showDetail(id) {
-            $('.milestone-detail'+id).collapse('toggle')
-        }
-        function showSectionDetail(id) {
-            $('.section-detail'+id).collapse('toggle')
-        }
+	function showDetail(id) {
+				$('.milestone-detail'+id).collapse('toggle')
+			}
+	function showSectionDetail(id) {
+		$('.section-detail'+id).collapse('toggle')
+	}
 
 </script>

@@ -145,7 +145,7 @@
                                     @php
                                     
                                     @endphp
-                                    <div class="fs-sm text-white-75">
+                                    <div class="fs-sm text-black">
                                          {{$totalmilestone[$course->id]}} milestones
                                     </div>
                                 </div>

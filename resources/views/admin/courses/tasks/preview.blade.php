@@ -1,6 +1,6 @@
 .@extends('layouts.preview')
 
-@section('title', 'Student Dashboard : Courses')
+@section('title', 'Student - Public High School Dashboard : Courses')
 
 @section('page-style')
 
@@ -15,7 +15,7 @@
 
     <!-- Hero Content -->
     <div class="bg-image"   >
-        <div class="bg-primary">
+        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$task->coverimage}}); background-repeat: no-repeat;background-position: center; background-size: cover;">
             <div class="float-start">
                 <button class="btn " style="background-color: grey">Task</button>
             </div>
@@ -33,10 +33,14 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-alt">
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
-					</li>					
+						<a class="link-fx text-dark" href="javascript:;">Courses</a>
+					</li>	
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.detail',['milestone' => $milestone->id]) }}">
+						<a class="link-fx text-dark" href="javascript:;">{{$course[0]->title}}</a>
+					</li>		
+					<li class="breadcrumb-item">
+						
+						<a class="link-fx text-dark" href="javascript:;">
 						@php
 							$stringLen = strlen($milestone->name);							
 						@endphp
@@ -49,7 +53,7 @@
 						</a>
 					</li>
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('modules.detail',['module'=>$module->id]) }}">
+						<a class="link-fx text-dark" href="javascript:;">
 						@php
 							$stringLen1 = strlen($module->title);
 							
@@ -63,7 +67,7 @@
 						</a>
 					</li>						
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('sections.show-detail',['section'=>$task->id]) }}">
+						<a class="link-fx text-dark" href="javascript:;">
 						@php
 							$stringLen2 = strlen($section->title);
 							
@@ -100,11 +104,11 @@
             <form action="{{ route('tasks.change_status',['task'=>$task->id]) }}" method="post">
                 @csrf
                 @if($task->authTaskStatus() && $task->authTaskStatus()->status == 1)
-                <button type="button" class="btn btn-primary float-end btn-sm" >
+                <button type="submit" class="btn btn-primary float-end btn-sm" >
                     Mark InComplete
                 </button>
                     @else
-                    <button type="button" class="btn btn-success float-end btn-sm" >
+                    <button type="submit" class="btn btn-success float-end btn-sm" >
                         Mark Complete
                     </button>
                     @endif
@@ -112,11 +116,12 @@
         </div>
     </div>
 
-        <div class=" py-5">
-
-            <div class="row" style="width: 99%">
-                <div class="col-lg-9 col-md-9 col-sm-12 mx-auto">
-					@php
+	<div class="content content-boxed">
+        <div class="row">
+            
+			
+			<div class="col-xl-8">
+			@php
 						$previouMileId=0;
 						$nextExist =0;
 						$lastItem = count($gettasks)-1;
@@ -158,17 +163,81 @@
 						@endif
 						
 					@endforeach	
-                    <div class="card">
-                        <div class="card-body">
-                            <p>{!! $task->description !!}</p>
-                        </div>
+				<div class="block block-rounded">	
+					<div class="block-content" style="margin-bottom:20px;">
+						{!! $task->description !!}            
+					
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-xl-4">
+				<!-- Subscribe -->
+{{--                <div class="block block-rounded">--}}
+{{--                    <div class="block-content">--}}
+{{--                        <a class="btn btn-primary w-100 mb-2" href="javascript:void(0)">Subscribe from $9/month</a>--}}
+{{--                        <p class="fs-sm text-center">--}}
+{{--                            or <a class="link-effect fw-medium" href="javascript:void(0)">buy this course for $28</a>--}}
+{{--                        </p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+                <!-- END Subscribe -->
+
+                <!-- Course Info -->
+                <div class="block block-rounded">
+                    <div class="block-header block-0-default text-center">
+                        <h3 class="block-title">About This Task</h3>
                     </div>
-
-
+                    <div class="block-content">
+                        <table class="table table-striped table-borderless fs-sm">
+                            <tbody>
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <i class="fa fa-fw fa-clock me-1"></i> 3 hours--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <i class="fa fa-fw fa-heart me-1"></i> 16850 Favorites--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-calendar me-1"></i> {{ $task->created_at->diffForHumans() }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-tags me-1"></i>
+                                    @foreach($task->tags() as $tag)
+                                        <a class="fw-semibold link-fx text-primary" href="javascript:void(0)">{{ $tag->name }}</a>,
+                                    @endforeach
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div> 
                 </div>
-            </div>
-        </div>
+                <!-- END Course Info -->
 
+                <!-- About Instructor -->
+{{--                <a class="block block-rounded block-link-shadow" href="javascript:void(0)">--}}
+{{--                    <div class="block-header block-header-default text-center">--}}
+{{--                        <h3 class="block-title">About The Instructor</h3>--}}
+{{--                    </div>--}}
+{{--                    <div class="block-content block-content-full text-center">--}}
+{{--                        <div class="push">--}}
+{{--                            <img class="img-avatar" src="assets/media/avatars/avatar11.jpg" alt="">--}}
+{{--                        </div>--}}
+{{--                        <div class="fw-semibold mb-1">Jose Parker</div>--}}
+{{--                        <div class="fs-sm text-muted">Front-end Developer</div>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
+                <!-- END About Instructor -->
+			
+			</div>
+		</div>
+	</div>	
 
     <!-- END Page Content -->
 </main>
