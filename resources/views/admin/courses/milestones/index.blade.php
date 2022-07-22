@@ -121,6 +121,9 @@
                                     </div>
 
                                 </div>
+								<div class="fs-sm text-white-75 displaymilecnt">
+									 {{ $milestone->modules->count() }} Modules
+								</div>
                             </div>
                             <h5>
                                 {{ $milestone->name }}

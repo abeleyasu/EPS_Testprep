@@ -130,16 +130,38 @@
                     @foreach($courses as $key => $course)
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
-                            
-                            <a class="block block-rounded block-link-pop h-100 mb-0" href="{{ route('courses.milestone',['course' => $course->id]) }}">
+                            @if($course->status == 'paid')
+								<a class="block block-rounded block-link-pop h-100 mb-0" href="javascript:;">
 
-                                <div class="block-content block-content-full text-center {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}">
+                                <div class="block-content block-content-full text-center bg-grayed">
 
-                                    @if($course->status == 'paid')
                                     <div class="btn-group float-end ">
                                         <span class="badge bg-dark">Paid</span>
                                     </div>
-                                    @endif
+                                    
+                                    <div class="item item-2x item-circle bg-white-10 py-3 my-3 mx-auto">
+                                    {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
+                                    </div>
+                                    @php
+                                    
+                                    @endphp
+                                    <div class="fs-sm text-black">
+                                         {{$totalmilestone[$course->id]}} milestones
+                                    </div>
+                                </div>
+                                <div class="block-content block-content-full">
+                                    <h4 class="h5 mb-1">
+                                        {{ $course->title }}
+                                    </h4>
+                                    <div class="fs-sm text-muted">{{ $course->created_at->format( 'M d, Y') }}</div>
+                                    
+                                </div>
+                            </a>
+							@else
+								<a class="block block-rounded block-link-pop h-100 mb-0" href="{{ route('courses.milestone',['course' => $course->id]) }}">
+
+                                <div class="block-content block-content-full text-center {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}">
+
                                     <div class="item item-2x item-circle bg-white-10 py-3 my-3 mx-auto">
                                     {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
                                     </div>
@@ -158,6 +180,8 @@
                                     
                                 </div>
                             </a>
+							@endif
+                            
                         </div>
                         <!-- END Course -->
                     @endforeach

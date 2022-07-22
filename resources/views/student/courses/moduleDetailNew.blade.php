@@ -272,7 +272,15 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3><a href="{{ route('sections.detail',['section'=>$section->id]) }}">{{$key+1}}. {{ $section->title }}</a></h3>
+										    <h3>
+											@if($section->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{$key+1}}. {{ $section->title }}</a>
+											@else
+											<a href="{{ route('sections.detail',['section'=>$section->id]) }}">{{$key+1}}. {{ $section->title }}</a>
+											@endif
+											
+											
+											</h3>
                                         </div>
                                         <div class="col-1" style="float:left; margin-top:-12px;">
                                         <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$section->id}})">
@@ -329,7 +337,14 @@
 										@foreach($section->tasks as $task_key => $task)
 											<div class="my-3">                                               
                                                                                   
-												<span class="mx-4"><a href="{{ route('tasks.detail',['task'=>$task->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!} </a></span>
+												<span class="mx-4">											
+												
+												@if($task->status == 'paid')
+													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!}</a>
+												@else
+												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!} </a>
+												@endif
+												</span>
 												
 										</div>	
 										@endforeach

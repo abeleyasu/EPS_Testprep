@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\CourseManagement;
-
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,5 +33,14 @@ class Section extends Model
     }
     public function module() {
         return $this->belongsTo(Module::class);
+    }
+	public function tags() {
+        return Tag::select('tags.id','tags.name')
+            ->join('model_has_tags', 'tags.id','model_has_tags.tag_id')
+            ->join('sections','model_has_tags.model_id','sections.id')
+            ->where([
+                ['model_has_tags.model_id', $this->id],
+                ['model_has_tags.model_type', get_class($this)]
+            ])->get();
     }
 }

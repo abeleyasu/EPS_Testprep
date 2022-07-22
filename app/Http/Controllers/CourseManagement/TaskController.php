@@ -75,6 +75,9 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+		if($task->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
 		
 		$course = array();
@@ -214,10 +217,12 @@ class TaskController extends Controller
      * @param  \App\Models\CourseManagement\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function preview(Task $task)
+    public function preview($id)
     {
+		$task = Task::findorfail($id);
         $gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
 		
+		$course = array();
 		$milestone = array();
 		$module = array();
 		$section = array();
@@ -230,6 +235,12 @@ class TaskController extends Controller
 		if($module){
 			$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();			
 		}
-        return view('admin.courses.tasks.preview', compact('task','gettasks', 'section', 'module', 'milestone'));
+		if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }
+        return view('admin.courses.tasks.preview', compact('task','gettasks', 'section', 'module', 'milestone','course'));
     }
 }

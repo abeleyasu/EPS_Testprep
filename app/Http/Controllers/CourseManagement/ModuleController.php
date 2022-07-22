@@ -80,6 +80,9 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
+		if($module->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
         if($milestone){
@@ -255,18 +258,25 @@ class ModuleController extends Controller
      * @param Module $module
      * @return \Illuminate\Http\Response
      */
-    public function preview(Module $module)
+    public function preview($id)
     {
         $tags = Tag::all();
+		$module = Module::findorfail($id);
         $module_tags = ModelTag::where([
-            ['model_id', $module->id],
+            ['model_id', $id],
             ['model_type', get_class($module)]
         ])->pluck('tag_id')->toArray();
 		
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
-		
+		$course = [];
+		if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }
         return view('admin.courses.modules.preview', compact('module',
-            'milestone','tags', 'module_tags','getModules'));
+            'milestone','tags', 'module_tags','getModules', 'module','course'));
     }
 }

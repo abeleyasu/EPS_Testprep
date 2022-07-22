@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.preview')
 
 @section('title', 'Student - Public High School Dashboard : Courses')
 
@@ -8,12 +8,7 @@
 @endsection
 
 @section('user-content')
-<style>
-    .block-content img{
-        max-width:100% !important;
-        height:auto !important;
-    }
-</style>
+
 
 
     <!-- Main Container -->
@@ -37,7 +32,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt">
                         <li class="breadcrumb-item">
-                            <a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
+                            <a class="link-fx text-dark" href="javascript:;">Courses</a>
                         </li>
                         
                         <li class="breadcrumb-item" aria-current="page">
@@ -96,11 +91,11 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3>
+										    <h3 style="line-height:0px;">
 											@if($milestone->status == 'paid')
 												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
 											@else
-											<a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a>
+											<a href="javascript:;">{{ $milestone->name }}</a>
 											@endif
 											
 											</h3>

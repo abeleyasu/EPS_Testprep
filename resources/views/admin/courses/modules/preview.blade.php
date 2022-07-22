@@ -1,6 +1,6 @@
 @extends('layouts.preview')
 
-@section('title', 'Student Dashboard : Courses')
+@section('title', 'Student - Public High School Dashboard : Courses')
 
 
 @section('page-style')
@@ -20,6 +20,16 @@
             list-style-type: none;
             position: relative;
             padding-left: 1.5rem;
+        }
+        .number_count {
+        height: 45px;
+        width: 45px;
+        background-color: #1f2937;
+        border-radius: 50%;
+        display: inline-block;
+        color: #fff;
+        font-size: 24px;
+        line-height: 44px;
         }
 
         /* Timeline vertical line */
@@ -114,7 +124,7 @@
 
     <!-- Hero Content -->
     <div class="bg-image"   >
-        <div class="bg-primary">
+        <div class="bg-primary" style="background:url({{url('/public/Image/')}}/{{$module->coverimage}});background-repeat: no-repeat;background-position: center; background-size: cover">
             <div class="float-start">Module</div>
             <div class="content content-full text-center py-7 pb-5">
                 <h1 class="h2 text-white mb-2">
@@ -132,11 +142,13 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-alt">
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
+						<a class="link-fx text-dark" href="javascript:;">Courses</a>
 					</li>
-					
+                    <li class="breadcrumb-item">
+                            <a class="link-fx text-dark" href="javascript:;">{{$course[0]->title}}</a>
+                        </li>					
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.detail',['milestone' => $module->milestone_id]) }}">
+						<a class="link-fx text-dark" href="javascript:;">
 						@php
 							$stringLen = strlen($milestone->name);
 						@endphp
@@ -169,10 +181,36 @@
 		</div>
 	</div>
 
-        <div class=" py-5">
+       
+	<!-------
+	
+	*
+	*
+	* after that
+	*
+	*
+	
+	------->
+	<div class="content content-boxed">
+        <div class="row">
+            <div class="block-content" style="margin-bottom:20px;">
+                @php
+                echo $description = $module->description;
+                @endphp
+            
+            
+            </div>
 
-            <div class="row" style="width: 99%">
-                <div class="col-lg-9 col-md-9 col-sm-12 mx-auto">
+            <div class="block-content" style="margin-bottom:20px;">
+                @php
+                echo $content = strip_tags($module->content);
+                @endphp
+            
+            
+            </div>
+            <div class="col-xl-8">
+                <!-- Lessons -->
+				<!--- BreadCrump   Start--->			
 					@php
 						$previouMileId=0;
 						$nextExist =0;
@@ -191,7 +229,7 @@
 									</a>
 							@endif
 							@if ($lastItem == $mokey)
-								<a href="javascript:;" class="btn w-25 btn-alt-success">
+								<a href="" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milstone
 								</a>
 							@endif
@@ -215,18 +253,179 @@
 						@endif
 						
 					@endforeach	
+                <!--- BreadCrump   end--->	
+					@php		
+						$totaltasks =0;
+						$completedsection = 0;
+					@endphp	
+						@foreach($module->sections as $key => $section)
+						
+                        <div class="block block-rounded">
+                            <div class="block-content fs-sm">
+							<div class="mb-2">
+								<div class="card-body row">
+									<div class="col-12 colapHead" >
+                                        <div class="col-11" style="float:left;">
+										    <h3 style="line-height:0px;">
+											@if($section->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{$key+1}}. {{ $section->title }}</a>
+											@else
+											<a href="javascript:;">{{$key+1}}. {{ $section->title }}</a>
+											@endif
+											
+											
+											</h3>
+                                        </div>
+                                        <div class="col-1" style="float:left; margin-top:-12px;">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$section->id}})">
+											<i class="fa-solid fa-arrow-down"></i>
+										</button>
+                                        </div>
+                                    </div>
+									
+									@php
+                                    $all_tasks = $module->tasks();
+									$totaltasks = $all_tasks->count();
+                                    $completion_percent = 0;
+                                    
+                                    $completedtask = 0;
+									
+										
+                                    if($all_tasks->count() > 0) {
+										$tasks = $all_tasks->count();
+										
+										$user_tasks = $all_tasks->filter(function($item) {
+											
+											return $item->user_id == auth()->id() &&  $item->complete ==1;
+										});
+										$sectiontask = count($user_tasks);
+										
+										$user_tasks= $user_tasks->count() > 0?
+										array_map(function ($item){
+											return $item['id'];
+										},$user_tasks->toArray())
+										:
+										[];
+										$completion_percent = floor(count($user_tasks)/$tasks * 100);
+                                    }
+									
+                                    
+                                    @endphp
+									
+									<div class="col-12" style="margin-bottom:20px;">
+                                        <div class="col-7" style="float:left;">
+                                            <div class="progress" style="background:#c4c5c7;">
+                                                    <div class="progress-bar "
+                                                        style="background-color: blue; width: {{$completion_percent}}%"
+                                                        role="progressbar"
+                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4" style="float:left;margin-left:20px;">
+                                            <b>{{$completion_percent}}% Task Complete</b>
+                                        </div>    
+                                    </div>
+									
+									<div class="col-12 collapse hide task-detail{{$section->id}}">
+                                        
+										@foreach($section->tasks as $task_key => $task)
+											<div class="my-3">                                               
+                                                                                  
+												<span class="mx-4">											
+												
+												@if($task->status == 'paid')
+													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!}</a>
+												@else
+												<a href="javascript:;"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!} </a>
+												@endif
+												</span>
+												
+										</div>	
+										@endforeach
+									</div>
+									
+								</div>
+							</div>
+							</div>
+						</div>		
+						@endforeach
+								
+								
+                    
+                <!-- END Lessons -->
+            </div>
+            <div class="col-xl-4">
+                <!-- Subscribe -->
+{{--                <div class="block block-rounded">--}}
+{{--                    <div class="block-content">--}}
+{{--                        <a class="btn btn-primary w-100 mb-2" href="javascript:void(0)">Subscribe from $9/month</a>--}}
+{{--                        <p class="fs-sm text-center">--}}
+{{--                            or <a class="link-effect fw-medium" href="javascript:void(0)">buy this course for $28</a>--}}
+{{--                        </p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+                <!-- END Subscribe -->
 
-                    <h3><b>Sections</b></h3>
-                    <p>{!! $module->content !!}</p>
-                    <!-- Timeline -->
-                    <ul class="timeline">
-
-                    </ul><!-- End -->
-
+                <!-- Course Info -->
+                <div class="block block-rounded">
+                    <div class="block-header block-0-default text-center">
+                        <h3 class="block-title">About This Module</h3>
+                    </div>
+                    <div class="block-content">
+                        <table class="table table-striped table-borderless fs-sm">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-book me-1"></i>
+                                    {{ $module->sections->count() }} sections
+                                </td>
+                            </tr>
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <i class="fa fa-fw fa-clock me-1"></i> 3 hours--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td>--}}
+{{--                                    <i class="fa fa-fw fa-heart me-1"></i> 16850 Favorites--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-calendar me-1"></i> {{ $module->created_at->diffForHumans() }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-fw fa-tags me-1"></i>
+                                    @foreach($module->tags() as $tag)
+                                        <a class="fw-semibold link-fx text-primary" href="javascript:void(0)">{{ $tag->name }}</a>,
+                                    @endforeach
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <!-- END Course Info -->
+
+                <!-- About Instructor -->
+{{--                <a class="block block-rounded block-link-shadow" href="javascript:void(0)">--}}
+{{--                    <div class="block-header block-header-default text-center">--}}
+{{--                        <h3 class="block-title">About The Instructor</h3>--}}
+{{--                    </div>--}}
+{{--                    <div class="block-content block-content-full text-center">--}}
+{{--                        <div class="push">--}}
+{{--                            <img class="img-avatar" src="assets/media/avatars/avatar11.jpg" alt="">--}}
+{{--                        </div>--}}
+{{--                        <div class="fw-semibold mb-1">Jose Parker</div>--}}
+{{--                        <div class="fs-sm text-muted">Front-end Developer</div>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
+                <!-- END About Instructor -->
             </div>
         </div>
-
+		</div>
 
     <!-- END Page Content -->
 </main>
@@ -234,17 +433,25 @@
 @endsection
 
 @section('user-script')
-
     <script>
+        function ObjectLength( object ) {
+            var length = 0;
+            for( var key in object ) {
+                if( object.hasOwnProperty(key) ) {
+                    ++length;
+                }
+            }
+            return length;
+        };
 
         var module_id = '{{ $module->id }}';
         var user = '{{ auth()->id() }}';
         var first_time = true;
         $(document).ready(() => {
-            populateTasks();
+           /* populateTasks();*/
         });
 
-        function populateTasks() {
+        /*function populateTasks() {
 
             $.ajax({
                 headers: {
@@ -255,12 +462,16 @@
                 method: 'post',
                 success: (res) => {
                     $('.timeline').empty();
+                    var j = 1;
                     res.data.forEach(i => {
+                        var completedtask =  ObjectLength(i.user_tasks);
+                        var totaltask =  ObjectLength(i.tasks);
+                        console.log('i',i);
 
                         
                         $(`<li class="timeline-item bg-white rounded ml-3 p-4 shadow" style="">
                          <div class="row" id="row-${i.id}">
-                                    <div class="col-1 number_count">${i.id}</div>
+                                    <div class="col-1 number_count">`+j+`</div>
                                     <div class="col-8">
                                         <a href="/user/sections/${i.id}/show-detail">${i.title}</a>
                                     </div>
@@ -291,6 +502,7 @@
                                               </div>
                                   </div>
                             </div>
+
                             <div class="col-12 collapse hide section-detail${i.id}">
 
                             </div>`).appendTo(`#row-${i.id}`);
@@ -311,14 +523,15 @@
                                   </div>`).appendTo(`.section-detail${i.id}`);
                             })
                         }
+                        j++;
                     });
 
                 }
             });
-        }
+        }*/
 
         function showDetail(id ) {
-            $('.section-detail'+id).collapse('toggle');
+            $('.task-detail'+id).collapse('toggle');
         }
 
         function changeStatus(task, section) {
@@ -344,3 +557,4 @@
         }
     </script>
 @endsection
+

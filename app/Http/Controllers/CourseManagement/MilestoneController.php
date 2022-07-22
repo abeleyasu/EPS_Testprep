@@ -127,6 +127,9 @@ class MilestoneController extends Controller
     public function show(Milestone $milestone)
     {
         //echo $milestone->id;
+		if($milestone->status == 'paid'){
+			return redirect(route('home'));
+		}
 		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
         
         if($milestone){
@@ -294,7 +297,15 @@ class MilestoneController extends Controller
         $contentCategories = ContentCategory::all();
 		
 		$getMilestones = Milestone::orderby('id')->get();
+		
+		if($milestone){
+            
+                $courseid = $milestone->course_id;
+                $course = Courses::where('id','=',$courseid)->get();
+                //print_r($course);
+            }
+		
         return view('admin.courses.milestones.preview',
-            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','getMilestones'));
+            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','getMilestones','course'));
     }
 }

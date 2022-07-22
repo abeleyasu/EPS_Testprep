@@ -1,0 +1,43 @@
+.accordinIcon{
+	text-align: right;
+	position: absolute;
+	right: 485px;
+}
+.modelprehead{
+	display: flex;
+	flex-direction: row;
+	}
+.modelprehead h3{
+	width:82%;
+}	
+.modelprehead button{
+	text-align:right;
+	padding: 0px;
+	text-align: center;
+	height: 40px;
+	width: 18% !important;
+	
+}
+.colapHead{
+	--bs-table-accent-bg: var(--bs-table-active-bg);
+    color: var(--bs-table-active-color);
+	
+}
+.colapHead a{
+	font-size: .875rem;
+    text-transform: uppercase;
+    letter-spacing: .0625em;
+	transition: color .12s ease-out;
+    color: #4c78dd;
+    text-decoration: none;
+	font-weight: 600;
+}
+.btnminwidth{
+	min-width:205px;
+}
+.bg-grayed{
+	background: #ccc !important;
+}
+.front-grayed{
+	color: #999 !important;
+}
