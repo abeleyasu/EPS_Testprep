@@ -8,7 +8,12 @@
 @endsection
 
 @section('user-content')
-
+<style>
+    .block-content img{
+        max-width:100% !important;
+        height:auto !important;
+    }
+</style>
 
 
     <!-- Main Container -->
@@ -91,7 +96,7 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3 style="line-height:0px;"><a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a></h3>
+										    <h3><a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a></h3>
                                         </div>
                                         <div class="col-1" style="float:left;">
                                        <!-- <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">

@@ -9,6 +9,13 @@
 
 @section('user-content')
 
+<style>
+    .block-content img{
+        max-width:100% !important;
+        height:auto !important;
+    }
+</style>
+
     <!-- Main Container -->
     <main id="main-container">
         <!-- Hero Content -->
@@ -148,7 +155,7 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3 style="line-height:0px;"><a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a></h3>
+										    <h3><a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a></h3>
                                         </div>
                                         <div class="col-1" style="float:left; margin-top:-12px;">
                                         <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$module->id}})">

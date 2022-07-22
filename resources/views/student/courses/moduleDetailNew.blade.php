@@ -21,6 +21,12 @@
             position: relative;
             padding-left: 1.5rem;
         }
+
+    .block-content img{
+        max-width:100% !important;
+        height:auto !important;
+    }
+
         .number_count {
         height: 45px;
         width: 45px;
@@ -266,7 +272,7 @@
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
-										    <h3 style="line-height:0px;"><a href="{{ route('sections.detail',['section'=>$section->id]) }}">{{$key+1}}. {{ $section->title }}</a></h3>
+										    <h3><a href="{{ route('sections.detail',['section'=>$section->id]) }}">{{$key+1}}. {{ $section->title }}</a></h3>
                                         </div>
                                         <div class="col-1" style="float:left; margin-top:-12px;">
                                         <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$section->id}})">
