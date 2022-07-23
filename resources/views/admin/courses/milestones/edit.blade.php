@@ -61,7 +61,7 @@
                                 <div class="holder">
 
                                     @if($milestone->coverimage)
-                                <img id="imgPreview" src="/image/{{$milestone->coverimage}}" alt="pic" width="200" />   
+                                <img id="imgPreview" src="/Image/{{$milestone->coverimage}}" alt="pic" width="200" />   
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif
