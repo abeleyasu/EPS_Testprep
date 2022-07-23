@@ -28,7 +28,9 @@ trait CRUD
         }else{
 			$fillable_key_value['coverimage'] = '';
 		}
-        
+        if($request->section_id != ''){
+            $fillable_key_value['status'] = 1;
+        }
 
         return $model->create($fillable_key_value);
 

@@ -53,7 +53,11 @@
                             </div>
                             <div class="mb-2">
                                 <div class="holder">
-                                    <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
+                                @if($task->coverimage)
+                                <img id="imgPreview" src="/public/image/{{$task->coverimage}}" alt="pic" width="200" />   
+                                @else
+                                <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
+                                @endif
                                 </div>
                                     <label for="content" class="form-label">Upload Cover Image</label>
                                     <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
