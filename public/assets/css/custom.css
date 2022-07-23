@@ -1,3 +1,5 @@
+
+text/css custom.css ( ASCII text )
 .accordinIcon{
 	text-align: right;
 	position: absolute;
@@ -41,3 +43,24 @@
 .front-grayed{
 	color: #999 !important;
 }
+.font-grayed{
+	color: #999 !important;
+}
+.verticalnum{
+	display:flex;
+	flex-direction:row;
+}
+.verticalnum .vnum{width: 10%; }
+.verticalnum .vnum span{ 
+	font-size: 20px;
+    border-radius: 100%;
+    padding: 12px 18px;
+    background: #E2E2E2;
+    color: #000;
+    text-decoration: none;
+    position: relative;
+    top: 24%;
+    left: 16px;
+}
+.verticalnum .vnum span:hover{ background:#008000; color:#fff; }
+.verticalnum .vcontent{width:90%;}

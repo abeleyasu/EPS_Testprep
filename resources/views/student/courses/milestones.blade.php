@@ -86,13 +86,15 @@
 						@endphp
                     
                         
-						@foreach($milestones as $milestone)
+						@foreach($milestones as $mkey=>$milestone)
 						@php 
 						 $totalMilestone=$totalMilestone+1;
 						@endphp
                         <div class="block block-rounded">
                             <div class="block-content fs-sm">
-							<div class="mb-2">
+							<div class="mb-2 verticalnum">
+								<div class="vnum"><span>{{ $mkey+1 }}</span></div>
+								<div class="vcontent">
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
@@ -197,7 +199,7 @@
                                     
                                     
                                 @endif
-                                    
+                                </div>    
 								</div>
 							</div>
                             </div>

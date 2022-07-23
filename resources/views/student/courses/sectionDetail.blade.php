@@ -237,7 +237,9 @@
 					@foreach($tasks as $key=>$task)
 						<div class="block block-rounded">
 								<div class="block-content fs-sm">
-								<div class="mb-2">
+								<div class="mb-2 verticalnum">
+							<div class="vnum"><span>{{ $key+1 }}</span></div>
+								<div class="vcontent">
 									<div class="card-body row">
 										<div class="col-12 colapHead" >
 											<div class="col-11" style="float:left;">
@@ -272,6 +274,7 @@
 												
 											</div>
 										</div>
+									</div>
 									</div>
 								</div>
 							</div>
