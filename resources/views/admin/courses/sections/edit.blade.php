@@ -45,7 +45,7 @@
                             <div class="mb-2">
                                 <div class="holder">
                                 @if($section->coverimage)
-                                <img id="imgPreview" src="/public/image/{{$section->coverimage}}" alt="pic" width="200" />   
+                                <img id="imgPreview" src="/image/{{$section->coverimage}}" alt="pic" width="200" />   
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif

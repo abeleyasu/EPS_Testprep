@@ -54,7 +54,7 @@
                             <div class="mb-2">
                                 <div class="holder">
                                 @if($task->coverimage)
-                                <img id="imgPreview" src="/public/image/{{$task->coverimage}}" alt="pic" width="200" />   
+                                <img id="imgPreview" src="/image/{{$task->coverimage}}" alt="pic" width="200" />   
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif
