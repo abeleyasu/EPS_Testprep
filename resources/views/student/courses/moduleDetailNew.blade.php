@@ -293,6 +293,9 @@
 									
 									@php
                                     $all_tasks = $module->tasks();
+                                    $all_tasks = $all_tasks->filter(function($item) {
+										return  $item->status =='paid';
+									});
 									$totaltasks = $all_tasks->count();
                                     $completion_percent = 0;
                                     
@@ -304,7 +307,7 @@
 										
 										$user_tasks = $all_tasks->filter(function($item) {
 											
-											return $item->user_id == auth()->id() &&  $item->complete ==1;
+											return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid';
 										});
 										$sectiontask = count($user_tasks);
 										

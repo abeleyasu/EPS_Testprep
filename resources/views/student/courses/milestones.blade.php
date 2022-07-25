@@ -128,6 +128,9 @@
                                         @php
                                          
                                         $all_tasks = $module->tasks();
+                                        $all_tasks = $all_tasks->filter(function($item) {
+                                            return  $item->status == 'paid';
+                                        });
                                         $totalmoduletask = count($all_tasks);
                                        
                                        
@@ -136,9 +139,10 @@
                                         $moduletask =  count($tasks);
                                         $totaltask += count($tasks);
                                         $user_tasks = $all_tasks->filter(function($item) {
-                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status == 'paid';
                                         });
-                                          $completemoduletask =  count($user_tasks);
+
+                                        $completemoduletask =  count($user_tasks);
                                         if($moduletask == $completemoduletask){
                                              $completedmodule += 1;
                                         }

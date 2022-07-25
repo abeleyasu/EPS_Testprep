@@ -131,6 +131,9 @@
                         @foreach($module->sections as $section_key => $section)
                         @php
                         $all_tasks = $section->taskStatus();
+                        $all_tasks = $all_tasks->filter(function($item) {
+									return $item->status =='paid';
+								});
                             $completion_percent = 0;
                             $all_tasks->count();
                             if($all_tasks->count() > 0) {
@@ -138,7 +141,7 @@
 								$sectiontask =  count($tasks);
 								$totaltasks += 1;
 								$user_tasks = $all_tasks->filter(function($item) {
-									return $item->user_id == auth()->id() &&  $item->complete ==1;
+									return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid';
 								});
 								$sectioncompletedtask =  $user_tasks->count();
 								if($sectiontask == $sectioncompletedtask){
@@ -176,6 +179,9 @@
                                     @php
                                     
                                     $all_tasks = $module->tasks();
+                                    $all_tasks = $all_tasks->filter(function($item) {
+                                        return $item->status =='paid';
+                                    });
                                     
                                     
                                     $completion_percent = 0;
@@ -186,7 +192,7 @@
                                     $moduletask = count($tasks);
                                     
                                     $user_tasks = $all_tasks->filter(function($item) {
-                                        return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid' ;
                                     });
                                     $completedtask = count($user_tasks);
                                     
@@ -196,9 +202,11 @@
                                     },$user_tasks->toArray())
                                     :
                                     [];
-                                    $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
+                                    
+                                    $completion_percent = floor(count($user_tasks)/$all_tasks->count() * 100);
                                     }
 									$sectionpercentage = 0;
+                                    
 									if($totaltasks>0){
 										$sectionpercentage = ($completedsection*100)/$totaltasks;	
 									}

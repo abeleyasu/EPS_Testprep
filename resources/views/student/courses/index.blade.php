@@ -127,7 +127,73 @@
         <div class="content content-boxed">
 
                 <div class="row items-push py-4">
+                    @php
+                    $completion_percent = []; 
+                    $totaltask = 0;
+                    $completedtask = 0;
+                    $completedmodule = 0;
+                    $totalmodules = 0;
+                    @endphp
                     @foreach($courses as $key => $course)
+                        @if($course->milestones)
+                            @foreach($course->milestones as $key => $milestone)
+
+                                @if($milestone->modules)
+                                    
+                                    @php
+                                    $totalmodules =  count($milestone->modules);
+                                    
+                                    @endphp
+                                        @foreach($milestone->modules as $module)
+                                        
+                                        @php
+                                         
+                                        $all_tasks = $module->tasks();
+                                        $totalmoduletask = count($all_tasks);
+                                       
+                                       
+                                        if($all_tasks->count() > 0) {
+                                        $tasks = $all_tasks->unique('id');
+                                        $moduletask =  count($tasks);
+                                        $totaltask += count($tasks);
+                                        $user_tasks = $all_tasks->filter(function($item) {
+                                            return $item->user_id == auth()->id() &&  $item->complete ==1;
+                                        });
+                                          $completemoduletask =  count($user_tasks);
+                                        if($moduletask == $completemoduletask){
+                                             $completedmodule += 1;
+                                        }
+                                        $completedtask += count($user_tasks);
+                                        $user_tasks= $user_tasks->count() > 0?
+                                        array_map(function ($item){
+                                            return $item['id'];
+                                        },$user_tasks->toArray())
+                                        :
+                                        [];
+                                        
+                                        }
+                                        @endphp
+
+                                        
+                                    @endforeach
+                                @endif
+                            @endforeach
+                            @endif
+                                    
+                                    @php
+                                    $completion_percent = 0; 
+									$modulepercentage = 0;
+                                    if($totalmodules >0){
+                                        $modulepercentage = ($completedmodule*100)/$totalmodules;
+                                        if($totaltask){
+                                            $completion_percent = floor(($completedtask * 100)/$totaltask);
+                                        }else{
+                                            $completion_percent = 0; 
+                                        }
+                                    }
+                                    
+                                    
+                                    @endphp
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
                             @if($course->status == 'paid')
@@ -181,6 +247,7 @@
                                 </div>
                             </a>
 							@endif
+                        
                             
                         </div>
                         <!-- END Course -->
