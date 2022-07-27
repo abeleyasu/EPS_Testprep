@@ -165,8 +165,8 @@ class SectionController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('sections.index')->with('success', 'Section updated successfully');
+		return redirect('admin/course-management/sections/'.$model->id.'/edit')->with('success', 'Section updated successfully');
+        /*return redirect()->route('sections.index')->with('success', 'Section updated successfully');*/
     }
 
     /**

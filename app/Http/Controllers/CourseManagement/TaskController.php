@@ -49,10 +49,10 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        //
-        $task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
-
-
+        
+        //$task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
+		$task = Task::create($request->all());
+	
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -161,7 +161,8 @@ class TaskController extends Controller
                 ]);
             }
         }
-        return redirect()->route('tasks.index')->with('success', 'Task updated successfully');
+        /*return redirect()->route('tasks.index')->with('success', 'Task updated successfully');*/
+		return redirect('admin/course-management/tasks/'.$model->id.'/edit')->with('success', 'Section updated successfully');
     }
 
     /**

@@ -216,8 +216,8 @@ class MilestoneController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('milestones.index')->with('success', 'Milestone updated successfully');
+		return redirect('admin/course-management/milestones/'.$id.'/edit')->with('success', 'Milestone updated successfully');
+        /*return redirect()->route('milestones.index')->with('success', 'Milestone updated successfully');*/
     }
 
     /**

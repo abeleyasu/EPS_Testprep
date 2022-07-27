@@ -99,8 +99,8 @@ class CourseController extends Controller
             'title' => $request->name,
             'description' => $request->description
         ]);
-
-        return redirect()->route('courseslist.index')->with('success', 'Milestone updated successfully');
+		return redirect('admin/course-management/courseslist/'.$id'/edit')->with('success', 'Course updated successfully');
+        /*return redirect()->route('courseslist.index')->with('success', 'Milestone updated successfully');*/
 	}
 	/**
      * Remove the specified resource from storage.

@@ -153,8 +153,8 @@ class ModuleController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('modules.index')->with('success', 'Module updated successfully');
+		return redirect()->route('modules.edit',['module'=>$module->id])->with('success', 'Module updated successfully');
+        /*return redirect()->route('modules.index')->with('success', 'Module updated successfully');*/
     }
 
     /**

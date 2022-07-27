@@ -142,7 +142,8 @@ class CoursesController extends Controller
             }
         }    
         //return redirect()->route('courses.index')->with('success', 'Milestone updated successfully');
-        return Redirect::back()->withErrors(['msg' => 'The Message']);
+        /*return Redirect::back()->withErrors(['msg' => 'The Message']);*/
+		return redirect('admin/course-management/courses/'.$id.'/edit')->with('success', 'Course updated successfully');
     }
 
     public function create()

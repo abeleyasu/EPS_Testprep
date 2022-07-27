@@ -283,7 +283,16 @@
                                         @endif
                                     </div>
                                 </div>
+								
+								<div class="mb-2">
+									<label class="form-label" for="status">Status</label>
 
+									<select name="status" class="form-control">
+										<option value="paid">Paid</option>
+										<option value="unpaid">Unpaid</option>
+									</select>
+								</div>
+							
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" value="1" id="task_published" name="published">
                                     <label class="form-check-label" for="task_published"></label>
