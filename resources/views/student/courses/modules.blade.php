@@ -77,7 +77,7 @@
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($milestone->content);
+                echo $content = $milestone->content;
                 @endphp
             
             
@@ -152,10 +152,47 @@
                                                 
                         @endphp
                         @endforeach
+						@php
+                                    
+							$all_tasks = $section->taskStatus();
+							$all_tasks = $all_tasks->filter(function($item) {
+								return $item->status =='paid';
+							});
+							
+							
+							$completion_percent = 0;
+							$completedtask = 0;
+							$moduletask = 0;
+							if($all_tasks->count() > 0) {
+							$tasks = $all_tasks->unique('id');
+							$moduletask = count($tasks);
+							
+							$user_tasks = $all_tasks->filter(function($item) {
+								return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid' ;
+							});
+							$completedtask = count($user_tasks);
+							
+							$user_tasks= $user_tasks->count() > 0?
+							array_map(function ($item){
+								return $item['id'];
+							},$user_tasks->toArray())
+							:
+							[];
+							
+							$completion_percent = floor(count($user_tasks)/$all_tasks->count() * 100);
+							}
+							$sectionpercentage = 0;
+							
+							if($totaltasks>0){
+								$sectionpercentage = ($completedsection*100)/$totaltasks;	
+							}
+							
+							@endphp
                         <div class="block block-rounded">
                             <div class="block-content fs-sm">
 							<div class="mb-2 verticalnum">
-							<div class="vnum"><span>{{ $key+1 }}</span></div>
+							@php $sectionprogress ='vnumbgcolorgray'; if($sectionpercentage == 100){$sectionprogress ='vnumbgcolorgreen';} @endphp
+							<div class="modvnum"><span class="{{ $sectionprogress }}">{{ $key+1 }}</span></div>
 								<div class="vcontent">
 								<div class="card-body row">
 									<div class="col-12 colapHead" >
@@ -165,7 +202,7 @@
 											@if($module->status == 'paid')
 												<a href="javascript:;" class="font-grayed">{{ $module->title }}</a>
 											@else
-											<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{$key+1}}. {{ $module->title }}</a>
+											<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{ $module->title }}</a>
 											@endif
 											</h3>
                                         </div>
@@ -176,42 +213,7 @@
                                         </div>
                                     </div>
                                            
-                                    @php
                                     
-                                    $all_tasks = $module->tasks();
-                                    $all_tasks = $all_tasks->filter(function($item) {
-                                        return $item->status =='paid';
-                                    });
-                                    
-                                    
-                                    $completion_percent = 0;
-                                    $completedtask = 0;
-                                    $moduletask = 0;
-                                    if($all_tasks->count() > 0) {
-                                    $tasks = $all_tasks->unique('id');
-                                    $moduletask = count($tasks);
-                                    
-                                    $user_tasks = $all_tasks->filter(function($item) {
-                                        return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid' ;
-                                    });
-                                    $completedtask = count($user_tasks);
-                                    
-                                    $user_tasks= $user_tasks->count() > 0?
-                                    array_map(function ($item){
-                                        return $item['id'];
-                                    },$user_tasks->toArray())
-                                    :
-                                    [];
-                                    
-                                    $completion_percent = floor(count($user_tasks)/$all_tasks->count() * 100);
-                                    }
-									$sectionpercentage = 0;
-                                    
-									if($totaltasks>0){
-										$sectionpercentage = ($completedsection*100)/$totaltasks;	
-									}
-                                    
-                                    @endphp
                                     <div class="col-12" style="margin-bottom:20px;">
                                         <div class="col-7" style="float:left;">
                                             <div class="progress" style="background:#c4c5c7;">

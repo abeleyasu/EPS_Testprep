@@ -265,34 +265,11 @@
 						$completedsection = 0;
 					@endphp	
 						@foreach($module->sections as $key => $section)
-						
+							
                         <div class="block block-rounded">
-                            <div class="block-content fs-sm">
-							<div class="mb-2 verticalnum">
-							<div class="vnum"><span>{{ $key+1 }}</span></div>
-								<div class="vcontent">
-								<div class="card-body row">
-									<div class="col-12 colapHead" >
-                                        <div class="col-11" style="float:left;">
-										    <h3>
-											@if($section->status == 'paid')
-												<a href="javascript:;" class="font-grayed">{{ $section->title }}</a>
-											@else
-											<a href="{{ route('sections.detail',['section'=>$section->id]) }}">{{$key+1}}. {{ $section->title }}</a>
-											@endif
-											
-											
-											</h3>
-                                        </div>
-                                        <div class="col-1" style="float:left; margin-top:-12px;">
-                                        <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$section->id}})">
-											<i class="fa-solid fa-arrow-down"></i>
-										</button>
-                                        </div>
-                                    </div>
-									
+						
 									@php
-                                    $all_tasks = $module->tasks();
+                                    $all_tasks = $section->taskStatus();
                                     $all_tasks = $all_tasks->filter(function($item) {
 										return  $item->status =='paid';
 									});
@@ -309,6 +286,7 @@
 											
 											return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid';
 										});
+
 										$sectiontask = count($user_tasks);
 										
 										$user_tasks= $user_tasks->count() > 0?
@@ -322,6 +300,32 @@
 									
                                     
                                     @endphp
+									
+                            <div class="block-content fs-sm">
+							<div class="mb-2 verticalnum">
+							
+							@php $taskprogress ='vnumbgcolorgray'; if($completion_percent == 100){$taskprogress ='vnumbgcolorgreen';} @endphp
+							<div class="secvnum"><span class="{{ $taskprogress }}">{{ $key+1 }}</span></div>
+								<div class="vcontent">
+								<div class="card-body row">
+									<div class="col-12 colapHead" >
+                                        <div class="col-11" style="float:left;">
+										    <h3>
+											@if($section->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{ $section->title }}</a>
+											@else
+											<a href="{{ route('sections.detail',['section'=>$section->id]) }}"> {{ $section->title }}</a>
+											@endif
+											
+											
+											</h3>
+                                        </div>
+                                        <div class="col-1" style="float:left; margin-top:-12px;">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$section->id}})">
+											<i class="fa-solid fa-arrow-down"></i>
+										</button>
+                                        </div>
+                                    </div>
 									
 									<div class="col-12" style="margin-bottom:20px;">
                                         <div class="col-7" style="float:left;">

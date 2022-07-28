@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.preview')
 
 @section('title', 'Student - Public High School Dashboard : Courses')
 
@@ -105,14 +105,14 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb breadcrumb-alt">
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('courses.index') }}">Courses</a>
+						<a class="link-fx text-dark" href="javascript:;">Courses</a>
 					</li>
                     <li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="/user/courses/{{$course[0]->id}}/milestone">{{$course[0]->title}}</a>
+						<a class="link-fx text-dark" href="javascript:;">{{$course[0]->title}}</a>
 					</li>
 					
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('milestone.detail',['milestone' => $milestone->id]) }}">
+						<a class="link-fx text-dark" href="javascript:;">
 							@php
 								$stringLen = strlen($milestone->name);
 							@endphp
@@ -125,7 +125,7 @@
 						</a>
 					</li>
 					<li class="breadcrumb-item">
-						<a class="link-fx text-dark" href="{{ route('modules.detail',['module'=>$section->module_id]) }}">	
+						<a class="link-fx text-dark" href="javascript:;">	
 						@php
 							$stringLen1 = strlen($module->title);
 						@endphp
@@ -180,17 +180,17 @@
 					@foreach($getSections as $skey => $getSection)
 						@if ($section->id == $getSection->id)
 							@if ($skey>0)
-								<a href="{{ route('sections.show-detail',['section'=>$previouSecId]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 									<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Previous Section
 								</a>	
 							@endif
 							@if ($skey ==0 && count($getSections)>1)
-								<a href="{{ route('sections.show-detail',['section'=>$getSections[1]->id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
 								</a>
 							@endif
 							@if ($lastItem == $skey)
-								<a href="{{ route('modules.detail',['module'=>$getSection->module_id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Module
 								</a>
 							@endif
@@ -200,7 +200,7 @@
 						@endphp	
 							@if ($nextExist>0)
 								@php $nextExist =0; @endphp
-								<a href="{{ route('sections.show-detail',['section'=>$getSection->id]) }}" class="btn w-25 btn-alt-success">
+								<a href="javascript:;" class="btn w-25 btn-alt-success">
 										<i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Section
 								</a>
 							@endif
@@ -234,24 +234,17 @@
 						}
 					@endphp
 					@if($all_tasks->count() > 0 && isset($tasks))
-						@php $tasknum =0; @endphp
-					@foreach($tasks as $tkey=>$task)
-					@php $tasknum++; @endphp
+					@foreach($tasks as $key=>$task)
 						<div class="block block-rounded">
 								<div class="block-content fs-sm">
-								<div class="mb-2 verticalnum">
-								@php $taskprogress ='vnumbgcolorgray'; if(in_array($task->id,$user_tasks)){$taskprogress ='vnumbgcolorgreen';} @endphp
-							<div class="taskvnum"><span class="{{ $taskprogress }}">{{ $tasknum }}</span></div>
-								<div class="vcontent">
+								<div class="mb-2">
 									<div class="card-body row">
 										<div class="col-12 colapHead" >
 											<div class="col-11" style="float:left;">
 											@if($task->status == 'paid')
 												<div class="dispalytask_list">
 												<div class="round" >
-													<input type="checkbox" id="checkbox{{$task->id}}"
-														   @if(in_array($task->id,$user_tasks))checked
-														   @endif>
+													<input type="checkbox">
 													<label for="checkbox{{$task->id}}"></label>
 												</div>
 												<a href="javascript:;" class="font-grayed" >
@@ -260,18 +253,11 @@
 												</div>
 											@else
 											<div class="dispalytask_list">
-												<div class="round" onclick="changeStatus({{ $task->id }})" >
-													<input type="checkbox" id="checkbox{{$task->id}}"
-														   @if(in_array($task->id,$user_tasks))checked
-														   @endif/>
+												<div class="round" >
+													<input type="checkbox">
 													<label for="checkbox{{$task->id}}"></label>
-													<form action="{{ route('tasks.change_status',['task'=>$task->id])}}" style="display: none"
-														  id="task-status-form-{{$task->id}}" method="post">
-														@csrf
-														<input type="hidden" value="{{$section->module->milestone->id}}" name="course_id" />
-													</form>
 												</div>
-												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}">
+												<a href="javascript:;">
 												{{ $task->title }}
 												</a>
 												</div>
@@ -279,7 +265,6 @@
 												
 											</div>
 										</div>
-									</div>
 									</div>
 								</div>
 							</div>

@@ -61,7 +61,7 @@
         <!-- END Navigation -->
     <!-- Page Content -->
     <div class="content content-boxed">
-        <div class="row">
+        <div class="row coursedesc">
             <div class="block-content" style="margin-bottom:20px;">
                 @php
                 echo $description = $course->description;
@@ -69,7 +69,8 @@
             
             
             </div>
-
+		</div>
+		<div class="row">
             <div class="block-content" style="margin-bottom:20px;">
                 @php
                 echo $content = strip_tags($course->content);
@@ -77,7 +78,8 @@
             
             
             </div>
-
+		</div>
+		<div class="row">
             <div class="col-xl-8">
                 <!-- Lessons -->
 								
@@ -91,30 +93,7 @@
 						 $totalMilestone=$totalMilestone+1;
 						@endphp
                         <div class="block block-rounded">
-                            <div class="block-content fs-sm">
-							<div class="mb-2 verticalnum">
-								<div class="vnum"><span>{{ $mkey+1 }}</span></div>
-								<div class="vcontent">
-								<div class="card-body row">
-									<div class="col-12 colapHead" >
-                                        <div class="col-11" style="float:left;">
-										    <h3>
-											@if($milestone->status == 'paid')
-												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
-											@else
-											<a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a>
-											@endif
-											
-											</h3>
-                                        </div>
-                                        <div class="col-1" style="float:left;">
-                                       <!-- <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">
-											 <i class="fa-solid fa-arrow-down"></i> 
-										</button> -->
-                                        </div>
-                                    </div>
-                                           
-                                    @if($milestone->modules)
+						@if($milestone->modules)
                                     
                                     @php
                                     $totalmodules =  count($milestone->modules);
@@ -174,6 +153,31 @@
                                     
                                     
                                     @endphp
+                            <div class="block-content fs-sm">
+							<div class="mb-2 verticalnum">
+							@php $moduleprogress ='vnumbgcolorgray'; if($modulepercentage == 100){$moduleprogress ='vnumbgcolorgreen';} @endphp
+								<div class="milvnum"><span class="{{ $moduleprogress }}">{{ $mkey+1 }}</span></div>
+								<div class="vcontent">
+								<div class="card-body row">
+									<div class="col-12 colapHead" >
+                                        <div class="col-11" style="float:left;">
+										    <h3>
+											@if($milestone->status == 'paid')
+												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
+											@else
+											<a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a>
+											@endif
+											
+											</h3>
+                                        </div>
+                                        <div class="col-1" style="float:left;">
+                                       <!-- <button type="button" class="btn btn-primary btn-sm" onclick="showDetail({{$milestone->id}})">
+											 <i class="fa-solid fa-arrow-down"></i> 
+										</button> -->
+                                        </div>
+                                    </div>
+                                           
+                                    
                                    <div class="col-8">
                                         <div class="progress">
                                             <div class="progress-bar "

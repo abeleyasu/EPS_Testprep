@@ -50,17 +50,47 @@ text/css custom.css ( ASCII text )
 	display:flex;
 	flex-direction:row;
 }
-.verticalnum .vnum{width: 10%; }
-.verticalnum .vnum span{ 
+.verticalnum .milvnum{width: 10%; }
+.verticalnum .milvnum span{ 
 	font-size: 20px;
     border-radius: 100%;
     padding: 12px 18px;
-    background: #E2E2E2;
-    color: #000;
     text-decoration: none;
     position: relative;
-    top: 24%;
+    top: 37%;
     left: 16px;
 }
-.verticalnum .vnum span:hover{ background:#008000; color:#fff; }
+.verticalnum .modvnum{width: 10%; }
+.verticalnum .modvnum span{ 
+	font-size: 20px;
+    border-radius: 100%;
+    padding: 12px 18px;
+    text-decoration: none;
+    position: relative;
+    top: 34%;
+    left: 16px;
+}
+.verticalnum .secvnum{width: 10%; }
+.verticalnum .secvnum span{ 
+	font-size: 20px;
+    border-radius: 100%;
+    padding: 12px 18px;
+    text-decoration: none;
+    position: relative;
+    top: 37%;
+    left: 16px;
+}
+.verticalnum .taskvnum{width: 10%; }
+.verticalnum .taskvnum span{ 
+	font-size: 20px;
+    border-radius: 100%;
+    padding: 12px 18px;
+    text-decoration: none;
+    position: relative;
+    top: 22%;
+    left: 16px;
+}
 .verticalnum .vcontent{width:90%;}
+.coursedesc{display:block !important;}
+.vnumbgcolorgray{background: #E2E2E2; color: #000;}
+.vnumbgcolorgreen{background: #008000; color:#fff; }
