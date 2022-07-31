@@ -493,7 +493,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: `/api/milestone/${data.item}/reorder`,
+                        url: `/api/courses/${data.item}/reorder`,
                         method: 'post',
                         data:data,
                         success: (res) => {

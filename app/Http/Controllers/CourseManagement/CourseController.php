@@ -113,7 +113,7 @@ class CourseController extends Controller
 		
         $course = ContentCategory::findorfail($id);
         $course->delete();
-        return redirect()->route('courseslist.index')->with('success', 'Course delete successfully');
+        return redirect()->route('admin/course-management/courses')->with('success', 'Course delete successfully');
 	}
 	public function preview($id){
 		$milestones = Milestone::orderBy('order')->where('course_id','=',$id)->where('published',1)->get();
@@ -127,5 +127,39 @@ class CourseController extends Controller
         $sections = Section::all();
 		
 		return view('admin.courses.preview', compact('tags','milestones','course','totalmilestones'));
-	}	
+	}
+	public function reorder($id, Request $request) {
+        $new_order = $request->new_index;
+        $old_order = $request->old_index;
+        $course = Courses::findorfail($id);
+        $course->order = $new_order;
+        $course->save();
+        /*$milestone->update(['order'=> $new_order]);*/
+        $this->reorderOnUpdate($old_order, $new_order, $id);
+        return response()->json(
+            ['message' => 'reordered successfully'],200
+        );
+    }
+	private function reorderOnUpdate($old_order, $new_order, $dont_reorder) {
+        if($new_order > $old_order) {
+            //selected item move down
+            $reorder_sections = Courses::where([
+                ['order','>=', $old_order],
+                ['order','<=', $new_order],
+                ['id','!=', $dont_reorder]
+            ])->orderBy('order')->get();
+            foreach ($reorder_sections as $section) {
+                $section->update(['order'=> $section->order-1]);
+            }
+        }elseif($old_order > $new_order) {
+            $reorder_sections = Courses::where([
+                ['order','<=', $old_order],
+                ['order','>=', $new_order],
+                ['id','!=', $dont_reorder]
+            ])->orderBy('order')->get();
+            foreach ($reorder_sections as $section) {
+                $section->update(['order'=> $section->order+1]);
+            }
+        }
+    }
 }

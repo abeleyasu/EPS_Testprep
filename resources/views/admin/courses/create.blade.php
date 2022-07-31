@@ -336,20 +336,41 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
-         $(document).ready(()=>{
-      $('#course_cover_image').change(function(){
-        const file = this.files[0];
-        console.log(file);
-        if (file){
-          let reader = new FileReader();
-          reader.onload = function(event){
-            console.log(event.target.result);
-            $('#imgPreview').attr('src', event.target.result);
-            $('#imgPreview').show();
-          }
-          reader.readAsDataURL(file);
-        }
-      });
+    $(document).ready(()=>{
+		$('#course_cover_image').change(function(){
+			const file = this.files[0];
+			if (file){
+			  let reader = new FileReader();
+			  reader.onload = function(event){
+				console.log(event.target.result);
+				$('#imgPreview').attr('src', event.target.result);
+				$('#imgPreview').show();
+			  }
+			  reader.readAsDataURL(file);
+			}
+		});
+		$.ajax({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			},
+			url: `/api/courses/all`,
+			method: 'post',
+			success: (res) => {
+				var arrCount = res.data.length;
+				$("#order").val(Number(arrCount)+1);
+				res.data.forEach(i => {
+
+					$('<div class="list-group-item">\n' +
+						'<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+						'<i class="fa-solid fa-grip-vertical"></i>\n' +
+						'</span>\n' +
+						'<button class="btn btn-primary" value="'+i.id+'">'+i.title+'</button>\n' +
+						'</div>').appendTo('#listWithHandle');
+				});
+
+				
+			}
+        });
     });
         var order = 0;
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
@@ -378,29 +399,8 @@
 
         function openOrderDialog() {
 
-            $('#listWithHandle').empty();
-
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: `/api/courses/all`,
-                method: 'post',
-                success: (res) => {
-                    res.data.forEach(i => {
-
-                        $('<div class="list-group-item">\n' +
-                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                            '</span>\n' +
-                            '<button class="btn btn-primary" value="'+i.id+'">'+i.title+'</button>\n' +
-                            '</div>').appendTo('#listWithHandle');
-                    });
-
-                    myModal.show();
-                }
-            });
+            /*$('#listWithHandle').empty();*/
+			myModal.show();            
         }
         function saveOrder() {
             $('#order').val(order);
@@ -464,6 +464,7 @@
             handle: '.glyphicon-move',
             animation: 150,
                 onEnd: function(evt) {
+					console.log(evt);
                 let data = {
                     new_index: evt.newIndex+1,
                     old_index: evt.oldIndex+1,
@@ -474,7 +475,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: `/api/milestone/${data.item}/reorder`,
+                        url: `/api/courses/${data.item}/reorder`,
                         method: 'post',
                         data:data,
                         success: (res) => {

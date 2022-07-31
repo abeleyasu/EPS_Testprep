@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' =>'api'],function() {
     Route::post('tags',[TagController::class,'storeJson']);
     Route::post('courses/all',[CourseController::class,'all']);
+	Route::post('courses/{id}/reorder',[CourseController::class,'reorder']);
     Route::post('modules/{id}/sections',[SectionController::class,'sectionsByModule']);
 //    Route::post('modules/{id}/reorder',[SectionController::class,'sectionsByModule']);
     Route::post('modules/{id}/reorder',[ModuleController::class,'reorder']);

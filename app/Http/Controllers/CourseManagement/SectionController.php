@@ -35,8 +35,9 @@ class SectionController extends Controller
     public function create()
     {
         $modules = Module::orderBy('order')->get();
+		$sections = Section::count();
         $tags = Tag::all();
-        return view('admin.courses.sections.create', compact('modules', 'tags'));
+        return view('admin.courses.sections.create', compact('modules', 'tags','sections'));
     }
 
     /**
@@ -56,7 +57,39 @@ class SectionController extends Controller
 
         $section = $this->createFromRequest(app('App\Models\CourseManagement\Section'),$request);
 
-
+		/**********Order reset**********/
+		$sections = Section::orderBy('order')->get();
+		$currentId = $section->id;
+		$currentOrder = $section->order;
+		$orderInd=1;
+		
+		foreach($sections as $sectio){
+			if($orderInd<$currentOrder){
+				
+				if($currentId == $sectio->id){
+					$sectio->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					
+					$sectio->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $sectio->id){
+					$sectio->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$sectio->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
+		
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -151,7 +184,38 @@ class SectionController extends Controller
         $request->request->add(['published' => $request->published ? true : false]);
 //        $this->reorderOnUpdate($section, $request);
         $model = $this->updateFromRequest($section, $request);
-
+		/**********Order reset**********/
+		$sections = Section::orderBy('order')->get();
+		$currentId = $section->id;
+		$currentOrder = $section->order;
+		$orderInd=1;
+		
+		foreach($sections as $sectio){
+			if($orderInd<$currentOrder){
+				
+				if($currentId == $sectio->id){
+					$sectio->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					
+					$sectio->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $sectio->id){
+					$sectio->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$sectio->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $model->id],

@@ -106,6 +106,38 @@ class MilestoneController extends Controller
             'coverimage'=>$filename,
             'published' => $request->get('published') ? true : false
         ]);
+		/**********Order reset**********/
+		$milestones = Milestone::orderBy('order')->get();
+		$currentId = $milestone->id;
+		$currentOrder = $milestone->order;
+		$orderInd=1;
+		
+		foreach($milestones as $mileston){
+			if($orderInd<$currentOrder){
+				
+				if($currentId == $mileston->id){
+					$mileston->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					
+					$mileston->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $mileston->id){
+					$mileston->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$mileston->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -202,7 +234,38 @@ class MilestoneController extends Controller
             'coverimage' => $filename,
             'published' => $request->get('published') ? true : false
         ]);
-
+		/**********Order reset**********/
+		$milestones = Milestone::orderBy('order')->get();
+		$currentId = $milestone->id;
+		$currentOrder = $request->get('order');
+		$orderInd=1;
+		
+		foreach($milestones as $mileston){
+			if($orderInd<$currentOrder){
+				
+				if($currentId == $mileston->id){
+					$mileston->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					
+					$mileston->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $mileston->id){
+					$mileston->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$mileston->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $milestone->id],
@@ -265,7 +328,7 @@ class MilestoneController extends Controller
         }
     }
 
-    public function reOrder($id, Request $request) {
+    public function reorder($id, Request $request) {
         $new_order = $request->new_index;
         $old_order = $request->old_index;
         $milestone = Milestone::findorfail($id);

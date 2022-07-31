@@ -393,19 +393,39 @@
 
     <script>
         $(document).ready(()=>{
-      $('#course_cover_image').change(function(){
-        const file = this.files[0];
-        console.log(file);
-        if (file){
-          let reader = new FileReader();
-          reader.onload = function(event){
-            console.log(event.target.result);
-            $('#imgPreview').attr('src', event.target.result);
-            $('#imgPreview').show();
-          }
-          reader.readAsDataURL(file);
-        }
-      });
+		    $('#course_cover_image').change(function(){
+				const file = this.files[0];
+				console.log(file);
+				if (file){
+				  let reader = new FileReader();
+				  reader.onload = function(event){
+					console.log(event.target.result);
+					$('#imgPreview').attr('src', event.target.result);
+					$('#imgPreview').show();
+				  }
+				  reader.readAsDataURL(file);
+				}
+		    });
+			$.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: `/api/milestones/all`,
+                method: 'post',
+                success: (res) => {
+					var arrCount = res.data.length;
+					$("#order").val(Number(arrCount)+1);
+                    res.data.forEach(i => {
+
+                        $('<div class="list-group-item">\n' +
+                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                            '</span>\n' +
+                            '<button class="btn btn-primary" value="'+i.id+'">'+i.name+'</button>\n' +
+                            '</div>').appendTo('#listWithHandle');
+                    });                    
+                }
+            });
     });
         var order = 0;
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
@@ -433,30 +453,7 @@
         // }
 
         function openOrderDialog() {
-
-            $('#listWithHandle').empty();
-
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: `/api/milestones/all`,
-                method: 'post',
-                success: (res) => {
-                    res.data.forEach(i => {
-
-                        $('<div class="list-group-item">\n' +
-                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                            '</span>\n' +
-                            '<button class="btn btn-primary" value="'+i.id+'">'+i.name+'</button>\n' +
-                            '</div>').appendTo('#listWithHandle');
-                    });
-
-                    myModal.show();
-                }
-            });
+			myModal.show();            
         }
         function saveOrder() {
             $('#order').val(order);

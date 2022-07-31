@@ -108,7 +108,7 @@
                                 <label class="form-label" for="order">Order</label>
 
                                 <div class="input-group mb-3">
-                                    <input type="number" readonly class="form-control" name="order" value="0"
+                                    <input type="number" readonly class="form-control" name="order" value="{{ $totalModule+1 }}"
                                         id="order"/>
                                     <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
                                         <i class="fa-solid fa-check"></i>
@@ -327,7 +327,7 @@
                     method: 'post',
                     data:data,
                     success: (res) => {
-
+						order = data.new_index;
                     },
                     error: () => {
                         alert('Something went wrong')

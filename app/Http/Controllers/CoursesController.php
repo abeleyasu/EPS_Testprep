@@ -59,6 +59,7 @@ class CoursesController extends Controller
             $file->move(('public/Image'), $filename);
            
         }
+		
         $course = Courses::create([
             'title' => $request->name,
             'description' => $request->description,
@@ -70,6 +71,35 @@ class CoursesController extends Controller
             'status' => $request->get('status'),
             'coverimage' =>$filename
         ]);
+		/**********Order reset**********/
+		$courses = Courses::orderBy('order')->get();
+		$currentId = $course->id;
+		$currentOrder = $course->order;
+		$orderInd=1;
+		foreach($courses as $cours){
+			if($orderInd<$currentOrder){
+				if($currentId == $cours->id){
+					$cours->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$cours->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $cours->id){
+					$cours->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$cours->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
 		if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -127,7 +157,38 @@ class CoursesController extends Controller
             'duration' => $duration,
             'order' => $request->get('order'),
             'status' => $request->get('status'),
-        ]);                 
+        ]); 
+		/**********Order reset**********/
+		$courses = Courses::orderBy('order')->get();
+		$currentId = $course->id;
+		$currentOrder = $request->get('order');
+		$orderInd=1;
+		foreach($courses as $cours){
+			if($orderInd<$currentOrder){
+				if($currentId == $cours->id){
+					$cours->update([
+						'order' => $request->get('order')
+					]);
+				}else{
+					$cours->update([
+						'order' => $orderInd
+					]);
+				}
+				 
+			}else{
+				if($currentId == $cours->id){
+					$cours->update([
+						'order' => $request->get('order')
+					]);
+				}else{
+					$cours->update([
+						'order' => $orderInd+1
+					]);
+				}					
+			}
+			$orderInd++;
+		}
+			
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $course->id],
@@ -185,4 +246,17 @@ class CoursesController extends Controller
         
         return view('student.courses.milestones', compact('tags','milestones','course','totalmilestones'));
     }
+	/**
+     * Remove the specified resource from storage.
+     *
+     * @param Course $course
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+		
+        $course = Courses::findorfail($id);
+        $course->delete();
+        return back()->with('success', 'Category deleted successfully!');
+	}
 }

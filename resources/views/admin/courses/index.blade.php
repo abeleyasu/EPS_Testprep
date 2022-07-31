@@ -105,19 +105,24 @@
                                         <a href="/admin/course-management/courses/{{$course->id}}/edit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                             <i class="fa fa-fw fa-pencil-alt"></i>
                                         </a>
-                                        <button type="button"
+										<form action="{{ route('courses.destroy',$course->id)}}" method="POST">
+											@method('DELETE')
+											{{ csrf_field() }}
+											<button type="submit" class="btn btn-sm btn-alt-secondary delete-course"><i class="fa fa-fw fa-times"></i></button>
+										</form>
+                                        <!--<button type="button"
                                                 class="btn btn-sm btn-alt-secondary delete-course"
                                                 data-id="{{$course->id}}"
                                                 data-bs-toggle="tooltip"
                                                 title="Delete Course"
                                                 onclick="deleteItem({{ $course->id }})"
                                         >
-                                            <i class="fa fa-fw fa-times"></i>
+                                            
                                         </button>
-                                        <form id="delete-form-{{$course->id}}" action="{{ route('milestones.destroy',$course->id) }}" method="POST" style="display: none;">
+                                        <form id="delete-form-{{$course->id}}" action="{{ route('courses.destroy',$course->id) }}" method="POST" style="display: none;">
                                             @method('DELETE')
                                             {{ csrf_field() }}
-                                        </form>
+                                        </form>-->
                                     </div>									
 
                                 </div>

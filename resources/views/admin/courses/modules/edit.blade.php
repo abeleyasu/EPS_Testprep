@@ -345,7 +345,7 @@
                     method: 'post',
                     data:data,
                     success: (res) => {
-
+						order = data.new_index;	
                     },
                     error: () => {
                         alert('Something went wrong')

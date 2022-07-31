@@ -20,7 +20,6 @@ class ModuleController extends Controller
     public function index()
     {
         $modules = Module::orderBy('order')->get();
-
         return view('admin.courses.modules.index', compact('modules'));
     }
 
@@ -33,10 +32,10 @@ class ModuleController extends Controller
      */
     public function create()
     {
-
         $milestones = Milestone::orderBy('order')->get();
         $tags = Tag::all();
-        return view('admin.courses.modules.create', compact('tags', 'milestones'));
+		$totalModule = Module::count();
+        return view('admin.courses.modules.create', compact('tags', 'milestones', 'totalModule'));
     }
 
     /**
@@ -50,15 +49,46 @@ class ModuleController extends Controller
         
         $request->request->add(['added_by' => auth()->id()]);
 
-        $order = $request->order;
+        /*$order = $request->order;
         if(!$order || $order == 0) {
             $request->request->add(['order' => Module::where('milestone_id',$request->milestone_id)->count() + 1]);
         } else {
             $this->reorderOnCreate($request);
-        }
+        }*/
        
         $module = $this->createFromRequest(app('App\Models\CourseManagement\Module'),$request);
-        
+        /**********Order reset**********/
+		$modules = Module::orderBy('order')->get();
+		$currentId = $module->id;
+		$currentOrder = $request->order;
+		$orderInd=1;
+		
+		foreach($modules as $modul){
+			if($orderInd<$currentOrder){
+				
+				if($currentId == $modul->id){
+					$modul->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					
+					$modul->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $modul->id){
+					$modul->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$modul->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -139,7 +169,38 @@ class ModuleController extends Controller
         $request->request->add(['published' => $request->published ? true : false]);
 
         $this->updateFromRequest($module, $request);
-
+		/**********Order reset**********/
+		$modules = Module::orderBy('order')->get();
+		$currentId = $module->id;
+		$currentOrder = $module->order;
+		$orderInd=1;
+		
+		foreach($modules as $modul){
+			if($orderInd<$currentOrder){
+				
+				if($currentId == $modul->id){
+					$modul->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					
+					$modul->update([
+						'order' => $orderInd
+					]);	
+				}				 
+			}else{
+				if($currentId == $modul->id){
+					$modul->update([
+						'order' => $currentOrder
+					]); 
+				}else{
+					$modul->update([
+						'order' => $orderInd+1
+					]);	
+				}					
+			}
+			$orderInd++;
+		}
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $module->id],
