@@ -94,3 +94,10 @@ text/css custom.css ( ASCII text )
 .coursedesc{display:block !important;}
 .vnumbgcolorgray{background: #E2E2E2; color: #000;}
 .vnumbgcolorgreen{background: #008000; color:#fff; }
+@media(max-width: 767px){
+	.verticalnum .milvnum span{
+		top: 6%;
+		padding: 7px 14px;
+		left: 3px;
+	}
+}
