@@ -310,7 +310,7 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-fw fa-book me-1"></i>
-                                    {{ $section->tasks->count() }} tasks
+                                    {{ $tasks->count() }} tasks
                                 </td>
                             </tr>
 {{--                            <tr>--}}
