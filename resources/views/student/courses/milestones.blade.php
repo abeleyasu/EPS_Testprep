@@ -181,7 +181,7 @@
                                    <div class="col-8">
                                         <div class="progress">
                                             <div class="progress-bar "
-                                                style="background-color: blue; margin-left:-12px; width: {{$completion_percent}}%"
+                                                style="background-color: blue; width: {{$completion_percent}}%"
                                                 role="progressbar"
                                                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
@@ -195,7 +195,7 @@
                                     <div class="col-8">
                                         <div class="progress">
                                             <div class="progress-bar "
-                                            style="background-color: blue; margin-left:-12px; width: {{$modulepercentage}}%"
+                                            style="background-color: blue; width: {{$modulepercentage}}%"
                                                 role="progressbar"
                                                 aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
