@@ -212,13 +212,24 @@
                                     
                                     @endphp
                                     <div class="fs-sm text-black">
-                                         {{$totalmilestone[$course->id]}} milestones
+                                         {{$totalmilestone[$course->id]['total_milestone']}} milestones
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
                                     <h4 class="h5 mb-1">
                                         {{ $course->title }}
                                     </h4>
+									<div class="row mb-2">
+										<div class="col-12">
+											<p style="font-size: 12px; margin-bottom: 0;">{{$totalmilestone[$course->id]['completed_task']}}% Task Complete</p>
+											<div class="progress" style="background:#c4c5c7;">
+													<div class="progress-bar "
+														style="background-color: blue; width: {{$totalmilestone[$course->id]['completed_task']}}%"
+														role="progressbar"
+														aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+										</div>
+									</div>
                                     <div class="fs-sm text-muted">{{ $course->created_at->format( 'M d, Y') }}</div>
                                     
                                 </div>
@@ -235,13 +246,24 @@
                                     
                                     @endphp
                                     <div class="fs-sm text-white-75">
-                                         {{$totalmilestone[$course->id]}} milestones
+                                         {{$totalmilestone[$course->id]['total_milestone']}} milestones
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
                                     <h4 class="h5 mb-1">
                                         {{ $course->title }}
                                     </h4>
+									<div class="row mb-2">
+										<div class="col-12">
+											<p style="font-size: 12px; margin-bottom: 0;">{{$totalmilestone[$course->id]['completed_task']}}% Task Complete</p>
+											<div class="progress" style="background:#c4c5c7;">
+													<div class="progress-bar "
+														style="background-color: blue; width: {{$totalmilestone[$course->id]['completed_task']}}%"
+														role="progressbar"
+														aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+										</div>
+									</div>
                                     <div class="fs-sm text-muted">{{ $course->created_at->format( 'M d, Y') }}</div>
                                     
                                 </div>
