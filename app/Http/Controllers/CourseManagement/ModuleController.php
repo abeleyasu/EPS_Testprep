@@ -64,29 +64,9 @@ class ModuleController extends Controller
 		$orderInd=1;
 		
 		foreach($modules as $modul){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $modul->id){
-					$modul->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$modul->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $modul->id){
-					$modul->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$modul->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$modul->update([
+				'order' => $orderInd
+			]);
 			$orderInd++;
 		}
         if($request->tags) {
@@ -176,29 +156,9 @@ class ModuleController extends Controller
 		$orderInd=1;
 		
 		foreach($modules as $modul){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $modul->id){
-					$modul->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$modul->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $modul->id){
-					$modul->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$modul->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$modul->update([
+				'order' => $orderInd
+			]);
 			$orderInd++;
 		}
         if($request->tags) {

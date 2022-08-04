@@ -73,31 +73,15 @@ class CoursesController extends Controller
         ]);
 		/**********Order reset**********/
 		$courses = Courses::orderBy('order')->get();
+		
 		$currentId = $course->id;
 		$currentOrder = $course->order;
 		$orderInd=1;
 		foreach($courses as $cours){
-			if($orderInd<$currentOrder){
-				if($currentId == $cours->id){
-					$cours->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$cours->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $cours->id){
-					$cours->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$cours->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$cours->update([
+				'order' => $currentOrder
+			]); 			
+			
 			$orderInd++;
 		}
 		if($request->tags) {
@@ -164,7 +148,7 @@ class CoursesController extends Controller
 		$currentOrder = $request->get('order');
 		$orderInd=1;
 		foreach($courses as $cours){
-			if($orderInd<$currentOrder){
+			/*if($orderInd<$currentOrder){
 				if($currentId == $cours->id){
 					$cours->update([
 						'order' => $request->get('order')
@@ -176,16 +160,19 @@ class CoursesController extends Controller
 				}
 				 
 			}else{
-				if($currentId == $cours->id){
+				if($orderInd==$currentOrder || $currentId == $cours->id){
 					$cours->update([
-						'order' => $request->get('order')
+						'order' => $currentOrder
 					]);
 				}else{
 					$cours->update([
 						'order' => $orderInd+1
 					]);
 				}					
-			}
+			}*/
+			$cours->update([
+						'order' => $orderInd
+					]);
 			$orderInd++;
 		}
 			

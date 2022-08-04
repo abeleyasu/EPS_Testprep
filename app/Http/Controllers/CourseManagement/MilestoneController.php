@@ -38,22 +38,7 @@ class MilestoneController extends Controller
         ],200);
     }
 
-    // public function studentIndex()
-    // {
-        // $courses = Courses::where('published', true)->orderBy('order')->get();
-		// $totalmilestone = [];
-        // foreach($courses as $course){
-            // $courseid = $course->id;
-            
-            // if($courseid){
-                // $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
-                // $totalmilestone[$courseid] = count($coursemilestones);
-            // }
-        // }
-        // return view('student.courses.index', compact('courses','totalmilestone'));
-    // }
-	
-	public function studentIndex()
+    public function studentIndex()
     {
         $courses = Courses::where('published', true)->orderBy('order')->get();
 		$totalmilestone = [];
@@ -61,36 +46,8 @@ class MilestoneController extends Controller
             $courseid = $course->id;
             
             if($courseid){
-                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->where('published',1)->get();
-                $totalmilestone[$courseid]['total_milestone'] = count($coursemilestones);
-				$totalmilestone[$courseid]['completed_task'] = 0;
-				$totalmilestone[$courseid]['total_module'] = 0;
-				$total_milestone_task = 0;
-				$completed_milestone_task = 0;
-				foreach($coursemilestones as $mkey=>$milestone){
-					$completemoduletask = 0;
-					$totalmoduletask = 0;
-					$total_module = 0;
-					foreach($milestone->modules as $module){
-						$all_tasks = $module->tasks();
-						$all_tasks = $all_tasks->filter(function($item) {
-							return  $item->status == 'paid';
-						});
-						$totalmoduletask = $totalmoduletask + count($all_tasks);
-						$user_tasks = $all_tasks->filter(function($item) {
-							return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status == 'paid';
-						});
-						$completemoduletask =  $completemoduletask + count($user_tasks);
-					}
-					$total_milestone_task = $total_milestone_task + $totalmoduletask;
-					$completed_milestone_task = $completed_milestone_task + $completemoduletask;
-					$total_module = $total_module + count($milestone->modules);
-				}
-				$totalmilestone[$courseid]['total_module'] = $total_module;
-				if($completed_milestone_task != 0){					
-					$completed_task_per = ($completed_milestone_task * 100) / $total_milestone_task;
-					$totalmilestone[$courseid]['completed_task'] = $completed_task_per;
-				}
+                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
+                $totalmilestone[$courseid] = count($coursemilestones);
             }
         }
         return view('student.courses.index', compact('courses','totalmilestone'));
@@ -156,29 +113,9 @@ class MilestoneController extends Controller
 		$orderInd=1;
 		
 		foreach($milestones as $mileston){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $mileston->id){
-					$mileston->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$mileston->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $mileston->id){
-					$mileston->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$mileston->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$mileston->update([
+				'order' => $orderInd
+			]);
 			$orderInd++;
 		}
         if($request->tags) {
@@ -284,29 +221,9 @@ class MilestoneController extends Controller
 		$orderInd=1;
 		
 		foreach($milestones as $mileston){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $mileston->id){
-					$mileston->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$mileston->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $mileston->id){
-					$mileston->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$mileston->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$mileston->update([
+				'order' => $orderInd
+			]);
 			$orderInd++;
 		}
         if($request->tags) {

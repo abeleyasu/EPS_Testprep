@@ -64,29 +64,9 @@ class SectionController extends Controller
 		$orderInd=1;
 		
 		foreach($sections as $sectio){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $sectio->id){
-					$sectio->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$sectio->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $sectio->id){
-					$sectio->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$sectio->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$sectio->update([
+				'order' => $orderInd
+			]);
 			$orderInd++;
 		}
 		
@@ -191,29 +171,9 @@ class SectionController extends Controller
 		$orderInd=1;
 		
 		foreach($sections as $sectio){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $sectio->id){
-					$sectio->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$sectio->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $sectio->id){
-					$sectio->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$sectio->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
+			$sectio->update([
+				'order' => $orderInd
+			]);
 			$orderInd++;
 		}
         if($request->tags) {

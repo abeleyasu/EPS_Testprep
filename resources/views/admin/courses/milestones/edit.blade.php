@@ -414,12 +414,12 @@
 
             $('#listWithHandle').empty();
 
-
+      let course_id = $('select[name=course]').val();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/api/milestones/all`,
+                url: `/api/courses/${course_id}/milestones/`,
                 method: 'post',
                 success: (res) => {
                     res.data.forEach(i => {
@@ -507,7 +507,7 @@
                     old_index: evt.oldIndex+1,
                     item: evt.item.children[1].value
                 };
-
+				$('#order').val(evt.newIndex+1);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

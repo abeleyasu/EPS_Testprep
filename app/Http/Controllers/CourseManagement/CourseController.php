@@ -162,4 +162,10 @@ class CourseController extends Controller
             }
         }
     }
+	public function milestonesByCourse($courseId){
+		$milestones = Milestone::orderBy('order')->where('course_id','=',$courseId)->where('published',1)->get();
+		return response()->json([
+            'data' => $milestones
+        ],200);
+	}
 }

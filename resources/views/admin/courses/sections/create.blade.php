@@ -248,7 +248,8 @@
                     old_index: evt.oldIndex+1,
                     item: evt.item.children[1].value
                 };
-
+				
+				$('#order').val(evt.newIndex+1);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

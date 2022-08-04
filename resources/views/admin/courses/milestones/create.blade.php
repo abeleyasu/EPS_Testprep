@@ -193,7 +193,7 @@
                                 <label class="form-label" for="order">Order</label>
 
                                 <div class="input-group mb-3">
-                                    <input type="number" readonly class="form-control" name="order" value="0"
+                                    <input type="number" readonly class="form-control" name="order" value="{{ $totalMilstone+1 }}"
                                         id="order"/>
                                     <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
                                         <i class="fa-solid fa-check"></i>
@@ -406,26 +406,7 @@
 				  reader.readAsDataURL(file);
 				}
 		    });
-			$.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: `/api/milestones/all`,
-                method: 'post',
-                success: (res) => {
-					var arrCount = res.data.length;
-					$("#order").val(Number(arrCount)+1);
-                    res.data.forEach(i => {
-
-                        $('<div class="list-group-item">\n' +
-                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                            '</span>\n' +
-                            '<button class="btn btn-primary" value="'+i.id+'">'+i.name+'</button>\n' +
-                            '</div>').appendTo('#listWithHandle');
-                    });                    
-                }
-            });
+			
     });
         var order = 0;
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
@@ -453,6 +434,28 @@
         // }
 
         function openOrderDialog() {
+			$('#listWithHandle').empty();
+			let course_id = $('select[name=select_course]').val();
+			$.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: `/api/courses/${course_id}/milestones/`,
+                method: 'post',
+                success: (res) => {
+					var arrCount = res.data.length;
+					
+                    res.data.forEach(i => {
+
+                        $('<div class="list-group-item">\n' +
+                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                            '</span>\n' +
+                            '<button class="btn btn-primary" value="'+i.id+'">'+i.name+'</button>\n' +
+                            '</div>').appendTo('#listWithHandle');
+                    });                    
+                }
+            });
 			myModal.show();            
         }
         function saveOrder() {
@@ -522,7 +525,7 @@
                     old_index: evt.oldIndex+1,
                     item: evt.item.children[1].value
                 };
-
+				$('#order').val(evt.newIndex+1);
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
