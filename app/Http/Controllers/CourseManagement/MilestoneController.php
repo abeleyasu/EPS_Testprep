@@ -46,8 +46,38 @@ class MilestoneController extends Controller
             $courseid = $course->id;
             
             if($courseid){
-                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
-                $totalmilestone[$courseid] = count($coursemilestones);
+                // $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
+                // $totalmilestone[$courseid] = count($coursemilestones);
+                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->where('published',1)->get();
+                $totalmilestone[$courseid]['total_milestone'] = count($coursemilestones);
+                $totalmilestone[$courseid]['completed_task'] = 0;
+				$totalmilestone[$courseid]['total_module'] = 0;
+				$total_milestone_task = 0;
+				$completed_milestone_task = 0;
+				foreach($coursemilestones as $mkey=>$milestone){
+					$completemoduletask = 0;
+					$totalmoduletask = 0;
+					$total_module = 0;
+					foreach($milestone->modules as $module){
+						$all_tasks = $module->tasks();
+						$all_tasks = $all_tasks->filter(function($item) {
+							return  $item->status == 'paid';
+						});
+						$totalmoduletask = $totalmoduletask + count($all_tasks);
+						$user_tasks = $all_tasks->filter(function($item) {
+							return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status == 'paid';
+						});
+						$completemoduletask =  $completemoduletask + count($user_tasks);
+					}
+					$total_milestone_task = $total_milestone_task + $totalmoduletask;
+					$completed_milestone_task = $completed_milestone_task + $completemoduletask;
+					$total_module = $total_module + count($milestone->modules);
+				}
+				$totalmilestone[$courseid]['total_module'] = $total_module;
+				if($completed_milestone_task != 0){					
+					$completed_task_per = ($completed_milestone_task * 100) / $total_milestone_task;
+					$totalmilestone[$courseid]['completed_task'] = $completed_task_per;
+				}
             }
         }
         return view('student.courses.index', compact('courses','totalmilestone'));
@@ -66,7 +96,8 @@ class MilestoneController extends Controller
         $sections = Section::all();
         $contentCategories = ContentCategory::all();
         $courses = $courses = Courses::all();
-        return view('admin.courses.milestones.create', compact('tags','sections','courses', 'contentCategories','usersRoles'));
+		$totalMilstone = Milestone::count();
+        return view('admin.courses.milestones.create', compact('tags','sections','courses', 'contentCategories','usersRoles','totalMilstone'));
     }
 
     /**
@@ -107,7 +138,7 @@ class MilestoneController extends Controller
             'published' => $request->get('published') ? true : false
         ]);
 		/**********Order reset**********/
-		$milestones = Milestone::orderBy('order')->get();
+		/*$milestones = Milestone::orderBy('order')->get();
 		$currentId = $milestone->id;
 		$currentOrder = $milestone->order;
 		$orderInd=1;
@@ -117,7 +148,7 @@ class MilestoneController extends Controller
 				'order' => $orderInd
 			]);
 			$orderInd++;
-		}
+		}*/
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -215,7 +246,7 @@ class MilestoneController extends Controller
             'published' => $request->get('published') ? true : false
         ]);
 		/**********Order reset**********/
-		$milestones = Milestone::orderBy('order')->get();
+		/*$milestones = Milestone::orderBy('order')->get();
 		$currentId = $milestone->id;
 		$currentOrder = $request->get('order');
 		$orderInd=1;
@@ -225,7 +256,7 @@ class MilestoneController extends Controller
 				'order' => $orderInd
 			]);
 			$orderInd++;
-		}
+		}*/
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $milestone->id],
@@ -294,10 +325,15 @@ class MilestoneController extends Controller
         $milestone = Milestone::findorfail($id);
         $milestone->order = $new_order;
         $milestone->save();
+		$currMileOrder =0;
+		if($request->currentMileId>0){
+			$currentmilestone = Milestone::findorfail($request->currentMileId);
+			$currMileOrder = $currentmilestone->order;
+		}
         /*$milestone->update(['order'=> $new_order]);*/
         $this->reorderOnUpdate($old_order, $new_order, $id);
         return response()->json(
-            ['message' => 'reordered successfully'],200
+            ['message' => 'reordered successfully','currentMilestoneId'=>$currMileOrder],200
         );
     }
 	

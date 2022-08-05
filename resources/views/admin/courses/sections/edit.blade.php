@@ -325,21 +325,22 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
-          $(document).ready(()=>{
-      $('#course_cover_image').change(function(){
-        const file = this.files[0];
-        console.log(file);
-        if (file){
-          let reader = new FileReader();
-          reader.onload = function(event){
-            console.log(event.target.result);
-            $('#imgPreview').attr('src', event.target.result);
-            $('#imgPreview').show();
-          }
-          reader.readAsDataURL(file);
-        }
-      });
-    });
+         var currsectId = '<?php echo $section->id; ?>';
+		 $(document).ready(()=>{
+		  $('#course_cover_image').change(function(){
+			const file = this.files[0];
+			console.log(file);
+			if (file){
+			  let reader = new FileReader();
+			  reader.onload = function(event){
+				console.log(event.target.result);
+				$('#imgPreview').attr('src', event.target.result);
+				$('#imgPreview').show();
+			  }
+			  reader.readAsDataURL(file);
+			}
+		  });
+		});
         var order = 0;
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
@@ -379,7 +380,7 @@
         }
 
         function saveOrder() {
-            $('#order').val(order);
+            /*$('#order').val(order);*/
             myModal.hide();
         }
 
@@ -394,9 +395,9 @@
                 let data = {
                     new_index: evt.newIndex+1,
                     old_index: evt.oldIndex+1,
-                    item: evt.item.children[1].value
+                    item: evt.item.children[1].value,
+					currSectionId: currsectId
                 };
-				$('#order').val(evt.newIndex+1);
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -405,7 +406,7 @@
                     method: 'post',
                     data:data,
                     success: (res) => {
-
+						$('#order').val(res.currOrder);
                     },
                     error: () => {
                         alert('Something went wrong')

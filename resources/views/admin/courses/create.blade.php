@@ -403,7 +403,7 @@
 			myModal.show();            
         }
         function saveOrder() {
-            $('#order').val(order);
+            /*$('#order').val(order);*/
             myModal.hide();
         }
         function addTag(evt){
@@ -468,9 +468,10 @@
                 let data = {
                     new_index: evt.newIndex+1,
                     old_index: evt.oldIndex+1,
-                    item: evt.item.children[1].value
+                    item: evt.item.children[1].value,
+					currentOrderId: 0
                 };
-				$('#order').val(evt.newIndex+1);
+				
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

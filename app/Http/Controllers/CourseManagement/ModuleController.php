@@ -58,7 +58,7 @@ class ModuleController extends Controller
        
         $module = $this->createFromRequest(app('App\Models\CourseManagement\Module'),$request);
         /**********Order reset**********/
-		$modules = Module::orderBy('order')->get();
+		/*$modules = Module::orderBy('order')->get();
 		$currentId = $module->id;
 		$currentOrder = $request->order;
 		$orderInd=1;
@@ -68,7 +68,7 @@ class ModuleController extends Controller
 				'order' => $orderInd
 			]);
 			$orderInd++;
-		}
+		}*/
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -150,7 +150,7 @@ class ModuleController extends Controller
 
         $this->updateFromRequest($module, $request);
 		/**********Order reset**********/
-		$modules = Module::orderBy('order')->get();
+		/*$modules = Module::orderBy('order')->get();
 		$currentId = $module->id;
 		$currentOrder = $module->order;
 		$orderInd=1;
@@ -160,7 +160,7 @@ class ModuleController extends Controller
 				'order' => $orderInd
 			]);
 			$orderInd++;
-		}
+		}*/
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $module->id],
@@ -190,27 +190,22 @@ class ModuleController extends Controller
         return redirect()->route('modules.index')->with('success', 'Module delete successfully');
     }
 
-    private function reorderOnUpdate($module, $request) {
-        $new_order = $request->order;
-        $old_order = $module->order;
+    private function reorderOnUpdate($old_order, $new_order, $dont_reorder) {
         if($new_order > $old_order) {
             //selected item move down
             $reorder_sections = Module::where([
                 ['order','>=', $old_order],
                 ['order','<=', $new_order],
-                ['id','!=', $module->id],
-                ['milestone_id','!=', $request->milestone_id]
+                ['id','!=', $dont_reorder]
             ])->orderBy('order')->get();
             foreach ($reorder_sections as $section) {
                 $section->update(['order'=> $section->order-1]);
             }
         }elseif($old_order > $new_order) {
-            //selected item move down
             $reorder_sections = Module::where([
                 ['order','<=', $old_order],
                 ['order','>=', $new_order],
-                ['id','!=', $module->id],
-                ['milestone_id','!=', $request->milestone_id]
+                ['id','!=', $dont_reorder]
             ])->orderBy('order')->get();
             foreach ($reorder_sections as $section) {
                 $section->update(['order'=> $section->order+1]);
@@ -245,33 +240,16 @@ class ModuleController extends Controller
 
         $module->order = $new_order;
         $module->save();
-        if($new_order > $old_order) {
-            //selected item move down
-            $reorder_sections = Module::where([
-                ['order','>=', $old_order],
-                ['order','<=', $new_order],
-                ['id','!=', $module->id],
-                ['milestone_id','=', $module->milestone_id]
-            ])->orderBy('order')->get();
-            foreach ($reorder_sections as $section) {
-                $section->update(['order'=> $section->order-1]);
-            }
-        }elseif($old_order > $new_order) {
-            //selected item move down
-            $reorder_sections = Module::where([
-                ['order','<=', $old_order],
-                ['order','>=', $new_order],
-                ['id','!=', $module->id],
-                ['milestone_id','=', $module->milestone_id]
-            ])->orderBy('order')->get();
-            foreach ($reorder_sections as $section) {
-                $section->update(['order'=> $section->order+1]);
-            }
-        }
-
-        return response()->json([
-            'message' => 'module ordered successfully'
-        ],200);
+        $currModOrder =0;
+		if($request->currentModId>0){
+			$currentModule = Module::findorfail($request->currentModId);
+			$currModOrder = $currentModule->order;
+		}
+        /*$milestone->update(['order'=> $new_order]);*/
+        $this->reorderOnUpdate($old_order, $new_order, $id);
+        return response()->json(
+            ['message' => 'reordered successfully','currentModuleId'=>$currModOrder],200
+        );
     }
 	/**
      * Show the form for editing the specified resource.

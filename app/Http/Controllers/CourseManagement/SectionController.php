@@ -58,7 +58,7 @@ class SectionController extends Controller
         $section = $this->createFromRequest(app('App\Models\CourseManagement\Section'),$request);
 
 		/**********Order reset**********/
-		$sections = Section::orderBy('order')->get();
+		/*$sections = Section::orderBy('order')->get();
 		$currentId = $section->id;
 		$currentOrder = $section->order;
 		$orderInd=1;
@@ -68,7 +68,7 @@ class SectionController extends Controller
 				'order' => $orderInd
 			]);
 			$orderInd++;
-		}
+		}*/
 		
         if($request->tags) {
             foreach ($request->tags as $tag) {
@@ -165,7 +165,7 @@ class SectionController extends Controller
 //        $this->reorderOnUpdate($section, $request);
         $model = $this->updateFromRequest($section, $request);
 		/**********Order reset**********/
-		$sections = Section::orderBy('order')->get();
+		/*$sections = Section::orderBy('order')->get();
 		$currentId = $section->id;
 		$currentOrder = $section->order;
 		$orderInd=1;
@@ -175,7 +175,7 @@ class SectionController extends Controller
 				'order' => $orderInd
 			]);
 			$orderInd++;
-		}
+		}*/
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $model->id],
@@ -212,27 +212,22 @@ class SectionController extends Controller
         ],200);
     }
 
-    private function reorderOnUpdate($model, $request) {
-        $new_order = $request->order;
-        $old_order = $model->order;
+    private function reorderOnUpdate($old_order, $new_order, $dont_reorder) {
         if($new_order > $old_order) {
             //selected item move down
             $reorder_sections = Section::where([
                 ['order','>=', $old_order],
                 ['order','<=', $new_order],
-                ['id','!=', $model->id],
-                ['module_id','!=', $request->module_id]
+                ['id','!=', $dont_reorder]
             ])->orderBy('order')->get();
             foreach ($reorder_sections as $section) {
                 $section->update(['order'=> $section->order-1]);
             }
         }elseif($old_order > $new_order) {
-            //selected item move down
             $reorder_sections = Section::where([
                 ['order','<=', $old_order],
                 ['order','>=', $new_order],
-                ['id','!=', $model->id],
-                ['module_id','!=', $request->module_id]
+                ['id','!=', $dont_reorder]
             ])->orderBy('order')->get();
             foreach ($reorder_sections as $section) {
                 $section->update(['order'=> $section->order+1]);
@@ -256,32 +251,15 @@ class SectionController extends Controller
         $model = Section::findorfail($id);
         $model->order = $new_order;
         $model->save();
-        if($new_order > $old_order) {
-            //selected item move down
-            $reorder_sections = Section::where([
-                ['order','>=', $old_order],
-                ['order','<=', $new_order],
-                ['id','!=', $model->id],
-                ['module_id','!=', $request->module_id]
-            ])->orderBy('order')->get();
-            foreach ($reorder_sections as $section) {
-                $section->update(['order'=> $section->order-1]);
-            }
-        }elseif($old_order > $new_order) {
-            //selected item move down
-            $reorder_sections = Section::where([
-                ['order','<=', $old_order],
-                ['order','>=', $new_order],
-                ['id','!=', $model->id],
-                ['module_id','!=', $request->module_id]
-            ])->orderBy('order')->get();
-            foreach ($reorder_sections as $section) {
-                $section->update(['order'=> $section->order+1]);
-            }
-        }
-
+        
+		$currOrder =0;
+		if($request->currSectionId>0){
+			$currentSection = Section::findorfail($request->currSectionId);
+			$currOrder = $currentSection->order;
+		}
+		$this->reorderOnUpdate($old_order, $new_order, $id);
         return response()->json([
-            'message' => 'reordered successfully'
+            'message' => 'reordered successfully','currOrder'=>$currOrder
         ],200);
     }
 

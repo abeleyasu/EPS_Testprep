@@ -136,8 +136,14 @@ class CourseController extends Controller
         $course->save();
         /*$milestone->update(['order'=> $new_order]);*/
         $this->reorderOnUpdate($old_order, $new_order, $id);
+		$latestcourseord = 0;
+		if($request->currentOrderId>0){
+			$latestcourse = Courses::findorfail($request->currentOrderId);
+			$latestcourseord = $latestcourse->order;
+		}
+		
         return response()->json(
-            ['message' => 'reordered successfully'],200
+            ['message' => 'reordered successfully','currentOrder'=>$latestcourseord],200
         );
     }
 	private function reorderOnUpdate($old_order, $new_order, $dont_reorder) {

@@ -375,21 +375,22 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
+		var currentMileId = '<?php echo $milestone->id; ?>';
          $(document).ready(()=>{
-      $('#course_cover_image').change(function(){
-        const file = this.files[0];
-        console.log(file);
-        if (file){
-          let reader = new FileReader();
-          reader.onload = function(event){
-            console.log(event.target.result);
-            $('#imgPreview').attr('src', event.target.result);
-            $('#imgPreview').show();
-          }
-          reader.readAsDataURL(file);
-        }
-      });
-    });
+		  $('#course_cover_image').change(function(){
+			const file = this.files[0];
+			console.log(file);
+			if (file){
+			  let reader = new FileReader();
+			  reader.onload = function(event){
+				console.log(event.target.result);
+				$('#imgPreview').attr('src', event.target.result);
+				$('#imgPreview').show();
+			  }
+			  reader.readAsDataURL(file);
+			}
+		  });
+		});
         var order = '{{ $milestone->order }}';
         var currentMile = '{{ $milestone->id }}';
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
@@ -505,9 +506,10 @@
                 let data = {
                     new_index: evt.newIndex+1,
                     old_index: evt.oldIndex+1,
-                    item: evt.item.children[1].value
+                    item: evt.item.children[1].value,
+					currentMileId: currentMileId
                 };
-				$('#order').val(evt.newIndex+1);
+				
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -516,7 +518,8 @@
                     method: 'post',
                     data:data,
                     success: (res) => {
-						order = data.new_index;						
+						order = res.currentMilestoneId;
+						$('#order').val(order);	
                     },
                     error: () => {
                         alert('Something went wrong')

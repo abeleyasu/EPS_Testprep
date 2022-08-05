@@ -143,12 +143,12 @@ class CoursesController extends Controller
             'status' => $request->get('status'),
         ]); 
 		/**********Order reset**********/
-		$courses = Courses::orderBy('order')->get();
+		/*$courses = Courses::orderBy('order')->get();
 		$currentId = $course->id;
 		$currentOrder = $request->get('order');
 		$orderInd=1;
 		foreach($courses as $cours){
-			/*if($orderInd<$currentOrder){
+			if($orderInd<$currentOrder){
 				if($currentId == $cours->id){
 					$cours->update([
 						'order' => $request->get('order')
@@ -169,12 +169,12 @@ class CoursesController extends Controller
 						'order' => $orderInd+1
 					]);
 				}					
-			}*/
+			}
 			$cours->update([
 						'order' => $orderInd
 					]);
 			$orderInd++;
-		}
+		}*/
 			
         if($request->tags) {
             ModelTag::where([
