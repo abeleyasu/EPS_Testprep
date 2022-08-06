@@ -59,7 +59,7 @@ class MilestoneController extends Controller
 					$totalmoduletask = 0;
 					$total_module = 0;
 					foreach($milestone->modules as $module){
-						$all_tasks = $module->tasks();
+						$all_tasks = $module->tasks(auth()->id());
 						$all_tasks = $all_tasks->filter(function($item) {
 							return  $item->status == 'paid';
 						});

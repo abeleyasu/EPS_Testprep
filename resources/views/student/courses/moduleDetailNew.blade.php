@@ -269,34 +269,13 @@
                         <div class="block block-rounded">
 						
 									@php
-                                    $all_tasks = $section->taskStatus();
-                                    $all_tasks = $all_tasks->filter(function($item) {
-										return  $item->status =='paid';
-									});
-									$totaltasks = $all_tasks->count();
-                                    $completion_percent = 0;
+									$tasks = $section->totalTasks();
+									$totaltasks = $tasks->count();
+									$completeTasks = $section->sectionCompleteTasks(auth()->id());
+									$totalCompleteTasks = $completeTasks->count();
                                     
-                                    $completedtask = 0;
-									
-										
-                                    if($all_tasks->count() > 0) {
-										$tasks = $all_tasks->count();
-										
-										$user_tasks = $all_tasks->filter(function($item) {
-											
-											return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid';
-										});
-
-										$sectiontask = count($user_tasks);
-										
-										$user_tasks= $user_tasks->count() > 0?
-										array_map(function ($item){
-											return $item['id'];
-										},$user_tasks->toArray())
-										:
-										[];
-										$completion_percent = floor(count($user_tasks)/$tasks * 100);
-                                    }
+									$completion_percent = floor($totalCompleteTasks/$totaltasks * 100);
+                                    
 									
                                     
                                     @endphp
@@ -343,7 +322,8 @@
 									
 									<div class="col-12 collapse hide task-detail{{$section->id}}">
                                         
-										@foreach($section->tasks as $task_key => $task)
+										@foreach($section->totalTasks as $task_key => $task)
+										
 											<div class="my-3">                                               
                                                                                   
 												<span class="mx-4">											

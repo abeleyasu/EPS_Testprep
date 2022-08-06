@@ -85,74 +85,41 @@
 								
 						@php 
 						 $totalMilestone=0;
-						@endphp
-                    
-                        
-						@foreach($milestones as $mkey=>$milestone)
-						@php 
+						 $completion_percent=0;
+						 
+					
+						foreach($milestones as $mkey=>$milestone){
+						$completedmodule=0;
+						$totalmodules=0;
+						 $modulepercentage=0;
+						
+						$modules =  $milestone->modules();
+						$totalmodules = $modules->count();
+						
+						$tasks =  $milestone->tasks();
+						$totalTasks =  $tasks->count();
+						$completeTasks =  $milestone->completeTasks(auth()->id());
+						$totalCompleteTasks =  $completeTasks->count();
 						 $totalMilestone=$totalMilestone+1;
+						 if($totalCompleteTasks>0){
+							 $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
+						 }
+						 
+						 
+						 foreach($milestone->modules as $mmkey=>$module){
+							 $mtotaltasks = $module->tasks(auth()->id())->count();
+							 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+							 if($mtotaltasks == $mtotalcompletetasks){
+								$completedmodule++;
+							 }
+						 }
+						 if($completedmodule>0){
+							$modulepercentage = floor(($completedmodule/$totalmodules)*100);	
+						 }
+						 
 						@endphp
                         <div class="block block-rounded">
 						@if($milestone->modules)
-                                    
-                                    @php
-                                    $totalmodules =  count($milestone->modules);
-                                    $completion_percent = []; 
-                                    $totaltask = 0;
-                                    $completedtask = 0;
-                                    $completedmodule = 0;
-                                    @endphp
-                                        @foreach($milestone->modules as $module)
-                                        
-                                        @php
-                                         
-                                        $all_tasks = $module->tasks();
-                                        $all_tasks = $all_tasks->filter(function($item) {
-                                            return  $item->status == 'paid';
-                                        });
-                                        $totalmoduletask = count($all_tasks);
-                                       
-                                       
-                                        if($all_tasks->count() > 0) {
-                                        $tasks = $all_tasks->unique('id');
-                                        $moduletask =  count($tasks);
-                                        $totaltask += count($tasks);
-                                        $user_tasks = $all_tasks->filter(function($item) {
-                                            return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status == 'paid';
-                                        });
-
-                                        $completemoduletask =  count($user_tasks);
-                                        if($moduletask == $completemoduletask){
-                                             $completedmodule += 1;
-                                        }
-                                        $completedtask += count($user_tasks);
-                                        $user_tasks= $user_tasks->count() > 0?
-                                        array_map(function ($item){
-                                            return $item['id'];
-                                        },$user_tasks->toArray())
-                                        :
-                                        [];
-                                        
-                                        }
-                                        @endphp
-
-                                        
-                                    @endforeach
-
-                                    @php
-                                    $completion_percent = 0; 
-									$modulepercentage = 0;
-                                    if($totalmodules >0){
-                                        $modulepercentage = ($completedmodule*100)/$totalmodules;
-                                        if($totaltask){
-                                            $completion_percent = floor(($completedtask * 100)/$totaltask);
-                                        }else{
-                                            $completion_percent = 0; 
-                                        }
-                                    }
-                                    
-                                    
-                                    @endphp
                             <div class="block-content fs-sm">
 							<div class="mb-2 verticalnum">
 							@php $moduleprogress ='vnumbgcolorgray'; if($modulepercentage == 100){$moduleprogress ='vnumbgcolorgreen';} @endphp
@@ -212,7 +179,7 @@
 							</div>
                             </div>
                         </div>
-						@endforeach
+						@php } @endphp
 								
 								
                      

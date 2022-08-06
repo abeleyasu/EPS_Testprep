@@ -21,6 +21,9 @@ class Section extends Model
     public function tasks() {
         return $this->hasMany(Task::class);
     }
+	public function totalTasks() {
+        return $this->tasks()->where('published','=', 1);
+    }
 
 
     public function taskStatus() {
@@ -42,5 +45,22 @@ class Section extends Model
                 ['model_has_tags.model_id', $this->id],
                 ['model_has_tags.model_type', get_class($this)]
             ])->get();
+    }
+	public function sectionTasks($userId) {
+        $tasks = Task::select('tasks.*')
+				->join('sections', 'section_id', 'sections.id')
+				->where('tasks.published', 1)
+				->where('sections.id', $this->id)->get();
+        return $tasks;
+    }
+    public function sectionCompleteTasks($userId) {
+        $tasks = Task::select('tasks.*','user_task_statuses.status as complete', 'user_task_statuses.user_id as user_id')
+            ->join('sections', 'section_id', 'sections.id')
+            ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
+            ->where('sections.id', $this->id)
+            ->where('user_task_statuses.status', 1)
+            ->where('tasks.published', 1)
+			->where('user_task_statuses.user_id', $userId)->get();
+        return $tasks;
     }
 }

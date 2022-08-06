@@ -88,6 +88,7 @@
 				@php
 					$previouMileId=0;
 					$nextExist =0;
+					$sectionpercentage=0;
 				@endphp
 					@foreach($getMilestones as $mkey => $getMilestone)
 						@if ($milestone->id == $getMilestone->id)
@@ -121,71 +122,40 @@
 						
 					@endforeach				
                 
-                    
-						@foreach($milestone->modules as $key => $module)
+                    @php
+						foreach($milestone->modules as $key => $module){
 
-                        @php
-                        $completedsection = 0;
-                        $totaltasks = 0;
-                        @endphp
-                        @foreach($module->sections as $section_key => $section)
-                        @php
-                        $all_tasks = $section->taskStatus();
-                        $all_tasks = $all_tasks->filter(function($item) {
-									return $item->status =='paid';
-								});
-                            $completion_percent = 0;
-                            $all_tasks->count();
-                            if($all_tasks->count() > 0) {
-								$tasks = $all_tasks->unique('id');
-								$sectiontask =  count($tasks);
-								$totaltasks += 1;
-								$user_tasks = $all_tasks->filter(function($item) {
-									return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid';
-								});
-								$sectioncompletedtask =  $user_tasks->count();
-								if($sectiontask == $sectioncompletedtask){
-									$completedsection += 1;
-								}
-                            }
-                                            
-                                                
-                        @endphp
-                        @endforeach
-						@php
-                                    
-							$all_tasks = $section->taskStatus();
-							$all_tasks = $all_tasks->filter(function($item) {
-								return $item->status =='paid';
-							});
+												
+							$completedsection = 0;
+							$totaltasks = 0;
 							
+                            $tasks = $module->tasks(auth()->id());
+							$totalTasks = $tasks->count();
+							
+                            $completeTasks = $module->completeTasks(auth()->id());
+							$totalCompTasks = $completeTasks->count();
 							
 							$completion_percent = 0;
-							$completedtask = 0;
-							$moduletask = 0;
-							if($all_tasks->count() > 0) {
-							$tasks = $all_tasks->unique('id');
-							$moduletask = count($tasks);
+							$sectotaltasks = 0;
+							$sectotalCompleteTasks = 0;
 							
-							$user_tasks = $all_tasks->filter(function($item) {
-								return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status =='paid' ;
-							});
-							$completedtask = count($user_tasks);
+							$completion_percent = floor($totalCompTasks/$totalTasks * 100);
+							$sections = $module->sections();
+							$totalSections = $sections->count();
+							$comSections=0;
+								foreach($module->sections as $section_key => $section){
+									$sectasks = $section->sectionTasks(auth()->id());
+									$sectotaltasks = $sectasks->count();
+									$seccompleteTasks = $section->sectionCompleteTasks(auth()->id());
+									$sectotalCompleteTasks = $seccompleteTasks->count();
+									if($sectotaltasks == $sectotalCompleteTasks){
+										$comSections++;
+									}
+								
+								}
 							
-							$user_tasks= $user_tasks->count() > 0?
-							array_map(function ($item){
-								return $item['id'];
-							},$user_tasks->toArray())
-							:
-							[];
+							$sectionpercentage = floor($comSections/$totalSections * 100);	
 							
-							$completion_percent = floor(count($user_tasks)/$all_tasks->count() * 100);
-							}
-							$sectionpercentage = 0;
-							
-							if($totaltasks>0){
-								$sectionpercentage = ($completedsection*100)/$totaltasks;	
-							}
 							
 							@endphp
                         <div class="block block-rounded">
@@ -239,7 +209,7 @@
                                         </div>
 
                                         <div class="col-4" style="float:left;margin-left:20px;">
-                                            <b>{{$completedsection}}/{{$totaltasks}} Section Complete</b>
+                                            <b>{{$comSections}}/{{$totalSections}} Section Complete</b>
                                         </div>    
                                     </div>
                                     
@@ -248,36 +218,14 @@
                                         
 										@foreach($module->sections as $section_key => $section)
 											<div class="my-3">
-                                                
-                                        @php
-                                        $all_tasks = $section->taskStatus();
-                                            $completion_percent = 0;
-                                            $all_tasks->count();
-                                            if($all_tasks->count() > 0) {
-                                            $tasks = $all_tasks->unique('id');
-                                            $sectiontask =  count($tasks);
-                                            $user_tasks = $all_tasks->filter(function($item) {
-                                                return $item->user_id == auth()->id() &&  $item->complete ==1;
-                                            });
-                                            $sectioncompletedtask =  $user_tasks->count();
-                                            $user_tasks= $user_tasks->count() > 0?
-                                            array_map(function ($item){
-                                                return $item['id'];
-                                            },$user_tasks->toArray())
-                                            :
-                                            [];
-                                            $completion_percent = floor(count($user_tasks)/$tasks->count() * 100);
-                                            }
-                                        
-                                            
-                                        @endphp
+                                         
                                             
 												<span class="mx-4">
 																								
 												@if($section->status == 'paid')
-													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
+													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i>  {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
 												@else
-												<a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a>
+												<a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i>  {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a>
 												@endif
 												</span>
 												
@@ -289,7 +237,7 @@
 							</div>
                             </div>
                         </div>
-						@endforeach
+						@php } @endphp
 								
 								
                     

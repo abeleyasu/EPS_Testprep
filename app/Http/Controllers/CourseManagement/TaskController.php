@@ -36,10 +36,9 @@ class TaskController extends Controller
      */
     public function create()
     {
-		$tasks = Task::count();
         $sections = Section::orderBy('title')->get();
         $tags = Tag::all();
-        return view('admin.courses.tasks.create', compact('sections','tags', 'tasks'));
+        return view('admin.courses.tasks.create', compact('sections','tags'));
     }
 
     /**
@@ -53,38 +52,7 @@ class TaskController extends Controller
         
         //$task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
 		$task = Task::create($request->all());
-		/**********Order reset**********/
-		$tasks = Task::orderBy('order')->get();
-		$currentId = $task->id;
-		$currentOrder = $task->order;
-		$orderInd=1;
-		
-		foreach($tasks as $tas){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $tas->id){
-					$tas->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$tas->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $tas->id){
-					$tas->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$tas->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
-			$orderInd++;
-		}
+	
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -179,38 +147,7 @@ class TaskController extends Controller
         $request->request->add(['published' => $request->published ? true : false]);
 
         $model = $this->updateFromRequest($task,$request);
-		/**********Order reset**********/
-		$tasks = Task::orderBy('order')->get();
-		$currentId = $task->id;
-		$currentOrder = $task->order;
-		$orderInd=1;
-		
-		foreach($tasks as $tas){
-			if($orderInd<$currentOrder){
-				
-				if($currentId == $tas->id){
-					$tas->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					
-					$tas->update([
-						'order' => $orderInd
-					]);	
-				}				 
-			}else{
-				if($currentId == $tas->id){
-					$tas->update([
-						'order' => $currentOrder
-					]); 
-				}else{
-					$tas->update([
-						'order' => $orderInd+1
-					]);	
-				}					
-			}
-			$orderInd++;
-		}
+
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $model->id],

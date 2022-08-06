@@ -30,16 +30,26 @@ class Module extends Model
     public function sections() {
         return $this->hasMany(Section::class);
     }
-
-    public function tasks() {
-        $tasks = Task::select('tasks.*','user_task_statuses.status as complete', 'user_task_statuses.user_id')
+	public function tasks($userId) {
+        $tasks = Task::select('tasks.*')
+				->join('sections', 'section_id', 'sections.id')
+				->join('modules','sections.module_id','modules.id')
+				->where('tasks.published', 1)
+				->where('modules.id', $this->id)->get();
+        return $tasks;
+    }
+    public function completeTasks($userId) {
+        $tasks = Task::select('tasks.*','user_task_statuses.status as complete', 'user_task_statuses.user_id as user_id')
             ->join('sections', 'section_id', 'sections.id')
             ->join('modules','sections.module_id','modules.id')
             ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
-            ->where('modules.id', $this->id)->get();
+            ->where('modules.id', $this->id)
+            ->where('user_task_statuses.status', 1)
+            ->where('tasks.published', 1)
+			->where('user_task_statuses.user_id', $userId)->get();
         return $tasks;
     }
-
+	
     public function tags() {
         return Tag::select('tags.id','tags.name')
             ->join('model_has_tags', 'tags.id','model_has_tags.tag_id')

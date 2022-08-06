@@ -43,4 +43,24 @@ class Milestone extends Model
                 ['model_has_tags.model_type', get_class($this)]
             ])->get();
     }
+	public function tasks(){
+		$tasks = Task::select('tasks.*')
+				->join('sections', 'section_id', 'sections.id')
+				->join('modules','sections.module_id','modules.id')
+				->where('tasks.published', 1)
+				->where('modules.milestone_id', $this->id)->get();
+        return $tasks;
+	}
+	public function completeTasks($userId) {
+        $tasks = Task::select('tasks.*','user_task_statuses.status as complete', 'user_task_statuses.user_id as user_id')
+            ->join('sections', 'section_id', 'sections.id')
+            ->join('modules','sections.module_id','modules.id')
+            ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
+            ->where('modules.milestone_id', $this->id)
+            ->where('user_task_statuses.status', 1)
+            ->where('tasks.published', 1)
+			->where('user_task_statuses.user_id', $userId)->get();
+        return $tasks;
+    }
+
 }
