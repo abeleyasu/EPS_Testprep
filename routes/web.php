@@ -17,6 +17,7 @@ use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
+use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,7 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     // Route::put('categories/{category}/', [CategoryController::class])->name('categories');
     // questions
     Route::resource('questions', QuestionsController::class);
+	Route::resource('practicetests', PracticeTestsController::class);
 });
 
 //User Routes

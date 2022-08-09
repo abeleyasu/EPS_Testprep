@@ -146,6 +146,14 @@
                             </a>
                         </li>
                     </ul>
+					<ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['practicetests.index','practicetests.create','practicetests.edit']) ? 'active' : ''}}"
+                               href="{{route('practicetests.index')}}">
+                                <span class="nav-main-link-name">Practice Tests</span>
+                            </a>
+                        </li>
+                    </ul>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','categories.index','categories.create','categories.edit'])) ? 'open' : ''}}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
