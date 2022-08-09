@@ -164,7 +164,7 @@
 						
 					@endforeach	
 				<div class="block block-rounded">	
-					<div class="block-content" style="margin-bottom:20px;">
+					<div class="block-content videoResp" style="margin-bottom:20px;">
 						{!! $task->description !!}            
 					
 					</div>

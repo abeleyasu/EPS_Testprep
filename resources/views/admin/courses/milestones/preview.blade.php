@@ -36,7 +36,7 @@
                         </li>
 
                         <li class="breadcrumb-item">
-                            <a class="link-fx text-dark" href="javascript:;">{{$course[0]->title}}</a>
+                            <a class="link-fx text-dark" href="javascript:;">@if(isset($course[0])) {{$course[0]->title}} @endif</a>
                         </li>
 
                         <li class="breadcrumb-item" aria-current="page">
@@ -70,7 +70,7 @@
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($milestone->content);
+                echo $content = $milestone->content;
                 @endphp
             
             

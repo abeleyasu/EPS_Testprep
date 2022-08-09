@@ -145,20 +145,23 @@
 						<a class="link-fx text-dark" href="javascript:;">Courses</a>
 					</li>
                     <li class="breadcrumb-item">
-                            <a class="link-fx text-dark" href="javascript:;">{{$course[0]->title}}</a>
+                            <a class="link-fx text-dark" href="javascript:;">@if(isset($course[0])) {{$course[0]->title}} @endif</a>
                         </li>					
 					<li class="breadcrumb-item">
 						<a class="link-fx text-dark" href="javascript:;">
 						@php
+						if(isset($milestone) && !empty($milestone)){
 							$stringLen = strlen($milestone->name);
-						@endphp
-						@if ($stringLen>25)
-							@php $convetStr = substr($milestone->name, 0, 25); @endphp
-							{{$convetStr}}...
-						@else
-							{{ $milestone->name }}
-						@endif		
 						
+							if ($stringLen>25){
+								$convetStr = substr($milestone->name, 0, 25);
+								echo $convetStr.'...';
+							}else{
+								echo $milestone->name;
+							}
+						}
+								
+						@endphp
 						</a>
 					</li>
 						

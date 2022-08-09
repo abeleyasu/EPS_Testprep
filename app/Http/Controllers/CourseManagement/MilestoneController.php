@@ -50,34 +50,34 @@ class MilestoneController extends Controller
                 // $totalmilestone[$courseid] = count($coursemilestones);
                 $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->where('published',1)->get();
                 $totalmilestone[$courseid]['total_milestone'] = count($coursemilestones);
+                
                 $totalmilestone[$courseid]['completed_task'] = 0;
 				$totalmilestone[$courseid]['total_module'] = 0;
-				$total_milestone_task = 0;
-				$completed_milestone_task = 0;
+				$total_milestone_completion_percent = 0;
 				foreach($coursemilestones as $mkey=>$milestone){
-					$completemoduletask = 0;
-					$totalmoduletask = 0;
-					$total_module = 0;
-					foreach($milestone->modules as $module){
-						$all_tasks = $module->tasks(auth()->id());
-						$all_tasks = $all_tasks->filter(function($item) {
-							return  $item->status == 'paid';
-						});
-						$totalmoduletask = $totalmoduletask + count($all_tasks);
-						$user_tasks = $all_tasks->filter(function($item) {
-							return $item->user_id == auth()->id() &&  $item->complete ==1 && $item->status == 'paid';
-						});
-						$completemoduletask =  $completemoduletask + count($user_tasks);
-					}
-					$total_milestone_task = $total_milestone_task + $totalmoduletask;
-					$completed_milestone_task = $completed_milestone_task + $completemoduletask;
-					$total_module = $total_module + count($milestone->modules);
+					$completedmodule=0;
+					$totalmodules=0;
+					$modules =  $milestone->modules();
+					$totalmodules = $modules->count();
+					foreach($milestone->modules as $mmkey=>$module){
+						 $mtotaltasks = $module->tasks()->count();
+						 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+						 if($mtotaltasks == $mtotalcompletetasks){
+							$completedmodule++;
+						 }elseif($mtotalcompletetasks > 0){
+						     $completedmodule = $mtotalcompletetasks / $mtotaltasks;
+						 }
+					 }
+					 if($completedmodule > 0){
+						$modulepercentage = floor(($completedmodule/$totalmodules)*100);
+						$total_milestone_completion_percent = $total_milestone_completion_percent + $modulepercentage;
+					 }
+				}			
+				if($total_milestone_completion_percent > 0){
+					$completed_task_per = $total_milestone_completion_percent / count($coursemilestones);
+					$totalmilestone[$courseid]['completed_task'] = round($completed_task_per);
 				}
-				$totalmilestone[$courseid]['total_module'] = $total_module;
-				if($completed_milestone_task != 0){					
-					$completed_task_per = ($completed_milestone_task * 100) / $total_milestone_task;
-					$totalmilestone[$courseid]['completed_task'] = $completed_task_per;
-				}
+               
             }
         }
         return view('student.courses.index', compact('courses','totalmilestone'));

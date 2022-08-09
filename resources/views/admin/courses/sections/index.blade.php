@@ -57,7 +57,7 @@
 									{!! $section->description !!}
 								@endif
                             </td>
-							<td>{{$section->module->milestone->name}}</td>
+							<td>@if($section->module && $section->module->milestone) {{$section->module->milestone->name}} @endif</td>
 							<td>{{$section->module->title}}</td>
                             <td>
                                 <div class="btn-group">

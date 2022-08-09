@@ -156,7 +156,7 @@
 	</div>
 	<div class="content content-boxed">
         <div class="row">
-			<div class="block-content" style="margin-bottom:20px;">
+			<div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $description = $section->description;
                 @endphp
@@ -164,7 +164,7 @@
             
             </div>
 
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $content = strip_tags($section->content);
                 @endphp            

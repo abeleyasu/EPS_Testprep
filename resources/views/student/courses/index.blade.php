@@ -128,82 +128,17 @@
 
                 <div class="row items-push py-4">
                     @php
-                    $completion_percent = 0; 
-                    $totaltask = 0;
-                    $completedtask = 0;
-                    $completedmodule = 0;
-                    $totalmodules = 0;
-					$totalperProfres=0;
                     
-					foreach($courses as $key => $course){
-						if($course->getmilestones()){
-
-							$completeMilestone=0;
-							$totalperProfres=0;
-							$totalMilestone= $course->getmilestones()->count();
-
-							foreach($course->getmilestones() as $key => $milestone){
-
-								$mtotaltasks = $milestone->tasks(auth()->id())->count();
-								$mtotalcompletetasks = $milestone->completeTasks(auth()->id())->count();
-
-								if($mtotaltasks == $mtotalcompletetasks){
-								$completeMilestone++;
-								}
-								if($totalMilestone>0){
-								$totalperProfres = floor($completeMilestone/$totalMilestone * 100);	
-								}else{
-								$totalperProfres = 0;
-								}
-								if($milestone->modules()){
-
-
-									$totalmodules =  $milestone->modules()->count();
-
-									foreach($milestone->modules() as $module){
-								 
-										$all_tasks = $module->tasks(auth()->id());
-										$totalmoduletask = count($all_tasks);
-
-
-										if($all_tasks->count() > 0) {
-											$tasks = $all_tasks->unique('id');
-											$moduletask =  count($tasks);
-											$totaltask += count($tasks);
-											$user_tasks = $all_tasks->filter(function($item) {
-												return $item->user_id == auth()->id() &&  $item->complete ==1;
-											});
-											  $completemoduletask =  count($user_tasks);
-											if($moduletask == $completemoduletask){
-												 $completedmodule += 1;
-											}
-											$completedtask += count($user_tasks);
-											$user_tasks= $user_tasks->count() > 0?
-											array_map(function ($item){
-												return $item['id'];
-											},$user_tasks->toArray())
-											:
-											[];
-
-										}
-
-									}
-								}
-							}
-						}
-                                    
 						$completion_percent = 0; 
-						$modulepercentage = 0;
-						if($totalmodules >0){
-							$modulepercentage = ($completedmodule*100)/$totalmodules;
-							if($totaltask){
+						$totaltask = 0;
+						$completedtask = 0;
+						
+						foreach($courses as $key => $course){
+							$totaltask = $course->tasks()->count();
+							if($totaltask>0){
+								$completedtask = $course->completeTasks(auth()->id())->count();
 								$completion_percent = floor(($completedtask/$totaltask)*100);
-							}else{
-								$completion_percent = 0; 
-							}
-						}
-                                    
-                                    
+							}     
                     @endphp
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
@@ -232,9 +167,9 @@
                                     </h4>
                                     <div class="row mb-2">
 										<div class="col-12">
-											<div class="progress" style="background:#c4c5c7;">
+											<div class="progress coursesBar" style="background:#c4c5c7;">
 													<div class="progress-bar "
-														style="background-color: blue; width: {{ $totalperProfres }}%"
+														style="background-color: blue; width: {{ $completion_percent }}%"
 														role="progressbar"
 														aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 											</div>

@@ -22,4 +22,10 @@ class UserController extends Controller
 			return redirect('/user/dashboard');
 		}		
     }
+	
+	public function clearCache()
+    {
+        \Artisan::call('optimize:clear');
+		echo 'Cache Removed';
+    }
 }

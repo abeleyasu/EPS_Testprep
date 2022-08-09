@@ -27,7 +27,7 @@
                     </h1>
                     <h2 class="h4 fw-normal text-white-75">
                         {{ $totalmilestones }} milestones
-                    </h2>
+                    </h2> 
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row coursedesc">
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $description = $course->description;
                 @endphp
@@ -71,7 +71,7 @@
             </div>
 		</div>
 		<div class="row">
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $content = strip_tags($course->content);
                 @endphp
@@ -84,39 +84,40 @@
                 <!-- Lessons -->
 								
 						@php 
-						 $totalMilestone=0;
-						 $completion_percent=0;
+						 
 						 
 					
 						foreach($milestones as $mkey=>$milestone){
-						$completedmodule=0;
-						$totalmodules=0;
-						 $modulepercentage=0;
-						
-						$modules =  $milestone->modules();
-						$totalmodules = $modules->count();
-						
-						$tasks =  $milestone->tasks();
-						$totalTasks =  $tasks->count();
-						$completeTasks =  $milestone->completeTasks(auth()->id());
-						$totalCompleteTasks =  $completeTasks->count();
-						 $totalMilestone=$totalMilestone+1;
-						 if($totalCompleteTasks>0){
-							 $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
-						 }
-						 
-						 
-						 foreach($milestone->modules as $mmkey=>$module){
-							 $mtotaltasks = $module->tasks(auth()->id())->count();
-							 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
-							 if($mtotaltasks == $mtotalcompletetasks){
-								$completedmodule++;
+							$totalMilestone=0;
+						 $completion_percent=0;
+							$completedmodule=0;
+							$totalmodules=0;
+							 $modulepercentage=0;
+							
+							$modules =  $milestone->modules();
+							$totalmodules = $modules->count();
+							
+							$tasks =  $milestone->tasks();
+							$totalTasks =  $tasks->count();
+							$completeTasks =  $milestone->completeTasks(auth()->id());
+							$totalCompleteTasks =  $completeTasks->count();
+							 $totalMilestone=$totalMilestone+1;
+							 if($totalCompleteTasks>0){
+								 $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
 							 }
-						 }
-						 if($completedmodule>0){
-							$modulepercentage = floor(($completedmodule/$totalmodules)*100);	
-						 }
-						 
+							 
+							 
+							 foreach($milestone->modules as $mmkey=>$module){
+								 $mtotaltasks = $module->tasks()->count();
+								 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+								 if($mtotaltasks == $mtotalcompletetasks){
+									$completedmodule++;
+								 }
+							 }
+							 if($completedmodule>0){
+								$modulepercentage = floor(($completedmodule/$totalmodules)*100);	
+							 }
+							 
 						@endphp
                         <div class="block block-rounded">
 						@if($milestone->modules)

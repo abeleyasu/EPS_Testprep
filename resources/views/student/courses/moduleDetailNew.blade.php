@@ -199,7 +199,7 @@
 	------->
 	<div class="content content-boxed">
         <div class="row">
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $description = $module->description;
                 @endphp
@@ -207,7 +207,7 @@
             
             </div>
 
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $content = strip_tags($module->content);
                 @endphp
@@ -269,6 +269,7 @@
                         <div class="block block-rounded">
 						
 									@php
+									$completion_percent =0;
 									$tasks = $section->totalTasks();
 									$totaltasks = $tasks->count();
 									$completeTasks = $section->sectionCompleteTasks(auth()->id());

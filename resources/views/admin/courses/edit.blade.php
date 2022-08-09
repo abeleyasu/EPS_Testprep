@@ -370,8 +370,12 @@
         var previewModal = new bootstrap.Modal(document.getElementById('previewModal'), {
             keyboard: false
         });
-        One.helpersOnLoad(['js-ckeditor']);
-
+        //One.helpersOnLoad(['js-ckeditor']);
+        var allowedContent = true;
+		CKEDITOR.replace( 'js-ckeditor',{
+			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			allowedContent,
+		});
         function calculateTime(val) {
             setTimeout(() => {
                 let _min = $(val).val();
@@ -456,10 +460,14 @@
 
             // Init full text editor
             if (ckeditorFull) {
+                var allowedContent = true;
                 CKEDITOR.replace( 'js-ckeditor-desc', {
                 customConfig: '/assets/js/plugins/ckeditor/config.js',
                 filebrowserBrowseUrl : '/browse.php',
-                filebrowserUploadUrl : '/upload.php'
+                filebrowserUploadUrl : '/upload.php',
+                extraPlugins: 'videoembed, colorbutton,colordialog,font',
+			    allowedContent,
+			    colorButton_enableMore: true
                 
             });
 

@@ -120,7 +120,7 @@
         <div class=" py-5">
 
             <div class="row" style="width: 99%">
-                <div class="col-lg-9 col-md-9 col-sm-12 mx-auto">
+                <div class="col-lg-9 col-md-9 col-sm-12 mx-auto videoResp">
                     <p>{!! $module->content !!}</p>
                     <!-- Timeline -->
                     <ul class="timeline" style="position:inherit;">

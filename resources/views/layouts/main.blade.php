@@ -78,5 +78,21 @@
 	<script src="{{asset('assets/js/custom.js')}}"></script>
     <!-- Page JS Code -->
     @yield('page-script')
+	<script>
+	 $(document).ready(function(){
+		 setTimeout(function(){ 
+			 $('.videoResp .fullwidth_center iframe').width('100%');
+			 $('.videoResp .fullwidth_center').css('text-align','center');
+			 $('.videoResp .fullwidth_left iframe').width('100%');
+			 $('.videoResp .fullwidth_left').css('text-align','left');
+			 $('.videoResp .fullwidth_right iframe').width('100%');
+			 $('.videoResp .fullwidth_right').css('text-align','right');
+			 
+			 $('.videoResp img').width('100%');
+			 $('.videoResp img').width('100%');
+			 $('.videoResp img').width('100%');
+		 }, 1000);	 
+	 });
+	</script>
   </body>
 </html>

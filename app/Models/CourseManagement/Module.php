@@ -30,7 +30,7 @@ class Module extends Model
     public function sections() {
         return $this->hasMany(Section::class);
     }
-	public function tasks($userId) {
+	public function tasks() {
         $tasks = Task::select('tasks.*')
 				->join('sections', 'section_id', 'sections.id')
 				->join('modules','sections.module_id','modules.id')

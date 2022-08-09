@@ -58,7 +58,7 @@
 									{!! $module->description !!}
 								@endif
                             </td>
-							<td>{{$module->milestone->name}}</td>
+							<td>@if($module->milestone && $module->milestone->name) {{$module->milestone->name}} @endif</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('modules.edit', ['module' => $module->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Milestone">

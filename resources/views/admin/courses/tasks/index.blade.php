@@ -60,8 +60,8 @@
 								@endif
                                 
                             </td>
-							<td>{{$task->section->module->milestone->name}}</td>
-							<td>{{$task->section->module->title}}</td>
+							<td>@if($task->section->module && $task->section->module->milestone) {{$task->section->module->milestone->name}} @endif</td>
+							<td>@if($task->section->module) {{$task->section->module->title}} @endif</td>
 							<td>{{$task->section->title}}</td>
 							<td>
 								@php $positioncount = 0; $taskPosition=1; @endphp

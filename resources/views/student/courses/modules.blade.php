@@ -67,7 +67,7 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row">
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $description = $milestone->description;
                 @endphp
@@ -75,7 +75,7 @@
             
             </div>
 
-            <div class="block-content" style="margin-bottom:20px;">
+            <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
                 echo $content = $milestone->content;
                 @endphp
@@ -125,11 +125,11 @@
                     @php
 						foreach($milestone->modules as $key => $module){
 
-												
+							$sectionpercentage = 0;					
 							$completedsection = 0;
 							$totaltasks = 0;
 							
-                            $tasks = $module->tasks(auth()->id());
+                            $tasks = $module->tasks();
 							$totalTasks = $tasks->count();
 							
                             $completeTasks = $module->completeTasks(auth()->id());

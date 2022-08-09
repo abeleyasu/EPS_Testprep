@@ -131,7 +131,7 @@
 
 
                                 @php
-                                    $all_tasks = $module->tasks(auth()->id());
+                                    $all_tasks = $module->tasks();
                                     $completion_percent = 0;
                                     if($all_tasks->count() > 0) {
                                     $tasks = $all_tasks->unique('id');

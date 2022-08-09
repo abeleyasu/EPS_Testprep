@@ -191,8 +191,12 @@
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
         });
-        One.helpersOnLoad(['js-ckeditor']);
-
+        // One.helpersOnLoad(['js-ckeditor']);
+        var allowedContent = true;
+		CKEDITOR.replace( 'js-ckeditor',{
+			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			allowedContent
+		});
 
         function openOrderDialog() {
             $('#listWithHandle').empty();
