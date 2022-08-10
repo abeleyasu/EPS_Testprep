@@ -186,7 +186,7 @@ button:hover {
 						</div>
 						<div class="col-md-12">
 							<label class="form-label">Test Type:</label>
-							<select id="format" name="testformat" class="form-control">
+							<select id="format" name="format" class="form-control">
 								@foreach($testformats as $key=>$testformat)
 								<option value="{{$key}}" {{$practicetests->testformat == $key ? 'selected': '';}}>{{$testformat}}</option>
 								@endforeach
@@ -196,8 +196,8 @@ button:hover {
                 </div>
                 <div class="tab">
                     <div class="mb-2 mb-4">
-						<label for="testdescription" class="form-label">Description:</label>
-						<textarea id="js-ckeditor-desc" name="testdescription" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" >{{$practicetests->testdescription}}</textarea>
+						<label for="description" class="form-label">Description:</label>
+						<textarea id="js-ckeditor-desc" name="description" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" >{{$practicetests->testdescription}}</textarea>
 						@error('description')
 							<div class="invalid-feedback">{{$message}}</div>
 						@enderror
@@ -207,6 +207,13 @@ button:hover {
 							<i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question
 						</button>
 					</div>
+					<div class="col-md-6">
+						<ul class="list-group">
+						@foreach($testQuestions as $key => $question)
+							<li class="list-group-item question_{{$question->id}}"><span style="width: 84%; float: left;">Question {{($key+1)}}</span> <span style="width: 15%; float: right;"><i class="fa fa-fw fa-pencil-alt edit_question" data-id="{{$question->id}}" style="margin-right: 4px;"></i><i class="fa fa-fw fa-times delete_question" data-id="{{$question->id}}"></i></span></li>
+						@endforeach
+						</ul>
+					</div>
                 </div>
                 <div style="overflow:auto;" id="nextprevious">
                     <div style="float:right;"> <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button> </div>
@@ -215,12 +222,15 @@ button:hover {
     </div>
 </div>
                             <!----------------->
+							
                         </div>
                     </div>
                 </div>
              </div>
          </div>
-		 
+    </form>
+</main>
+
 <!-- END Main Container -->
 <div class="modal fade" id="questionModal"
 
@@ -236,7 +246,7 @@ button:hover {
 				<div class="row">
 					<div class="mb-2">
 						<label class="form-label">Question Type:</label>
-						<select id="format" name="questionformat" class="form-control">
+						<select id="format" name="format" class="form-control">
 							@foreach($questionformats as $key=>$questionformat)
 							<option value="{{$key}}" {{$practicetests->questionformat == $key ? 'selected': '';}}>{{$questionformat}}</option>
 							@endforeach
@@ -252,19 +262,19 @@ button:hover {
 					</div>
 					<div class="mb-2 mb-4">
 						<label for="description" class="form-label">Description:</label>
-						<textarea id="js-ckeditor-que-desc" name="questiondescription" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" >{{$practicetests->questiondescription}}</textarea>
+						<textarea id="js-ckeditor-que-desc" name="description" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" >{{$practicetests->questiondescription}}</textarea>
 					</div>
 				</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="$('#questionModal').modal('hide');">Save changes</button>
+				<input type="hidden" class="question_id" value="" />
+                <button type="button" class="btn btn-primary save_question">Save changes</button>
+                <button type="button" class="btn btn-primary update_question">Update changes</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Modal -->
-    </form>
-</main>
 
 @endsection
 
@@ -276,15 +286,97 @@ button:hover {
 <script>
 		var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor-desc',{
-			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			extraPlugins: 'colorbutton,colordialog,font,oembed',
 			allowedContent
 		});
 		CKEDITOR.replace( 'js-ckeditor-que-desc',{
-			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font',
 			allowedContent
 		});
 		$('.add_question_modal_btn').click(function() {
+			$('.save_question').show();
 			$('#questionModal').modal('show');
+		});
+		
+		$('.delete_question').click(function() {
+			var result = confirm('Are you sure to remove ?');
+			if(!result) {
+				return false;
+			}
+			var id = $(this).data('id');
+			$.ajax({
+                 data:{
+					'id': id,
+					'_token': $('input[name="_token"]').val()
+				},
+                url: '{{route("deletePracticeQuestionById")}}',
+                method: 'post',
+                success: (res) => {
+					$('.question_'+id).remove();
+                }
+            });
+		});
+		
+		$('.edit_question').click(function() {
+			var id = $(this).data('id');
+			$.ajax({
+                data:{
+					'id': id,
+					'_token': $('input[name="_token"]').val()
+				},
+                url: '{{route("getPracticeQuestionById")}}',
+                method: 'post',
+                success: (res) => {
+					console.log(res['description']);
+					var id = $('.question_id').val(res['id']);
+					var formate = res['format'];
+					var testid = res['testid'];
+					
+					$('#format option[value="'+formate+'"]').attr("selected", "selected");
+					$('#practicetestid option[value="'+testid+'"]').attr("selected", "selected");
+					CKEDITOR.instances['js-ckeditor-que-desc'].setData(res['description']);
+					$('#questionModal').modal('show');
+                }
+            });
+		});
+		
+		$('.save_question').click(function() {
+			var format = $('#format').val();
+			var practicetestid = $('#practicetestid').val();
+			var description = CKEDITOR.instances['js-ckeditor-que-desc'].getData();
+			$.ajax({
+                data:{
+					'format': format,
+					'practicetestid': practicetestid,
+					'description': description,
+					'_token': $('input[name="_token"]').val()
+				},
+                url: '{{route("addPracticeQuestion")}}',
+                method: 'post',
+                success: (res) => {
+					alert('Question Added');
+                }
+            });
+		});
+		$('.update_question').click(function() {
+			var id = $('.question_id').val();
+			var format = $('#format').val();
+			var practicetestid = $('#practicetestid').val();
+			var description = CKEDITOR.instances['js-ckeditor-que-desc'].getData();
+			$.ajax({
+                data:{
+					'id': id,
+					'format': format,
+					'practicetestid': practicetestid,
+					'description': description,
+					'_token': $('input[name="_token"]').val()
+				},
+                url: '{{route("updatePracticeQuestion")}}',
+                method: 'post',
+                success: (res) => {
+					alert('Question Updated');
+                }
+            });
 		});
 	</script>
 <script>

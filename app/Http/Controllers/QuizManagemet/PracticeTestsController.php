@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CRUD;
 use App\Models\PracticeTest;
+use App\Models\PracticeQuestion;
 use Illuminate\Support\Facades\View;
 
 class PracticeTestsController extends Controller
@@ -45,17 +46,14 @@ class PracticeTestsController extends Controller
     {
 		$practice = new PracticeTest();
 		$practice->title = $request->title;
-		$practice->testformat = $request->testformat;
-		$practice->testdescription = $request->testdescription;
-		$practice->questionformat = $request->questionformat;
-		if($request->testid != 0){
-			$practice->testid = $request->testid;
-		}
-		$practice->questiondescription = $request->questiondescription;
+		$practice->format = $request->format;
+		$practice->description = $request->description;
 		$practice->save();
-		if($request->testid == 0){
-			$practice->testid = $practice->id;
-			$practice->save();
+		
+		$questions = PracticeQuestion::where('testid', 0)->get();
+		foreach($questions as $question) {
+			$question->testid = $practice->id;
+			$question->save();
 		}
 		
         return redirect()->route('practicetests.index')->with('message','Test created successfully');
@@ -82,7 +80,8 @@ class PracticeTestsController extends Controller
     {
 		$practicetests = PracticeTest::find($id);
 		$tests = PracticeTest::get();
-        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests'));
+		$testQuestions = PracticeQuestion::where('testid', $id)->get();
+        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions'));
     }
 
     /**
@@ -96,11 +95,8 @@ class PracticeTestsController extends Controller
     {
 		$practice = PracticeTest::find($request->id);
 		$practice->title = $request->title;
-		$practice->testformat = $request->testformat;
-		$practice->testdescription = $request->testdescription;
-		$practice->questionformat = $request->questionformat;
-		$practice->testid = $request->testid;
-		$practice->questiondescription = $request->questiondescription;
+		$practice->format = $request->format;
+		$practice->description = $request->description;
 		$practice->save();
         return redirect()->route('practicetests.index')->with('message','Question updated successfully');
     }

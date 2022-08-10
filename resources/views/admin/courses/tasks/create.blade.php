@@ -162,7 +162,7 @@
         One.helpersOnLoad(['js-ckeditor', 'jq-select2']);
         var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor',{
-			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font',
 			allowedContent
 		});
 

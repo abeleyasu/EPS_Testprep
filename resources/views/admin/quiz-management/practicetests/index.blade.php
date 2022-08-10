@@ -43,7 +43,7 @@
                         @foreach($tests as $test)
                         <tr>
                             <td class="fw-semibold fs-sm">{{$test->title}}</td>
-							<td>{{$testformats[$test->testformat]}}</td>
+							<td>{{$testformats[$test->format]}}</td>
                             <td>
 							<div class="btn-group">
                                     <a href="{{route('practicetests.edit', ['practicetest' => $test->id])}}"

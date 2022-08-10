@@ -212,7 +212,7 @@
         // One.helpersOnLoad(['js-ckeditor']);
         var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor',{
-			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font',
 			allowedContent
 		});
 
@@ -301,7 +301,7 @@
                 // CKEDITOR.replace('js-ckeditor-desc');
                 var allowedContent = true;
         		CKEDITOR.replace( 'js-ckeditor-desc',{
-        			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+        			extraPlugins: 'oembed,colorbutton,colordialog,font',
         			allowedContent
         		});
                 // Add .js-ckeditor-enabled class to tag it as activated

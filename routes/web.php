@@ -18,6 +18,7 @@ use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
+use \App\Http\Controllers\QuizManagemet\PracticeQuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,9 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     // questions
     Route::resource('questions', QuestionsController::class);
 	Route::resource('practicetests', PracticeTestsController::class);
+	Route::post('updatePracticeQuestion', [PracticeQuestionController::class, 'updatePracticeQuestion'])->name('updatePracticeQuestion');
+	Route::post('getPracticeQuestionById', [PracticeQuestionController::class, 'getPracticeQuestionById'])->name('getPracticeQuestionById');
+	Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
 });
 
 //User Routes

@@ -189,7 +189,7 @@ button:hover {
 						</div>
 						<div class="col-md-12">
 							<label class="form-label">Test Type:</label>
-							<select id="format" name="testformat" class="form-control">
+							<select id="format" name="format" class="form-control">
 								@foreach($testformats as $key=>$testformat)
 								<option value="{{$key}}">{{$testformat}}</option>
 								@endforeach
@@ -200,7 +200,7 @@ button:hover {
                 <div class="tab">
                     <div class="mb-2 mb-4">
 						<label for="testdescription" class="form-label">Description:</label>
-						<textarea id="js-ckeditor-desc" name="testdescription" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" ></textarea>
+						<textarea id="js-ckeditor-desc" name="description" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" ></textarea>
 						@error('description')
 							<div class="invalid-feedback">{{$message}}</div>
 						@enderror
@@ -223,13 +223,12 @@ button:hover {
                 </div>
             </div>
         </div>
-		
-		<!-- END Main Container -->
-<div class="modal fade" id="questionModal"
+    </form>
+</main>
 
-     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- END Main Container -->
+<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" >Add Question</h5>
@@ -260,17 +259,12 @@ button:hover {
 				</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="$('#questionModal').modal('hide');">Save changes</button>
+                <button type="button" class="btn btn-primary save_question">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Modal -->
-
-    </form>
-</main>
-
-
 
 
 @endsection
@@ -282,11 +276,11 @@ button:hover {
 	<script>
 		var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor-desc',{
-			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font',
 			allowedContent
 		});
 		CKEDITOR.replace( 'js-ckeditor-que-desc',{
-			extraPlugins: 'videoembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font',
 			allowedContent
 		});
 		$('.add_question_modal_btn').click(function() {
@@ -296,6 +290,24 @@ button:hover {
 			}
 			$('#practicetestid').append('<option value="0" selected>'+title+'</option>');
 			$('#questionModal').modal('show');
+		});
+		$('.save_question').click(function() {
+			var format = $('#format').val();
+			var practicetestid = $('#practicetestid').val();
+			var description = CKEDITOR.instances['js-ckeditor-que-desc'].getData();
+			$.ajax({
+                data:{
+					'format': format,
+					'practicetestid': practicetestid,
+					'description': description,
+					'_token': $('input[name="_token"]').val()
+				},
+                url: '{{route("addPracticeQuestion")}}',
+                method: 'post',
+                success: (res) => {
+					alert('Question Added');
+                }
+            });
 		});
 	</script>
 <script>
