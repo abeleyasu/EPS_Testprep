@@ -137,7 +137,7 @@
                     {{ $module->title }}
                 </h1>
                 <h2 class="h4 fw-normal text-white-75">
-                    {{ $module->sections->count() }} sections
+                    {{ $module->sections->count() }} Sections
                 </h2>
             </div>
         </div>
@@ -274,8 +274,10 @@
 									$totaltasks = $tasks->count();
 									$completeTasks = $section->sectionCompleteTasks(auth()->id());
 									$totalCompleteTasks = $completeTasks->count();
-                                    
-									$completion_percent = floor($totalCompleteTasks/$totaltasks * 100);
+                                    if($totaltasks>0){
+										$completion_percent = floor($totalCompleteTasks/$totaltasks * 100);	
+									}
+									
                                     
 									
                                     
@@ -374,7 +376,7 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-fw fa-book me-1"></i>
-                                    {{ $module->sections->count() }} sections
+                                    {{ $module->sections->count() }} Sections
                                 </td>
                             </tr>
 {{--                            <tr>--}}

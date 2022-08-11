@@ -24,19 +24,7 @@
                         </div>
                         <div class="block-content block-content-full">
 
-                            <div class="mb-2">
-                                <label for="name" class="form-label">Section:</label>
-                                <select class=" form-control {{$errors->has('section_id') ? 'is-invalid' : ''}}"
-                                        name="section_id" required >
-                                    @foreach($sections as $section)
-                                        <option value="{{$section->id}}">{{ $section->title }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('title')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
+                          
                             <div class="mb-2">
                                 <label for="title" class="form-label">Title:</label>
                                 <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('title') ? 'is-invalid' : ''}}"
@@ -95,6 +83,29 @@
                                     </div>
                                 </div>
                             </div>
+							<div class="mb-2">
+                                <label for="type" class="form-label">Parent Section:</label>
+                                <select name="section_id" class="form-control" id="section_id">
+                                    @foreach($sections as $section)
+                                        <option value="{{$section->id}}"> {{ $section->title }}</option>
+                                    @endforeach
+                                </select>
+                                @error('section_id')
+                                <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
+							<div class="mb-2">
+                                <label class="form-label" for="order">Order</label>
+
+                                <div class="input-group mb-3">
+                                    <input type="number" readonly class="form-control" name="order" value="{{ $tasks+1 }}"
+                                        id="order"/>
+                                    <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                </div>
+
+                            </div>
                             <div class="mb-2">
                                 <label class="form-label" for="tags">Tags</label>
                                 <input type="text" maxlength="30"
@@ -131,7 +142,39 @@
         </div>
     </form>
 </main>
+<!-- END Main Container -->
+<div class="modal fade" id="dragModal"
 
+     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Top level</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- List with handle -->
+                <div id="listWithHandle" class="list-group">
+
+                    <div class="list-group-item">
+
+                        <span class="glyphicon glyphicon-move" aria-hidden="true">
+                            <i class="fa-solid fa-grip-vertical"></i>
+                        </span>
+
+                        <button class="btn btn-primary"> Current Section</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveOrder()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
     @include('admin.preview.task')
 
 
@@ -140,6 +183,8 @@
 
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('assets/js/plugins/select2/js/select2.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
 
     <script>
@@ -158,6 +203,10 @@
         }
       });
     });
+	 var order = 0;
+        var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
+            keyboard: false
+        });
 
         One.helpersOnLoad(['js-ckeditor', 'jq-select2']);
         var allowedContent = true;
@@ -166,8 +215,66 @@
 			allowedContent
 		});
 
-        function previewModal() {}
+		function openOrderDialog() {
+            $('#listWithHandle').empty();
 
+            let section_id = $('#section_id').val();
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: `/api/sections/${section_id}/tasks`,
+                method: 'post',
+                success: (res) => {
+                    res.data.forEach(i => {
+
+                        $('<div class="list-group-item">\n' +
+                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                            '</span>\n' +
+                            '<button class="btn btn-primary" value="'+i.id+'">'+i.title+'</button>\n' +
+                            '</div>').appendTo('#listWithHandle');
+                    });
+
+                    myModal.show();
+                }
+            });
+        }
+
+        function saveOrder() {
+            /*$('#order').val(order);*/
+            myModal.hide();
+        }		
+        function previewModal() {}
+	 // List with handle
+        Sortable.create(listWithHandle, {
+            handle: '.glyphicon-move',
+            animation: 150,
+            onEnd: function(evt) {
+                let data = {
+                    new_index: evt.newIndex+1,
+                    old_index: evt.oldIndex+1,
+                    item: evt.item.children[1].value,
+					currTaskId:0
+                };
+				
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: `/api/tasks/${data.item}/reorder`,
+                    method: 'post',
+                    data:data,
+                    success: (res) => {
+
+                    },
+                    error: () => {
+                        alert('Something went wrong')
+                    }
+                });
+            }
+        },);
 
     </script>
 @endsection

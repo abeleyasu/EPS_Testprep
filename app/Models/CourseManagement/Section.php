@@ -19,7 +19,7 @@ class Section extends Model
     ];
 
     public function tasks() {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class)->orderBy('order');
     }
 	public function totalTasks() {
         return $this->tasks()->where('published','=', 1);
@@ -31,7 +31,8 @@ class Section extends Model
             ->join('sections', 'section_id', 'sections.id')
             ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
 			->where('tasks.published',1)
-            ->where('sections.id', $this->id)->get();
+            ->where('sections.id', $this->id)
+			->orderBy('order')->get();
         return $tasks;
     }
     public function module() {

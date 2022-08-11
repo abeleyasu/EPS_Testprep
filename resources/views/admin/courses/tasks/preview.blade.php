@@ -42,7 +42,7 @@
 						
 						<a class="link-fx text-dark" href="javascript:;">
 						@php
-						if(isset($milestone)){
+						if(isset($milestone) && !empty($milestone)){
 							$stringLen = strlen($milestone->name);
 							if ($stringLen>25){
 								$convetStr = substr($milestone->name, 0, 25);

@@ -90,22 +90,15 @@
                                    
                                 </div>
 							</div>
-                            <div class="row">
-                                <!--<button type="button" class="btn w-25 btn-alt-success"
-                                        onclick="previewMilestone()">
-                                    <i class="fa fa-fw fa-eye me-1 opacity-50"></i> Preview
-                                </button>-->
-								<div class="col-md-6 col-xl-6">
-									<button type="submit" class="btn btn-alt-success">
-										<i class="fa fa-fw fa-plus me-1 opacity-50"></i> update Course
-									</button>
-								</div>	
-								<div class="col-md-6 col-xl-6 text-end">	
-									<a href="{{ route('milestones.create')}}" class="btn btn-sm btn-primary">
-										<i class="fa fa-plus" ></i> New Milestone
-									</a>
-								</div>
-                            </div>
+							<a href="{{ route('milestones.create')}}" class="addchild btn w-100 btn-alt-light text-center"
+                                        >
+                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Milestone
+                                </a>
+                                <div class="col-md-6 col-xl-5 mb-4">
+                                    <button type="submit" class="btn w-100 btn-alt-success">
+                                        Update Course
+                                    </button>
+                                </div>
 							
                         </div>
                     </div>

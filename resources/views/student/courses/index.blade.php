@@ -128,17 +128,17 @@
 
                 <div class="row items-push py-4">
                     @php
-                    
-						$completion_percent = 0; 
-						$totaltask = 0;
-						$completedtask = 0;
 						
 						foreach($courses as $key => $course){
+							$completion_percent = 0; 
+							$totaltask = 0;
+							$completedtask = 0;
+							
 							$totaltask = $course->tasks()->count();
 							if($totaltask>0){
 								$completedtask = $course->completeTasks(auth()->id())->count();
 								$completion_percent = floor(($completedtask/$totaltask)*100);
-							}     
+							}    
                     @endphp
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
@@ -202,7 +202,7 @@
 										<div class="col-12">
 											<div class="progress" style="background:#c4c5c7;">
 													<div class="progress-bar "
-														style="background-color: blue; width: {{$totalmilestone[$course->id]['completed_task']}}%"
+														style="background-color: blue; width:{{ $completion_percent }}%"
 														role="progressbar"
 														aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 											</div>

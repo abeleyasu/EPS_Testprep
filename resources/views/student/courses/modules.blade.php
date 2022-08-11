@@ -26,7 +26,7 @@
                         {{ $milestone->name }}
                     </h1>
                     <h2 class="h4 fw-normal text-white-75">
-                        {{ $milestone->modules->count() }} modules
+                        {{ $milestone->modules->count() }} Modules
                     </h2>
                 </div>
             </div>
@@ -138,8 +138,10 @@
 							$completion_percent = 0;
 							$sectotaltasks = 0;
 							$sectotalCompleteTasks = 0;
+							if($totalTasks>0){
+								$completion_percent = floor($totalCompTasks/$totalTasks * 100);
+							}
 							
-							$completion_percent = floor($totalCompTasks/$totalTasks * 100);
 							$sections = $module->sections();
 							$totalSections = $sections->count();
 							$comSections=0;
@@ -148,13 +150,17 @@
 									$sectotaltasks = $sectasks->count();
 									$seccompleteTasks = $section->sectionCompleteTasks(auth()->id());
 									$sectotalCompleteTasks = $seccompleteTasks->count();
-									if($sectotaltasks == $sectotalCompleteTasks){
-										$comSections++;
-									}
+									if($sectotaltasks>0){
+										if($sectotaltasks == $sectotalCompleteTasks){
+											$comSections++;
+										}
+									}										
 								
 								}
+							if($totalSections>0){
+								$sectionpercentage = floor($comSections/$totalSections * 100);	
+							}
 							
-							$sectionpercentage = floor($comSections/$totalSections * 100);	
 							
 							
 							@endphp

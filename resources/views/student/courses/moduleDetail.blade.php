@@ -109,7 +109,7 @@
                     {{ $module->title }}
                 </h1>
                 <h2 class="h4 fw-normal text-white-75">
-                    {{ $module->sections->count() }} sections
+                    {{ $module->sections->count() }} Sections
                 </h2>
             </div>
         </div>

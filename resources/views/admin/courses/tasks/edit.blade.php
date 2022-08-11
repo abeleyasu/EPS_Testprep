@@ -21,21 +21,7 @@
                         </div>
                         <div class="block-content block-content-full">
 
-                            <div class="mb-2">
-                                <label for="name" class="form-label">Section:</label>
-                                <select class=" form-control {{$errors->has('section_id') ? 'is-invalid' : ''}}"
-                                        name="section_id" required >
-                                    @foreach($sections as $section)
-                                        <option value="{{$section->id}}"
-                                                @if($task->section_id == $section->id) selected @endif
-                                        >{{ $section->title }}</option>
-                                    @endforeach
-                                </select>
-
-                                @error('title')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
+                            
                             <div class="mb-2">
                                 <label for="title" class="form-label">Title:</label>
                                 <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('title') ? 'is-invalid' : ''}}"
@@ -89,6 +75,33 @@
                                     </div>
                                 </div>
                             </div>
+							<div class="mb-2">
+                                <label for="name" class="form-label">Section:</label>
+                                <select class=" form-control {{$errors->has('section_id') ? 'is-invalid' : ''}}"
+                                        name="section_id" id="section_id" required >
+                                    @foreach($sections as $section)
+                                        <option value="{{$section->id}}"
+                                                @if($task->section_id == $section->id) selected @endif
+                                        >{{ $section->title }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('title')
+                                <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
+							<div class="mb-2">
+                                    <label class="form-label" for="order">Order</label>
+
+                                    <div class="input-group mb-3">
+                                        <input type="number" readonly class="form-control" value="{{ $task->order }}"
+                                            id="order" />
+                                        <button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
                             <div class="mb-2">
                                 <label class="form-label" for="tags">Tags</label>
                                 <input type="text" maxlength="30"
@@ -172,6 +185,7 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
+	var currtaskId = '<?php echo $task->id; ?>';
          $(document).ready(()=>{
       $('#course_cover_image').change(function(){
         const file = this.files[0];
@@ -201,13 +215,13 @@
         function openOrderDialog() {
             $('#listWithHandle').empty();
 
-            let milestone_id = $('#milestone_id').val();
+            let section_id = $('#section_id').val();
 
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: `/api/milestone/${milestone_id}/sections`,
+                url: `/api/sections/${section_id}/tasks`,
                 method: 'post',
                 success: (res) => {
                     res.data.forEach(i => {
@@ -216,28 +230,46 @@
                             '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                             '<i class="fa-solid fa-grip-vertical"></i>\n' +
                             '</span>\n' +
-                            '<button class="btn btn-primary">'+i.title+'</button>\n' +
+                            '<button class="btn btn-primary" value="'+i.id+'">'+i.title+'</button>\n' +
                             '</div>').appendTo('#listWithHandle');
                     });
+
                     myModal.show();
                 }
             });
         }
 
         function saveOrder() {
-            $('#order').val(order);
+            /*$('#order').val(order);*/
             myModal.hide();
-        }
-
-
-
-
-        // List with handle
+        }		
+        function previewModal() {}
+	 // List with handle
         Sortable.create(listWithHandle, {
             handle: '.glyphicon-move',
             animation: 150,
-            onEnd: function f(evt) {
-                order = evt.newIndex+1;
+            onEnd: function(evt) {
+                let data = {
+                    new_index: evt.newIndex+1,
+                    old_index: evt.oldIndex+1,
+                    item: evt.item.children[1].value,
+					currTaskId:currtaskId
+                };
+				
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: `/api/tasks/${data.item}/reorder`,
+                    method: 'post',
+                    data:data,
+                    success: (res) => {
+
+                    },
+                    error: () => {
+                        alert('Something went wrong')
+                    }
+                });
             }
         },);
 

@@ -100,12 +100,12 @@
                                         </div>
                                     @endforeach
 
-                                    <a href="{{route('sections.create')}}" class="btn w-100 btn-alt-light text-center"
+                                    
+                                </div>
+							<a href="{{route('sections.create')}}" class="addchild btn w-100 btn-alt-light text-center"
                                             >
                                         <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Section
                                     </a>
-                                </div>
-
                             <div class="col-md-6 col-xl-5 mb-4">
                                 <button type="submit" class="btn w-100 btn-alt-success">
                                     Update Module

@@ -36,9 +36,10 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $sections = Section::orderBy('title')->get();
+        $sections = Section::orderBy('order')->get();
+		$tasks = Task::count();
         $tags = Tag::all();
-        return view('admin.courses.tasks.create', compact('sections','tags'));
+        return view('admin.courses.tasks.create', compact('sections','tags', 'tasks'));
     }
 
     /**
@@ -49,10 +50,15 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        
         //$task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
-		$task = Task::create($request->all());
-	
+		$order = $request->order;
+        if(!$order || $order == 0) {
+            $request->request->add(['order' => Task::where('section_id','=', $request->section_id)->count() + 1]);
+        } else {
+            $this->reorderOnCreate($request);
+        }
+
+        $task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -243,5 +249,61 @@ class TaskController extends Controller
                 //print_r($course);
             }
         return view('admin.courses.tasks.preview', compact('task','gettasks', 'section', 'module', 'milestone','course'));
+    }
+	public function taskBySection($id) {
+        return response()->json([
+            'data' => Task::where('section_id', $id)->orderBy('order')->get()
+        ],200);
+    }
+
+    private function reorderOnUpdate($old_order, $new_order, $dont_reorder) {
+        if($new_order > $old_order) {
+            //selected item move down
+            $reorder_tasks = Task::where([
+                ['order','>=', $old_order],
+                ['order','<=', $new_order],
+                ['id','!=', $dont_reorder]
+            ])->orderBy('order')->get();
+            foreach ($reorder_tasks as $task) {
+                $task->update(['order'=> $task->order-1]);
+            }
+        }elseif($old_order > $new_order) {
+            $reorder_tasks = Task::where([
+                ['order','<=', $old_order],
+                ['order','>=', $new_order],
+                ['id','!=', $dont_reorder]
+            ])->orderBy('order')->get();
+            foreach ($reorder_tasks as $task) {
+                $task->update(['order'=> $task->order+1]);
+            }
+        }
+    }
+    private function reorderOnCreate($request) {
+        $reorder_tasks = Task::where([
+            ['order','>=', $request->order],
+            ['section_id','>=', $request->section_id],
+        ])->orderBy('order')->get();
+        foreach ($reorder_tasks as $task) {
+            $task->update(['order'=> $task->order+1]);
+        }
+    }
+
+    public function reorder($id, Request $request) {
+
+        $new_order = $request->new_index;
+        $old_order = $request->old_index;
+        $model = Task::findorfail($id);
+        $model->order = $new_order;
+        $model->save();
+        
+		$currOrder =0;
+		if($request->currTaskId>0){
+			$currentTask = Task::findorfail($request->currTaskId);
+			$currOrder = $currentTask->order;
+		}
+		$this->reorderOnUpdate($old_order, $new_order, $id);
+        return response()->json([
+            'message' => 'reordered successfully','currOrder'=>$currOrder
+        ],200);
     }
 }

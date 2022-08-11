@@ -26,7 +26,7 @@
                         {{ $course->title}}
                     </h1>
                     <h2 class="h4 fw-normal text-white-75">
-                        {{ $totalmilestones }} milestones
+                        {{ $totalmilestones }} Milestones
                     </h2> 
                 </div>
             </div>
@@ -110,11 +110,13 @@
 							 foreach($milestone->modules as $mmkey=>$module){
 								 $mtotaltasks = $module->tasks()->count();
 								 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
-								 if($mtotaltasks == $mtotalcompletetasks){
-									$completedmodule++;
+								 if($mtotaltasks>0){
+									 if($mtotaltasks == $mtotalcompletetasks){
+										$completedmodule=$completedmodule+1;
+									 }
 								 }
 							 }
-							 if($completedmodule>0){
+							 if($completedmodule>0 && $totalmodules){
 								$modulepercentage = floor(($completedmodule/$totalmodules)*100);	
 							 }
 							 
@@ -170,7 +172,7 @@
                                     </div>
                                     <div class="col-4">
                                         
-                                    <p>{{$completedmodule}}/{{$totalmodules}} Module progress</p>
+                                    <p>{{$completedmodule}}/{{$totalmodules}} Module Progress</p>
                                     </div>
                                     
                                     
@@ -229,7 +231,7 @@
                         </div>
                     </div>
                 </div>
-			@endif;
+			@endif
     <!-- END Page Content -->
     </main>
 @endsection

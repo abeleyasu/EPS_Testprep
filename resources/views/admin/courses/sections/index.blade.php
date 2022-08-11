@@ -43,8 +43,9 @@
                     </thead>
                     <tbody>
                         @foreach($sections as $section)
+						@if(isset($section))
                         <tr>
-                            <td class="fw-semibold fs-sm">{{$section->title}}</td>
+                            <td class="fw-semibold fs-sm">@if($section->title !=''){{$section->title}} @endif</td>
                             <td class="fs-sm">
 								@php 
 								$stringLen = strlen($section->description);								 
@@ -58,7 +59,7 @@
 								@endif
                             </td>
 							<td>@if($section->module && $section->module->milestone) {{$section->module->milestone->name}} @endif</td>
-							<td>{{$section->module->title}}</td>
+							<td>@if(isset($section->module)) {{$section->module->title}} @endif</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('sections.edit', ['section' => $section->id])}}"
@@ -90,6 +91,7 @@
                                 </div>
                             </td>
                         </tr>
+						@endif
                         @endforeach
 
                     </tbody>

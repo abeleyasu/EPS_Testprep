@@ -42,5 +42,7 @@ Route::group(['middleware' =>'api'],function() {
     Route::post('sections/{id}/reorder',[SectionController::class,'reorder']);
     Route::post('sections/{id}/reorder',[SectionController::class,'reorder']);
     Route::post('task/{task}/change-status', [TaskController::class, 'changeStatusJson']);
+    Route::post('sections/{id}/tasks', [TaskController::class, 'taskBySection']);
+	Route::post('tasks/{id}/reorder',[TaskController::class,'reorder']);
 
 });
