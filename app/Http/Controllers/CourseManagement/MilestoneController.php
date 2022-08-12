@@ -54,6 +54,7 @@ class MilestoneController extends Controller
                 $totalmilestone[$courseid]['completed_task'] = 0;
 				$totalmilestone[$courseid]['total_module'] = 0;
 				$total_milestone_completion_percent = 0;
+				$completed_task_per = 0;
 				foreach($coursemilestones as $mkey=>$milestone){
 					$completedmodule=0;
 					$totalmodules=0;
@@ -76,6 +77,8 @@ class MilestoneController extends Controller
 				if($total_milestone_completion_percent > 0){
 					$completed_task_per = $total_milestone_completion_percent / count($coursemilestones);
 					$totalmilestone[$courseid]['completed_task'] = round($completed_task_per);
+				}else {
+					$totalmilestone[$courseid]['completed_task'] = 0;					
 				}
                
             }

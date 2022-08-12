@@ -41,6 +41,8 @@ class Courses extends Model
 				->join('milestones','modules.milestone_id','milestones.id')
 				->join('courses','milestones.course_id','courses.id')
 				->where('tasks.published', 1)
+				->where('milestones.deleted_at', NULL)
+				->where('modules.deleted_at', NULL)
 				->where('courses.id', $this->id)->get();
         return $tasks;
 	}
@@ -52,6 +54,8 @@ class Courses extends Model
 				->join('courses','milestones.course_id','courses.id')
             ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
             ->where('courses.id', $this->id)
+			->where('milestones.deleted_at', NULL)
+			->where('modules.deleted_at', NULL)
             ->where('user_task_statuses.status', 1)
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();

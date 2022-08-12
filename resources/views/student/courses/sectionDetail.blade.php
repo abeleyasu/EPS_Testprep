@@ -254,7 +254,7 @@
 														   @endif>
 													<label for="checkbox{{$task->id}}"></label>
 												</div>
-												<a href="javascript:;" class="font-grayed" >
+												<a href="javascript:;" class="font-grayed" style="padding-top: 3px">
 												{{ $task->title }}
 												</a>
 												</div>
@@ -271,7 +271,7 @@
 														<input type="hidden" value="{{$section->module->milestone->id}}" name="course_id" />
 													</form>
 												</div>
-												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}">
+												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}" style="padding-top: 3px">
 												{{ $task->title }}
 												</a>
 												</div>

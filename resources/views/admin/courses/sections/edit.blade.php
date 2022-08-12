@@ -351,6 +351,10 @@
 			extraPlugins: 'oembed,colorbutton,colordialog,font',
 			allowedContent
 		});
+		CKEDITOR.replace( 'js-ckeditor-task',{
+			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			allowedContent
+		});
 
         function openOrderDialog() {
 
