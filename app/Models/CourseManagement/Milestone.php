@@ -48,6 +48,7 @@ class Milestone extends Model
 				->join('sections', 'section_id', 'sections.id')
 				->join('modules','sections.module_id','modules.id')
 				->where('tasks.published', 1)
+				->where('modules.deleted_at', NULL)
 				->where('modules.milestone_id', $this->id)->get();
         return $tasks;
 	}
@@ -57,6 +58,7 @@ class Milestone extends Model
             ->join('modules','sections.module_id','modules.id')
             ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
             ->where('modules.milestone_id', $this->id)
+			->where('modules.deleted_at', NULL)
             ->where('user_task_statuses.status', 1)
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();
