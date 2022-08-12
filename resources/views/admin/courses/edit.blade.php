@@ -366,7 +366,7 @@
         //One.helpersOnLoad(['js-ckeditor']);
         var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor',{
-			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent,
 		});
         function calculateTime(val) {
@@ -458,7 +458,7 @@
                 customConfig: '/assets/js/plugins/ckeditor/config.js',
                 filebrowserBrowseUrl : '/browse.php',
                 filebrowserUploadUrl : '/upload.php',
-                extraPlugins: 'oembed, colorbutton,colordialog,font',
+                extraPlugins: 'oembed, colorbutton,colordialog,font,ckeditor_wiris',
 			    allowedContent,
 			    colorButton_enableMore: true
                 

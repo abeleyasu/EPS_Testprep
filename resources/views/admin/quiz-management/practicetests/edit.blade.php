@@ -286,11 +286,11 @@ button:hover {
 <script>
 		var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor-desc',{
-			extraPlugins: 'colorbutton,colordialog,font,oembed',
+			extraPlugins: 'colorbutton,colordialog,font,oembed,ckeditor_wiris',
 			allowedContent
 		});
 		CKEDITOR.replace( 'js-ckeditor-que-desc',{
-			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});
 		$('.add_question_modal_btn').click(function() {

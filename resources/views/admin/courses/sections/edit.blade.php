@@ -348,11 +348,11 @@
         // One.helpersOnLoad(['js-ckeditor']);
         var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor',{
-			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});
 		CKEDITOR.replace( 'js-ckeditor-task',{
-			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});
 

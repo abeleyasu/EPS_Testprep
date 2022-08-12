@@ -382,7 +382,7 @@
        // One.helpersOnLoad(['js-ckeditor']);
         var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor',{
-			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});
         function calculateTime(val) {
@@ -451,7 +451,7 @@
                 // CKEDITOR.replace('js-ckeditor-desc');
                 var allowedContent = true;
         		CKEDITOR.replace( 'js-ckeditor-desc',{
-        			extraPlugins: 'oembed,colorbutton,colordialog,font',
+        			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         			allowedContent
         		});
 
