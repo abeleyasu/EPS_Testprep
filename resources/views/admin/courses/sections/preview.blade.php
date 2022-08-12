@@ -114,7 +114,7 @@
 					<li class="breadcrumb-item">
 						<a class="link-fx text-dark" href="javascript:;">
 							@php
-							if(isset($milestone)){
+							if($milestone){
 								$stringLen = strlen($milestone->name);
 							
 								if ($stringLen>25){
