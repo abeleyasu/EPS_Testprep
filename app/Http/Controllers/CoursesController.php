@@ -34,8 +34,8 @@ class CoursesController extends Controller
     {
 		$validated = $request->validate([
 			'name' => 'required',
-			'description' => 'required',
-			'content' => 'required',
+			// 'description' => 'required',
+			// 'content' => 'required',
 			'user_type' => 'required',
 			'order' => 'required',
 			'status' => 'required',

@@ -105,11 +105,11 @@
                                         <a href="/admin/course-management/courses/{{$course->id}}/edit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                             <i class="fa fa-fw fa-pencil-alt"></i>
                                         </a>
-										<form action="{{ route('courses.destroy',$course->id)}}" method="POST">
+										<form action="{{ route('courses.destroy',$course->id)}}" method="POST" id="delete-item-form-{{$course->id}}">
 											@method('DELETE')
 											{{ csrf_field() }}
-											<button type="submit" class="btn btn-sm btn-alt-secondary delete-course"><i class="fa fa-fw fa-times"></i></button>
 										</form>
+										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" onclick="deleteItem_fun({{ $course->id }})"><i class="fa fa-fw fa-times"></i></button>
                                         <!--<button type="button"
                                                 class="btn btn-sm btn-alt-secondary delete-course"
                                                 data-id="{{$course->id}}"
@@ -149,6 +149,13 @@
 @section('admin-script')
 
     <script>
+	function deleteItem_fun(id) {
+		var result = confirm("Are you sure to delete ?");
+		if(result == false) {
+			return false;
+		}
+		$('#delete-item-form-'+id).submit();
+	}
         var gridDiv = $('.grid-view');
         var tableDiv = $('.table-view');
         var gridBtn = $('.grid-btn');
