@@ -206,7 +206,7 @@
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($module->content);
+                echo $content = $module->content;
                 @endphp
             
             

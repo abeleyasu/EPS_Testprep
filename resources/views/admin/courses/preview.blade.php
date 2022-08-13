@@ -61,16 +61,12 @@
                 @php
                 echo $description = $course->description;
                 @endphp
-            
-            
             </div>
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($course->content);
+                echo $content = $course->content;
                 @endphp
-            
-            
             </div>
 
             <div class="col-xl-8">

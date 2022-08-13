@@ -173,7 +173,7 @@
 
             <div class="block-content" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($section->content);
+                echo $content = $section->content;
                 @endphp            
             
             </div>

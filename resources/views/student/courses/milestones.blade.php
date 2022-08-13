@@ -73,7 +73,7 @@
 		<div class="row">
             <div class="block-content videoResp" style="margin-bottom:20px;">
                 @php
-                echo $content = strip_tags($course->content);
+                echo $content = $course->content;
                 @endphp
             
             
