@@ -4,7 +4,11 @@
 <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed">
     @include('components.admin-nav')
     @include('components.admin-header')
-
+	<style>
+		.wrs_tickContainer {
+			display: none !important;
+		}
+	</style>
     @yield('admin-content')
 
     @include('components.admin-footer')
