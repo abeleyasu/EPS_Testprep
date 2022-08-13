@@ -202,7 +202,7 @@
         });
         // One.helpersOnLoad(['js-ckeditor']);
         var allowedContent = true;
-		CKEDITOR.replace( 'js-ckedito',{
+		CKEDITOR.replace( 'js-ckeditor',{
 			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});
