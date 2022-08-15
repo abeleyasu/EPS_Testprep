@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
-
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" id="css-main" href="{{asset('assets/css/admin.css')}}">
 
 
@@ -73,7 +73,7 @@
                                             data-id="{{$course->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Course"
-                                            onclick="deleteItem({{ $course->id }})"
+                                            onClick="deleteItem({{$course->id}})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
@@ -109,7 +109,7 @@
 											@method('DELETE')
 											{{ csrf_field() }}
 										</form>
-										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" onclick="deleteItem_fun({{ $course->id }})"><i class="fa fa-fw fa-times"></i></button>
+										<button type="button" class="btn btn-sm btn-alt-secondary delete-course"><i class="fa fa-fw fa-times" onClick="deleteItem_fun({{$course->id}})"></i></button>
                                         <!--<button type="button"
                                                 class="btn btn-sm btn-alt-secondary delete-course"
                                                 data-id="{{$course->id}}"
@@ -147,15 +147,31 @@
 @endsection
 
 @section('admin-script')
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
 	function deleteItem_fun(id) {
-		var result = confirm("Are you sure to delete ?");
-		if(result == false) {
-			return false;
-		}
-		$('#delete-item-form-'+id).submit();
-	}
+		// var id = $(this).data("id");
+		var form =  $('#delete-item-form-'+id);
+		event.preventDefault();
+		swal({
+			title: "Are you sure?",
+			text: "But you will still be able to retrieve this.",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, archive it!",
+			cancelButtonText: "No, cancel please!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm){
+			if (isConfirm) {
+				form.submit();
+			} else {
+				swal("Cancelled", "", "error");
+			}
+		});
+	};
         var gridDiv = $('.grid-view');
         var tableDiv = $('.table-view');
         var gridBtn = $('.grid-btn');
