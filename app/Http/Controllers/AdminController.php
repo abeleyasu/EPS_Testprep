@@ -56,7 +56,17 @@ class AdminController extends Controller
             'email' => ['required', 'email', 'unique:users'],
             'phone' => ['required', 'numeric'],
             'password' => ['required', 'min:6'],
-        ]);
+        ],
+		[
+			'first_name.required' => 'First Name is required',
+			'last_name.required' => 'Last Name is required',
+			'email.required' => 'Email is required',
+			'email.unique' => 'Email already exist',
+			'password.required' => 'Password is required',
+			'password.min' => 'The password must be at least 6 characters',
+			'phone.required' => 'Phone is required',
+			'phone.numeric' => 'Phone must be numeric',
+		]);
 
         $user = User::create([
             'name' => $request->first_name." ".$request->last_name,
