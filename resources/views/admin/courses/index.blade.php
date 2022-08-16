@@ -109,7 +109,7 @@
 											@method('DELETE')
 											{{ csrf_field() }}
 										</form>
-										<button type="button" class="btn btn-sm btn-alt-secondary delete-course"><i class="fa fa-fw fa-times" onClick="deleteItem_fun({{$course->id}})"></i></button>
+										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" onClick="deleteItem_fun({{$course->id}})"><i class="fa fa-fw fa-times"></i></button>
                                         <!--<button type="button"
                                                 class="btn btn-sm btn-alt-secondary delete-course"
                                                 data-id="{{$course->id}}"

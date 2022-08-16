@@ -49,7 +49,7 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{route('content-categories.edit', ['content_category' => $content->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Milestone">
+                                    <a href="{{route('content-categories.edit', ['content_category' => $content->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Content Category">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
                                     <button type="button"
