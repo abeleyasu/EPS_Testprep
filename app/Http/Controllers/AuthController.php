@@ -27,7 +27,18 @@ class AuthController extends Controller
             'phone' => ['required', 'numeric'],
             'password' => ['required', 'confirmed', 'min:6'],
             'terms' => ['accepted'],
-        ]);
+        ],
+		[
+			'first_name.required' => 'First Name is required',
+			'last_name.required' => 'Last Name is required',
+			'email.required' => 'Email is required',
+			'email.unique' => 'Email already exist',
+			'email.email' => 'The email must be a valid email address.',
+			'password.required' => 'Password is required',
+			'password.min' => 'The password must be at least 6 characters',
+			'phone.required' => 'Phone is required',
+			'phone.numeric' => 'Phone must be numeric',
+		]);
 
         $user = User::create([
             'name' => $request->first_name." ".$request->last_name,
@@ -55,7 +66,13 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6'],
-        ]);
+        ],
+		[
+			'email.required' => 'Email is required',
+			'email.email' => 'The email must be a valid email address.',
+			'password.required' => 'Password is required',
+			'password.min' => 'The password must be at least 6 characters',
+		]);
 
         if(Auth::attempt($credentials, $request->remember)){
             $request->session()->regenerate();
@@ -89,7 +106,14 @@ class AuthController extends Controller
     }
 
     public function postForgetPassword(Request $request) {
-        $request->validate(['email' => 'required|email|exists:users,email']);
+        $request->validate([
+				'email' => 'required|email|exists:users,email'
+			],
+			[
+				'email.required' => 'Email is required',
+				'email.email' => 'The email must be a valid email address.',
+				'email.exists' => 'The email not exists',
+			]);
 
         $status = Password::sendResetLink(
             $request->only('email')
