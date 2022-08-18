@@ -237,7 +237,7 @@ button:hover {
             <div class="modal-body">
 				<div class="row">
 					<div class="mb-2">
-						<label class="form-label">Question Type:</label>
+						<label class="form-label" style="font-size: 13px;">Question Type:</label>
 						<select id="format" name="questionformat" class="form-control">
 							@foreach($questionformats as $key=>$questionformat)
 							<option value="{{$key}}">{{$questionformat}}</option>
@@ -245,7 +245,7 @@ button:hover {
 						</select>
 					</div>
 					<div class="mb-2">
-						<label class="form-label">Tests:</label>
+						<label class="form-label" style="font-size: 13px;">Add question to:</label>
 						<select id="practicetestid" name="testid" class="form-control">
 							@foreach($tests as $key=>$test)
 							<option value="{{$test->id}}">{{$test->title}}</option>
@@ -253,7 +253,7 @@ button:hover {
 						</select>
 					</div>
 					<div class="mb-2 mb-4">
-						<label for="description" class="form-label">Description:</label>
+						<label for="description" class="form-label" style="font-size: 13px;">Description:</label>
 						<textarea id="js-ckeditor-que-desc" name="questiondescription" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" ></textarea>
 					</div>
 				</div>
