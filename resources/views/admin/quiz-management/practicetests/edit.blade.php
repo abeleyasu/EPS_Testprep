@@ -188,7 +188,7 @@ button:hover {
 							<label class="form-label">Test Type:</label>
 							<select id="format" name="format" class="form-control">
 								@foreach($testformats as $key=>$testformat)
-								<option value="{{$key}}" {{$practicetests->testformat == $key ? 'selected': '';}}>{{$testformat}}</option>
+								<option value="{{$key}}" {{$practicetests->format == $key ? 'selected': '';}}>{{$testformat}}</option>
 								@endforeach
 							</select>
 						</div>
@@ -197,7 +197,7 @@ button:hover {
                 <div class="tab">
                     <div class="mb-2 mb-4">
 						<label for="description" class="form-label">Description:</label>
-						<textarea id="js-ckeditor-desc" name="description" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" >{{$practicetests->testdescription}}</textarea>
+						<textarea id="js-ckeditor-desc" name="description" class="form-control form-control-lg form-control-alt" id="description" name="description" placeholder="Description" >{{$practicetests->description}}</textarea>
 						@error('description')
 							<div class="invalid-feedback">{{$message}}</div>
 						@enderror

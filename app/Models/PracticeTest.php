@@ -11,6 +11,6 @@ class PracticeTest extends Model
     use HasFactory, SoftDeletes;
 	
 	protected $fillable = [
-        'title', 'testformat', 'testdescription', 'questionformat', 'testid', 'questiondescription',
+        'title', 'format', 'description',
     ];
 }
