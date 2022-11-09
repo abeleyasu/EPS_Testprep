@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" id="css-main" href="{{asset('assets/css/admin.css')}}">
 
 
@@ -96,7 +96,7 @@
                                             data-id="{{$task->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Task"
-                                            onclick="deleteItem_fun({{$task->id}})"
+                                            onclick="deleteItem_fun({{ $task->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
@@ -124,7 +124,7 @@
 
 @section('admin-script')
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");
@@ -148,8 +148,6 @@
 				swal("Cancelled", "", "error");
 			}
 		});
-	};
-
-
+	}
     </script>
 @endsection

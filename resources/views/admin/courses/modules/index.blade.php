@@ -72,7 +72,7 @@
                                             data-id="{{$module->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Module"
-                                            onclick="deleteItem_fun({{$module->id}})"
+                                            onclick="deleteItem_fun({{ $module->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
@@ -124,6 +124,7 @@
 				swal("Cancelled", "", "error");
 			}
 		});
-	};
+	}
+
     </script>
 @endsection

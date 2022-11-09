@@ -92,7 +92,8 @@
 
                                                 @foreach($module->sections as $section)
                                                     <div class="my-3">
-                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span><a href="/admin/course-management/sections/{{$section->id}}/edit" target="__blank"> {!! $section->title !!}</a>
+                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span><a href="/admin/course-management/sections/{{$section->id}}/edit" target="__blank"> {!! $
+                                                            ->title !!}</a>
                                                         <span class="float-end">
                                                             <button type="button" class="btn btn-success btn-sm mx-3" onclick="showSectionDetail({{$section->id}})">
                                                                 <i class="fa-solid fa-arrow-down"></i>

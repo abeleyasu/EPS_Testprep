@@ -25,7 +25,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::orderBy('created_at', 'desc')->get();
+        $tasks = Task::orderBy('order')->get();
         return view('admin.courses.tasks.index', compact('tasks'));
     }
 
@@ -84,13 +84,13 @@ class TaskController extends Controller
 		if($task->status == 'paid'){
 			return redirect(route('home'));
 		}
-		$gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
+		$gettasks = Task::where('section_id',$task->section_id)->orderBy('order')->get();
 		
 		$course = array();
 		$milestone = array();
 		$module = array();
 		$section = array();
-		$section = Section::where('id',$task->section_id)->orderBy('id')->first();
+		$section = Section::where('id',$task->section_id)->orderBy('order')->first();
 	
 		if($section){
 			$module = Module::where('id', $section->module_id)->orderBy('order')->first();	
@@ -132,7 +132,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        $sections = Section::orderBy('title')->get();
+        $sections = Section::orderBy('order')->get();
         $tags = Tag::all();
         $module_tags = ModelTag::where([
             ['model_id', $task->id],
@@ -227,13 +227,13 @@ class TaskController extends Controller
     public function preview($id)
     {
 		$task = Task::findorfail($id);
-        $gettasks = Task::where('section_id',$task->section_id)->orderBy('id')->get();
+        $gettasks = Task::where('section_id',$task->section_id)->orderBy('order')->get();
 		
 		$course = array();
 		$milestone = array();
 		$module = array();
 		$section = array();
-		$section = Section::where('id',$task->section_id)->orderBy('id')->first();
+		$section = Section::where('id',$task->section_id)->orderBy('order')->first();
 	
 		if($section){
 			$module = Module::where('id', $section->module_id)->orderBy('order')->first();	
@@ -295,7 +295,7 @@ class TaskController extends Controller
         $model = Task::findorfail($id);
         $model->order = $new_order;
         $model->save();
-        
+         
 		$currOrder =0;
 		if($request->currTaskId>0){
 			$currentTask = Task::findorfail($request->currTaskId);

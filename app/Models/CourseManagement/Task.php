@@ -17,6 +17,7 @@ class Task extends Model
         'description',
         'status',
         'order',
+        'task_type',
         'coverimage',
         'published'
     ];

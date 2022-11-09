@@ -33,7 +33,7 @@ text/css custom.css ( ASCII text )
     color: #4c78dd;
     text-decoration: none;
 	font-weight: 600;
-	line-height: 22px;
+	line-height: 16px;
 }
 .btnminwidth{
 	min-width:205px;
@@ -96,9 +96,32 @@ text/css custom.css ( ASCII text )
 .vnumbgcolorgray{background: #E2E2E2; color: #000;}
 .vnumbgcolorgreen{background: #008000; color:#fff; }
 @media(max-width: 767px){
-	.verticalnum .milvnum span{
+    .verticalnum .modvnum span,
+	.verticalnum .secvnum span {
+		top: 18%;
+		padding: 7px 14px;
+		left: 3px;
+	}
+	.verticalnum .milvnum span {
 		top: 6%;
 		padding: 7px 14px;
 		left: 3px;
 	}
+}
+.addchild{
+	  border: 1px solid rgba(0,0,0,.125);
+	  border-radius: 0.25rem;
+	  margin: 10px 0px;
+
+}
+.tileHead{
+	line-height:29px;
+}.unpaidtileHead{
+	line-height:29px;
+}
+.tileHead i{
+	width:20px;
+}
+.unpaidtileHead i{
+	width:20px;
 }

@@ -46,6 +46,22 @@
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
+                        <div class="mb-2">
+                            <label for="description" class="form-label">Passage Type:</label>
+
+
+                            <select id="type" name="type" class="form-control form-control-lg form-control-alt
+                            {{$errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description"
+                                      placeholder="Description" >
+                                <option value="">Select Type</option>
+                                <option value="PSAT">PSAT</option>
+                                <option value="PSAT">SAT</option>
+                                <option value="PSAT">ACT</option>
+                            </select>
+                            @error('type')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
+                        </div>
 
 
                     </div>

@@ -292,6 +292,15 @@
 										<option value="unpaid">Unpaid</option>
 									</select>
 								</div>
+								<div class="mb-2">
+									<label class="form-label" for="status">Task Type</label>
+
+									<select name="task_type" class="form-control">
+										<option value="text_video">Text/Video Task</option>
+										<option value="quiz">Quiz Task</option>
+										<option value="assignment">Assignment Task</option>
+									</select>
+								</div>
 							
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" value="1" id="task_published" name="published">

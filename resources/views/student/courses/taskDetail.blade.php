@@ -21,7 +21,16 @@
             </div>
             <div class="content content-full text-center py-7 pb-5">
                 <h1 class="h2 text-white mb-2">
-                    {{ $task->title }}
+                   @php 
+						if($task->task_type == 'text_video'){
+							echo '<i class="fas fa-video"></i>';
+						}else if($task->task_type == 'quiz'){
+							echo '<i class="fas fa-lightbulb"></i>';
+						}else if($task->task_type == 'assignment'){
+							echo '<i class="fa-solid fa-book-open"></i>';
+						} 
+					@endphp
+					{{ $task->title }}
                 </h1>
 
             </div>

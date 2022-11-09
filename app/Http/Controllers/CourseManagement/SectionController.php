@@ -79,8 +79,7 @@ class SectionController extends Controller
                 ]);
             }
         }
-        return redirect()->route('sections.index')->with('success', 'Section created successfully');
-
+		return redirect()->route('sections.edit',['section'=>$section->id])->with('success', 'Section created successfully');
     }
 
     /**
@@ -96,7 +95,7 @@ class SectionController extends Controller
 			return redirect(route('home'));
 		}
 		$milestone = array();
-		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
+		$getSections = Section::where('module_id',$section->module_id)->orderBy('order')->get();
 		
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
 		
@@ -116,7 +115,7 @@ class SectionController extends Controller
     {
         $section = Section::findorfail($id);
 		$milestone = array();
-		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
+		$getSections = Section::where('module_id',$section->module_id)->orderBy('order')->get();
 		
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
 		
@@ -307,7 +306,7 @@ class SectionController extends Controller
 		$milestone = array();
 		$course=[];
 		$section = Section::findorfail($id);
-		$getSections = Section::where('module_id',$section->module_id)->orderBy('id')->get();
+		$getSections = Section::where('module_id',$section->module_id)->orderBy('order')->get();
 		
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();
 		

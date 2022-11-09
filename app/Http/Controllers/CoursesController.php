@@ -220,7 +220,7 @@ class CoursesController extends Controller
 		
         //$usersRoles = UserRole::where('slug','!=','super_admin')->get();		
         $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->where('published',1)->get();
-		$totalmilestones = 0;
+        $totalmilestones = 0;
 		if($milestones){
 			$totalmilestones = $milestones->count();
 		}        

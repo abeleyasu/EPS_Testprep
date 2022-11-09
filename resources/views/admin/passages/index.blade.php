@@ -37,6 +37,7 @@
                         <tr>
                             <th>Title</th>
                             <th class="">Description</th>
+                            <th class="">Type</th>
                              <th >Action</th>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <td class="fs-sm">
                                 {!! $passage->description !!}
                             </td>
+                            <td class="fs-sm">{{$passage->type}}</td>
                             <td>
                                 <div class="btn-group">
                                 <a href="{{route('passages.preview', ['passage' => $passage->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Passage">

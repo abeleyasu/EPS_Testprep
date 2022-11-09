@@ -73,7 +73,7 @@
                                             data-id="{{$course->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Course"
-                                            onClick="deleteItem({{$course->id}})"
+                                            onclick="deleteItem({{ $course->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
@@ -109,7 +109,7 @@
 											@method('DELETE')
 											{{ csrf_field() }}
 										</form>
-										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" onClick="deleteItem_fun({{$course->id}})"><i class="fa fa-fw fa-times"></i></button>
+										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" onclick="deleteItem_fun({{ $course->id }})"><i class="fa fa-fw fa-times"></i></button>
                                         <!--<button type="button"
                                                 class="btn btn-sm btn-alt-secondary delete-course"
                                                 data-id="{{$course->id}}"
@@ -171,7 +171,7 @@
 				swal("Cancelled", "", "error");
 			}
 		});
-	};
+	}
         var gridDiv = $('.grid-view');
         var tableDiv = $('.table-view');
         var gridBtn = $('.grid-btn');

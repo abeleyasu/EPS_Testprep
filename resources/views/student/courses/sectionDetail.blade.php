@@ -254,7 +254,18 @@
 														   @endif>
 													<label for="checkbox{{$task->id}}"></label>
 												</div>
-												<a href="javascript:;" class="font-grayed" style="padding-top: 3px">
+												<a href="javascript:;" class="font-grayed tileHead" style="padding-top: 3px">
+												@php 
+													if($task->task_type == 'text_video'){
+														echo '<i class="fas fa-video"></i>';
+													}else if($task->task_type == 'quiz'){
+														echo '<i class="fas fa-lightbulb"></i>';
+													}else if($task->task_type == 'assignment'){
+														echo '<i class="fa-solid fa-book-open"></i>';
+													} 
+												@endphp
+												
+												
 												{{ $task->title }}
 												</a>
 												</div>
@@ -271,8 +282,17 @@
 														<input type="hidden" value="{{$section->module->milestone->id}}" name="course_id" />
 													</form>
 												</div>
-												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}" style="padding-top: 3px">
-												{{ $task->title }}
+												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}" class="unpaidtileHead" style="padding-top: 3px">
+												@php 
+													if($task->task_type == 'text_video'){
+														echo '<i class="fas fa-video"></i>';
+													}else if($task->task_type == 'quiz'){
+														echo '<i class="fas fa-lightbulb"></i>';
+													}else if($task->task_type == 'assignment'){
+														echo '<i class="fa-solid fa-book-open"></i>';
+													} 
+												@endphp
+												<span>{{ $task->title }} </span>
 												</a>
 												</div>
 											@endif

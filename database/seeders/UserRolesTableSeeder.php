@@ -18,20 +18,6 @@ class UserRolesTableSeeder extends Seeder
      */
     public function run()
     {	
-
-		DB::table('users')->insert([
-            [
-
-				'name' => 'Super Admin',
-				'first_name' => 'App',
-				'last_name' => 'Super Admin',
-				'email' => 'superadmin@cps.com',
-				'phone' => '123456789',
-				'role' => 1,
-				'password' => bcrypt('admin123@admin'),
-            ]
-		]);
-
 		DB::table('user_roles')->insert([
 			'name' => 'Super Admin',
 			'slug' => 'super_admin'

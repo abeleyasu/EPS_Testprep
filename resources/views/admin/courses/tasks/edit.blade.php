@@ -101,7 +101,16 @@
                                         </button>
                                     </div>
 
-                                </div>
+                            </div>
+							<div class="mb-2">
+								<label class="form-label" for="status">Task Type</label>
+
+								<select name="task_type" class="form-control">
+									<option value="text_video" @php if($task->task_type == 'text_video'){ echo 'selected';} @endphp >Text/Video Task</option>
+									<option value="quiz"  @php if($task->task_type == 'quiz'){ echo 'selected';} @endphp >Quiz Task</option>
+									<option value="assignment" @php if($task->task_type == 'assignment'){ echo 'selected';} @endphp >Assignment Task</option>
+								</select>
+							</div>
                             <div class="mb-2">
                                 <label class="form-label" for="tags">Tags</label>
                                 <input type="text" maxlength="30"

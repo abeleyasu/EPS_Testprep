@@ -110,7 +110,7 @@
                                                 data-id="{{$milestone->id}}"
                                                 data-bs-toggle="tooltip"
                                                 title="Delete Milestone"
-                                                onclick="deleteItem_fun({{$milestone->id}})"
+                                                onclick="deleteItem_fun({{ $milestone->id }})"
                                         >
                                             <i class="fa fa-fw fa-times"></i>
                                         </button>
@@ -167,7 +167,7 @@
 				swal("Cancelled", "", "error");
 			}
 		});
-	};
+	}
         var gridDiv = $('.grid-view');
         var tableDiv = $('.table-view');
         var gridBtn = $('.grid-btn');

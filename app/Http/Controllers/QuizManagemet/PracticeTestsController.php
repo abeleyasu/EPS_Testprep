@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\CRUD;
 use App\Models\PracticeTest;
 use App\Models\PracticeQuestion;
+use App\Models\PracticeTestSection;
+use App\Models\Passage;
 use Illuminate\Support\Facades\View;
 
 class PracticeTestsController extends Controller
@@ -17,6 +19,7 @@ class PracticeTestsController extends Controller
 	public function __construct(){
 		View::share('testformats', $this->testformat);
 		View::share('questionformats', $this->questionformat);
+        View::share('passages', Passage::get());
     }
 	
 	public function index()
@@ -48,12 +51,13 @@ class PracticeTestsController extends Controller
 		$practice->title = $request->title;
 		$practice->format = $request->format;
 		$practice->description = $request->description;
+        
 		$practice->save();
 		
-		$questions = PracticeQuestion::where('testid', 0)->get();
-		foreach($questions as $question) {
-			$question->testid = $practice->id;
-			$question->save();
+		$sections = PracticeTestSection::where('testid', 0)->get();
+		foreach($sections as $section) {
+			$section->testid = $practice->id;
+			$section->save();
 		}
 		
         return redirect()->route('practicetests.index')->with('message','Test created successfully');
@@ -80,8 +84,10 @@ class PracticeTestsController extends Controller
     {
 		$practicetests = PracticeTest::find($id);
 		$tests = PracticeTest::get();
-		$testQuestions = PracticeQuestion::where('testid', $id)->get();
-        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions'));
+		//$testQuestions = PracticeQuestion::where('section_id', $id)->get();
+		$testQuestions = PracticeTestSection::find($id)->getPracticeQuestions();
+		$testsections = PracticeTestSection::orderBy('section_order')->where('testid', $id)->get();
+        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections'));
     }
 
     /**
@@ -93,10 +99,15 @@ class PracticeTestsController extends Controller
      */
     public function update(Request $request, PracticeTest $practicetests)
     {
+        $tags = '';
+        if(is_array($request->tags)){
+            $tags = implode(",", $request->tags);
+        }
 		$practice = PracticeTest::find($request->id);
 		$practice->title = $request->title;
-		$practice->format = $request->format;
+		/*$practice->format = $request->format;*/
 		$practice->description = $request->description;
+        $practice->tags = $tags;
 		$practice->save();
         return redirect()->route('practicetests.index')->with('message','Question updated successfully');
     }

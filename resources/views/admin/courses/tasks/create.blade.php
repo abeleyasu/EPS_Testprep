@@ -106,6 +106,15 @@
                                 </div>
 
                             </div>
+							<div class="mb-2">
+									<label class="form-label" for="status">Task Type</label>
+
+									<select name="task_type" class="form-control">
+										<option value="text_video">Text/Video Task</option>
+										<option value="quiz">Quiz Task</option>
+										<option value="assignment">Assignment Task</option>
+									</select>
+								</div>
                             <div class="mb-2">
                                 <label class="form-label" for="tags">Tags</label>
                                 <input type="text" maxlength="30"
@@ -211,7 +220,7 @@
         One.helpersOnLoad(['js-ckeditor', 'jq-select2']);
         var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor',{
-			extraPlugins: 'oembed,colorbutton,colordialog,font',
+			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});
 

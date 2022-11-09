@@ -86,9 +86,14 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     // questions
     Route::resource('questions', QuestionsController::class);
 	Route::resource('practicetests', PracticeTestsController::class);
+	Route::post('addPracticeQuestion', [PracticeQuestionController::class, 'addPracticeQuestion'])->name('addPracticeQuestion');
+	Route::post('getPracticePassage', [PracticeQuestionController::class, 'getPracticePassage'])->name('getPracticePassage');
+    Route::post('addPracticeTestSection', [PracticeQuestionController::class, 'addPracticeTestSection'])->name('addPracticeTestSection');
 	Route::post('updatePracticeQuestion', [PracticeQuestionController::class, 'updatePracticeQuestion'])->name('updatePracticeQuestion');
 	Route::post('getPracticeQuestionById', [PracticeQuestionController::class, 'getPracticeQuestionById'])->name('getPracticeQuestionById');
 	Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
+    Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
+    Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
 });
 
 //User Routes
@@ -105,4 +110,5 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/tasks/{task}/detail', [TaskController::class, 'show'])->name('tasks.detail');
     Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
     Route::post('task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
+    Route::get('/clearCache', [UserController::class, 'clearCache']);
 });

@@ -80,7 +80,7 @@
                                             data-id="{{$section->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Section"
-                                            onclick="deleteItem_fun({{$section->id}})"
+                                            onclick="deleteItem_fun({{ $section->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
@@ -133,8 +133,7 @@
 				swal("Cancelled", "", "error");
 			}
 		});
-	};
-
+	}
 
     </script>
 @endsection

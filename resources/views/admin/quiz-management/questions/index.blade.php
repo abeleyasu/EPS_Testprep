@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
-
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" id="css-main" href="{{asset('assets/css/admin.css')}}">
 
 
@@ -59,11 +59,11 @@
                                             data-id="{{$question->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Section"
-                                            onclick="deleteItem({{ $question->id }})"
+                                            onclick="deleteItem_fun({{ $question->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
-                                    <form id="delete-form-{{$question->id}}" action="{{ route('questions.destroy',$question->id) }}" method="POST" style="display: none;">
+                                    <form id="delete-item-form-{{$question->id}}" action="{{ route('questions.destroy',$question->id) }}" method="POST" style="display: none;">
                                         @method('DELETE')
                                         {{ csrf_field() }}
                                     </form>
@@ -87,7 +87,31 @@
 
 @section('admin-script')
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
+	function deleteItem_fun(id) {
+		// var id = $(this).data("id");
+		var form =  $('#delete-item-form-'+id);
+		event.preventDefault();
+		swal({
+			title: "Are you sure?",
+			text: "But you will still be able to retrieve this.",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, archive it!",
+			cancelButtonText: "No, cancel please!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm){
+			if (isConfirm) {
+				form.submit();
+			} else {
+				swal("Cancelled", "", "error");
+			}
+		});
+	}
 
 
     </script>
