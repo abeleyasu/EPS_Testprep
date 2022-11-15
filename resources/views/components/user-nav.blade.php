@@ -46,6 +46,13 @@
                         <span class="nav-main-link-name">Courses</span>
                     </a>
                 </li>
+
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{Route::is(['test_prep_dashboard']) ? 'active' : ''}}" href="{{route('test_prep_dashboard')}}">
+                        <i class="nav-main-link-icon si si-speedometer"></i>
+                        <span class="nav-main-link-name">Test Prep Dashboard</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->
