@@ -9,6 +9,10 @@
         $(this).toggleClass("show");
       });
     });
+
+    $('input[type="checkbox"]').click(function(e){
+	    e.stopPropagation()
+    })
   </script>
 @endsection
 
