@@ -1,8 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.user')
 
 @section('title', 'calendar : CPS')
 
-@section('admin-content')
+@section('user-content')
 <!-- Main Container -->
 <main id="main-container">
     <!-- Hero -->

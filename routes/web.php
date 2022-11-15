@@ -111,6 +111,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
     Route::post('task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
     Route::get('/clearCache', [UserController::class, 'clearCache']);
-    Route::view('student-view-dashboard', 'student-view-dashboard');
+    Route::view('student-view-dashboard', 'user/student-view-dashboard');
     Route::view('calendar', 'user/calendar');
+    Route::view('practice-test', 'user/practice-test');
 });

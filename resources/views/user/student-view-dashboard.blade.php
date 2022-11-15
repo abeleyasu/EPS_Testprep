@@ -1,22 +1,22 @@
-@extends('layouts.admin')
+@extends('layouts.user')
 
 @section('title', 'Student View Dashboard : CPS')
 
 @section('page-script')
-  <script>
-    $(document).ready(function() {
-      $("#categoryQuestion1").click(function() {
-        $(this).toggleClass("show");
-      });
+<script>
+  $(document).ready(function() {
+    $("#categoryQuestion1").click(function() {
+      $(this).toggleClass("show");
     });
+  });
 
-    $('input[type="checkbox"]').click(function(e){
-	    e.stopPropagation()
-    })
-  </script>
+  $('input[type="checkbox"]').click(function(e) {
+    e.stopPropagation()
+  })
+</script>
 @endsection
 
-@section('admin-content')
+@section('user-content')
 <!-- Main Container -->
 <main id="main-container">
   <div class="bg-body-light">
