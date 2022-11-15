@@ -86,7 +86,7 @@
         <div class="content">
           <div class="row">
             <!-- BEGIN TEST PREP TOOLS CONTENT BOX -->
-            <div class="col-md-7 col-xl-7">
+            <div class="col-md-8 col-xl-7">
               <div class="block block-rounded">
                 <div class="block-header block-header-default text-white" style="background: #000">
                   <h3 class="block-title">
@@ -108,7 +108,7 @@
                         <div class="block block-rounded">
                           <div class="block-content">
                             <div class="row items-push">
-                              <div class="col-md-12 col-lg-12 col-xl-12">
+                              <div class="col-md-12 col-lg-12 col-xl-12" style='padding: 0 !important'>
                                 <!-- Calendar Container -->
                                 <div id="js-calendar"></div>
                               </div>
@@ -831,7 +831,7 @@ https://demo.pixelcave.com/oneui/be_forms_plugins.html -->
         <!-- END TEST PREP TOOLS CONTENT BOX -->
 
         <!-- BEGIN TEST PREP LESSONS CONTENT BOX -->
-        <div class="col-md-5 col-xl-5">
+        <div class="col-md-4 col-xl-5">
 
           
           <div class="block block-rounded">
@@ -882,6 +882,18 @@ https://demo.pixelcave.com/oneui/be_forms_plugins.html -->
 
 @section('page-style')
 <style>
+
+  .fc-toolbar-title{
+    font-size: 120% !important;
+  }
+
+  .fc-toolbar-chunk
+  {
+    display: flex;
+    font-size: 75%;
+  }
+  
+
   .content {
     width: 90%;
   }
