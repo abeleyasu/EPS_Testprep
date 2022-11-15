@@ -114,8 +114,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/clearCache', [UserController::class, 'clearCache']);
     Route::view('student-view-dashboard', 'user/student-view-dashboard');
     Route::view('calendar', 'user/calendar');
-    Route::view('practice-test', 'user/practice-test');
-    Route::view('student-view-dashboard', 'student-view-dashboard');
+    Route::view('practice-test', 'user/practice-test')->name('practicetest');
+    // Route::view('student-view-dashboard', 'student-view-dashboard');
     // Please make any changes you think it's necessary to routing 
     Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 });
