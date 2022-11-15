@@ -50,7 +50,6 @@ Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');
 
 //Admin Routes
 Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
-    Route::view('student-view-dashboard', 'student-view-dashboard');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
     Route::get('/user_list', [AdminController::class, 'userList'])->name('admin-user-list');
     Route::get('/create_user', [AdminController::class, 'showCreateUser'])->name('admin-create-user');
@@ -112,4 +111,5 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
     Route::post('task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
     Route::get('/clearCache', [UserController::class, 'clearCache']);
+    Route::view('student-view-dashboard', 'student-view-dashboard');
 });
