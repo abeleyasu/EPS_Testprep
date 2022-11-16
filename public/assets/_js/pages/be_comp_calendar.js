@@ -85,105 +85,158 @@ class pageCompCalendar {
                     right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                 },
                 drop: function (info) {
-                  let event_id = info.draggedEl.dataset.id;
-                  let url = info.draggedEl.dataset.url;
-                  let start_date = info.dateStr;
+                    let event_id = info.draggedEl.dataset.id;
+                    let url = info.draggedEl.dataset.url;
+                    let start_date = info.dateStr;
                     $.ajax({
                         url: url,
                         type: "POST",
                         dataType: "JSON",
                         data: {
-                          _token: $('meta[name="csrf-token"]').attr('content'),
-                          event_id: event_id,
-                          start_date: start_date,
+                            _token: $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                            event_id: event_id,
+                            start_date: start_date,
                         },
                         success: function (resp) {
-                          if (resp.success) {
-                              $("#alert-message").removeClass("d-none");
-                              $("#alert-message").removeClass("alert-danger");
-                              $("#alert-message").addClass("alert-success");
-                              $("#alert-message .alert-title").html(
-                                  resp.message
-                              );
-                          }
+                            if (resp.success) {
+                                $("#alert-message").removeClass("d-none");
+                                $("#alert-message").removeClass("alert-danger");
+                                $("#alert-message").addClass("alert-success");
+                                $("#alert-message .alert-title").html(
+                                    resp.message
+                                );
+                            }
                         },
                         error: function (err) {
                             console.log("err =>>>", err);
                         },
                     });
-                  info.draggedEl.parentNode.remove();
+                    info.draggedEl.parentNode.remove();
                 },
-                eventResize: function(info) {
-                  let id = info.event.extendedProps.event_id;
-                  let start_date = info.event.startStr;
-                  let end_date = moment(info.event.endStr).subtract(1, "days").format("YYYY-MM-DD"); 
-                  let site_url = $('#site_url').val();
-                  $.ajax({
-                    url: `${site_url}/user/calendar/resize-events`,
-                    type: "POST",
-                    dataType: "JSON",
-                    data: {
-                      _token: $('meta[name="csrf-token"]').attr('content'),
-                      id: id,
-                      start_date: start_date,
-                      end_date: end_date,
-                    },
-                    success: function (resp) {
-                      if (resp.success) {
-                        $("#alert-message").removeClass("d-none");
-                        $("#alert-message").removeClass("alert-danger");
-                        $("#alert-message").addClass("alert-success");
-                        $("#alert-message .alert-title").html(
-                            resp.message
-                        );
-                      }
-                    },
-                    error: function (err) {
-                        console.log("err =>>>", err);
-                    },
-                  });                 
-                },
-                eventDrop: function (info) {
-                    let id = info.event.extendedProps.event_id;
+                eventResize: function (info) {
+                    let id = info.event.id;
                     let start_date = info.event.startStr;
                     let end_date = null;
-                    if(info.event.endStr != null) {
-                        end_date = moment(info.event.endStr).subtract(1, "days").format("YYYY-MM-DD");
+                    if (info.event.endStr != "") {
+                        end_date = moment(info.event.endStr)
+                            .subtract(1, "days")
+                            .format("YYYY-MM-DD");
                     } else {
                         end_date = null;
                     }
-                    let site_url = $('#site_url').val();
-                  $.ajax({
-                    url: `${site_url}/user/calendar/resize-events`,
-                    type: "POST",
-                    dataType: "JSON",
-                    data: {
-                      _token: $('meta[name="csrf-token"]').attr('content'),
-                      id: id,
-                      start_date: start_date,
-                      end_date: end_date,
-                    },
-                    success: function (resp) {
-                      if (resp.success) {
-                        $("#alert-message").removeClass("d-none");
-                        $("#alert-message").removeClass("alert-danger");
-                        $("#alert-message").addClass("alert-success");
-                        $("#alert-message .alert-title").html(
-                            resp.message
-                        );
-                      }
-                    },
-                    error: function (err) {
-                        console.log("err =>>>", err);
-                    },
-                  });  
+                    let site_url = $("#site_url").val();
+                    $.ajax({
+                        url: `${site_url}/user/calendar/resize-events`,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                            id: id,
+                            start_date: start_date,
+                            end_date: end_date,
+                        },
+                        success: function (resp) {
+                            if (resp.success) {
+                                $("#alert-message").removeClass("d-none");
+                                $("#alert-message").removeClass("alert-danger");
+                                $("#alert-message").addClass("alert-success");
+                                $("#alert-message .alert-title").html(
+                                    resp.message
+                                );
+                            }
+                        },
+                        error: function (err) {
+                            console.log("err =>>>", err);
+                        },
+                    });
+                },
+                eventDrop: function (info) {
+                    let id = info.event.id;
+                    let start_date = info.event.startStr;
+                    let end_date = null;
+                    if (info.event.endStr != "") {
+                        end_date = moment(info.event.endStr)
+                            .subtract(1, "days")
+                            .format("YYYY-MM-DD");
+                    } else {
+                        end_date = null;
+                    }
+                    let site_url = $("#site_url").val();
+                    $.ajax({
+                        url: `${site_url}/user/calendar/resize-events`,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                            id: id,
+                            start_date: start_date,
+                            end_date: end_date,
+                        },
+                        success: function (resp) {
+                            if (resp.success) {
+                                $("#alert-message").removeClass("d-none");
+                                $("#alert-message").removeClass("alert-danger");
+                                $("#alert-message").addClass("alert-success");
+                                $("#alert-message .alert-title").html(
+                                    resp.message
+                                );
+                            }
+                        },
+                        error: function (err) {
+                            console.log("err =>>>", err);
+                        },
+                    });
                 },
                 eventClick: function (info) {
-                    alert("Id: " + info.event.extendedProps.event_id + ", Title: " + info.event.title);
+                    let id = info.event.id;
+                    let title = info.event.title;
+                    $("#event-click-model").modal("show");
+                    $("#event-click-model .main-content").html(title);
+                    $("#event-click-model .btn-main-id").attr("data-id", id);
                 },
                 events: eventObj,
             }
         );
+
+        $('#deleteEvent').click(function(){
+          let id = $("#deleteEvent").attr('data-id');
+          var event = calendar.getEventById(id);
+          let site_url = $("#site_url").val();
+          $.ajax({
+              url: `${site_url}/user/calendar/delete-event/${id}`,
+              type: "DELETE",
+              dataType: "JSON",
+              data: {
+                _token: $('meta[name="csrf-token"]').attr(
+                  "content"
+                ),
+              },
+              success: function(resp) {
+                  if (resp.success) {
+                      $('#event-click-model').modal('hide');
+                      event.remove();
+                      $('#alert-message').removeClass('d-none');
+                      $('#alert-message').removeClass('alert-danger');
+                      $('#alert-message').addClass('alert-success');
+                      $('#alert-message .alert-title').html(resp.message);
+                  }
+              },
+              error: function(err) {
+                  console.log("err =>>>", err);
+              }
+          });
+        });
+
+        $('#editEvent').click(function() {
+          let id = $('#editEvent').attr('data-id');
+          console.log("editEvent", id);
+        });
 
         calendar.render();
     }

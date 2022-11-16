@@ -94,7 +94,7 @@ class UserCalendarController extends Controller
      * @param  \App\Models\UserCalendar  $userCalendar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserCalendar $userCalendar)
+    public function updateEvent(Request $request)
     {
         //
     }
@@ -105,8 +105,10 @@ class UserCalendarController extends Controller
      * @param  \App\Models\UserCalendar  $userCalendar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserCalendar $userCalendar)
+    public function deleteEvent($id)
     {
-        //
+        UserCalendar::whereId($id)->delete();
+
+        return response()->json(["success" => true, "data" => $id, "message" => "Event deleted successfully"]);
     }
 }

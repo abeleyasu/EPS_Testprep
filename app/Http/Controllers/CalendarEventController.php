@@ -21,15 +21,34 @@ class CalendarEventController extends Controller
         $final_arr = [];
         
         foreach($all_events as $event) {
-            $event_arr['event_id'] = $event->id;
+            $event_arr['id'] = $event->id;
             $event_arr['title'] = $event->event->title;
             $event_arr['start'] = $event->start_date;
+            $event_arr['color'] = $this->findColor($event->event->color);
             $event_arr['end'] = date('Y-m-d', strtotime('+1 day', strtotime($event->end_date)));
             $event_arr['allDay'] = true;
             array_push($final_arr, $event_arr);
         }
 
         return view('user.calendar', compact('events', 'final_arr'));
+    }
+
+    public function findColor($color)
+    {
+        if($color == "info")
+        {
+            $c_code = "#0891b2";
+        } else if($color == "warning") {
+            $c_code = "#e04f1a";
+        } else if($color == "success") {
+            $c_code = "#82b54b";
+        } else if($color == "danger") {
+            $c_code = "#dc2626";
+        } else {
+            $c_code = "#4c78dd";
+        }
+
+        return $c_code;
     }
 
     /**
@@ -54,9 +73,16 @@ class CalendarEventController extends Controller
 
         $event = CalendarEvent::create([
             "title" => $title,
+            "color" => $this->randomHexColor()
         ]);
 
         return response()->json(["success" => true, "data" => $event, "message" => "Event saved successfully"]);
+    }
+
+    public function randomHexColor()
+    {
+        $colors = ["success", "danger", "warning", "info"];
+        return $colors[array_rand($colors)];
     }
 
     /**

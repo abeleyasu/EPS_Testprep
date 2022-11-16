@@ -13,6 +13,7 @@ class CalendarEvent extends Model
     
     protected $fillable = [
         'title',
-        'is_assigned'
+        'is_assigned',
+        'color'
     ];
 }

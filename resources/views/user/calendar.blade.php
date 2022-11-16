@@ -64,7 +64,7 @@
                         <ul id="js-events" class="list list-events">
                             @foreach($events as $event)
                             <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}</div>
+                                <div class="js-event p-2 fs-sm fw-medium rounded bg-{{$event->color}}-light text-{{$event->color}}" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}</div>
                             </li>
                             @endforeach
                         </ul>
@@ -82,6 +82,29 @@
         <!-- END Calendar -->
     </div>
     <!-- END Page Content -->
+    <div class="modal" id="event-click-model" tabindex="-1" role="dialog" aria-labelledby="modal-block-small" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="block block-rounded block-transparent mb-0">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">Event Details</h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-fw fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="block-content fs-sm">
+                        <p class="main-content"></p>
+                    </div>
+                    <div class="block-content block-content-full text-end bg-body">
+                        <button type="button" class="btn btn-main-id btn-sm btn-danger me-1" id="deleteEvent">Delete</button>
+                        <button type="button" class="btn btn-main-id btn-sm btn-primary" id="editEvent">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <!-- END Main Container -->
 @endsection
@@ -127,7 +150,7 @@
                     let html = ``;
                     if (resp.success) {
                         html += `<li>`;
-                        html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info" data-url="{{ route('calendar.assignEvent') }}" data-id="${resp.data.id}">${resp.data.title}</div>`;
+                        html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-${resp.data.color}-light text-${resp.data.color}" data-url="{{ route('calendar.assignEvent') }}" data-id="${resp.data.id}">${resp.data.title}</div>`;
                         html += `</li>`;
 
                         $('.list-events').append(html);
