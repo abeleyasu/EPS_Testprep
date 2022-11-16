@@ -6,174 +6,195 @@
 
 // Full Calendar, for more examples you can check out http://fullcalendar.io/
 class pageCompCalendar {
-  /*
-   * Add event to the events list
-   *
-   */
-  static addEvent() {
-    let eventInput = document.querySelector('.js-add-event');
-    let eventInputVal = '';
+    /*
+     * Add event to the events list
+     *
+     */
+    static addEvent() {
+        let eventInput = document.querySelector(".js-add-event");
+        let eventInputVal = "";
 
-    // When the add event form is submitted
-    document.querySelector('.js-form-add-event').addEventListener('submit', e => {
-      e.preventDefault();
+        // When the add event form is submitted
+        document
+            .querySelector(".js-form-add-event")
+            .addEventListener("submit", (e) => {
+                e.preventDefault();
 
-      // Get input value
-      eventInputVal = eventInput.value;
+                // Get input value
+                eventInputVal = eventInput.value;
 
-      // Check if the user entered something
-      if (eventInputVal) {
-        let eventList = document.getElementById('js-events');
-        let newEvent = document.createElement('li');
-        let newEventDiv = document.createElement('div');
+                // Check if the user entered something
+                if (eventInputVal) {
+                    let eventList = document.getElementById("js-events");
+                    let newEvent = document.createElement("li");
+                    let newEventDiv = document.createElement("div");
 
-        // Prepare new event div
-        newEventDiv.classList.add('js-event');
-        newEventDiv.classList.add('p-2');
-        newEventDiv.classList.add('fs-sm');
-        newEventDiv.classList.add('fw-medium');
-        newEventDiv.classList.add('rounded');
-        newEventDiv.classList.add('bg-info-light');
-        newEventDiv.classList.add('text-info');
-        newEventDiv.textContent = eventInputVal;
-        
-        // Prepare new event li
-        newEvent.appendChild(newEventDiv);
+                    // Prepare new event div
+                    newEventDiv.classList.add("js-event");
+                    newEventDiv.classList.add("p-2");
+                    newEventDiv.classList.add("fs-sm");
+                    newEventDiv.classList.add("fw-medium");
+                    newEventDiv.classList.add("rounded");
+                    newEventDiv.classList.add("bg-info-light");
+                    newEventDiv.classList.add("text-info");
+                    newEventDiv.textContent = eventInputVal;
 
-        // Add it to the events list
-        eventList.insertBefore(newEvent, eventList.firstChild);
+                    // Prepare new event li
+                    newEvent.appendChild(newEventDiv);
 
-        // Clear input field
-        eventInput.value = '';
-      }
-    });
-  }
+                    // Add it to the events list
+                    eventList.insertBefore(newEvent, eventList.firstChild);
 
-  /*
-   * Init drag and drop event functionality
-   *
-   */
-  static initEvents() {
-    new FullCalendar.Draggable(document.getElementById('js-events'), {
-      itemSelector: '.js-event',
-      eventData: function (eventEl) {
-        return {
-          title: eventEl.textContent,
-          backgroundColor: getComputedStyle(eventEl).color,
-          borderColor: getComputedStyle(eventEl).color
-        };
-      }
-    });
-  }
+                    // Clear input field
+                    eventInput.value = "";
+                }
+            });
+    }
 
-  /*
-   * Init calendar demo functionality
-   *
-   */
-  static initCalendar() {
-    let date = new Date();
-    let d = date.getDate();
-    let m = date.getMonth();
-    let y = date.getFullYear();
+    /*
+     * Init drag and drop event functionality
+     *
+     */
+    static initEvents() {
+        new FullCalendar.Draggable(document.getElementById("js-events"), {
+            itemSelector: ".js-event",
+            eventData: function (eventEl) {
+                return {
+                    title: eventEl.textContent,
+                    backgroundColor: getComputedStyle(eventEl).color,
+                    borderColor: getComputedStyle(eventEl).color,
+                };
+            },
+        });
+    }
 
-    let calendar = new FullCalendar.Calendar(document.getElementById('js-calendar'), {
-      themeSystem: 'standard',
-      firstDay: 1,
-      editable: true,
-      droppable: true,
-      headerToolbar: {
-        left: 'title',
-        right: 'prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      drop: function (info) {
-        info.draggedEl.parentNode.remove();
-      },
-      events: [
-        {
-          title: 'Gaming Day',
-          start: new Date(y, m, 1),
-          allDay: true
-        },
-        {
-          title: 'Skype Meeting',
-          start: new Date(y, m, 3)
-        },
-        {
-          title: 'Project X',
-          start: new Date(y, m, 9),
-          end: new Date(y, m, 12),
-          allDay: true,
-          color: '#e04f1a'
-        },
-        {
-          title: 'Work',
-          start: new Date(y, m, 17),
-          end: new Date(y, m, 19),
-          allDay: true,
-          color: '#82b54b'
-        },
-        {
-          id: 999,
-          title: 'Hiking (repeated)',
-          start: new Date(y, m, d - 1, 15, 0)
-        },
-        {
-          id: 999,
-          title: 'Hiking (repeated)',
-          start: new Date(y, m, d + 3, 15, 0)
-        },
-        {
-          title: 'Landing Template',
-          start: new Date(y, m, d - 3),
-          end: new Date(y, m, d - 3),
-          allDay: true,
-          color: '#ffb119'
-        },
-        {
-          title: 'Lunch',
-          start: new Date(y, m, d + 7, 15, 0),
-          color: '#82b54b'
-        },
-        {
-          title: 'Coding',
-          start: new Date(y, m, d, 8, 0),
-          end: new Date(y, m, d, 14, 0),
-        },
-        {
-          title: 'Trip',
-          start: new Date(y, m, 25),
-          end: new Date(y, m, 27),
-          allDay: true,
-          color: '#ffb119'
-        },
-        {
-          title: 'Reading',
-          start: new Date(y, m, d + 8, 20, 0),
-          end: new Date(y, m, d + 8, 22, 0)
-        },
-        {
-          title: 'Follow us on Twitter',
-          start: new Date(y, m, 22),
-          allDay: true,
-          url: 'http://twitter.com/pixelcave',
-          color: '#3c90df'
-        }
-      ]
-    });
+    /*
+     * Init calendar demo functionality
+     *
+     */
+    static initCalendar(eventObj) {
+        let calendar = new FullCalendar.Calendar(
+            document.getElementById("js-calendar"),
+            {
+                themeSystem: "standard",
+                firstDay: 1,
+                editable: true,
+                droppable: true,
+                headerToolbar: {
+                    left: "title",
+                    right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                },
+                drop: function (info) {
+                  let event_id = info.draggedEl.dataset.id;
+                  let url = info.draggedEl.dataset.url;
+                  let start_date = info.dateStr;
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                          _token: $('meta[name="csrf-token"]').attr('content'),
+                          event_id: event_id,
+                          start_date: start_date,
+                        },
+                        success: function (resp) {
+                          if (resp.success) {
+                              $("#alert-message").removeClass("d-none");
+                              $("#alert-message").removeClass("alert-danger");
+                              $("#alert-message").addClass("alert-success");
+                              $("#alert-message .alert-title").html(
+                                  resp.message
+                              );
+                          }
+                        },
+                        error: function (err) {
+                            console.log("err =>>>", err);
+                        },
+                    });
+                  info.draggedEl.parentNode.remove();
+                },
+                eventResize: function(info) {
+                  let id = info.event.extendedProps.event_id;
+                  let start_date = info.event.startStr;
+                  let end_date = moment(info.event.endStr).subtract(1, "days").format("YYYY-MM-DD"); 
+                  let site_url = $('#site_url').val();
+                  $.ajax({
+                    url: `${site_url}/user/calendar/resize-events`,
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                      _token: $('meta[name="csrf-token"]').attr('content'),
+                      id: id,
+                      start_date: start_date,
+                      end_date: end_date,
+                    },
+                    success: function (resp) {
+                      if (resp.success) {
+                        $("#alert-message").removeClass("d-none");
+                        $("#alert-message").removeClass("alert-danger");
+                        $("#alert-message").addClass("alert-success");
+                        $("#alert-message .alert-title").html(
+                            resp.message
+                        );
+                      }
+                    },
+                    error: function (err) {
+                        console.log("err =>>>", err);
+                    },
+                  });                 
+                },
+                eventDrop: function (info) {
+                    let id = info.event.extendedProps.event_id;
+                    let start_date = info.event.startStr;
+                    let end_date = null;
+                    if(info.event.endStr != null) {
+                        end_date = moment(info.event.endStr).subtract(1, "days").format("YYYY-MM-DD");
+                    } else {
+                        end_date = null;
+                    }
+                    let site_url = $('#site_url').val();
+                  $.ajax({
+                    url: `${site_url}/user/calendar/resize-events`,
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                      _token: $('meta[name="csrf-token"]').attr('content'),
+                      id: id,
+                      start_date: start_date,
+                      end_date: end_date,
+                    },
+                    success: function (resp) {
+                      if (resp.success) {
+                        $("#alert-message").removeClass("d-none");
+                        $("#alert-message").removeClass("alert-danger");
+                        $("#alert-message").addClass("alert-success");
+                        $("#alert-message .alert-title").html(
+                            resp.message
+                        );
+                      }
+                    },
+                    error: function (err) {
+                        console.log("err =>>>", err);
+                    },
+                  });  
+                },
+                eventClick: function (info) {
+                    alert("Id: " + info.event.extendedProps.event_id + ", Title: " + info.event.title);
+                },
+                events: eventObj,
+            }
+        );
 
-    calendar.render();
-  }
+        calendar.render();
+    }
 
-  /*
-   * Init functionality
-   *
-   */
-  static init() {
-    this.addEvent();
-    this.initEvents();
-    this.initCalendar();
-  }
+    /*
+     * Init functionality
+     *
+     */
+    static init(eventObj) {
+        this.addEvent();
+        this.initEvents();
+        this.initCalendar(eventObj);
+    }
 }
-
-// Initialize when page loads
-One.onLoad(pageCompCalendar.init());

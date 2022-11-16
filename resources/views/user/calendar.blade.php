@@ -34,6 +34,12 @@
     <!-- Page Content -->
     <div class="content">
         <!-- Calendar -->
+        <div class="alert alert-dismissible d-none" role="alert" id="alert-message">
+            <p class="mb-0 alert-title">
+
+            </p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <div class="block block-rounded">
             <div class="block-content">
                 <div class="row items-push">
@@ -45,8 +51,8 @@
                         <!-- Add Event Form -->
                         <form class="js-form-add-event push">
                             <div class="input-group">
-                                <input type="text" class="js-add-event form-control" placeholder="Add Event..">
-                                <span class="input-group-text">
+                                <input type="text" name="title" id="event-title" class="js-add-event form-control" placeholder="Add Event..">
+                                <span class="input-group-text" style="cursor: pointer" onclick="addTitle()">
                                     <i class="fa fa-fw fa-plus-circle"></i>
                                 </span>
                             </div>
@@ -54,35 +60,15 @@
                         <!-- END Add Event Form -->
 
                         <!-- Event List -->
+                        @if(!empty($events))
                         <ul id="js-events" class="list list-events">
+                            @foreach($events as $event)
                             <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info">Codename X</div>
+                                <div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}</div>
                             </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-success-light text-success">Weekend Adventure</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info">Project Mars</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-warning-light text-warning">Meeting</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-success-light text-success">Walk the dog</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info">AI schedule</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-success-light text-success">Cinema</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-danger-light text-danger">Project X</div>
-                            </li>
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-warning-light text-warning">Skype Meeting</div>
-                            </li>
+                            @endforeach
                         </ul>
+                        @endif
                         <div class="text-center">
                             <p class="fs-sm text-muted">
                                 <i class="fa fa-arrows-alt"></i> Drag and drop events on the calendar
@@ -101,9 +87,62 @@
 @endsection
 
 @section('page-style')
+<!-- open ui plugins -->
+<link rel="stylesheet" href="{{asset('assets/js/plugins/fullcalendar/main.min.css')}}">
 <style>
     .content {
         width: 90%;
     }
 </style>
+@endsection
+
+@section('user-script')
+<script src="{{asset('assets/js/plugins/fullcalendar/main.min.js')}}"></script>
+<script src="{{asset('assets/js/moment/moment.min.js')}}"></script>
+<script src="{{asset('assets/_js/pages/be_comp_calendar.js')}}"></script>
+<script>
+    let eventObj = @json($final_arr);
+
+    pageCompCalendar.init(eventObj);
+
+    function addTitle() {
+        let title = $('#event-title').val();
+
+        if (title == "") {
+            $('#alert-message').removeClass('d-none');
+            $('#alert-message').removeClass('alert-success');
+            $('#alert-message').addClass('alert-danger');
+            $('#alert-message .alert-title').html('Please Enter Event');
+            return false;
+        } else {
+            $.ajax({
+                url: "{{ route('calendar.addEvent') }}",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    "_token": "{{  csrf_token() }}",
+                    "title": title
+                },
+                success: function(resp) {
+                    let html = ``;
+                    if (resp.success) {
+                        html += `<li>`;
+                        html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-info-light text-info" data-url="{{ route('calendar.assignEvent') }}" data-id="${resp.data.id}">${resp.data.title}</div>`;
+                        html += `</li>`;
+
+                        $('.list-events').append(html);
+                        $('#event-title').val("");
+                        $('#alert-message').removeClass('d-none');
+                        $('#alert-message').removeClass('alert-danger');
+                        $('#alert-message').addClass('alert-success');
+                        $('#alert-message .alert-title').html(resp.message);
+                    }
+                },
+                error: function(err) {
+                    console.log("err =>>>", err);
+                }
+            });
+        }
+    }
+</script>
 @endsection
