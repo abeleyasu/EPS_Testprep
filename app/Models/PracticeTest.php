@@ -13,4 +13,9 @@ class PracticeTest extends Model
 	protected $fillable = [
         'title', 'format', 'description',
     ];
+
+    public function getPracticeSections()
+    {
+        return $this->hasMany(PracticeTestSection::class, 'testid','id');
+    }
 }
