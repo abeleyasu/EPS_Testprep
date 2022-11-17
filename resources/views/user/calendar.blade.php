@@ -63,8 +63,8 @@
                         @if(!empty($events))
                         <ul id="js-events" class="list list-events">
                             @foreach($events as $event)
-                            <li>
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-{{$event->color}}-light text-{{$event->color}}" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}</div>
+                            <li class="event-list-{{ $event->id }}">
+                                <div class="js-event p-2 fs-sm fw-medium rounded bg-{{$event->color}}-light text-{{$event->color}}" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}<span class="main-event-trash" onclick="mainEventTrash({{ $event->id }})"><i class="fa-solid fa-trash"></i></span></div>
                             </li>
                             @endforeach
                         </ul>
@@ -83,7 +83,7 @@
     </div>
     <!-- END Page Content -->
     <div class="modal" id="event-click-model" tabindex="-1" role="dialog" aria-labelledby="modal-block-small" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-dialog  modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="block block-rounded block-transparent mb-0">
                     <div class="block-header block-header-default">
@@ -95,11 +95,27 @@
                         </div>
                     </div>
                     <div class="block-content fs-sm">
-                        <p class="main-content"></p>
+                        <form id="EditEventModel">
+                            <div class="mb-3">
+                                <label for="exampleInputEventTitle" class="form-label">Event Title</label>
+                                <input type="text" class="form-control" placeholder="Enter Event Title" name="title" id="exampleInputEventTitle" autocomplete="off">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEventColor" class="form-label">Event Color</label>
+                                <select class="form-select form-select-lg mb-3" id="exampleInputEventColor" name="color" aria-label=".form-select-lg example">
+                                    <option value="">Select Color</option>
+                                    <option value="success">Success</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="info">Info</option>
+                                    <option value="danger">Danger</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                     <div class="block-content block-content-full text-end bg-body">
-                        <button type="button" class="btn btn-main-id btn-sm btn-danger me-1" id="deleteEvent">Delete</button>
-                        <button type="button" class="btn btn-main-id btn-sm btn-primary" id="editEvent">Edit</button>
+                        <button type="button" class="btn btn-sm btn-info" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-main-id btn-sm btn-primary" id="editEvent">Update</button>
+                        <button type="button" class="btn btn-main-id btn-sm btn-secondary me-1" id="deleteEvent"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
             </div>
@@ -116,20 +132,43 @@
     .content {
         width: 90%;
     }
+    .main-event-trash {
+        position: absolute;
+        right: 12px;
+        cursor: pointer;
+    }
+
+    .fc-button-primary {
+        color: #334155 !important;
+        background-color: #dde2e9 !important;
+        border-color: #dde2e9 !important;
+    }
+
+    .fc-today-button {
+        background-color: #334155 !important;
+        color:   #dde2e9!important;
+    }
+    
+    .fc-button-active{
+        color: #334155 !important;
+        background-color: #f6f7f9 !important;
+        border-color: #f6f7f9 !important;
+    }
 </style>
 @endsection
 
 @section('user-script')
 <script src="{{asset('assets/js/plugins/fullcalendar/main.min.js')}}"></script>
 <script src="{{asset('assets/js/moment/moment.min.js')}}"></script>
+<script src="{{asset('assets/js/sweetalert2/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('assets/_js/pages/be_comp_calendar.js')}}"></script>
 <script>
     let eventObj = @json($final_arr);
 
     pageCompCalendar.init(eventObj);
 
-    function addTitle() {
-        let title = $('#event-title').val();
+    function addTitle(title) {
+        title = $('#event-title').val();
 
         if (title == "") {
             $('#alert-message').removeClass('d-none');
@@ -149,8 +188,8 @@
                 success: function(resp) {
                     let html = ``;
                     if (resp.success) {
-                        html += `<li>`;
-                        html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-${resp.data.color}-light text-${resp.data.color}" data-url="{{ route('calendar.assignEvent') }}" data-id="${resp.data.id}">${resp.data.title}</div>`;
+                        html += `<li class="event-list-${resp.data.id}">`;
+                        html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-${resp.data.color}-light text-${resp.data.color}" data-url="{{ route('calendar.assignEvent') }}" data-id="${resp.data.id}">${resp.data.title}<span class="main-event-trash" onclick="mainEventTrash(${resp.data.id})"><i class="fa-solid fa-trash"></i></div>`;
                         html += `</li>`;
 
                         $('.list-events').append(html);
@@ -166,6 +205,41 @@
                 }
             });
         }
+    }
+
+    function mainEventTrash(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to delete this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `{{ url('user/calendar/trash-event/${id}') }}`,
+                    type: "DELETE",
+                    dataType: "JSON",
+                    data: {
+                        "_token": "{{  csrf_token() }}",
+                    },
+                    success: function(resp) {
+                        if (resp.success) {
+                            $(`.event-list-${resp.data}`).remove();
+                            $('#alert-message').removeClass('d-none');
+                            $('#alert-message').removeClass('alert-danger');
+                            $('#alert-message').addClass('alert-success');
+                            $('#alert-message .alert-title').html(resp.message);
+                        }
+                    },
+                    error: function(err) {
+                        console.log("err =>>>", err);
+                    }
+                });
+            }
+        })
     }
 </script>
 @endsection

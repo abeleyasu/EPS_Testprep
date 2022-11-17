@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class CalendarEventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $events = CalendarEvent::where('is_assigned',0)->get();
@@ -25,8 +20,8 @@ class CalendarEventController extends Controller
             $event_arr['title'] = $event->event->title;
             $event_arr['start'] = $event->start_date;
             $event_arr['color'] = $this->findColor($event->event->color);
-            $event_arr['end'] = date('Y-m-d', strtotime('+1 day', strtotime($event->end_date)));
-            $event_arr['allDay'] = true;
+            $event_arr['end'] = isset($event->end_date) ? date('Y-m-d H:i:s', strtotime('+1 day', strtotime($event->end_date))) : null;
+            $event_arr['allDay'] = date('H:i:s', strtotime($event->start_date)) == "00:00:00" ? true : false;
             array_push($final_arr, $event_arr);
         }
 
@@ -35,8 +30,7 @@ class CalendarEventController extends Controller
 
     public function findColor($color)
     {
-        if($color == "info")
-        {
+        if($color == "info") {
             $c_code = "#0891b2";
         } else if($color == "warning") {
             $c_code = "#e04f1a";
@@ -51,22 +45,6 @@ class CalendarEventController extends Controller
         return $c_code;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $title = $request->title;
@@ -85,48 +63,10 @@ class CalendarEventController extends Controller
         return $colors[array_rand($colors)];
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CalendarEvent  $calendarEvent
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CalendarEvent $calendarEvent)
+    public function destroy($id)
     {
-        //
-    }
+        CalendarEvent::whereId($id)->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CalendarEvent  $calendarEvent
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CalendarEvent $calendarEvent)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CalendarEvent  $calendarEvent
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CalendarEvent $calendarEvent)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CalendarEvent  $calendarEvent
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CalendarEvent $calendarEvent)
-    {
-        //
+        return response()->json(["success" => true, "data" => $id, "message" => "Event deleted successfully"]);
     }
 }

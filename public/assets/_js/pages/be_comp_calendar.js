@@ -40,13 +40,13 @@ class pageCompCalendar {
                     newEventDiv.textContent = eventInputVal;
 
                     // Prepare new event li
-                    newEvent.appendChild(newEventDiv);
+                    // newEvent.appendChild(newEventDiv);
 
                     // Add it to the events list
-                    eventList.insertBefore(newEvent, eventList.firstChild);
+                    // eventList.insertBefore(newEvent, eventList.firstChild);
 
                     // Clear input field
-                    eventInput.value = "";
+                    // eventInput.value = "";
                 }
             });
     }
@@ -85,9 +85,13 @@ class pageCompCalendar {
                     right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                 },
                 drop: function (info) {
+                    info.draggedEl.parentNode.remove();
+                },
+                eventReceive: function (info) {
                     let event_id = info.draggedEl.dataset.id;
                     let url = info.draggedEl.dataset.url;
-                    let start_date = info.dateStr;
+                    let start_date = moment(info.event.startStr).format("YYYY-MM-DD HH:mm:ss");
+                    let listEvent = calendar.getEvents();
                     $.ajax({
                         url: url,
                         type: "POST",
@@ -101,6 +105,10 @@ class pageCompCalendar {
                         },
                         success: function (resp) {
                             if (resp.success) {
+                                listEvent.forEach(event => { 
+                                    event.remove();
+                                });
+                                calendar.addEventSource(resp.data);
                                 $("#alert-message").removeClass("d-none");
                                 $("#alert-message").removeClass("alert-danger");
                                 $("#alert-message").addClass("alert-success");
@@ -113,16 +121,13 @@ class pageCompCalendar {
                             console.log("err =>>>", err);
                         },
                     });
-                    info.draggedEl.parentNode.remove();
                 },
                 eventResize: function (info) {
                     let id = info.event.id;
-                    let start_date = info.event.startStr;
+                    let start_date = moment(info.event.startStr).format("YYYY-MM-DD HH:mm:ss");
                     let end_date = null;
                     if (info.event.endStr != "") {
-                        end_date = moment(info.event.endStr)
-                            .subtract(1, "days")
-                            .format("YYYY-MM-DD");
+                        end_date = moment(info.event.endStr).subtract(1, "days").format("YYYY-MM-DD HH:mm:ss");
                     } else {
                         end_date = null;
                     }
@@ -156,12 +161,10 @@ class pageCompCalendar {
                 },
                 eventDrop: function (info) {
                     let id = info.event.id;
-                    let start_date = info.event.startStr;
+                    let start_date = moment(info.event.startStr).format("YYYY-MM-DD HH:mm:ss");
                     let end_date = null;
                     if (info.event.endStr != "") {
-                        end_date = moment(info.event.endStr)
-                            .subtract(1, "days")
-                            .format("YYYY-MM-DD");
+                        end_date = moment(info.event.endStr).subtract(1, "days").format("YYYY-MM-DD HH:mm:ss");
                     } else {
                         end_date = null;
                     }
@@ -195,47 +198,113 @@ class pageCompCalendar {
                 },
                 eventClick: function (info) {
                     let id = info.event.id;
-                    let title = info.event.title;
-                    $("#event-click-model").modal("show");
-                    $("#event-click-model .main-content").html(title);
-                    $("#event-click-model .btn-main-id").attr("data-id", id);
+                    let site_url = $("#site_url").val();
+                    $.ajax({
+                        url: `${site_url}/user/calendar/get-event/${id}`,
+                        type: "GET",
+                        dataType: "JSON",
+                        success: function (resp) {
+                            if (resp.success) {
+                                $("#event-click-model").modal("show");
+                                let title = resp.data.event.title;
+                                let color = resp.data.event.color;
+                                $('#exampleInputEventTitle').val(title);
+                                $('#exampleInputEventColor').val(color);
+                                $("#event-click-model .btn-main-id").attr("data-id", resp.data.event.id);
+                            }
+                        },
+                        error: function (err) {
+                            console.log("err =>>>", err);
+                        },
+                    });
                 },
                 events: eventObj,
             }
         );
 
         $('#deleteEvent').click(function(){
-          let id = $("#deleteEvent").attr('data-id');
-          var event = calendar.getEventById(id);
-          let site_url = $("#site_url").val();
-          $.ajax({
-              url: `${site_url}/user/calendar/delete-event/${id}`,
-              type: "DELETE",
-              dataType: "JSON",
-              data: {
-                _token: $('meta[name="csrf-token"]').attr(
-                  "content"
-                ),
-              },
-              success: function(resp) {
-                  if (resp.success) {
-                      $('#event-click-model').modal('hide');
-                      event.remove();
-                      $('#alert-message').removeClass('d-none');
-                      $('#alert-message').removeClass('alert-danger');
-                      $('#alert-message').addClass('alert-success');
-                      $('#alert-message .alert-title').html(resp.message);
-                  }
-              },
-              error: function(err) {
-                  console.log("err =>>>", err);
-              }
-          });
+            let id = $("#deleteEvent").attr('data-id');
+            let site_url = $("#site_url").val();
+            let listEvent = calendar.getEvents();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `${site_url}/user/calendar/delete-event/${id}`,
+                        type: "DELETE",
+                        dataType: "JSON",
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr(
+                            "content"
+                            ),
+                        },
+                        success: function(resp) {
+                            let html = ``;
+                            if (resp.success) {
+                                $('#event-click-model').modal('hide');
+                                listEvent.forEach(event => { 
+                                    event.remove();
+                                });
+                                calendar.addEventSource(resp.data['fetchAllEvents']);
+                                html += `<li class="event-list-${resp.data['event'].id}">`;
+                                html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-${resp.data['event'].color}-light text-${resp.data['event'].color}" data-url="${site_url}/user/calendar/assign-events" data-id="${resp.data['event'].id}">${resp.data['event'].title}<span class="main-event-trash" onclick="mainEventTrash(${resp.data['event'].id})"><i class="fa-solid fa-trash"></i></div>`;
+                                html += `</li>`;
+                                $('.list-events').append(html);
+                                $('#alert-message').removeClass('d-none');
+                                $('#alert-message').removeClass('alert-danger');
+                                $('#alert-message').addClass('alert-success');
+                                $('#alert-message .alert-title').html(resp.message);
+                            }
+                        },
+                        error: function(err) {
+                            console.log("err =>>>", err);
+                        }
+                    });  
+                }
+            })
         });
 
         $('#editEvent').click(function() {
-          let id = $('#editEvent').attr('data-id');
-          console.log("editEvent", id);
+            let id = $('#editEvent').attr('data-id');
+            let title = $('#exampleInputEventTitle').val();
+            let color = $('#exampleInputEventColor').val();
+            let site_url = $("#site_url").val();
+            let listEvent = calendar.getEvents();
+            $.ajax({
+                url: `${site_url}/user/calendar/update-event/${id}`,
+                type: "PUT",
+                dataType: "JSON",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr(
+                    "content"
+                    ),
+                    title: title,
+                    color: color
+                },
+                success: function(resp) {
+                    if (resp.success) {
+                        $('#event-click-model').modal('hide');
+                        listEvent.forEach(event => { 
+                            event.remove();
+                        });
+                        calendar.addEventSource(resp.data);
+                        $('#alert-message').removeClass('d-none');
+                        $('#alert-message').removeClass('alert-danger');
+                        $('#alert-message').addClass('alert-success');
+                        $('#alert-message .alert-title').html(resp.message);
+                    }
+                },
+                error: function(err) {
+                    console.log("err =>>>", err);
+                }
+            });
         });
 
         calendar.render();

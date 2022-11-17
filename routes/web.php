@@ -118,10 +118,12 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::view('practice-test-sections', 'user/practice-test-sections');
     Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
     Route::get('/calendar', [CalendarEventController::class, 'index']);
+    Route::delete('/calendar/trash-event/{id}', [CalendarEventController::class, 'destroy']);
     Route::post('/calendar/assign-events', [UserCalendarController::class, 'store'])->name('calendar.assignEvent');
     Route::post('/calendar/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('calendar.resizeEvent');
     Route::delete('/calendar/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('calendar.deleteEvent');
     Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
+    Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
     Route::view('practice-test', 'user/practice-test')->name('practicetest');
     // Route::view('student-view-dashboard', 'student-view-dashboard');
     // Please make any changes you think it's necessary to routing 
