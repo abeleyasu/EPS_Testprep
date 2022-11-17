@@ -247,6 +247,8 @@ class pageCompCalendar {
                             let html = ``;
                             if (resp.success) {
                                 $('#event-click-model').modal('hide');
+                                $('#exampleInputEventTitle').val('');
+                                $('#exampleInputEventColor').val('');
                                 listEvent.forEach(event => { 
                                     event.remove();
                                 });
@@ -297,6 +299,8 @@ class pageCompCalendar {
                 success: function(resp) {
                     if (resp.success) {
                         $('#event-click-model').modal('hide');
+                        $('#exampleInputEventTitle').val('');
+                        $('#exampleInputEventColor').val('');
                         listEvent.forEach(event => { 
                             event.remove();
                         });
@@ -343,6 +347,8 @@ class pageCompCalendar {
                 success: function(resp) {
                     if (resp.success) {
                         $('#event-select-model').modal('hide');
+                        $('#AddInputEventTitle').val('');
+                        $('#AddInputEventColor').val('');
                         listEvent.forEach(event => { 
                             event.remove();
                         });
