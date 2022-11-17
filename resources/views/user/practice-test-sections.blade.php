@@ -37,20 +37,39 @@
         </div>
         </div>
         <!-- Hero -->
+        @if(!$testSectionName == 0)
         <div class="bg-body-light">
           <div class="content content-boxed">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
               <div class="flex-grow-1">
                 <h1 class="h3 fw-bold mb-2">
-                  Practice test sections
+                  {{$testSectionName}} section
                 </h1>
                 <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                  This test has 4 sections and 15 questions
+                
+                  This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
+                
                 </h2>
               </div>
             </div>
           </div>
         </div>
+        @elseif($testSections == 0)
+        <div class="bg-body-light">
+          <div class="content content-boxed">
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+              <div class="flex-grow-1">
+                <h1 class="h3 fw-bold mb-2">
+                  Undefined section
+                </h1>
+                <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                 
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endif
         <!-- END Hero -->
 
         <!-- Page Content -->
@@ -65,30 +84,39 @@
                                                               to 'timeline-event' elements to position them to the right (screen width > 1200px) (useful, if you
                                                               would like to have multiple events to the left or to the right section)
           -->
+          @if(!$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
-            
-
+          <?php  $count = 0; ?>
+          @foreach($testSectionsDetails as $singletestSections)
+          
             <!-- START SECTION -->
             <li class="timeline-event">
               <div class="timeline-event-icon bg-success">
-                <i class="fa-solid fa-1"></i>
+                <i class="fa-solid fa-{{++$count}}"></i>
               </div>
               <div class="timeline-event-block block">
                 <div class="block-header block-header-default">
-                  <h3 class="block-title">Section 1</h3>
+                  <h3 class="block-title">{{$singletestSections['Sections'][0]['practice_test_type']}} Section</h3>
                   <div class="block-options">
+                  
+                  @if(isset($singletestSections['Sections_question']))
                     <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                        14 Questions - 10 Minutes
+                        {{count($singletestSections['Sections_question'])}} Questions 
                     </div>
+                    @elseif(!isset($singletestSections['Sections_question']))
+                    <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+                        0 Questions 
+                    </div>
+                    @endif
                   </div>
                 </div>
                 <div class="block-content">
                     <div class="d-flex justify-content-between">
                       <p>
-                        Start Section 1 questions
+                        Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section Questions
                       </p>
                       <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <i class="fa fa-lg fa-circle-check me-1"></i>Start Section 1
+                        <i class="fa fa-lg fa-circle-check me-1"></i>Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section 
                       </button>
                     </div>
                 </div>
@@ -96,93 +124,14 @@
             </li>
             <!-- END SECTION -->
 
-            <!-- START SECTION -->
-            <li class="timeline-event">
-              <div class="timeline-event-icon bg-success">
-                <i class="fa-solid fa-2"></i>
-              </div>
-              <div class="timeline-event-block block">
-                <div class="block-header block-header-default">
-                  <h3 class="block-title">Section 1</h3>
-                  <div class="block-options">
-                    <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                        14 Questions - 10 Minutes
-                    </div>
-                  </div>
-                </div>
-                <div class="block-content">
-                    <div class="d-flex justify-content-between">
-                      <p>
-                        Start Section 1 questions
-                      </p>
-                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <i class="fa fa-lg fa-circle-check me-1"></i>Start Section 1
-                      </button>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <!-- END SECTION -->
-
-            <!-- START SECTION -->
-            <li class="timeline-event">
-              <div class="timeline-event-icon bg-success">
-                <i class="fa-solid fa-3"></i>
-              </div>
-              <div class="timeline-event-block block">
-                <div class="block-header block-header-default">
-                  <h3 class="block-title">Section 1</h3>
-                  <div class="block-options">
-                    <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                        14 Questions - 10 Minutes
-                    </div>
-                  </div>
-                </div>
-                <div class="block-content">
-                    <div class="d-flex justify-content-between">
-                      <p>
-                        Start Section 1 questions
-                      </p>
-                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <i class="fa fa-lg fa-circle-check me-1"></i>Start Section 1
-                      </button>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <!-- END SECTION -->
-
-            <!-- START SECTION -->
-            <li class="timeline-event">
-              <div class="timeline-event-icon bg-success">
-                <i class="fa-solid fa-4"></i>
-              </div>
-              <div class="timeline-event-block block">
-                <div class="block-header block-header-default">
-                  <h3 class="block-title">Section 1</h3>
-                  <div class="block-options">
-                    <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                        14 Questions - 10 Minutes
-                    </div>
-                  </div>
-                </div>
-                <div class="block-content">
-                    <div class="d-flex justify-content-between">
-                      <p>
-                        Start Section 1 questions
-                      </p>
-                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <i class="fa fa-lg fa-circle-check me-1"></i>Start Section 1
-                      </button>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <!-- END SECTION -->
-
-            
+            @endforeach
 
           </ul>
+          @elseif($testSections == 0)
+          <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+               No Sections Added yet!
+          </div>
+          @endif
           <!-- END Timeline -->
         </div>
         <!-- END Page Content -->

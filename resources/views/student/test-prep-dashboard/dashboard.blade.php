@@ -398,15 +398,19 @@ Use this to track timing as you take official tests on paper.
                                                     <th>Test Name &amp; Link<!--Test Name--></th>
                                                     <th>Status</th>
                                                   </tr> 
+                                                  <?php  $count = 0; ?>
+                                                  @foreach($getAllPracticeTests as $singleGetAllPracticeTests)
+                                                  <?php  //echo "<pre>"; print_r($singleGetAllPracticeTests); echo "</pre>"; ?>
                                                   <tr>
                                                     <td>
-                                                      <a class="fw-medium" href="javascript:void(0)">College Prep System PSAT #1</a>
+                                                      <a class="fw-medium" href="{{route('single_test', ['id' => $singleGetAllPracticeTests->id])}}">College Prep System {{$singleGetAllPracticeTests->format}} #{{++$count}}</a>
                                                     </td>
                                                     <td class="text-end text-muted"> 
                                                       <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 bg-warning-light text-warning"><i class="fa fa-lg fa-circle-exclamation me-1"></i>Upgrade to Take Test</button>
                                                     </td>
                                                   </tr>
-                                                  <tr>
+                                                  @endforeach
+                                                  <!-- <tr>
                                                     <td>
                                                       <a class="fw-medium" href="javascript:void(0)">College Prep System SAT #1</a>
                                                     </td>
@@ -436,8 +440,8 @@ Use this to track timing as you take official tests on paper.
                                                     </td>
                                                     <td class="text-end text-muted">
                                                       <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 bg-warning-light text-warning"><i class="fa fa-lg fa-circle-exclamation me-1"></i>Upgrade to Take Test</button>
-                                                    </td> <!-- Tests that are unavailable are grayed out (or RED LOCKED) because they haven't UPGRADED to PAID ACCOUNT -->
-                                                  </tr>
+                                                    </td> 
+                                                  </tr> -->
                                                 </tbody>
                                               </table>
                                               <!-- END Basics -->

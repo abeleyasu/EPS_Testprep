@@ -115,6 +115,11 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::post('/task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
     Route::get('/clearCache', [UserController::class, 'clearCache']);
     Route::view('student-view-dashboard', 'user/student-view-dashboard');
+
+    //Route::view('practice-test-sections', 'user/practice-test-sections');
+    Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
+
+    Route::view('calendar', 'user/calendar');
     Route::view('practice-test-sections', 'user/practice-test-sections');
     Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
     Route::get('/calendar', [CalendarEventController::class, 'index']);
