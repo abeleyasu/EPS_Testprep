@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('user_calendars', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('event_id');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
+            $table->dateTime('start_date');
+            $table->dateTime('end_date')->nullable();
             $table->foreign('event_id')->references('id')->on('calendar_events');
             $table->timestamps();
         });
