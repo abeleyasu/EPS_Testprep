@@ -13,6 +13,7 @@ use App\Http\Controllers\QuizTagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\UserController;
@@ -20,6 +21,7 @@ use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
 use \App\Http\Controllers\QuizManagemet\PracticeQuestionController;
 use App\Http\Controllers\TestPrepController;
+use App\Http\Controllers\UserCalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,7 +112,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/sections/{section}/show-detail', [SectionController::class, 'showDetail'])->name('sections.show-detail');
     Route::get('/tasks/{task}/detail', [TaskController::class, 'show'])->name('tasks.detail');
     Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
-    Route::post('task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
+    Route::post('/task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
     Route::get('/clearCache', [UserController::class, 'clearCache']);
     Route::view('student-view-dashboard', 'user/student-view-dashboard');
 
@@ -118,6 +120,16 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
     Route::view('calendar', 'user/calendar');
+    Route::view('practice-test-sections', 'user/practice-test-sections');
+    Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
+    Route::get('/calendar', [CalendarEventController::class, 'index']);
+    Route::delete('/calendar/trash-event/{id}', [CalendarEventController::class, 'destroy']);
+    Route::post('/calendar/assign-events', [UserCalendarController::class, 'store'])->name('calendar.assignEvent');
+    Route::post('/calendar/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('calendar.resizeEvent');
+    Route::delete('/calendar/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('calendar.deleteEvent');
+    Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
+    Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
+    Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
     Route::view('practice-test', 'user/practice-test')->name('practicetest');
     // Route::view('student-view-dashboard', 'student-view-dashboard');
     // Please make any changes you think it's necessary to routing 
