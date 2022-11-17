@@ -79,6 +79,7 @@ class pageCompCalendar {
                 themeSystem: "standard",
                 firstDay: 1,
                 editable: true,
+                selectable: true,
                 droppable: true,
                 headerToolbar: {
                     left: "title",
@@ -109,12 +110,7 @@ class pageCompCalendar {
                                     event.remove();
                                 });
                                 calendar.addEventSource(resp.data);
-                                $("#alert-message").removeClass("d-none");
-                                $("#alert-message").removeClass("alert-danger");
-                                $("#alert-message").addClass("alert-success");
-                                $("#alert-message .alert-title").html(
-                                    resp.message
-                                );
+                                toastr.success(resp.message);
                             }
                         },
                         error: function (err) {
@@ -146,12 +142,7 @@ class pageCompCalendar {
                         },
                         success: function (resp) {
                             if (resp.success) {
-                                $("#alert-message").removeClass("d-none");
-                                $("#alert-message").removeClass("alert-danger");
-                                $("#alert-message").addClass("alert-success");
-                                $("#alert-message .alert-title").html(
-                                    resp.message
-                                );
+                                toastr.success(resp.message);
                             }
                         },
                         error: function (err) {
@@ -183,12 +174,7 @@ class pageCompCalendar {
                         },
                         success: function (resp) {
                             if (resp.success) {
-                                $("#alert-message").removeClass("d-none");
-                                $("#alert-message").removeClass("alert-danger");
-                                $("#alert-message").addClass("alert-success");
-                                $("#alert-message .alert-title").html(
-                                    resp.message
-                                );
+                                toastr.success(resp.message);
                             }
                         },
                         error: function (err) {
@@ -217,6 +203,18 @@ class pageCompCalendar {
                             console.log("err =>>>", err);
                         },
                     });
+                },
+                select: function(info) {
+                    let start_date = moment(info.startStr).format("YYYY-MM-DD HH:mm:ss");
+                    let end_date = null;
+                    if (info.endStr != "") {
+                        end_date = moment(info.endStr).subtract(1, "days").format("YYYY-MM-DD HH:mm:ss");
+                    } else {
+                        end_date = null;
+                    }
+                    $('#AddInputStartDate').val(start_date);
+                    $('#AddInputEndDate').val(end_date);
+                    $('#event-select-model').modal('show');
                 },
                 events: eventObj,
             }
@@ -257,10 +255,7 @@ class pageCompCalendar {
                                 html += `<div class="js-event p-2 fs-sm fw-medium rounded bg-${resp.data['event'].color}-light text-${resp.data['event'].color}" data-url="${site_url}/user/calendar/assign-events" data-id="${resp.data['event'].id}">${resp.data['event'].title}<span class="main-event-trash" onclick="mainEventTrash(${resp.data['event'].id})"><i class="fa-solid fa-trash"></i></div>`;
                                 html += `</li>`;
                                 $('.list-events').append(html);
-                                $('#alert-message').removeClass('d-none');
-                                $('#alert-message').removeClass('alert-danger');
-                                $('#alert-message').addClass('alert-success');
-                                $('#alert-message .alert-title').html(resp.message);
+                                toastr.success(resp.message);
                             }
                         },
                         error: function(err) {
@@ -277,6 +272,17 @@ class pageCompCalendar {
             let color = $('#exampleInputEventColor').val();
             let site_url = $("#site_url").val();
             let listEvent = calendar.getEvents();
+            
+            if(title == "") {
+                toastr.error("Please Enter Title!");
+                return false;
+            }
+
+            if(color == "") {
+                toastr.error("Please Select Color!");
+                return false;
+            }
+
             $.ajax({
                 url: `${site_url}/user/calendar/update-event/${id}`,
                 type: "PUT",
@@ -295,10 +301,53 @@ class pageCompCalendar {
                             event.remove();
                         });
                         calendar.addEventSource(resp.data);
-                        $('#alert-message').removeClass('d-none');
-                        $('#alert-message').removeClass('alert-danger');
-                        $('#alert-message').addClass('alert-success');
-                        $('#alert-message .alert-title').html(resp.message);
+                        toastr.success(resp.message);
+                    }
+                },
+                error: function(err) {
+                    console.log("err =>>>", err);
+                }
+            });
+        });
+
+        $('#addEvent').click(function() {
+            let title = $('#AddInputEventTitle').val();
+            let color = $('#AddInputEventColor').val();
+            let start_date = $('#AddInputStartDate').val();
+            let end_date = $('#AddInputEndDate').val();
+            let site_url = $("#site_url").val();
+            let listEvent = calendar.getEvents();
+
+            if(title == "") {
+                toastr.error("Please Enter Title!");
+                return false;
+            }
+
+            if(color == "") {
+                toastr.error("Please Select Color!");
+                return false;
+            }
+            $.ajax({
+                url: `${site_url}/user/calendar/add-assign-event`,
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr(
+                    "content"
+                    ),
+                    title: title,
+                    color: color,
+                    start_date: start_date,
+                    end_date: end_date
+                },
+                success: function(resp) {
+                    if (resp.success) {
+                        $('#event-select-model').modal('hide');
+                        listEvent.forEach(event => { 
+                            event.remove();
+                        });
+                        calendar.addEventSource(resp.data);
+                        toastr.success(resp.message);
                     }
                 },
                 error: function(err) {

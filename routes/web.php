@@ -123,6 +123,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::post('/calendar/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('calendar.resizeEvent');
     Route::delete('/calendar/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('calendar.deleteEvent');
     Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
+    Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
     Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
     Route::view('practice-test', 'user/practice-test')->name('practicetest');
     // Route::view('student-view-dashboard', 'student-view-dashboard');
