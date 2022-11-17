@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('calendar_events', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->string('color',7)->nullable();
             $table->tinyInteger('is_assigned')->default(0)->comment("0 = not assigned, 1 = assigned");
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

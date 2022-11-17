@@ -34,12 +34,6 @@
     <!-- Page Content -->
     <div class="content">
         <!-- Calendar -->
-        <div class="alert alert-dismissible d-none" role="alert" id="alert-message">
-            <p class="mb-0 alert-title">
-
-            </p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
         <div class="block block-rounded">
             <div class="block-content">
                 <div class="row items-push">
@@ -64,7 +58,7 @@
                         <ul id="js-events" class="list list-events">
                             @foreach($events as $event)
                             <li class="event-list-{{ $event->id }}">
-                                <div class="js-event p-2 fs-sm fw-medium rounded bg-{{$event->color}}-light text-{{$event->color}}" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}<span class="main-event-trash" onclick="mainEventTrash({{ $event->id }})"><i class="fa-solid fa-trash"></i></span></div>
+                                <div class="js-event p-2 fs-sm fw-medium rounded bg-{{$event->color}}-light text-{{$event->color}}" data-url="{{ route('calendar.assignEvent') }}" data-id="{{ $event->id }}">{{ $event->title }}<span class="main-event-trash" onclick="mainEventTrash({{$event->id}})"><i class="fa-solid fa-trash"></i></span></div>
                             </li>
                             @endforeach
                         </ul>
@@ -87,7 +81,7 @@
             <div class="modal-content">
                 <div class="block block-rounded block-transparent mb-0">
                     <div class="block-header block-header-default">
-                        <h3 class="block-title">Event Details</h3>
+                        <h3 class="block-title">Edit Event Details</h3>
                         <div class="block-options">
                             <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="fa fa-fw fa-times"></i>
@@ -114,8 +108,48 @@
                     </div>
                     <div class="block-content block-content-full text-end bg-body">
                         <button type="button" class="btn btn-sm btn-info" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-main-id btn-sm btn-primary" id="editEvent">Update</button>
+                        <button type="button" class="btn btn-main-id btn-sm btn-primary" id="editEvent">Update Event</button>
                         <button type="button" class="btn btn-main-id btn-sm btn-secondary me-1" id="deleteEvent"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="event-select-model" tabindex="-1" role="dialog" aria-labelledby="modal-block-small" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="block block-rounded block-transparent mb-0">
+                    <div class="block-header block-header-default">
+                        <h3 class="block-title">Add Event Details</h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-fw fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="block-content fs-sm">
+                        <form id="AddEventModel">
+                            <div class="mb-3">
+                                <label for="AddInputEventTitle" class="form-label">Event Title</label>
+                                <input type="text" class="form-control" placeholder="Enter Event Title" name="title" id="AddInputEventTitle" autocomplete="off">
+                            </div>
+                            <div class="mb-3">
+                                <label for="AddInputEventColor" class="form-label">Event Color</label>
+                                <select class="form-select form-select-lg mb-3" id="AddInputEventColor" name="color" aria-label=".form-select-lg example">
+                                    <option value="">Select Color</option>
+                                    <option value="success">Success</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="info">Info</option>
+                                    <option value="danger">Danger</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="start_date" id="AddInputStartDate">
+                            <input type="hidden" name="end_date" id="AddInputEndDate">
+                        </form>
+                    </div>
+                    <div class="block-content block-content-full text-end bg-body">
+                        <button type="button" class="btn btn-sm btn-info" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-sm btn-primary" id="addEvent">Add Event</button>
                     </div>
                 </div>
             </div>
@@ -128,6 +162,7 @@
 @section('page-style')
 <!-- open ui plugins -->
 <link rel="stylesheet" href="{{asset('assets/js/plugins/fullcalendar/main.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
 <style>
     .content {
         width: 90%;
@@ -162,6 +197,7 @@
 <script src="{{asset('assets/js/moment/moment.min.js')}}"></script>
 <script src="{{asset('assets/js/sweetalert2/sweetalert2.all.min.js')}}"></script>
 <script src="{{asset('assets/_js/pages/be_comp_calendar.js')}}"></script>
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script>
     let eventObj = @json($final_arr);
 
@@ -171,10 +207,7 @@
         title = $('#event-title').val();
 
         if (title == "") {
-            $('#alert-message').removeClass('d-none');
-            $('#alert-message').removeClass('alert-success');
-            $('#alert-message').addClass('alert-danger');
-            $('#alert-message .alert-title').html('Please Enter Event');
+            toastr.error("Please Enter Event!");
             return false;
         } else {
             $.ajax({
@@ -194,10 +227,7 @@
 
                         $('.list-events').append(html);
                         $('#event-title').val("");
-                        $('#alert-message').removeClass('d-none');
-                        $('#alert-message').removeClass('alert-danger');
-                        $('#alert-message').addClass('alert-success');
-                        $('#alert-message .alert-title').html(resp.message);
+                        toastr.success(resp.message);
                     }
                 },
                 error: function(err) {
@@ -228,10 +258,7 @@
                     success: function(resp) {
                         if (resp.success) {
                             $(`.event-list-${resp.data}`).remove();
-                            $('#alert-message').removeClass('d-none');
-                            $('#alert-message').removeClass('alert-danger');
-                            $('#alert-message').addClass('alert-success');
-                            $('#alert-message .alert-title').html(resp.message);
+                            toastr.success(resp.message);
                         }
                     },
                     error: function(err) {
@@ -240,6 +267,23 @@
                 });
             }
         })
+    }
+
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
     }
 </script>
 @endsection

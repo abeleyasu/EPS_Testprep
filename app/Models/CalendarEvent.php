@@ -12,6 +12,7 @@ class CalendarEvent extends Model
     protected $table = 'calendar_events';
     
     protected $fillable = [
+        'user_id',
         'title',
         'is_assigned',
         'color'
