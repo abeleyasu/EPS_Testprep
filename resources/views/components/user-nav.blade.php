@@ -28,7 +28,7 @@
         <!-- Side Navigation -->
         <div class="content-side">
             <ul class="nav-main">
-				<li class="nav-main-item">
+                <li class="nav-main-item">
                     <a class="nav-main-link {{Route::is('resume') ? 'active' : ''}}" href="{{route('resume')}}">
                         <i class="nav-main-link-icon far fa-user"></i>
                         <span class="nav-main-link-name">Resume</span>
@@ -47,16 +47,60 @@
                     </a>
                 </li>
 
-                <li class="nav-main-item">
+                <!-- <li class="nav-main-item">
                     <a class="nav-main-link {{Route::is(['test_prep_dashboard']) ? 'active' : ''}}" href="{{route('test_prep_dashboard')}}">
                         <i class="nav-main-link-icon si si-puzzle"></i>
                         <span class="nav-main-link-name">Test Prep Dashboard</span>
                     </a>
+                </li> -->
+                <li class="nav-main-item">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                        <i class="nav-main-link-icon si si-layers"></i>
+                        <span class="nav-main-link-name">Dashboard</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['test_prep_dashboard']) ? 'active' : ''}}" href="{{route('test_prep_dashboard')}}">
+                                <i class="nav-main-link-icon si si-puzzle"></i>
+                                <span class="nav-main-link-name">Test Prep Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                                <i class="nav-main-link-icon si si-graduation"></i>
+                                <span class="nav-main-link-name">Admissions dashboard</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link">
+                                        <span class="nav-main-link-name">High School Resume tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link">
+                                        <span class="nav-main-link-name">Initial College List tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link">
+                                        <span class="nav-main-link-name">College Application Deadline Organizer tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link">
+                                        <span class="nav-main-link-name">Cost Comparison tool</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
                 </li>
             </ul>
         </div>
         <!-- END Side Navigation -->
     </div>
     <!-- END Sidebar Scrolling -->
-    </nav>
-    <!-- END Sidebar -->
+</nav>
+<!-- END Sidebar -->
