@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserCalendarController extends Controller
 {
+    /* Add Event and assign to calendar */
+
     public function addAssignEvent(Request $request)
     {
         $title = $request->title;
@@ -31,6 +33,8 @@ class UserCalendarController extends Controller
 
         return response()->json(["success" => true, "data" => $this->fetchAllEvents(), "message" => "Event assigned successfully"]);
     }
+
+    /* Fetch all event and display in calendar */
 
     public function fetchAllEvents()
     {
@@ -55,6 +59,8 @@ class UserCalendarController extends Controller
         return json_decode(json_encode($final_arr), FALSE);
     }
 
+    /* Find color by color class */
+
     public function findColor($color)
     {
         if($color == "info") {
@@ -71,6 +77,8 @@ class UserCalendarController extends Controller
 
         return $c_code;
     }
+
+    /* Assign event to calendar */
 
     public function store(Request $request)
     {
@@ -89,6 +97,8 @@ class UserCalendarController extends Controller
         return response()->json(["success" => true, "data" => $this->fetchAllEvents(), "message" => "Event assigned successfully"]);
     }
 
+    /* resize event data and update value */
+
     public function resizeEvent(Request $request)
     {
         $id = $request->id;
@@ -103,12 +113,16 @@ class UserCalendarController extends Controller
         return response()->json(["success" => true, "data" => "", "message" => "Event edited successfully"]);
     }
 
+    /* Get event using ID */
+
     public function getEventById($id)
     {
         $userCalendar = UserCalendar::whereId($id)->with('event')->first();
 
         return response()->json(["success" => true, "data" => $userCalendar, "message" => ""]);
     }
+
+    /* Update Event Data */
 
     public function updateEvent(Request $request, $id)
     {
@@ -122,6 +136,8 @@ class UserCalendarController extends Controller
 
         return response()->json(["success" => true, "data" => $this->fetchAllEvents(), "message" => "Event updated successfully"]);
     }
+
+    /* Delete Event Data */
 
     public function deleteEvent($id)
     {

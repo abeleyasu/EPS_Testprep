@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class CalendarEventController extends Controller
 {
+    /* Fetch all event and display in calendar */
+
     public function index()
     {
         $events = CalendarEvent::where('user_id', Auth::id())->where('is_assigned',0)->get();
@@ -33,6 +35,8 @@ class CalendarEventController extends Controller
         return view('user.calendar', compact('events', 'final_arr'));
     }
 
+    /* Find color by color class */
+
     public function findColor($color)
     {
         if($color == "info") {
@@ -50,6 +54,8 @@ class CalendarEventController extends Controller
         return $c_code;
     }
 
+    /* Create User Event */
+
     public function store(Request $request)
     {
         $title = $request->title;
@@ -63,11 +69,15 @@ class CalendarEventController extends Controller
         return response()->json(["success" => true, "data" => $event, "message" => "Event saved successfully"]);
     }
 
+    /* Add random color in calendar */
+
     public function randomHexColor()
     {
         $colors = ["success", "danger", "warning", "info"];
         return $colors[array_rand($colors)];
     }
+
+    /* Delete Event By ID */
 
     public function destroy($id)
     {
