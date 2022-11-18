@@ -203,8 +203,8 @@
 
     pageCompCalendar.init(eventObj);
 
-    function addTitle(title) {
-        title = $('#event-title').val();
+    function addTitle() {
+        let title = $('#event-title').val();
 
         if (title == "") {
             toastr.error("Please Enter Event!");
