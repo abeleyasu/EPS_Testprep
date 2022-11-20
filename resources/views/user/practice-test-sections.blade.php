@@ -115,9 +115,19 @@
                       <p>
                         Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section Questions
                       </p>
-                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+                      <!-- <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
                         <i class="fa fa-lg fa-circle-check me-1"></i>Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section 
+                      </button> -->
+                      @if(isset($singletestSections['Sections_question']))
+                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+                        <a class="fw-medium" href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']])}}">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
                       </button>
+                      @elseif(!isset($singletestSections['Sections_question']))
+                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+                        <a class="fw-medium" href="#">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
+                      </button>
+                      @endif
+                      
                     </div>
                 </div>
               </div>

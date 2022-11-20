@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\PracticeTest;
 use App\Models\PracticeTestSection;
 use App\Models\PracticeQuestion;
+use App\Models\Passage;
 
 class TestPrepController extends Controller
 {
@@ -14,6 +15,52 @@ class TestPrepController extends Controller
     {
         $getAllPracticeTests = PracticeTest::get();
         return view('student.test-prep-dashboard.dashboard' , compact('getAllPracticeTests'));
+    }
+
+
+    public function get_questions(Request $request)
+    {
+            $get_total_question  = DB::table('practice_questions')
+            ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+            ->select('practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+            ->where('practice_questions.practice_test_sections_id', $request->section_id)->count();
+
+           
+            $get_offset = $request->get_offset;
+            
+
+            $testSectionQuestions = DB::table('practice_questions')
+            ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+            ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+            ->where('practice_questions.practice_test_sections_id', $request->section_id)
+            ->offset($get_offset)->limit(1)->get(); 
+
+            if($testSectionQuestions->isEmpty())
+            {
+                $testSectionQuestions = 0;
+            }
+            
+            
+            if($get_offset >= $get_total_question)
+            {
+                $set_next_offset = $get_offset;
+                $set_prev_offset = $get_offset - 1;
+            }
+            else
+            {
+                $set_next_offset = $get_offset + 1;
+                $set_prev_offset = $get_offset - 1;
+            }
+
+            return response()->json(['success'=>'0','questions' => $testSectionQuestions,'total_question' => $get_total_question , 'get_offset' => $get_offset , 'set_next_offset' => $set_next_offset, 'set_prev_offset' => $set_prev_offset]);
+    }
+
+
+
+    public function singleSection(Request $request, $id)
+    {
+         $set_offset = 0;
+        return view('user.practice-test' , ['id' => $id,'set_offset' => $set_offset]);
     }
 
     public function singleTest(Request $request, $id)

@@ -130,7 +130,12 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
     Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
     Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
-    Route::view('practice-test', 'user/practice-test')->name('practicetest');
+
+    //Route::view('practice-test', 'user/practice-test')->name('practicetest');
+    Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
+
+    Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
+
     // Route::view('student-view-dashboard', 'student-view-dashboard');
     // Please make any changes you think it's necessary to routing 
     Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
