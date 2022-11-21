@@ -119,8 +119,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     //Route::view('practice-test-sections', 'user/practice-test-sections');
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
-    Route::view('calendar', 'user/calendar');
-    Route::view('practice-test-sections', 'user/practice-test-sections');
+    Route::view('/calendar', 'user.calendar');
+    Route::view('/practice-test-sections', 'user.practice-test-sections');
     Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
     Route::get('/calendar', [CalendarEventController::class, 'index']);
     Route::delete('/calendar/trash-event/{id}', [CalendarEventController::class, 'destroy']);
@@ -130,8 +130,12 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
     Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
     Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
-    Route::view('practice-test', 'user/practice-test')->name('practicetest');
-    // Route::view('student-view-dashboard', 'student-view-dashboard');
+    Route::view('/practice-test', 'user.practice-test')->name('practicetest');
+    Route::view('/admin-dashboard/high-school-resume', 'user.admin-dashboard.high-school-resume')->name('admin-dashboard.highSchoolResume');
+    Route::view('/admin-dashboard/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('admin-dashboard.initialCollegeList');
+    Route::view('/admin-dashboard/college-application-deadline', 'user.admin-dashboard.college-application-deadline')->name('admin-dashboard.collegeApplicationDeadline');
+    Route::view('/admin-dashboard/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('admin-dashboard.costComparison');
+    // Route::view('/student-view-dashboard', 'student-view-dashboard');
     // Please make any changes you think it's necessary to routing 
     Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 });
