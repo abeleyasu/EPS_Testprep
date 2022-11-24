@@ -126,18 +126,20 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     //Route::view('practice-test-sections', 'user/practice-test-sections');
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
-    Route::view('/calendar', 'user.calendar');
     Route::view('/practice-test-sections', 'user.practice-test-sections');
-    Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
-    Route::get('/calendar', [CalendarEventController::class, 'index']);
-    Route::delete('/calendar/trash-event/{id}', [CalendarEventController::class, 'destroy']);
-    Route::post('/calendar/assign-events', [UserCalendarController::class, 'store'])->name('calendar.assignEvent');
-    Route::post('/calendar/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('calendar.resizeEvent');
-    Route::delete('/calendar/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('calendar.deleteEvent');
-    Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
-    Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
-    Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
     Route::view('/practice-test', 'user.practice-test')->name('practicetest');
+
+    Route::group(['prefix' => 'calendar', 'as' => 'calendar'], function(){
+        Route::get('/', [CalendarEventController::class, 'index']);
+        Route::post('/add-events', [CalendarEventController::class, 'store'])->name('.addEvent');
+        Route::delete('/trash-event/{id}', [CalendarEventController::class, 'destroy'])->name('.trashEvent');
+        Route::post('/assign-events', [UserCalendarController::class, 'store'])->name('.assignEvent');
+        Route::post('/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('.resizeEvent');
+        Route::delete('/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('.deleteEvent');
+        Route::put('/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('.updateEvent');
+        Route::post('/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('.addAssignEvent');
+        Route::get('/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('.getEventById');
+    });
 
     Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function(){
         Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function(){
@@ -155,6 +157,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
             Route::post('/features-attributes',[FeaturedAttributeController::class, 'store'])->name('featuresAttributes.store');
             Route::get('/preview',[PreviewController::class, 'index'])->name('preview');
         });
+        
         Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');
         Route::view('/college-application-deadline', 'user.admin-dashboard.college-application-deadline')->name('collegeApplicationDeadline');
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
