@@ -86,7 +86,7 @@
             </div>
         </div>
     </div>
-    <!-- END Page Content -->
+    <!-- END Page Conten    t -->
     <!-- Navigation -->
     <div class="bg-body-extra-light">
         <div class="content content-boxed py-3">
