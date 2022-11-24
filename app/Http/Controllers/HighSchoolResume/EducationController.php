@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HighSchoolResume\PersonalInfoRequest;
+use App\Http\Requests\HighSchoolResume\EducationRequest;
 use Illuminate\Http\Request;
 
-class PersonalInfoController extends Controller
+class EducationController extends Controller
 {
     public function index()
     {
-        return view('user.admin-dashboard.high-school-resume.personal-info');
+        return view('user.admin-dashboard.high-school-resume.education-info');
     }
 
     public function create()
@@ -18,7 +18,7 @@ class PersonalInfoController extends Controller
         //
     }
 
-    public function store(PersonalInfoRequest $request)
+    public function store(EducationRequest $request)
     {
         $data = $request->validated();
 

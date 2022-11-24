@@ -16,6 +16,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
+use App\Http\Controllers\HighSchoolResume\EducationController;
 use App\Http\Controllers\HighSchoolResume\PersonalInfoController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
@@ -137,8 +138,9 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
         Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function(){
             Route::get('/personal-info',[PersonalInfoController::class, 'index'])->name('personalInfo');
             Route::post('/personal-info',[PersonalInfoController::class, 'store'])->name('personalInfo.store');
+            Route::get('/education-info',[EducationController::class, 'index'])->name('educationInfo');
+            Route::post('/education-info',[EducationController::class, 'store'])->name('educationInfo.store');
 
-            Route::view('/education-info', 'user.admin-dashboard.high-school-resume.education-info')->name('educationInfo');
             Route::view('/honors', 'user.admin-dashboard.high-school-resume.honors')->name('honors');
             Route::view('/activities', 'user.admin-dashboard.high-school-resume.activities')->name('activities');
             Route::view('/employement-certified', 'user.admin-dashboard.high-school-resume.employement-certified')->name('employementCertified');
