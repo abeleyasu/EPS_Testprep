@@ -16,6 +16,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
+use App\Http\Controllers\HighSchoolResume\EducationController;
+use App\Http\Controllers\HighSchoolResume\PersonalInfoController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
@@ -64,17 +66,17 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
         Route::resource('courses', CoursesController::class);
         Route::post('courses/{course}/courseupdate', [CoursesController::class, 'courseupdate'])->name('courses.courseupdate');
         Route::resource('courseslist', CourseController::class);
-       // Route::post('courseslist', CourseController::class);
-		Route::post('courseslist/{course}/courseupdate', [CourseController::class, 'courseupdate'])->name('courseslist.courseupdate');
-		Route::get('courses/{course}/preview', [CourseController::class, 'preview'])->name('courses.preview');
+        // Route::post('courseslist', CourseController::class);
+        Route::post('courseslist/{course}/courseupdate', [CourseController::class, 'courseupdate'])->name('courseslist.courseupdate');
+        Route::get('courses/{course}/preview', [CourseController::class, 'preview'])->name('courses.preview');
         Route::resource('milestones', MilestoneController::class);
         Route::get('milestones/{milestone}/preview', [MilestoneController::class, 'preview'])->name('milestones.preview');
         Route::resource('modules', ModuleController::class);
-		Route::get('modules/{module}/preview', [ModuleController::class, 'preview'])->name('modules.preview');
+        Route::get('modules/{module}/preview', [ModuleController::class, 'preview'])->name('modules.preview');
         Route::resource('sections', SectionController::class);
-		Route::get('sections/{section}/preview', [SectionController::class, 'preview'])->name('sections.preview');
+        Route::get('sections/{section}/preview', [SectionController::class, 'preview'])->name('sections.preview');
         Route::resource('tasks', TaskController::class);
-		Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
+        Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
     });
     Route::resource('tags', TagController::class);
     Route::resource('categories', CategoryController::class);
@@ -82,19 +84,19 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::resource('sub_categories', SubCategoryController::class);
     Route::resource('quiztags', QuizTagController::class);
     Route::resource('content-categories', ContentCategoryController::class);
-    
+
     Route::resource('passages', PassagesController::class);
     Route::get('passages/{passage}/preview', [PassagesController::class, 'preview'])->name('passages.preview');
     // Route::put('categories/{category}/', [CategoryController::class])->name('categories');
     // questions
     Route::resource('questions', QuestionsController::class);
-	Route::resource('practicetests', PracticeTestsController::class);
-	Route::post('addPracticeQuestion', [PracticeQuestionController::class, 'addPracticeQuestion'])->name('addPracticeQuestion');
-	Route::post('getPracticePassage', [PracticeQuestionController::class, 'getPracticePassage'])->name('getPracticePassage');
+    Route::resource('practicetests', PracticeTestsController::class);
+    Route::post('addPracticeQuestion', [PracticeQuestionController::class, 'addPracticeQuestion'])->name('addPracticeQuestion');
+    Route::post('getPracticePassage', [PracticeQuestionController::class, 'getPracticePassage'])->name('getPracticePassage');
     Route::post('addPracticeTestSection', [PracticeQuestionController::class, 'addPracticeTestSection'])->name('addPracticeTestSection');
-	Route::post('updatePracticeQuestion', [PracticeQuestionController::class, 'updatePracticeQuestion'])->name('updatePracticeQuestion');
-	Route::post('getPracticeQuestionById', [PracticeQuestionController::class, 'getPracticeQuestionById'])->name('getPracticeQuestionById');
-	Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
+    Route::post('updatePracticeQuestion', [PracticeQuestionController::class, 'updatePracticeQuestion'])->name('updatePracticeQuestion');
+    Route::post('getPracticeQuestionById', [PracticeQuestionController::class, 'getPracticeQuestionById'])->name('getPracticeQuestionById');
+    Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
     Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
     Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
 });
@@ -119,8 +121,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     //Route::view('practice-test-sections', 'user/practice-test-sections');
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
-    Route::view('calendar', 'user/calendar');
-    Route::view('practice-test-sections', 'user/practice-test-sections');
+    Route::view('/calendar', 'user.calendar');
+    Route::view('/practice-test-sections', 'user.practice-test-sections');
     Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
     Route::get('/calendar', [CalendarEventController::class, 'index']);
     Route::delete('/calendar/trash-event/{id}', [CalendarEventController::class, 'destroy']);
@@ -130,13 +132,28 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
     Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
     Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
+    Route::view('/practice-test', 'user.practice-test')->name('practicetest');
 
-    //Route::view('practice-test', 'user/practice-test')->name('practicetest');
+    Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function(){
+        Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function(){
+            Route::get('/personal-info',[PersonalInfoController::class, 'index'])->name('personalInfo');
+            Route::post('/personal-info',[PersonalInfoController::class, 'store'])->name('personalInfo.store');
+            Route::get('/education-info',[EducationController::class, 'index'])->name('educationInfo');
+            Route::post('/education-info',[EducationController::class, 'store'])->name('educationInfo.store');
+
+            Route::view('/honors', 'user.admin-dashboard.high-school-resume.honors')->name('honors');
+            Route::view('/activities', 'user.admin-dashboard.high-school-resume.activities')->name('activities');
+            Route::view('/employement-certified', 'user.admin-dashboard.high-school-resume.employement-certified')->name('employementCertified');
+            Route::view('/features-attributes', 'user.admin-dashboard.high-school-resume.features-attributes')->name('featuresAttributes');
+            Route::view('/preview', 'user.admin-dashboard.high-school-resume.preview')->name('preview');
+        });
+        Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');
+        Route::view('/college-application-deadline', 'user.admin-dashboard.college-application-deadline')->name('collegeApplicationDeadline');
+        Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
+    });
+    
     Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
-
     Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
-
-    // Route::view('student-view-dashboard', 'student-view-dashboard');
     // Please make any changes you think it's necessary to routing 
     Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 });
