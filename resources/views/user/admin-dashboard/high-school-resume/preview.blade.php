@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'High School Resume : CPS')
+@section('title', 'HSR | Preview : CPS')
 
 @section('user-content')
 <main id="main-container">
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li role="presentation">
-                    <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employementCertified') }}" id="step5-tab">
+                    <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}" id="step5-tab">
                         <i class="fa-solid fa-envelope d-none"></i>
                         <i class="fa-solid fa-check fa-check-block "></i>
                         <p>Employment & <br> Certifications</p>

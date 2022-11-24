@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li role="presentation">
-                    <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employementCertified') }}" id="step5-tab">
+                    <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}" id="step5-tab">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         <i class="fa-solid fa-check "></i>
                         <p>Employment & <br> Certifications</p>
@@ -66,7 +66,7 @@
                     </a>
                 </li>
             </ul>
-            <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}" method="POST">
+            <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
                 @csrf
                 <div class="tab-content" id="myTabContent">
                     <div class="setup-content" role="tabpanel" id="step2" aria-labelledby="step2-tab">
@@ -344,7 +344,7 @@
                                                     IB Courses
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <select class="js-select2 select @error('ib_courses') is-invalid @enderror" id="ib_courses" name="ib_courses" multiple="multiple">
+                                                <select class="js-select2 select" id="ib_courses" name="ib_courses" multiple="multiple">
                                                     <option value="list 1">list 1</option>
                                                     <option value="list 2">list 2</option>
                                                     <option value="list 3">list 3</option>
@@ -364,7 +364,7 @@
                                                     AP Courses
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <select class="js-select2 select @error('ap_courses') is-invalid @enderror" id="ap_courses" name="ap_courses" multiple="multiple">
+                                                <select class="js-select2 select" id="ap_courses" name="ap_courses" multiple="multiple">
                                                     <option value="list 1">list 1</option>
                                                     <option value="list 2">list 2</option>
                                                     <option value="list 3">list 3</option>

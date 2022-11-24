@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'High School Resume : CPS')
+@section('title', 'HSR | Honors : CPS')
 
 @section('user-content')
     <main id="main-container">
@@ -49,7 +49,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employementCertified') }}"
+                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
                             id="step5-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
@@ -72,42 +72,56 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="" method="POST">
+                <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.honors.store') }}" method="POST">
+                    @csrf
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
                             <div class="accordion accordionExample2">
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class=" text-white fw-600 collapsed"> Academic Honors, Achievements, & Other
+                                        <a class=" text-white fw-600 collapsed"> Academic Honors, Achievements & Other
                                             Awards</a>
                                     </div>
-                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                    <div id="collapseOne" class="collapse {{ $errors->has('position') || $errors->has('honor_achievement_award') || $errors->has('grade') || $errors->has('location') ? 'show' : '' }}" aria-labelledby="headingOne"
                                         data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <div class="row mb-4">
                                                     <div class="col-lg-2">
                                                         <div>
-                                                            <label class="form-label" for="position">Position</label>
-                                                            <input type="number" class="form-control" id="position"
-                                                                name="position" placeholder="position" required>
+                                                            <label class="form-label" for="position">
+                                                                Position
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input type="number" class="form-control @error('position') is-invalid @enderror" id="position"
+                                                                name="position" value="{{ old('position') }}" placeholder="Enter Position">
+                                                            @error('position')
+                                                                <span class="invalid">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div>
-                                                            <label class="form-label" for="honor">Honor / Achievement /
-                                                                Award</label>
-                                                            <input type="text" class="form-control" id="honor"
-                                                                name="honor" placeholder="Ex: National Honor Society"
-                                                                required>
+                                                            <label class="form-label" for="honor_achievement_award">
+                                                                Honor / Achievement / Award
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input type="text" class="form-control @error('honor_achievement_award') is-invalid @enderror" id="honor_achievement_award"
+                                                                name="honor_achievement_award" value="{{ old('honor_achievement_award') }}" placeholder="Ex: National Honor Society">
+                                                            @error('honor_achievement_award')
+                                                                <span class="invalid">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div>
-                                                            <label class="form-label" for="AP-Courses">IB Courses</label>
-                                                            <select class="js-select2 select" id="AP-Courses"
-                                                                name="AP-Courses" multiple="multiple">
+                                                            <label class="form-label" for="grade">
+                                                                Grade(s)
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <select class="js-select2 select" id="grade"
+                                                                name="grade" multiple="multiple">
                                                                 <option value="1st grade">1st grade</option>
                                                                 <option value="2st grade">2st grade</option>
                                                                 <option value="3st grade">3st grade</option>
@@ -118,19 +132,27 @@
                                                                 <option value="8st grade">8st grade</option>
                                                                 <option value="9st grade">9st grade</option>
                                                             </select>
+                                                            @error('grade')
+                                                                <span class="invalid">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <div>
-                                                            <label class="form-label" for="Location">Location</label>
-                                                            <input type="text" class="form-control" id="Location"
-                                                                name="Location" placeholder="Ex: DRHS" required>
+                                                            <label class="form-label" for="location">
+                                                                Location
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <input type="text" class="form-control @error('location') is-invalid @enderror" value="{{ old('location') }}" id="location"
+                                                                name="location" placeholder="Ex: DRHS">
+                                                            @error('location')
+                                                            <span class="invalid">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <div>
-                                                            <label class="form-label" for="Location">Action</label>
-
+                                                            <label class="form-label" for="action">Action</label>
                                                         </div>
                                                     </div>
                                                     <table class="table">
@@ -174,9 +196,9 @@
                                     </a>
                                 </div>
                                 <div class="next-btn">
-                                    <a href="{{ route('admin-dashboard.highSchoolResume.activities') }}"
-                                        class="btn btn-alt-primary next-step"> Next
-                                    </a>
+                                    <div class="next-btn">
+                                        <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                                    </div>
                                 </div>
                             </div>
                         </div>
