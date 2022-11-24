@@ -151,8 +151,9 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
         Route::view('/college-application-deadline', 'user.admin-dashboard.college-application-deadline')->name('collegeApplicationDeadline');
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
     });
-
-    // Route::view('/student-view-dashboard', 'student-view-dashboard');
+    
+    Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
+    Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
     // Please make any changes you think it's necessary to routing 
     Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 });
