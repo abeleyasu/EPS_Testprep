@@ -4,12 +4,24 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
+use Illuminate\Support\Facades\View;
 
 class PreviewController extends Controller
 {
     public function index()
     {
         return view('user.admin-dashboard.high-school-resume.preview');
+    }
+
+    public function resumePreview()
+    {
+
+        $pdf = new Dompdf();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview')->render();
+        $pdf->loadHTML($html);
+        $pdf->render();
+        return $pdf->stream();
     }
 
     public function create()

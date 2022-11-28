@@ -156,6 +156,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
             Route::get('/features-attributes',[FeaturedAttributeController::class, 'index'])->name('featuresAttributes');
             Route::post('/features-attributes',[FeaturedAttributeController::class, 'store'])->name('featuresAttributes.store');
             Route::get('/preview',[PreviewController::class, 'index'])->name('preview');
+            Route::get('/pdf/preview',[PreviewController::class, 'resumePreview'])->name('pdf.preview');
+            Route::view('/pdf/sample', 'user.admin-dashboard.high-school-resume.resume_preview');
         });
         
         Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');
