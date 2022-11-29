@@ -71,7 +71,8 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="" method="POST">
+                <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.featuresAttributes.store') }}" method="POST">
+                    @csrf
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
                             <div class="accordion accordionExample2">
@@ -81,21 +82,22 @@
                                         <a class="text-white fw-600 collapsed"> Featured skills</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse {{ $errors->has('position') || $errors->has('interest') || $errors->has('grade') || $errors->has('location') || $errors->has('details') ? 'show' : '' }}"
+                                        class="collapse {{ $errors->has('featured_skill') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr>
-                                                            <td><label class="form-label" for="featured_skill">
+                                                            <td>
+                                                                <label class="form-label" for="featured_skill">
                                                                     Featured skill
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
                                                                     class="form-control @error('featured_skill') is-invalid @enderror"
-                                                                    value="{{ old('featured_skill') }}" id="featured_skill1"
-                                                                    name="job_title" placeholder="Enter Featured Skill">
+                                                                    value="{{ old('featured_skill') }}" id="featured_skill"
+                                                                    name="featured_skill" placeholder="Enter Featured Skill">
                                                                 @error('featured_skill')
                                                                     <span class="invalid">{{ $message }}</span>
                                                                 @enderror
@@ -135,14 +137,15 @@
                                         <a class="text-white fw-600 collapsed"> Featured Award </a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('position') || $errors->has('interest') || $errors->has('grade') || $errors->has('location') || $errors->has('details') ? 'show' : '' }}"
+                                        class="collapse {{ $errors->has('featured_award') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr>
-                                                            <td><label class="form-label" for="featured_award">
+                                                            <td>
+                                                                <label class="form-label" for="featured_award">
                                                                     Featured Award
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -151,7 +154,7 @@
                                                                     value="{{ old('featured_award') }}"
                                                                     id="featured_award" name="featured_award"
                                                                     placeholder="Enter Featured Award">
-                                                                @error('featured_skill')
+                                                                @error('featured_award')
                                                                     <span class="invalid">{{ $message }}</span>
                                                                 @enderror
                                                             </td>
@@ -190,14 +193,15 @@
                                         <a class="text-white fw-600 collapsed"> Featured Languages </a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse {{ $errors->has('position') || $errors->has('interest') || $errors->has('grade') || $errors->has('location') || $errors->has('details') ? 'show' : '' }}"
+                                        class="collapse {{ $errors->has('featured_language') || $errors->has('languages_level') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr>
-                                                            <td><label class="form-label" for="featured_language">
+                                                            <td>
+                                                                <label class="form-label" for="featured_language">
                                                                     Language
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -210,7 +214,8 @@
                                                                     <span class="invalid">{{ $message }}</span>
                                                                 @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="languages_level">
+                                                            <td>
+                                                                <label class="form-label" for="languages_level">
                                                                     Languages level
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -234,7 +239,7 @@
                                                             <td>Mark</td>
                                                             <td>Mark</td>
                                                             <td><i class="fa-solid fa-pen me-2" data-bs-toggle="modal"
-                                                                    data-bs-target="#languages_level_main"></i> <i
+                                                                    data-bs-target="#featured_language_main"></i> <i
                                                                     class="fa-solid fa-circle-xmark"></i></td>
                                                         </tr>
                                                         <tr>
@@ -259,13 +264,13 @@
                             <div class="d-flex justify-content-between mt-3">
                                 <div class="prev-btn">
                                     <a href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
-                                        class="btn btn-alt-primary next-step"> Prev
+                                        class="btn btn-alt-primary next-step"> Previous
                                     </a>
                                 </div>
                                 <div class="next-btn">
-                                    <a href="{{ route('admin-dashboard.highSchoolResume.preview') }}"
-                                        class="btn btn-alt-primary next-step"> Next
-                                    </a>
+                                    <div class="next-btn">
+                                        <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -277,135 +282,135 @@
 
 
     <!-- Featured skills Modal -->
-    <div class="modal" id="features_skill_main" tabindex="-1" role="dialog"
-        aria-labelledby="modal-block-extra-large" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Featured skills</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="features_skill_main" tabindex="-1" role="dialog"
+            aria-labelledby="modal-block-extra-large" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Featured skills</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <label class="form-label" for="featured_skill_modal">
-                                Featured skill
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control @error('featured_skill_modal') is-invalid @enderror"
-                                value="{{ old('featured_skill_modal') }}" id="featured_skill_modal" name="job_title"
-                                placeholder="Enter Featured Skill">
-                            @error('featured_skill_modal')
-                                <span class="invalid">{{ $message }}</span>
-                            @enderror
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        <div class="block-content fs-sm">
+                            <form>
+                                <label class="form-label" for="featured_skill_modal">
+                                    Featured skill
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('featured_skill_modal') is-invalid @enderror"
+                                    value="{{ old('featured_skill_modal') }}" id="featured_skill_modal" name="job_title"
+                                    placeholder="Enter Featured Skill">
+                                @error('featured_skill_modal')
+                                    <span class="invalid">{{ $message }}</span>
+                                @enderror
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Featured skills Modal -->
 
     <!-- Featured Award Modal -->
-    <div class="modal" id="featured_award_main" tabindex="-1" role="dialog"
-        aria-labelledby="modal-block-extra-large" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Featured Award</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="featured_award_main" tabindex="-1" role="dialog"
+            aria-labelledby="modal-block-extra-large" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Featured Award</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <label class="form-label" for="featured_award_modal">
-                                Featured Award
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control @error('featured_award_modal') is-invalid @enderror"
-                                value="{{ old('featured_award_modal') }}" id="featured_award_modal"
-                                name="featured_award_modal" placeholder="Enter Featured Award">
-                            @error('featured_award_modal')
-                                <span class="invalid">{{ $message }}</span>
-                            @enderror
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        <div class="block-content fs-sm">
+                            <form>
+                                <label class="form-label" for="featured_award_modal">
+                                    Featured Award
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('featured_award_modal') is-invalid @enderror"
+                                    value="{{ old('featured_award_modal') }}" id="featured_award_modal"
+                                    name="featured_award_modal" placeholder="Enter Featured Award">
+                                @error('featured_award_modal')
+                                    <span class="invalid">{{ $message }}</span>
+                                @enderror
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Featured Award Modal -->
 
     <!-- Featured Languages Modal -->
-    <div class="modal" id="languages_level_main" tabindex="-1" role="dialog"
-        aria-labelledby="modal-block-extra-large" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Featured Languages</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="featured_language_modal">
-                                        Language
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('featured_language_modal') is-invalid @enderror"
-                                        value="{{ old('featured_language_modal') }}" id="featured_language_modal"
-                                        name="featured_language_modal" placeholder="Enter Language">
-                                    @error('featured_language_modal')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="languages_level_modal">
-                                        Languages level
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('languages_level_modal') is-invalid @enderror"
-                                        value="{{ old('languages_level_modal') }}" id="languages_level_modal"
-                                        name="languages_level_modal" placeholder="Fluent">
-                                    @error('languages_level_modal')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
+        <div class="modal" id="featured_language_main" tabindex="-1" role="dialog"
+            aria-labelledby="modal-block-extra-large" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Featured Languages</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
                             </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="featured_language_modal">
+                                            Language
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('featured_language_modal') is-invalid @enderror"
+                                            value="{{ old('featured_language_modal') }}" id="featured_language_modal"
+                                            name="featured_language_modal" placeholder="Enter Language">
+                                        @error('featured_language_modal')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="languages_level_modal">
+                                            Languages level
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('languages_level_modal') is-invalid @enderror"
+                                            value="{{ old('languages_level_modal') }}" id="languages_level_modal"
+                                            name="languages_level_modal" placeholder="Fluent">
+                                        @error('languages_level_modal')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Featured Languages Modal -->
 @endsection
 

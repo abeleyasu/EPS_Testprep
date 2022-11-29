@@ -696,7 +696,7 @@
                         <div class="prev-btn">
                             <a href="{{ route('admin-dashboard.highSchoolResume.honors') }}"
                                 class="btn btn-alt-primary next-step">
-                                Prev
+                                Previous
                             </a>
                         </div>
                         <div class="next-btn">
@@ -710,538 +710,534 @@
         </div>
     </main>
 
-
-
-    <!-- Demonstrated interest in the area
-                        of your major Modal -->
-    <div class="modal" id="activity_demonstrated" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Demonstrated interest in the area
-                            of your major</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+    <!-- Demonstrated interest in the area of your major Modal -->
+        <div class="modal" id="activity_demonstrated" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Demonstrated interest in the area
+                                of your major</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="position">
-                                        Position
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('position') is-invalid @enderror"
-                                        value="{{ old('position') }}" id="position" name="position"
-                                        placeholder="Enter Position">
-                                    @error('position')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="demonstrated_modal_position">
+                                            Position
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('demonstrated_modal_position') is-invalid @enderror"
+                                            value="{{ old('demonstrated_modal_position') }}" id="demonstrated_modal_position" name="demonstrated_modal_position"
+                                            placeholder="Enter Position">
+                                        @error('demonstrated_modal_position')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="demonstrated_modal_interest">
+                                            Interest
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('demonstrated_modal_interest') is-invalid @enderror"
+                                            id="demonstrated_modal_interest" name="demonstrated_modal_interest" value="{{ old('demonstrated_modal_interest') }}"
+                                            placeholder="Enter Interest">
+                                        @error('demonstrated_modal_interest')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="demonstrated_modal_grade">
+                                            Grade(s)
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="js-select2 select" id="demonstrated_modal_grade" name="demonstrated_modal_grade"
+                                            multiple="multiple">
+                                            <option value="list 1">list 1</option>
+                                            <option value="list 2">list 2</option>
+                                            <option value="list 3">list 3</option>
+                                            <option value="list 4">list 4</option>
+                                            <option value="list 5">list 5</option>
+                                            <option value="list 6">list 6</option>
+                                            <option value="list 7">list 7</option>
+                                            <option value="list 8">list 8</option>
+                                            <option value="list 9">list 9</option>
+                                        </select>
+                                        @error('demonstrated_modal_grade')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="interest">
-                                        Interest
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('interest') is-invalid @enderror"
-                                        id="interest" name="interest" value="{{ old('interest') }}"
-                                        placeholder="Enter Interest">
-                                    @error('interest')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="demonstrated_modal_location">
+                                            Location
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('demonstrated_modal_location') is-invalid @enderror"
+                                            id="demonstrated_modal_location" name="demonstrated_modal_location" value="{{ old('demonstrated_modal_location') }}"
+                                            placeholder="Enter Location">
+                                        @error('demonstrated_modal_location')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="demonstrated_modal_details">
+                                            Details
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <textarea class="form-control @error('demonstrated_modal_details') is-invalid @enderror" id="demonstrated_modal_details" name="demonstrated_modal_details" rows="1"
+                                            placeholder="Enter Details">{{ old('demonstrated_modal_details') }}</textarea>
+                                        @error('demonstrated_modal_details')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="grade">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="ap_courses" name="ap_courses"
-                                        multiple="multiple">
-                                        <option value="list 1">list 1</option>
-                                        <option value="list 2">list 2</option>
-                                        <option value="list 3">list 3</option>
-                                        <option value="list 4">list 4</option>
-                                        <option value="list 5">list 5</option>
-                                        <option value="list 6">list 6</option>
-                                        <option value="list 7">list 7</option>
-                                        <option value="list 8">list 8</option>
-                                        <option value="list 9">list 9</option>
-                                    </select>
-                                    @error('ap_courses')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="location">
-                                        Locations
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('location') is-invalid @enderror"
-                                        id="location" name="location" value="{{ old('location') }}"
-                                        placeholder="Enter Location">
-                                    @error('location')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="details">
-                                        Details
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <textarea class="form-control @error('details') is-invalid @enderror" id="details" name="details" rows="1"
-                                        placeholder="Enter Details">{{ old('details') }}</textarea>
-                                    @error('details')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Demonstrated interest in the area
-                    of your major Modal -->
+    <!-- Demonstrated interest in the area of your major Modal -->
 
     <!-- Leadership Modal -->
-    <div class="modal" id="activity_leadership" tabindex="-1" role="dialog"
-        aria-labelledby="modal-block-extra-large" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Leadership</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="activity_leadership" tabindex="-1" role="dialog"
+            aria-labelledby="modal-block-extra-large" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Leadership</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="status">
-                                        Status
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('status') is-invalid @enderror"
-                                        id="status" name="status" value="{{ old('status') }}"
-                                        placeholder="Enter Status">
-                                    @error('status')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="leadership_modal_status">
+                                            Status
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('leadership_modal_status') is-invalid @enderror"
+                                            id="leadership_modal_status" name="leadership_modal_status" value="{{ old('leadership_modal_status') }}"
+                                            placeholder="Enter Status">
+                                        @error('leadership_modal_status')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="leadership_modal_position">
+                                            Position
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('leadership_modal_position') is-invalid @enderror"
+                                            id="leadership_modal_position" name="leadership_modal_position" placeholder="Enter Position">
+                                        @error('leadership_modal_position')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="leadership_modal_organization">
+                                            Organization
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('leadership_modal_organization') is-invalid @enderror"
+                                            id="leadership_modal_organization" name="leadership_modal_organization" value="{{ old('leadership_modal_organization') }}"
+                                            placeholder="Enter Organization">
+                                        @error('leadership_modal_organization')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="leadership_position">
-                                        Position
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('leadership_position') is-invalid @enderror"
-                                        id="leadership_position" name="leadership_position" placeholder="Enter Position">
-                                    @error('leadership_position')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="leadership_modal_location">
+                                            Location
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('leadership_modal_location') is-invalid @enderror"
+                                            id="leadership_modal_location" name="leadership_modal_location"
+                                            value="{{ old('leadership_modal_location') }}" placeholder="Ex: DRHS">
+                                        @error('leadership_modal_location')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="leadership_modal_grade">
+                                            Grade(s)
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="js-select2 select select2min" id="leadership_modal_grade"
+                                            name="leadership_modal_grade" multiple="multiple">
+                                            <option value="1st grade">1st grade
+                                            </option>
+                                            <option value="2st grade">2st grade
+                                            </option>
+                                            <option value="3st grade">3st grade
+                                            </option>
+                                            <option value="4st grade">4st grade
+                                            </option>
+                                            <option value="5st grade">5st grade
+                                            </option>
+                                            <option value="6st grade">6st grade
+                                            </option>
+                                            <option value="7st grade">7st grade
+                                            </option>
+                                            <option value="8st grade">8st grade
+                                            </option>
+                                            <option value="9st grade">9st grade
+                                            </option>
+                                        </select>
+                                        @error('leadership_modal_grade')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="organization">
-                                        Organization
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('organization') is-invalid @enderror"
-                                        id="organization" name="organization" value="{{ old('organization') }}"
-                                        placeholder="Enter Organization">
-                                    @error('organization')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="leadership_location">
-                                        Locations
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('leadership_location') is-invalid @enderror"
-                                        id="leadership_location" name="leadership_location"
-                                        value="{{ old('leadership_location') }}" placeholder="Ex: DRHS">
-                                    @error('leadership_location')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="leadership_grade_modal">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select select2min" id="leadership_grade"
-                                        name="leadership_grade_modal" multiple="multiple">
-                                        <option value="1st grade">1st grade
-                                        </option>
-                                        <option value="2st grade">2st grade
-                                        </option>
-                                        <option value="3st grade">3st grade
-                                        </option>
-                                        <option value="4st grade">4st grade
-                                        </option>
-                                        <option value="5st grade">5st grade
-                                        </option>
-                                        <option value="6st grade">6st grade
-                                        </option>
-                                        <option value="7st grade">7st grade
-                                        </option>
-                                        <option value="8st grade">8st grade
-                                        </option>
-                                        <option value="9st grade">9st grade
-                                        </option>
-                                    </select>
-                                    @error('leadership_grade_modal')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Leadership Modal -->
 
     <!-- Activities & Clubs Modal -->
-    <div class="modal" id="activity_clubs" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Activities & Clubs</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="activity_clubs" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Activities & Clubs</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="activity_position">
-                                        Positions
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('activity_position') is-invalid @enderror"
-                                        value="{{ old('activity_position') }}" id="activity_position"
-                                        name="activity_position" placeholder="Enter Position">
-                                    @error('activity_position')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="activity_modal_position">
+                                            Positions
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('activity_modal_position') is-invalid @enderror"
+                                            value="{{ old('activity_modal_position') }}" id="activity_modal_position"
+                                            name="activity_modal_position" placeholder="Enter Position">
+                                        @error('activity_modal_position')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="activity_modal_activity">
+                                            Activity
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('activity_modal_activity') is-invalid @enderror"
+                                            id="activity_modal_activity" name="activity_modal_activity" value="{{ old('activity_modal_activity') }}"
+                                            placeholder="Enter Activity">
+                                        @error('activity_modal_activity')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="activity_modal_grade">
+                                            Grade(s)
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="js-select2 select" id="activity_modal_grade"
+                                            name="activity_modal_grade" multiple="multiple">
+                                            <option value="1st grade">1st grade
+                                            </option>
+                                            <option value="2st grade">2st grade
+                                            </option>
+                                            <option value="3st grade">3st grade
+                                            </option>
+                                            <option value="4st grade">4st grade
+                                            </option>
+                                            <option value="5st grade">5st grade
+                                            </option>
+                                            <option value="6st grade">6st grade
+                                            </option>
+                                            <option value="7st grade">7st grade
+                                            </option>
+                                            <option value="8st grade">8st grade
+                                            </option>
+                                            <option value="9st grade">9st grade
+                                            </option>
+                                        </select>
+                                        @error('activity_modal_grade')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="activity">
-                                        Activity
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('activity') is-invalid @enderror"
-                                        id="activity" name="activity" value="{{ old('activity') }}"
-                                        placeholder="Enter Activity">
-                                    @error('activity')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="activity_modal_location">
+                                            Location
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('activity_modal_location') is-invalid @enderror"
+                                            id="activity_modal_location" name="activity_modal_location"
+                                            value="{{ old('activity_modal_location') }}" placeholder="Ex: DRHS">
+                                        @error('activity_modal_location')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="activity_modal_honor_award">
+                                            Honor/Award
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('activity_modal_honor_award') is-invalid @enderror"
+                                            id="activity_modal_honor_award" name="activity_modal_honor_award" value="{{ old('activity_modal_honor_award') }}"
+                                            placeholder="Enter Honor/Award">
+                                        @error('activity_modal_honor_award')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="activity_grade_modal">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="activity_grade_modal"
-                                        name="activity_grade_modal" multiple="multiple">
-                                        <option value="1st grade">1st grade
-                                        </option>
-                                        <option value="2st grade">2st grade
-                                        </option>
-                                        <option value="3st grade">3st grade
-                                        </option>
-                                        <option value="4st grade">4st grade
-                                        </option>
-                                        <option value="5st grade">5st grade
-                                        </option>
-                                        <option value="6st grade">6st grade
-                                        </option>
-                                        <option value="7st grade">7st grade
-                                        </option>
-                                        <option value="8st grade">8st grade
-                                        </option>
-                                        <option value="9st grade">9st grade
-                                        </option>
-                                    </select>
-                                    @error('activity_grade_modal')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="activity_location">
-                                        Locations
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('activity_location') is-invalid @enderror"
-                                        id="activity_location" name="activity_location"
-                                        value="{{ old('activity_location') }}" placeholder="Ex: DRHS">
-                                    @error('activity_location')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="honor_award">
-                                        Honor/Award
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('honor_award') is-invalid @enderror"
-                                        id="honor_award" name="honor_award" value="{{ old('honor_award') }}"
-                                        placeholder="Enter Honor/Award">
-                                    @error('honor_award')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Activities & Clubs Modal -->
 
     <!-- Athletics Modal -->
-    <div class="modal" id="activity_athletics" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Activities & Clubs</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="activity_athletics" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Activities & Clubs</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="athletics_positions">
-                                        Positions
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('athletics_positions') is-invalid @enderror"
-                                        id="athletics_positions" name="athletics_positions"
-                                        value="{{ old('athletics_positions') }}" placeholder="Enter Position">
-                                    @error('athletics_positions')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="athletics_modal_position">
+                                            Position
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('athletics_modal_position') is-invalid @enderror"
+                                            id="athletics_modal_position" name="athletics_modal_position"
+                                            value="{{ old('athletics_modal_position') }}" placeholder="Enter Position">
+                                        @error('athletics_modal_position')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="athletics_modal_activity">
+                                            Athletic Activity
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('athletics_modal_activity') is-invalid @enderror"
+                                            id="athletics_modal_activity" name="athletics_modal_activity"
+                                            value="{{ old('athletics_modal_activity') }}" placeholder="Enter Activity">
+                                        @error('athletics_modal_activity')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label class="form-label" for="athletics_modal_grade">
+                                            Grade(s)
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="js-select2 select" id="athletics_modal_grade"
+                                            name="athletics_modal_grade" multiple="multiple">
+                                            <option value="1st grade">1st grade
+                                            </option>
+                                            <option value="2st grade">2st grade
+                                            </option>
+                                            <option value="3st grade">3st grade
+                                            </option>
+                                            <option value="4st grade">4st grade
+                                            </option>
+                                            <option value="5st grade">5st grade
+                                            </option>
+                                            <option value="6st grade">6st grade
+                                            </option>
+                                            <option value="7st grade">7st grade
+                                            </option>
+                                            <option value="8st grade">8st grade
+                                            </option>
+                                            <option value="9st grade">9st grade
+                                            </option>
+                                        </select>
+                                        @error('athletics_modal_grade')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="athletics_activity">
-                                        Athletic Activity
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('athletics_activity') is-invalid @enderror"
-                                        id="athletics_activity" name="athletics_activity"
-                                        value="{{ old('athletics_activity') }}" placeholder="Enter Activity">
-                                    @error('athletics_activity')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="athletics_modal_location">
+                                            Location
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('athletics_modal_location') is-invalid @enderror"
+                                            value="{{ old('athletics_modal_location') }}" id="athletics_modal_location"
+                                            name="athletics_modal_location" placeholder="Ex: DRHS">
+                                        @error('athletics_modal_location')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="athletics_modal_honor">
+                                            Honor
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('athletics_modal_honor') is-invalid @enderror"
+                                            id="athletics_modal_honor" name="athletics_modal_honor" value="{{ old('athletics_modal_honor') }}"
+                                            placeholder="Enter Honor">
+                                        @error('athletics_modal_honor')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <label class="form-label" for="athletics_grade_modal">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="athletics_grade_modal"
-                                        name="athletics_grade_modal" multiple="multiple">
-                                        <option value="1st grade">1st grade
-                                        </option>
-                                        <option value="2st grade">2st grade
-                                        </option>
-                                        <option value="3st grade">3st grade
-                                        </option>
-                                        <option value="4st grade">4st grade
-                                        </option>
-                                        <option value="5st grade">5st grade
-                                        </option>
-                                        <option value="6st grade">6st grade
-                                        </option>
-                                        <option value="7st grade">7st grade
-                                        </option>
-                                        <option value="8st grade">8st grade
-                                        </option>
-                                        <option value="9st grade">9st grade
-                                        </option>
-                                    </select>
-                                    @error('athletics_grade_modal')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="athletics_location">
-                                        Locations
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('athletics_location') is-invalid @enderror"
-                                        value="{{ old('athletics_location') }}" id="athletics_location"
-                                        name="athletics_location" placeholder="Ex: DRHS">
-                                    @error('athletics_location')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="athletics_honor">
-                                        Honor
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('athletics_honor') is-invalid @enderror"
-                                        id="athletics_honor" name="athletics_honor" value="{{ old('athletics_honor') }}"
-                                        placeholder="Enter Honor">
-                                    @error('athletics_honor')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Athletics Modal -->
 
     <!-- Community service / Volunteerism Modal -->
-    <div class="modal" id="activity_community" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Community service / Volunteerism</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="activity_community" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Community service / Volunteerism</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="participation_level">
-                                        Participation level
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('participation_level') is-invalid @enderror"
-                                        value="{{ old('participation_level') }}" id="participation_level"
-                                        name="participation_level" placeholder="Enter Participation level">
-                                    @error('participation_level')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="community_modal_participation_level">
+                                            Participation level
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('community_modal_participation_level') is-invalid @enderror"
+                                            value="{{ old('community_modal_participation_level') }}" id="community_modal_participation_level"
+                                            name="community_modal_participation_level" placeholder="Enter Participation level">
+                                        @error('community_modal_participation_level')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="community_modal_service">
+                                            Service
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('community_modal_service') is-invalid @enderror"
+                                            id="community_modal_service" name="community_modal_service"
+                                            value="{{ old('community_modal_service') }}" placeholder="Enter Service">
+                                        @error('community_modal_service')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="community_service">
-                                        Service
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('community_service') is-invalid @enderror"
-                                        id="community_service" name="community_service"
-                                        value="{{ old('community_service') }}" placeholder="Enter Service">
-                                    @error('community_service')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="community_modal_grade">
+                                            Grade(s)
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="js-select2 select" id="community_modal_grade"
+                                            name="community_modal_grade" multiple="multiple">
+                                            <option value="1st grade">1st grade</option>
+                                            <option value="2st grade">2st grade</option>
+                                            <option value="3st grade">3st grade</option>
+                                            <option value="4st grade">4st grade</option>
+                                            <option value="5st grade">5st grade</option>
+                                            <option value="6st grade">6st grade</option>
+                                            <option value="7st grade">7st grade</option>
+                                            <option value="8st grade">8st grade</option>
+                                            <option value="9st grade">9st grade</option>
+                                        </select>
+                                        @error('community_modal_grade')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="community_modal_location">
+                                            Location
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('community_modal_location') is-invalid @enderror"
+                                            id="community_modal_location" name="community_modal_location" placeholder="Enter Location">
+                                        @error('community_modal_location')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="community_grade_modal">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="community_grade_modal"
-                                        name="community_grade_modal" multiple="multiple">
-                                        <option value="1st grade">1st grade</option>
-                                        <option value="2st grade">2st grade</option>
-                                        <option value="3st grade">3st grade</option>
-                                        <option value="4st grade">4st grade</option>
-                                        <option value="5st grade">5st grade</option>
-                                        <option value="6st grade">6st grade</option>
-                                        <option value="7st grade">7st grade</option>
-                                        <option value="8st grade">8st grade</option>
-                                        <option value="9st grade">9st grade</option>
-                                    </select>
-                                    @error('community_grade')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="community_location">
-                                        Locations
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('community_location') is-invalid @enderror"
-                                        id="community_location" name="community_location" placeholder="Enter Location">
-                                    @error('community_location')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!-- Community service / Volunteerism Modal -->
 @endsection
 

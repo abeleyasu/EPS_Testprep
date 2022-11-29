@@ -8,7 +8,7 @@ function addLinks(data) {
     let html = ``;
     html += `<div class="row p-0 mt-3 remove_links">`;
     html += `<div class="col-lg-11">`;
-    html += `<input type="text" class="form-control" name="social_links" placeholder="Enter Social links">`;
+    html += `<input type="text" class="form-control" name="social_links[]" placeholder="Enter Social links">`;
     html += `</div>`;
     html += `<div class="col-lg-1">`;
     html += `<a href="javascript:void(0)" class="add-btn" onclick="removeLinks(this)">`;

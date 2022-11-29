@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
+                        <a class="nav-link" href="javascript:void(0)"
                             id="step2-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
@@ -33,14 +33,14 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
+                        <a class="nav-link" href="javascript:void(0)" id="step3-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
                             <p>Honors</p>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.activities') }}"
+                        <a class="nav-link" href="javascript:void(0)"
                             id="step4-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
+                        <a class="nav-link" href="javascript:void(0)"
                             id="step5-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check"></i>
@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
+                        <a class="nav-link" href="javascript:void(0)"
                             id="step6-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check"></i>
@@ -64,16 +64,19 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.preview') }}" id="step7-tab">
+                        <a class="nav-link" href="javascript:void(0)" id="step7-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check"></i>
                             <p>Preview</p>
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
+                <form class="js-validation" action="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.personalInfo.update', $personal_info->id) : route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
                     method="POST">
                     @csrf
+                    @if(isset($personal_info))
+                        @method('PUT')
+                    @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                             <div class="accordion accordionExample">
@@ -96,7 +99,7 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('first_name') is-invalid @enderror"
-                                                                value="{{ old('first_name') }}" id="first_name"
+                                                                value="{{ isset($personal_info->first_name) ? $personal_info->first_name : old('first_name') }}" id="first_name"
                                                                 name="first_name" placeholder="Enter First Name">
                                                             @error('first_name')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -111,7 +114,7 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('middle_name') is-invalid @enderror"
-                                                                value="{{ old('middle_name') }}" id="middle_name"
+                                                                value="{{ isset($personal_info->middle_name) ? $personal_info->middle_name : old('middle_name') }}" id="middle_name"
                                                                 name="middle_name" placeholder="Enter Middle Name">
                                                             @error('middle_name')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -126,7 +129,7 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('last_name') is-invalid @enderror"
-                                                                value="{{ old('last_name') }}" id="last_name"
+                                                                value="{{ isset($personal_info->last_name) ? $personal_info->last_name : old('last_name') }}" id="last_name"
                                                                 name="last_name" placeholder="Enter Last Name">
                                                             @error('last_name')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -155,9 +158,8 @@
                                                                 Street Address 1
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <textarea class="form-control @error('street_address_one') is-invalid @enderror"
-                                                                value="{{ old('street_address_one') }}" id="street_address_one" name="street_address_one"
-                                                                placeholder="Enter Street Address 1"></textarea>
+                                                            <textarea class="form-control @error('street_address_one') is-invalid @enderror" id="street_address_one" name="street_address_one"
+                                                                placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : old('street_address_one') }}</textarea>
                                                             @error('street_address_one')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -168,9 +170,8 @@
                                                             Street Address 2
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <textarea class="form-control @error('street_address_two') is-invalid @enderror"
-                                                            value="{{ old('street_address_two') }}" id="street_address_two" name="street_address_two"
-                                                            placeholder="Enter Street Address 2"></textarea>
+                                                        <textarea class="form-control @error('street_address_two') is-invalid @enderror" id="street_address_two" name="street_address_two"
+                                                            placeholder="Enter Street Address 2">{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : old('street_address_two') }}</textarea>
                                                         @error('street_address_two')
                                                             <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -186,7 +187,7 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('city') is-invalid @enderror"
-                                                                value="{{ old('city') }}" id="city"
+                                                                value="{{ isset($personal_info->city) ? $personal_info->city : old('city') }}" id="city"
                                                                 name="city" placeholder="Enter city">
                                                             @error('city')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -201,7 +202,7 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('state') is-invalid @enderror"
-                                                                value="{{ old('state') }}" id="state"
+                                                                value="{{ isset($personal_info->state) ? $personal_info->state : old('state') }}" id="state"
                                                                 name="state" placeholder="Enter State">
                                                             @error('state')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -216,7 +217,7 @@
                                                             </label>
                                                             <input type="number"
                                                                 class="form-control @error('zip_code') is-invalid @enderror"
-                                                                value="{{ old('zip_code') }}" id="zip_code"
+                                                                value="{{ isset($personal_info->zip_code) ? $personal_info->zip_code : old('zip_code') }}" id="zip_code"
                                                                 name="zip_code" placeholder="Enter Zip Code">
                                                             @error('zip_code')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -247,7 +248,7 @@
                                                             </label>
                                                             <input type="tel"
                                                                 class="form-control @error('cell_phone') is-invalid @enderror"
-                                                                value="{{ old('cell_phone') }}" id="cell_phone"
+                                                                value="{{ isset($personal_info->cell_phone) ? $personal_info->cell_phone : old('cell_phone') }}" id="cell_phone"
                                                                 name="cell_phone" placeholder="Enter cell phone no">
                                                             @error('cell_phone')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -262,7 +263,7 @@
                                                             </label>
                                                             <input type="email"
                                                                 class="form-control @error('email') is-invalid @enderror"
-                                                                value="{{ old('email') }}" id="email"
+                                                                value="{{ isset($personal_info->email) ? $personal_info->email : old('email') }}" id="email"
                                                                 name="email" placeholder="Enter Email">
                                                             @error('email')
                                                                 <span class="invalid">{{ $message }}</span>
@@ -276,18 +277,22 @@
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="social_link_div">
-                                                        <div class="row p-0">
-                                                            <div class="col-lg-11">
-                                                                <input type="text" class="form-control"
-                                                                    name="social_links" placeholder="Enter Social links">
-                                                            </div>
-                                                            <div class="col-lg-1">
-                                                                <a href="javascript:void(0)" class="add-btn"
-                                                                    onclick="addLinks(this)">
-                                                                    <i class="fa-solid fa-plus"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                        @if(!empty($personal_info->social_links))
+                                                            @foreach($personal_info->social_links as $key => $link)
+                                                                <div class="row p-0 mt-3 {{ $key == 0 ? '' : 'remove_links' }}">
+                                                                    <div class="col-lg-11">
+                                                                        <input type="text" class="form-control"
+                                                                            name="social_links[]" value="{{ $link }}" placeholder="Enter Social links">
+                                                                    </div>
+                                                                    <div class="col-lg-1">
+                                                                        <a href="javascript:void(0)" class="add-btn"
+                                                                            onclick="{{ $key == 0 ? 'addLinks(this)' : 'removeLinks(this)' }}">
+                                                                            <i class="fa-solid {{ $key == 0 ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="row mb-4">
@@ -299,7 +304,7 @@
                                                             </label>
                                                             <input type="email"
                                                                 class="form-control @error('parent_email_one') is-invalid @enderror"
-                                                                value="{{ old('parent_email_one') }}"
+                                                                value="{{ isset($personal_info->parent_email_one) ? $personal_info->parent_email_one : old('parent_email_one') }}"
                                                                 id="parent_email_one" name="parent_email_one"
                                                                 placeholder="Enter Parent Email 1">
                                                             @error('parent_email_one')
@@ -315,7 +320,7 @@
                                                             </label>
                                                             <input type="email"
                                                                 class="form-control @error('parent_email_two') is-invalid @enderror"
-                                                                value="{{ old('parent_email_two') }}"
+                                                                value="{{ isset($personal_info->parent_email_two) ? $personal_info->parent_email_two : old('parent_email_two') }}"
                                                                 id="parent_email_two" name="parent_email_two"
                                                                 placeholder="Enter Parent Email 2">
                                                             @error('parent_email_two')

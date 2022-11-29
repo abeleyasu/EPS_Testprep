@@ -143,10 +143,16 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
 
     Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function(){
         Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function(){
-            Route::get('/personal-info',[PersonalInfoController::class, 'index'])->name('personalInfo');
-            Route::post('/personal-info',[PersonalInfoController::class, 'store'])->name('personalInfo.store');
-            Route::get('/education-info',[EducationController::class, 'index'])->name('educationInfo');
-            Route::post('/education-info',[EducationController::class, 'store'])->name('educationInfo.store');
+            Route::controller(PersonalInfoController::class)->group(function(){
+                Route::get('/personal-info', 'index')->name('personalInfo');
+                Route::post('/personal-info', 'store')->name('personalInfo.store');
+                Route::put('/personal-info/{personalInfo}', 'update')->name('personalInfo.update');
+            });
+            Route::controller(EducationController::class)->group(function(){
+                Route::get('/education-info', 'index')->name('educationInfo');
+                Route::post('/education-info','store')->name('educationInfo.store');
+                Route::put('/education-info/{education}', 'update')->name('educationInfo.update');
+            });
             Route::get('/honors',[HonorsController::class, 'index'])->name('honors');
             Route::post('/honors',[HonorsController::class, 'store'])->name('honors.store');
             Route::get('/activities',[ActivityController::class, 'index'])->name('activities');
@@ -157,7 +163,6 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
             Route::post('/features-attributes',[FeaturedAttributeController::class, 'store'])->name('featuresAttributes.store');
             Route::get('/preview',[PreviewController::class, 'index'])->name('preview');
             Route::get('/pdf/preview',[PreviewController::class, 'resumePreview'])->name('pdf.preview');
-            Route::view('/pdf/sample', 'user.admin-dashboard.high-school-resume.resume_preview');
         });
         
         Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');

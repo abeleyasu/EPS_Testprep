@@ -4,7 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EducationRequest;
-use Illuminate\Http\Request;
+use App\Models\HighSchoolResume\Education;
 
 class EducationController extends Controller
 {
@@ -13,37 +13,47 @@ class EducationController extends Controller
         return view('user.admin-dashboard.high-school-resume.education-info');
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(EducationRequest $request)
     {
         $data = $request->validated();
 
+        if(!empty($request->course_data)){
+            $data['course_data'] = $request->course_data;
+        }
+
+        if(!empty($request->honor_course_data)){
+            $data['honor_course_data'] = $request->honor_course_data;
+        }
+
+        if(!empty($request->testing_data)){
+            $data['testing_data'] = $request->testing_data;
+        }
+
         if (!empty($data)) {
+            Education::create($data);
             return redirect()->route('admin-dashboard.highSchoolResume.honors');
         }
     }
 
-    public function show($id)
+    public function update(EducationRequest $request, Education $education)
     {
-        //
-    }
+        $data = $request->validated();
 
-    public function edit($id)
-    {
-        //
-    }
+        if(!empty($request->course_data)){
+            $data['course_data'] = $request->course_data;
+        }
 
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if(!empty($request->honor_course_data)){
+            $data['honor_course_data'] = $request->honor_course_data;
+        }
 
-    public function destroy($id)
-    {
-        //
+        if(!empty($request->testing_data)){
+            $data['testing_data'] = $request->testing_data;
+        }
+
+        if (!empty($data)) {
+            $education->update($data);
+            return redirect()->route('admin-dashboard.highSchoolResume.honors');
+        }
     }
 }

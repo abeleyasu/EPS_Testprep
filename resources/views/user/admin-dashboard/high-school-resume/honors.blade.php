@@ -199,7 +199,7 @@
                         <div class="d-flex justify-content-between mt-3">
                             <div class="prev-btn">
                                 <a href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
-                                    class="btn btn-alt-primary next-step"> Prev
+                                    class="btn btn-alt-primary next-step"> Previous
                                 </a>
                             </div>
                             <div class="next-btn">
@@ -214,99 +214,95 @@
         </div>
     </main>
 
-
-
-
-
     <!--Honors Modal -->
-    <div class="modal" id="honors" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-default">
-                        <h3 class="block-title">Academic Honors, Achievements & Other Awards</h3>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
+        <div class="modal" id="honors" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="block block-rounded block-transparent mb-0">
+                        <div class="block-header block-header-default">
+                            <h3 class="block-title">Academic Honors, Achievements & Other Awards</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="block-content fs-sm">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="position">
-                                        Position
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="number" class="form-control @error('position') is-invalid @enderror"
-                                        id="position" name="position" value="{{ old('position') }}"
-                                        placeholder="Enter Position">
-                                    @error('position')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                        <div class="block-content fs-sm">
+                            <form>
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="honors_modal_position">
+                                            Position
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="number" class="form-control @error('honors_modal_position') is-invalid @enderror"
+                                            id="honors_modal_position" name="honors_modal_position" value="{{ old('honors_modal_position') }}"
+                                            placeholder="Enter Position">
+                                        @error('honors_modal_position')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="honors_modal_achievement_award">
+                                            Honor / Achievement / Award
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('honors_modal_achievement_award') is-invalid @enderror"
+                                            id="honors_modal_achievement_award" name="honors_modal_achievement_award"
+                                            value="{{ old('honors_modal_achievement_award') }}"
+                                            placeholder="Ex: National Honor Society">
+                                        @error('honors_modal_achievement_award')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="honor_achievement_award">
-                                        Honor / Achievement / Award
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control @error('honor_achievement_award') is-invalid @enderror"
-                                        id="honor_achievement_award" name="honor_achievement_award"
-                                        value="{{ old('honor_achievement_award') }}"
-                                        placeholder="Ex: National Honor Society">
-                                    @error('honor_achievement_award')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-4">
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="honors_modal_grade">
+                                            Grade(s)
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="js-select2 select" id="honors_modal_grade" name="honors_modal_grade"
+                                            multiple="multiple">
+                                            <option value="list 1">list 1</option>
+                                            <option value="list 2">list 2</option>
+                                            <option value="list 3">list 3</option>
+                                            <option value="list 4">list 4</option>
+                                            <option value="list 5">list 5</option>
+                                            <option value="list 6">list 6</option>
+                                            <option value="list 7">list 7</option>
+                                            <option value="list 8">list 8</option>
+                                            <option value="list 9">list 9</option>
+                                        </select>
+                                        @error('honors_modal_grade')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="form-label" for="honors_modal_location">
+                                            Location
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('honors_modal_location') is-invalid @enderror"
+                                            value="{{ old('honors_modal_location') }}" id="honors_modal_location" name="honors_modal_location"
+                                            placeholder="Ex: DRHS">
+                                        @error('honors_modal_location')
+                                            <span class="invalid">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="grade">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="ap_courses" name="ap_courses"
-                                        multiple="multiple">
-                                        <option value="list 1">list 1</option>
-                                        <option value="list 2">list 2</option>
-                                        <option value="list 3">list 3</option>
-                                        <option value="list 4">list 4</option>
-                                        <option value="list 5">list 5</option>
-                                        <option value="list 6">list 6</option>
-                                        <option value="list 7">list 7</option>
-                                        <option value="list 8">list 8</option>
-                                        <option value="list 9">list 9</option>
-                                    </select>
-                                    @error('ap_courses')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="location">
-                                        Location
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control @error('location') is-invalid @enderror"
-                                        value="{{ old('location') }}" id="location" name="location"
-                                        placeholder="Ex: DRHS">
-                                    @error('location')
-                                        <span class="invalid">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="block-content block-content-full text-end">
-                        <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            </form>
+                        </div>
+                        <div class="block-content block-content-full text-end">
+                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     <!--Honors Modal -->
 @endsection
 

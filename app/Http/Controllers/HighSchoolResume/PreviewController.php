@@ -16,7 +16,6 @@ class PreviewController extends Controller
 
     public function resumePreview()
     {
-
         $pdf = new Dompdf();
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview')->render();
         $pdf->loadHTML($html);
