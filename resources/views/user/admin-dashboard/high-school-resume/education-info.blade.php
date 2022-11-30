@@ -66,8 +66,11 @@
                     </a>
                 </li>
             </ul>
-            <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
+            <form class="js-validation" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
                 @csrf
+                @if(isset($education))
+                    @method('PUT')
+                @endif
                 <div class="tab-content" id="myTabContent">
                     <div class="setup-content" role="tabpanel" id="step2" aria-labelledby="step2-tab">
                         <div class="accordion accordionExample2">
@@ -85,7 +88,7 @@
                                                             Grade
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('current_grade') is-invalid @enderror" value="{{ old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
+                                                        <input type="text" class="form-control @error('current_grade') is-invalid @enderror" value="{{ isset($education->current_grade) ? $education->current_grade : old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
                                                         @error('current_grade')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -98,23 +101,9 @@
                                                         <label class="form-label" for="month">Month
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="js-select2 form-select @error('month') is-invalid @enderror" id="month" name="month" style="width: 100%;">
-                                                            <option selected="selected" disabled>Projected Graduation Month</option>
-                                                            <option value="January">January</option>
-                                                            <option value="February">February</option>
-                                                            <option value="March">March</option>
-                                                            <option value="April">April</option>
-                                                            <option value="May">May</option>
-                                                            <option value="June">June</option>
-                                                            <option value="July">July</option>
-                                                            <option value="August">August</option>
-                                                            <option value="September">September</option>
-                                                            <option value="October">October</option>
-                                                            <option value="November">November</option>
-                                                            <option value="December">December</option>
-                                                        </select>
+                                                        <input class="month-own form-control @error('month') is-invalid @enderror" id="month" name="month" value="{{ isset($education->month) ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
                                                         @error('month')
-                                                        <span class="invalid">{{ $message }}</span>
+                                                            <span class="invalid">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -123,26 +112,9 @@
                                                         <label class="form-label" for="year">Year
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="js-select2 form-select @error('year') is-invalid @enderror" id="year" name="year" style="width: 100%;">
-                                                            <option selected="selected" disabled>Projected
-                                                                Graduation
-                                                                Year
-                                                            </option>
-                                                            <option value="2000">2000</option>
-                                                            <option value="2001">2001</option>
-                                                            <option value="2002">2002</option>
-                                                            <option value="2003">2003</option>
-                                                            <option value="2004">2004</option>
-                                                            <option value="2005">2005</option>
-                                                            <option value="2006">2006</option>
-                                                            <option value="2007">2007</option>
-                                                            <option value="2008">2008</option>
-                                                            <option value="2009">2009</option>
-                                                            <option value="2010">2010</option>
-                                                            <option value="2011">2011</option>
-                                                        </select>
+                                                        <input class="year-own form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{ isset($education->year) ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
                                                         @error('year')
-                                                        <span class="invalid">{{ $message }}</span>
+                                                            <span class="invalid">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -151,7 +123,7 @@
                                                         <label class="form-label" for="high_school_name">High School
                                                             name <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_name') is-invalid @enderror" id="high_school_name" value="{{ old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
+                                                        <input type="text" class="form-control @error('high_school_name') is-invalid @enderror" id="high_school_name" value="{{ isset($education->high_school_name) ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
                                                         @error('high_school_name')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -164,7 +136,7 @@
                                                         <label class="form-label" for="high_school_city">High School
                                                             City <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_city') is-invalid @enderror" id="high_school_city" value="{{ old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
+                                                        <input type="text" class="form-control @error('high_school_city') is-invalid @enderror" id="high_school_city" value="{{ isset($education->high_school_city) ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
                                                         @error('high_school_city')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -175,7 +147,7 @@
                                                         <label class="form-label" for="high_school_state">High School
                                                             State <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_state') is-invalid @enderror" id="high_school_state" value="{{ old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
+                                                        <input type="text" class="form-control @error('high_school_state') is-invalid @enderror" id="high_school_state" value="{{ isset($education->high_school_state) ? $education->high_school_state : old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
                                                         @error('high_school_state')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -187,7 +159,7 @@
                                                             School
                                                             District <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_district') is-invalid @enderror" id="high_school_district" value="{{ old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
+                                                        <input type="text" class="form-control @error('high_school_district') is-invalid @enderror" id="high_school_district" value="{{ isset($education->high_school_district) ? $education->high_school_district : old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
                                                         @error('high_school_district')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -207,8 +179,8 @@
                                         <div class="main-form-input">
                                             <div class="mb-4">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="val-terms" name="val-terms">
-                                                    <label class="form-check-label" for="val-terms">
+                                                    <input class="form-check-input" type="checkbox" value="1" id="is_graduate" name="is_graduate" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="is_graduate">
                                                         I have already graduated high school
                                                     </label>
                                                 </div>
@@ -220,7 +192,7 @@
                                                             Grade level
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('grade_level') is-invalid @enderror" value="{{ old('grade_level') }}" id="grade_level" name="grade_level" placeholder="Enter Grade level">
+                                                        <input type="text" class="form-control @error('grade_level') is-invalid @enderror" value="{{ isset($education->grade_level) ? $education->grade_level : old('grade_level') }}" id="grade_level" name="grade_level" placeholder="Enter Grade level">
                                                         @error('grade_level')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -232,13 +204,13 @@
                                                             College Name
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="js-example-disabled-results form-control" id="college_name" name="college_name">
-                                                            <option value="one">First</option>
-                                                            <option value="two">Second</option>
-                                                            <option value="three">Third</option>
+                                                        <select class="form-control" id="college_name" name="college_name">
+                                                            <option value="one" {{ isset($education->college_name) && $education->college_name == "one" ? 'selected' : '' }}>First</option>
+                                                            <option value="two" {{ isset($education->college_name) && $education->college_name == "two" ? 'selected' : '' }}>Second</option>
+                                                            <option value="three" {{ isset($education->college_name) && $education->college_name == "three" ? 'selected' : '' }}>Third</option>
                                                         </select>
                                                         @error('college_name')
-                                                        <span class="invalid">{{ $message }}</span>
+                                                            <span class="invalid">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -250,7 +222,7 @@
                                                             College City
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('college_city') is-invalid @enderror" value="{{ old('college_city') }}" id="college_city" name="college_city" placeholder="Enter College City">
+                                                        <input type="text" class="form-control @error('college_city') is-invalid @enderror" value="{{ isset($education->college_city) ? $education->college_city : old('college_city') }}" id="college_city" name="college_city" placeholder="Enter College City">
                                                         @error('college_city')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -262,7 +234,7 @@
                                                             College State
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('college_state') is-invalid @enderror" value="{{ old('college_state') }}" id="college_state" name="college_state" placeholder="Enter College State">
+                                                        <input type="text" class="form-control @error('college_state') is-invalid @enderror" value="{{ isset($education->college_state) ? $education->college_state : old('college_state') }}" id="college_state" name="college_state" placeholder="Enter College State">
                                                         @error('college_state')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -286,7 +258,7 @@
                                                         <label class="form-label" for="cumulative_gpa_unweighted">Cumulative
                                                             GPA
                                                             (UNWEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control @error('cumulative_gpa_unweighted') is-invalid @enderror" id="cumulative_gpa_unweighted" value="{{ old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
+                                                        <input type="text" class="form-control @error('cumulative_gpa_unweighted') is-invalid @enderror" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
                                                         @error('cumulative_gpa_unweighted')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -297,7 +269,7 @@
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
                                                             (WEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control @error('cumulative_gpa_weighted') is-invalid @enderror" id="cumulative_gpa_weighted" value="{{ old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                        <input type="text" class="form-control @error('cumulative_gpa_weighted') is-invalid @enderror" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
                                                         @error('cumulative_gpa_weighted')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -322,7 +294,7 @@
                                                             Class rank
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('class_rank') is-invalid @enderror" value="{{ old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
+                                                        <input type="text" class="form-control @error('class_rank') is-invalid @enderror" value="{{ isset($education->class_rank) ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
                                                         @error('class_rank')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -334,7 +306,7 @@
                                                             Total Number of Student
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="number" class="form-control @error('total_no_of_student') is-invalid @enderror" value="{{ old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
+                                                        <input type="number" class="form-control @error('total_no_of_student') is-invalid @enderror" value="{{ isset($education->total_no_of_student) ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
                                                         @error('total_no_of_student')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -359,16 +331,12 @@
                                                             IB Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select" id="ib_courses" name="ib_courses" multiple="multiple">
-                                                            <option value="list 1">list 1</option>
-                                                            <option value="list 2">list 2</option>
-                                                            <option value="list 3">list 3</option>
-                                                            <option value="list 4">list 4</option>
-                                                            <option value="list 5">list 5</option>
-                                                            <option value="list 6">list 6</option>
-                                                            <option value="list 7">list 7</option>
-                                                            <option value="list 8">list 8</option>
-                                                            <option value="list 9">list 9</option>
+                                                        <select class="js-select2 select" id="ib_courses" name="ib_courses[]" multiple="multiple">
+                                                            <option value="list 1" {{ !empty($education->ib_courses) && in_array("list 1",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 1</option>
+                                                            <option value="list 2" {{ !empty($education->ib_courses) && in_array("list 2",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 2</option>
+                                                            <option value="list 3" {{ !empty($education->ib_courses) && in_array("list 3",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 3</option>
+                                                            <option value="list 4" {{ !empty($education->ib_courses) && in_array("list 4",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 4</option>
+                                                            <option value="list 5" {{ !empty($education->ib_courses) && in_array("list 5",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 5</option>
                                                         </select>
                                                         @error('ib_courses')
                                                         <span class="invalid">{{ $message }}</span>
@@ -381,16 +349,12 @@
                                                             AP Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select" id="ap_courses" name="ap_courses" multiple="multiple">
-                                                            <option value="list 1">list 1</option>
-                                                            <option value="list 2">list 2</option>
-                                                            <option value="list 3">list 3</option>
-                                                            <option value="list 4">list 4</option>
-                                                            <option value="list 5">list 5</option>
-                                                            <option value="list 6">list 6</option>
-                                                            <option value="list 7">list 7</option>
-                                                            <option value="list 8">list 8</option>
-                                                            <option value="list 9">list 9</option>
+                                                        <select class="js-select2 select" id="ap_courses" name="ap_courses[]" multiple="multiple">
+                                                            <option value="list 1" {{ !empty($education->ap_courses) && in_array("list 1",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 1</option>
+                                                            <option value="list 2" {{ !empty($education->ap_courses) && in_array("list 2",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 2</option>
+                                                            <option value="list 3" {{ !empty($education->ap_courses) && in_array("list 3",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 3</option>
+                                                            <option value="list 4" {{ !empty($education->ap_courses) && in_array("list 4",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 4</option>
+                                                            <option value="list 5" {{ !empty($education->ap_courses) && in_array("list 5",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 5</option>
                                                         </select>
                                                         @error('ap_courses')
                                                         <span class="invalid">{{ $message }}</span>
@@ -398,7 +362,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="course_data" id="course_data">
+                                            <input type="hidden" name="course_data" id="course_data" value="{{ !empty($education->course_data) ? $education->course_data : '' }}">
                                             <table class="table">
                                                 <tbody>
                                                     <tr class="course_data_table_row">
@@ -428,10 +392,22 @@
                                                             </a>
                                                         </td>
                                                     </tr>
+                                                    @if(!empty($education->course_data))
+                                                        @foreach(json_decode($education->course_data) as $course_data) 
+                                                            <tr id="course_{{ $course_data->id }}">
+                                                                <td class="course_name">{{ $course_data->course_name }}</td>
+                                                                <td class="search_college_name">{{ $course_data->search_college_name }}</td>
+                                                                <td>
+                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $course_data->id }}" onclick="course_edit_model(this)"></i>
+                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $course_data->id }}" onclick="course_model_remove(this)"></i>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <input type="hidden" name="honor_course_data" id="honor_course_data">
+                                        <input type="hidden" name="honor_course_data" id="honor_course_data" value="{{ !empty($education->honor_course_data) ? $education->honor_course_data : '' }}">
                                         <table class="table">
                                             <tbody>
                                                 <tr class="honor_course_data_table_row"> 
@@ -440,7 +416,7 @@
                                                             Honors Course Name
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control" id="honors_course_name" value="{{ old('honors_course_name') }}" name="honors_course_name" placeholder="Ex: College English 101">
+                                                        <input type="text" class="form-control" id="honors_course_name" name="honors_course_name" placeholder="Ex: College English 101">
                                                     </td>
                                                     <td>
                                                         <label class="form-label">Action</label><br>
@@ -449,6 +425,17 @@
                                                         </a>
                                                     </td>
                                                 </tr>
+                                                @if(!empty($education->honor_course_data))
+                                                    @foreach(json_decode($education->honor_course_data) as $honor_course_data)
+                                                        <tr id="honor_course_{{ $honor_course_data->id }}">
+                                                            <td class="honor_course_name">{{ $honor_course_data->honor_course_name }}</td>
+                                                            <td>
+                                                                <i class="fa-solid fa-pen me-2" data-id="{{ $honor_course_data->id }}" onclick="honor_course_edit_model(this)"></i>
+                                                                <i class="fa-solid fa-circle-xmark" data-id="{{ $honor_course_data->id }}" onclick="honor_course_model_remove(this)"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -458,10 +445,10 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                                     <a class=" text-white fw-600 collapsed">Testing</a>
                                 </div>
-                                <div id="collapseSix" class="collapse {{ $errors->first('name_of_test') || $errors->first('results_score') || $errors->first('date') ? 'show' : '' }}" data-parent=".accordionExample2">
+                                <div id="collapseSix" class="collapse" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
-                                            <input type="hidden" name="testing_data" id="testing_data">
+                                            <input type="hidden" name="testing_data" id="testing_data" value="{{ !empty($education->testing_data) ? $education->testing_data : '' }}">
                                             <table class="table">
                                                 <tbody>
                                                     <tr class="testing_table_row">
@@ -470,21 +457,21 @@
                                                                 Name of test
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control" value="{{ old('name_of_test') }}" id="name_of_test" name="name_of_test" placeholder="Enter Name of test">
+                                                            <input type="text" class="form-control" id="name_of_test" name="name_of_test" placeholder="Enter Name of test">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="results_score">
                                                                 Results Score
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control" value="{{ old('results_score') }}" id="results_score" name="results_score" placeholder="Enter Results score">
+                                                            <input type="text" class="form-control" id="results_score" name="results_score" placeholder="Enter Results score">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="date">
                                                                 Date
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="date" class="form-control" id="date" value="{{ old('date') }}" name="date" placeholder="Enter Date">
+                                                            <input type="text" class="date-own form-control" id="date" name="date" placeholder="Enter Date" autocomplete="off">
                                                         </td>
                                                         <td>
                                                             <label class="form-label">Action</label><br>
@@ -493,10 +480,22 @@
                                                             </a>
                                                         </td>
                                                     </tr>
+                                                    @if(!empty($education->testing_data))
+                                                        @foreach(json_decode($education->testing_data) as $testing_data)
+                                                            <tr id="testing_{{ $testing_data->id }}">
+                                                                <td class="name_of_test">{{ $testing_data->name_of_test }}</td>
+                                                                <td class="results_score">{{ $testing_data->results_score }}</td>
+                                                                <td class="date">{{ $testing_data->date }}</td>
+                                                                <td>
+                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $testing_data->id }}" onclick="testing_edit_model(this)"></i>
+                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $testing_data->id }}" onclick="testing_model_remove(this)"></i>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -514,12 +513,11 @@
                                                             Intended College Major
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="js-select2 form-select @error('intended_college_major') is-invalid @enderror" id="intended_college_major" name="intended_college_major" style="width: 100%;">
-                                                            <option value="">Select Intended College Major
-                                                            </option>
-                                                            <option value="1">Test</option>
-                                                            <option value="2">Demo</option>
-                                                            <option value="3">Temp</option>
+                                                        <select class="form-select @error('intended_college_major') is-invalid @enderror" id="intended_college_major" name="intended_college_major" style="width: 100%;">
+                                                            <option value="">Select Intended College Major</option>
+                                                            <option value="1" {{ isset($education->intended_college_major) && $education->intended_college_major == 1 ? 'selected' : '' }}>Test</option>
+                                                            <option value="2" {{ isset($education->intended_college_major) && $education->intended_college_major == 2 ? 'selected' : '' }}>Demo</option>
+                                                            <option value="3" {{ isset($education->intended_college_major) && $education->intended_college_major == 3 ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_major')
                                                         <span class="invalid">{{ $message }}</span>
@@ -532,12 +530,11 @@
                                                             Intended College Minor
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="js-select2 form-select @error('intended_college_minor') is-invalid @enderror" id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
-                                                            <option value="">Select Intended College Minor
-                                                            </option>
-                                                            <option value="1">Test</option>
-                                                            <option value="2">Demo</option>
-                                                            <option value="3">Temp</option>
+                                                        <select class="form-select @error('intended_college_minor') is-invalid @enderror" id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
+                                                            <option value="">Select Intended College Minor</option>
+                                                            <option value="1" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 1 ? 'selected' : '' }}>Test</option>
+                                                            <option value="2" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 2 ? 'selected' : '' }}>Demo</option>
+                                                            <option value="3" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 3 ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_minor')
                                                         <span class="invalid">{{ $message }}</span>
@@ -669,21 +666,21 @@
                                     Name of test
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" value="{{ old('testing_name_of_test') }}" id="testing_name_of_test" name="testing_name_of_test" placeholder="Enter Name of test">
+                                <input type="text" class="form-control" id="testing_name_of_test" name="testing_name_of_test" placeholder="Enter Name of test">
                             </div>
                             <div class="col-lg-4">
                                 <label class="form-label" for="testing_results_score">
                                     Results Score
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" value="{{ old('testing_results_score') }}" id="testing_results_score" name="testing_results_score" placeholder="Enter Results score">
+                                <input type="text" class="form-control" id="testing_results_score" name="testing_results_score" placeholder="Enter Results score">
                             </div>
                             <div class="col-lg-4">
                                 <label class="form-label" for="testing_date">
                                     Date
                                     <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" class="form-control" id="testing_date" value="{{ old('testing_date') }}" name="testing_date" placeholder="Enter Date">
+                                <input type="text" class="date-own form-control" id="testing_date" name="testing_date" placeholder="Enter Date" autocomplete="off">
                             </div>
                         </div>
                     </form>
@@ -702,6 +699,7 @@
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
 <style>
     .select2-container .select2-selection--multiple {
         min-width: 36vw !important;
@@ -714,10 +712,27 @@
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/high-school-resume.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
     var courseData = [];
     var honorCourseData = [];
     var testingData = [];
+
+    $('.year-own').datepicker({
+        minViewMode: 2,
+        format: 'yyyy'
+    });
+
+    $('.month-own').datepicker({
+        minViewMode: "months",
+        startView: "months", 
+        format: 'mm'
+    });
+
+    $('.date-own').datepicker({
+        format: 'dd-mm-yyyy',
+        startDate: '-3d'
+    });
 
     function addCourseData(data) {
         let course_name = $('input[name="course_name"]').val();
@@ -855,7 +870,6 @@
 
         let html = ``;
         if (name_of_test != "" && results_score != "" && date != "") {
-
             html += `<tr id="testing_${temp_testing_id}">`;
             html += `<td class="name_of_test">${name_of_test}</td>`;
             html += `<td class="results_score">${results_score}</td>`;

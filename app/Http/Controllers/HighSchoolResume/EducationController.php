@@ -10,7 +10,8 @@ class EducationController extends Controller
 {
     public function index()
     {
-        return view('user.admin-dashboard.high-school-resume.education-info');
+        $education  = Education::latest()->first();
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education'));
     }
 
     public function store(EducationRequest $request)

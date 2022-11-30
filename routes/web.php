@@ -153,8 +153,11 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::post('/education-info','store')->name('educationInfo.store');
                 Route::put('/education-info/{education}', 'update')->name('educationInfo.update');
             });
-            Route::get('/honors',[HonorsController::class, 'index'])->name('honors');
-            Route::post('/honors',[HonorsController::class, 'store'])->name('honors.store');
+            Route::controller(HonorsController::class)->group(function(){
+                Route::get('/honors', 'index')->name('honors');
+                Route::post('/honors', 'store')->name('honors.store');
+                Route::put('/honors/{honor}', 'update')->name('honors.update');
+            });
             Route::get('/activities',[ActivityController::class, 'index'])->name('activities');
             Route::post('/activities',[ActivityController::class, 'store'])->name('activities.store');
             Route::get('/employment-certifications',[EmploymentCertificationController::class, 'index'])->name('employmentCertification');
