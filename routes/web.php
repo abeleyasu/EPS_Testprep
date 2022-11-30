@@ -158,8 +158,11 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::post('/honors', 'store')->name('honors.store');
                 Route::put('/honors/{honor}', 'update')->name('honors.update');
             });
-            Route::get('/activities',[ActivityController::class, 'index'])->name('activities');
-            Route::post('/activities',[ActivityController::class, 'store'])->name('activities.store');
+            Route::controller(ActivityController::class)->group(function(){
+                Route::get('/activities', 'index')->name('activities');
+                Route::post('/activities', 'store')->name('activities.store');
+                Route::put('/activities/{activity}', 'update')->name('activities.update');
+            });
             Route::get('/employment-certifications',[EmploymentCertificationController::class, 'index'])->name('employmentCertification');
             Route::post('/employment-certifications',[EmploymentCertificationController::class, 'store'])->name('employmentCertification.store');
             Route::get('/features-attributes',[FeaturedAttributeController::class, 'index'])->name('featuresAttributes');

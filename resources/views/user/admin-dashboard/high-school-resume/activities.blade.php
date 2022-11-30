@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
+                        <a class="nav-link" href="javascript:void(0)"
                             id="step5-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
+                        <a class="nav-link" href="javascript:void(0)"
                             id="step6-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.preview') }}" id="step7-tab">
+                        <a class="nav-link" href="javascript:void(0)" id="step7-tab">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <i class="fa-solid fa-check "></i>
                             <p>Preview</p>
@@ -84,39 +84,37 @@
                                             major</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse {{ $errors->has('position') || $errors->has('interest') || $errors->has('grade') || $errors->has('location') || $errors->has('details') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <tr>
-                                                            <td><label class="form-label" for="position">
+                                                        <tr class="demonstrated_data_table_row">
+                                                            <input type="hidden" name="demonstrated_data" id="demonstrated_data">
+                                                            <td>
+                                                                <label class="form-label" for="position">
                                                                     Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('position') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     value="{{ old('position') }}" id="position"
-                                                                    name="position" placeholder="Enter Position">
-                                                                @error('position')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
+                                                                    name="position" placeholder="Enter Position" autocomplete="off">
                                                             </td>
-                                                            <td> <label class="form-label" for="interest">
+                                                            <td> 
+                                                                <label class="form-label" for="interest">
                                                                     Interest
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('interest') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="interest" name="interest"
                                                                     value="{{ old('interest') }}"
                                                                     placeholder="Enter Interest">
-                                                                @error('interest')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="grade">
+                                                            <td>
+                                                                <label class="form-label" for="grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -127,72 +125,33 @@
                                                                     <option value="3st grade">3st grade</option>
                                                                     <option value="4st grade">4st grade</option>
                                                                     <option value="5st grade">5st grade</option>
-                                                                    <option value="6st grade">6st grade</option>
-                                                                    <option value="7st grade">7st grade</option>
-                                                                    <option value="8st grade">8st grade</option>
-                                                                    <option value="9st grade">9st grade</option>
                                                                 </select>
-                                                                @error('grade')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="location">
-                                                                    Locations
+                                                            <td>
+                                                                <label class="form-label" for="location">
+                                                                    Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('location') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="location" name="location"
                                                                     value="{{ old('location') }}"
                                                                     placeholder="Enter Location">
-                                                                @error('location')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="details">
+                                                            <td>
+                                                                <label class="form-label" for="details">
                                                                     Details
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <textarea class="form-control @error('details') is-invalid @enderror" id="details" name="details" rows="1"
+                                                                <textarea class="form-control" id="details" name="details" rows="1"
                                                                     placeholder="Enter Details">{{ old('details') }}</textarea>
-                                                                @error('details')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" class="add-btn plus-icon">
+                                                                <a href="javascript:void(0)" onclick="addDemonstratedData(this)" class="add-btn plus-icon">
                                                                     <i class="fa-solid fa-plus"></i>
                                                                 </a>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2" data-bs-toggle="modal"
-                                                                    data-bs-target="#activity_demonstrated"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -206,123 +165,81 @@
                                         <a class=" text-white fw-600 collapsed">Leadership</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('status') || $errors->has('leadership_position') || $errors->has('organization') || $errors->has('leadership_location') || $errors->has('leadership_grade') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <tr>
-                                                            <td><label class="form-label" for="status">
+                                                        <input type="hidden" name="leadership_data" id="leadership_data">
+                                                        <tr class="leadership_data_table_row">
+                                                            <td>
+                                                                <label class="form-label" for="leadership_status">
                                                                     Status
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('status') is-invalid @enderror"
-                                                                    id="status" name="status"
-                                                                    value="{{ old('status') }}"
+                                                                    class="form-control"
+                                                                    id="leadership_status" name="leadership_status"
+                                                                    value="{{ old('leadership_status') }}"
                                                                     placeholder="Enter Status">
-                                                                @error('status')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="leadership_position">
+                                                            <td>
+                                                                <label class="form-label" for="leadership_position">
                                                                     Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('leadership_position') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="leadership_position" name="leadership_position"
-                                                                    placeholder="Enter Position">
-                                                                @error('leadership_position')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
+                                                                    placeholder="Enter Position" autocomplete="off">
                                                             </td>
-                                                            <td><label class="form-label" for="organization">
+                                                            <td>
+                                                                <label class="form-label" for="leadership_organization">
                                                                     Organization
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('organization') is-invalid @enderror"
-                                                                    id="organization" name="organization"
-                                                                    value="{{ old('organization') }}"
+                                                                    class="form-control"
+                                                                    id="leadership_organization" name="leadership_organization"
+                                                                    value="{{ old('leadership_organization') }}"
                                                                     placeholder="Enter Organization">
-                                                                @error('organization')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="leadership_location">
-                                                                    Locations
+                                                            <td>
+                                                                <label class="form-label" for="leadership_location">
+                                                                    Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('leadership_location') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="leadership_location" name="leadership_location"
                                                                     value="{{ old('leadership_location') }}"
                                                                     placeholder="Ex: DRHS">
-                                                                @error('leadership_location')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="leadership_grade">
+                                                            <td>
+                                                                <label class="form-label" for="leadership_grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select @error('leadership_grade') is-invalid @enderror" id="leadership"
+                                                                <select class="js-select2 select" id="leadership_grade"
                                                                     name="leadership_grade" multiple="multiple">
                                                                     <option value="1st grade">1st grade</option>
                                                                     <option value="2st grade">2st grade</option>
                                                                     <option value="3st grade">3st grade</option>
                                                                     <option value="4st grade">4st grade</option>
                                                                     <option value="5st grade">5st grade</option>
-                                                                    <option value="6st grade">6st grade</option>
-                                                                    <option value="7st grade">7st grade</option>
-                                                                    <option value="8st grade">8st grade</option>
-                                                                    <option value="9st grade">9st grade</option>
                                                                 </select>
-                                                                @error('leadership_grade')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" class="add-btn plus-icon">
+                                                                <a href="javascript:void(0)" onclick="addLeadershipData(this)" class="add-btn plus-icon">
                                                                     <i class="fa-solid fa-plus"></i>
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2" data-bs-toggle="modal"
-                                                                    data-bs-target="#activity_leadership"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -332,40 +249,38 @@
                                         <a class=" text-white fw-600 collapsed">Activities & Clubs</a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse {{ $errors->has('activity_position') || $errors->has('activity') || $errors->has('activity_grade') || $errors->has('activity_location') || $errors->has('honor_award') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="collapseThree" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <tr>
-                                                            <td><label class="form-label" for="activity_position">
-                                                                    Positions
+                                                        <tr class="activity_data_table_row">
+                                                            <input type="hidden" name="activities_data" id="activities_data">
+                                                            <td>
+                                                                <label class="form-label" for="activity_position">
+                                                                    Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('activity_position') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     value="{{ old('activity_position') }}"
                                                                     id="activity_position" name="activity_position"
-                                                                    placeholder="Enter Position">
-                                                                @error('activity_position')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
+                                                                    placeholder="Enter Position" autocomplete="off">
                                                             </td>
-                                                            <td><label class="form-label" for="activity">
+                                                            <td>
+                                                                <label class="form-label" for="activity">
                                                                     Activity
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('activity') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="activity" name="activity"
                                                                     value="{{ old('activity') }}"
                                                                     placeholder="Enter Activity">
-                                                                @error('activity')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td> <label class="form-label" for="activity_grade">
+                                                            <td> 
+                                                                <label class="form-label" for="activity_grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -376,75 +291,36 @@
                                                                     <option value="3st grade">3st grade</option>
                                                                     <option value="4st grade">4st grade</option>
                                                                     <option value="5st grade">5st grade</option>
-                                                                    <option value="6st grade">6st grade</option>
-                                                                    <option value="7st grade">7st grade</option>
-                                                                    <option value="8st grade">8st grade</option>
-                                                                    <option value="9st grade">9st grade</option>
                                                                 </select>
-                                                                @error('activity_grade')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="activity_location">
-                                                                    Locations
+                                                            <td>
+                                                                <label class="form-label" for="activity_location">
+                                                                    Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('activity_location') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="activity_location" name="activity_location"
                                                                     value="{{ old('activity_location') }}"
                                                                     placeholder="Ex: DRHS">
-                                                                @error('activity_location')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="honor_award">
+                                                            <td>
+                                                                <label class="form-label" for="activity_honor_award">
                                                                     Honor/Award
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('honor_award') is-invalid @enderror"
-                                                                    id="honor_award" name="honor_award"
-                                                                    value="{{ old('honor_award') }}"
+                                                                    class="form-control"
+                                                                    id="activity_honor_award" name="activity_honor_award"
+                                                                    value="{{ old('activity_honor_award') }}"
                                                                     placeholder="Enter Honor/Award">
-                                                                @error('honor_award')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" class="add-btn plus-icon">
+                                                                <a href="javascript:void(0)" onclick="addActivityData(this)" class="add-btn plus-icon">
                                                                     <i class="fa-solid fa-plus"></i>
                                                                 </a>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2" data-bs-toggle="modal"
-                                                                    data-bs-target="#activity_clubs"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -458,40 +334,39 @@
                                         <a class=" text-white fw-600 collapsed">Athletics</a>
                                     </div>
                                     <div id="collapseFour"
-                                        class="collapse {{ $errors->has('athletics_positions') || $errors->has('athletics_activity') || $errors->has('athletics_grade') || $errors->has('athletics_location') || $errors->has('athletics_honor') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="collapseFour" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <tr>
-                                                            <td> <label class="form-label" for="athletics_positions">
-                                                                    Positions
+                                                        <tr class="athletics_data_table_row">
+                                                            <input type="hidden" name="athletics_data" id="athletics_data">
+                                                            <td> 
+                                                                <label class="form-label" for="athletics_position">
+                                                                    Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('athletics_positions') is-invalid @enderror"
-                                                                    id="athletics_positions" name="athletics_positions"
-                                                                    value="{{ old('athletics_positions') }}"
-                                                                    placeholder="Enter Position">
-                                                                @error('athletics_positions')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
+                                                                    class="form-control"
+                                                                    id="athletics_positions" name="athletics_position"
+                                                                    value="{{ old('athletics_position') }}"
+                                                                    placeholder="Enter Position" autocomplete="off">
+    
                                                             </td>
-                                                            <td><label class="form-label" for="athletics_activity">
+                                                            <td>
+                                                                <label class="form-label" for="athletics_activity">
                                                                      Activity
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('athletics_activity') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="athletics_activity" name="athletics_activity"
                                                                     value="{{ old('athletics_activity') }}"
                                                                     placeholder="Enter Activity">
-                                                                @error('athletics_activity')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="athletics_grade">
+                                                            <td>
+                                                                <label class="form-label" for="athletics_grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -502,75 +377,36 @@
                                                                     <option value="3st grade">3st grade</option>
                                                                     <option value="4st grade">4st grade</option>
                                                                     <option value="5st grade">5st grade</option>
-                                                                    <option value="6st grade">6st grade</option>
-                                                                    <option value="7st grade">7st grade</option>
-                                                                    <option value="8st grade">8st grade</option>
-                                                                    <option value="9st grade">9st grade</option>
                                                                 </select>
-                                                                @error('athletics_grade')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="athletics_location">
-                                                                    Locations
+                                                            <td>
+                                                                <label class="form-label" for="athletics_location">
+                                                                    Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('athletics_location') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     value="{{ old('athletics_location') }}"
                                                                     id="athletics_location" name="athletics_location"
                                                                     placeholder="Ex: DRHS">
-                                                                @error('athletics_location')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="athletics_honor">
+                                                            <td>
+                                                                <label class="form-label" for="athletics_honor">
                                                                     Honor
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('athletics_honor') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="athletics_honor" name="athletics_honor"
                                                                     value="{{ old('athletics_honor') }}"
                                                                     placeholder="Enter Honor">
-                                                                @error('athletics_honor')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" class="add-btn plus-icon">
+                                                                <a href="javascript:void(0)" onclick="addAthleticsData(this)" class="add-btn plus-icon">
                                                                     <i class="fa-solid fa-plus"></i>
                                                                 </a>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2" data-bs-toggle="modal"
-                                                                    data-bs-target="#activity_athletics"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -585,40 +421,38 @@
                                         <a class=" text-white fw-600 collapsed">Community service / Volunteerism</a>
                                     </div>
                                     <div id="collapseFive"
-                                        class="collapse {{ $errors->has('participation_level') || $errors->has('community_service') || $errors->has('community_grade') || $errors->has('community_location') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="collapseFive" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <tr>
-                                                            <td> <label class="form-label" for="participation_level">
+                                                        <tr class="community_data_table_row">
+                                                            <input type="hidden" name="community_service_data" id="community_service_data">
+                                                            <td> 
+                                                                <label class="form-label" for="participation_level">
                                                                     Participation level
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('participation_level') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     value="{{ old('participation_level') }}"
                                                                     id="participation_level" name="participation_level"
                                                                     placeholder="Enter Participation level">
-                                                                @error('participation_level')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td> <label class="form-label" for="community_service">
+                                                            <td> 
+                                                                <label class="form-label" for="community_service">
                                                                     Service
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('community_service') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="community_service" name="community_service"
                                                                     value="{{ old('community_service') }}"
                                                                     placeholder="Enter Service">
-                                                                @error('community_service')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
-                                                            <td><label class="form-label" for="community_grade">
+                                                            <td>
+                                                                <label class="form-label" for="community_grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
@@ -629,58 +463,23 @@
                                                                     <option value="3st grade">3st grade</option>
                                                                     <option value="4st grade">4st grade</option>
                                                                     <option value="5st grade">5st grade</option>
-                                                                    <option value="6st grade">6st grade</option>
-                                                                    <option value="7st grade">7st grade</option>
-                                                                    <option value="8st grade">8st grade</option>
-                                                                    <option value="9st grade">9st grade</option>
                                                                 </select>
-                                                                @error('community_grade')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td><label class="form-label" for="community_location">
-                                                                    Locations
+                                                                    Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('community_location') is-invalid @enderror"
+                                                                    class="form-control"
                                                                     id="community_location" name="community_location"
                                                                     placeholder="Enter Location">
-                                                                @error('community_location')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" class="add-btn plus-icon">
+                                                                <a href="javascript:void(0)" onclick="addCommunityData(this)" class="add-btn plus-icon">
                                                                     <i class="fa-solid fa-plus"></i>
                                                                 </a>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2" data-bs-toggle="modal"
-                                                                    data-bs-target="#activity_community"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td>Mark</td>
-                                                            <td><i class="fa-solid fa-pen me-2"></i> <i
-                                                                    class="fa-solid fa-circle-xmark"></i></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -711,7 +510,7 @@
     </main>
 
     <!-- Demonstrated interest in the area of your major Modal -->
-        <div class="modal" id="activity_demonstrated" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+        <div class="modal" id="activity_demonstrated_modal" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -726,84 +525,63 @@
                             </div>
                         </div>
                         <div class="block-content fs-sm">
-                            <form>
-                                <div class="row mb-4">
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="demonstrated_modal_position">
-                                            Position
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('demonstrated_modal_position') is-invalid @enderror"
-                                            value="{{ old('demonstrated_modal_position') }}" id="demonstrated_modal_position" name="demonstrated_modal_position"
-                                            placeholder="Enter Position">
-                                        @error('demonstrated_modal_position')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="demonstrated_modal_interest">
-                                            Interest
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('demonstrated_modal_interest') is-invalid @enderror"
-                                            id="demonstrated_modal_interest" name="demonstrated_modal_interest" value="{{ old('demonstrated_modal_interest') }}"
-                                            placeholder="Enter Interest">
-                                        @error('demonstrated_modal_interest')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="demonstrated_modal_grade">
-                                            Grade(s)
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="js-select2 select" id="demonstrated_modal_grade" name="demonstrated_modal_grade"
-                                            multiple="multiple">
-                                            <option value="list 1">list 1</option>
-                                            <option value="list 2">list 2</option>
-                                            <option value="list 3">list 3</option>
-                                            <option value="list 4">list 4</option>
-                                            <option value="list 5">list 5</option>
-                                            <option value="list 6">list 6</option>
-                                            <option value="list 7">list 7</option>
-                                            <option value="list 8">list 8</option>
-                                            <option value="list 9">list 9</option>
-                                        </select>
-                                        @error('demonstrated_modal_grade')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="demonstrated_modal_position">
+                                        Position
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        value="{{ old('position') }}" id="demonstrated_modal_position" name="position"
+                                        placeholder="Enter Position">
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="demonstrated_modal_location">
-                                            Location
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('demonstrated_modal_location') is-invalid @enderror"
-                                            id="demonstrated_modal_location" name="demonstrated_modal_location" value="{{ old('demonstrated_modal_location') }}"
-                                            placeholder="Enter Location">
-                                        @error('demonstrated_modal_location')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="demonstrated_modal_details">
-                                            Details
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <textarea class="form-control @error('demonstrated_modal_details') is-invalid @enderror" id="demonstrated_modal_details" name="demonstrated_modal_details" rows="1"
-                                            placeholder="Enter Details">{{ old('demonstrated_modal_details') }}</textarea>
-                                        @error('demonstrated_modal_details')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="demonstrated_modal_interest">
+                                        Interest
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        id="demonstrated_modal_interest" name="interest" value="{{ old('interest') }}"
+                                        placeholder="Enter Interest">
                                 </div>
-                            </form>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="demonstrated_modal_grade">
+                                        Grade(s)
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="js-select2 select" id="demonstrated_modal_grade" name="grade"
+                                        multiple="multiple">
+                                        <option value="1st grade">1st grade</option>
+                                        <option value="2st grade">2st grade</option>
+                                        <option value="3st grade">3st grade</option>
+                                        <option value="4st grade">4st grade</option>
+                                        <option value="5st grade">5st grade</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="demonstrated_modal_location">
+                                        Location
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        id="demonstrated_modal_location" name="location" value="{{ old('location') }}"
+                                        placeholder="Enter Location">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="demonstrated_modal_details">
+                                        Details
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <textarea class="form-control" id="demonstrated_modal_details" name="details" rows="1"
+                                        placeholder="Enter Details">{{ old('details') }}</textarea>
+                                </div>
+                            </div>
                         </div>
                         <div class="block-content block-content-full text-end">
                             <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            <button type="button" class="btn submit-btn" id="updateDemonstratedForm" onclick="updateDemonstratedForm(this)">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -812,7 +590,7 @@
     <!-- Demonstrated interest in the area of your major Modal -->
 
     <!-- Leadership Modal -->
-        <div class="modal" id="activity_leadership" tabindex="-1" role="dialog"
+        <div class="modal" id="leadership_modal" tabindex="-1" role="dialog"
             aria-labelledby="modal-block-extra-large" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -826,96 +604,71 @@
                             </div>
                         </div>
                         <div class="block-content fs-sm">
-                            <form>
-                                <div class="row mb-4">
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="leadership_modal_status">
-                                            Status
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('leadership_modal_status') is-invalid @enderror"
-                                            id="leadership_modal_status" name="leadership_modal_status" value="{{ old('leadership_modal_status') }}"
-                                            placeholder="Enter Status">
-                                        @error('leadership_modal_status')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="leadership_modal_position">
-                                            Position
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('leadership_modal_position') is-invalid @enderror"
-                                            id="leadership_modal_position" name="leadership_modal_position" placeholder="Enter Position">
-                                        @error('leadership_modal_position')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="leadership_modal_organization">
-                                            Organization
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('leadership_modal_organization') is-invalid @enderror"
-                                            id="leadership_modal_organization" name="leadership_modal_organization" value="{{ old('leadership_modal_organization') }}"
-                                            placeholder="Enter Organization">
-                                        @error('leadership_modal_organization')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="leadership_modal_status">
+                                        Status
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        id="leadership_modal_status" name="leadership_status" value="{{ old('leadership_status') }}"
+                                        placeholder="Enter Status">
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="leadership_modal_location">
-                                            Location
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('leadership_modal_location') is-invalid @enderror"
-                                            id="leadership_modal_location" name="leadership_modal_location"
-                                            value="{{ old('leadership_modal_location') }}" placeholder="Ex: DRHS">
-                                        @error('leadership_modal_location')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="leadership_modal_grade">
-                                            Grade(s)
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="js-select2 select select2min" id="leadership_modal_grade"
-                                            name="leadership_modal_grade" multiple="multiple">
-                                            <option value="1st grade">1st grade
-                                            </option>
-                                            <option value="2st grade">2st grade
-                                            </option>
-                                            <option value="3st grade">3st grade
-                                            </option>
-                                            <option value="4st grade">4st grade
-                                            </option>
-                                            <option value="5st grade">5st grade
-                                            </option>
-                                            <option value="6st grade">6st grade
-                                            </option>
-                                            <option value="7st grade">7st grade
-                                            </option>
-                                            <option value="8st grade">8st grade
-                                            </option>
-                                            <option value="9st grade">9st grade
-                                            </option>
-                                        </select>
-                                        @error('leadership_modal_grade')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="leadership_modal_position">
+                                        Position
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="leadership_modal_position" name="leadership_position" placeholder="Enter Position" autocomplete="off">
                                 </div>
-                            </form>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="leadership_modal_organization">
+                                        Organization
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="leadership_modal_organization" name="leadership_organization" value="{{ old('leadership_organization') }}"
+                                        placeholder="Enter Organization">
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="leadership_modal_location">
+                                        Location
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="leadership_modal_location" name="leadership_location"
+                                        value="{{ old('leadership_location') }}" placeholder="Ex: DRHS">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="leadership_modal_grade">
+                                        Grade(s)
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="js-select2 select select2min" id="leadership_modal_grade"
+                                        name="leadership_grade" multiple="multiple">
+                                        <option value="1st grade">1st grade
+                                        </option>
+                                        <option value="2st grade">2st grade
+                                        </option>
+                                        <option value="3st grade">3st grade
+                                        </option>
+                                        <option value="4st grade">4st grade
+                                        </option>
+                                        <option value="5st grade">5st grade
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="block-content block-content-full text-end">
                             <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            <button type="button" class="btn submit-btn" id="updateLeadershipForm" onclick="updateLeadershipForm(this)">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -924,7 +677,7 @@
     <!-- Leadership Modal -->
 
     <!-- Activities & Clubs Modal -->
-        <div class="modal" id="activity_clubs" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+        <div class="modal" id="activity_model" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -938,96 +691,71 @@
                             </div>
                         </div>
                         <div class="block-content fs-sm">
-                            <form>
-                                <div class="row mb-4">
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="activity_modal_position">
-                                            Positions
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('activity_modal_position') is-invalid @enderror"
-                                            value="{{ old('activity_modal_position') }}" id="activity_modal_position"
-                                            name="activity_modal_position" placeholder="Enter Position">
-                                        @error('activity_modal_position')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="activity_modal_activity">
-                                            Activity
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('activity_modal_activity') is-invalid @enderror"
-                                            id="activity_modal_activity" name="activity_modal_activity" value="{{ old('activity_modal_activity') }}"
-                                            placeholder="Enter Activity">
-                                        @error('activity_modal_activity')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="activity_modal_grade">
-                                            Grade(s)
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="js-select2 select" id="activity_modal_grade"
-                                            name="activity_modal_grade" multiple="multiple">
-                                            <option value="1st grade">1st grade
-                                            </option>
-                                            <option value="2st grade">2st grade
-                                            </option>
-                                            <option value="3st grade">3st grade
-                                            </option>
-                                            <option value="4st grade">4st grade
-                                            </option>
-                                            <option value="5st grade">5st grade
-                                            </option>
-                                            <option value="6st grade">6st grade
-                                            </option>
-                                            <option value="7st grade">7st grade
-                                            </option>
-                                            <option value="8st grade">8st grade
-                                            </option>
-                                            <option value="9st grade">9st grade
-                                            </option>
-                                        </select>
-                                        @error('activity_modal_grade')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="activity_modal_position">
+                                        Position
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        value="{{ old('position') }}" id="activity_modal_position"
+                                        name="position" placeholder="Enter Position" autocomplete="off">
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="activity_modal_location">
-                                            Location
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('activity_modal_location') is-invalid @enderror"
-                                            id="activity_modal_location" name="activity_modal_location"
-                                            value="{{ old('activity_modal_location') }}" placeholder="Ex: DRHS">
-                                        @error('activity_modal_location')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="activity_modal_honor_award">
-                                            Honor/Award
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('activity_modal_honor_award') is-invalid @enderror"
-                                            id="activity_modal_honor_award" name="activity_modal_honor_award" value="{{ old('activity_modal_honor_award') }}"
-                                            placeholder="Enter Honor/Award">
-                                        @error('activity_modal_honor_award')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="activity_modal_activity">
+                                        Activity
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        id="activity_modal_activity" name="activity" value="{{ old('activity') }}"
+                                        placeholder="Enter Activity">
                                 </div>
-                            </form>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="activity_modal_grade">
+                                        Grade(s)
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="js-select2 select" id="activity_modal_grade"
+                                        name="grade" multiple="multiple">
+                                        <option value="1st grade">1st grade
+                                        </option>
+                                        <option value="2st grade">2st grade
+                                        </option>
+                                        <option value="3st grade">3st grade
+                                        </option>
+                                        <option value="4st grade">4st grade
+                                        </option>
+                                        <option value="5st grade">5st grade
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="activity_modal_location">
+                                        Location
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="activity_modal_location" name="location"
+                                        value="{{ old('location') }}" placeholder="Ex: DRHS">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="activity_modal_honor_award">
+                                        Honor/Award
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                        id="activity_modal_honor_award" name="honor_award" value="{{ old('honor_award') }}"
+                                        placeholder="Enter Honor/Award">
+                                </div>
+                            </div>
                         </div>
                         <div class="block-content block-content-full text-end">
                             <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            <button type="button" class="btn submit-btn" id="updateActivityForm" onclick="updateActivityForm(this)">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -1036,7 +764,7 @@
     <!-- Activities & Clubs Modal -->
 
     <!-- Athletics Modal -->
-        <div class="modal" id="activity_athletics" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+        <div class="modal" id="athletics_model" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -1050,98 +778,73 @@
                             </div>
                         </div>
                         <div class="block-content fs-sm">
-                            <form>
-                                <div class="row mb-4">
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="athletics_modal_position">
-                                            Position
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('athletics_modal_position') is-invalid @enderror"
-                                            id="athletics_modal_position" name="athletics_modal_position"
-                                            value="{{ old('athletics_modal_position') }}" placeholder="Enter Position">
-                                        @error('athletics_modal_position')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="athletics_modal_activity">
-                                            Athletic Activity
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('athletics_modal_activity') is-invalid @enderror"
-                                            id="athletics_modal_activity" name="athletics_modal_activity"
-                                            value="{{ old('athletics_modal_activity') }}" placeholder="Enter Activity">
-                                        @error('athletics_modal_activity')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="form-label" for="athletics_modal_grade">
-                                            Grade(s)
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="js-select2 select" id="athletics_modal_grade"
-                                            name="athletics_modal_grade" multiple="multiple">
-                                            <option value="1st grade">1st grade
-                                            </option>
-                                            <option value="2st grade">2st grade
-                                            </option>
-                                            <option value="3st grade">3st grade
-                                            </option>
-                                            <option value="4st grade">4st grade
-                                            </option>
-                                            <option value="5st grade">5st grade
-                                            </option>
-                                            <option value="6st grade">6st grade
-                                            </option>
-                                            <option value="7st grade">7st grade
-                                            </option>
-                                            <option value="8st grade">8st grade
-                                            </option>
-                                            <option value="9st grade">9st grade
-                                            </option>
-                                        </select>
-                                        @error('athletics_modal_grade')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="athletics_modal_position">
+                                        Position
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="athletics_modal_position" name="position"
+                                        value="{{ old('position') }}" placeholder="Enter Position" autocomplete="off">
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="athletics_modal_location">
-                                            Location
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('athletics_modal_location') is-invalid @enderror"
-                                            value="{{ old('athletics_modal_location') }}" id="athletics_modal_location"
-                                            name="athletics_modal_location" placeholder="Ex: DRHS">
-                                        @error('athletics_modal_location')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="athletics_modal_honor">
-                                            Honor
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('athletics_modal_honor') is-invalid @enderror"
-                                            id="athletics_modal_honor" name="athletics_modal_honor" value="{{ old('athletics_modal_honor') }}"
-                                            placeholder="Enter Honor">
-                                        @error('athletics_modal_honor')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="athletics_modal_activity">
+                                        Athletics Activity
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="athletics_modal_activity" name="activity"
+                                        value="{{ old('activity') }}" placeholder="Enter Activity">
                                 </div>
-                            </form>
+                                <div class="col-lg-4">
+                                    <label class="form-label" for="athletics_modal_grade">
+                                        Grade(s)
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="js-select2 select" id="athletics_modal_grade"
+                                        name="grade" multiple="multiple">
+                                        <option value="1st grade">1st grade
+                                        </option>
+                                        <option value="2st grade">2st grade
+                                        </option>
+                                        <option value="3st grade">3st grade
+                                        </option>
+                                        <option value="4st grade">4st grade
+                                        </option>
+                                        <option value="5st grade">5st grade
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="athletics_modal_location">
+                                        Location
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        value="{{ old('location') }}" id="athletics_modal_location"
+                                        name="location" placeholder="Ex: DRHS">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="athletics_modal_honor">
+                                        Honor
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="athletics_modal_honor" name="honor" value="{{ old('honor') }}"
+                                        placeholder="Enter Honor">
+                                </div>
+                            </div>
                         </div>
                         <div class="block-content block-content-full text-end">
                             <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            <button type="button" class="btn submit-btn" id="updateAthleticsForm" onclick="updateAthleticsForm(this)">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -1150,7 +853,7 @@
     <!-- Athletics Modal -->
 
     <!-- Community service / Volunteerism Modal -->
-        <div class="modal" id="activity_community" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
+        <div class="modal" id="community_service_model" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -1164,75 +867,57 @@
                             </div>
                         </div>
                         <div class="block-content fs-sm">
-                            <form>
-                                <div class="row mb-4">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="community_modal_participation_level">
-                                            Participation level
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('community_modal_participation_level') is-invalid @enderror"
-                                            value="{{ old('community_modal_participation_level') }}" id="community_modal_participation_level"
-                                            name="community_modal_participation_level" placeholder="Enter Participation level">
-                                        @error('community_modal_participation_level')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="community_modal_service">
-                                            Service
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('community_modal_service') is-invalid @enderror"
-                                            id="community_modal_service" name="community_modal_service"
-                                            value="{{ old('community_modal_service') }}" placeholder="Enter Service">
-                                        @error('community_modal_service')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="community_modal_participation_level">
+                                        Participation level
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        value="{{ old('participation_level') }}" id="community_modal_participation_level"
+                                        name="participation_level" placeholder="Enter Participation level">
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="community_modal_grade">
-                                            Grade(s)
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <select class="js-select2 select" id="community_modal_grade"
-                                            name="community_modal_grade" multiple="multiple">
-                                            <option value="1st grade">1st grade</option>
-                                            <option value="2st grade">2st grade</option>
-                                            <option value="3st grade">3st grade</option>
-                                            <option value="4st grade">4st grade</option>
-                                            <option value="5st grade">5st grade</option>
-                                            <option value="6st grade">6st grade</option>
-                                            <option value="7st grade">7st grade</option>
-                                            <option value="8st grade">8st grade</option>
-                                            <option value="9st grade">9st grade</option>
-                                        </select>
-                                        @error('community_modal_grade')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <label class="form-label" for="community_modal_location">
-                                            Location
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text"
-                                            class="form-control @error('community_modal_location') is-invalid @enderror"
-                                            id="community_modal_location" name="community_modal_location" placeholder="Enter Location">
-                                        @error('community_modal_location')
-                                            <span class="invalid">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="community_modal_service">
+                                        Service
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="community_modal_service" name="service"
+                                        value="{{ old('service') }}" placeholder="Enter Service">
                                 </div>
-                            </form>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="community_modal_grade">
+                                        Grade(s)
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="js-select2 select" id="community_modal_grade"
+                                        name="grade" multiple="multiple">
+                                        <option value="1st grade">1st grade</option>
+                                        <option value="2st grade">2st grade</option>
+                                        <option value="3st grade">3st grade</option>
+                                        <option value="4st grade">4st grade</option>
+                                        <option value="5st grade">5st grade</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label" for="community_modal_location">
+                                        Location
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="community_modal_location" value="{{ old('location') }}" name="location" placeholder="Enter Location">
+                                </div>
+                            </div>
                         </div>
                         <div class="block-content block-content-full text-end">
                             <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" data-bs-dismiss="modal">Submit</button>
+                            <button type="button" class="btn submit-btn" id="updateCommunityForm" onclick="updateCommunityForm(this)">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -1256,4 +941,504 @@
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script>
+        var demonstratedData = [];
+        var leadershipData = [];
+        var activityData = [];
+        var athleticsData = [];
+        var communityData = [];
+
+        // Demonstrated table start 
+
+        function addDemonstratedData(data) {
+            let position = $('input[name="position"]').val();
+            let interest = $('input[name="interest"]').val();
+            let grade = $('#grade').val();
+            let location = $('input[name="location"]').val();
+            let details = $('#details').val();
+            let temp_demonstrated_id = Date.now();
+
+            let html = ``;
+            if (position != "" && interest != "" && location != "" && details != "" && grade != "") {
+                html += `<tr id="demonstrated_${temp_demonstrated_id}">`;
+                html += `<td class="position">${position}</td>`;
+                html += `<td class="interest">${interest}</td>`;
+                html += `<td class="grade">${grade.join(", ").toString()}</td>`;
+                html += `<td class="location">${location}</td>`;
+                html += `<td class="details">${details}</td>`;
+                html += `<td>`;
+                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_demonstrated_id}" onclick="demonstrated_edit_model(this)"></i>`;
+                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_demonstrated_id}" onclick="demonstrated_model_remove(this)"></i>`;
+                html += `</td>`;
+
+                demonstratedData.push({
+                    "id": temp_demonstrated_id,
+                    "position": position,
+                    "interest": interest,
+                    "grade": JSON.stringify(grade),
+                    "location": location,
+                    "details": details
+                });
+            } else {
+                alert('Please Enter Demonstrated Details');
+            }
+
+            $('.demonstrated_data_table_row').after(html);
+            $('input[name="position"]').val('');
+            $('input[name="interest"]').val('');
+            $('input[name="location"]').val('');
+            $('#details').val('');
+            $("#grade").val(null).trigger("change");
+            $('#demonstrated_data').val(JSON.stringify(demonstratedData));
+        }
+
+        function demonstrated_edit_model(data) {
+            let demonstratedData = $('#demonstrated_data').val();
+                demonstratedData = JSON.parse(demonstratedData);
+            let id = $(data).attr('data-id');
+            let demonstrated_result = demonstratedData.find(demonstrate => demonstrate.id == id);
+            let grade = JSON.parse(demonstrated_result.grade);
+            
+            $('#demonstrated_modal_position').val(demonstrated_result.position);
+            $('#demonstrated_modal_interest').val(demonstrated_result.interest);
+            $("#demonstrated_modal_grade").val(grade).trigger("change");
+            $('#demonstrated_modal_location').val(demonstrated_result.location);
+            $('#demonstrated_modal_details').val(demonstrated_result.details);
+            $('#updateDemonstratedForm').attr('data-id', id);
+            $('#activity_demonstrated_modal').modal('show');
+        }
+
+        function updateDemonstratedForm(data) {
+            let id = $(data).attr('data-id');
+            let position = $('#demonstrated_modal_position').val();
+            let interest = $('#demonstrated_modal_interest').val();
+            let grade = $('#demonstrated_modal_grade').val();
+            let location = $('#demonstrated_modal_location').val();
+            let details = $('#demonstrated_modal_details').val();
+
+            let demonstratedData = $('#demonstrated_data').val();
+                demonstratedData = JSON.parse(demonstratedData);
+            for (let i = 0; i < demonstratedData.length; i++) {
+                if (demonstratedData[i].id == id) {
+                    demonstratedData[i].position = position
+                    demonstratedData[i].interest = interest
+                    demonstratedData[i].grade = JSON.stringify(grade)
+                    demonstratedData[i].location = location
+                    demonstratedData[i].details = details
+                }
+            }
+            $('#demonstrated_data').val(JSON.stringify(demonstratedData));
+            $(`#demonstrated_${id} .position`).text(position);
+            $(`#demonstrated_${id} .interest`).text(interest);
+            $(`#demonstrated_${id} .grade`).text(grade.join(", ").toString());
+            $(`#demonstrated_${id} .location`).text(location);
+            $(`#demonstrated_${id} .details`).text(details);
+
+            $('#activity_demonstrated_modal').modal('hide');
+        }
+
+        function demonstrated_model_remove(data) {
+            let id = $(data).attr('data-id');
+            let demonstratedData = $('#demonstrated_data').val();
+                demonstratedData = JSON.parse(demonstratedData);
+            const deleted_demonstrate = demonstratedData.filter(demonstrate => demonstrate.id != id)
+            $('#demonstrated_data').val(JSON.stringify(deleted_demonstrate));
+            $(`#demonstrated_${id}`).remove();
+        }
+
+        // Demonstrated table end 
+
+        // Leadership table start 
+
+        function addLeadershipData(data) {
+            let leadership_status = $('input[name="leadership_status"]').val();
+            let leadership_position = $('input[name="leadership_position"]').val();
+            let leadership_organization = $('input[name="leadership_organization"]').val();
+            let leadership_location = $('input[name="leadership_location"]').val();
+            let leadership_grade = $('#leadership_grade').val();
+            let temp_leadership_id = Date.now();
+
+            let html = ``;
+            if (leadership_status != "" && leadership_position != "" && leadership_organization != "" && leadership_location != "" && grade != "") {
+                html += `<tr id="leadership_${temp_leadership_id}">`;
+                html += `<td class="leadership_status">${leadership_status}</td>`;
+                html += `<td class="leadership_position">${leadership_position}</td>`;
+                html += `<td class="leadership_organization">${leadership_organization}</td>`;
+                html += `<td class="leadership_location">${leadership_location}</td>`;
+                html += `<td class="leadership_grade">${leadership_grade.join(", ").toString()}</td>`;
+                html += `<td>`;
+                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_leadership_id}" onclick="leadership_edit_model(this)"></i>`;
+                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_leadership_id}" onclick="leadership_model_remove(this)"></i>`;
+                html += `</td>`;
+
+                leadershipData.push({
+                    "id": temp_leadership_id,
+                    "leadership_status": leadership_status,
+                    "leadership_position": leadership_position,
+                    "leadership_organization": leadership_organization,
+                    "leadership_grade": JSON.stringify(leadership_grade),
+                    "leadership_location": leadership_location
+                });
+            } else {
+                alert('Please Enter Leadership Details');
+            }
+
+            $('.leadership_data_table_row').after(html);
+            $('input[name="leadership_status"]').val('');
+            $('input[name="leadership_position"]').val('');
+            $('input[name="leadership_organization"]').val('');
+            $('input[name="leadership_location"]').val('');
+            $("#leadership_grade").val(null).trigger("change");
+            $('#leadership_data').val(JSON.stringify(leadershipData));
+        }
+
+        function leadership_edit_model(data) {
+            let leadershipData = $('#leadership_data').val();
+                leadershipData = JSON.parse(leadershipData);
+            let id = $(data).attr('data-id');
+            let leadership_result = leadershipData.find(leadership => leadership.id == id);
+            let leadership_grade = JSON.parse(leadership_result.leadership_grade);
+            
+            $('#leadership_modal_status').val(leadership_result.leadership_status);
+            $('#leadership_modal_position').val(leadership_result.leadership_position);
+            $('#leadership_modal_organization').val(leadership_result.leadership_organization);
+            $("#leadership_modal_grade").val(leadership_grade).trigger("change");
+            $('#leadership_modal_location').val(leadership_result.leadership_location);
+            $('#updateLeadershipForm').attr('data-id', id);
+            $('#leadership_modal').modal('show');
+        }
+
+        function updateLeadershipForm(data) {
+            let id = $(data).attr('data-id');
+            let leadership_status = $('#leadership_modal_status').val();
+            let leadership_position = $('#leadership_modal_position').val();
+            let leadership_organization = $('#leadership_modal_organization').val();
+            let leadership_grade = $('#leadership_modal_grade').val();
+            let leadership_location = $('#leadership_modal_location').val();
+
+            let leadershipData = $('#leadership_data').val();
+                leadershipData = JSON.parse(leadershipData);
+            for (let i = 0; i < leadershipData.length; i++) {
+                if (leadershipData[i].id == id) {
+                    leadershipData[i].leadership_status = leadership_status
+                    leadershipData[i].leadership_position = leadership_position
+                    leadershipData[i].leadership_organization = leadership_organization                  
+                    leadershipData[i].leadership_location = leadership_location
+                    leadershipData[i].leadership_grade = JSON.stringify(leadership_grade)
+                }
+            }
+            $('#leadership_data').val(JSON.stringify(leadershipData));
+            $(`#leadership_${id} .leadership_status`).text(leadership_status);
+            $(`#leadership_${id} .leadership_position`).text(leadership_position);
+            $(`#leadership_${id} .leadership_organization`).text(leadership_organization);
+            $(`#leadership_${id} .leadership_location`).text(leadership_location);
+            $(`#leadership_${id} .leadership_grade`).text(leadership_grade.join(", ").toString());
+
+            $('#leadership_modal').modal('hide');
+        }
+
+        function leadership_model_remove(data) {
+            let id = $(data).attr('data-id');
+            let leadershipData = $('#leadership_data').val();
+                leadershipData = JSON.parse(leadershipData);
+            const deleted_leadership = leadershipData.filter(leadership => leadership.id != id)
+            $('#leadership_data').val(JSON.stringify(deleted_leadership));
+            $(`#leadership_${id}`).remove();
+        }
+
+        // Leadership table end 
+
+        // Activity table start 
+
+        function addActivityData(data) {
+            let activity_position = $('input[name="activity_position"]').val();
+            let activity = $('input[name="activity"]').val();
+            let activity_grade = $('#activity_grade').val();
+            let activity_location = $('input[name="activity_location"]').val();
+            let activity_honor_award = $('input[name="activity_honor_award"]').val();
+            let temp_activity_id = Date.now();
+
+            let html = ``;
+            if (activity_position != "" && activity != "" && activity_grade != "" && activity_location != "" && activity_honor_award != "") {
+                html += `<tr id="activity_${temp_activity_id}">`;
+                html += `<td class="activity_position">${activity_position}</td>`;
+                html += `<td class="activity">${activity}</td>`;
+                html += `<td class="activity_grade">${activity_grade.join(", ").toString()}</td>`;
+                html += `<td class="activity_location">${activity_location}</td>`;
+                html += `<td class="activity_honor_award">${activity_honor_award}</td>`;
+                html += `<td>`;
+                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_activity_id}" onclick="activity_edit_model(this)"></i>`;
+                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_activity_id}" onclick="activity_model_remove(this)"></i>`;
+                html += `</td>`;
+
+                activityData.push({
+                    "id": temp_activity_id,
+                    "activity_position": activity_position,
+                    "activity": activity,
+                    "activity_grade": JSON.stringify(activity_grade),
+                    "activity_location": activity_location,
+                    "activity_honor_award": activity_honor_award
+                });
+            } else {
+                alert('Please Enter Activity Details');
+            }
+
+            $('.activity_data_table_row').after(html);
+            $('input[name="activity_position"]').val('');
+            $('input[name="activity"]').val('');
+            $("#activity_grade").val(null).trigger("change");
+            $('input[name="activity_location"]').val('');
+            $('input[name="activity_honor_award"]').val('');
+            $('#activities_data').val(JSON.stringify(activityData));
+        }
+
+        function activity_edit_model(data) {
+            let activityData = $('#activities_data').val();
+                activityData = JSON.parse(activityData);
+            let id = $(data).attr('data-id');
+            let activity_result = activityData.find(activity => activity.id == id);
+            let activity_grade = JSON.parse(activity_result.activity_grade);
+            
+            $('#activity_modal_position').val(activity_result.activity_position);
+            $('#activity_modal_activity').val(activity_result.activity);
+            $("#activity_modal_grade").val(activity_grade).trigger("change");
+            $('#activity_modal_location').val(activity_result.activity_location);
+            $('#activity_modal_honor_award').val(activity_result.activity_honor_award);
+            $('#updateActivityForm').attr('data-id', id);
+            $('#activity_model').modal('show');
+        }
+
+        function updateActivityForm(data) {
+            let id = $(data).attr('data-id');
+            let activity_position = $('#activity_modal_position').val();
+            let activity = $('#activity_modal_activity').val();
+            let activity_grade = $('#activity_modal_grade').val();
+            let activity_location = $('#activity_modal_location').val();
+            let activity_honor_award = $('#activity_modal_honor_award').val();
+
+            let activityData = $('#activities_data').val();
+                activityData = JSON.parse(activityData);
+            for (let i = 0; i < activityData.length; i++) {
+                if (activityData[i].id == id) {
+                    activityData[i].activity_position = activity_position
+                    activityData[i].activity = activity
+                    activityData[i].activity_grade = JSON.stringify(activity_grade)
+                    activityData[i].activity_location = activity_location                  
+                    activityData[i].activity_honor_award = activity_honor_award
+                }
+            }
+            $('#activities_data').val(JSON.stringify(activityData));
+            $(`#activity_${id} .activity_position`).text(activity_position);
+            $(`#activity_${id} .activity`).text(activity);
+            $(`#activity_${id} .activity_grade`).text(activity_grade.join(", ").toString());
+            $(`#activity_${id} .activity_location`).text(activity_location);
+            $(`#activity_${id} .activity_honor_award`).text(activity_honor_award);
+
+            $('#activity_model').modal('hide');
+        }
+
+        function activity_model_remove(data) {
+            let id = $(data).attr('data-id');
+            let activityData = $('#activities_data').val();
+                activityData = JSON.parse(activityData);
+            const deleted_activity = activityData.filter(activity => activity.id != id)
+            $('#activities_data').val(JSON.stringify(deleted_activity));
+            $(`#activity_${id}`).remove();
+        }
+
+        // Activity table end 
+
+        // Athletics table start 
+
+        function addAthleticsData(data) {
+            let athletics_position = $('input[name="athletics_position"]').val();
+            let athletics_activity = $('input[name="athletics_activity"]').val();
+            let athletics_grade = $('#athletics_grade').val();
+            let athletics_location = $('input[name="athletics_location"]').val();
+            let athletics_honor = $('input[name="athletics_honor"]').val();
+            let temp_athletics_id = Date.now();
+
+            let html = ``;
+            if (athletics_position != "" && athletics_activity != "" && athletics_grade != "" && athletics_location != "" && athletics_honor != "") {
+                html += `<tr id="athletics_${temp_athletics_id}">`;
+                html += `<td class="athletics_position">${athletics_position}</td>`;
+                html += `<td class="athletics_activity">${athletics_activity}</td>`;
+                html += `<td class="athletics_grade">${athletics_grade.join(", ").toString()}</td>`;
+                html += `<td class="athletics_location">${athletics_location}</td>`;
+                html += `<td class="athletics_honor">${athletics_honor}</td>`;
+                html += `<td>`;
+                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_athletics_id}" onclick="athletics_edit_model(this)"></i>`;
+                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_athletics_id}" onclick="athletics_model_remove(this)"></i>`;
+                html += `</td>`;
+
+                athleticsData.push({
+                    "id": temp_athletics_id,
+                    "athletics_position": athletics_position,
+                    "athletics_activity": athletics_activity,
+                    "athletics_grade": JSON.stringify(athletics_grade),
+                    "athletics_location": athletics_location,
+                    "athletics_honor": athletics_honor
+                });
+            } else {
+                alert('Please Enter Athletics Details');
+            }
+
+            $('.athletics_data_table_row').after(html);
+            $('input[name="athletics_position"]').val('');
+            $('input[name="athletics_activity"]').val('');
+            $("#athletics_grade").val(null).trigger("change");
+            $('input[name="athletics_location"]').val('');
+            $('input[name="athletics_honor"]').val('');
+            $('#athletics_data').val(JSON.stringify(athleticsData));
+        }
+
+        function athletics_edit_model(data) {
+            let athleticsData = $('#athletics_data').val();
+                athleticsData = JSON.parse(athleticsData);
+            let id = $(data).attr('data-id');
+            let athletics_result = athleticsData.find(athletic => athletic.id == id);
+            let athletics_grade = JSON.parse(athletics_result.athletics_grade);
+            
+            $('#athletics_modal_position').val(athletics_result.athletics_position);
+            $('#athletics_modal_activity').val(athletics_result.athletics_activity);
+            $("#athletics_modal_grade").val(athletics_grade).trigger("change");
+            $('#athletics_modal_location').val(athletics_result.athletics_location);
+            $('#athletics_modal_honor').val(athletics_result.athletics_honor);
+            $('#updateAthleticsForm').attr('data-id', id);
+            $('#athletics_model').modal('show');
+        }
+
+        function updateAthleticsForm(data) {
+            let id = $(data).attr('data-id');
+            let athletics_position = $('#athletics_modal_position').val();
+            let athletics_activity = $('#athletics_modal_activity').val();
+            let athletics_grade = $('#athletics_modal_grade').val();
+            let athletics_location = $('#athletics_modal_location').val();
+            let athletics_honor = $('#athletics_modal_honor').val();
+
+            let athleticsData = $('#athletics_data').val();
+                athleticsData = JSON.parse(athleticsData);
+            for (let i = 0; i < athleticsData.length; i++) {
+                if (athleticsData[i].id == id) {
+                    athleticsData[i].athletics_position = athletics_position
+                    athleticsData[i].athletics_activity = athletics_activity
+                    athleticsData[i].athletics_grade = JSON.stringify(athletics_grade)
+                    athleticsData[i].athletics_location = athletics_location                  
+                    athleticsData[i].athletics_honor = athletics_honor
+                }
+            }
+            $('#athletics_data').val(JSON.stringify(athleticsData));
+            $(`#athletics_${id} .athletics_position`).text(athletics_position);
+            $(`#athletics_${id} .athletics_activity`).text(athletics_activity);
+            $(`#athletics_${id} .athletics_grade`).text(athletics_grade.join(", ").toString());
+            $(`#athletics_${id} .athletics_location`).text(athletics_location);
+            $(`#athletics_${id} .athletics_honor`).text(athletics_honor);
+
+            $('#athletics_model').modal('hide');
+        }
+
+        function athletics_model_remove(data) {
+            let id = $(data).attr('data-id');
+            let athleticsData = $('#athletics_data').val();
+                athleticsData = JSON.parse(athleticsData);
+            const deleted_athletics = athleticsData.filter(athletic => athletic.id != id)
+            $('#athletics_data').val(JSON.stringify(deleted_athletics));
+            $(`#athletics_${id}`).remove();
+        }
+
+        // Athletics table end 
+
+        // community service table start 
+
+        function addCommunityData(data) {
+            let participation_level = $('input[name="participation_level"]').val();
+            let community_service = $('input[name="community_service"]').val();
+            let community_grade = $('#community_grade').val();
+            let community_location = $('input[name="community_location"]').val();
+            let temp_community_id = Date.now();
+
+            let html = ``;
+            if (participation_level != "" && community_service != "" && community_grade != "" && community_location != "") {
+                html += `<tr id="community_${temp_community_id}">`;
+                html += `<td class="participation_level">${participation_level}</td>`;
+                html += `<td class="community_service">${community_service}</td>`;
+                html += `<td class="community_grade">${community_grade.join(", ").toString()}</td>`;
+                html += `<td class="community_location">${community_location}</td>`;
+                html += `<td>`;
+                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_community_id}" onclick="community_edit_model(this)"></i>`;
+                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_community_id}" onclick="community_model_remove(this)"></i>`;
+                html += `</td>`;
+
+                communityData.push({
+                    "id": temp_community_id,
+                    "participation_level": participation_level,
+                    "community_service": community_service,
+                    "community_grade": JSON.stringify(community_grade),
+                    "community_location": community_location
+                });
+            } else {
+                alert('Please Enter community Details');
+            }
+
+            $('.community_data_table_row').after(html);
+            $('input[name="participation_level"]').val('');
+            $('input[name="community_service"]').val('');
+            $("#community_grade").val(null).trigger("change");
+            $('input[name="community_location"]').val('');
+            $('#community_service_data').val(JSON.stringify(communityData));
+        }
+
+        function community_edit_model(data) {
+            let communityServiceData = $('#community_service_data').val();
+                communityServiceData = JSON.parse(communityServiceData);
+            let id = $(data).attr('data-id');
+            let community_service_result = communityServiceData.find(community_service => community_service.id == id);
+            let community_grade = JSON.parse(community_service_result.community_grade);
+            
+            $('#community_modal_participation_level').val(community_service_result.participation_level);
+            $('#community_modal_service').val(community_service_result.community_service);
+            $("#community_modal_grade").val(community_grade).trigger("change");
+            $('#community_modal_location').val(community_service_result.community_location);
+            $('#updateCommunityForm').attr('data-id', id);
+            $('#community_service_model').modal('show');
+        }
+
+        function updateCommunityForm(data) {
+            let id = $(data).attr('data-id');
+            let participation_level = $('#community_modal_participation_level').val();
+            let community_service = $('#community_modal_service').val();
+            let community_grade = $('#community_modal_grade').val();
+            let community_location = $('#community_modal_location').val();
+
+            let communityServiceData = $('#community_service_data').val();
+                communityServiceData = JSON.parse(communityServiceData);
+            for (let i = 0; i < communityServiceData.length; i++) {
+                if (communityServiceData[i].id == id) {
+                    communityServiceData[i].participation_level = participation_level
+                    communityServiceData[i].community_service = community_service
+                    communityServiceData[i].community_grade = JSON.stringify(community_grade)
+                    communityServiceData[i].community_location = community_location                  
+                }
+            }
+            $('#community_service_data').val(JSON.stringify(communityServiceData));
+            $(`#community_${id} .participation_level`).text(participation_level);
+            $(`#community_${id} .community_service`).text(community_service);
+            $(`#community_${id} .community_grade`).text(community_grade.join(", ").toString());
+            $(`#community_${id} .community_location`).text(community_location);
+
+            $('#community_service_model').modal('hide');
+        }
+
+        function community_model_remove(data) {
+            let id = $(data).attr('data-id');
+            let communityServiceData = $('#community_service_data').val();
+                communityServiceData = JSON.parse(communityServiceData);
+            const deleted_community = communityServiceData.filter(community => community.id != id)
+            $('#community_service_data').val(JSON.stringify(deleted_community));
+            $(`#community_${id}`).remove();
+        }
+
+        // community service table end 
+
+    </script>
 @endsection

@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('activities', function (Blueprint $table) {
+            $table->id();
+            $table->json('demonstrated_data')->nullable();
+            $table->json('leadership_data')->nullable();
+            $table->json('activities_data')->nullable();
+            $table->json('athletics_data')->nullable();
+            $table->json('community_service_data')->nullable();
+            $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('activities');
+    }
+};
