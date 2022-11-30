@@ -72,6 +72,16 @@
                         </a>
                     </li>
                 </ul>
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> {{ $error }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endforeach
+                @endif
                 <form class="js-validation" action="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
                     method="POST">
                     @csrf

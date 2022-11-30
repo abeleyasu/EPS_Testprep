@@ -14,7 +14,14 @@ class HonorsRequest extends FormRequest
     public function rules()
     {
         return [
-            "honors_data" => "",
+            "honors_data" => "required",
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'honors_data.required' => 'Honors Data is required'
         ];
     }
 }

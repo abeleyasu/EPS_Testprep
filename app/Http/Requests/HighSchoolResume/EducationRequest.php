@@ -33,6 +33,9 @@ class EducationRequest extends FormRequest
             "ap_courses" => "required",
             "intended_college_major" => "required",
             "intended_college_minor" => "required",
+            "course_data" => "required",
+            "honor_course_data" => "required",
+            "testing_data" => "required"
         ];
     }
 
@@ -58,6 +61,9 @@ class EducationRequest extends FormRequest
             "ap_courses.required" => "AP Courses field is required",
             "intended_college_major.required" => "Intended College Major field is required",
             "intended_college_minor.required" => "Intended College Minor field is required",
+            "course_data.required" => "Course Data is required",
+            "honor_course_data.required" => "Honor Course Data is required",
+            "testing_data.required" => "Testing Data is required"
         ];
     }
 }

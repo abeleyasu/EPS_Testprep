@@ -66,6 +66,21 @@
                     </a>
                 </li>
             </ul>
+            @if(!empty($activity->demonstrated_data))
+                @foreach(json_decode($activity->demonstrated_data) as $demonstrated_data)
+                    <tr id="demonstrated_{{ $demonstrated_data->id }}">
+                        <td class="position">{{ $demonstrated_data->position }}</td>
+                        <td class="interest">{{ $demonstrated_data->interest }}</td>
+                        <td class="grade">{{ implode(", ",json_decode($demonstrated_data->grade)) }}</td>
+                        <td class="location">{{ $demonstrated_data->location }}</td>
+                        <td class="details">{{ $demonstrated_data->details }}</td>
+                        <td>
+                            <i class="fa-solid fa-pen me-2" data-id="{{ $demonstrated_data->id }}" onclick="demonstrated_edit_model(this)"></i>
+                            <i class="fa-solid fa-circle-xmark" data-id="{{ $demonstrated_data->id }}" onclick="demonstrated_model_remove(this)"></i>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
             <form class="js-validation" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
                 @csrf
                 @if(isset($education))

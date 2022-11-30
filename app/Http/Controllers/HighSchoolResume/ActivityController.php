@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\ActivityRequest;
 use App\Models\HighSchoolResume\Activity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
 {
     public function index()
     {
-        return view('user.admin-dashboard.high-school-resume.activities');
+        $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->first();
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity'));
     }
 
     public function store(ActivityRequest $request)
@@ -37,6 +39,10 @@ class ActivityController extends Controller
         if(!empty($request->community_service_data)){
             $data['community_service_data'] = $request->community_service_data;
         }
+
+        $data['user_id'] = Auth::id();
+
+        $data = array_filter($data);
 
         if (!empty($data)) {
             Activity::create($data);
@@ -67,6 +73,8 @@ class ActivityController extends Controller
         if(!empty($request->community_service_data)){
             $data['community_service_data'] = $request->community_service_data;
         }
+
+        $data = array_filter($data);
 
         if (!empty($data)) {
             $activity->update($data);

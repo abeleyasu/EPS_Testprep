@@ -416,3 +416,20 @@ td {
         border-right: 1px solid #1f2937;
     }
 }
+
+.close {
+    float: right !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    color: #000 !important;
+    text-shadow: 0 1px 0 #fff !important;
+    opacity: .5 !important;
+}
+
+button.close {
+    padding: 0 !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    -webkit-appearance: none !important;
+}

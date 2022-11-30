@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Education extends Model
+class FeaturedAttribute extends Model
 {
     use HasFactory;
 
-    protected $table = "educations";
+    protected $table = "featured_attributes";
 
     protected $guarded = [];
 
     protected $casts = [
-        'course_data' => 'array',
-        'honor_course_data' => 'array',
-        'testing_data' => 'array'
+        'featured_skills_data' => 'array',
+        'featured_awards_data' => 'array',
+        'featured_languages_data' => 'array'
     ];
 
-    protected function courseData(): Attribute
+    protected function featuredSkillsData(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),
@@ -28,7 +28,7 @@ class Education extends Model
         );
     } 
 
-    protected function honorCourseData(): Attribute
+    protected function featuredAwardsData(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),
@@ -36,7 +36,7 @@ class Education extends Model
         );
     } 
 
-    protected function testingData(): Attribute
+    protected function featuredLanguagesData(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),

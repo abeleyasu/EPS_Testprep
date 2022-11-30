@@ -167,7 +167,7 @@
                 </div>
                 <div class="next-btn">
                     <div class="next-btn">
-                        <a href="javascript:;" class="btn btn-alt-primary next-step">Submit</a>
+                        <a href="{{ route('admin-dashboard.highSchoolResume.resume.complete') }}" class="btn btn-alt-primary next-step">Submit</a>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('personal_info', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('first_name');
             $table->string('middle_name');
             $table->string('last_name');
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->string('parent_email_one');
             $table->string('parent_email_two');
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

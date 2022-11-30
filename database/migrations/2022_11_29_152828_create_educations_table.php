@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('educations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('current_grade');
             $table->string('month');
             $table->integer('year');
@@ -39,6 +40,7 @@ return new class extends Migration
             $table->string('intended_college_major');
             $table->string('intended_college_minor');
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('honors', function (Blueprint $table) {
+        Schema::create('employment_certifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->json('honors_data')->nullable();
+            $table->json('employment_data')->nullable();
+            $table->json('significant_data')->nullable();
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('honors');
+        Schema::dropIfExists('employment_certifications');
     }
 };

@@ -163,12 +163,21 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::post('/activities', 'store')->name('activities.store');
                 Route::put('/activities/{activity}', 'update')->name('activities.update');
             });
-            Route::get('/employment-certifications',[EmploymentCertificationController::class, 'index'])->name('employmentCertification');
-            Route::post('/employment-certifications',[EmploymentCertificationController::class, 'store'])->name('employmentCertification.store');
-            Route::get('/features-attributes',[FeaturedAttributeController::class, 'index'])->name('featuresAttributes');
-            Route::post('/features-attributes',[FeaturedAttributeController::class, 'store'])->name('featuresAttributes.store');
-            Route::get('/preview',[PreviewController::class, 'index'])->name('preview');
-            Route::get('/pdf/preview',[PreviewController::class, 'resumePreview'])->name('pdf.preview');
+            Route::controller(EmploymentCertificationController::class)->group(function(){
+                Route::get('/employment-certifications', 'index')->name('employmentCertification');
+                Route::post('/employment-certifications', 'store')->name('employmentCertification.store');
+                Route::put('/employment-certifications/{employmentCertification}', 'update')->name('employmentCertification.update');
+            });
+            Route::controller(FeaturedAttributeController::class)->group(function(){
+                Route::get('/features-attributes', 'index')->name('featuresAttributes');
+                Route::post('/features-attributes', 'store')->name('featuresAttributes.store');
+                Route::put('/features-attributes/{featuredAttribute}', 'update')->name('featuresAttributes.update');
+            });
+            Route::controller(PreviewController::class)->group(function(){
+                Route::get('/preview', 'index')->name('preview');
+                Route::get('/pdf/preview', 'resumePreview')->name('pdf.preview');
+                Route::get('/resume/complete', 'resumeComplete')->name('resume.complete');
+            });
         });
         
         Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');

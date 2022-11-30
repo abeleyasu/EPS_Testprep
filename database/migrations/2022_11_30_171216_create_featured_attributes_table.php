@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('honors', function (Blueprint $table) {
+        Schema::create('featured_attributes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->json('honors_data')->nullable();
+            $table->json('featured_skills_data')->nullable();
+            $table->json('featured_awards_data')->nullable();
+            $table->json('featured_languages_data')->nullable();
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('honors');
+        Schema::dropIfExists('featured_attributes');
     }
 };

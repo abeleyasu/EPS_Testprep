@@ -71,9 +71,22 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="{{ route('admin-dashboard.highSchoolResume.activities.store') }}"
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> {{ $error }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endforeach
+                @endif
+                <form class="js-validation" action="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.activities.update', $activity->id) : route('admin-dashboard.highSchoolResume.activities.store') }}"
                     method="post">
                     @csrf
+                    @if(isset($activity))
+                        @method('PUT')
+                    @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
                             <div class="accordion accordionExample2">
@@ -91,7 +104,7 @@
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="demonstrated_data_table_row">
-                                                            <input type="hidden" name="demonstrated_data" id="demonstrated_data">
+                                                            <input type="hidden" name="demonstrated_data" id="demonstrated_data" value="{{ !empty($activity->demonstrated_data) ? $activity->demonstrated_data : '' }}">
                                                             <td>
                                                                 <label class="form-label" for="position">
                                                                     Position
@@ -153,6 +166,21 @@
                                                                 </a>
                                                             </td>
                                                         </tr>
+                                                        @if(!empty($activity->demonstrated_data))
+                                                            @foreach(json_decode($activity->demonstrated_data) as $demonstrated_data)
+                                                                <tr id="demonstrated_{{ $demonstrated_data->id }}">
+                                                                    <td class="position">{{ $demonstrated_data->position }}</td>
+                                                                    <td class="interest">{{ $demonstrated_data->interest }}</td>
+                                                                    <td class="grade">{{ implode(", ",json_decode($demonstrated_data->grade)) }}</td>
+                                                                    <td class="location">{{ $demonstrated_data->location }}</td>
+                                                                    <td class="details">{{ $demonstrated_data->details }}</td>
+                                                                    <td>
+                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $demonstrated_data->id }}" onclick="demonstrated_edit_model(this)"></i>
+                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $demonstrated_data->id }}" onclick="demonstrated_model_remove(this)"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -171,7 +199,7 @@
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <input type="hidden" name="leadership_data" id="leadership_data">
+                                                        <input type="hidden" name="leadership_data" id="leadership_data" value="{{ !empty($activity->leadership_data) ? $activity->leadership_data : '' }}">
                                                         <tr class="leadership_data_table_row">
                                                             <td>
                                                                 <label class="form-label" for="leadership_status">
@@ -237,6 +265,21 @@
                                                                 </a>
                                                             </td>
                                                         </tr>
+                                                        @if(!empty($activity->leadership_data))
+                                                            @foreach(json_decode($activity->leadership_data) as $leadership_data)
+                                                                <tr id="leadership_{{ $leadership_data->id }}">
+                                                                    <td class="leadership_status">{{ $leadership_data->leadership_status }}</td>
+                                                                    <td class="leadership_position">{{ $leadership_data->leadership_position }}</td>
+                                                                    <td class="leadership_organization">{{ $leadership_data->leadership_organization }}</td>
+                                                                    <td class="leadership_location">{{ $leadership_data->leadership_location }}</td>
+                                                                    <td class="leadership_grade">{{ implode(', ', json_decode($leadership_data->leadership_grade)) }}</td>
+                                                                    <td>
+                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $leadership_data->id }}" onclick="leadership_edit_model(this)"></i>
+                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $leadership_data->id }}" onclick="leadership_model_remove(this)"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -256,7 +299,7 @@
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="activity_data_table_row">
-                                                            <input type="hidden" name="activities_data" id="activities_data">
+                                                            <input type="hidden" name="activities_data" id="activities_data" value="{{ !empty($activity->activities_data) ? $activity->activities_data : '' }}">
                                                             <td>
                                                                 <label class="form-label" for="activity_position">
                                                                     Position
@@ -322,6 +365,21 @@
                                                                 </a>
                                                             </td>
                                                         </tr>
+                                                        @if(!empty($activity->activities_data))
+                                                            @foreach(json_decode($activity->activities_data) as $activities_data)
+                                                                <tr id="activity_{{ $activities_data->id }}">
+                                                                    <td class="activity_position">{{ $activities_data->activity_position }}</td>
+                                                                    <td class="activity">{{ $activities_data->activity }}</td>
+                                                                    <td class="activity_grade">{{ implode(", ", json_decode($activities_data->activity_grade)) }}</td>
+                                                                    <td class="activity_location">{{ $activities_data->activity_location }}</td>
+                                                                    <td class="activity_honor_award">{{ $activities_data->activity_honor_award }}</td>
+                                                                    <td>
+                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $activities_data->id }}" onclick="activity_edit_model(this)"></i>
+                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $activities_data->id }}" onclick="activity_model_remove(this)"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -341,7 +399,7 @@
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="athletics_data_table_row">
-                                                            <input type="hidden" name="athletics_data" id="athletics_data">
+                                                            <input type="hidden" name="athletics_data" id="athletics_data" value="{{ !empty($activity->athletics_data) ? $activity->athletics_data : '' }}">
                                                             <td> 
                                                                 <label class="form-label" for="athletics_position">
                                                                     Position
@@ -408,6 +466,21 @@
                                                                 </a>
                                                             </td>
                                                         </tr>
+                                                        @if(!empty($activity->athletics_data))
+                                                            @foreach(json_decode($activity->athletics_data) as $athletics_data)
+                                                                <tr id="athletics_{{ $athletics_data->id }}">
+                                                                    <td class="athletics_position">{{ $athletics_data->athletics_position }}</td>
+                                                                    <td class="athletics_activity">{{ $athletics_data->athletics_activity }}</td>
+                                                                    <td class="athletics_grade">{{ implode(", ", json_decode($athletics_data->athletics_grade)) }}</td>
+                                                                    <td class="athletics_location">{{ $athletics_data->athletics_location }}</td>
+                                                                    <td class="athletics_honor">{{ $athletics_data->athletics_honor }}</td> 
+                                                                    <td>
+                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $athletics_data->id }}" onclick="athletics_edit_model(this)"></i>
+                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $athletics_data->id }}" onclick="athletics_model_remove(this)"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -428,7 +501,7 @@
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="community_data_table_row">
-                                                            <input type="hidden" name="community_service_data" id="community_service_data">
+                                                            <input type="hidden" name="community_service_data" id="community_service_data" value="{{ !empty($activity->community_service_data) ? $activity->community_service_data : '' }}">
                                                             <td> 
                                                                 <label class="form-label" for="participation_level">
                                                                     Participation level
@@ -481,6 +554,20 @@
                                                                 </a>
                                                             </td>
                                                         </tr>
+                                                        @if(!empty($activity->community_service_data))
+                                                            @foreach(json_decode($activity->community_service_data) as $community_service_data)
+                                                                <tr id="community_{{ $community_service_data->id }}">
+                                                                    <td class="participation_level">{{ $community_service_data->participation_level }}</td>
+                                                                    <td class="community_service">{{ $community_service_data->community_service }}</td>
+                                                                    <td class="community_grade">{{ implode(", ", json_decode($community_service_data->community_grade)) }}</td>
+                                                                    <td class="community_location">{{ $community_service_data->community_location }}</td>
+                                                                    <td>
+                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $community_service_data->id }}"  onclick="community_edit_model(this)"></i>
+                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $community_service_data->id }}" onclick="community_model_remove(this)"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>

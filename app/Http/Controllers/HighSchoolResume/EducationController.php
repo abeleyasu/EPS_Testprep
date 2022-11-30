@@ -5,12 +5,13 @@ namespace App\Http\Controllers\HighSchoolResume;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EducationRequest;
 use App\Models\HighSchoolResume\Education;
+use Illuminate\Support\Facades\Auth;
 
 class EducationController extends Controller
 {
     public function index()
     {
-        $education  = Education::latest()->first();
+        $education  = Education::where('user_id', Auth::id())->where('is_draft',0)->first();
         return view('user.admin-dashboard.high-school-resume.education-info', compact('education'));
     }
 
@@ -29,6 +30,10 @@ class EducationController extends Controller
         if(!empty($request->testing_data)){
             $data['testing_data'] = $request->testing_data;
         }
+
+        $data['user_id'] = Auth::id();
+
+        $data = array_filter($data);
 
         if (!empty($data)) {
             Education::create($data);
@@ -51,6 +56,8 @@ class EducationController extends Controller
         if(!empty($request->testing_data)){
             $data['testing_data'] = $request->testing_data;
         }
+
+        $data = array_filter($data);
 
         if (!empty($data)) {
             $education->update($data);
