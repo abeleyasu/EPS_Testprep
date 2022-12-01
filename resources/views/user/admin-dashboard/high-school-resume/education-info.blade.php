@@ -530,9 +530,9 @@
                                                         </label>
                                                         <select class="form-select @error('intended_college_major') is-invalid @enderror" id="intended_college_major" name="intended_college_major" style="width: 100%;">
                                                             <option value="">Select Intended College Major</option>
-                                                            <option value="1" {{ isset($education->intended_college_major) && $education->intended_college_major == 1 ? 'selected' : '' }}>Test</option>
-                                                            <option value="2" {{ isset($education->intended_college_major) && $education->intended_college_major == 2 ? 'selected' : '' }}>Demo</option>
-                                                            <option value="3" {{ isset($education->intended_college_major) && $education->intended_college_major == 3 ? 'selected' : '' }}>Temp</option>
+                                                            <option value="Test" {{ isset($education->intended_college_major) && $education->intended_college_major == 'Test' ? 'selected' : '' }}>Test</option>
+                                                            <option value="Demo" {{ isset($education->intended_college_major) && $education->intended_college_major == 'Demo' ? 'selected' : '' }}>Demo</option>
+                                                            <option value="Temp" {{ isset($education->intended_college_major) && $education->intended_college_major == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_major')
                                                         <span class="invalid">{{ $message }}</span>
@@ -547,9 +547,9 @@
                                                         </label>
                                                         <select class="form-select @error('intended_college_minor') is-invalid @enderror" id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
                                                             <option value="">Select Intended College Minor</option>
-                                                            <option value="1" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 1 ? 'selected' : '' }}>Test</option>
-                                                            <option value="2" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 2 ? 'selected' : '' }}>Demo</option>
-                                                            <option value="3" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 3 ? 'selected' : '' }}>Temp</option>
+                                                            <option value="Test" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 'Test' ? 'selected' : '' }}>Test</option>
+                                                            <option value="Demo" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 'Demo' ? 'selected' : '' }}>Demo</option>
+                                                            <option value="Temp" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_minor')
                                                         <span class="invalid">{{ $message }}</span>
