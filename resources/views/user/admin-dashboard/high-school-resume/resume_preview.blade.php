@@ -12,162 +12,221 @@
             font-family: 'Inter', sans-serif;
         }
 
-        td {
-            /* display: block; */
-            margin-bottom: 5px
+        .details .section:last-of-type {
+            margin-bottom: 0px;
         }
-        p{
-            font-weight: 300;
+
+        .details .section__title {
+            font-size: 14px;
+            color: #1f2937;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
         }
 
 
-        tr {
+        .details .left,
+        .details .right {
+            vertical-align: top;
+            display: inline-block;
+        }
+
+        .details .left {
+            width: 30%;
+            border-right: 1px solid #1f2937;
+            padding-right: 50px
+        }
+
+        .details .right {
+            width: 60%;
+            padding-left: 15px
+        }
+
+        span {
+            font-weight: 700;
+        }
+
+        div {
+            margin-right: 0;
+            display: block;
             text-align: left;
             color: #1f2937;
             cursor: unset;
+            font-size: 14px;
+            margin-bottom: 3px
         }
 
-        th {
-            margin-bottom: 20px;
-        }
-
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            color: #1f2937 !important;
-            font-size: 13px;
-            font-family: 'Inter', sans-serif !important;
-        }
-
-        th,
-        td {
-            padding: 0;
-            font-family: 'Inter', sans-serif;
+        .section_margin,.section_right_margin{
+            margin-bottom: 20px
         }
     </style>
 </head>
 
 <body>
-    <p
-        style="border-bottom: 1px solid #1f2937; margin-bottom: 20px; text-align:left;padding-bottom:10px;color: #1f2937;font-size:2.25rem">
-        <b>Jon<b> Richards
-        </p>
-    <table>
-        <tr>
-            <th
-                style="padding:15px 0;border-right: 1px solid #1f2937;width:180px;padding-bottm:20px;  font-size: 16px;text-align:left;color: #1f2937; margin-bottom: 15px;text-transform: uppercase;">
-                CONTACT
-            </th>
-            <th
-                style="padding-left:10px;font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-                EDUCATION
-            </th>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">Blash</td>
-            <td style="padding-left:10px">Freshman / CHS / Forecast Grove</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">apt 211</td>
-            <td style="padding-left:10px">Diploma Designation : IB Diploma</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">Forest Grove, OR,</td>
-            <td style="padding-left:10px">Weighted GPA: 8.89, Class Rank: 4/50</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">303-20-2-1010</td>
-            <td style="padding-left:10px"><b style="font-size: 14px">IB Courses:</b> Social and Cultural AnthropologyWeighted GPA: 8.89, Class
-                Rank: 4/50</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">jon@jon.com</td>
-            <td style="padding-left:10px"><b style="font-size: 14px">AP Courses:</b> AP Art and Design Program, Ap Chemistry, AP Comparative
-                Government and Politics</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">FB</td>
-            <td style="padding-left:10px"><b style="font-size: 14px">Honors Courses:</b> asdfas, ASDFADSFD, bio</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;"></td>
-            <td style="padding-left:10px"><b style="font-size: 14px">Concurrent Courses:</b> fdsgsd-,DFASDF-,HELLO-,sdf-,college english</td>
-        </tr>
-        <tr>
-            <th
-                style="border-right: 1px solid #1f2937;padding:15px 0;width:170px;  font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-                FEATURED SKILLS
-            </th>
-            <th
-                style="padding-left:10px;font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-                ACTIVITIES
-            </th>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">Blash</td>
-            <td style="padding-left:10px"><b>intended College Major(s):</b> Accounting Technician, Actuarial Science
-            </td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">Gamer</td>
-            <td style="padding-left:10px"><b style="font-size: 14px">intended College Major(s):</b> Accounting Technician, Actuarial
-                Science,Adult Development & 
-                aging/gerontology, Advertising, Aerospace Engineering Technologies</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">treasurer</td>
-            <td style="padding-left:10px"><b style="font-size: 14px">Demostrated Interests in the Area of my College Major.</b> - St
-                Marles-DRHS--YEPs</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;"></td>
-            <td style="padding-left:10px"><b style="font-size: 14px">Leadership:</b> 10-Atogned,., atonga</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;"></td>
-            <td style="padding-left:10px"><b style="font-size: 14px">Athletics: </b>- Tennis School, Letter</td>
-        </tr>
-        <tr>
-            <th
-                style="border-right: 1px solid #1f2937;padding:15px 0;width:170px;  font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-                FEATURED AWARDS
-            </th>
-            <th
-                style="padding-left:10px;font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-                EMPLOYEMENT
-            </th>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">awarded</td>
-            <td style="padding-left:10px">10, Barisha, Starbucks, Deriver, CO</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;">yep</td>
-            <td style="padding-left:10px"></td>
-        </tr>
-        <tr>
-            <th
-                style="border-right: 1px solid #1f2937;padding:15px 0;width:170px;  font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-            </th>
-            <th
-                style="padding-left:10px;font-size: 16px;text-align:left;color: #1f2937;text-transform: uppercase;">
-                CERTIFICATIONS
-            </th>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;"></td>
-            <td style="padding-left:10px">10. CPA AHA, 1st cert</td>
-        </tr>
-        <tr>
-            <td style="border-right: 1px solid #1f2937;"></td>
-            <td style="padding-left:10px">10, cpr aha abd</td>
-        </tr>
-
-
-    </table>
-
-
+    <p style="border-bottom: 1px solid #1f2937; margin-bottom: 20px; text-align:left;padding-bottom:10px;color: #1f2937;font-size:2.25rem">
+        <b>{{ $personal_info->first_name }}<b> {{ $personal_info->last_name }}
+    </p>
+    <div class="details">
+        <div class="section">
+            <div class="section__list">
+                <div class="section__list-item">
+                    <div class="left section_margin">
+                        <div class="section_margin">
+                            <div class="section__title">CONTACT</div>
+                            <div>{{ $personal_info->email }}</div>
+                            <div>{{ $personal_info->cell_phone }}</div>
+                            <div>{{ $personal_info->street_address_one }}</div>
+                            <div>{{ $personal_info->street_address_two }}</div>
+                            <div>{{ $personal_info->zip_code }}</div>
+                            <div>{{ $personal_info->city .", ". $personal_info->state }}</div>
+                        </div>
+                        @if(!empty($featuredAttribute->featured_skills_data))
+                            <div class="section_margin">
+                                <div class="section__title">FEATURED SKILLS</div>
+                                @foreach(json_decode($featuredAttribute->featured_skills_data) as $featured_skills)
+                                    <div>{{ $featured_skills->featured_skill }}</div>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if(!empty($featuredAttribute->featured_awards_data))
+                            <div class="section_margin">
+                                <div class="section__title">FEATURED AWARDS</div>
+                                @foreach(json_decode($featuredAttribute->featured_awards_data) as $featured_awards)
+                                    <div>{{ $featured_awards->featured_award }}</div>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if(!empty($featuredAttribute->featured_languages_data))
+                            <div class="section_margin">
+                                <div class="section__title">FEATURED LANGUAGES</div>
+                                @foreach(json_decode($featuredAttribute->featured_languages_data) as $featured_languages)
+                                    <div>{{ $featured_languages->featured_language }}</div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                    <div class="right section_margin">
+                        @if(!empty($education))
+                            <div class="section_right_margin">
+                                <div class="section__title">EDUCATION</div>
+                                <div>{{ $education->high_school_name }} / {{ $education->high_school_city }} / {{ $education->high_school_state }}</div>
+                                <div>Weighted GPA: {{ isset($education->cumulative_gpa_weighted) ? $education->cumulative_gpa_weighted : '-' }}, Class Rank: {{ isset($education->class_rank) ? $education->class_rank : '-' }}</div>
+                                <div>
+                                    <span>Name of Test: </span> 
+                                    @php
+                                        $testing_data = json_decode($education->testing_data);
+                                        $testing_data_arr = \App\Helpers\Helper::objectToArray($testing_data);
+                                    @endphp
+                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($testing_data_arr, 'name_of_test', ', ') }}
+                                </div>
+                                @if(!empty($education->ib_courses))
+                                    <div>
+                                        <span>IB Courses: </span> 
+                                        {{ implode(", ", json_decode($education->ib_courses)) }}
+                                    </div>
+                                @endif
+                                @if(!empty($education->ap_courses))
+                                    <div>
+                                        <span>AP Courses: </span> 
+                                        {{ implode(", ", json_decode($education->ap_courses)) }}
+                                    </div>
+                                @endif
+                                @if(!empty($education->honor_course_data))
+                                    <div>
+                                        <span>Honors Courses: </span> 
+                                        @php
+                                            $honor_course_data = json_decode($education->honor_course_data);
+                                            $honor_course_data_arr = \App\Helpers\Helper::objectToArray($honor_course_data);
+                                        @endphp
+                                        {{ \App\Helpers\Helper::convertMultidimensionalToString($honor_course_data_arr, 'honor_course_name', ', ') }}
+                                    </div>
+                                @endif
+                                @if(!empty($education->course_data))
+                                    <div>
+                                        <span>Concurrent Courses: </span>
+                                        @php
+                                            $course_data = json_decode($education->course_data);
+                                            $course_data_arr = \App\Helpers\Helper::objectToArray($course_data);
+                                        @endphp
+                                        {{ \App\Helpers\Helper::convertMultidimensionalToString($course_data_arr, 'course_name', ', ') }}
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
+                        @if(!empty($activity))
+                            <div class="section_right_margin">
+                                <div class="section__title">ACTIVITIES</div>
+                                @if(isset($education->intended_college_major))
+                                    <div>
+                                        <span>Intended College Major(s):  </span> 
+                                        {{ $education->intended_college_major }}
+                                    </div>
+                                @endif
+                                @if(isset($education->intended_college_major))
+                                    <div>
+                                        <span>Intended College Minor(s): </span> 
+                                        {{ $education->intended_college_minor }}
+                                    </div>
+                                @endif
+                                @if(!empty($activity->demonstrated_data))
+                                    <div>
+                                        <span>Demostrated Interests in the Area of my College Major: </span> 
+                                        @php
+                                            $demonstrated_data = json_decode($activity->demonstrated_data);
+                                            $demonstrated_data_arr = \App\Helpers\Helper::objectToArray($demonstrated_data);
+                                        @endphp
+                                        {{ \App\Helpers\Helper::convertMultidimensionalToString($demonstrated_data_arr, 'interest', ', ') }}
+                                    </div>
+                                @endif
+                                @if(!empty($activity->leadership_data))
+                                    <div>
+                                        <span>Leadership: </span> 
+                                        @php
+                                            $leadership_data = json_decode($activity->leadership_data);
+                                            $leadership_data_arr = \App\Helpers\Helper::objectToArray($leadership_data);
+                                        @endphp
+                                        {{ \App\Helpers\Helper::convertMultidimensionalToString($leadership_data_arr, 'leadership_organization', ', ') }}
+                                    </div>
+                                @endif
+                                @if(!empty($activity->athletics_data))
+                                    <div>
+                                        <span>Athletics: </span> 
+                                        @php
+                                            $athletics_data = json_decode($activity->athletics_data);
+                                            $athletics_data_arr = \App\Helpers\Helper::objectToArray($athletics_data);
+                                        @endphp
+                                        {{ \App\Helpers\Helper::convertMultidimensionalToString($athletics_data_arr, 'athletics_activity', ', ') }}
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
+                        @if(!empty($employmentCertification))
+                            @if(!empty($employmentCertification->significant_data))
+                                <div class="section_right_margin">
+                                    <div class="section__title">EMPLOYMENT</div>
+                                    @php
+                                        $significant_data = json_decode($employmentCertification->significant_data);
+                                        $significant_data_arr = \App\Helpers\Helper::objectToArray($significant_data);
+                                    @endphp
+                                    <div>{{ \App\Helpers\Helper::convertMultidimensionalToString($significant_data_arr, 'responsibility_interest', ', ') }}</div>
+                                </div>
+                            @endif
+                            @if(!empty($employmentCertification->employment_data))
+                                <div class="section_right_margin">
+                                    <div class="section__title">CERTIFICATIONS</div>
+                                    @php
+                                        $employment_data = json_decode($employmentCertification->employment_data);
+                                        $employment_data_arr = \App\Helpers\Helper::objectToArray($employment_data);
+                                    @endphp
+                                    <div>{{ \App\Helpers\Helper::convertMultidimensionalToString($employment_data_arr, 'job_title', ', ') }}</div>
+                                </div>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -31,6 +31,14 @@ class EducationController extends Controller
             $data['testing_data'] = $request->testing_data;
         }
 
+        if(!empty($request->ib_courses)){
+            $data['ib_courses'] = json_encode($request->ib_courses);
+        }
+
+        if(!empty($request->ap_courses)){
+            $data['ap_courses'] = json_encode($request->ap_courses);
+        }
+
         $data['user_id'] = Auth::id();
 
         $data = array_filter($data);
@@ -55,6 +63,14 @@ class EducationController extends Controller
 
         if(!empty($request->testing_data)){
             $data['testing_data'] = $request->testing_data;
+        }
+
+        if(!empty($request->ib_courses)){
+            $data['ib_courses'] = json_encode($request->ib_courses);
+        }
+
+        if(!empty($request->ap_courses)){
+            $data['ap_courses'] = json_encode($request->ap_courses);
         }
 
         $data = array_filter($data);

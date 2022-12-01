@@ -292,6 +292,19 @@
                                                                     </div>
                                                                 </div>
                                                             @endforeach
+                                                        @else
+                                                            <div class="row p-0 mt-3">
+                                                                <div class="col-lg-11">
+                                                                    <input type="text" class="form-control"
+                                                                        name="social_links[]" placeholder="Enter Social links">
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <a href="javascript:void(0)" class="add-btn"
+                                                                        onclick="addLinks(this)">
+                                                                        <i class="fa-solid fa-plus"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
                                                         @endif
                                                     </div>
                                                 </div>
