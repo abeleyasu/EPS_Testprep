@@ -16,8 +16,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
+use App\Http\Controllers\HighSchoolResume\ActivityController;
 use App\Http\Controllers\HighSchoolResume\EducationController;
+use App\Http\Controllers\HighSchoolResume\EmploymentCertificationController;
+use App\Http\Controllers\HighSchoolResume\FeaturedAttributeController;
+use App\Http\Controllers\HighSchoolResume\HonorsController;
 use App\Http\Controllers\HighSchoolResume\PersonalInfoController;
+use App\Http\Controllers\HighSchoolResume\PreviewController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
@@ -121,32 +126,63 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     //Route::view('practice-test-sections', 'user/practice-test-sections');
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
-    Route::view('/calendar', 'user.calendar');
     Route::view('/practice-test-sections', 'user.practice-test-sections');
-    Route::post('/calendar/add-events', [CalendarEventController::class, 'store'])->name('calendar.addEvent');
-    Route::get('/calendar', [CalendarEventController::class, 'index']);
-    Route::delete('/calendar/trash-event/{id}', [CalendarEventController::class, 'destroy']);
-    Route::post('/calendar/assign-events', [UserCalendarController::class, 'store'])->name('calendar.assignEvent');
-    Route::post('/calendar/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('calendar.resizeEvent');
-    Route::delete('/calendar/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('calendar.deleteEvent');
-    Route::put('/calendar/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('calendar.updateEvent');
-    Route::post('/calendar/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('calendar.addAssignEvent');
-    Route::get('/calendar/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('calendar.getEventById');
     Route::view('/practice-test', 'user.practice-test')->name('practicetest');
+
+    Route::group(['prefix' => 'calendar', 'as' => 'calendar'], function(){
+        Route::get('/', [CalendarEventController::class, 'index']);
+        Route::post('/add-events', [CalendarEventController::class, 'store'])->name('.addEvent');
+        Route::delete('/trash-event/{id}', [CalendarEventController::class, 'destroy'])->name('.trashEvent');
+        Route::post('/assign-events', [UserCalendarController::class, 'store'])->name('.assignEvent');
+        Route::post('/resize-events', [UserCalendarController::class, 'resizeEvent'])->name('.resizeEvent');
+        Route::delete('/delete-event/{id}', [UserCalendarController::class, 'deleteEvent'])->name('.deleteEvent');
+        Route::put('/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('.updateEvent');
+        Route::post('/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('.addAssignEvent');
+        Route::get('/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('.getEventById');
+    });
 
     Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function(){
         Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function(){
-            Route::get('/personal-info',[PersonalInfoController::class, 'index'])->name('personalInfo');
-            Route::post('/personal-info',[PersonalInfoController::class, 'store'])->name('personalInfo.store');
-            Route::get('/education-info',[EducationController::class, 'index'])->name('educationInfo');
-            Route::post('/education-info',[EducationController::class, 'store'])->name('educationInfo.store');
-
-            Route::view('/honors', 'user.admin-dashboard.high-school-resume.honors')->name('honors');
-            Route::view('/activities', 'user.admin-dashboard.high-school-resume.activities')->name('activities');
-            Route::view('/employement-certified', 'user.admin-dashboard.high-school-resume.employement-certified')->name('employementCertified');
-            Route::view('/features-attributes', 'user.admin-dashboard.high-school-resume.features-attributes')->name('featuresAttributes');
-            Route::view('/preview', 'user.admin-dashboard.high-school-resume.preview')->name('preview');
+            Route::get('/list', [PreviewController::class, 'list'])->name('list');
+            Route::controller(PersonalInfoController::class)->group(function(){
+                Route::get('/personal-info', 'index')->name('personalInfo');
+                Route::post('/personal-info', 'store')->name('personalInfo.store');
+                Route::put('/personal-info/{personalInfo}', 'update')->name('personalInfo.update');
+            });
+            Route::controller(EducationController::class)->group(function(){
+                Route::get('/education-info', 'index')->name('educationInfo');
+                Route::post('/education-info','store')->name('educationInfo.store');
+                Route::put('/education-info/{education}', 'update')->name('educationInfo.update');
+            });
+            Route::controller(HonorsController::class)->group(function(){
+                Route::get('/honors', 'index')->name('honors');
+                Route::post('/honors', 'store')->name('honors.store');
+                Route::put('/honors/{honor}', 'update')->name('honors.update');
+            });
+            Route::controller(ActivityController::class)->group(function(){
+                Route::get('/activities', 'index')->name('activities');
+                Route::post('/activities', 'store')->name('activities.store');
+                Route::put('/activities/{activity}', 'update')->name('activities.update');
+            });
+            Route::controller(EmploymentCertificationController::class)->group(function(){
+                Route::get('/employment-certifications', 'index')->name('employmentCertification');
+                Route::post('/employment-certifications', 'store')->name('employmentCertification.store');
+                Route::put('/employment-certifications/{employmentCertification}', 'update')->name('employmentCertification.update');
+            });
+            Route::controller(FeaturedAttributeController::class)->group(function(){
+                Route::get('/features-attributes', 'index')->name('featuresAttributes');
+                Route::post('/features-attributes', 'store')->name('featuresAttributes.store');
+                Route::put('/features-attributes/{featuredAttribute}', 'update')->name('featuresAttributes.update');
+            });
+            Route::controller(PreviewController::class)->group(function(){
+                Route::get('/preview', 'index')->name('preview');
+                Route::get('/pdf/preview', 'resumePreview')->name('pdf.preview');
+                Route::get('/resume/complete', 'resumeComplete')->name('resume.complete');
+                Route::get('/resume/download/{id}', 'resumeDownload')->name('resume.download');
+                Route::delete('/resume/delete/{id}', 'destroy')->name('resume.destroy');
+            });
         });
+        
         Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');
         Route::view('/college-application-deadline', 'user.admin-dashboard.college-application-deadline')->name('collegeApplicationDeadline');
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');

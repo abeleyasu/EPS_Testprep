@@ -33,22 +33,22 @@ class PersonalInfoRequest extends FormRequest
     public function messages()
     {
         return [
-            'first_name.required' => 'first name field is required',
-            'middle_name.required' => 'middle name field is required',
-            'last_name.required' => 'last name field is required',
-            'street_address_one.required' => 'street address 1 field is required',
-            'street_address_two.required' => 'street address 2 field is required',
-            'city.required' => 'city field is required',
-            'state.required' => 'state field is required',
-            'zip_code.required' => 'zip code field is required',
-            'cell_phone.required' => 'cell phone field is required',
-            'email.required' => 'email field is required',
-            'email.email' => 'email must be valid email',
-            'social_links.required' => 'social link field is required',
-            'parent_email_one.required' => 'parent email one field is required',
-            'parent_email_one.email' => 'parent email 1 must be valid email',
-            'parent_email_two.required' => 'parent email two field is required',
-            'parent_email_two.email' => 'parent email 2 must be valid email',
+            'first_name.required' => 'First Name field is required',
+            'middle_name.required' => 'Middle Name field is required',
+            'last_name.required' => 'Last Name field is required',
+            'street_address_one.required' => 'Street Address 1 field is required',
+            'street_address_two.required' => 'Street Address 2 field is required',
+            'city.required' => 'City field is required',
+            'state.required' => 'State field is required',
+            'zip_code.required' => 'Zip Code field is required',
+            'cell_phone.required' => 'Cell Phone field is required',
+            'email.required' => 'Email field is required',
+            'email.email' => 'Email must be valid email',
+            'social_links.required' => 'Social Link field is required',
+            'parent_email_one.required' => 'Parent Email 1 field is required',
+            'parent_email_one.email' => 'Parent Email 1 must be valid email',
+            'parent_email_two.required' => 'Parent Email 2 field is required',
+            'parent_email_two.email' => 'Parent Email 2 must be valid email',
         ];
     }
 }
