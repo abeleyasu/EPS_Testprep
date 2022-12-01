@@ -11,7 +11,7 @@ class EducationController extends Controller
 {
     public function index()
     {
-        $education  = Education::where('user_id', Auth::id())->where('is_draft',0)->first();
+        $education  = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         return view('user.admin-dashboard.high-school-resume.education-info', compact('education'));
     }
 

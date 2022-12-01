@@ -12,7 +12,7 @@ class PersonalInfoController extends Controller
 {
     public function index()
     {
-        $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft',0)->first();
+        $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info'));
     }
 

@@ -12,7 +12,7 @@ class EmploymentCertificationController extends Controller
 {
     public function index()
     {
-        $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->first();
+        $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification'));
     }
 

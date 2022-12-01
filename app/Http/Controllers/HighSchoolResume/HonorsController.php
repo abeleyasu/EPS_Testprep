@@ -12,7 +12,7 @@ class HonorsController extends Controller
 {
     public function index()
     {
-        $honor  = Honor::where('user_id', Auth::id())->where('is_draft',0)->first();
+        $honor  = Honor::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         return view('user.admin-dashboard.high-school-resume.honors', compact('honor'));
     }
 

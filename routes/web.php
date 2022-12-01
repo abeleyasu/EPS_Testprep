@@ -143,6 +143,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
 
     Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function(){
         Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function(){
+            Route::get('/list', [PreviewController::class, 'list'])->name('list');
             Route::controller(PersonalInfoController::class)->group(function(){
                 Route::get('/personal-info', 'index')->name('personalInfo');
                 Route::post('/personal-info', 'store')->name('personalInfo.store');
@@ -177,6 +178,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::get('/preview', 'index')->name('preview');
                 Route::get('/pdf/preview', 'resumePreview')->name('pdf.preview');
                 Route::get('/resume/complete', 'resumeComplete')->name('resume.complete');
+                Route::get('/resume/download/{id}', 'resumeDownload')->name('resume.download');
+                Route::delete('/resume/delete/{id}', 'destroy')->name('resume.destroy');
             });
         });
         

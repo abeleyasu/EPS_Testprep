@@ -12,7 +12,7 @@ class ActivityController extends Controller
 {
     public function index()
     {
-        $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->first();
+        $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         return view('user.admin-dashboard.high-school-resume.activities', compact('activity'));
     }
 

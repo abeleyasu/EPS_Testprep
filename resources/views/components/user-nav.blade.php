@@ -77,10 +77,17 @@
                             </a>
                             <ul class="nav-main-submenu">
                                 <li class="nav-main-item">
-                                    <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.*') ? 'active' : '' }}"
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.personalInfo') ? 'active' : '' }}"
                                         href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}">
                                         <i class="fa fa-2x fa-school"></i>
                                         <span class="nav-main-link-name">High School Resume tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}"
+                                        href="{{ route('admin-dashboard.highSchoolResume.list') }}">
+                                        <i class="fa fa-2x fa-school"></i>
+                                        <span class="nav-main-link-name">Resume listing</span>
                                     </a>
                                 </li>
                                 <li class="nav-main-item">

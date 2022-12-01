@@ -12,7 +12,7 @@ class FeaturedAttributeController extends Controller
 {
     public function index()
     {
-        $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->first();
+        $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         return view('user.admin-dashboard.high-school-resume.features-attributes', compact('featuredAttribute'));
     }
 
