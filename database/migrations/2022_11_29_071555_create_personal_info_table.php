@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('zip_code');
             $table->string('cell_phone');
             $table->string('email');
-            $table->json('social_links')->nullable();
+            $table->longText('social_links')->nullable();
             $table->string('parent_email_one');
             $table->string('parent_email_two');
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');

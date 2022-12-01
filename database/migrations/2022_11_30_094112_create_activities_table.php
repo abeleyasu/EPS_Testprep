@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->json('demonstrated_data')->nullable();
-            $table->json('leadership_data')->nullable();
-            $table->json('activities_data')->nullable();
-            $table->json('athletics_data')->nullable();
-            $table->json('community_service_data')->nullable();
+            $table->longText('demonstrated_data')->nullable();
+            $table->longText('leadership_data')->nullable();
+            $table->longText('activities_data')->nullable();
+            $table->longText('athletics_data')->nullable();
+            $table->longText('community_service_data')->nullable();
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
