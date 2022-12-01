@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('honors', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->json('honors_data')->nullable();
+            $table->longText('honors_data')->nullable();
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

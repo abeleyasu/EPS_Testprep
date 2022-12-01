@@ -34,9 +34,9 @@ return new class extends Migration
             $table->integer('total_no_of_student');
             $table->string('ib_courses');
             $table->string('ap_courses');
-            $table->json('course_data')->nullable();
-            $table->json('honor_course_data')->nullable();
-            $table->json('testing_data')->nullable();
+            $table->longText('course_data')->nullable();
+            $table->longText('honor_course_data')->nullable();
+            $table->longText('testing_data')->nullable();
             $table->string('intended_college_major');
             $table->string('intended_college_minor');
             $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
