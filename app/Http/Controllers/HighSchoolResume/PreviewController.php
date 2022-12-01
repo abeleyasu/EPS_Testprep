@@ -68,6 +68,6 @@ class PreviewController extends Controller
             "is_draft" => 1
         ]);
 
-        return redirect()->route('admin-dashboard.highSchoolResume.preview');
+        return redirect()->route('admin-dashboard.highSchoolResume.personalInfo');
     }
 }
