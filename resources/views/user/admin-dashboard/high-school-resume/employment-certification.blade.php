@@ -71,16 +71,6 @@
                         </a>
                     </li>
                 </ul>
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ $error }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endforeach
-                @endif
                 <form class="js-validation" action="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
                     @csrf
                     @if(isset($employmentCertification))
@@ -95,21 +85,21 @@
                                         <a class="text-white fw-600 collapsed"> Employment & Certifications</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse"
+                                        class="collapse {{ $errors->has('employment_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="employment_data_table_row">
-                                                            <input type="hidden" name="employment_data" id="employment_data" value="{{ !empty($employmentCertification->employment_data) ? $employmentCertification->employment_data : '' }}">
+                                                            <input type="hidden" name="employment_data" id="employment_data" value="{{ !empty($employmentCertification->employment_data) ? $employmentCertification->employment_data : old('employment_data') }}">
                                                             <td>
                                                                 <label class="form-label" for="job_title">
                                                                     Job title
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('employment_data') is-invalid @enderror"
                                                                     value="{{ old('job_title') }}" id="job_title"
                                                                     name="job_title" placeholder="Enter Job title">
                                                             </td>
@@ -118,13 +108,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="employment_grade"
-                                                                    name="employment_grade" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                <select class="js-select2 @error('employment_data') is-invalid @enderror select" id="employment_grade"
+                                                                    name="employment_grade[]" multiple="multiple">
+                                                                    <option {{ in_array("1st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -133,7 +123,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('employment_data') is-invalid @enderror"
                                                                     id="employment_location" name="employment_location"
                                                                     value="{{ old('employment_location') }}"
                                                                     placeholder="Enter Location">
@@ -144,7 +134,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('employment_data') is-invalid @enderror"
                                                                     id="employment_honor_award"
                                                                     name="employment_honor_award"
                                                                     value="{{ old('employment_honor_award') }}"
@@ -152,13 +142,19 @@
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addEmploymentData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addEmploymentData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('employment_data') bg-danger @enderror"></i>
+                                                                    @error('employment_data') 
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($employmentCertification->employment_data))
-                                                            @foreach(json_decode($employmentCertification->employment_data) as $employment_data)
+                                                        @if(!empty($employmentCertification->employment_data) || !empty(old('employment_data')))
+                                                            @php
+                                                                $employment_data = !empty($employmentCertification->employment_data) ? $employmentCertification->employment_data : old('employment_data');
+                                                            @endphp
+                                                            @foreach(json_decode($employment_data) as $employment_data)
                                                                 <tr id="employment_{{ $employment_data->id }}">
                                                                     <td class="job_title">{{ $employment_data->job_title }}</td>
                                                                     <td class="employment_grade">{{ implode(", ",json_decode($employment_data->employment_grade)) }}</td>
@@ -184,14 +180,14 @@
                                             interests</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse"
+                                        class="collapse {{ $errors->has('significant_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="significant_data_table_row">
-                                                            <input type="hidden" name="significant_data" id="significant_data" value="{{ !empty($employmentCertification->significant_data) ? $employmentCertification->significant_data : '' }}">
+                                                            <input type="hidden" name="significant_data" id="significant_data" value="{{ !empty($employmentCertification->significant_data) ? $employmentCertification->significant_data : old('significant_data') }}">
                                                             <td>
                                                                 <label class="form-label"
                                                                     for="responsibility_interest">
@@ -199,7 +195,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('significant_data') is-invalid @enderror"
                                                                     value="{{ old('responsibility_interest') }}"
                                                                     id="responsibility_interest"
                                                                     name="responsibility_interest"
@@ -211,15 +207,15 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select"
+                                                                <select class="js-select2 select @error('significant_data') is-invalid @enderror"
                                                                     id="significant_grade"
-                                                                    name="significant_grade"
+                                                                    name="significant_grade[]"
                                                                     multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ in_array("1st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -229,7 +225,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('significant_data') is-invalid @enderror"
                                                                     id="significant_location"
                                                                     name="significant_location"
                                                                     value="{{ old('significant_location') }}"
@@ -241,7 +237,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('significant_data') is-invalid @enderror"
                                                                     value="{{ old('significant_honor_award') }}"
                                                                     id="significant_honor_award"
                                                                     name="significant_honor_award"
@@ -249,13 +245,19 @@
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addSignificantData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addSignificantData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('employment_data') bg-danger @enderror"></i>
+                                                                    @error('employment_data') 
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($employmentCertification->significant_data))
-                                                            @foreach(json_decode($employmentCertification->significant_data) as $significant_data)
+                                                        @if(!empty($employmentCertification->significant_data) || !empty(old('significant_data')))
+                                                            @php
+                                                                $significant_data = !empty($employmentCertification->significant_data) ? $employmentCertification->significant_data : old('significant_data');
+                                                            @endphp
+                                                            @foreach(json_decode($significant_data) as $significant_data)
                                                                 <tr id="significant_{{ $significant_data->id }}">
                                                                     <td class="responsibility_interest">{{ $significant_data->responsibility_interest }}</td>
                                                                     <td class="significant_grade">{{ implode(", ",json_decode($significant_data->significant_grade)) }}</td>

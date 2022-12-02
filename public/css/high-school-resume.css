@@ -336,6 +336,10 @@ td {
     display: inline-block
 }
 
+.select.is-invalid + .select2-container .selection .select2-selection{ 
+    border-color: #dc2626 !important;
+}
+
 
 /*================== 
     Preview page css 

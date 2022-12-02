@@ -66,19 +66,7 @@
                     </a>
                 </li>
             </ul>
-            @if($errors->any())
-                @php $validationErr = ["course_data", "honor_course_data", "testing_data"]; @endphp
-                @foreach ($validationErr as $err)
-                    @if($errors->has($err))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ $errors->first($err) }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
-                @endforeach
-            @endif
+        
             <form class="js-validation" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
                 @csrf
                 @if(isset($education))
@@ -319,7 +307,7 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
                                     <a class=" text-white fw-600 collapsed">Courses</a>
                                 </div>
-                                <div id="collapseFive" class="collapse {{ $errors->first('ib_courses') || $errors->first('ap_courses') || $errors->first('course_name') || $errors->first('honors_course_name') ? 'show' : '' }}" data-parent=".accordionExample2">
+                                <div id="collapseFive" class="collapse {{ $errors->first('ib_courses') || $errors->first('ap_courses') || $errors->first('course_name') || $errors->first('course_data') || $errors->first('honor_course_data') ? 'show' : '' }}" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
@@ -329,12 +317,12 @@
                                                             IB Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select" id="ib_courses" name="ib_courses[]" multiple="multiple">
-                                                            <option value="list 1" {{ !empty($education->ib_courses) && in_array("list 1",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 1</option>
-                                                            <option value="list 2" {{ !empty($education->ib_courses) && in_array("list 2",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 2</option>
-                                                            <option value="list 3" {{ !empty($education->ib_courses) && in_array("list 3",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 3</option>
-                                                            <option value="list 4" {{ !empty($education->ib_courses) && in_array("list 4",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 4</option>
-                                                            <option value="list 5" {{ !empty($education->ib_courses) && in_array("list 5",json_decode($education->ib_courses)) ? 'selected' : '' }}>list 5</option>
+                                                        <select class="js-select2 select @error('ib_courses') is-invalid @enderror" id="ib_courses" name="ib_courses[]" multiple="multiple">
+                                                            <option value="list 1" {{ (!empty($education->ib_courses) && in_array("list 1",json_decode($education->ib_courses))) || in_array("list 1", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 1</option>
+                                                            <option value="list 2" {{ (!empty($education->ib_courses) && in_array("list 2",json_decode($education->ib_courses))) || in_array("list 2", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 2</option>
+                                                            <option value="list 3" {{ (!empty($education->ib_courses) && in_array("list 3",json_decode($education->ib_courses))) || in_array("list 3", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 3</option>
+                                                            <option value="list 4" {{ (!empty($education->ib_courses) && in_array("list 4",json_decode($education->ib_courses))) || in_array("list 4", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 4</option>
+                                                            <option value="list 5" {{ (!empty($education->ib_courses) && in_array("list 5",json_decode($education->ib_courses))) || in_array("list 5", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 5</option>
                                                         </select>
                                                         @error('ib_courses')
                                                         <span class="invalid">{{ $message }}</span>
@@ -347,20 +335,20 @@
                                                             AP Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select" id="ap_courses" name="ap_courses[]" multiple="multiple">
-                                                            <option value="list 1" {{ !empty($education->ap_courses) && in_array("list 1",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 1</option>
-                                                            <option value="list 2" {{ !empty($education->ap_courses) && in_array("list 2",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 2</option>
-                                                            <option value="list 3" {{ !empty($education->ap_courses) && in_array("list 3",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 3</option>
-                                                            <option value="list 4" {{ !empty($education->ap_courses) && in_array("list 4",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 4</option>
-                                                            <option value="list 5" {{ !empty($education->ap_courses) && in_array("list 5",json_decode($education->ap_courses)) ? 'selected' : '' }}>list 5</option>
+                                                        <select class="js-select2 select @error('ap_courses') is-invalid @enderror" id="ap_courses" name="ap_courses[]" multiple="multiple">
+                                                            <option value="list 1" {{ (!empty($education->ap_courses) && in_array("list 1",json_decode($education->ap_courses))) || in_array("list 1", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 1</option>
+                                                            <option value="list 2" {{ (!empty($education->ap_courses) && in_array("list 2",json_decode($education->ap_courses))) || in_array("list 2", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 2</option>
+                                                            <option value="list 3" {{ (!empty($education->ap_courses) && in_array("list 3",json_decode($education->ap_courses))) || in_array("list 3", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 3</option>
+                                                            <option value="list 4" {{ (!empty($education->ap_courses) && in_array("list 4",json_decode($education->ap_courses))) || in_array("list 4", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 4</option>
+                                                            <option value="list 5" {{ (!empty($education->ap_courses) && in_array("list 5",json_decode($education->ap_courses))) || in_array("list 5", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 5</option>
                                                         </select>
                                                         @error('ap_courses')
-                                                        <span class="invalid">{{ $message }}</span>
+                                                            <span class="invalid">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="course_data" id="course_data" value="{{ !empty($education->course_data) ? $education->course_data : '' }}">
+                                            <input type="hidden" name="course_data" id="course_data" value="{{ !empty($education->course_data) ? $education->course_data : old('course_data') }}">
                                             <table class="table">
                                                 <tbody>
                                                     <tr class="course_data_table_row">
@@ -369,25 +357,29 @@
                                                                 Course Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Ex: College English 101">
+                                                            <input type="text" class="form-control @error('course_data') is-invalid @enderror" value="{{ old('course_name') }}" id="course_name" name="course_name" placeholder="Ex: College English 101">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="search_college_name">
                                                                 Search College Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <select class="form-control" name="search_college_name" id="search_college_name">
-                                                                <option value="">Search College Name</option>
-                                                                <option value="first">First</option>
-                                                                <option value="second">Second</option>
-                                                                <option value="third">Third</option>
+                                                            <select class="form-control @error('course_data') is-invalid @enderror" name="search_college_name" id="search_college_name">
+                                                                <option {{ old('search_college_name') == "" ? 'selected' : "" }} value="">Search College Name</option>
+                                                                <option {{ old('search_college_name') == "first" ? 'selected' : "" }} value="first">First</option>
+                                                                <option {{ old('search_college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
+                                                                <option {{ old('search_college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
                                                             </select>
                                                         </td>
                                                         <td>
                                                             <label class="form-label">Action</label><br>
-                                                            <a href="javascript:void(0)" onclick="addCourseData(this)" class="add-btn plus-icon">
-                                                                <i class="fa-solid fa-plus"></i>
+                                                            <a href="javascript:void(0)" onclick="addCourseData(this)" class="add-btn d-flex plus-icon">
+                                                                <i class="fa-solid fa-plus @error('course_data') bg-danger @enderror"></i>
+                                                                @error('course_data')
+                                                                    <span class="ms-2 mt-2 invalid">Click on add icon to insert course data</span>
+                                                                @enderror
                                                             </a>
+                                                            
                                                         </td>
                                                     </tr>
                                                     @if(!empty($education->course_data))
@@ -401,11 +393,22 @@
                                                                 </td>
                                                             </tr>
                                                         @endforeach
+                                                    @elseif(!empty(old('course_data')))
+                                                        @foreach(json_decode(old('course_data')) as $course_data) 
+                                                            <tr id="course_{{ $course_data->id }}">
+                                                                <td class="course_name">{{ $course_data->course_name }}</td>
+                                                                <td class="search_college_name">{{ $course_data->search_college_name }}</td>
+                                                                <td>
+                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $course_data->id }}" onclick="course_edit_model(this)"></i>
+                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $course_data->id }}" onclick="course_model_remove(this)"></i>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
                                                     @endif
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <input type="hidden" name="honor_course_data" id="honor_course_data" value="{{ !empty($education->honor_course_data) ? $education->honor_course_data : '' }}">
+                                        <input type="hidden" name="honor_course_data" id="honor_course_data" value="{{ !empty($education->honor_course_data) ? $education->honor_course_data : old('honor_course_data') }}">
                                         <table class="table">
                                             <tbody>
                                                 <tr class="honor_course_data_table_row"> 
@@ -414,17 +417,32 @@
                                                             Honors Course Name
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control" id="honors_course_name" name="honors_course_name" placeholder="Ex: College English 101">
+                                                        <input type="text" class="form-control @error('honor_course_data') is-invalid @enderror" value="{{ old('honors_course_name') }}" id="honors_course_name" name="honors_course_name" placeholder="Ex: College English 101">
                                                     </td>
                                                     <td>
                                                         <label class="form-label">Action</label><br>
-                                                        <a href="javascript:void(0)" onclick="addHonorCourseData(this)" class="add-btn plus-icon">
-                                                            <i class="fa-solid fa-plus"></i>
+                                                        <a href="javascript:void(0)" onclick="addHonorCourseData(this)" class="add-btn plus-icon d-flex">
+                                                            <i class="fa-solid fa-plus @error('honor_course_data') bg-danger @enderror"></i>
+                                                            @error('honor_course_data')
+                                                                <span class="ms-2 mt-2 invalid">Click on add icon to Honors course name</span>
+                                                            @enderror
                                                         </a>
+                                                        
                                                     </td>
                                                 </tr>
+                                                
                                                 @if(!empty($education->honor_course_data))
                                                     @foreach(json_decode($education->honor_course_data) as $honor_course_data)
+                                                        <tr id="honor_course_{{ $honor_course_data->id }}">
+                                                            <td class="honor_course_name">{{ $honor_course_data->honor_course_name }}</td>
+                                                            <td>
+                                                                <i class="fa-solid fa-pen me-2" data-id="{{ $honor_course_data->id }}" onclick="honor_course_edit_model(this)"></i>
+                                                                <i class="fa-solid fa-circle-xmark" data-id="{{ $honor_course_data->id }}" onclick="honor_course_model_remove(this)"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @elseif(!empty(old('honor_course_data')))
+                                                    @foreach(json_decode(old('honor_course_data')) as $honor_course_data)
                                                         <tr id="honor_course_{{ $honor_course_data->id }}">
                                                             <td class="honor_course_name">{{ $honor_course_data->honor_course_name }}</td>
                                                             <td>
@@ -443,10 +461,10 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                                     <a class=" text-white fw-600 collapsed">Testing</a>
                                 </div>
-                                <div id="collapseSix" class="collapse" data-parent=".accordionExample2">
+                                <div id="collapseSix" class="collapse {{ $errors->first('testing_data') ? 'show' : '' }}" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
-                                            <input type="hidden" name="testing_data" id="testing_data" value="{{ !empty($education->testing_data) ? $education->testing_data : '' }}">
+                                            <input type="hidden" name="testing_data" id="testing_data" value="{{ !empty($education->testing_data) ? $education->testing_data : old('testing_data') }}">
                                             <table class="table">
                                                 <tbody>
                                                     <tr class="testing_table_row">
@@ -455,31 +473,47 @@
                                                                 Name of test
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control" id="name_of_test" name="name_of_test" placeholder="Enter Name of test">
+                                                            <input type="text" class="form-control @error('testing_data') is-invalid @enderror" value="{{ old('name_of_test') }}" id="name_of_test" name="name_of_test" placeholder="Enter Name of test">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="results_score">
                                                                 Results Score
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control" id="results_score" name="results_score" placeholder="Enter Results score">
+                                                            <input type="text" class="form-control @error('testing_data') is-invalid @enderror" value="{{ old('results_score') }}" id="results_score" name="results_score" placeholder="Enter Results score">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="date">
                                                                 Date
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="date-own form-control" id="date" name="date" placeholder="Enter Date" autocomplete="off">
+                                                            <input type="text" class="date-own form-control @error('testing_data') is-invalid @enderror" value="{{ old('date') }}" id="date" name="date" placeholder="Enter Date" autocomplete="off">
                                                         </td>
                                                         <td>
                                                             <label class="form-label">Action</label><br>
-                                                            <a href="javascript:void(0)" onclick="addTestingData(this)" class="add-btn plus-icon">
-                                                                <i class="fa-solid fa-plus"></i>
+                                                            <a href="javascript:void(0)" onclick="addTestingData(this)" class="add-btn plus-icon d-flex">
+                                                                <i class="fa-solid fa-plus @error('testing_data') bg-danger @enderror"></i>
+                                                                @error('testing_data') 
+                                                                    <span class="ms-2 mt-2 invalid">Click on add icon to Testing data</span>
+                                                                @enderror
                                                             </a>
+                                                        
                                                         </td>
                                                     </tr>
                                                     @if(!empty($education->testing_data))
                                                         @foreach(json_decode($education->testing_data) as $testing_data)
+                                                            <tr id="testing_{{ $testing_data->id }}">
+                                                                <td class="name_of_test">{{ $testing_data->name_of_test }}</td>
+                                                                <td class="results_score">{{ $testing_data->results_score }}</td>
+                                                                <td class="date">{{ $testing_data->date }}</td>
+                                                                <td>
+                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $testing_data->id }}" onclick="testing_edit_model(this)"></i>
+                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $testing_data->id }}" onclick="testing_model_remove(this)"></i>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @elseif(!empty(old('testing_data')))
+                                                        @foreach(json_decode(old('testing_data')) as $testing_data)
                                                             <tr id="testing_{{ $testing_data->id }}">
                                                                 <td class="name_of_test">{{ $testing_data->name_of_test }}</td>
                                                                 <td class="results_score">{{ $testing_data->results_score }}</td>
@@ -513,9 +547,9 @@
                                                         </label>
                                                         <select class="form-select @error('intended_college_major') is-invalid @enderror" id="intended_college_major" name="intended_college_major" style="width: 100%;">
                                                             <option value="">Select Intended College Major</option>
-                                                            <option value="Test" {{ isset($education->intended_college_major) && $education->intended_college_major == 'Test' ? 'selected' : '' }}>Test</option>
-                                                            <option value="Demo" {{ isset($education->intended_college_major) && $education->intended_college_major == 'Demo' ? 'selected' : '' }}>Demo</option>
-                                                            <option value="Temp" {{ isset($education->intended_college_major) && $education->intended_college_major == 'Temp' ? 'selected' : '' }}>Temp</option>
+                                                            <option value="Test" {{ (isset($education->intended_college_major) ? $education->intended_college_major : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
+                                                            <option value="Demo" {{ (isset($education->intended_college_major) ? $education->intended_college_major : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
+                                                            <option value="Temp" {{ (isset($education->intended_college_major) ? $education->intended_college_major : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_major')
                                                         <span class="invalid">{{ $message }}</span>
@@ -530,9 +564,9 @@
                                                         </label>
                                                         <select class="form-select @error('intended_college_minor') is-invalid @enderror" id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
                                                             <option value="">Select Intended College Minor</option>
-                                                            <option value="Test" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 'Test' ? 'selected' : '' }}>Test</option>
-                                                            <option value="Demo" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 'Demo' ? 'selected' : '' }}>Demo</option>
-                                                            <option value="Temp" {{ isset($education->intended_college_minor) && $education->intended_college_minor == 'Temp' ? 'selected' : '' }}>Temp</option>
+                                                            <option value="Test" {{ (isset($education->intended_college_minor) ? $education->intended_college_minor : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
+                                                            <option value="Demo" {{ (isset($education->intended_college_minor) ? $education->intended_college_minor : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
+                                                            <option value="Temp" {{ (isset($education->intended_college_minor) ? $education->intended_college_minor : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_minor')
                                                         <span class="invalid">{{ $message }}</span>
@@ -597,10 +631,10 @@
                                 <span class="text-danger">*</span>
                             </label>
                             <select class="form-control" name="college_name" id="course_modal_college_name" required>
-                                <option value="">Select College Name</option>
-                                <option value="first">First</option>
-                                <option value="second">Second</option>
-                                <option value="third">Third</option>
+                                <option {{ old('college_name') == "" ? 'selected' : "" }} value="">Select College Name</option>
+                                <option {{ old('college_name') == "first" ? 'selected' : "" }} value="first">First</option>
+                                <option {{ old('college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
+                                <option {{ old('college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
                             </select>
                         </div>
                     </div>

@@ -72,16 +72,6 @@
                         </a>
                     </li>
                 </ul>
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ $error }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endforeach
-                @endif
                 <form class="js-validation" action="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
                     method="POST">
                     @csrf
@@ -98,13 +88,13 @@
                                             Awards</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse {{ $errors->has('position') || $errors->has('honor_achievement_award') || $errors->has('grade') || $errors->has('location') ? 'show' : '' }}"
+                                        class="collapse show"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <input type="hidden" name="honors_data" id="honors_data" value="{{ !empty($honor->honors_data) ? $honor->honors_data : '' }}">
+                                                        <input type="hidden" name="honors_data" id="honors_data" value="{{ !empty($honor->honors_data) ? $honor->honors_data : old('honors_data') }}">
                                                         <tr class="honors_data_table_row">
                                                             <td>
                                                                 <label class="form-label" for="position">
@@ -112,7 +102,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="number"
-                                                                    class="form-control @error('position') is-invalid @enderror"
+                                                                    class="form-control @error('honors_data') is-invalid @enderror"
                                                                     id="position" name="position"
                                                                     value="{{ old('position') }}"
                                                                     placeholder="Enter Position" autocomplete="off">
@@ -126,7 +116,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('honor_achievement_award') is-invalid @enderror"
+                                                                    class="form-control @error('honors_data') is-invalid @enderror"
                                                                     id="honor_achievement_award"
                                                                     name="honor_achievement_award"
                                                                     value="{{ old('honor_achievement_award') }}"
@@ -140,13 +130,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="grade"
+                                                                <select class="js-select2 select @error('honors_data') is-invalid @enderror" id="grade"
                                                                     name="grade[]" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ (in_array('1st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                    <option {{ (in_array('2st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                    <option {{ (in_array('3st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                    <option {{ (in_array('4st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                    <option {{ (in_array('5st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -155,7 +145,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('location') is-invalid @enderror"
+                                                                    class="form-control @error('honors_data') is-invalid @enderror"
                                                                     value="{{ old('location') }}" id="location"
                                                                     name="location" placeholder="Ex: DRHS">
                                                                 @error('location')
@@ -164,8 +154,11 @@
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addHonorsData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addHonorsData(this)" class="add-btn d-flex plus-icon">
+                                                                    <i class="fa-solid fa-plus @error('honors_data') bg-danger @enderror"></i>
+                                                                    @error('honors_data')
+                                                                        <span class="ms-2 mt-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
