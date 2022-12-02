@@ -153,7 +153,12 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     });
     
     Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
+
+    Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
+
     Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
+
+    Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
     // Please make any changes you think it's necessary to routing 
     Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 });
