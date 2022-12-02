@@ -19,55 +19,55 @@
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}"
                             id="step1-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Personal Info</p>
+                            <h6>Personal Info</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
                             id="step2-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Education </p>
+                            <h6>Education </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Honors </p>
+                            <h6>Honors </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>4</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Activities</p>
+                            <h6>Activities</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)"
                             id="step5-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>5</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Employment & <br> Certifications</p>
+                            <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)"
                             id="step6-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>6</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Featured <br> Attributes</p>
+                            <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)" id="step7-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p >7</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Preview</p>
+                            <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
@@ -579,15 +579,19 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
-                        <div class="prev-btn">
+                        <div class="prev-btn next-btn">
                             <a href="{{ route('admin-dashboard.highSchoolResume.honors') }}"
-                                class="btn btn-alt-primary next-step">
-                                Previous
+                                class="btn btn-alt-success next-step">
+                                Previous Step
                             </a>
+                            <div class="eye-module">
+                                <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                            </div>
                         </div>
                         <div class="next-btn">
-                            <div class="next-btn">
-                                <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                            <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
+                            <div class="eye-module">
+                                <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
                             </div>
                         </div>
                     </div>
