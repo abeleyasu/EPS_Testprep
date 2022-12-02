@@ -66,19 +66,17 @@
                     </a>
                 </li>
             </ul>
-            @if(!empty($activity->demonstrated_data))
-                @foreach(json_decode($activity->demonstrated_data) as $demonstrated_data)
-                    <tr id="demonstrated_{{ $demonstrated_data->id }}">
-                        <td class="position">{{ $demonstrated_data->position }}</td>
-                        <td class="interest">{{ $demonstrated_data->interest }}</td>
-                        <td class="grade">{{ implode(", ",json_decode($demonstrated_data->grade)) }}</td>
-                        <td class="location">{{ $demonstrated_data->location }}</td>
-                        <td class="details">{{ $demonstrated_data->details }}</td>
-                        <td>
-                            <i class="fa-solid fa-pen me-2" data-id="{{ $demonstrated_data->id }}" onclick="demonstrated_edit_model(this)"></i>
-                            <i class="fa-solid fa-circle-xmark" data-id="{{ $demonstrated_data->id }}" onclick="demonstrated_model_remove(this)"></i>
-                        </td>
-                    </tr>
+            @if($errors->any())
+                @php $validationErr = ["course_data", "honor_course_data", "testing_data"]; @endphp
+                @foreach ($validationErr as $err)
+                    @if($errors->has($err))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> {{ $errors->first($err) }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                 @endforeach
             @endif
             <form class="js-validation" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
@@ -205,28 +203,21 @@
                                                     <div>
                                                         <label class="form-label" for="grade_level">
                                                             Grade level
-                                                            <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('grade_level') is-invalid @enderror" value="{{ isset($education->grade_level) ? $education->grade_level : old('grade_level') }}" id="grade_level" name="grade_level" placeholder="Enter Grade level">
-                                                        @error('grade_level')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" value="{{ isset($education->grade_level) ? $education->grade_level : old('grade_level') }}" id="grade_level" name="grade_level" placeholder="Enter Grade level" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="college_name">
                                                             College Name
-                                                            <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="form-control" id="college_name" name="college_name">
+                                                        <select class="form-control" id="college_name" name="college_name" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
+                                                            <option value="">Select College Name</option>
                                                             <option value="one" {{ isset($education->college_name) && $education->college_name == "one" ? 'selected' : '' }}>First</option>
                                                             <option value="two" {{ isset($education->college_name) && $education->college_name == "two" ? 'selected' : '' }}>Second</option>
                                                             <option value="three" {{ isset($education->college_name) && $education->college_name == "three" ? 'selected' : '' }}>Third</option>
                                                         </select>
-                                                        @error('college_name')
-                                                            <span class="invalid">{{ $message }}</span>
-                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,24 +226,16 @@
                                                     <div>
                                                         <label class="form-label" for="college_city">
                                                             College City
-                                                            <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('college_city') is-invalid @enderror" value="{{ isset($education->college_city) ? $education->college_city : old('college_city') }}" id="college_city" name="college_city" placeholder="Enter College City">
-                                                        @error('college_city')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" value="{{ isset($education->college_city) ? $education->college_city : old('college_city') }}" id="college_city" name="college_city" placeholder="Enter College City" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="college_state">
                                                             College State
-                                                            <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('college_state') is-invalid @enderror" value="{{ isset($education->college_state) ? $education->college_state : old('college_state') }}" id="college_state" name="college_state" placeholder="Enter College State">
-                                                        @error('college_state')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" value="{{ isset($education->college_state) ? $education->college_state : old('college_state') }}" id="college_state" name="college_state" placeholder="Enter College State" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                     </div>
                                                 </div>
                                             </div>
@@ -953,6 +936,20 @@
         $('#testing_data').val(JSON.stringify(deleted_testing));
         $(`#testing_${id}`).remove();
     }
+
+    $(document).on('change', '#is_graduate', function(){
+        if(this.checked){
+            $('#grade_level').attr('disabled',true);
+            $('#college_name').attr('disabled',true);
+            $('#college_city').attr('disabled',true);
+            $('#college_state').attr('disabled',true);
+        } else {
+            $('#grade_level').attr('disabled',false);
+            $('#college_name').attr('disabled',false);
+            $('#college_city').attr('disabled',false);
+            $('#college_state').attr('disabled',false);
+        }
+    });
 
 </script>
 @endsection
