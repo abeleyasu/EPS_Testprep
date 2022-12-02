@@ -33,8 +33,9 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="section_id" value="{{$id}}">
+    <input type="hidden" id="section_id" value="{{$section_id}}">
     <input type="hidden" id="get_offset" value="{{$set_offset}}">
+    <input type="hidden" id="get_question_type" value="{{$question_type}}">
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row">
@@ -82,12 +83,12 @@
                 </div>
                 <div class="col-xl-4">
                     <button type="button" class="btn btn-sm btn-outline-danger fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-flag me-1" style="color:red"></i>Flag</button>
-                    <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-forward me-1"></i>Skip</button>
+                    <button type="button" id="get_skip_question_btn" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 skip"><i class="fa fa-fw fa-forward me-1"></i>Skip</button>
                     <button type="button" class="btn btn-sm btn-outline-warning fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-circle-question me-1"></i>Guess</button>
                     <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
                 </div>
                 <div class="col-xl-4">
-                    <button type="button" class="btn btn-sm btn-outline-success fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-circle-check me-1"></i>Submit Section</button>
+                    <button type="button" disabled class="btn btn-sm btn-outline-success fs-xs fw-semibold me-1 mb-3 submit_section_btn"><i class="fa fa-fw fa-circle-check me-1"></i>Submit Section</button>
                 </div>
             </div>
         </div>
@@ -109,30 +110,110 @@
 </script>
 <script>
          jQuery(document).ready(function(){
-            console.log($('meta[name="_token"]').attr('content'));
+
+            var selected_answer = [];
             var get_offset = jQuery('#get_offset').val();
+            
+            var getSelectedAnswer ;
+            var check_click_type = 'onload';
+            jQuery(".prev").click(function(){
+                var get_offset = jQuery(this).val();
+                var get_question_id = jQuery('.get_question_id').val();
+
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                }
+                else
+                {
+                    selected_answer[get_question_id] = '-';
+                }
+                // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                // selected_answer[get_question_id] = getSelectedAnswer;
+                var check_click_type = 'prev';
+                
+                get_first_question(get_offset);
+            });
+
+            jQuery(".skip").click(function(){
+                var get_offset = jQuery(this).val();
+                var get_question_id = jQuery('.get_question_id').val();
+
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                }
+                else
+                {
+                    selected_answer[get_question_id] = '-';
+                }
+                get_first_question(get_offset);
+            });
+
+            jQuery(".next").click(function(){
+                var get_offset = jQuery(this).val();
+                var get_question_id = jQuery('.get_question_id').val();
+
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                }
+                else
+                {
+                    selected_answer[get_question_id] = '-';
+                }
+            //     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                
+                
+            //    selected_answer[get_question_id] = getSelectedAnswer;
+                get_first_question(get_offset);
+            });
 
             
-            jQuery(".prev").click(function(){
-                console.log(jQuery(this).val());
-                var get_offset = jQuery(this).val();
-                var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-                console.log(getSelectedAnswer);
-                get_first_question(get_offset);
-            });
-            jQuery(".next").click(function(){
-                console.log(jQuery(this).val());
-                var get_offset = jQuery(this).val();
+            jQuery(".submit_section_btn").click(function(){
+                var get_question_id = jQuery('.get_question_id').val();
+                var get_section_id = jQuery('#section_id').val();
+                
+                // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                // selected_answer[get_question_id] = getSelectedAnswer;
 
-                var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-                console.log(getSelectedAnswer);
-                get_first_question(get_offset);
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                }
+                else
+                {
+                    selected_answer[get_question_id] = '-';
+                }
+
+                console.log(selected_answer);
+                $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                  }
+                });
+
+                jQuery.ajax({
+                    url: "{{ url('/user/set_user_question_answer/post') }}",
+                    method: 'post',
+                    data: {
+                        selected_answer: (selected_answer),
+                        get_section_id:get_section_id
+                    },
+                    success: function(result){
+                        console.log(result);
+                        window.location.href = "{{url('user/student-view-dashboard')}}";
+                }});
+
             });
+            
             
             get_first_question(get_offset);
             function get_first_question(get_offset)
             {
-                console.log();
+                console.log(selected_answer);
+
+               
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -143,10 +224,11 @@
                     method: 'post',
                     data: {
                         section_id: jQuery('#section_id').val(),
+                        question_type: jQuery('#get_question_type').val(),
                         get_offset: get_offset,
                     },
                     success: function(result){
-                        
+                        console.log(result);
                         var passage_type = 'PASSAGE TYPE: '+ result.questions[0].type;
                         var passage_title =  result.questions[0].title;
                         var passage_description =  result.questions[0].description;
@@ -159,10 +241,10 @@
                         var get_question_no = parseInt(result.get_offset) + 1;
 
                         var set_questions_options = '<div class="mb-4">';
-                        set_questions_options += '<label class="form-label">Question '+get_question_no+' '+get_question_title+'</label>';
+                        set_questions_options += '<input type="hidden" value="'+result.questions[0].question_id+'" class="get_question_id" ><label class="form-label">Question '+get_question_no+' '+get_question_title+'</label>';
 
                         var get_options = result.questions[0].question_answer_options.replace(/(<([^>]+)>)/gi, "");
-
+                        
                         jQuery.each(JSON.parse(get_options), function (key,val) {
                            var get_option_number = 'A';
                            if(key == 0)
@@ -182,11 +264,27 @@
                             get_option_number = 'd';
                            }
 
-                           set_questions_options += '<div class="space-y-2"><div class="form-check">';
-                           set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'" checked><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                           
+                           if(selected_answer[result.questions[0].question_id] !== '' && selected_answer[result.questions[0].question_id] !== undefined )
+                           {
+                                if(selected_answer[result.questions[0].question_id] == get_option_number )
+                                {
+                                    set_questions_options += '<div class="space-y-2">';
+                                     set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'" checked ><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                }
+                                else
+                                {
+                                    set_questions_options += '<div class="space-y-2">';
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                }
+                           }
+                           else
+                           {
+                                set_questions_options += '<div class="space-y-2">';
+                                set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                           }
+                            
                         });
-
-                        
 
                         set_questions_options += '</div>';
 
@@ -212,26 +310,31 @@
                         if(result.set_next_offset >= result.total_question )
                         {
                             jQuery('#get_next_question_btn').prop('disabled', true);
+                            jQuery('#get_skip_question_btn').prop('disabled', true);
+                            
                             jQuery('.next').prop('disabled', true);
+                            jQuery('.submit_section_btn').prop('disabled', false);
+                            jQuery('.skip').prop('disabled', true);
                         }
                         else
                         {
                             jQuery('#get_next_question_btn').prop('disabled', false);
+                            jQuery('#get_skip_question_btn').prop('disabled', false);
+
                             jQuery('.next').prop('disabled', false);
+                            jQuery('.submit_section_btn').prop('disabled', true);
+                            
+                            jQuery('.skip').prop('disabled', false);
                         }
                         
                         jQuery('#get_next_question_btn').val(result.set_next_offset);
                         jQuery('.next').val(result.set_next_offset);
+                        jQuery('.skip').val(result.set_next_offset);
 
                         jQuery('#get_previous_question_btn').val(result.set_prev_offset);
                         jQuery('.prev').val(result.set_prev_offset);
-
                 }});
-
-                
             }
-
-           
         });
 </script>
 @endsection

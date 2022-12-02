@@ -72,6 +72,7 @@
         @endif
         <!-- END Hero -->
 
+
         <!-- Page Content -->
         <div class="content content-boxed">
           <!-- Timeline -->
@@ -84,6 +85,10 @@
                                                               to 'timeline-event' elements to position them to the right (screen width > 1200px) (useful, if you
                                                               would like to have multiple events to the left or to the right section)
           -->
+
+          <button type="button" disabled class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+              <a class="fw-medium" href="{{route('all_section', ['id' => $selected_test_id])}}">Start All Section </a>
+          </button>
           @if(!$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
@@ -119,9 +124,15 @@
                         <i class="fa fa-lg fa-circle-check me-1"></i>Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section 
                       </button> -->
                       @if(isset($singletestSections['Sections_question']))
-                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <a class="fw-medium" href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']])}}">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
-                      </button>
+                        @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
+                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+                          <a class="fw-medium" href="{{url('user/student-view-dashboard')}}">Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
+                        </button>
+                        @else
+                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+                          <a class="fw-medium" href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']])}}">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
+                        </button>
+                        @endif
                       @elseif(!isset($singletestSections['Sections_question']))
                       <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
                         <a class="fw-medium" href="#">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
