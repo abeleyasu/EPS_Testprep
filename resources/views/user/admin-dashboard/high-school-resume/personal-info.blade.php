@@ -284,7 +284,7 @@
                                                                 <div
                                                                     class="row p-0 mt-3 {{ $key == 0 ? '' : 'remove_links' }}">
                                                                     <div class="col-lg-11">
-                                                                        <input type="text" class="form-control @error('social_links') is-invalid @enderror"
+                                                                        <input type="text" class="form-control  @error('social_links') is-invalid @enderror"
                                                                             name="social_links[]"
                                                                             value="{{ $link }}"
                                                                             placeholder="Enter Social links">
@@ -306,7 +306,7 @@
                                                                 <div class="col-lg-11">
                                                                     <input type="text" class="form-control @error('social_links') is-invalid @enderror"
                                                                         name="social_links[]"
-                                                                        placeholder="Enter Social links">
+                                                                        placeholder="Enter Social links ">
                                                                         @error('social_links')
                                                                             <span class="invalid">{{ $message }}</span>
                                                                         @enderror

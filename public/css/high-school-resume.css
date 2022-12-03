@@ -44,7 +44,7 @@ p {
 .invalid {
     width: 100%;
     margin-top: 0.375rem;
-    font-size: .875rem;
+    font-size: 13px;
     color: #dc2626;
     display: block;
 }
@@ -281,18 +281,20 @@ input[type=number] {
 .table>:not(caption)>*>* {
     padding: 10px 30px 10px 0;
 }
+.fa-eye{
+    background-color: transparent !important;
+    border: transparent !important;
+}
 
 .plus-icon i {
-    background-color: #4a9d2f;
     position: relative;
     top: 6px;
-    width: 25px;
-    height: 25px;
     color: #fff;
     text-align: center;
     border-radius: 50%;
-    line-height: 28px;
+    line-height: 17px;
     font-size: 14px;
+    padding: 8px;
 }
 
 .addButton {
