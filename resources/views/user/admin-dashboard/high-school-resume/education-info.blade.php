@@ -424,7 +424,7 @@
                                                         <a href="javascript:void(0)" onclick="addHonorCourseData(this)" class="add-btn plus-icon d-flex">
                                                             <i class="fa-solid fa-plus @error('honor_course_data') bg-danger @enderror"></i>
                                                             @error('honor_course_data')
-                                                                <span class="ms-2 mt-2 invalid">Click on add icon to Honors course name</span>
+                                                                <span class="ms-2 mt-2 invalid">Click on add icon to insert Honors course name</span>
                                                             @enderror
                                                         </a>
                                                         
@@ -494,7 +494,7 @@
                                                             <a href="javascript:void(0)" onclick="addTestingData(this)" class="add-btn plus-icon d-flex">
                                                                 <i class="fa-solid fa-plus @error('testing_data') bg-danger @enderror"></i>
                                                                 @error('testing_data') 
-                                                                    <span class="ms-2 mt-2 invalid">Click on add icon to Testing data</span>
+                                                                    <span class="ms-2 mt-2 invalid">Click on add icon to insert Testing data</span>
                                                                 @enderror
                                                             </a>
                                                         

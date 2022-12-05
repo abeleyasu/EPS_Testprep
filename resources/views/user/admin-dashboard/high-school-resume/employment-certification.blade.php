@@ -145,7 +145,7 @@
                                                                 <a href="javascript:void(0)" onclick="addEmploymentData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('employment_data') bg-danger @enderror"></i>
                                                                     @error('employment_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert employment data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -246,9 +246,9 @@
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
                                                                 <a href="javascript:void(0)" onclick="addSignificantData(this)" class="add-btn plus-icon d-flex">
-                                                                    <i class="fa-solid fa-plus @error('employment_data') bg-danger @enderror"></i>
-                                                                    @error('employment_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                    <i class="fa-solid fa-plus @error('significant_data') bg-danger @enderror"></i>
+                                                                    @error('significant_data') 
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert significant data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>

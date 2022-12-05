@@ -155,7 +155,7 @@
                                                                 <a href="javascript:void(0)" onclick="addDemonstratedData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('demonstrated_data') bg-danger @enderror"></i>
                                                                     @error('demonstrated_data')
-                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert demonstrated data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -260,7 +260,7 @@
                                                                 <a href="javascript:void(0)" onclick="addLeadershipData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('leadership_data') bg-danger @enderror"></i>
                                                                     @error('leadership_data')
-                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert leadership data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -366,7 +366,7 @@
                                                                 <a href="javascript:void(0)" onclick="addActivityData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('activities_data') bg-danger @enderror"></i>
                                                                     @error('activities_data')
-                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert activity data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -473,7 +473,7 @@
                                                                 <a href="javascript:void(0)" onclick="addAthleticsData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('athletics_data') bg-danger @enderror"></i>
                                                                     @error('athletics_data')
-                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert athletics data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -567,7 +567,7 @@
                                                                 <a href="javascript:void(0)" onclick="addCommunityData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('community_service_data') bg-danger @enderror"></i>
                                                                     @error('community_service_data')
-                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert community service data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>

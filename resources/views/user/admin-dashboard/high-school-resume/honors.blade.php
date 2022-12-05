@@ -157,7 +157,7 @@
                                                                 <a href="javascript:void(0)" onclick="addHonorsData(this)" class="add-btn d-flex plus-icon">
                                                                     <i class="fa-solid fa-plus @error('honors_data') bg-danger @enderror"></i>
                                                                     @error('honors_data')
-                                                                        <span class="ms-2 mt-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="ms-2 mt-2 invalid">Click on add icon to insert honors data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>

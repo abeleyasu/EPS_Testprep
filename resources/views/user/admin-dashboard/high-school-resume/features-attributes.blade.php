@@ -108,7 +108,7 @@
                                                                 <a href="javascript:void(0)" onclick="addFeaturedSkillData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('featured_skills_data') bg-danger @enderror"></i>
                                                                     @error('featured_skills_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert featured skills data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -163,7 +163,7 @@
                                                                 <a href="javascript:void(0)" onclick="addFeaturedAwardData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('featured_awards_data') bg-danger @enderror"></i>
                                                                     @error('featured_awards_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert featured award data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
@@ -229,7 +229,7 @@
                                                                 <a href="javascript:void(0)" onclick="addFeaturedLanguageData(this)" class="add-btn plus-icon d-flex">
                                                                     <i class="fa-solid fa-plus @error('featured_languages_data') bg-danger @enderror"></i>
                                                                     @error('featured_languages_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert featured language data</span>
                                                                     @enderror
                                                                 </a>
                                                             </td>
