@@ -86,7 +86,7 @@ class PreviewController extends Controller
             "is_draft" => 1
         ]);
 
-        return redirect()->route('admin-dashboard.highSchoolResume.personalInfo');
+        return redirect()->route('admin-dashboard.highSchoolResume.list');
     }
 
     public function list()
