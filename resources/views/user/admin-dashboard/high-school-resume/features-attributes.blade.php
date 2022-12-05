@@ -19,68 +19,58 @@
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}"
                             id="step1-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Personal Info</p>
+                            <h6>Personal Info</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
                             id="step2-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Education </p>
+                            <h6>Education </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Honors </p>
+                            <h6>Honors </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">4</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Activities</p>
+                            <h6>Activities</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
                             id="step5-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">5</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Employment & <br> Certifications</p>
+                            <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
                             id="step6-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>6</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Featured <br> Attributes</p>
+                            <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.preview') }}" id="step7-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>7</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Preview</p>
+                            <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ $error }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endforeach
-                @endif
                 <form class="js-validation" action="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes.update', $featuredAttribute->id) : route('admin-dashboard.highSchoolResume.featuresAttributes.store') }}" method="POST">
                     @csrf
                     @if(isset($featuredAttribute))
@@ -95,33 +85,39 @@
                                         <a class="text-white fw-600 collapsed"> Featured skills</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse"
+                                        class="collapse {{ $errors->has('featured_skills_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="featured_skill_data_table_row">
-                                                            <input type="hidden" name="featured_skills_data" id="featured_skills_data" value="{{ !empty($featuredAttribute->featured_skills_data) ? $featuredAttribute->featured_skills_data : '' }}">
+                                                            <input type="hidden" name="featured_skills_data" id="featured_skills_data" value="{{ !empty($featuredAttribute->featured_skills_data) ? $featuredAttribute->featured_skills_data : old('featured_skills_data') }}">
                                                             <td>
                                                                 <label class="form-label" for="featured_skill">
                                                                     Featured skill
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('featured_skills_data') is-invalid @enderror"
                                                                     value="{{ old('featured_skill') }}" id="featured_skill"
                                                                     name="featured_skill" placeholder="Enter Featured Skill">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addFeaturedSkillData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addFeaturedSkillData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('featured_skills_data') bg-danger @enderror"></i>
+                                                                    @error('featured_skills_data') 
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($featuredAttribute->featured_skills_data))
-                                                            @foreach(json_decode($featuredAttribute->featured_skills_data) as $featured_skills_data)
+                                                        @if(!empty($featuredAttribute->featured_skills_data) || !empty(old('featured_skills_data')))
+                                                            @php
+                                                                $featured_skills_data = !empty($featuredAttribute->featured_skills_data) ? $featuredAttribute->featured_skills_data : old('featured_skills_data');
+                                                            @endphp
+                                                            @foreach(json_decode($featured_skills_data) as $featured_skills_data)
                                                                 <tr id="featured_skill_{{ $featured_skills_data->id }}">
                                                                     <td class="featured_skill">{{ $featured_skills_data->featured_skill }}</td>
                                                                     <td>
@@ -143,34 +139,40 @@
                                         <a class="text-white fw-600 collapsed"> Featured Award </a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse"
+                                        class="collapse {{ $errors->has('featured_awards_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="featured_award_data_table_row">
-                                                            <input type="hidden" name="featured_awards_data" id="featured_awards_data" value="{{ !empty($featuredAttribute->featured_awards_data) ? $featuredAttribute->featured_awards_data : '' }}">
+                                                            <input type="hidden" name="featured_awards_data" id="featured_awards_data" value="{{ !empty($featuredAttribute->featured_awards_data) ? $featuredAttribute->featured_awards_data : old('featured_awards_data') }}">
                                                             <td>
                                                                 <label class="form-label" for="featured_award">
                                                                     Featured Award
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('featured_awards_data') is-invalid @enderror"
                                                                     value="{{ old('featured_award') }}"
                                                                     id="featured_award" name="featured_award"
                                                                     placeholder="Enter Featured Award">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addFeaturedAwardData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addFeaturedAwardData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('featured_awards_data') bg-danger @enderror"></i>
+                                                                    @error('featured_awards_data') 
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($featuredAttribute->featured_awards_data))
-                                                            @foreach(json_decode($featuredAttribute->featured_awards_data) as $featured_awards_data)
+                                                        @if(!empty($featuredAttribute->featured_awards_data) || !empty(old('featured_awards_data')))
+                                                            @php
+                                                                $featured_awards_data = !empty($featuredAttribute->featured_awards_data) ? $featuredAttribute->featured_awards_data : old('featured_awards_data');
+                                                            @endphp
+                                                            @foreach(json_decode($featured_awards_data) as $featured_awards_data)
                                                                 <tr id="featured_award_{{ $featured_awards_data->id }}">
                                                                     <td class="featured_award">{{ $featured_awards_data->featured_award }}</td>
                                                                     <td>
@@ -192,21 +194,21 @@
                                         <a class="text-white fw-600 collapsed"> Featured Languages </a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse"
+                                        class="collapse {{ $errors->has('featured_languages_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="featured_language_data_table_row">
-                                                            <input type="hidden" name="featured_languages_data" id="featured_languages_data" value="{{ !empty($featuredAttribute->featured_languages_data) ? $featuredAttribute->featured_languages_data : '' }}">
+                                                            <input type="hidden" name="featured_languages_data" id="featured_languages_data" value="{{ !empty($featuredAttribute->featured_languages_data) ? $featuredAttribute->featured_languages_data : old('featured_languages_data') }}">
                                                             <td>
                                                                 <label class="form-label" for="featured_language">
                                                                     Language
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('featured_languages_data') is-invalid @enderror"
                                                                     value="{{ old('featured_language') }}"
                                                                     id="featured_language" name="featured_language"
                                                                     placeholder="Enter Language">
@@ -217,19 +219,25 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('featured_languages_data') is-invalid @enderror"
                                                                     value="{{ old('languages_level') }}"
                                                                     id="languages_level" name="languages_level"
                                                                     placeholder="Fluent">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addFeaturedLanguageData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addFeaturedLanguageData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('featured_languages_data') bg-danger @enderror"></i>
+                                                                    @error('featured_languages_data') 
+                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($featuredAttribute->featured_languages_data))
+                                                        @if(!empty($featuredAttribute->featured_languages_data) || !empty(old('featured_languages_data')))
+                                                            @php
+                                                                $featured_languages_data = !empty($featuredAttribute->featured_languages_data) ? $featuredAttribute->featured_languages_data : old('featured_languages_data');
+                                                            @endphp
                                                             @foreach(json_decode($featuredAttribute->featured_languages_data) as $featured_languages_data)
                                                                 <tr id="featured_language_{{ $featured_languages_data->id }}">
                                                                     <td class="featured_language">{{ $featured_languages_data->featured_language }}</td>
@@ -249,14 +257,18 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between mt-3">
-                                <div class="prev-btn">
+                                <div class="prev-btn next-btn">
                                     <a href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
-                                        class="btn btn-alt-primary next-step"> Previous
-                                    </a>
+                                        class="btn btn-alt-success next-step"> Previous Step
+                                    </a> 
+                                    <div class="eye-module">
+                                        <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                                    </div>
                                 </div>
                                 <div class="next-btn">
-                                    <div class="next-btn">
-                                        <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                                    <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
+                                    <div class="eye-module">
+                                        <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
                                     </div>
                                 </div>
                             </div>

@@ -19,62 +19,59 @@
                     <li role="presentation">
                         <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}"
                             id="step1-tab">
-                            <i class="fa-solid fa-envelope"></i>
+                            <p>1</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Personal Info</p>
+                            <h6>Personal Info</h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
-                            id="step2-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <i class="fa-solid fa-check "></i>
-                            <p>Education</p>
+                        <a class="nav-link" href="javascript:void(0)" id="step2-tab">
+                            <p>2</p>
+                            <i class="fa-solid fa-check  "></i>
+                            <h6>Education</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)" id="step3-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>3</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Honors</p>
+                            <h6>Honors</h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
-                            id="step4-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        <a class="nav-link" href="javascript:void(0)" id="step4-tab">
+                            <p>4</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Activities</p>
+                            <h6>Activities</h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
-                            id="step5-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        <a class="nav-link" href="javascript:void(0)" id="step5-tab">
+                            <p>5</p>
                             <i class="fa-solid fa-check"></i>
-                            <p>Employment & <br> Certifications</p>
+                            <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
-                            id="step6-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        <a class="nav-link" href="javascript:void(0)" id="step6-tab">
+                            <p>6</p>
                             <i class="fa-solid fa-check"></i>
-                            <p>Featured <br> Attributes</p>
+                            <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)" id="step7-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>7</p>
                             <i class="fa-solid fa-check"></i>
-                            <p>Preview</p>
+                            <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.personalInfo.update', $personal_info->id) : route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
+                <form class="js-validation"
+                    action="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.personalInfo.update', $personal_info->id) : route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
                     method="POST">
                     @csrf
-                    @if(isset($personal_info))
+                    @if (isset($personal_info))
                         @method('PUT')
                     @endif
                     <div class="tab-content" id="myTabContent">
@@ -99,8 +96,9 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('first_name') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->first_name) ? $personal_info->first_name : old('first_name') }}" id="first_name"
-                                                                name="first_name" placeholder="Enter First Name">
+                                                                value="{{ isset($personal_info->first_name) ? $personal_info->first_name : old('first_name') }}"
+                                                                id="first_name" name="first_name"
+                                                                placeholder="Enter First Name">
                                                             @error('first_name')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -114,8 +112,9 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('middle_name') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->middle_name) ? $personal_info->middle_name : old('middle_name') }}" id="middle_name"
-                                                                name="middle_name" placeholder="Enter Middle Name">
+                                                                value="{{ isset($personal_info->middle_name) ? $personal_info->middle_name : old('middle_name') }}"
+                                                                id="middle_name" name="middle_name"
+                                                                placeholder="Enter Middle Name">
                                                             @error('middle_name')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -129,8 +128,9 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('last_name') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->last_name) ? $personal_info->last_name : old('last_name') }}" id="last_name"
-                                                                name="last_name" placeholder="Enter Last Name">
+                                                                value="{{ isset($personal_info->last_name) ? $personal_info->last_name : old('last_name') }}"
+                                                                id="last_name" name="last_name"
+                                                                placeholder="Enter Last Name">
                                                             @error('last_name')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -158,8 +158,8 @@
                                                                 Street Address 1
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <textarea class="form-control @error('street_address_one') is-invalid @enderror" id="street_address_one" name="street_address_one"
-                                                                placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : old('street_address_one') }}</textarea>
+                                                            <textarea class="form-control @error('street_address_one') is-invalid @enderror" id="street_address_one"
+                                                                name="street_address_one" placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : old('street_address_one') }}</textarea>
                                                             @error('street_address_one')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -170,8 +170,8 @@
                                                             Street Address 2
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <textarea class="form-control @error('street_address_two') is-invalid @enderror" id="street_address_two" name="street_address_two"
-                                                            placeholder="Enter Street Address 2">{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : old('street_address_two') }}</textarea>
+                                                        <textarea class="form-control @error('street_address_two') is-invalid @enderror" id="street_address_two"
+                                                            name="street_address_two" placeholder="Enter Street Address 2">{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : old('street_address_two') }}</textarea>
                                                         @error('street_address_two')
                                                             <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -187,8 +187,8 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('city') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->city) ? $personal_info->city : old('city') }}" id="city"
-                                                                name="city" placeholder="Enter city">
+                                                                value="{{ isset($personal_info->city) ? $personal_info->city : old('city') }}"
+                                                                id="city" name="city" placeholder="Enter city">
                                                             @error('city')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -202,8 +202,8 @@
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control @error('state') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->state) ? $personal_info->state : old('state') }}" id="state"
-                                                                name="state" placeholder="Enter State">
+                                                                value="{{ isset($personal_info->state) ? $personal_info->state : old('state') }}"
+                                                                id="state" name="state" placeholder="Enter State">
                                                             @error('state')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -217,8 +217,9 @@
                                                             </label>
                                                             <input type="number"
                                                                 class="form-control @error('zip_code') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->zip_code) ? $personal_info->zip_code : old('zip_code') }}" id="zip_code"
-                                                                name="zip_code" placeholder="Enter Zip Code">
+                                                                value="{{ isset($personal_info->zip_code) ? $personal_info->zip_code : old('zip_code') }}"
+                                                                id="zip_code" name="zip_code"
+                                                                placeholder="Enter Zip Code">
                                                             @error('zip_code')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -248,8 +249,9 @@
                                                             </label>
                                                             <input type="tel"
                                                                 class="form-control @error('cell_phone') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->cell_phone) ? $personal_info->cell_phone : old('cell_phone') }}" id="cell_phone"
-                                                                name="cell_phone" placeholder="Enter cell phone no">
+                                                                value="{{ isset($personal_info->cell_phone) ? $personal_info->cell_phone : old('cell_phone') }}"
+                                                                id="cell_phone" name="cell_phone"
+                                                                placeholder="Enter cell phone no">
                                                             @error('cell_phone')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -263,8 +265,8 @@
                                                             </label>
                                                             <input type="email"
                                                                 class="form-control @error('email') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->email) ? $personal_info->email : old('email') }}" id="email"
-                                                                name="email" placeholder="Enter Email">
+                                                                value="{{ isset($personal_info->email) ? $personal_info->email : old('email') }}"
+                                                                id="email" name="email" placeholder="Enter Email">
                                                             @error('email')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -277,12 +279,18 @@
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="social_link_div">
-                                                        @if(!empty($personal_info->social_links))
-                                                            @foreach($personal_info->social_links as $key => $link)
+                                                        @if (!empty($personal_info->social_links) || !empty(old('social_links')))
+                                                            @php $social_links = !empty($personal_info->social_links) && array_filter($personal_info->social_links) ? $personal_info->social_links : old('social_links'); @endphp
+                                                            @foreach ($social_links as $key => $link)
                                                                 <div class="row p-0 mt-3 {{ $key == 0 ? '' : 'remove_links' }}">
                                                                     <div class="col-lg-11">
-                                                                        <input type="text" class="form-control"
-                                                                            name="social_links[]" value="{{ $link }}" placeholder="Enter Social links">
+                                                                        <input type="text" class="form-control  @error('social_links.*') is-invalid @enderror"
+                                                                            name="social_links[]"
+                                                                            value="{{ $link }}"
+                                                                            placeholder="Enter Social links">
+                                                                            @error('social_links.*')
+                                                                                <span class="invalid">{{ $message }}</span>
+                                                                            @enderror
                                                                     </div>
                                                                     <div class="col-lg-1">
                                                                         <a href="javascript:void(0)" class="add-btn"
@@ -295,8 +303,13 @@
                                                         @else
                                                             <div class="row p-0 mt-3">
                                                                 <div class="col-lg-11">
-                                                                    <input type="text" class="form-control"
-                                                                        name="social_links[]" placeholder="Enter Social links">
+                                                                    <input type="text" class="form-control @error('social_links.*') is-invalid @enderror"
+                                                                        name="social_links[]"
+                                                                        value="{{ old('social_links') }}"
+                                                                        placeholder="Enter Social links ">
+                                                                        @error('social_links.*')
+                                                                            <span class="invalid">{{ $message }}</span>
+                                                                        @enderror
                                                                 </div>
                                                                 <div class="col-lg-1">
                                                                     <a href="javascript:void(0)" class="add-btn"
@@ -348,7 +361,10 @@
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
                                     <div class="next-btn">
-                                        <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                                        <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
+                                        <div class="eye-module">
+                                            <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

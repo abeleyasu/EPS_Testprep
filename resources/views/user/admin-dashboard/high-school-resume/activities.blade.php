@@ -19,68 +19,59 @@
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}"
                             id="step1-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Personal Info</p>
+                            <h6>Personal Info</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
                             id="step2-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Education </p>
+                            <h6>Education </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Honors </p>
+                            <h6>Honors </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>4</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Activities</p>
+                            <h6>Activities</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)"
                             id="step5-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>5</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Employment & <br> Certifications</p>
+                            <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)"
                             id="step6-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>6</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Featured <br> Attributes</p>
+                            <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="javascript:void(0)" id="step7-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p >7</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Preview</p>
+                            <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ $error }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endforeach
-                @endif
+               
                 <form class="js-validation" action="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.activities.update', $activity->id) : route('admin-dashboard.highSchoolResume.activities.store') }}"
                     method="post">
                     @csrf
@@ -97,21 +88,21 @@
                                             major</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse"
+                                        class="collapse {{ $errors->first('demonstrated_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="demonstrated_data_table_row">
-                                                            <input type="hidden" name="demonstrated_data" id="demonstrated_data" value="{{ !empty($activity->demonstrated_data) ? $activity->demonstrated_data : '' }}">
+                                                            <input type="hidden" name="demonstrated_data" id="demonstrated_data" value="{{ !empty($activity->demonstrated_data) ? $activity->demonstrated_data : old('demonstrated_data') }}">
                                                             <td>
                                                                 <label class="form-label" for="position">
                                                                     Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('demonstrated_data') is-invalid @enderror"
                                                                     value="{{ old('position') }}" id="position"
                                                                     name="position" placeholder="Enter Position" autocomplete="off">
                                                             </td>
@@ -121,7 +112,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('demonstrated_data') is-invalid @enderror"
                                                                     id="interest" name="interest"
                                                                     value="{{ old('interest') }}"
                                                                     placeholder="Enter Interest">
@@ -131,13 +122,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="grade"
+                                                                <select class="js-select2 select @error('demonstrated_data') is-invalid @enderror" id="grade"
                                                                     name="grade" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ in_array("1st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -146,7 +137,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('demonstrated_data') is-invalid @enderror"
                                                                     id="location" name="location"
                                                                     value="{{ old('location') }}"
                                                                     placeholder="Enter Location">
@@ -156,18 +147,24 @@
                                                                     Details
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <textarea class="form-control" id="details" name="details" rows="1"
+                                                                <textarea class="form-control @error('demonstrated_data') is-invalid @enderror" id="details" name="details" rows="1"
                                                                     placeholder="Enter Details">{{ old('details') }}</textarea>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addDemonstratedData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addDemonstratedData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('demonstrated_data') bg-danger @enderror"></i>
+                                                                    @error('demonstrated_data')
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($activity->demonstrated_data))
-                                                            @foreach(json_decode($activity->demonstrated_data) as $demonstrated_data)
+                                                        @if(!empty($activity->demonstrated_data) || !empty(old('demonstrated_data')))
+                                                            @php
+                                                                $demonstrated_data = !empty($activity->demonstrated_data) ? $activity->demonstrated_data : old('demonstrated_data');
+                                                            @endphp
+                                                            @foreach(json_decode($demonstrated_data) as $demonstrated_data)
                                                                 <tr id="demonstrated_{{ $demonstrated_data->id }}">
                                                                     <td class="position">{{ $demonstrated_data->position }}</td>
                                                                     <td class="interest">{{ $demonstrated_data->interest }}</td>
@@ -193,13 +190,13 @@
                                         <a class=" text-white fw-600 collapsed">Leadership</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse"
+                                        class="collapse {{ $errors->first('leadership_data') ? 'show' : '' }}"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <input type="hidden" name="leadership_data" id="leadership_data" value="{{ !empty($activity->leadership_data) ? $activity->leadership_data : '' }}">
+                                                        <input type="hidden" name="leadership_data" id="leadership_data" value="{{ !empty($activity->leadership_data) ? $activity->leadership_data : old('leadership_data') }}">
                                                         <tr class="leadership_data_table_row">
                                                             <td>
                                                                 <label class="form-label" for="leadership_status">
@@ -207,7 +204,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('leadership_data') is-invalid @enderror"
                                                                     id="leadership_status" name="leadership_status"
                                                                     value="{{ old('leadership_status') }}"
                                                                     placeholder="Enter Status">
@@ -218,7 +215,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('leadership_data') is-invalid @enderror"
                                                                     id="leadership_position" name="leadership_position"
                                                                     placeholder="Enter Position" autocomplete="off">
                                                             </td>
@@ -228,7 +225,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('leadership_data') is-invalid @enderror"
                                                                     id="leadership_organization" name="leadership_organization"
                                                                     value="{{ old('leadership_organization') }}"
                                                                     placeholder="Enter Organization">
@@ -239,7 +236,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('leadership_data') is-invalid @enderror"
                                                                     id="leadership_location" name="leadership_location"
                                                                     value="{{ old('leadership_location') }}"
                                                                     placeholder="Ex: DRHS">
@@ -249,24 +246,30 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="leadership_grade"
+                                                                <select class="js-select2 select @error('leadership_data') is-invalid @enderror" id="leadership_grade"
                                                                     name="leadership_grade" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ in_array("1st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addLeadershipData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addLeadershipData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('leadership_data') bg-danger @enderror"></i>
+                                                                    @error('leadership_data')
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($activity->leadership_data))
-                                                            @foreach(json_decode($activity->leadership_data) as $leadership_data)
+                                                        @if(!empty($activity->leadership_data) || !empty(old('leadership_data')))
+                                                            @php
+                                                                $leadership_data = !empty($activity->leadership_data) ? $activity->leadership_data : old('leadership_data');
+                                                            @endphp
+                                                            @foreach(json_decode($leadership_data) as $leadership_data)
                                                                 <tr id="leadership_{{ $leadership_data->id }}">
                                                                     <td class="leadership_status">{{ $leadership_data->leadership_status }}</td>
                                                                     <td class="leadership_position">{{ $leadership_data->leadership_position }}</td>
@@ -292,21 +295,21 @@
                                         <a class=" text-white fw-600 collapsed">Activities & Clubs</a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse"
+                                        class="collapse {{ $errors->first('activities_data') ? 'show' : '' }}"
                                         aria-labelledby="collapseThree" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="activity_data_table_row">
-                                                            <input type="hidden" name="activities_data" id="activities_data" value="{{ !empty($activity->activities_data) ? $activity->activities_data : '' }}">
+                                                            <input type="hidden" name="activities_data" id="activities_data" value="{{ !empty($activity->activities_data) ? $activity->activities_data : old('activities_data') }}">
                                                             <td>
                                                                 <label class="form-label" for="activity_position">
                                                                     Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('activities_data') is-invalid @enderror"
                                                                     value="{{ old('activity_position') }}"
                                                                     id="activity_position" name="activity_position"
                                                                     placeholder="Enter Position" autocomplete="off">
@@ -317,7 +320,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('activities_data') is-invalid @enderror"
                                                                     id="activity" name="activity"
                                                                     value="{{ old('activity') }}"
                                                                     placeholder="Enter Activity">
@@ -327,13 +330,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="activity_grade"
+                                                                <select class="js-select2 @error('activities_data') is-invalid @enderror select" id="activity_grade"
                                                                     name="activity_grade" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ in_array("1st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -342,7 +345,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('activities_data') is-invalid @enderror"
                                                                     id="activity_location" name="activity_location"
                                                                     value="{{ old('activity_location') }}"
                                                                     placeholder="Ex: DRHS">
@@ -353,20 +356,26 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('activities_data') is-invalid @enderror"
                                                                     id="activity_honor_award" name="activity_honor_award"
                                                                     value="{{ old('activity_honor_award') }}"
                                                                     placeholder="Enter Honor/Award">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addActivityData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addActivityData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('activities_data') bg-danger @enderror"></i>
+                                                                    @error('activities_data')
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($activity->activities_data))
-                                                            @foreach(json_decode($activity->activities_data) as $activities_data)
+                                                        @if(!empty($activity->activities_data) || !empty(old('activities_data')))
+                                                            @php
+                                                                $activities_data = !empty($activity->activities_data) ? $activity->activities_data : old('activities_data');
+                                                            @endphp
+                                                            @foreach(json_decode($activities_data) as $activities_data)
                                                                 <tr id="activity_{{ $activities_data->id }}">
                                                                     <td class="activity_position">{{ $activities_data->activity_position }}</td>
                                                                     <td class="activity">{{ $activities_data->activity }}</td>
@@ -392,21 +401,21 @@
                                         <a class=" text-white fw-600 collapsed">Athletics</a>
                                     </div>
                                     <div id="collapseFour"
-                                        class="collapse"
+                                        class="collapse {{ $errors->first('athletics_data') ? 'show' : '' }}"
                                         aria-labelledby="collapseFour" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="athletics_data_table_row">
-                                                            <input type="hidden" name="athletics_data" id="athletics_data" value="{{ !empty($activity->athletics_data) ? $activity->athletics_data : '' }}">
+                                                            <input type="hidden" name="athletics_data" id="athletics_data" value="{{ !empty($activity->athletics_data) ? $activity->athletics_data : old('athletics_data') }}">
                                                             <td> 
                                                                 <label class="form-label" for="athletics_position">
                                                                     Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('athletics_data') is-invalid @enderror"
                                                                     id="athletics_positions" name="athletics_position"
                                                                     value="{{ old('athletics_position') }}"
                                                                     placeholder="Enter Position" autocomplete="off">
@@ -418,7 +427,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('athletics_data') is-invalid @enderror"
                                                                     id="athletics_activity" name="athletics_activity"
                                                                     value="{{ old('athletics_activity') }}"
                                                                     placeholder="Enter Activity">
@@ -428,13 +437,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="athletics_grade"
+                                                                <select class="js-select2 select @error('athletics_data') is-invalid @enderror" id="athletics_grade"
                                                                     name="athletics_grade" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ in_array("1st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -443,7 +452,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('athletics_data') is-invalid @enderror"
                                                                     value="{{ old('athletics_location') }}"
                                                                     id="athletics_location" name="athletics_location"
                                                                     placeholder="Ex: DRHS">
@@ -454,20 +463,26 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('athletics_data') is-invalid @enderror"
                                                                     id="athletics_honor" name="athletics_honor"
                                                                     value="{{ old('athletics_honor') }}"
                                                                     placeholder="Enter Honor">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addAthleticsData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addAthleticsData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('athletics_data') bg-danger @enderror"></i>
+                                                                    @error('athletics_data')
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($activity->athletics_data))
-                                                            @foreach(json_decode($activity->athletics_data) as $athletics_data)
+                                                        @if(!empty($activity->athletics_data) || !empty(old('athletics_data')))
+                                                            @php
+                                                                $athletics_data = !empty($activity->athletics_data) ? $activity->athletics_data : old('athletics_data');
+                                                            @endphp
+                                                            @foreach(json_decode($athletics_data) as $athletics_data)
                                                                 <tr id="athletics_{{ $athletics_data->id }}">
                                                                     <td class="athletics_position">{{ $athletics_data->athletics_position }}</td>
                                                                     <td class="athletics_activity">{{ $athletics_data->athletics_activity }}</td>
@@ -494,21 +509,21 @@
                                         <a class=" text-white fw-600 collapsed">Community service / Volunteerism</a>
                                     </div>
                                     <div id="collapseFive"
-                                        class="collapse"
+                                        class="collapse {{ $errors->first('community_service_data') ? 'show' : '' }}"
                                         aria-labelledby="collapseFive" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
                                                         <tr class="community_data_table_row">
-                                                            <input type="hidden" name="community_service_data" id="community_service_data" value="{{ !empty($activity->community_service_data) ? $activity->community_service_data : '' }}">
+                                                            <input type="hidden" name="community_service_data" id="community_service_data" value="{{ !empty($activity->community_service_data) ? $activity->community_service_data : old('community_service_data') }}">
                                                             <td> 
                                                                 <label class="form-label" for="participation_level">
                                                                     Participation level
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('community_service_data') is-invalid @enderror"
                                                                     value="{{ old('participation_level') }}"
                                                                     id="participation_level" name="participation_level"
                                                                     placeholder="Enter Participation level">
@@ -519,7 +534,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('community_service_data') is-invalid @enderror"
                                                                     id="community_service" name="community_service"
                                                                     value="{{ old('community_service') }}"
                                                                     placeholder="Enter Service">
@@ -529,13 +544,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="community_grade"
+                                                                <select class="js-select2 select @error('community_service_data') is-invalid @enderror" id="community_grade"
                                                                     name="community_grade" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ in_array("1st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                    <option {{ in_array("2st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                    <option {{ in_array("3st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                    <option {{ in_array("4st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                    <option {{ in_array("5st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td><label class="form-label" for="community_location">
@@ -543,19 +558,25 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control"
+                                                                    class="form-control @error('community_service_data') is-invalid @enderror"
                                                                     id="community_location" name="community_location"
                                                                     placeholder="Enter Location">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addCommunityData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addCommunityData(this)" class="add-btn plus-icon d-flex">
+                                                                    <i class="fa-solid fa-plus @error('community_service_data') bg-danger @enderror"></i>
+                                                                    @error('community_service_data')
+                                                                        <span class="me-2 ms-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($activity->community_service_data))
-                                                            @foreach(json_decode($activity->community_service_data) as $community_service_data)
+                                                        @if(!empty($activity->community_service_data) || !empty(old('community_service_data')))
+                                                            @php
+                                                                $community_service_data = !empty($activity->community_service_data) ? $activity->community_service_data : old('community_service_data')
+                                                            @endphp
+                                                            @foreach(json_decode($community_service_data) as $community_service_data)
                                                                 <tr id="community_{{ $community_service_data->id }}">
                                                                     <td class="participation_level">{{ $community_service_data->participation_level }}</td>
                                                                     <td class="community_service">{{ $community_service_data->community_service }}</td>
@@ -579,15 +600,19 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
-                        <div class="prev-btn">
+                        <div class="prev-btn next-btn">
                             <a href="{{ route('admin-dashboard.highSchoolResume.honors') }}"
-                                class="btn btn-alt-primary next-step">
-                                Previous
+                                class="btn btn-alt-success next-step">
+                                Previous Step
                             </a>
+                            <div class="eye-module">
+                                <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                            </div>
                         </div>
                         <div class="next-btn">
-                            <div class="next-btn">
-                                <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                            <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
+                            <div class="eye-module">
+                                <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
                             </div>
                         </div>
                     </div>

@@ -19,69 +19,59 @@
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}"
                             id="step1-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Personal Info</p>
+                            <h6>Personal Info</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link " href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
                             id="step2-tab">
-                            <i class="fa-solid fa-envelope d-none"></i>
+                            <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
-                            <p>Education </p>
+                            <h6>Education </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.honors') }}"
                             id="step3-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <i class="fa-solid fa-check "></i>
-                            <p>Honors </p>
+                            <p>3</p>
+                            <i class="fa-solid fa-check"></i>
+                            <h6>Honors </h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>4</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Activities</p>
+                            <h6>Activities</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}"
                             id="step5-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>5</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Employment & <br> Certifications</p>
+                            <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
                             id="step6-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>6</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Featured <br> Attributes</p>
+                            <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation">
                         <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.preview') }}" id="step7-tab">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>7</p>
                             <i class="fa-solid fa-check "></i>
-                            <p>Preview</p>
+                            <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
-                @if ($errors->any())
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Error!</strong> {{ $error }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endforeach
-                @endif
                 <form class="js-validation" action="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
                     method="POST">
                     @csrf
@@ -98,13 +88,13 @@
                                             Awards</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse {{ $errors->has('position') || $errors->has('honor_achievement_award') || $errors->has('grade') || $errors->has('location') ? 'show' : '' }}"
+                                        class="collapse show"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <table class="table">
                                                     <tbody>
-                                                        <input type="hidden" name="honors_data" id="honors_data" value="{{ !empty($honor->honors_data) ? $honor->honors_data : '' }}">
+                                                        <input type="hidden" name="honors_data" id="honors_data" value="{{ !empty($honor->honors_data) ? $honor->honors_data : old('honors_data') }}">
                                                         <tr class="honors_data_table_row">
                                                             <td>
                                                                 <label class="form-label" for="position">
@@ -112,7 +102,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="number"
-                                                                    class="form-control @error('position') is-invalid @enderror"
+                                                                    class="form-control @error('honors_data') is-invalid @enderror"
                                                                     id="position" name="position"
                                                                     value="{{ old('position') }}"
                                                                     placeholder="Enter Position" autocomplete="off">
@@ -126,7 +116,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('honor_achievement_award') is-invalid @enderror"
+                                                                    class="form-control @error('honors_data') is-invalid @enderror"
                                                                     id="honor_achievement_award"
                                                                     name="honor_achievement_award"
                                                                     value="{{ old('honor_achievement_award') }}"
@@ -140,13 +130,13 @@
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select" id="grade"
+                                                                <select class="js-select2 select @error('honors_data') is-invalid @enderror" id="grade"
                                                                     name="grade[]" multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    <option {{ (in_array('1st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                    <option {{ (in_array('2st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                    <option {{ (in_array('3st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                    <option {{ (in_array('4st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                    <option {{ (in_array('5st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>
                                                             <td>
@@ -155,7 +145,7 @@
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <input type="text"
-                                                                    class="form-control @error('location') is-invalid @enderror"
+                                                                    class="form-control @error('honors_data') is-invalid @enderror"
                                                                     value="{{ old('location') }}" id="location"
                                                                     name="location" placeholder="Ex: DRHS">
                                                                 @error('location')
@@ -164,8 +154,11 @@
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addHonorsData(this)" class="add-btn plus-icon">
-                                                                    <i class="fa-solid fa-plus"></i>
+                                                                <a href="javascript:void(0)" onclick="addHonorsData(this)" class="add-btn d-flex plus-icon">
+                                                                    <i class="fa-solid fa-plus @error('honors_data') bg-danger @enderror"></i>
+                                                                    @error('honors_data')
+                                                                        <span class="ms-2 mt-2 invalid">Click on add icon to insert data</span>
+                                                                    @enderror
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -193,14 +186,18 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
-                            <div class="prev-btn">
+                            <div class="prev-btn next-btn">
                                 <a href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}"
-                                    class="btn btn-alt-primary next-step"> Previous
+                                    class="btn btn-alt-success next-step"> Previous Step
                                 </a>
+                                <div class="eye-module">
+                                    <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                                </div>
                             </div>
                             <div class="next-btn">
-                                <div class="next-btn">
-                                    <input type="submit" class="btn btn-alt-primary next-step" value="Next">
+                                <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
+                                <div class="eye-module">
+                                    <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
                                 </div>
                             </div>
                         </div>

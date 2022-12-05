@@ -86,7 +86,7 @@
                                 <li class="nav-main-item">
                                     <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}"
                                         href="{{ route('admin-dashboard.highSchoolResume.list') }}">
-                                        <i class="fa fa-2x fa-school"></i>
+                                        <i class="fa fa-2x fa-address-card"></i>
                                         <span class="nav-main-link-name">Resume listing</span>
                                     </a>
                                 </li>

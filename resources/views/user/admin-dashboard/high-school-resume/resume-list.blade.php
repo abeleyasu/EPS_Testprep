@@ -33,7 +33,7 @@
                                     </td>
                                     <td class="fs-sm">{{ $resume->personal_info->first_name ." ". $resume->personal_info->last_name }}</td>
                                     <td>
-                                        <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', $resume->id) }}" class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-primary"><i class="fa fa-fw fa-download"></i></a>
+                                        <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', $resume->id) }}" class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-primary" data-bs-toggle="tooltip" title="Download Resume"><i class="fa fa-fw fa-download"></i></a>
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">

@@ -44,7 +44,7 @@ p {
 .invalid {
     width: 100%;
     margin-top: 0.375rem;
-    font-size: .875rem;
+    font-size: 13px;
     color: #dc2626;
     display: block;
 }
@@ -101,7 +101,7 @@ body {
     min-width: 76vw !important;
 }
 
-.custom-tab-container ul li i {
+.custom-tab-container ul li p {
     width: 50px;
     height: 50px;
     font-size: 22px;
@@ -109,8 +109,24 @@ body {
     text-align: center;
     border-radius: 50%;
     line-height: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
     color: #fff;
+    margin: auto;
+}
+
+.custom-tab-container ul li i {
+    width: 50px;
+    height: 50px;
+    font-size: 22px;
+    background-color: #d9e8c3;
+    text-align: center;
+    border-radius: 50%;
+    line-height: 50px;
+    margin-bottom: 20px !important;
+    color: #3d6208;
+    border: 1px solid #d9e8c3;
+    ;
+    margin: auto;
 }
 
 .select2-container--default .select2-selection--multiple,
@@ -163,7 +179,7 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.custom-tab-container ul li a.active i {
+.custom-tab-container ul li a.active p {
     background-color: #1f2937;
     color: #fff;
 }
@@ -231,14 +247,26 @@ input[type=number] {
     color: #ffffff;
 }
 
-.submit-btn,.btn {
+.submit-btn {
     background-color: #1f2937;
     color: #fff;
     font-size: 14px;
 }
 
-.btn:hover {
+.eye-module {
+    position: absolute;
+    top: 6px;
+    left: 35px;
+}
+.btn-alt-primary,.btn-alt-primary:hover{
+    background-color: #1f2937;
     color: #fff;
+    font-size: 14px;
+}
+
+
+.next-step {
+    padding: 5px 46px 5px 60px;
 }
 
 .modal-dialog-centered {
@@ -253,18 +281,20 @@ input[type=number] {
 .table>:not(caption)>*>* {
     padding: 10px 30px 10px 0;
 }
+.fa-eye{
+    background-color: transparent !important;
+    border: transparent !important;
+}
 
 .plus-icon i {
-    background-color: #4a9d2f;
     position: relative;
     top: 6px;
-    width: 25px;
-    height: 25px;
     color: #fff;
     text-align: center;
     border-radius: 50%;
-    line-height: 28px;
+    line-height: 17px;
     font-size: 14px;
+    padding: 8px;
 }
 
 .addButton {
@@ -279,6 +309,9 @@ input[type=number] {
     margin-bottom: -20px;
 }
 
+.next-btn {
+    position: relative;
+}
 
 
 
@@ -305,6 +338,10 @@ td {
     display: inline-block
 }
 
+.select.is-invalid + .select2-container .selection .select2-selection{ 
+    border-color: #dc2626 !important;
+}
+
 
 /*================== 
     Preview page css 
@@ -322,42 +359,52 @@ td {
     font-weight: 600;
     color: #1f2937;
 }
-.text-border{
+
+.text-border {
     border-bottom: 1px solid #000;
     margin-bottom: 30px;
 }
-.text-border h1{
+
+.text-border h1 {
     margin-bottom: 0;
 }
-.text-border h1{
+
+.text-border h1 {
     font-weight: 500;
 }
-.text-border h1 span{
+
+.text-border h1 span {
     font-weight: 800;
 }
-.preview-list h3{
+
+.preview-list h3 {
     font-size: 16px;
     color: #1f2937;
     font-weight: 500;
     margin-bottom: 15px;
     text-transform: uppercase;
 }
-.custom-tab-container .list{
+
+.custom-tab-container .list {
     display: unset;
 }
-.custom-tab-container .list li{
+
+.custom-tab-container .list li {
     margin-right: 0;
     display: block;
     text-align: left;
     color: #1f2937;
     cursor: unset;
 }
-.custom-tab-container .list li span{
+
+.custom-tab-container .list li span {
     font-weight: 600;
 }
-.preview-border{
+
+.preview-border {
     border-right: 1px solid #1f2937;
 }
+
 @page: footer {
     display: none
 }
@@ -365,54 +412,64 @@ td {
 @page: header {
     display: none
 }
+
 @media print {
     .header-area h2 {
         margin-bottom: 5px;
         color: #1f2937;
     }
-    
+
     .header-area {
         margin-bottom: 30px;
     }
-    
+
     .header-area p a {
         font-weight: 600;
         color: #1f2937;
     }
-    .text-border{
+
+    .text-border {
         border-bottom: 1px solid #000;
         margin-bottom: 30px;
     }
-    .text-border h1{
+
+    .text-border h1 {
         margin-bottom: 0;
     }
-    .text-border h1{
+
+    .text-border h1 {
         font-weight: 500;
     }
-    .text-border h1 span{
+
+    .text-border h1 span {
         font-weight: 800;
     }
-    .preview-list h3{
+
+    .preview-list h3 {
         font-size: 16px;
         color: #1f2937;
         font-weight: 500;
         margin-bottom: 15px;
         text-transform: uppercase;
     }
-    .custom-tab-container .list{
+
+    .custom-tab-container .list {
         display: unset;
     }
-    .custom-tab-container .list li{
+
+    .custom-tab-container .list li {
         margin-right: 0;
         display: block;
         text-align: left;
         color: #1f2937;
         cursor: unset;
     }
-    .custom-tab-container .list li span{
+
+    .custom-tab-container .list li span {
         font-weight: 600;
     }
-    .preview-border{
+
+    .preview-border {
         border-right: 1px solid #1f2937;
     }
 }
