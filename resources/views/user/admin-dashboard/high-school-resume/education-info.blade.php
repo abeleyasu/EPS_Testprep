@@ -79,7 +79,7 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     <a class="text-white fw-600 collapsed"> High school information</a>
                                 </div>
-                                <div id="collapseOne" class="collapse {{ $errors->first('current_grade') || $errors->first('month') || $errors->first('year') || $errors->first('high_school_name') || $errors->first('high_school_city') || $errors->first('high_school_state') || $errors->first('high_school_district') || $errors->first('high_school_district') ? 'show' : '' }}" aria-labelledby="headingOne" data-parent=".accordionExample2">
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
@@ -588,13 +588,13 @@
                         <a href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success next-step"> Previous Step
                         </a>
                         <div class="eye-module">
-                            <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                            <i class="fa-solid fa-arrow-left btn-alt-success opacity-50"></i>
                         </div>
                     </div>
                     <div class="next-btn">
                         <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
                         <div class="eye-module">
-                            <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                            <i class="fa-solid fa-arrow-right btn-alt-success opacity-50"></i>
                         </div>
                     </div>
                 </div>
