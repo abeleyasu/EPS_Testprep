@@ -279,24 +279,23 @@
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="social_link_div">
-                                                        @if (!empty($personal_info->social_links))
-                                                            @foreach ($personal_info->social_links as $key => $link)
-                                                                <div
-                                                                    class="row p-0 mt-3 {{ $key == 0 ? '' : 'remove_links' }}">
+                                                        @if (!empty($personal_info->social_links) || !empty(old('social_links')))
+                                                            @php $social_links = !empty($personal_info->social_links) && array_filter($personal_info->social_links) ? $personal_info->social_links : old('social_links'); @endphp
+                                                            @foreach ($social_links as $key => $link)
+                                                                <div class="row p-0 mt-3 {{ $key == 0 ? '' : 'remove_links' }}">
                                                                     <div class="col-lg-11">
-                                                                        <input type="text" class="form-control  @error('social_links') is-invalid @enderror"
+                                                                        <input type="text" class="form-control  @error('social_links.*') is-invalid @enderror"
                                                                             name="social_links[]"
                                                                             value="{{ $link }}"
                                                                             placeholder="Enter Social links">
-                                                                            @error('social_links')
+                                                                            @error('social_links.*')
                                                                                 <span class="invalid">{{ $message }}</span>
                                                                             @enderror
                                                                     </div>
                                                                     <div class="col-lg-1">
                                                                         <a href="javascript:void(0)" class="add-btn"
                                                                             onclick="{{ $key == 0 ? 'addLinks(this)' : 'removeLinks(this)' }}">
-                                                                            <i
-                                                                                class="fa-solid {{ $key == 0 ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                            <i class="fa-solid {{ $key == 0 ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -304,10 +303,11 @@
                                                         @else
                                                             <div class="row p-0 mt-3">
                                                                 <div class="col-lg-11">
-                                                                    <input type="text" class="form-control @error('social_links') is-invalid @enderror"
+                                                                    <input type="text" class="form-control @error('social_links.*') is-invalid @enderror"
                                                                         name="social_links[]"
+                                                                        value="{{ old('social_links') }}"
                                                                         placeholder="Enter Social links ">
-                                                                        @error('social_links')
+                                                                        @error('social_links.*')
                                                                             <span class="invalid">{{ $message }}</span>
                                                                         @enderror
                                                                 </div>

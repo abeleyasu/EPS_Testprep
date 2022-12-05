@@ -24,7 +24,7 @@ class PersonalInfoRequest extends FormRequest
             "zip_code" => "required",
             "cell_phone" => "required",
             "email" => "required|email",
-            "social_links" => "required",
+            "social_links.*" => "required",
             "parent_email_one" => "required|email",
             "parent_email_two" => "required|email",
         ];
@@ -44,7 +44,7 @@ class PersonalInfoRequest extends FormRequest
             'cell_phone.required' => 'Cell Phone field is required',
             'email.required' => 'Email field is required',
             'email.email' => 'Email must be valid email',
-            'social_links.required' => 'Social Link field is required',
+            'social_links.*.required' => 'Social Link field is required',
             'parent_email_one.required' => 'Parent Email 1 field is required',
             'parent_email_one.email' => 'Parent Email 1 must be valid email',
             'parent_email_two.required' => 'Parent Email 2 field is required',
