@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link active " href="{{ route('admin-dashboard.highSchoolResume.preview') }}"
+                        <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.preview') }}"
                             id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -281,15 +281,15 @@
                             class="btn btn-alt-success next-step"> Previous
                         </a>
                         <div class="eye-module">
-                            <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                            <i class="fa-solid fa-arrow-left btn-alt-success opacity-50"></i>
                         </div>
                     </div>
                     <div class="next-btn">
                         <a href="{{ route('admin-dashboard.highSchoolResume.resume.complete') }}"
                             class="btn btn-alt-success next-step">Submit</a>
-                        <div class="eye-module">
+                        {{-- <div class="eye-module">
                             <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

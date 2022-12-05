@@ -83,7 +83,7 @@
                                         <a class=" text-white fw-600 collapsed">Personal info</a>
                                     </div>
                                     <div id="collapseOne"
-                                        class="collapse {{ $errors->has('first_name') || $errors->has('middle_name') || $errors->has('last_name') ? 'show' : '' }}"
+                                        class="collapse show"
                                         aria-labelledby="headingOne" data-parent=".accordionExample">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -363,7 +363,7 @@
                                     <div class="next-btn">
                                         <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
                                         <div class="eye-module">
-                                            <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
+                                            <i class="fa-solid fa-arrow-right btn-alt-success opacity-50"></i>
                                         </div>
                                     </div>
                                 </div>
