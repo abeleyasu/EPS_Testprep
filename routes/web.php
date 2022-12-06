@@ -178,7 +178,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::get('/preview', 'index')->name('preview');
                 Route::get('/pdf/preview', 'resumePreview')->name('pdf.preview');
                 Route::get('/resume/complete', 'resumeComplete')->name('resume.complete');
-                Route::get('/resume/download/{id}', 'resumeDownload')->name('resume.download');
+                Route::get('/resume/download/{id}/{type}', 'resumeDownload')->name('resume.download');
                 Route::delete('/resume/delete/{id}', 'destroy')->name('resume.destroy');
             });
         });

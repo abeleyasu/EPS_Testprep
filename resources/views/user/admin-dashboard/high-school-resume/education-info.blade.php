@@ -233,7 +233,7 @@
                             </div>
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                    <a class=" text-white fw-600 collapsed">Contact information</a>
+                                    <a class=" text-white fw-600 collapsed">Grades</a>
                                 </div>
                                 <div id="collapseThree" class="collapse {{ $errors->first('cumulative_gpa_unweighted') || $errors->first('cumulative_gpa_weighted') || $errors->first('cumulative_gpa_unweighted') ? 'show' : '' }}" data-parent=".accordionExample2">
                                     <div class="block-content">
