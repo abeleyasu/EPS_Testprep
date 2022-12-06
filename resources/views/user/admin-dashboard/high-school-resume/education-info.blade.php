@@ -731,11 +731,6 @@
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
-<style>
-    .select2-container .select2-selection--multiple {
-        min-width: 36vw !important;
-    }
-</style>
 @endsection
 
 @section('user-script')

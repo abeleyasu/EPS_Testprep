@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="block-content">
+            <div class="block-content resume-list-table">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-vcenter" id="resumeTable">
                         <thead>
@@ -41,16 +41,16 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'preview']) }}" class="btn btn-sm btn-alt-secondary"
+                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'preview']) }}" class="btn btn-sm"
                                                 data-bs-toggle="tooltip" title="Preview" target="_blank">
                                                 <i class="fa fa-fw fa-file-pdf"></i>
                                             </a>
-                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'download']) }}" class="btn btn-sm btn-alt-secondary ms-2"
+                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'download']) }}" class="btn btn-sm ms-2"
                                                 data-bs-toggle="tooltip" title="Download">
                                                 <i class="fa fa-fw fa-download"></i>
                                             </a>
                                             <form id="deleteResumeForm" onsubmit="deleteResume(this)" data-id="{{ $resume->id }}">
-                                                <button type="submit" class="btn btn-sm btn-alt-secondary ms-2" 
+                                                <button type="submit" class="btn btn-sm ms-2" 
                                                     data-bs-toggle="tooltip" title="Delete">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </button>
