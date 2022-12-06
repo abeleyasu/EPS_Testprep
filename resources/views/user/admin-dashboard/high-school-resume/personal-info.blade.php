@@ -361,10 +361,10 @@
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
                                     <div class="next-btn">
-                                        <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
-                                        <div class="eye-module">
+                                        <input type="submit" class="btn  btn-alt-success next-step" value="Next Step"/>
+                                        <!-- <div class="eye-module">
                                             <i class="fa-solid fa-arrow-right btn-alt-success opacity-50"></i>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

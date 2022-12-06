@@ -233,7 +233,7 @@
                             </div>
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                    <a class=" text-white fw-600 collapsed">Contact information</a>
+                                    <a class=" text-white fw-600 collapsed">Grades</a>
                                 </div>
                                 <div id="collapseThree" class="collapse {{ $errors->first('cumulative_gpa_unweighted') || $errors->first('cumulative_gpa_weighted') || $errors->first('cumulative_gpa_unweighted') ? 'show' : '' }}" data-parent=".accordionExample2">
                                     <div class="block-content">
@@ -584,18 +584,12 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-3">
-                    <div class="prev-btn next-btn">
-                        <a href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success next-step"> Previous Step
+                    <div class="prev-btn">
+                        <a href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
                         </a>
-                        <div class="eye-module">
-                            <i class="fa-solid fa-arrow-left btn-alt-success opacity-50"></i>
-                        </div>
                     </div>
                     <div class="next-btn">
                         <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
-                        <div class="eye-module">
-                            <i class="fa-solid fa-arrow-right btn-alt-success opacity-50"></i>
-                        </div>
                     </div>
                 </div>
             </form>

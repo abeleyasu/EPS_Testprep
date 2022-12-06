@@ -253,12 +253,10 @@ input[type=number] {
     font-size: 14px;
 }
 
-.eye-module {
-    position: absolute;
-    top: 6px;
-    left: 35px;
-}
-.btn-alt-primary,.btn-alt-primary:hover{
+
+
+.btn-alt-primary,
+.btn-alt-primary:hover {
     background-color: #1f2937;
     color: #fff;
     font-size: 14px;
@@ -266,8 +264,27 @@ input[type=number] {
 
 
 .next-step {
-    padding: 5px 46px 5px 60px;
+    padding: 5px 64px 5px 45px;
+    background-image: url(../Image/arrow-right.png);
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: 130px 9px;
+    font-size: 15px;
 }
+
+.prev-step{
+    padding: 5px 45px 5px 58px;
+    background-image: url(../Image/arrow-left.png);
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: 28px 9px;
+    font-size: 15px;
+}
+
+.submit_btn{
+    padding: 5px 45px 5px 45px;
+}
+
 
 .modal-dialog-centered {
     position: relative;
@@ -280,10 +297,6 @@ input[type=number] {
 
 .table>:not(caption)>*>* {
     padding: 10px 30px 10px 0;
-}
-.fa-eye{
-    background-color: transparent !important;
-    border: transparent !important;
 }
 
 .plus-icon i {
@@ -307,10 +320,6 @@ input[type=number] {
 
 .input-margin {
     margin-bottom: -20px;
-}
-
-.next-btn {
-    position: relative;
 }
 
 
@@ -338,7 +347,7 @@ td {
     display: inline-block
 }
 
-.select.is-invalid + .select2-container .selection .select2-selection{ 
+.select.is-invalid+.select2-container .selection .select2-selection {
     border-color: #dc2626 !important;
 }
 

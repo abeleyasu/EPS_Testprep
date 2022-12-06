@@ -40,7 +40,7 @@ class PreviewController extends Controller
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
         $pdf->loadHTML($html);
         $pdf->render();
-        return $pdf->stream();
+        return $pdf->stream('resume.pdf',array('Attachment' => 0));
     }
 
     public function resumeComplete()
@@ -96,7 +96,7 @@ class PreviewController extends Controller
         return view('user.admin-dashboard.high-school-resume.resume-list',compact('highSchoolResume'));
     }
 
-    public function resumeDownload($id)
+    public function resumeDownload($id, $type)
     {
         $highSchoolResume =  HighSchoolResume::find($id);
         $pdf = new Dompdf();
@@ -109,7 +109,7 @@ class PreviewController extends Controller
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
         $pdf->loadHTML($html);
         $pdf->render();
-        return $pdf->stream('resume_'.$id.'.pdf');
+        return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
     }
 
     public function destroy($id)
@@ -122,6 +122,6 @@ class PreviewController extends Controller
         EmploymentCertification::find($highSchoolResume->employment_certification_id)->delete();
         FeaturedAttribute::find($highSchoolResume->featured_attribute_id)->delete();
         $highSchoolResume->delete();
-        return redirect()->route('admin-dashboard.highSchoolResume.list');
+        return response()->json(['success' => true, 'id' => $id, 'message' => 'Resume Deleted successfully']);
     }
 }
