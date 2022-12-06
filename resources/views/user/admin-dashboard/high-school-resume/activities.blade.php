@@ -602,18 +602,14 @@
                     <div class="d-flex justify-content-between mt-3">
                         <div class="prev-btn next-btn">
                             <a href="{{ route('admin-dashboard.highSchoolResume.honors') }}"
-                                class="btn btn-alt-success next-step">
+                                class="btn btn-alt-success prev-step">
                                 Previous Step
                             </a>
-                            <div class="eye-module">
-                                <i class="fa-solid fa-arrow-left btn-alt-success opacity-50"></i>
-                            </div>
+                        
                         </div>
                         <div class="next-btn">
                             <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
-                            <div class="eye-module">
-                                <i class="fa-solid fa-arrow-right btn-alt-success opacity-50"></i>
-                            </div>
+                            
                         </div>
                     </div>
                 </form>

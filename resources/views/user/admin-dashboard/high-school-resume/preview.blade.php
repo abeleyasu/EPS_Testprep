@@ -278,18 +278,14 @@
                 <div class="d-flex justify-content-between mt-3">
                     <div class="prev-btn next-btn">
                         <a href="{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
-                            class="btn btn-alt-success next-step"> Previous
+                            class="btn btn-alt-success prev-step"> Previous
                         </a>
-                        <div class="eye-module">
-                            <i class="fa-solid fa-arrow-left btn-alt-success opacity-50"></i>
-                        </div>
+                       
                     </div>
                     <div class="next-btn">
                         <a href="{{ route('admin-dashboard.highSchoolResume.resume.complete') }}"
-                            class="btn btn-alt-success next-step">Submit</a>
-                        {{-- <div class="eye-module">
-                            <i class="fa-solid fa-eye btn-alt-success opacity-50"></i>
-                        </div> --}}
+                            class="btn btn-alt-success submit_btn">Submit</a>
+                        
                     </div>
                 </div>
             </div>
