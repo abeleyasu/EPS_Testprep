@@ -24,7 +24,7 @@
       <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
         <div class="flex-grow-1">
           <h1 class="h3 fw-bold mb-2">
-            Test Review
+            {{$get_test_name}}
           </h1>
           <h2 class="fs-base lh-base fw-medium text-muted mb-0">
             Official ACT 74F - April 2017
