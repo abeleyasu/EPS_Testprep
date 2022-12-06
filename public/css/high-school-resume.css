@@ -86,7 +86,7 @@ body {
 }
 
 #page-header .content-header {
-    padding-left: 3.875rem;
+    padding-left: 2.875rem;
     padding-right: 1.875rem;
 }
 
@@ -98,7 +98,6 @@ body {
     min-height: 37px !important;
     user-select: none;
     -webkit-user-select: none;
-    min-width: 76vw !important;
 }
 
 .custom-tab-container ul li p {
@@ -128,6 +127,22 @@ body {
     ;
     margin: auto;
 }
+#page-container.sidebar-mini.sidebar-o .content-header {
+    padding-left: 22px;
+    padding-right: 1.875rem;
+}
+
+#page-container.sidebar-mini.sidebar-o #sidebar {
+    width: 247px;
+}
+
+#page-container.sidebar-mini.sidebar-o {
+    padding-left: 67px;
+}
+.sidebar-mini.sidebar-o #sidebar:hover{
+    width: 290px !important;
+}
+
 
 .select2-container--default .select2-selection--multiple,
 .select2-container--default .select2-selection--single {
@@ -203,6 +218,13 @@ input[type=number] {
     color: #545454 !important;
     padding: 0 !important;
     border: unset !important;
+}
+
+.resume-list-table   {
+    background: #fff;
+    box-shadow: 0 0 10px rgb(183 183 183 / 45%);
+    margin: 26px 0;
+    border-radius: 15px;
 }
 
 .custom-tab-container ul {
@@ -498,4 +520,15 @@ button.close {
     background-color: transparent !important;
     border: 0 !important;
     -webkit-appearance: none !important;
+}
+
+.resume_remove_1 td:first-child{
+    padding-left: 30px;
+
+
+}
+
+.table-responsive td,.table-responsive th{
+    
+    padding: 10px 30px 10px 30px;
 }
