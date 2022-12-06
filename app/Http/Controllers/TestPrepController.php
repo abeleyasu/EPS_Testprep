@@ -65,6 +65,7 @@ class TestPrepController extends Controller
     public function singleReview(Request $request , $test , $id)
     {   
         $current_user_id = Auth::id();
+        $get_test_name = $test;
         //$user_selected_answers =  UserAnswers::get();
         $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $id)->get();
         $store_user_answers_details = array();
@@ -82,13 +83,25 @@ class TestPrepController extends Controller
                
             }
         }
-        return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details]);
+        return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name]);
     }
 
     public function set_answers(Request $request)
     {
         $current_user_id = Auth::id();
         $get_section_id = $request->get_section_id;
+
+        $get_question_title = DB::table('practice_tests')
+        ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
+        ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+        ->select('practice_tests.*')
+        ->where('practice_questions.practice_test_sections_id', $get_section_id)->get(); 
+
+        $get_test_name = $get_question_title[0]->title;
+        // echo "<pre>";
+        // print_r($get_question_title);
+        // echo "</pre>";
+        // die();
        
         $filtered_answers = array_filter($request->selected_answer);
        
@@ -113,7 +126,7 @@ class TestPrepController extends Controller
             $userAnswers->save();
         }
 
-        return response()->json(['success'=>'0']);
+        return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_name' => $get_test_name]);
     }
 
     public function get_questions(Request $request)

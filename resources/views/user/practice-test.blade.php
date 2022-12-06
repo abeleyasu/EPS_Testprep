@@ -201,8 +201,17 @@
                         get_section_id:get_section_id
                     },
                     success: function(result){
-                        console.log(result);
-                        window.location.href = "{{url('user/student-view-dashboard')}}";
+                        console.log(result.success);
+                        console.log(result.get_test_name);
+                        console.log(result.section_id);
+                        
+                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page';
+                        //console.log(url);
+                        //console.log("{{url('')}}");
+                        //return false;
+                        ///practice-tests/{test}/{id}/review-page
+                        window.location.href = url;
+                        
                 }});
 
             });
