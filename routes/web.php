@@ -121,9 +121,12 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
     Route::post('/task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
     Route::get('/clearCache', [UserController::class, 'clearCache']);
+
     Route::view('student-view-dashboard', 'user/student-view-dashboard');
+    Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
 
     //Route::view('practice-test-sections', 'user/practice-test-sections');
+    
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
     Route::view('/practice-test-sections', 'user.practice-test-sections');

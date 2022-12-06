@@ -11,6 +11,7 @@ use App\Models\PracticeTestSection;
 use App\Models\PracticeQuestion;
 use App\Models\UserAnswers;
 use App\Models\Passage;
+use App\Models\User;
 
 class TestPrepController extends Controller
 {
@@ -19,6 +20,7 @@ class TestPrepController extends Controller
     public function dashboard()
     {
         $getAllPracticeTests = PracticeTest::get();
+        
         $events = CalendarEvent::where('user_id', Auth::id())->where('is_assigned',0)->get();
         $all_events = UserCalendar::with(['event' => function($query){
             $query->where('user_id', Auth::id());
@@ -58,6 +60,29 @@ class TestPrepController extends Controller
         }
 
         return $c_code;
+    }
+
+    public function singleReview(Request $request , $test , $id)
+    {   
+        $current_user_id = Auth::id();
+        //$user_selected_answers =  UserAnswers::get();
+        $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $id)->get();
+        $store_user_answers_details = array();
+        if(isset($user_selected_answers) && !empty($user_selected_answers))
+        {
+            $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+            foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
+            {
+                $get_question_details = DB::table('practice_questions')
+                ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+                ->where('practice_questions.id', $question_id)
+                ->get();
+                $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'get_question_details' => $get_question_details); 
+               
+            }
+        }
+        return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details]);
     }
 
     public function set_answers(Request $request)

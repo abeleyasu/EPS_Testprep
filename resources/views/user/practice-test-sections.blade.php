@@ -126,7 +126,9 @@
                       @if(isset($singletestSections['Sections_question']))
                         @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
                         <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                          <a class="fw-medium" href="{{url('user/student-view-dashboard')}}">Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
+                          <!-- <a class="fw-medium" href="{{url('user/student-view-dashboard')}}">Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a> -->
+                          <a class="fw-medium" href="{{route('single_review', ['test' => 'Test' , 'id' => $singletestSections['Sections'][0]['id']])}}">Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
+                          
                         </button>
                         @else
                         <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
