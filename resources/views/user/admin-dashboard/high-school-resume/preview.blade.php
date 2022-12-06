@@ -79,7 +79,7 @@
                             <p><a href="#">Home</a> > High School Resume</p>
                         </div>
                         <div class="mb-5">
-                            <a href="{{ route('admin-dashboard.highSchoolResume.pdf.preview') }}" target="_blank"
+                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/'. route('admin-dashboard.highSchoolResume.pdf.preview') }}" target="_blank"
                                 class="btn btn-alt-primary">SAVE RESUME AS FILE</a>
                         </div>
                         <div class="text-border">

@@ -40,7 +40,7 @@ class PreviewController extends Controller
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
         $pdf->loadHTML($html);
         $pdf->render();
-        return 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/'.$pdf->stream('resume.pdf',array('Attachment' => 0));
+        return $pdf->stream('resume.pdf',array('Attachment' => 0));
     }
 
     public function resumeComplete()
@@ -109,7 +109,7 @@ class PreviewController extends Controller
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
         $pdf->loadHTML($html);
         $pdf->render();
-        return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/'.$pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
+        return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
     }
 
     public function destroy($id)

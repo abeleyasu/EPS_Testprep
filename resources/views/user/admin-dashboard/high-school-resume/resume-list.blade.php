@@ -41,7 +41,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'preview']) }}" class="btn btn-sm"
+                                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/'. route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'preview']) }}" class="btn btn-sm"
                                                 data-bs-toggle="tooltip" title="Preview" target="_blank">
                                                 <i class="fa fa-fw fa-file-pdf"></i>
                                             </a>
