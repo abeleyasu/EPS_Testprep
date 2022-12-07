@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarEventController;
+use App\Http\Controllers\CollegeApplicationDeadlineController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\HighSchoolResume\ActivityController;
@@ -186,9 +187,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::get('/fetch-resume/{id}', 'fetchResume')->name('fetch.resume');
             });
         });
-        
+        Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
         Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');
-        Route::view('/college-application-deadline', 'user.admin-dashboard.college-application-deadline')->name('collegeApplicationDeadline');
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
     });
     
