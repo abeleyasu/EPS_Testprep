@@ -81,6 +81,11 @@
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <style>
+        .btn:focus{
+            box-shadow: none
+        }
+    </style>
 @endsection
 
 @section('user-script')
