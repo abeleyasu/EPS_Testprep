@@ -98,11 +98,7 @@ class TestPrepController extends Controller
         ->where('practice_questions.practice_test_sections_id', $get_section_id)->get(); 
 
         $get_test_name = $get_question_title[0]->title;
-        // echo "<pre>";
-        // print_r($get_question_title);
-        // echo "</pre>";
-        // die();
-       
+        
         $filtered_answers = array_filter($request->selected_answer);
        
         if(isset($filtered_answers) && !empty($filtered_answers))
@@ -110,8 +106,8 @@ class TestPrepController extends Controller
             $get_question_ids_array = array_keys($filtered_answers);
         }
        
-        if (DB::table('user_answers')->where('section_id', $get_section_id)->exists()) {
-            
+        if (DB::table('user_answers')->where('section_id', $get_section_id)->where('user_id', $current_user_id)->exists()) {
+
             DB::table('user_answers')
             ->where('section_id', $get_section_id)
             ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers)]);
@@ -125,7 +121,7 @@ class TestPrepController extends Controller
             $userAnswers->answer = json_encode($filtered_answers);
             $userAnswers->save();
         }
-
+        
         return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_name' => $get_test_name]);
     }
 
@@ -224,6 +220,9 @@ class TestPrepController extends Controller
 
     public function singleTest(Request $request, $id)
     {
+
+       $current_user_id = Auth::id();
+       
        $store_sections_details = array();
        $get_total_sections = 0;
        $get_total_questions = 0;
@@ -269,8 +268,8 @@ class TestPrepController extends Controller
                 ->get();
 
                 $check_if_section_completed = 'no';
-
-                if (DB::table('user_answers')->where('section_id', $single_test_sections->id)->exists()) {
+                
+                if (DB::table('user_answers')->where('section_id', $single_test_sections->id)->where('user_id', $current_user_id)->exists()) {
                     $check_if_section_completed = 'yes';
                 }
                 else
