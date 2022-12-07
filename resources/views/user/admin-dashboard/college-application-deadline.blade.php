@@ -11,7 +11,7 @@
                     <div>
                         <h1 class="h2 text-white mb-3">College Application Deadline Organizer</h1>
                     </div>
-                    <div>
+                    <div class="text-center">
                         <button type="button" class="btn btn-inform w-50" data-bs-toggle="popover" data-bs-placement="bottom"
                             title=""
                             data-bs-content="This is example content. You can put a description or more info here."
