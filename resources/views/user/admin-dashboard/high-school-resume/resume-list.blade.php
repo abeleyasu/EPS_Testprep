@@ -43,8 +43,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button class="btn btn-sm" data-toggle="modal"
-                                                data-target=".bd-example-modal-lg" data-bs-toggle="tooltip" title="Preview">
+                                            <button class="btn btn-sm" data-id="{{ $resume->id }}" onclick="showResumePreview(this)" data-bs-toggle="tooltip" title="Preview">
                                                 <i class="fa fa-fw fa-file-pdf"></i>
                                             </button>
                                             <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'download']) }}"
@@ -72,128 +71,9 @@
             </div>
         </div>
     </main>
-
-
     <!-- Resume-list Modal -->
-    <div class="modal fade bd-example-modal-lg" id="myLargeModalLabel" role="dialog"
-        aria-labelledby="modal-block-extra-large" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="block block-rounded block-transparent mb-0">
-                    <div class="block-header block-header-preview text-border rounded-0">
-                        <div class="">
-                            <h1><span>Carl </span> Crawford</h1>
-                        </div>
-                        <div class="block-options">
-                            <button type="button" class="btn-block-option close" data-dismiss="modal" aria-label="Close">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="modal-padding custom-tab-container block-content fs-sm">
-                        <div class="row">
-                            <div class="col-lg-4 preview-border">
-                                <div class="preview-leftside">
-                                    <div class="preview-list mb-3">
-                                        <h3>Contact</h3>
-                                        <ul class="list">
-                                            <li>judafabesy@mailinator.com</li>
-                                            <li>+1 (324) 606-7351</li>
-                                            <li>19 South New Road</li>
-                                            <li>Debitis in autem ver</li>
-                                            <li>11200</li>
-                                            <li>Sunt omnis veniam p, Ex quisquam pariatur</li>
-                                        </ul>
-                                    </div>
-                                    <div class="preview-list mb-3">
-                                        <h3>Featured Skills</h3>
-                                        <ul class="list">
-                                            <li>Amet dolore tempori</li>
-                                        </ul>
-                                    </div>
-                                    <div class="preview-list mb-3">
-                                        <h3>featured awards</h3>
-                                        <ul class="list">
-                                            <li>Qui lorem modi delen</li>
-                                        </ul>
-                                    </div>
-                                    <div class="preview-list mb-3">
-                                        <h3>featured languages</h3>
-                                        <ul class="list">
-                                            <li>Voluptatibus possimu</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-8">
-                                <div class="preview-rightside">
-                                    <div class="preview-list mb-3">
-                                        <h3>Education</h3>
-                                        <ul class="list">
-                                            <li>Reed Murphy / Qui neque repellendu / Molestiae velit proi</li>
-                                            <li>Weighted GPA: Dolorem ullamco eius, Class Rank: Ab eum enim aspernat
-                                            </li>
-                                            <li>
-                                                <span>Name of Test:</span>Uma Hale
-                                            </li>
-                                            <li>
-                                                <span>IB Courses:</span>list 5
-                                            </li>
-                                            <li>
-                                                <span>AP Courses:</span> list 2, list 3, list 4, list 5
-                                            </li>
-                                            <li>
-                                                <span>Honors Courses:</span> Hayden Johnston
-                                            </li>
-                                            <li>
-                                                <span>Concurrent Courses:</span> Brittany Harrison
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="preview-list mb-3">
-                                        <h3>Activities</h3>
-                                        <ul class="list">
-                                            <li>
-                                                <span>Intended College Major(s):</span>
-                                                Demo
-                                            </li>
-                                            <li>
-                                                <span>Intended College Minor(s):</span>Temp
-                                            </li>
-                                            <li>
-                                                <span>Demostrated Interests in the Area of my College
-                                                    Major:</span>Vel qui tenetur non
-                                            </li>
-                                            <li>
-                                                <span>Leadership:</span> Washington and Rich LLC
-                                            </li>
-                                            <li>
-                                                <span>Athletics:</span> Ullam eligendi sequi
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="preview-list mb-3">
-                                        <h3>Employment</h3>
-                                        <ul class="list">
-                                            <li> Non et sapiente maio </li>
-                                        </ul>
-                                    </div>
-                                    <div class="preview-list mb-3">
-                                        <h3>Certifications</h3>
-                                        <ul class="list">
-                                            <li> Ab recusandae Duis </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div class="modal fade bd-example-modal-lg showResumePreviewModal" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true"></div>
     <!-- Resume-list Modal -->
-
 @endsection
 
 @section('page-style')
@@ -244,6 +124,23 @@
                 }
             })
         });
+
+        function showResumePreview(data) {
+            let id = $(data).attr('data-id');
+            $.ajax({
+                url: `{{ url('/user/admin-dashboard/high-school-resume/fetch-resume/${id}') }}`,
+                type: 'GET',
+                success: function(resp) {
+                    if (resp.success) {
+                        $('.showResumePreviewModal').html(resp.html);
+                        $('.showResumePreviewModal').modal('show');
+                    }
+                },
+                error: function(err) {
+                    console.log("err =>>>", err);
+                }
+            });
+        }
 
         toastr.options = {
             "closeButton": true,

@@ -183,6 +183,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::get('/resume/complete', 'resumeComplete')->name('resume.complete');
                 Route::get('/resume/download/{id}/{type}', 'resumeDownload')->name('resume.download');
                 Route::delete('/resume/delete/{id}', 'destroy')->name('resume.destroy');
+                Route::get('/fetch-resume/{id}', 'fetchResume')->name('fetch.resume');
             });
         });
         
