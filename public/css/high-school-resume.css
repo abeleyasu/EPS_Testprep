@@ -532,3 +532,10 @@ button.close {
     
     padding: 10px 30px 10px 30px;
 }
+
+.modal-padding{
+    padding: 0 30px 30px;
+}
+.block-header-preview{
+    padding: 20px;
+}
