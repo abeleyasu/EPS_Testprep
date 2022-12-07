@@ -531,7 +531,7 @@
                                                                             <td>
                                                                                 <a class="fw-medium"
                                                                                     href="{{route('single_test', ['id' => $singleGetAllPracticeTests->id])}}">College Prep
-                                                                                    System {{$singleGetAllPracticeTests->format}} #{{++$count}}</a>
+                                                                                    {{$singleGetAllPracticeTests->title}} {{$singleGetAllPracticeTests->format}} #{{++$count}}</a>
                                                                             </td>
                                                                             <td class="text-end text-muted">
                                                                                 <button type="button"
