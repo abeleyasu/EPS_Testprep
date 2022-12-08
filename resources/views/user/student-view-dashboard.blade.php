@@ -1,3 +1,5 @@
+<?php  use Illuminate\Support\Facades\DB; use App\Models\PracticeTest;
+use App\Models\PracticeTestSection;?>
 @extends('layouts.user')
 
 @section('title', 'Student View Dashboard : CPS')
@@ -3289,7 +3291,7 @@
                       return str.replace( /(<([^>]+)>)/ig, '');
                   }
                 jQuery(".text-info").click(function () {
-                  
+                  jQuery('.nav-link').removeClass('active');
                    var get_question_title = removeTags(jQuery(this).data('question-title'));
                    jQuery(".text-info").addClass(get_question_title);
                    var get_passage_title = removeTags(jQuery(this).data('passage-title'));
@@ -3766,6 +3768,18 @@
       </div>
     </div>
     <!-- END Table 3 -->
+    <!-- <button type="button" style=" float: right;" disabled class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
+              <a class="fw-medium" href="">Return to all sections</a>
+    </button> -->
+    <?php
+    
+
+    $get_test_id = $_GET['test_id'];
+
+    ?>
+    <a href="{{route('single_test', ['id' => $get_test_id])}}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
+      <i class="fa fa-fw  me-1 opacity-50"></i> Return to all sections
+    </a>
   </div>
 </main>
 <!-- END Main Container -->

@@ -86,9 +86,7 @@
                                                               would like to have multiple events to the left or to the right section)
           -->
 
-          <button type="button" disabled class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-              <a class="fw-medium" href="{{route('all_section', ['id' => $selected_test_id])}}">Start All Section </a>
-          </button>
+          
           @if(!$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
@@ -119,26 +117,33 @@
                       <p>
                         Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section Questions
                       </p>
-                      <!-- <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <i class="fa fa-lg fa-circle-check me-1"></i>Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section 
-                      </button> -->
+                      <?php
+                        $url = $_SERVER['PHP_SELF'];
+                        $link_array = explode('/',$url);
+                        $current_section_id = end($link_array);
+                      ?>
                       @if(isset($singletestSections['Sections_question']))
                      
                         @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
-                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                          <!-- <a class="fw-medium" href="{{url('user/student-view-dashboard')}}">Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a> -->
-                          <a class="fw-medium" href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']])}}">Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
-                          
-                        </button>
+                       
+
+                        <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
+                          <i class="fa fa-fw  me-1 opacity-50"></i> Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section
+                        </a>
+                        
+
+
                         @else
-                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                          <a class="fw-medium" href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']])}}">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
-                        </button>
+                        <a href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id}}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
+                          <i class="fa fa-fw  me-1 opacity-50"></i> Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section
+                        </a>
+
                         @endif
                       @elseif(!isset($singletestSections['Sections_question']))
-                      <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success">
-                        <a class="fw-medium" href="#">Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section </a>
-                      </button>
+                     
+                      <a href="#" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
+                          <i class="fa fa-fw  me-1 opacity-50"></i> Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section
+                        </a>
                       @endif
                       
                     </div>
@@ -155,6 +160,9 @@
                No Sections Added yet!
           </div>
           @endif
+          <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none; pointer-events: none; cursor: default;" class="btn w-25 btn-alt-success">
+            <i class="fa fa-fw  me-1 opacity-50"></i> Start All Section
+          </a>
           <!-- END Timeline -->
         </div>
         <!-- END Page Content -->

@@ -173,6 +173,11 @@
             jQuery(".submit_section_btn").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
                 var get_section_id = jQuery('#section_id').val();
+                var get_question_type = jQuery('#get_question_type').val();
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const get_test_id = urlParams.get('test_id');
+                
                 
                 // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                 // selected_answer[get_question_id] = getSelectedAnswer;
@@ -187,6 +192,8 @@
                 }
 
                 console.log(selected_answer);
+                console.log(get_section_id);
+                //return false;
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -198,14 +205,15 @@
                     method: 'post',
                     data: {
                         selected_answer: (selected_answer),
-                        get_section_id:get_section_id
+                        get_section_id:get_section_id,
+                        get_question_type:get_question_type
                     },
                     success: function(result){
                         console.log(result.success);
                         console.log(result.get_test_name);
                         console.log(result.section_id);
                         
-                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page';
+                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id;
                         //console.log(url);
                         //console.log("{{url('')}}");
                         //return false;
