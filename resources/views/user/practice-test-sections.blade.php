@@ -118,7 +118,10 @@
                         Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section Questions
                       </p>
                       <?php
-                        $url = $_SERVER['PHP_SELF'];
+                        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] 
+                        === 'on' ? "https" : "http") . 
+                        "://" . $_SERVER['HTTP_HOST'] . 
+                        $_SERVER['REQUEST_URI'];
                         $link_array = explode('/',$url);
                         $current_section_id = end($link_array);
                       ?>
