@@ -90,16 +90,31 @@ class TestPrepController extends Controller
     {
         $current_user_id = Auth::id();
         $get_section_id = $request->get_section_id;
+        $get_question_type = $request->get_question_type;
 
-        $get_question_title = DB::table('practice_tests')
-        ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
-        ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
-        ->select('practice_tests.*')
-        ->where('practice_questions.practice_test_sections_id', $get_section_id)->get(); 
-
+        if($get_question_type == 'single')
+        {
+            $get_question_title = DB::table('practice_tests')
+            ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+            ->select('practice_tests.*')
+            ->where('practice_questions.practice_test_sections_id', $get_section_id)->get(); 
+        }
+        else if($get_question_type == 'all')
+        {
+            $get_question_title = DB::table('practice_tests')
+            ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+            ->select('practice_tests.*','practice_test_sections.id as test_section_id','practice_questions.id as test_question_id')
+            ->where('practice_tests.id', $get_section_id)->get(); 
+        }
+        
+        
         $get_test_name = $get_question_title[0]->title;
         
         $filtered_answers = array_filter($request->selected_answer);
+
+        //dd($get_question_title);
        
         if(isset($filtered_answers) && !empty($filtered_answers))
         {
@@ -107,7 +122,6 @@ class TestPrepController extends Controller
         }
        
         if (DB::table('user_answers')->where('section_id', $get_section_id)->where('user_id', $current_user_id)->exists()) {
-
             DB::table('user_answers')
             ->where('section_id', $get_section_id)
             ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers)]);
@@ -121,6 +135,7 @@ class TestPrepController extends Controller
             $userAnswers->answer = json_encode($filtered_answers);
             $userAnswers->save();
         }
+
         
         return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_name' => $get_test_name]);
     }
@@ -144,9 +159,14 @@ class TestPrepController extends Controller
                 ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
                 ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
                 ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
-                ->select('practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*' ,'practice_tests.*' ,'practice_test_sections.*' )
+                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*' ,'practice_tests.*' ,'practice_test_sections.*' )
                 ->where('practice_tests.id', $request->section_id)
                 ->offset($get_offset)->limit(1)->get(); 
+
+                // echo "<pre>";
+                // print_r($testSectionQuestions);
+                // echo "</pre>";
+                // die('op');
                 
                 if($testSectionQuestions->isEmpty())
                 {
