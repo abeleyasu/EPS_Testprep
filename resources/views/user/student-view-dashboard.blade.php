@@ -3777,9 +3777,13 @@ use App\Models\PracticeTestSection;?>
     $get_test_id = $_GET['test_id'];
 
     ?>
-    <a href="{{route('single_test', ['id' => $get_test_id])}}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
-      <i class="fa fa-fw  me-1 opacity-50"></i> Return to all sections
+    
+    <div class="justify-content-end d-flex mb-4">
+      <a href="{{route('single_test', ['id' => $get_test_id])}}" class="btn btn-alt-success">
+      <i class="fa-solid fa-arrow-left" style='margin-right:5px'></i> Return to all sections
     </a>
+    </div>
+
   </div>
 </main>
 <!-- END Main Container -->
