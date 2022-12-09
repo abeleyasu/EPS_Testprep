@@ -85,10 +85,6 @@ body {
     background: transparent !important;
 }
 
-#page-header .content-header {
-    padding-left: 2.875rem;
-    padding-right: 1.875rem;
-}
 
 
 .select2-container .select2-selection--multiple {
@@ -127,21 +123,7 @@ body {
     ;
     margin: auto;
 }
-#page-container.sidebar-mini.sidebar-o .content-header {
-    padding-left: 22px;
-    padding-right: 1.875rem;
-}
 
-#page-container.sidebar-mini.sidebar-o #sidebar {
-    width: 247px;
-}
-
-#page-container.sidebar-mini.sidebar-o {
-    padding-left: 67px;
-}
-.sidebar-mini.sidebar-o #sidebar:hover{
-    width: 290px !important;
-}
 
 
 .select2-container--default .select2-selection--multiple,
@@ -220,7 +202,7 @@ input[type=number] {
     border: unset !important;
 }
 
-.resume-list-table   {
+.resume-list-table {
     background: #fff;
     box-shadow: 0 0 10px rgb(183 183 183 / 45%);
     margin: 26px 0;
@@ -294,7 +276,7 @@ input[type=number] {
     font-size: 15px;
 }
 
-.prev-step{
+.prev-step {
     padding: 5px 45px 5px 58px;
     background-image: url(../Image/arrow-left.png);
     background-repeat: no-repeat;
@@ -303,7 +285,7 @@ input[type=number] {
     font-size: 15px;
 }
 
-.submit_btn{
+.submit_btn {
     padding: 5px 45px 5px 45px;
 }
 
@@ -436,13 +418,6 @@ td {
     border-right: 1px solid #1f2937;
 }
 
-@page: footer {
-    display: none
-}
-
-@page: header {
-    display: none
-}
 
 @media print {
     .header-area h2 {
@@ -522,13 +497,25 @@ button.close {
     -webkit-appearance: none !important;
 }
 
-.resume_remove_1 td:first-child{
+.resume_remove_1 td:first-child {
     padding-left: 30px;
 
 
 }
 
-.table-responsive td,.table-responsive th{
-    
+.table-responsive td,
+.table-responsive th {
+
     padding: 10px 30px 10px 30px;
+}
+
+.block-header-preview {
+    padding: 20px;
+}
+
+.modal-padding {
+    height: calc(100vh - 400px);
+    overflow: auto;
+    padding: 0 30px 30px;
+
 }

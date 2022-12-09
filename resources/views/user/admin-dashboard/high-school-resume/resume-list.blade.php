@@ -32,7 +32,9 @@
                                     <td class="fw-semibold fs-sm">
                                         {{ $resume->id }}
                                     </td>
-                                    <td class="fs-sm">{{ $resume->personal_info->first_name ." ". $resume->personal_info->last_name }}</td>
+                                    <td class="fs-sm">
+                                        {{ $resume->personal_info->first_name . ' ' . $resume->personal_info->last_name }}
+                                    </td>
                                     <td>
                                         {{ $resume->personal_info->email }}
                                     </td>
@@ -41,17 +43,17 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/'. route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'preview']) }}" class="btn btn-sm"
-                                                data-bs-toggle="tooltip" title="Preview" target="_blank">
+                                            <button class="btn btn-sm" data-id="{{ $resume->id }}" onclick="showResumePreview(this)" data-bs-toggle="tooltip" title="Preview">
                                                 <i class="fa fa-fw fa-file-pdf"></i>
-                                            </a>
-                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'download']) }}" class="btn btn-sm ms-2"
-                                                data-bs-toggle="tooltip" title="Download">
+                                            </button>
+                                            <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'download']) }}"
+                                                class="btn btn-sm ms-2" data-bs-toggle="tooltip" title="Download">
                                                 <i class="fa fa-fw fa-download"></i>
                                             </a>
-                                            <form id="deleteResumeForm" onsubmit="deleteResume(this)" data-id="{{ $resume->id }}">
-                                                <button type="submit" class="btn btn-sm ms-2" 
-                                                    data-bs-toggle="tooltip" title="Delete">
+                                            <form id="deleteResumeForm" onsubmit="deleteResume(this)"
+                                                data-id="{{ $resume->id }}">
+                                                <button type="submit" class="btn btn-sm ms-2" data-bs-toggle="tooltip"
+                                                    title="Delete">
                                                     <i class="fa fa-fw fa-trash"></i>
                                                 </button>
                                             </form>
@@ -69,30 +71,39 @@
             </div>
         </div>
     </main>
+    <!-- Resume-list Modal -->
+        <div class="modal fade bd-example-modal-lg showResumePreviewModal" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true"></div>
+    <!-- Resume-list Modal -->
 @endsection
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
-    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <style>
+        .btn:focus{
+            box-shadow: none
+        }
+    </style>
 @endsection
 
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-    <script src="{{asset('assets/js/sweetalert2/sweetalert2.all.min.js')}}"></script>
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
-    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     <script>
-        $(document).on('submit', '#deleteResumeForm', function(e){
+        $(document).on('submit', '#deleteResumeForm', function(e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to delete this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#131921',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
@@ -106,7 +117,7 @@
                             "_token": "{{ csrf_token() }}",
                         },
                         success: function(resp) {
-                            if(resp.success) {
+                            if (resp.success) {
                                 $(`#resumeTable .resume_remove_${resp.id}`).remove();
                                 toastr.success(resp.message);
                             }
@@ -118,6 +129,23 @@
                 }
             })
         });
+
+        function showResumePreview(data) {
+            let id = $(data).attr('data-id');
+            $.ajax({
+                url: `{{ url('/user/admin-dashboard/high-school-resume/fetch-resume/${id}') }}`,
+                type: 'GET',
+                success: function(resp) {
+                    if (resp.success) {
+                        $('.showResumePreviewModal').html(resp.html);
+                        $('.showResumePreviewModal').modal('show');
+                    }
+                },
+                error: function(err) {
+                    console.log("err =>>>", err);
+                }
+            });
+        }
 
         toastr.options = {
             "closeButton": true,

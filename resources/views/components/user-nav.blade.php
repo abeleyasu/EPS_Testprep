@@ -86,7 +86,7 @@
                         </li>
 
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="#">
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.collegeApplicationDeadline') ? 'active' : '' }}" href="{{ route('admin-dashboard.collegeApplicationDeadline') }}">
                                 <i class="nav-main-link-icon si si-book-open"></i>
                                 <span class="nav-main-link-name">College Application Deadline Organizer</span>
                             </a>

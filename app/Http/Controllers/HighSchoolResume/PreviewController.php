@@ -124,4 +124,18 @@ class PreviewController extends Controller
         $highSchoolResume->delete();
         return response()->json(['success' => true, 'id' => $id, 'message' => 'Resume Deleted successfully']);
     }
+
+    public function fetchResume($id)
+    {
+        $highSchoolResume =  HighSchoolResume::find($id);
+        $personal_info = PersonalInfo::find($highSchoolResume->personal_info_id);
+        $education = Education::find($highSchoolResume->education_id);
+        $honor = Honor::find($highSchoolResume->honor_id);
+        $activity = Activity::find($highSchoolResume->activity_id);
+        $employmentCertification = EmploymentCertification::find($highSchoolResume->employment_certification_id);
+        $featuredAttribute = FeaturedAttribute::find($highSchoolResume->featured_attribute_id);
+        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
+        
+        return response()->json(["success" => true, "html" => $html]);
+    }
 }

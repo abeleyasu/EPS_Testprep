@@ -1,4 +1,4 @@
-text/css custom.css (ASCII text) .accordinIcon {
+ .accordinIcon {
 	text-align: right;
 	position: absolute;
 	right: 485px;
@@ -242,4 +242,31 @@ text/css custom.css (ASCII text) .accordinIcon {
 
 #page-container.sidebar-o {
 	padding-left: 290px;
+}
+
+
+
+/*===== sidebar css ====*/
+
+
+#page-header .content-header {
+    padding-left: 2.875rem;
+    padding-right: 1.875rem;
+}
+
+#page-container.sidebar-mini.sidebar-o .content-header {
+    padding-left: 22px;
+    padding-right: 1.875rem;
+}
+
+#page-container.sidebar-mini.sidebar-o #sidebar {
+    width: 247px;
+}
+
+#page-container.sidebar-mini.sidebar-o {
+    padding-left: 67px;
+}
+
+.sidebar-mini.sidebar-o #sidebar:hover {
+    width: 290px !important;
 }

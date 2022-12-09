@@ -43,13 +43,18 @@
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
               <div class="flex-grow-1">
                 <h1 class="h3 fw-bold mb-2">
-                  {{$testSectionName}} section
+                <span class='text-primary'>{{$testSectionName}}</span> sections
                 </h1>
-                <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2 class="fs-base lh-base fw-medium text-muted mb-0">
                 
                   This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
                 
                 </h2>
+                <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
+                  <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                </a>
+                </div>
               </div>
             </div>
           </div>
@@ -98,7 +103,7 @@
               </div>
               <div class="timeline-event-block block">
                 <div class="block-header block-header-default">
-                  <h3 class="block-title">{{$singletestSections['Sections'][0]['practice_test_type']}} Section</h3>
+                  <h3 class="block-title">{{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section</h3>
                   <div class="block-options">
                   
                   @if(isset($singletestSections['Sections_question']))
@@ -112,11 +117,12 @@
                     @endif
                   </div>
                 </div>
-                <div class="block-content">
-                    <div class="d-flex justify-content-between">
-                      <p>
-                        Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section Questions
-                      </p>
+                <div class="block-content pb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        Start {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section Questions
+                        
+                      </div>
                       <?php
                         $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] 
                         === 'on' ? "https" : "http") . 
@@ -130,22 +136,28 @@
                         @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
                        
 
-                        <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
-                          <i class="fa fa-fw  me-1 opacity-50"></i> Review {{$singletestSections['Sections'][0]['practice_test_type']}} Section
+                        <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}" 
+                          style='padding: 5px 20px fs-5'
+                           class="btn btn-alt-success text-success">
+                          <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>
+                          Review Section
+                          {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
                         </a>
                         
 
-
                         @else
-                        <a href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id}}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
-                          <i class="fa fa-fw  me-1 opacity-50"></i> Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section
+                        <a href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id}}" 
+                          style="padding: 5px 20px fs-5" class="btn btn-alt-secondary text-primary">
+                          {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                          <i class="fa-solid fa-circle-check" style='margin-right:5px'></i> Start Section
                         </a>
 
                         @endif
                       @elseif(!isset($singletestSections['Sections_question']))
                      
-                      <a href="#" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none;" class="btn w-25 btn-alt-success">
-                          <i class="fa fa-fw  me-1 opacity-50"></i> Start {{$singletestSections['Sections'][0]['practice_test_type']}} Section
+                      <a href="#" style="" class="btn btn-alt-secondary">
+                          {{-- <i class="fa fa-fw  me-1 opacity-50"></i> Start {{ str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type']) }} Section --}}
+                          <i class="fa-solid fa-timer" style='margin-right:5px'></i> Start Section
                         </a>
                       @endif
                       
@@ -163,9 +175,11 @@
                No Sections Added yet!
           </div>
           @endif
-          <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style=" float: right; padding: 19px 19px;margin: 4px -3px;border: none; pointer-events: none; cursor: default;" class="btn w-25 btn-alt-success">
-            <i class="fa fa-fw  me-1 opacity-50"></i> Start All Section
-          </a>
+          {{-- <div class="d-flex justify-content-end">
+            <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn w-25 btn-alt-danger">
+              <i class="fa fa-fw  me-1 opacity-50"></i> Start All Sections
+            </a>
+          </div> --}}
           <!-- END Timeline -->
         </div>
         <!-- END Page Content -->
