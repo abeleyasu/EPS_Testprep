@@ -107,6 +107,7 @@ class TestPrepController extends Controller
             ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
             ->select('practice_tests.*','practice_test_sections.id as test_section_id','practice_questions.id as test_question_id')
             ->where('practice_tests.id', $get_section_id)->get(); 
+            dd('On Development');
         }
         
         
@@ -114,30 +115,72 @@ class TestPrepController extends Controller
         
         $filtered_answers = array_filter($request->selected_answer);
 
-        //dd($get_question_title);
-       
-        if(isset($filtered_answers) && !empty($filtered_answers))
+        if($get_question_type == 'single')
         {
-            $get_question_ids_array = array_keys($filtered_answers);
+            if(isset($filtered_answers) && !empty($filtered_answers))
+            {
+                $get_question_ids_array = array_keys($filtered_answers);
+            }
+        
+            if (DB::table('user_answers')->where('section_id', $get_section_id)->where('user_id', $current_user_id)->exists()) {
+                DB::table('user_answers')
+                ->where('section_id', $get_section_id)
+                ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers)]);
+            }
+            else
+            {
+                $userAnswers = new UserAnswers();
+                $userAnswers->user_id = $current_user_id;
+                $userAnswers->section_id = $get_section_id;
+                $userAnswers->question_id = json_encode($get_question_ids_array);
+                $userAnswers->answer = json_encode($filtered_answers);
+                $userAnswers->save();
+            }
         }
-       
-        if (DB::table('user_answers')->where('section_id', $get_section_id)->where('user_id', $current_user_id)->exists()) {
-            DB::table('user_answers')
-            ->where('section_id', $get_section_id)
-            ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers)]);
-        }
-        else
+        else if($get_question_type == 'all')
         {
-            $userAnswers = new UserAnswers();
-            $userAnswers->user_id = $current_user_id;
-            $userAnswers->section_id = $get_section_id;
-            $userAnswers->question_id = json_encode($get_question_ids_array);
-            $userAnswers->answer = json_encode($filtered_answers);
-            $userAnswers->save();
+                $store_querstion_answer_details = array();
+                if(isset($get_question_title) && !empty($get_question_title))
+                {
+                    foreach($get_question_title as $single_get_questions_title)
+                    {
+                        if(isset($filtered_answers) && !empty($filtered_answers))
+                        {
+                            foreach($filtered_answers as $user_question_id => $single_filtered_answers)
+                            {
+                                if($single_get_questions_title->test_question_id == $user_question_id )
+                                {
+                                    $store_querstion_answer_details[$single_get_questions_title->test_section_id][$single_get_questions_title->test_question_id] = $single_filtered_answers;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            if(isset($store_querstion_answer_details) && !empty($store_querstion_answer_details))
+            {
+                foreach($store_querstion_answer_details as $key => $values)
+                {
+                    $get_question_ids_array = array_keys($values);
+                    if (DB::table('user_answers')->where('section_id', $key)->where('user_id', $current_user_id)->exists()) {
+                        DB::table('user_answers')
+                        ->where('section_id', $key)
+                        ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($values)]);
+                    }
+                    else
+                    {
+                        $userAnswers = new UserAnswers();
+                        $userAnswers->user_id = $current_user_id;
+                        $userAnswers->section_id = $key;
+                        $userAnswers->question_id = json_encode($get_question_ids_array);
+                        $userAnswers->answer = json_encode($values);
+                        $userAnswers->save();
+                    }
+                }
+            }
         }
 
-        
-        return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_name' => $get_test_name]);
+       return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_name' => $get_test_name]);
     }
 
     public function get_questions(Request $request)
@@ -234,6 +277,7 @@ class TestPrepController extends Controller
 
     public function allSection(Request $request, $id)
     {
+        dd('On Development');
         $set_offset = 0;
         return view('user.practice-test' , ['section_id' => $id,'set_offset' => $set_offset, 'question_type' => 'all']);
     }

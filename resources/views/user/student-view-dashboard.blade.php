@@ -1,5 +1,3 @@
-<?php  use Illuminate\Support\Facades\DB; use App\Models\PracticeTest;
-use App\Models\PracticeTestSection;?>
 @extends('layouts.user')
 
 @section('title', 'Student View Dashboard : CPS')
