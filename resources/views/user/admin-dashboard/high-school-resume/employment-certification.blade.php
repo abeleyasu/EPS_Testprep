@@ -594,7 +594,7 @@
             $('input[name="responsibility_interest"]').val('');
             $("#significant_grade").val(null).trigger("change");
             $('input[name="significant_location"]').val('');
-            $('input[name="significant_honor_award"]').val('');
+            $('input[name="significant_honor_award"]').val(''   );
             $('#significant_data').val(JSON.stringify(significantData));
         }
 

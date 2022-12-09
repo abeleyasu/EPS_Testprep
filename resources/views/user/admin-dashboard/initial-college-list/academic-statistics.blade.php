@@ -63,26 +63,26 @@
 
                 <div class="row">
                     <!-- BEGIN TEST PREP TOOLS CONTENT BOX -->
-                    <div class="col-md-8 col-xl-7">
+                    <div class="col-md-7 col-xl-7">
                         <div class="block block-rounded">
                             <div class="block-header block-header-default text-white" style="background: #000">
                                 <h3 class="block-title">
                                     <i class="fa fa-screwdriver-wrench text-white me-1"></i> MY STATISTICS
                                 </h3>
                             </div>
-                            <div class="block-content">
-                                <div id="faq6" class="mb-5" role="tablist" aria-multiselectable="true">
-                                    <!-- BEGIN Accordion Block 1 STUDY AND PRACTICE CALENDAR -->
+                            <div class="block-content pb-3">
+                                <div id="faq6" class="mb-3" role="tablist" aria-multiselectable="true">
+
                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                        <div class="block-header block-header-default" role="tab" id="faq6_h1">
-                                            <a class="text-dark collapsed" data-bs-toggle="collapse" data-bs-parent="#faq6"
-                                                href="#faq6_q1" aria-expanded="false" aria-controls="faq6_q1"><i
-                                                    class="nav-main-link-icon fa fa-clock"></i> High School GPA</a>
+                                        <div class="block-header block-header-default" role="tab"
+                                            data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q1"
+                                            aria-expanded="false" aria-controls="faq6_q1">
+                                            <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i>
+                                                High School GPA</a>
                                         </div>
                                         <div id="faq6_q1" class="collapse" role="tabpanel" aria-labelledby="faq6_h1"
                                             data-bs-parent="#faq6" style="">
                                             <div class="block-content">
-                                                <!-- Calendar -->
                                                 <div class="block block-rounded">
                                                     <div class="mb-4">
                                                         <label class="form-label" for="example-select">Select Test
@@ -96,179 +96,278 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-xl-4 mb-4">
-                                                        <label class="form-label" for="example-select">Select Test
+                                                        <label class="form-label" for="test_date">Select Test
                                                             Date</label>
-                                                        <input type="date" class="js-datepicker form-control"
-                                                            id="example-datepicker1" name="example-datepicker1"
-                                                            data-week-start="1" data-autoclose="true"
-                                                            data-today-highlight="true" data-date-format="mm/dd/yy"
-                                                            placeholder="mm/dd/yy">
+                                                        <input type="text" class="date-own form-control" id="test_date"
+                                                            name="test_date" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="english_score">ACT English
+                                                            Score</label>
+                                                        <input type="text" class="form-control" id="english_score"
+                                                            name="english_score" placeholder="Please enter English Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="math_score">ACT Math Score</label>
+                                                        <input type="text" class="form-control" id="math_score"
+                                                            name="math_score" placeholder="Please enter Math Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="reading_score">ACT Reading
+                                                            Score</label>
+                                                        <input type="text" class="form-control" id="reading_score"
+                                                            name="reading_score" placeholder="Please enter Reading Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="science_score">ACT Science
+                                                            Score</label>
+                                                        <input type="text" class="form-control" id="science_score"
+                                                            name="science_score" placeholder="Please Enter Science Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="composite_score">ACT Composite
+                                                            Score</label>
+                                                        <input type="text" class="form-control" id="composite_score"
+                                                            name="composite_score"
+                                                            placeholder="Please Enter Composite Score">
                                                     </div>
                                                 </div>
-                                                <!-- END Calendar -->
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- END Accordion Block 1 STUDY AND PRACTICE CALENDAR -->
-                                    <!-- BEGIN Accordion Block 2 TEST PROCTOR -->
                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                        <div class="block-header block-header-default" role="tab" id="faq12_h1">
-                                            <a class="text-dark collapsed" data-bs-toggle="collapse" data-bs-parent="#faq6"
-                                                href="#faq12_q1" aria-expanded="false" aria-controls="faq12_q1"><i
-                                                    class="nav-main-link-icon fa fa-clock"></i>
-                                                Test Proctor</a>
+                                        <div class="block-header block-header-default" role="tab"
+                                            data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q2"
+                                            aria-expanded="false" aria-controls="faq6_q2">
+                                            <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i>
+                                                Past/Current Test Scores</a>
                                         </div>
-                                        <div id="faq12_q1" class="collapse" role="tabpanel" aria-labelledby="faq12_h1"
+                                        <div id="faq6_q2" class="collapse" role="tabpanel" aria-labelledby="faq6_h1"
                                             data-bs-parent="#faq6" style="">
                                             <div class="block-content">
-                                                <!-- Updates -->
-                                                Use this to track timing as you take official tests on paper.
-                                                Use the Test Proctor when you take any Official or Unofficial Practice
-                                                ACT/SAT/PSAT on paper. The Test Proctor will track and record your time on
-                                                each
-                                                section whether you finish early, on time, or late. This will help you track
-                                                your timing improvements for each new test you take. At the end of the test,
-                                                you'll be able to score your official practice test using our Exam Analyzer
-                                                or
-                                                record your scores if you took an unofficial practice test. Remember, if
-                                                you've
-                                                already take an Official Practice Test, you can score it below in the
-                                                "Official
-                                                Practice Test <b>Exam Analyzer</b> &amp; Scoring Tool" tab.
-                                                <br><br>
-                                                <span>Select Test Type</span><br>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">SAT</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">PSAT</button>
-
-                                                <br><br>
-                                                <!--
-                        
-                                                    <span>Select Test Source</span>
-                                                    <br />
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Official ACT Practice Test</button>
-                                                    <br /> -->
-                                                <!-- I REMOVED THE TEST SOURCE FROM HERE SO THAT IT'S EASY TO JUST START USING THE TEST PROCTOR... AFTER THE TEST PROCTOR IS USED, IT WILL PROMPT THE USER TO GO INPUT THEIR ANSWER CHOICES IN THE "OFFICIAL TEST ANALYZER & SCORE CALCULATOR" BY PROVIDING A LINK TO THAT PAGE... IF THEY DIDN'T TAKE AN OFFICIAL TEST, THEN THEY CAN IGNORE THE PROMPT -->
-                                                <!-- If user selects "Official Practice Test", show them the following options -->
-                                                <!--
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-info text-gray"></i>ACT 74F April 2017</button>
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-info text-gray"></i>ACT A09 December 2019</button>
-                                                    <br />
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Prep System Practice Test</button>
-                                                    <br /> -->
-                                                <!-- If user selects "College Prep System Practice Test", show them the following options -->
-                                                <!--
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-info text-gray"></i>College Prep System ACT #1</button>
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-info text-gray"></i>College Prep System ACT #2</button>
-                                                    <br />
-                                                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Other Test</button>
-                                                    <br /> -->
-                                                <!-- If user selects "Other Test", go to next set of options "Select Section(s)" -->
-
-
-                                                <span>Select Section(s)</span><br>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">All
-                                                    (Full Test)</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    English</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    Math</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    Reading</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    Science</button>
-
-                                                <br><br>
-                                                <span>Click to Get Started</span><br>
-                                                <button type="button"
-                                                    class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success text-gray">Enter
-                                                    Test Proctor</button>
-
-                                                <br>
-
-
-
-
-
-                                                <!-- END Updates -->
+                                                <div class="block block-rounded">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="example-select_test_scores">Select
+                                                            Test
+                                                            Type</label>
+                                                        <select class="form-select" id="example-select_test_scores"
+                                                            name="example-select_test_scores">
+                                                            <option selected="">Select One</option>
+                                                            <option value="1">ACT</option>
+                                                            <option value="2">SAT</option>
+                                                            <option value="3">PSAT</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xl-4 mb-4">
+                                                        <label class="form-label" for="test_date_test_scores">Select Test
+                                                            Date</label>
+                                                        <input type="text" class="date-own form-control"
+                                                            id="test_date_test_scores" name="test_date_test_scores"
+                                                            placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="english_score_test_scores">ACT
+                                                            English
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="english_score_test_scores"
+                                                            name="english_score_test_scores"
+                                                            placeholder="Please enter English Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="math_score_test_scores">ACT Math
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="math_score_test_scores" name="math_score_test_scores"
+                                                            placeholder="Please enter Math Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="reading_score_test_scores">ACT
+                                                            Reading
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="reading_score_test_scores"
+                                                            name="reading_score_test_scores"
+                                                            placeholder="Please enter Reading Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="science_score_test_scores">ACT
+                                                            Science
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="science_score_test_scores"
+                                                            name="science_score_test_scores"
+                                                            placeholder="Please Enter Science Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="composite_score_test_scores">ACT
+                                                            Composite Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="composite_score_test_scores"
+                                                            name="composite_score_test_scores"
+                                                            placeholder="Please Enter Composite Score">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- END Accordion Block 2 TEST PROCTOR -->
-
-                                    <!-- BEGIN Accordion Block 3 EXAM ANALYZER -->
                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                        <div class="block-header block-header-default" role="tab" id="faq13_h1">
-                                            <a class="text-dark collapsed" data-bs-toggle="collapse"
-                                                data-bs-parent="#faq6" href="#faq13_q1" aria-expanded="false"
-                                                aria-controls="faq13_q1"><i class="nav-main-link-icon fa fa-clock"></i>
-                                                Exam Analyzer</a>
+                                        <div class="block-header block-header-default" role="tab"
+                                            data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q3"
+                                            aria-expanded="false" aria-controls="faq6_q3">
+                                            <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i>
+                                                Goal Scores</a>
                                         </div>
-                                        <div id="faq13_q1" class="collapse" role="tabpanel" aria-labelledby="faq13_h1"
+                                        <div id="faq6_q3" class="collapse" role="tabpanel" aria-labelledby="faq6_h1"
+                                            data-bs-parent="#faq6">
+                                            <div class="block-content">
+                                                <div class="block block-rounded">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="example-select_goal_scores">Select
+                                                            Test
+                                                            Type</label>
+                                                        <select class="form-select" id="example-select_goal_scores"
+                                                            name="example-select_goal_scores">
+                                                            <option selected="">Select One</option>
+                                                            <option value="1">ACT</option>
+                                                            <option value="2">SAT</option>
+                                                            <option value="3">PSAT</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xl-4 mb-4">
+                                                        <label class="form-label" for="test_date_goal_scores">Select Test
+                                                            Date</label>
+                                                        <input type="text" class="date-own form-control"
+                                                            id="test_date_goal_scores" name="test_date_goal_scores"
+                                                            placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="english_score_goal_scores">ACT
+                                                            English
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="english_score_goal_scores"
+                                                            name="english_score_goal_scores"
+                                                            placeholder="Please enter English Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="math_score_goal_scores">ACT Math
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="math_score_goal_scores" name="math_score_goal_scores"
+                                                            placeholder="Please enter Math Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="reading_score_goal_scores">ACT
+                                                            Reading
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="reading_score_goal_scores"
+                                                            name="reading_score_goal_scores"
+                                                            placeholder="Please enter Reading Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="science_score_goal_scores">ACT
+                                                            Science
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="science_score_goal_scores"
+                                                            name="science_score_goal_scores"
+                                                            placeholder="Please Enter Science Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="composite_score_goal_scores">ACT
+                                                            Composite
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="composite_score_goal_scores"
+                                                            name="composite_score_goal_scores"
+                                                            placeholder="Please Enter Composite Score">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                        <div class="block-header block-header-default" role="tab"
+                                            data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q4"
+                                            aria-expanded="false" aria-controls="faq6_q4">
+                                            <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i>
+                                                Final Scores</a>
+                                        </div>
+                                        <div id="faq6_q4" class="collapse" role="tabpanel" aria-labelledby="faq6_h1"
                                             data-bs-parent="#faq6" style="">
                                             <div class="block-content">
-                                                <!-- Updates -->
-                                                This is information about the Exam Analyzer. This tells you how it works and
-                                                maybe links you to the page that lets you get started with it, such as
-                                                picking a
-                                                test, using the score calculator, then reviewing the analyzed test's
-                                                categories,
-                                                question types, answer types, etc.
-                                                <br><br>
-                                                <span>Select Test Type</span><br>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">SAT</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">PSAT</button>
-
-                                                <br><br>
-
-
-                                                <span>Select Section(s)</span><br>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">All
-                                                    (Full Test)</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    English</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    Math</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    Reading</button>
-                                                <button type="button"
-                                                    class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray">ACT
-                                                    Science</button>
-
-                                                <br><br>
-                                                <span>Click to Get Started</span><br>
-                                                <button type="button"
-                                                    class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success text-gray">Enter
-                                                    Exam Analyzer</button>
-
-                                                <br>
-
-
-
-
-
-                                                <!-- END Updates -->
+                                                <div class="block block-rounded">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="example-select_final_scores">Select
+                                                            Test
+                                                            Type</label>
+                                                        <select class="form-select" id="example-select_final_scores"
+                                                            name="example-select_final_scores">
+                                                            <option selected="">Select One</option>
+                                                            <option value="1">ACT</option>
+                                                            <option value="2">SAT</option>
+                                                            <option value="3">PSAT</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xl-4 mb-4">
+                                                        <label class="form-label" for="test_date_final_scores">Select Test
+                                                            Date</label>
+                                                        <input type="text" class="date-own form-control"
+                                                            id="test_date_final_scores" name="test_date_final_scores"
+                                                            placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="english_score_final_scores">ACT
+                                                            English
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="english_score_final_scores"
+                                                            name="english_score_final_scores"
+                                                            placeholder="Please enter English Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="math_score_final_scores">ACT Math
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="math_score_final_scores" name="math_score_final_scores"
+                                                            placeholder="Please enter Math Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="reading_score_final_scores">ACT
+                                                            Reading
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="reading_score_final_scores"
+                                                            name="reading_score_final_scores"
+                                                            placeholder="Please enter Reading Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="science_score_final_scores">ACT
+                                                            Science
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="science_score_final_scores"
+                                                            name="science_score_final_scores"
+                                                            placeholder="Please Enter Science Score">
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="composite_score_final_scores">ACT
+                                                            Composite
+                                                            Score</label>
+                                                        <input type="text" class="form-control"
+                                                            id="composite_score_final_scores"
+                                                            name="composite_score_final_scores"
+                                                            placeholder="Please Enter Composite Score">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- END Accordion Block 3 EXAM ANALYZER -->
                                 </div>
+                                <button type="reset" class="btn btn-sm btn btn-alt-success">Save Statistics (Hopefully
+                                    auto-saves)</button>
                             </div>
                         </div>
                     </div>
@@ -297,13 +396,22 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 @endsection
 
 
 @section('user-script')
+
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/selecting-search-params.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $('.date-own').datepicker({
+            format: 'dd-mm-yyyy',
+            startDate: '-3d'
+        });
+    </script>
 @endsection

@@ -247,3 +247,6 @@ h6 {
     overflow: auto; */
     padding: 20px;
 }
+.block-header-default{
+    cursor: pointer;
+}
