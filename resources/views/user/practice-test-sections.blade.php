@@ -128,7 +128,7 @@
                         === 'on' ? "https" : "http") . 
                         "://" . $_SERVER['HTTP_HOST'] . 
                         $_SERVER['REQUEST_URI'];
-                        $link_array = explode('/',$url);
+                        $link_array = explode('/',$url); 
                         $current_section_id = end($link_array);
                       ?>
                       @if(isset($singletestSections['Sections_question']))
