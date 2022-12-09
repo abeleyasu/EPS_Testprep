@@ -51,7 +51,7 @@
                   This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
                 
                 </h2>
-                <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-success fs-8">
+                <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
                   <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                 </a>
                 </div>
@@ -103,7 +103,7 @@
               </div>
               <div class="timeline-event-block block">
                 <div class="block-header block-header-default">
-                  <h3 class="block-title">{{$singletestSections['Sections'][0]['practice_test_type']}} Section</h3>
+                  <h3 class="block-title">{{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section</h3>
                   <div class="block-options">
                   
                   @if(isset($singletestSections['Sections_question']))
@@ -144,9 +144,9 @@
 
                         @else
                         <a href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id}}" 
-                          style="padding: 5px 20px" class="btn btn-alt-secondary">
+                          style="padding: 5px 20px fs-5" class="btn btn-alt-secondary text-primary">
                           {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
-                          Start Section
+                          <i class="fa-solid fa-circle-check" style='margin-right:5px'></i> Start Section
                         </a>
 
                         @endif
@@ -154,7 +154,7 @@
                      
                       <a href="#" style="" class="btn btn-alt-secondary">
                           {{-- <i class="fa fa-fw  me-1 opacity-50"></i> Start {{ str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type']) }} Section --}}
-                          <i class="fa fa-fw  me-1 opacity-50"></i> Start Section
+                          <i class="fa-solid fa-timer" style='margin-right:5px'></i> Start Section
                         </a>
                       @endif
                       
