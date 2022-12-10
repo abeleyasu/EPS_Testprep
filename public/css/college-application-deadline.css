@@ -22,7 +22,8 @@
     color: #fff !important;
 }
 
-.table>.table-default-active>tr:hover>*,.table-active{
+.table>.table-default-active>tr:hover>*,
+.table-active {
     --bs-table-accent-bg: #1f2937 !important;
     color: #fff !important;
 }
@@ -42,7 +43,8 @@
     --bs-table-accent-bg: rgb(235 238 242);
     color: var(--bs-table-hover-color);
 }
-.content-flex{
+
+.content-flex {
     display: grid;
     justify-content: center;
 }
@@ -52,7 +54,22 @@
     background-color: #1f2937;
     border-color: #1f2937;
 }
-.btn-inform:hover{
+
+.btn-inform:hover {
     color: #ffffff;
     background-color: #1f2937;
+}
+
+.form-check {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: unset !important;
+}
+.submit-btn {
+    background-color: #1f2937;
+    color: #fff;
+    font-size: 14px;
+}
+.submit-btn:hover{
+    color: #fff;
 }

@@ -24,6 +24,9 @@ use App\Http\Controllers\HighSchoolResume\FeaturedAttributeController;
 use App\Http\Controllers\HighSchoolResume\HonorsController;
 use App\Http\Controllers\HighSchoolResume\PersonalInfoController;
 use App\Http\Controllers\HighSchoolResume\PreviewController;
+use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
+use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
+use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
@@ -188,7 +191,17 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
             });
         });
         Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
-        Route::view('/initial-college-list', 'user.admin-dashboard.initial-college-list')->name('initialCollegeList');
+        Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function(){
+            Route::controller(SelectingSearchParamsController::class)->group(function(){
+                Route::get('/selecting-search-params', 'index')->name('selectingSearchParams');
+            });
+            Route::controller(CollegeSearchResultsController::class)->group(function(){
+                Route::get('/college-search-results', 'index')->name('CollegeSearchResults');
+            });
+            Route::controller(AcademicStatisticsController::class)->group(function(){
+                Route::get('/academic-statistics', 'index')->name('AcademicStatistics');
+            });
+        });
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
     });
     
