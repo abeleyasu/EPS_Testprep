@@ -621,7 +621,7 @@
                         </div>
                     </div>
                     <div class="block-content block-content-college fs-sm">
-                        <div class="tab-content" id="myTabContent">
+                        <div class="tab-content tabcontent_main" id="myTabContent">
                             <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                                 <div class="accordion accordionExample accordionExamplemain">
                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
@@ -631,7 +631,7 @@
                                                     class="fa fa-2x fa-circle-info"></i>College Overview</a>
                                         </div>
                                         <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 <div class="college-search-modal-text">
                                                     <p>Get a quick look at the most important information in the College
@@ -786,7 +786,7 @@
                                                     class="fa-solid fa-comments-dollar me-2"></i> Costs</a>
                                         </div>
                                         <div id="collapseTwo" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 <div class="block-content">
                                                     <a class="block block-rounded block-link-shadow text-center"
@@ -851,7 +851,7 @@
                                                     class="fa-solid fa-comments-dollar me-2"></i> Fields of Study</a>
                                         </div>
                                         <div id="collapseThree" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                     <div class="block-header block-header-tab" type="button"
@@ -904,7 +904,7 @@
                                                 Retention</a>
                                         </div>
                                         <div id="collapseSix" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 Words
                                             </div>
@@ -918,7 +918,7 @@
                                                     class="fa-solid fa-comments-dollar me-2"></i> Financial Aid & Debt</a>
                                         </div>
                                         <div id="collapseSeven" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 Input various costs of each college you're considering to compare the
                                                 difference in final cost. This tool provides a more realistic look at the
@@ -935,7 +935,7 @@
                                                     class="fa-solid fa-comments-dollar me-2"></i> Typical Earnings</a>
                                         </div>
                                         <div id="collapseEight" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 Input various costs of each college you're considering to compare the
                                                 difference in final cost. This tool provides a more realistic look at the
@@ -952,7 +952,7 @@
                                                     class="fa-solid fa-comments-dollar me-2"></i> Student Body</a>
                                         </div>
                                         <div id="collapseNine" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 Input various costs of each college you're considering to compare the
                                                 difference in final cost. This tool provides a more realistic look at the
@@ -969,7 +969,7 @@
                                                 Acceptance</a>
                                         </div>
                                         <div id="collapseTen" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 Input various costs of each college you're considering to compare the
                                                 difference in final cost. This tool provides a more realistic look at the
@@ -987,7 +987,7 @@
                                                 Requirements</a>
                                         </div>
                                         <div id="collapseEleven" class="collapse" aria-labelledby="headingOne"
-                                            data-parent=".accordionExample">
+                                            data-parent=".tabcontent_main">
                                             <div class="college-content-wrapper college-content">
                                                 Input various costs of each college you're considering to compare the
                                                 difference in final cost. This tool provides a more realistic look at the
