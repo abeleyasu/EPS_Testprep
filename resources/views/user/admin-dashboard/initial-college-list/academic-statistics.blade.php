@@ -122,14 +122,14 @@
                                                         <label class="form-label" for="science_score">ACT Science
                                                             Score</label>
                                                         <input type="text" class="form-control" id="science_score"
-                                                            name="science_score" placeholder="Please Enter Science Score">
+                                                            name="science_score" placeholder="Please enter Science Score">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label" for="composite_score">ACT Composite
                                                             Score</label>
                                                         <input type="text" class="form-control" id="composite_score"
                                                             name="composite_score"
-                                                            placeholder="Please Enter Composite Score">
+                                                            placeholder="Please enter Composite Score">
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,7 +197,7 @@
                                                         <input type="text" class="form-control"
                                                             id="science_score_test_scores"
                                                             name="science_score_test_scores"
-                                                            placeholder="Please Enter Science Score">
+                                                            placeholder="Please enter Science Score">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label" for="composite_score_test_scores">ACT
@@ -205,7 +205,7 @@
                                                         <input type="text" class="form-control"
                                                             id="composite_score_test_scores"
                                                             name="composite_score_test_scores"
-                                                            placeholder="Please Enter Composite Score">
+                                                            placeholder="Please enter Composite Score">
                                                     </div>
                                                 </div>
                                             </div>
@@ -273,7 +273,7 @@
                                                         <input type="text" class="form-control"
                                                             id="science_score_goal_scores"
                                                             name="science_score_goal_scores"
-                                                            placeholder="Please Enter Science Score">
+                                                            placeholder="Please enter Science Score">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label" for="composite_score_goal_scores">ACT
@@ -282,7 +282,7 @@
                                                         <input type="text" class="form-control"
                                                             id="composite_score_goal_scores"
                                                             name="composite_score_goal_scores"
-                                                            placeholder="Please Enter Composite Score">
+                                                            placeholder="Please enter Composite Score">
                                                     </div>
                                                 </div>
                                             </div>
@@ -350,7 +350,7 @@
                                                         <input type="text" class="form-control"
                                                             id="science_score_final_scores"
                                                             name="science_score_final_scores"
-                                                            placeholder="Please Enter Science Score">
+                                                            placeholder="Please enter Science Score">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label" for="composite_score_final_scores">ACT
@@ -359,7 +359,7 @@
                                                         <input type="text" class="form-control"
                                                             id="composite_score_final_scores"
                                                             name="composite_score_final_scores"
-                                                            placeholder="Please Enter Composite Score">
+                                                            placeholder="Please enter Composite Score">
                                                     </div>
                                                 </div>
                                             </div>
