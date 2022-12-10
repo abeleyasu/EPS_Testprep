@@ -318,11 +318,11 @@
                                                             <span class="text-danger">*</span>
                                                         </label><br>
                                                         <select class="js-select2 select @error('ib_courses') is-invalid @enderror" id="ib_courses" name="ib_courses[]" multiple="multiple">
-                                                            <option value="list 1" {{ (!empty($education->ib_courses) && in_array("list 1",json_decode($education->ib_courses))) || in_array("list 1", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 1</option>
-                                                            <option value="list 2" {{ (!empty($education->ib_courses) && in_array("list 2",json_decode($education->ib_courses))) || in_array("list 2", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 2</option>
-                                                            <option value="list 3" {{ (!empty($education->ib_courses) && in_array("list 3",json_decode($education->ib_courses))) || in_array("list 3", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 3</option>
-                                                            <option value="list 4" {{ (!empty($education->ib_courses) && in_array("list 4",json_decode($education->ib_courses))) || in_array("list 4", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 4</option>
-                                                            <option value="list 5" {{ (!empty($education->ib_courses) && in_array("list 5",json_decode($education->ib_courses))) || in_array("list 5", is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 5</option>
+                                                            @foreach($courses_list as $course_list)
+                                                                @if($course_list->course_type == 1)
+                                                                    <option value="{{ $course_list->id }}" {{ (!empty($education->ib_courses) && in_array($course_list->id,json_decode($education->ib_courses))) || in_array($course_list->id, is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>{{ $course_list->name }}</option>
+                                                                @endif
+                                                            @endforeach
                                                         </select>
                                                         @error('ib_courses')
                                                         <span class="invalid">{{ $message }}</span>
@@ -336,11 +336,11 @@
                                                             <span class="text-danger">*</span>
                                                         </label><br>
                                                         <select class="js-select2 select @error('ap_courses') is-invalid @enderror" id="ap_courses" name="ap_courses[]" multiple="multiple">
-                                                            <option value="list 1" {{ (!empty($education->ap_courses) && in_array("list 1",json_decode($education->ap_courses))) || in_array("list 1", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 1</option>
-                                                            <option value="list 2" {{ (!empty($education->ap_courses) && in_array("list 2",json_decode($education->ap_courses))) || in_array("list 2", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 2</option>
-                                                            <option value="list 3" {{ (!empty($education->ap_courses) && in_array("list 3",json_decode($education->ap_courses))) || in_array("list 3", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 3</option>
-                                                            <option value="list 4" {{ (!empty($education->ap_courses) && in_array("list 4",json_decode($education->ap_courses))) || in_array("list 4", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 4</option>
-                                                            <option value="list 5" {{ (!empty($education->ap_courses) && in_array("list 5",json_decode($education->ap_courses))) || in_array("list 5", is_array(old('ap_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>list 5</option>
+                                                            @foreach($courses_list as $course_list)
+                                                                @if($course_list->course_type == 2)
+                                                                    <option value="{{ $course_list->id }}" {{ (!empty($education->ap_courses) && in_array($course_list->id,json_decode($education->ap_courses))) || in_array($course_list->id, is_array(old('ap_courses')) ? old('ap_courses') : []) ? 'selected' : '' }}>{{ $course_list->name }}</option>
+                                                                @endif
+                                                            @endforeach
                                                         </select>
                                                         @error('ap_courses')
                                                             <span class="invalid">{{ $message }}</span>

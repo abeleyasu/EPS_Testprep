@@ -186,6 +186,19 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-main-item {{ Route::is('admin.highSchoolResume.*') ? 'open' : ''}}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon fas fa-cogs"></i>
+                        <span class="nav-main-link-name">Admission Management</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is('admin.highSchoolResume.settings') ? 'active' : ''}}" href="{{route('admin.highSchoolResume.settings')}}">
+                                <span class="nav-main-link-name">High School Resume Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

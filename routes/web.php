@@ -17,6 +17,7 @@ use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CollegeApplicationDeadlineController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
+use App\Http\Controllers\EducationCourseController;
 use App\Http\Controllers\HighSchoolResume\ActivityController;
 use App\Http\Controllers\HighSchoolResume\EducationController;
 use App\Http\Controllers\HighSchoolResume\EmploymentCertificationController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
 use \App\Http\Controllers\QuizManagemet\PracticeQuestionController;
+use App\Http\Controllers\ResumeSettingsController;
 use App\Http\Controllers\TestPrepController;
 use App\Http\Controllers\UserCalendarController;
 
@@ -71,6 +73,18 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::get('/edit_user/{id}', [AdminController::class, 'showEditUser'])->name('admin-edit-user');
     Route::post('/edit_user', [AdminController::class, 'updateUser'])->name('admin-update-user');
     Route::post('/delete_user', [AdminController::class, 'deleteUser'])->name('admin-delete-user');
+    Route::group(['prefix' => 'high-school-resume', 'as' => 'admin.highSchoolResume.'], function(){
+        Route::controller(ResumeSettingsController::class)->group(function(){
+            Route::get('/settings', 'index')->name('settings');
+        });
+        Route::controller(EducationCourseController::class)->group(function(){
+            Route::post('/add_course', 'store')->name('addCourse');
+            Route::get('/fetch_course/{educationCourse}', 'edit')->name('fetchCourse');
+            Route::get('/fetch_all_course', 'fetchAllCourse')->name('fetchAllCourse');
+            Route::put('/update_course/{educationCourse}', 'update')->name('updateCourse');
+            Route::delete('/delete_course/{id}', 'destroy')->name('deleteCourse');
+        });
+    });
     Route::group(['prefix' => 'course-management'], function () {
         Route::resource('courses', CoursesController::class);
         Route::post('courses/{course}/courseupdate', [CoursesController::class, 'courseupdate'])->name('courses.courseupdate');

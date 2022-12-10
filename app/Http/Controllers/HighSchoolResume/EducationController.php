@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EducationRequest;
+use App\Models\EducationCourse;
 use App\Models\HighSchoolResume\Education;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class EducationController extends Controller
     public function index()
     {
         $education  = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education'));
+        $courses_list = EducationCourse::all();
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'courses_list'));
     }
 
     public function store(EducationRequest $request)
