@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('featured_attributes')) {
         Schema::create('featured_attributes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
+        }
     }
 
     /**

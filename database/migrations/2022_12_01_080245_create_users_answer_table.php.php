@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('user_answers')) {
         Schema::create('user_answers', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->text('answer');
             $table->timestamps();
         });
+        }
     }
 
     /**

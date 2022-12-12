@@ -51,9 +51,16 @@
                   This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
                 
                 </h2>
+                
+                @if($testSections[0]->is_test_completed == 'yes')
+                <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
+                  <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
+                </a>
+                @else
                 <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
                   <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                 </a>
+                @endif
                 </div>
               </div>
             </div>
@@ -77,7 +84,16 @@
         @endif
         <!-- END Hero -->
 
+        <?php
+          $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] 
+          === 'on' ? "https" : "http") . 
+          "://" . $_SERVER['HTTP_HOST'] . 
+          $_SERVER['REQUEST_URI'];
+          $link_array = explode('/',$url); 
+          $current_section_id = end($link_array);
+          
 
+        ?>
         <!-- Page Content -->
         <div class="content content-boxed">
           <!-- Timeline -->
@@ -95,7 +111,9 @@
           @if(!$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
+          
           @foreach($testSectionsDetails as $singletestSections)
+          
             <!-- START SECTION -->
             <li class="timeline-event">
               <div class="timeline-event-icon bg-success">
@@ -123,20 +141,13 @@
                         Start {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section Questions
                         
                       </div>
-                      <?php
-                        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] 
-                        === 'on' ? "https" : "http") . 
-                        "://" . $_SERVER['HTTP_HOST'] . 
-                        $_SERVER['REQUEST_URI'];
-                        $link_array = explode('/',$url); 
-                        $current_section_id = end($link_array);
-                      ?>
+                      
                       @if(isset($singletestSections['Sections_question']))
                      
                         @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
                        
 
-                        <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id }}" 
+                        <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id .'&type=single' }}"  
                           style='padding: 5px 20px fs-5'
                            class="btn btn-alt-success text-success">
                           <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>
@@ -175,11 +186,16 @@
                No Sections Added yet!
           </div>
           @endif
+          
+          
           {{-- <div class="d-flex justify-content-end">
-            <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn w-25 btn-alt-danger">
+            <a  href="{{route('all_section', ['id' => $selected_test_id]).'?test_id='.$current_section_id}}" style="" class="btn w-25 btn-alt-danger">
               <i class="fa fa-fw  me-1 opacity-50"></i> Start All Sections
             </a>
           </div> --}}
+        
+          
+         
           <!-- END Timeline -->
         </div>
         <!-- END Page Content -->

@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('milestones', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->unsignedBigInteger('added_by');
-            $table->timestamps();
-            $table->softDeletes();
+        if (!Schema::hasTable('milestones')) {
+            Schema::create('milestones', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->text('description')->nullable();
+                $table->unsignedBigInteger('added_by');
+                $table->timestamps();
+                $table->softDeletes();
 
-            // $table->foreign('added_by')->references('id')->on('users');
-        });
+                // $table->foreign('added_by')->references('id')->on('users');
+            });
+        }
     }
 
     /**

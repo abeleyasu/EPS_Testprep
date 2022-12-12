@@ -13,19 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('modules', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->text('content')->nullable();
-            $table->tinyInteger('order')->default(0);
-            $table->unsignedBigInteger('milestone_id');
-            $table->unsignedBigInteger('added_by');
-            $table->timestamps();
-            $table->softDeletes();
+        if (!Schema::hasTable('modules')) {
+            Schema::create('modules', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->text('content')->nullable();
+                $table->tinyInteger('order')->default(0);
+                $table->unsignedBigInteger('milestone_id');
+                $table->unsignedBigInteger('added_by');
+                $table->timestamps();
+                $table->softDeletes();
 
-            $table->foreign('milestone_id')->references('id')->on('milestones')->onDelete('cascade');
-        });
+                $table->foreign('milestone_id')->references('id')->on('milestones')->onDelete('cascade');
+            });
+        }
     }
 
     /**

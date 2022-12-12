@@ -13,21 +13,25 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-        Schema::create('model_has_tags', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('model_id');
-            $table->string('model_type')->nullable();
-            $table->unsignedBigInteger('tag_id');
-            $table->timestamps();
-            $table->foreign('tag_id')->references('id')
-                ->on('tags')->onDelete('cascade');
-        });
+        if (!Schema::hasTable('tags')) {
+            Schema::create('tags', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+        if (!Schema::hasTable('model_has_tags')) {
+            Schema::create('model_has_tags', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('model_id');
+                $table->string('model_type')->nullable();
+                $table->unsignedBigInteger('tag_id');
+                $table->timestamps();
+                $table->foreign('tag_id')->references('id')
+                    ->on('tags')->onDelete('cascade');
+            });
+        }
     }
 
     /**

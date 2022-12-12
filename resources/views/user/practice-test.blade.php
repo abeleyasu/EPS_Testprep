@@ -175,9 +175,23 @@
                 var get_section_id = jQuery('#section_id').val();
                 var get_question_type = jQuery('#get_question_type').val();
 
-                const urlParams = new URLSearchParams(window.location.search);
-                const get_test_id = urlParams.get('test_id');
-                
+                // const urlParams = new URLSearchParams(window.location.search);
+                // const get_test_id = urlParams.get('test_id');
+                var get_test_id = '';
+                if (window.location.href.indexOf("all") > -1)
+                {
+                    console.log('if');
+                    var url = window.location.href,
+                    parts = url.split("/"),
+                    last_part = parts[parts.length-1];
+                    console.log(last_part);
+                     get_test_id = last_part;
+                }
+                else
+                {
+                    const urlParams = new URLSearchParams(window.location.search);
+                     get_test_id = urlParams.get('test_id');
+                }
                 
                 // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                 // selected_answer[get_question_id] = getSelectedAnswer;
@@ -212,12 +226,8 @@
                         console.log(result.success);
                         console.log(result.get_test_name);
                         console.log(result.section_id);
-                        
-                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id;
-                        //console.log(url);
-                        //console.log("{{url('')}}");
-                        //return false;
-                        ///practice-tests/{test}/{id}/review-page
+                        console.log(get_test_id);
+                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
                         window.location.href = url;
                         
                 }});

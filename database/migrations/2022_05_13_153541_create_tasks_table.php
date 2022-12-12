@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('section_id')->nullable();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+        if (!Schema::hasTable('tasks')) {
+            Schema::create('tasks', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('section_id')->nullable();
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
 
-            $table->foreign('section_id')->references('id')
-                ->on('sections')->onDelete('cascade');
-        });
+                $table->foreign('section_id')->references('id')
+                    ->on('sections')->onDelete('cascade');
+            });
+        }
     }
 
     /**

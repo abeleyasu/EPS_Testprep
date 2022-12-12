@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('education_courses', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->tinyInteger('course_type')->nullable()->comment('1 = IB Courses, 2 = AP Courses');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('education_courses')) {
+            Schema::create('education_courses', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->tinyInteger('course_type')->nullable()->comment('1 = IB Courses, 2 = AP Courses');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

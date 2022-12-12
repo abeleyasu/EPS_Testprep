@@ -13,18 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('activities', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->longText('demonstrated_data')->nullable();
-            $table->longText('leadership_data')->nullable();
-            $table->longText('activities_data')->nullable();
-            $table->longText('athletics_data')->nullable();
-            $table->longText('community_service_data')->nullable();
-            $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('activities')) {
+            Schema::create('activities', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->longText('demonstrated_data')->nullable();
+                $table->longText('leadership_data')->nullable();
+                $table->longText('activities_data')->nullable();
+                $table->longText('athletics_data')->nullable();
+                $table->longText('community_service_data')->nullable();
+                $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

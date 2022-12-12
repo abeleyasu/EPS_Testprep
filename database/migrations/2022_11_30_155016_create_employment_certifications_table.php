@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employment_certifications', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->longText('employment_data')->nullable();
-            $table->longText('significant_data')->nullable();
-            $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('employment_certifications')) {
+            Schema::create('employment_certifications', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->longText('employment_data')->nullable();
+                $table->longText('significant_data')->nullable();
+                $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

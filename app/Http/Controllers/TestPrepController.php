@@ -66,21 +66,56 @@ class TestPrepController extends Controller
     {   
         $current_user_id = Auth::id();
         $get_test_name = $test;
-        //$user_selected_answers =  UserAnswers::get();
-        $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $id)->get();
-        $store_user_answers_details = array();
-        if(isset($user_selected_answers) && !empty($user_selected_answers))
+        if(isset($_GET['type']) && !empty($_GET['type']))
         {
-            $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
-            foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
+            if($_GET['type'] == 'all')
             {
-                $get_question_details = DB::table('practice_questions')
-                ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
-                ->where('practice_questions.id', $question_id)
+                $get_all_section = DB::table('practice_test_sections')
+                ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+                ->select('practice_test_sections.*')
+                ->where('practice_tests.id', $id)
                 ->get();
-                $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'get_question_details' => $get_question_details); 
                
+                if(!$get_all_section->isEmpty())
+                {
+                    foreach($get_all_section as $get_single_section)
+                    {   
+                        $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $get_single_section->id)->get();
+                        if(isset($user_selected_answers) && !empty($user_selected_answers))
+                        {
+                            $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                            foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
+                            {
+                                $get_question_details = DB::table('practice_questions')
+                                ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+                                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+                                ->where('practice_questions.id', $question_id)
+                                ->get();
+                                $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'get_question_details' => $get_question_details); 
+                            
+                            }
+                        }
+                    }
+                }
+            }
+            else if($_GET['type'] == 'single')
+            {
+                $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $id)->get();
+                $store_user_answers_details = array();
+                if(isset($user_selected_answers) && !empty($user_selected_answers))
+                {
+                    $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                    foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
+                    {
+                        $get_question_details = DB::table('practice_questions')
+                        ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+                        ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+                        ->where('practice_questions.id', $question_id)
+                        ->get();
+                        $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'get_question_details' => $get_question_details); 
+                    
+                    }
+                }
             }
         }
         return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name]);
@@ -91,6 +126,7 @@ class TestPrepController extends Controller
         $current_user_id = Auth::id();
         $get_section_id = $request->get_section_id;
         $get_question_type = $request->get_question_type;
+        
 
         if($get_question_type == 'single')
         {
@@ -107,7 +143,7 @@ class TestPrepController extends Controller
             ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
             ->select('practice_tests.*','practice_test_sections.id as test_section_id','practice_questions.id as test_question_id')
             ->where('practice_tests.id', $get_section_id)->get(); 
-            dd('On Development');
+            //dd('On Development');
         }
         
         
@@ -126,6 +162,10 @@ class TestPrepController extends Controller
                 DB::table('user_answers')
                 ->where('section_id', $get_section_id)
                 ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers)]);
+
+                DB::table('practice_test_sections')
+                ->where('practice_test_sections.id', $get_section_id)
+                ->update(['is_section_completed'=> 'yes']);
             }
             else
             {
@@ -135,27 +175,31 @@ class TestPrepController extends Controller
                 $userAnswers->question_id = json_encode($get_question_ids_array);
                 $userAnswers->answer = json_encode($filtered_answers);
                 $userAnswers->save();
+
+                DB::table('practice_test_sections')
+                ->where('practice_test_sections.id', $get_section_id)
+                ->update(['is_section_completed'=> 'yes']);
             }
         }
         else if($get_question_type == 'all')
         {
-                $store_querstion_answer_details = array();
-                if(isset($get_question_title) && !empty($get_question_title))
+            $store_querstion_answer_details = array();
+            if(isset($get_question_title) && !empty($get_question_title))
+            {
+                foreach($get_question_title as $single_get_questions_title)
                 {
-                    foreach($get_question_title as $single_get_questions_title)
+                    if(isset($filtered_answers) && !empty($filtered_answers))
                     {
-                        if(isset($filtered_answers) && !empty($filtered_answers))
+                        foreach($filtered_answers as $user_question_id => $single_filtered_answers)
                         {
-                            foreach($filtered_answers as $user_question_id => $single_filtered_answers)
+                            if($single_get_questions_title->test_question_id == $user_question_id )
                             {
-                                if($single_get_questions_title->test_question_id == $user_question_id )
-                                {
-                                    $store_querstion_answer_details[$single_get_questions_title->test_section_id][$single_get_questions_title->test_question_id] = $single_filtered_answers;
-                                }
+                                $store_querstion_answer_details[$single_get_questions_title->test_section_id][$single_get_questions_title->test_question_id] = $single_filtered_answers;
                             }
                         }
                     }
                 }
+            }
                 
             if(isset($store_querstion_answer_details) && !empty($store_querstion_answer_details))
             {
@@ -166,6 +210,10 @@ class TestPrepController extends Controller
                         DB::table('user_answers')
                         ->where('section_id', $key)
                         ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($values)]);
+
+                        DB::table('practice_test_sections')
+                        ->where('practice_test_sections.id', $key)
+                        ->update(['is_section_completed'=> 'yes']);
                     }
                     else
                     {
@@ -175,17 +223,24 @@ class TestPrepController extends Controller
                         $userAnswers->question_id = json_encode($get_question_ids_array);
                         $userAnswers->answer = json_encode($values);
                         $userAnswers->save();
+
+                        DB::table('practice_test_sections')
+                        ->where('practice_test_sections.id', $key)
+                        ->update(['is_section_completed'=> 'yes']);
                     }
                 }
+                DB::table('practice_tests')
+                ->where('practice_tests.id', $get_section_id)
+                ->update(['is_test_completed'=> 'yes']);
             }
         }
 
-       return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_name' => $get_test_name]);
+       return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name]);
     }
 
     public function get_questions(Request $request)
     {
-        
+           
             if($request->question_type == 'all')
             {
                
@@ -194,8 +249,10 @@ class TestPrepController extends Controller
                 ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
                 ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
                 ->select('practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*' ,'practice_tests.*' ,'practice_test_sections.*' )
-                ->where('practice_tests.id', $request->section_id)->count();
-                
+                ->where('practice_tests.id', $request->section_id)
+                ->where('practice_test_sections.is_section_completed', '!=' , 'yes')
+                ->count();
+
                 $get_offset = $request->get_offset;
 
                 $testSectionQuestions = DB::table('practice_questions')
@@ -204,12 +261,9 @@ class TestPrepController extends Controller
                 ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
                 ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*' ,'practice_tests.*' ,'practice_test_sections.*' )
                 ->where('practice_tests.id', $request->section_id)
+                ->where('practice_test_sections.is_section_completed', '!=' , 'yes')
                 ->offset($get_offset)->limit(1)->get(); 
 
-                // echo "<pre>";
-                // print_r($testSectionQuestions);
-                // echo "</pre>";
-                // die('op');
                 
                 if($testSectionQuestions->isEmpty())
                 {
@@ -277,7 +331,7 @@ class TestPrepController extends Controller
 
     public function allSection(Request $request, $id)
     {
-        dd('On Development');
+        //dd('On Development');
         $set_offset = 0;
         return view('user.practice-test' , ['section_id' => $id,'set_offset' => $set_offset, 'question_type' => 'all']);
     }
@@ -290,11 +344,34 @@ class TestPrepController extends Controller
        $store_sections_details = array();
        $get_total_sections = 0;
        $get_total_questions = 0;
+
+       $check_if_all_section_done = DB::table('practice_tests')
+        ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
+        ->select('practice_test_sections.*')
+        ->where('practice_test_sections.testid', $id)
+        ->where('practice_test_sections.is_section_completed', 'yes')
+        ->count();
+
+        $get_all_section_for_check = DB::table('practice_tests')
+        ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
+        ->select('practice_test_sections.*')
+        ->where('practice_test_sections.testid', $id)
+        ->count();
+
+        if($check_if_all_section_done == $get_all_section_for_check)
+        {
+            DB::table('practice_tests')
+            ->where('practice_tests.id', $id)
+            ->update(['is_test_completed'=> 'yes']);
+        }
+
        $testSections = DB::table('practice_tests')
         ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
-        ->select('practice_test_sections.*', 'practice_tests.title' , 'practice_tests.format' ,  'practice_tests.description' , 'practice_tests.tags' /*, 'practice_questions.*'*/ )
+        ->select('practice_test_sections.*', 'practice_tests.title' , 'practice_tests.is_test_completed' , 'practice_tests.format' ,  'practice_tests.description' , 'practice_tests.tags' /*, 'practice_questions.*'*/ )
         ->where('practice_test_sections.testid', $id)
         ->get();
+
+        
         
         $get_total_sections = DB::table('practice_tests')
         ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
@@ -357,10 +434,6 @@ class TestPrepController extends Controller
                 }
             }
         }
-        // echo "<pre>";
-        // print_r($store_sections_details);
-        // echo "</pre>";
-        // die();
         return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions]);
     }
 

@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sections', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->unsignedBigInteger('module_id')->nullable();
-            $table->tinyInteger('order')->default(0);
-            $table->string('status')->nullable();
-            $table->timestamps();
-            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
-        });
+        if (!Schema::hasTable('sections')) {
+            Schema::create('sections', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->unsignedBigInteger('module_id')->nullable();
+                $table->tinyInteger('order')->default(0);
+                $table->string('status')->nullable();
+                $table->timestamps();
+                $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+            });
+        }
     }
 
     /**
