@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('practice_questions', function (Blueprint $table) {
-            $table->id();
-			$table->enum('format',['ACT','SAT','PSAT'])->comment('ACT=ACT Question,SAT=SAT Question,PSAT=PSAT Question')->default('ACT');
-			$table->string('testid');
-			$table->text('description')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('practice_questions')) {
+            Schema::create('practice_questions', function (Blueprint $table) {
+                $table->id();
+                $table->enum('format',['ACT','SAT','PSAT'])->comment('ACT=ACT Question,SAT=SAT Question,PSAT=PSAT Question')->default('ACT');
+                $table->string('testid');
+                $table->text('description')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -13,19 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('question_id')->default(0);
-            $table->foreign('question_id')
-                ->references('id')
-                ->on('questions')
-                ->onDelete('cascade');
-            $table->string('option');
-            $table->string('image',100)->nullable();
-            $table->boolean('is_correct')->default(0);
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('options')) {
+            Schema::create('options', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('question_id')->default(0);
+                $table->foreign('question_id')
+                    ->references('id')
+                    ->on('questions')
+                    ->onDelete('cascade');
+                $table->string('option');
+                $table->string('image',100)->nullable();
+                $table->boolean('is_correct')->default(0);
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

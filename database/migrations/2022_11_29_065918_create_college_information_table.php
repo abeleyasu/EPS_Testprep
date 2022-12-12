@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('college_information', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('city');
-            $table->string('state');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('college_information')) {
+            Schema::create('college_information', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('city');
+                $table->string('state');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -13,19 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('content_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        if (!Schema::hasTable('content_categories')) {
+            Schema::create('content_categories', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+        
         Schema::table('milestones', function (Blueprint $table) {
             $table->unsignedBigInteger('content_category_id')->nullable();
 
             $table->foreign('content_category_id')
                 ->references('id')->on('content_categories')->onDelete('cascade');
         });
+        
     }
 
     /**

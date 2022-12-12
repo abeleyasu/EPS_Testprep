@@ -3290,6 +3290,9 @@
                   }
                 jQuery(".text-info").click(function () {
                   jQuery('.nav-link').removeClass('active');
+                  jQuery('.tab-pane').removeClass('active');
+                  jQuery(".tab-pane:first").addClass('active');
+                  
                    var get_question_title = removeTags(jQuery(this).data('question-title'));
                    jQuery(".text-info").addClass(get_question_title);
                    var get_passage_title = removeTags(jQuery(this).data('passage-title'));
@@ -3311,6 +3314,7 @@
                     if($(this ).data('option-value') == 'a')
                     {
                       $(this).addClass('active');
+                     
                     }
                       if(get_correct_answer == $(this ).data('option-value') )
                       {
@@ -3341,10 +3345,8 @@
               });
           </script>
 
-<?php
-              // echo "<pre>";
-              // print_r($user_selected_answers);
-              // echo "</pre>";
+          <?php
+             $count = 1;
             ?>
              
             @foreach($user_selected_answers as $key => $single_user_selected_answers)
@@ -3357,7 +3359,7 @@
               
               <tr class="odd">
               <td class="text-center fs-sm dtr-control sorting_1" tabindex="0">
-                1
+                {{$count++}}
                 <i class="fa fa-fw fa-flag me-1" style="color:red"></i>
                 <i class="fa fa-fw fa-circle-question me-1" style="color:blue"></i>
                 <i style="color:black" class="fa fa-fw fa-forward me-1"></i>

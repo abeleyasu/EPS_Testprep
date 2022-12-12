@@ -13,20 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->enum('format',['MC','TR'])->comment('MC=multiple choice,TR=text response')->default('MC');
-            /*$table->unsignedInteger('passage_id')->default(0);
-            $table->foreign('passage_id')
-                ->references('id')
-                ->on('passages')
-                ->onDelete('cascade');*/ // uncomment it when passages table is done
-            $table->integer('passage_id')->default(0); // remove it when passages table is done
-            $table->tinyInteger('order')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('questions')) {
+            Schema::create('questions', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->enum('format',['MC','TR'])->comment('MC=multiple choice,TR=text response')->default('MC');
+                /*$table->unsignedInteger('passage_id')->default(0);
+                $table->foreign('passage_id')
+                    ->references('id')
+                    ->on('passages')
+                    ->onDelete('cascade');*/ // uncomment it when passages table is done
+                $table->integer('passage_id')->default(0); // remove it when passages table is done
+                $table->tinyInteger('order')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

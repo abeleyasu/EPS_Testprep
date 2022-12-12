@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('high_school_resumes')) {
         Schema::create('high_school_resumes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->foreign('featured_attribute_id')->references('id')->on('featured_attributes')->onDelete('cascade');
             $table->timestamps();
         });
+        }
     }
 
     /**
