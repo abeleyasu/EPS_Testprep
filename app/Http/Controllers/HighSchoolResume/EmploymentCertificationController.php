@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EmploymentCertificationRequest;
 use App\Models\HighSchoolResume\EmploymentCertification;
+use App\Models\HighSchoolResume\FeaturedAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +13,12 @@ class EmploymentCertificationController extends Controller
 {
     public function index()
     {
-        $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification'));
+        $user_id = Auth::id();
+        $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
+        $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        
+        $details = 0;
+        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details'));
     }
 
     public function store(EmploymentCertificationRequest $request)
@@ -51,6 +56,14 @@ class EmploymentCertificationController extends Controller
         }
 
         $data = array_filter($data);
+
+        if($data['employment_data'] == "[]"){
+            $data['employment_data'] = null;
+        } 
+        if($data['significant_data'] == "[]"){
+            $data['significant_data'] = null;
+        } 
+        
 
         if (!empty($data)) {
             $employmentCertification->update($data);

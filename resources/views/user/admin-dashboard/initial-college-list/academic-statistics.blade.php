@@ -366,8 +366,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="reset" class="btn btn-sm btn btn-alt-success">Save Statistics (Hopefully
-                                    auto-saves)</button>
+                                {{-- <button type="reset" class="btn btn-sm btn btn-alt-success">Save Statistics (Hopefully
+                                    auto-saves)</button> --}}
                             </div>
                         </div>
                     </div>

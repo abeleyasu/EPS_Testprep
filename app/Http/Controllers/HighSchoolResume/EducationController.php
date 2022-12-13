@@ -5,7 +5,11 @@ namespace App\Http\Controllers\HighSchoolResume;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EducationRequest;
 use App\Models\EducationCourse;
+use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\Education;
+use App\Models\HighSchoolResume\EmploymentCertification;
+use App\Models\HighSchoolResume\FeaturedAttribute;
+use App\Models\HighSchoolResume\Honor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -13,9 +17,17 @@ class EducationController extends Controller
 {
     public function index()
     {
-        $education  = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
+        $user_id = Auth::id();
+
+        $education = Education::whereUserId($user_id)->where('is_draft', 0)->first();
+        $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
+        $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
+        $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
+        $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+
         $courses_list = EducationCourse::all();
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'courses_list'));
+        $details = 0;
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education','honor','activity','employmentCertification','featuredAttribute', 'courses_list','details'));
     }
 
     public function store(EducationRequest $request)
@@ -77,6 +89,14 @@ class EducationController extends Controller
         }
 
         $data = array_filter($data);
+
+        if($data['course_data'] == "[]"){
+            $data['course_data'] = null;
+        }
+
+        if($data['honor_course_data'] == "[]"){
+            $data['honor_course_data'] = null;
+        }
 
         if (!empty($data)) {
             $education->update($data);

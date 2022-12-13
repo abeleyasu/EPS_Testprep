@@ -15,52 +15,60 @@
         </div>
         <div class="container">
             <div class="custom-tab-container">
+                @if(Session::has('successMessage'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        {{Session::get('message')}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
-                        <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}"
+                        <a class="nav-link active" href="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.personalInfo') : ''}}"
                             id="step1-tab">
                             <p>1</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Personal Info</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step2-tab">
+                    <li role="presentation" @if (!isset($personal_info)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.educationInfo') : ''}}" id="step2-tab">
                             <p>2</p>
                             <i class="fa-solid fa-check  "></i>
                             <h6>Education</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step3-tab">
+                    <li role="presentation" @if (!isset($personal_info)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.honors') : ''}}" id="step3-tab">
                             <p>3</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Honors</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step4-tab">
+                    <li role="presentation" @if (!isset($personal_info)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.activities') : ''}}" id="step4-tab">
                             <p>4</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Activities</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step5-tab">
+                    <li role="presentation" @if (!isset($personal_info)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification') : ''}}" id="step5-tab">
                             <p>5</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step6-tab">
+                    <li role="presentation" @if (!isset($personal_info)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}" id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step7-tab">
+                    <li role="presentation" @if (!isset($personal_info)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Preview</h6>
@@ -69,7 +77,7 @@
                 </ul>
                 <form class="js-validation"
                     action="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.personalInfo.update', $personal_info->id) : route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
-                    method="POST">
+                    method="POST" id="personalinfo">
                     @csrf
                     @if (isset($personal_info))
                         @method('PUT')
@@ -360,9 +368,11 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">
+                                    <div>
+                                        @include('components.reset-all-drafts-button')
+                                    </div>
                                     <div class="next-btn">
                                         <input type="submit" class="btn  btn-alt-success next-step" value="Next Step"/>
-                                       
                                     </div>
                                 </div>
                             </div>
@@ -375,8 +385,11 @@
 @endsection
 
 @section('page-style')
+
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+
 @endsection
 
 @section('user-script')
@@ -384,4 +397,31 @@
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
+
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+
+    <script>    
+
+        function errorMsg()
+        {
+            alert('You Have to submit current form first.');    
+        }
+    
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "10000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
 @endsection

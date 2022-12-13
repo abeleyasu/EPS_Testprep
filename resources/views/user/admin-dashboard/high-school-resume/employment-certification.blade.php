@@ -55,16 +55,16 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
+                    <li role="presentation" @if (!isset($employmentCertification)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}"
                             id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step7-tab">
+                    <li role="presentation" @if (!isset($employmentCertification)) onclick="errorMsg()" @endif>
+                        <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Preview</h6>
@@ -284,7 +284,10 @@
                                     </a>
                                    
                                 </div>
-                                <div class="next-btn">
+                                <div class="next-btn d-flex">
+                                    <div>
+                                        @include('components.reset-all-drafts-button')
+                                    </div>
                                     <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
                                     
                                 </div>
@@ -450,6 +453,7 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
     <style>
         .select2-container .select2-selection--multiple {
             min-width: 13vw !important;
@@ -462,6 +466,7 @@
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
         var employmentData = [];
         var significantData = [];
@@ -495,7 +500,7 @@
                     "employment_honor_award": employment_honor_award
                 });
             } else {
-                alert('Please Enter Employment Details');
+                toastr.error('Please Enter Employment Details');
             }
 
             $('.employment_data_table_row').after(html);
@@ -587,7 +592,7 @@
                     "significant_honor_award": significant_honor_award
                 });
             } else {
-                alert('Please Enter Significant Details');
+                toastr.error('Please Enter Significant Details');
             }
 
             $('.significant_data_table_row').after(html);
@@ -648,6 +653,27 @@
             $(`#significant_${id}`).remove();
         }
 
+        function errorMsg()
+        {
+            alert('You Have to submit current form first.');    
+        }
+
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
         // Significant table end
     </script>
 @endsection

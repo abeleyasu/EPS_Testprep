@@ -30,36 +30,36 @@
                         <h6>Education </h6>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" href="javascript:void(0)" id="step3-tab">
+                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                    <a class="nav-link" href="{{ isset($education) ? route('admin-dashboard.highSchoolResume.honors') : ''}}" id="step3-tab">
                         <p>3</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Honors </h6>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" href="javascript:void(0)" id="step4-tab">
+                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                    <a class="nav-link" href="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.activities') : ''}}" id="step4-tab">
                         <p>4</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Activities</h6>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" href="javascript:void(0)" id="step5-tab">
+                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                    <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification') : ''}}" id="step5-tab">
                         <p>5</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Employment & <br> Certifications</h6>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" href="javascript:void(0)" id="step6-tab">
+                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                    <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}" id="step6-tab">
                         <p>6</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Featured <br> Attributes</h6>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a class="nav-link" href="javascript:void(0)" id="step7-tab">
+                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                    <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                         <p>7</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Preview</h6>
@@ -588,7 +588,10 @@
                         <a href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
                         </a>
                     </div>
-                    <div class="next-btn">
+                    <div class="next-btn d-flex">
+                        <div>
+                            @include('components.reset-all-drafts-button')
+                        </div>
                         <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
                     </div>
                 </div>
@@ -731,6 +734,8 @@
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+
 @endsection
 
 @section('user-script')
@@ -739,6 +744,9 @@
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/high-school-resume.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script>
     var courseData = [];
     var honorCourseData = [];
@@ -781,7 +789,7 @@
                 "search_college_name": search_college_name
             });
         } else {
-            alert('Please Enter Course Name & College name');
+            toastr.error('Please Enter Course Name & College name');
         }
         $('.course_data_table_row').after(html);
         $('input[name="course_name"]').val('');
@@ -846,7 +854,7 @@
                 "honor_course_name": honor_course_name
             });
         } else {
-            alert('Please Enter Honor Course Name');
+            toastr.error    ('Please Enter Honor Course Name');
         }
 
         $('.honor_course_data_table_row').after(html);
@@ -912,7 +920,7 @@
                 "date": date
             });
         } else {
-            alert('Please Enter Testing Details');
+            toastr.error('Please Enter Testing Details');
         }
 
         $('.testing_table_row').after(html);
@@ -978,6 +986,29 @@
             $('#college_state').attr('disabled',false);
         }
     });
+
+
+    function errorMsg()
+    {
+        alert('You Have to submit current form first.');    
+    }
+
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 
 </script>
 @endsection

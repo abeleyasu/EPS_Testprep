@@ -25,7 +25,9 @@ class PreviewController extends Controller
         $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"));
+
+        $details = 0;
+        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details"));
     }
 
     public function resumePreview()
