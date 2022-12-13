@@ -259,7 +259,7 @@ class TestPrepController extends Controller
                 ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
                 ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
                 ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
-                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*' ,'practice_tests.*' ,'practice_test_sections.*' )
+                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.title as passage_title', 'passages.description as passage_description', 'passages.type as passage_type' ,'practice_tests.*' ,'practice_test_sections.*' )
                 ->where('practice_tests.id', $request->section_id)
                 ->where('practice_test_sections.is_section_completed', '!=' , 'yes')
                 ->offset($get_offset)->limit(1)->get(); 
@@ -295,9 +295,11 @@ class TestPrepController extends Controller
 
                 $testSectionQuestions = DB::table('practice_questions')
                 ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.title as passage_title', 'passages.description as passage_description', 'passages.type as passage_type')
                 ->where('practice_questions.practice_test_sections_id', $request->section_id)
                 ->offset($get_offset)->limit(1)->get(); 
+
+                //dd($testSectionQuestions);
 
                 if($testSectionQuestions->isEmpty())
                 {
