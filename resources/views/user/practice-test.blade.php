@@ -256,9 +256,10 @@
                     },
                     success: function(result){
                         console.log(result);
-                        var passage_type = 'PASSAGE TYPE: '+ result.questions[0].type;
-                        var passage_title =  result.questions[0].title;
-                        var passage_description =  result.questions[0].description;
+                        var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
+                        var passage_title =  result.questions[0].passage_title;
+                        var passage_description =  result.questions[0].passage_description;
+                        
                         passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
                         var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
 
