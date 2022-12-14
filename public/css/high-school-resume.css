@@ -412,6 +412,7 @@
 
     .custom-tab-container .list li span {
         font-weight: 600;
+        /* display: block; */
     }
 
     .preview-border {
@@ -518,4 +519,10 @@
         overflow: auto;
         padding: 0 30px 30px;
 
+    }
+
+    .reset-draft{
+        padding: 5px 35px;
+        margin-right: 10px;
+        font-size: 15px;
     }
