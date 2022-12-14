@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarEventController;
+use App\Http\Controllers\CareerExplorationController;
 use App\Http\Controllers\CollegeApplicationDeadlineController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
@@ -217,6 +218,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
             });
         });
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
+        Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
     });
     
     Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
