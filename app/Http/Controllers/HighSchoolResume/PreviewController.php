@@ -12,6 +12,7 @@ use App\Models\HighSchoolResume\Honor;
 use App\Models\HighSchoolResume\PersonalInfo;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
@@ -32,17 +33,21 @@ class PreviewController extends Controller
 
     public function resumePreview()
     {
-        $pdf = new Dompdf();
         $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $education = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $honor = Honor::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
-        $pdf->loadHTML($html);
-        $pdf->render();
-        return $pdf->stream('resume.pdf',array('Attachment' => 0));
+        $options = new Options(); 
+        $options->set('isPhpEnabled', 'true'); 
+        $dompdf = new Dompdf($options);
+        
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","dompdf"))->render();
+        $dompdf->loadHTML($html);
+        $dompdf->render();
+
+        return $dompdf->stream('resume.pdf',array('Attachment' => 0));
     }
 
     public function resumeComplete()
