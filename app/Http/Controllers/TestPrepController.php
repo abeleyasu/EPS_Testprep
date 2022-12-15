@@ -150,6 +150,7 @@ class TestPrepController extends Controller
         $get_test_name = $get_question_title[0]->title;
         
         $filtered_answers = array_filter($request->selected_answer);
+        
 
         if($get_question_type == 'single')
         {
@@ -157,7 +158,7 @@ class TestPrepController extends Controller
             {
                 $get_question_ids_array = array_keys($filtered_answers);
             }
-        
+           
             if (DB::table('user_answers')->where('section_id', $get_section_id)->where('user_id', $current_user_id)->exists()) {
                 DB::table('user_answers')
                 ->where('section_id', $get_section_id)
@@ -346,14 +347,14 @@ class TestPrepController extends Controller
        $store_sections_details = array();
        $get_total_sections = 0;
        $get_total_questions = 0;
-
+       
        $check_if_all_section_done = DB::table('practice_tests')
         ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
         ->select('practice_test_sections.*')
         ->where('practice_test_sections.testid', $id)
         ->where('practice_test_sections.is_section_completed', 'yes')
         ->count();
-
+        
         $get_all_section_for_check = DB::table('practice_tests')
         ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
         ->select('practice_test_sections.*')
@@ -387,6 +388,7 @@ class TestPrepController extends Controller
         ->where('practice_tests.id', $id)
         ->get();
 
+        
         if($testSectionName->isEmpty())
         {
             $testSectionName = 0;
@@ -395,8 +397,8 @@ class TestPrepController extends Controller
         {
             $testSectionName = $testSectionName[0]->title;
         }
-        
-        
+       
+
         if($testSections->isEmpty())
         {
             $testSections =  0;
@@ -425,8 +427,10 @@ class TestPrepController extends Controller
                 ->select('practice_questions.*')
                 ->where('practice_questions.practice_test_sections_id', $single_test_sections->id)
                 ->count();
+                
                 $store_sections_details[$single_test_sections->id]['check_if_section_completed'][] = $check_if_section_completed;
                 $store_sections_details[$single_test_sections->id]['Sections'][] = array("id" => $single_test_sections->id,"format" => $single_test_sections->format,"practice_test_type" => $single_test_sections->practice_test_type,"testid" => $single_test_sections->testid,"section_order" => $single_test_sections->section_order,"title" => $single_test_sections->title,"description" => $single_test_sections->description);
+                
                 if(!$testSections->isEmpty() &&  !$testSectionQuestions->isEmpty())
                 {
                     foreach($testSectionQuestions as $singletestSectionQuestions)
