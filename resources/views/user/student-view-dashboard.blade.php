@@ -3300,10 +3300,21 @@
                    var get_correct_answer = jQuery(this).data('correct-answer');
                    var get_user_answer = jQuery(this).data('user-answer');
                    var get_answers_exp = jQuery(this).data('answers-exp');
-                   
+                  
                    jQuery(".set_serial_no").text(serial_no);
                    jQuery(".set_question_title").text(get_question_title);
                    jQuery(".set_passage_title").text(get_passage_title);
+
+                   var array_correct = get_correct_answer.split(',');
+                   console.log(array_correct);
+                   array_correct = $.map(array_correct, function(value){
+                      return value.replace(/ /g, '');
+                    });
+                   var array_user_answer = get_user_answer.split(',');
+                   console.log(array_user_answer);
+                   array_user_answer = $.map(array_user_answer, function(value){
+                      return value.replace(/ /g, '');
+                    });
 
                    jQuery(".text-info").parent().find('.nav-tabs-alt .nav-item').find('.text-gray').each(function( index ) {
                     $.each(get_answers_exp, function( index, value ) {
@@ -3316,30 +3327,52 @@
                       $(this).addClass('active');
                      
                     }
-                      if(get_correct_answer == $(this ).data('option-value') )
-                      {
-                        //console.log('in if');
+                    
+                    var option_value = $(this ).data('option-value');
+                    if(jQuery.inArray(option_value, array_correct) != -1)
+                    {
                         $(this).removeClass('bg-city-dark');
                         $(this).removeClass('bg-success');
                         $(this).removeClass('bg-danger');
                         $(this).addClass('bg-success');
-                      }
-                      else if(get_user_answer == $(this ).data('option-value') )
-                      {
-                         
-                        $(this).addClass('bg-danger');
-                        $(this).addClass('text-gray');
-                        $(this).removeClass('bg-success');
-                        $(this).removeClass('bg-city-dark');
-                        
-                      }
-                      else
-                      {
-                        $(this).removeClass('bg-success');
+                    }
+                    else if(jQuery.inArray(option_value, array_user_answer) != -1)
+                    {
+                      $(this).addClass('bg-danger');
+                      $(this).addClass('text-gray');
+                      $(this).removeClass('bg-success');
+                      $(this).removeClass('bg-city-dark');
+                    }
+                    else 
+                    {
+                       $(this).removeClass('bg-success');
                         $(this).addClass('text-gray');
                         $(this).addClass('bg-city-dark');
-                      }
-                    });
+                    }
+                    
+                      // if(get_correct_answer == $(this ).data('option-value') )
+                      // {
+                      //   $(this).removeClass('bg-city-dark');
+                      //   $(this).removeClass('bg-success');
+                      //   $(this).removeClass('bg-danger');
+                      //   $(this).addClass('bg-success');
+                      // }
+                      // else if(get_user_answer == $(this ).data('option-value') )
+                      // {
+                         
+                      //   $(this).addClass('bg-danger');
+                      //   $(this).addClass('text-gray');
+                      //   $(this).removeClass('bg-success');
+                      //   $(this).removeClass('bg-city-dark');
+                        
+                      // }
+                      // else
+                      // {
+                      //   $(this).removeClass('bg-success');
+                      //   $(this).addClass('text-gray');
+                      //   $(this).addClass('bg-city-dark');
+                      // }
+                  });
                    
                 });
               });
@@ -3347,6 +3380,7 @@
 
           <?php
              $count = 1;
+             //dd($user_selected_answers);
             ?>
              
             @foreach($user_selected_answers as $key => $single_user_selected_answers)
@@ -3354,6 +3388,10 @@
             <?php
               // echo "<pre>";
               // print_r(json_decode($single_user_selected_answers['get_question_details'][0]->question_answer_options));
+              // ech<o "</pre>";
+              // echo "<pre>";
+              // print_r($key);
+              // print_r($single_user_selected_answers);
               // echo "</pre>";
             ?>
               
@@ -3368,8 +3406,9 @@
               <td class="fw-semibold fs-sm">{{$single_user_selected_answers['user_selected_answer']}}</td>
 
               <td class="fw-semibold fs-sm">{{$single_user_selected_answers['get_question_details'][0]->question_answer}}</td>
-
-              @if($single_user_selected_answers['user_selected_answer'] ==  $single_user_selected_answers['get_question_details'][0]->question_answer)
+              
+              <?php $correct =  str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
+              @if($single_user_selected_answers['user_selected_answer'] == $correct)
               <td>
                 <i class="fa fa-lg fa-circle-check me-1" style="color:green"></i>
               </td>
