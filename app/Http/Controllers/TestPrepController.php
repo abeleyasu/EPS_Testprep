@@ -146,7 +146,7 @@ class TestPrepController extends Controller
             //dd('On Development');
         }
         
-        
+
         $get_test_name = $get_question_title[0]->title;
         
         $filtered_answers = array_filter($request->selected_answer);
@@ -253,7 +253,7 @@ class TestPrepController extends Controller
                 ->where('practice_tests.id', $request->section_id)
                 ->where('practice_test_sections.is_section_completed', '!=' , 'yes')
                 ->count();
-
+        
                 $get_offset = $request->get_offset;
 
                 $testSectionQuestions = DB::table('practice_questions')
@@ -360,7 +360,7 @@ class TestPrepController extends Controller
         ->select('practice_test_sections.*')
         ->where('practice_test_sections.testid', $id)
         ->count();
-
+        
         if($check_if_all_section_done == $get_all_section_for_check)
         {
             DB::table('practice_tests')
