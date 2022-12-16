@@ -34,6 +34,8 @@ class EducationController extends Controller
     {
         $data = $request->validated();
 
+        // dd($data);
+
         if(!empty($request->course_data)){
             $data['course_data'] = $request->course_data;
         }

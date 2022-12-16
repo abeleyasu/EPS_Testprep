@@ -1,5 +1,5 @@
 <div>
-    <a href="{{ route('admin-dashboard.highSchoolResume.discarddrafts') }}" class="btn  btn-alt-danger reset-draft"
+    <a  class="btn btn-alt-danger reset-draft" onclick="Reset_drafts()"
         name="reset_drafts" id="reset_drafts" style="pointer-events:{{ !empty($details) ? 'none' : 'unset' }};opacity:{{ !empty($details) ? '0.6' : '1' }}">
     
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -10,3 +10,51 @@
     </a>
         
 </div>
+
+<script src="{{asset('assets/js/sweetalert2/sweetalert2.all.min.js')}}"></script>
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+
+
+<script>
+    
+    function Reset_drafts() {
+        Swal.fire({
+                title: 'Are you sure to reset all drafts?',
+                text: "You won't be able to delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+        })  
+        .then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `{{ route('admin-dashboard.highSchoolResume.discarddrafts') }}`,
+                    type: 'GET',
+                    success:function(response) {
+                        window.location.href = "{{ route('admin-dashboard.highSchoolResume.personalInfo')}}";
+                    }
+                });
+            }   
+        });
+    }
+
+    toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "10000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+  </script>

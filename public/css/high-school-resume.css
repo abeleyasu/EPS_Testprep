@@ -571,7 +571,7 @@
         right: -11px;
         bottom: -1.9%;
         position: absolute;
-        box-shadow: 0px 0px 4px #343434;
+          /* border: 1px solid #1f2937; */
     }
     .features-list-after::after{
         width: 20px;
@@ -583,7 +583,7 @@
         right: -11px;
         bottom: -130.9%;
         position: absolute;
-        box-shadow: 0px 0px 4px #343434;
+          /* border: 1px solid #1f2937; */
     }
     .honor-list-after::after{
         width: 20px;
@@ -595,5 +595,5 @@
         right: -11px;
         bottom: -5.9%;
         position: absolute;
-        box-shadow: 0px 0px 4px #343434;
+          /* border: 1px solid #1f2937; */
     }

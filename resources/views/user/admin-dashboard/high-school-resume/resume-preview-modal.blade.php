@@ -19,33 +19,38 @@
                                     <div class="preview-list position-relative ps-0 contact-list-after">
                                         <h3>Contact</h3>
                                         <ul class="list">
-                                            <li><span><i class="fa-solid fa-envelope-open-text"></i>
-                                                </span>{{ $personal_info->email }}</li>
-                                            <li><span><i class="fa-solid fa-phone"></i>
-                                                </span>{{ $personal_info->cell_phone }}</li>
+                                            <li>
+                                                <span><i class="fa-solid fa-envelope-open-text"></i>
+                                                </span>{{ $personal_info->email }}
+                                            </li>
+                                            <li>
+                                                <span><i class="fa-solid fa-phone"></i>
+                                                </span>{{ $personal_info->cell_phone }}
+                                            </li>
                                             <li class="d-flex"><span><i class="fa-solid fa-location-dot"></i>
                                                 </span>
                                                 <div class="ms-2">
                                                     <span class="d-block">Address1 / Address2 / Zip Code :</span>
-                                                    {{ $personal_info->street_address_one }} /
-                                                    {{ $personal_info->street_address_two }} /
+                                                    {{ $personal_info->street_address_one }} 
+                                                    <br>
+                                                    {{ $personal_info->street_address_two }} 
+                                                    <br>
                                                     {{ $personal_info->zip_code }}
                                                 </div>
                                             </li>
-
                                             <li class="d-flex mb-2"><span><i
                                                         class="fa-solid fa-envelope-open-text"></i>
                                                 </span>
                                                 <div class="ms-2">
-                                                    <span class="d-block">Parent Email 1 / Parent Email 2 </span>
-                                                    {{ $personal_info->parent_email_one }} /
+                                                    <span class="d-block">Parent Email 1 / Parent Email 2 :</span>
+                                                    {{ $personal_info->parent_email_one }} 
                                                     {{ $personal_info->parent_email_two }}
                                                 </div>
                                             </li>
                                             <li class="d-flex mb-2"><span><i class="fa-solid fa-location-dot"></i>
                                                 </span>
                                                 <div class="ms-2">
-                                                    <span class="d-block">City / State </span>
+                                                    <span class="d-block">City / State :</span>
                                                     {{ $personal_info->city . ', ' . $personal_info->state }}
                                                 </div>
                                             </li>
@@ -54,9 +59,11 @@
                                                     <span class="d-block">Social Links :</span>
                                                     <div class="list_group">
                                                         <ul class="list_items">
-                                                            <li class="list-type">
-                                                                {{ $personal_info->social_links[0] }}
-                                                            </li>
+                                                            @foreach ($personal_info->social_links as $link)
+                                                                <li class="list-type">
+                                                                    {{$link}}
+                                                                </li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -73,7 +80,8 @@
                                                         <div class="list_group">
                                                             <ul class="list_items">
                                                                 <li class="list-type">
-                                                                    {{ $featured_skills->featured_skill }}</li>
+                                                                    {{ $featured_skills->featured_skill }}
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     @endforeach
@@ -90,8 +98,8 @@
                                                         <div class="list_group">
                                                             <ul class="list_items">
                                                                 <li class="list-type">
-                                                                    {{ $featured_awards->featured_award }}</li>
-
+                                                                    {{ $featured_awards->featured_award }}
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     @endforeach
@@ -106,7 +114,6 @@
                                                 <ul class="list">
                                                     @foreach (json_decode($featuredAttribute->featured_languages_data) as $featured_languages)
                                                         <li>
-                                                            {{-- <span>Languages : </span> --}}
                                                             <div class="list_group">
                                                                 <ul class="list_items">
                                                                     <li class="list-type">
@@ -116,7 +123,6 @@
                                                             </div>
                                                         </li>
                                                     @endforeach
-
                                                 </ul>
                                             </div>
                                         </div>
@@ -127,23 +133,25 @@
                                             <ul class="list_items">
                                                 @php
                                                     $employment_data = json_decode($employmentCertification->employment_data);
-                                                    $employment_data_arr = \App\Helpers\Helper::objectToArray($employment_data);
                                                 @endphp
+                                                                                                             
+                                                @foreach ($employment_data as $data)
                                                 <li class="list-type">
                                                     <span>Job </span>
-                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($employment_data_arr, 'job_title', ', ') }}
+                                                    {{$data->job_title}} 
                                                     <span> with </span>
-                                                    {{ implode(',', json_decode(\App\Helpers\Helper::convertMultidimensionalToString($employment_data_arr, 'employment_grade', ', '))) }}
-
-                                                    <span> grade </span>
+                                                    {{implode(',',(json_decode($data->employment_grade)))}} 
                                                 </li>
+                                                @endforeach
+
+                                                @foreach ($employment_data as $data)
                                                 <li class="list-type">
-                                                    <span>Honor by </span>
-                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($employment_data_arr, 'employment_honor_award', ', ') }}
-
+                                                    <span> Honor by  </span>
+                                                    {{$data->employment_honor_award}} 
                                                     <span> at </span>
-                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($employment_data_arr, 'employment_location', ', ') }}
+                                                    {{$data->employment_location}} 
                                                 </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     @endif
@@ -153,25 +161,26 @@
                                             <ul class="list_items">
                                                 @php
                                                     $significant_data = json_decode($employmentCertification->significant_data);
-                                                    $significant_data_arr = \App\Helpers\Helper::objectToArray($significant_data);
                                                 @endphp
+                                                               
+                                                @foreach ($significant_data as $data)
                                                 <li class="list-type">
-                                                    <span>Responsibility or interest: </span>
-                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($significant_data_arr, 'responsibility_interest', ', ') }},
+                                                    <span>Responsibility or interest :</span>
+                                                    {{$data->responsibility_interest}} 
                                                     <span> with </span>
-                                                    {{ implode(',', json_decode(\App\Helpers\Helper::convertMultidimensionalToString($significant_data_arr, 'significant_grade', ', '))) }}
-
-                                                    <span> Grades </span>
+                                                    {{implode(',',(json_decode($data->significant_grade)))}} 
                                                 </li>
+                                                @endforeach
+
+                                                @foreach ($significant_data as $data)
                                                 <li class="list-type">
-                                                    <span>Honor by </span>
-                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($significant_data_arr, 'significant_honor_award', ', ') }}
-
+                                                    <span>Honor by</span>
+                                                    {{$data->significant_honor_award}} 
                                                     <span> at </span>
-                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($significant_data_arr, 'significant_location', ', ') }}
+                                                    {{$data->significant_location}} 
 
                                                 </li>
-
+                                                @endforeach
                                             </ul>
                                         </div>
                                     @endif
@@ -183,26 +192,29 @@
                                                     <span>Honor Position : </span>
                                                     <div class="list_group">
                                                         <ul class="list_items">
-                                                            <li class="list-type"> @php
+                                                            @php
                                                                 $honor_data = json_decode($honor->honors_data);
-                                                                $honor_data_arr = \App\Helpers\Helper::objectToArray($honor_data);
                                                             @endphp
-                                                                {{ \App\Helpers\Helper::convertMultidimensionalToString($honor_data_arr, 'position', ', ') }}
-                                                            </li>
+
+                                                            @foreach ($honor_data as $data)
+                                                                <li class="list-type">
+                                                                    {{$data->position}}
+                                                                </li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
-
                                                 </li>
                                                 <li>
                                                     <span class="d-block">Achivement / Grade : </span>
                                                     <div class="list_group">
                                                         <ul class="list_items">
-                                                            <li class="list-type">
-                                                                {{ \App\Helpers\Helper::convertMultidimensionalToString($honor_data_arr, 'honor_achievement_award', ', ') }}
-                                                                /
-                                                                {{ implode(',', json_decode(\App\Helpers\Helper::convertMultidimensionalToString($honor_data_arr, 'grade', ', '))) }}
 
-                                                            </li>
+                                                            @foreach ($honor_data as $data)
+                                                                <li class="list-type">
+                                                                    {{$data->honor_achievement_award}} / 
+                                                                    {{implode(',',(json_decode($data->grade)))}} 
+                                                                </li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
                                                 </li>
@@ -210,15 +222,15 @@
                                                     <span>Location : </span>
                                                     <div class="list_group">
                                                         <ul class="list_items">
-                                                            <li class="list-type">
-                                                                {{ \App\Helpers\Helper::convertMultidimensionalToString($honor_data_arr, 'location', ', ') }}
-                                                            </li>
+
+                                                            @foreach ($honor_data as $data)
+                                                                <li class="list-type">
+                                                                    {{$data->location}} 
+                                                                </li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
-
-
                                                 </li>
-                                                
                                             </ul>
                                         </div>
                                     @endif
@@ -230,18 +242,34 @@
                                         <div class="preview-list ">
                                             <h3>Education</h3>
                                             <ul class="list">
-                                                <li><span>Graduated in high school :</span> True</li>
-                                                <li><span>Grade Level / College Name :
-                                                    </span>
-                                                    a+ /
-                                                    mahavir /
+                                                <li>
+                                                    <span>
+                                                        Graduated in high school :
+                                                    </span> 
+                                                    {{ $education->is_graduate == 1 ? 'Yes' : 'No' }} 
                                                 </li>
-                                                <li><span> College City / College State :
-                                                    </span>
-                                                    Surat /
-                                                    gujarat /
-                                                </li>
-                                                <li><span class="d-block mb-2">School Name / City / State /
+                                                    @if ($education->grade_level && $education->college_name != null)
+                                                        <li>
+                                                            <span>
+                                                                {{$education->grade_level != '' ? 'Grade Level' : ''}} /
+                                                                {{$education->college_name != '' ? 'College name' : ''}} : 
+                                                            </span>
+                                                            {{ $education->grade_level != '' ? $education->grade_level : ''}} /
+                                                            {{ $education->grade_level != '' ? $education->college_name : ''}}
+                                                        </li>
+                                                    @endif
+                                                    @if ($education->college_city && $education->college_state != '')
+                                                        <li>
+                                                            <span>
+                                                                {{$education->college_city != '' ? 'College City ' : ''}} /
+                                                                {{$education->college_state != '' ? 'College State' : ''}} :
+                                                            </span>
+                                                            {{ $education->college_city != '' ? $education->college_city : ''}} /
+                                                            {{ $education->college_state != '' ? $education->college_state : ''}}
+                                                        </li>
+                                                    @endif
+                                                <li>
+                                                    <span class="d-block mb-2">School Name / City / State /
                                                         District :
                                                     </span>
                                                     {{ $education->high_school_name }} /
@@ -266,12 +294,18 @@
                                                 @if (!empty($education->ib_courses))
                                                     <li>
                                                         <span>IB Courses:</span>
+                                                       @foreach ($ib_courses as $course)
+                                                        {{$course->name}},
+                                                    @endforeach
+
                                                     </li>
                                                 @endif
                                                 @if (!empty($education->ap_courses))
                                                     <li>
                                                         <span>AP Courses:</span>
-                                                        {{ implode(', ', json_decode($education->ap_courses)) }}
+                                                        @foreach ($ap_courses as $course)
+                                                    {{$course->name}},
+                                                @endforeach
                                                     </li>
                                                 @endif
                                                 @if (!empty($education->honor_course_data))
@@ -279,31 +313,41 @@
                                                         <span> Honors Course :</span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type"> @php
+                                                                @php
+                                                                    $honor_course_data = json_decode($education->honor_course_data);
+                                                                @endphp
+                                                                @foreach ($honor_course_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->honor_course_name}}
+                                                                    </li>
+                                                                @endforeach
+                                                                {{-- <li class="list-type"> 
+                                                                @php
                                                                     $honor_course_data = json_decode($education->honor_course_data);
                                                                     $honor_course_data_arr = \App\Helpers\Helper::objectToArray($honor_course_data);
                                                                 @endphp
                                                                     {{ \App\Helpers\Helper::convertMultidimensionalToString($honor_course_data_arr, 'honor_course_name', ', ') }}
-                                                                </li>
+                                                                </li> --}}
                                                             </ul>
                                                         </div>
-
                                                     </li>
                                                 @endif
                                                 @if (!empty($education->course_data))
-                                                    <li>
-                                                        <span>Course : </span>
+                                                <li>
+                                                    <span>Course and College name: </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">@php
+                                                                @php
                                                                     $course_data = json_decode($education->course_data);
-                                                                    $course_data_arr = \App\Helpers\Helper::objectToArray($course_data);
                                                                 @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($course_data_arr, 'course_name', ', ') }}
-                                                                </li>
+                                                                @foreach ($course_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->course_name}} /
+                                                                        {{$data->search_college_name}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
-
                                                     </li>
                                                 @endif
                                                 @if (!empty($education->testing_data))
@@ -311,14 +355,15 @@
                                                         <span class="d-block mb-2">Name and Date of Test:</span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type"> @php
+                                                                @php
                                                                     $testing_data = json_decode($education->testing_data);
-                                                                    $testing_data_arr = \App\Helpers\Helper::objectToArray($testing_data);
                                                                 @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($testing_data_arr, 'name_of_test', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($testing_data_arr, 'date', ', ') }}
-                                                                </li>
+                                                                @foreach ($testing_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->name_of_test}} /
+                                                                        {{$data->date}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -355,25 +400,24 @@
                                     
                                     @if (!empty($activity))
                                         <div class="preview-list ">
-
                                             <h3>Activities</h3>
                                             <ul class="list">
-
                                                 @if (!empty($activity->demonstrated_data))
                                                     <li>
-                                                        <span class="d-block">Demostrated <U>Interests</U> and
-                                                            <U>Position</U> in the Area of my College
+                                                        <span class="d-block">Demostrated Interests and
+                                                            Position in the Area of my College
                                                             Major :</span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type"> @php
+                                                                @php
                                                                     $demonstrated_data = json_decode($activity->demonstrated_data);
-                                                                    $demonstrated_data_arr = \App\Helpers\Helper::objectToArray($demonstrated_data);
                                                                 @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($demonstrated_data_arr, 'interest', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($demonstrated_data_arr, 'position', ', ') }}
-                                                                </li>
+                                                                @foreach ($demonstrated_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->interest}} /
+                                                                        {{$data->position}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -382,17 +426,16 @@
                                                         </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ implode(',', json_decode(\App\Helpers\Helper::convertMultidimensionalToString($demonstrated_data_arr, 'grade', ', '))) }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($demonstrated_data_arr, 'location', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($demonstrated_data_arr, 'details', ', ') }}
-                                                                </li>
+                                                                @foreach ($demonstrated_data as $data)
+                                                                    <li class="list-type">
+
+                                                                        {{implode(',',(json_decode($data->grade)))}} 
+                                                                        {{$data->location}} /
+                                                                        {{$data->details}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
-
-
                                                     </li>
                                                 @endif
                                                 @if (!empty($activity->leadership_data))
@@ -400,33 +443,30 @@
                                                         <span>Leadership status with Position : </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    @php
-                                                                        $leadership_data = json_decode($activity->leadership_data);
-                                                                        $leadership_data_arr = \App\Helpers\Helper::objectToArray($leadership_data);
-                                                                    @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($leadership_data_arr, 'leadership_status', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($leadership_data_arr, 'leadership_position', ', ') }}
-                                                                </li>
+                                                                @php
+                                                                    $leadership_data = json_decode($activity->leadership_data);
+                                                                @endphp
+                                                                @foreach ($leadership_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->leadership_status}} /
+                                                                        {{$data->leadership_position}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
-                                                        </div>
-
-
+                                                       </div>
                                                     </li>
                                                     <li>
-                                                        <span>Organized By </span>
+                                                        <span>Leadership organized By :</span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($leadership_data_arr, 'leadership_organization', ', ') }}
-                                                                    <span> in </span>
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($leadership_data_arr, 'leadership_location', ', ') }}
-                                                                </li>
+                                                                @foreach ($leadership_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->leadership_organization}} /
+                                                                        {{$data->leadership_location}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
-
-
                                                     </li>
                                                 @endif
                                                 @if (!empty($activity->athletics_data))
@@ -434,29 +474,28 @@
                                                         <span>Athletics status with Position : </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    @php
-                                                                        $athletics_data = json_decode($activity->athletics_data);
-                                                                        $athletics_data_arr = \App\Helpers\Helper::objectToArray($athletics_data);
-                                                                    @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($athletics_data_arr, 'athletics_activity', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($athletics_data_arr, 'athletics_position', ', ') }}
-                                                                </li>
+                                                                @php
+                                                                    $athletics_data = json_decode($activity->athletics_data);
+                                                                @endphp
+                                                                @foreach ($athletics_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->athletics_activity}} /
+                                                                        {{$data->athletics_position}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
-
-
                                                     </li>
                                                     <li>
-                                                        <span>Athletics honor by </span>
+                                                        <span>Athletics honor by :</span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($athletics_data_arr, 'athletics_honor', ', ') }}
-                                                                    <span>in</span>
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($athletics_data_arr, 'athletics_location', ', ') }}
-                                                                </li>
+                                                                @foreach ($athletics_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->athletics_honor}} /
+                                                                        {{$data->athletics_location}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -467,28 +506,29 @@
                                                         <span>Activity with Position : </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    @php
-                                                                        $activities_data = json_decode($activity->activities_data);
-                                                                        $activities_data_arr = \App\Helpers\Helper::objectToArray($activities_data);
-                                                                    @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($activities_data_arr, 'activity', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($activities_data_arr, 'activity_position', ', ') }}
-                                                                </li>
+
+                                                                @php
+                                                                    $activities_data = json_decode($activity->activities_data);
+                                                                @endphp
+                                                                @foreach ($activities_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->activity}} /
+                                                                        {{$data->activity_position}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
-
                                                     </li>
                                                     <li>
-                                                        <span>Activity honor by </span>
+                                                        <span>Activity honor by :</span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($activities_data_arr, 'activity_honor_award', ', ') }}
-                                                                    <span>at</span>
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($activities_data_arr, 'activity_location', ', ') }}
-                                                                </li>
+                                                                @foreach ($activities_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->activity_honor_award}} /
+                                                                        {{$data->activity_location}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -499,15 +539,15 @@
                                                         <span>Participation and service : </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    @php
-                                                                        $community_service_data = json_decode($activity->community_service_data);
-                                                                        $community_service_data_arr = \App\Helpers\Helper::objectToArray($community_service_data);
-                                                                    @endphp
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($community_service_data_arr, 'participation_level', ', ') }}
-                                                                    /
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($community_service_data_arr, 'community_service', ', ') }}
-                                                                </li>
+                                                                @php
+                                                                    $community_service_data = json_decode($activity->community_service_data);
+                                                                @endphp
+                                                                @foreach ($community_service_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->participation_level}} /
+                                                                        {{$data->community_service}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
                                                     </li>
@@ -515,13 +555,13 @@
                                                         <span>Community Located at : </span>
                                                         <div class="list_group">
                                                             <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ \App\Helpers\Helper::convertMultidimensionalToString($community_service_data_arr, 'community_location', ', ') }}
-                                                                </li>
+                                                                @foreach ($community_service_data as $data)
+                                                                    <li class="list-type">
+                                                                        {{$data->community_location}}
+                                                                    </li>
+                                                                @endforeach
                                                             </ul>
                                                         </div>
-
-
                                                     </li>
                                                 @endif
                                             </ul>

@@ -55,7 +55,7 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" @if (!isset($employmentCertification)) onclick="errorMsg()" @endif>
+                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                         <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}"
                             id="step6-tab">
                             <p>6</p>
@@ -63,7 +63,7 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" @if (!isset($employmentCertification)) onclick="errorMsg()" @endif>
+                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -454,9 +454,18 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
     <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
     <style>
         .select2-container .select2-selection--multiple {
             min-width: 13vw !important;
+        }
+        .swal2-styled.swal2-default-outline:focus {
+            box-shadow: none;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #f27474;
+            color: #f27474;
         }
     </style>
 @endsection
@@ -480,6 +489,10 @@
             let employment_honor_award = $('input[name="employment_honor_award"]').val();
             let temp_employment_id = Date.now();
 
+            let  employment = $('#employment_data').val();
+            if( employment != "") {
+                employmentData = JSON.parse($('#employment_data').val());
+            }
             let html = ``;
             if (job_title != "" && employment_grade != "" && employment_location != "" && employment_honor_award != "") {
                 html += `<tr id="employment_${temp_employment_id}">`;
@@ -559,6 +572,10 @@
             const deleted_employment = employment_data.filter(employment => employment.id != id)
             $('#employment_data').val(JSON.stringify(deleted_employment));
             $(`#employment_${id}`).remove();
+
+            if ($('#employment_data').val() == '[]') {
+                $('#employment_data').val(null);
+            }
         }
 
         // Employment table end
@@ -572,6 +589,10 @@
             let significant_honor_award = $('input[name="significant_honor_award"]').val();
             let temp_significant_id = Date.now();
 
+            let  significant = $('#significant_data').val();
+            if( significant != "") {
+                significantData = JSON.parse($('#significant_data').val());
+            }
             let html = ``;
             if (responsibility_interest != "" && significant_grade != "" && significant_location != "" && significant_honor_award != "") {
                 html += `<tr id="significant_${temp_significant_id}">`;
@@ -651,11 +672,23 @@
             const deleted_significant = significant_data.filter(significant => significant.id != id)
             $('#significant_data').val(JSON.stringify(deleted_significant));
             $(`#significant_${id}`).remove();
+
+            if ($('#significant_data').val() == '[]') {
+                $('#significant_data').val(null);
+            }
         }
 
         function errorMsg()
         {
-            alert('You Have to submit current form first.');    
+            Swal.fire({
+                title: 'Complete Current Step',
+                text: "You Have to submit current form",
+                icon: 'warning',
+                confirmButtonColor: '#F27474',
+                confirmButtonText: 'Okay'
+            }).then((result) => {
+                window.location.href = "{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}";
+            });
         }
 
         toastr.options = {

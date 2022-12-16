@@ -12,6 +12,7 @@ use App\Models\HighSchoolResume\Honor;
 use App\Models\HighSchoolResume\PersonalInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PersonalInfoController extends Controller
 {
@@ -85,7 +86,8 @@ class PersonalInfoController extends Controller
         if (!empty($featuredAttribute)) {
             FeaturedAttribute::where('id', $featuredAttribute->id)->delete();
         }
-
-        return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["successMessage" => true, "message" => "Resume data has been cleaned now!"]);
+        Session::put(['success' => true, "message" => "Resume data has been cleaned now!"]);
+        // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
+        return response()->json(['success' => true, "message" => "Resume data has been cleaned now!"]);
     }
 }

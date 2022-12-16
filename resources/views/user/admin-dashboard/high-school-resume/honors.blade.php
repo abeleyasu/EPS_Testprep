@@ -40,7 +40,7 @@
                             <h6>Honors </h6>
                         </a>
                     </li>
-                    <li role="presentation" @if (!isset($honor)) onclick="errorMsg()" @endif>
+                    <li role="presentation" onclick="{{ !isset($honor) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                         <a class="nav-link" href="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.activities') : ''}}"
                             id="step4-tab">
                             <p>4</p>
@@ -48,7 +48,7 @@
                             <h6>Activities</h6>
                         </a>
                     </li>
-                    <li role="presentation" @if (!isset($honor)) onclick="errorMsg()" @endif>
+                    <li role="presentation" onclick="{{ !isset($honor) ? "errorMsg(); return false;" : "javascript:void(0)" }}" >
                         <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification') : ''}}"
                             id="step5-tab">
                             <p>5</p>
@@ -56,7 +56,7 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" @if (!isset($honor)) onclick="errorMsg()" @endif>
+                    <li role="presentation" onclick="{{ !isset($honor) ? "errorMsg(); return false;" : "javascript:void(0)" }}" >
                         <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}"
                             id="step6-tab">
                             <p>6</p>
@@ -64,7 +64,7 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" @if (!isset($honor)) onclick="errorMsg()" @endif>
+                    <li role="presentation" onclick="{{ !isset($honor) ? "errorMsg(); return false;" : "javascript:void(0)" }}" >
                         <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -295,6 +295,15 @@
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <style>
+        .swal2-styled.swal2-default-outline:focus {
+            box-shadow: none;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #f27474;
+            color: #f27474;
+        }
+    </style>
     <script>
         var honorsData = [];
 
@@ -308,6 +317,11 @@
             let grade = $('#grade').val();
             let location = $('input[name="location"]').val();
             let temp_honors_id = Date.now();
+
+            let honor = $('#honors_data').val();
+            if(honor != "") {
+                honorsData = JSON.parse($('#honors_data').val());
+            }
 
             let html = ``;
             if (position != "" && honor_achievement_award != "" && location != "" && grade != "") {
@@ -388,12 +402,24 @@
             const deleted_honor = honor_data.filter(honor => honor.id != id)
             $('#honors_data').val(JSON.stringify(deleted_honor));
             $(`#honors_${id}`).remove();
+            
+            if ($('#honors_data').val() == '[]') {
+                $('#honors_data').val(null);
+            }
         }
-
-        function errorMsg()
-        {
-            alert('You Have to submit current form first.');    
-        }
+        
+    function errorMsg()
+    {
+        Swal.fire({
+            title: 'Complete Current Step',
+            text: "You Have to submit current form",
+            icon: 'warning',
+            confirmButtonColor: '#F27474',
+            confirmButtonText: 'Okay'
+        }).then((result) => {
+            window.location.href = "{{ route('admin-dashboard.highSchoolResume.honors') }}";
+        });
+    }
 
     toastr.options = {
         "closeButton": true,

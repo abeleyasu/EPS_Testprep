@@ -30,35 +30,35 @@
                         <h6>Education </h6>
                     </a>
                 </li>
-                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                     <a class="nav-link" href="{{ isset($education) ? route('admin-dashboard.highSchoolResume.honors') : ''}}" id="step3-tab">
                         <p>3</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Honors </h6>
                     </a>
                 </li>
-                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
-                    <a class="nav-link" href="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.activities') : ''}}" id="step4-tab">
+                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <a class="nav-link" href="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.activities') : ''}}" id="step4-tab">
                         <p>4</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Activities</h6>
                     </a>
                 </li>
-                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                     <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification') : ''}}" id="step5-tab">
                         <p>5</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Employment & <br> Certifications</h6>
                     </a>
                 </li>
-                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                     <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}" id="step6-tab">
                         <p>6</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Featured <br> Attributes</h6>
                     </a>
                 </li>
-                <li role="presentation" @if (!isset($education)) onclick="errorMsg()" @endif>
+                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
                     <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                         <p>7</p>
                         <i class="fa-solid fa-check "></i>
@@ -202,9 +202,9 @@
                                                         </label>
                                                         <select class="form-control" id="college_name" name="college_name" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                             <option value="">Select College Name</option>
-                                                            <option value="one" {{ isset($education->college_name) && $education->college_name == "one" ? 'selected' : '' }}>First</option>
-                                                            <option value="two" {{ isset($education->college_name) && $education->college_name == "two" ? 'selected' : '' }}>Second</option>
-                                                            <option value="three" {{ isset($education->college_name) && $education->college_name == "three" ? 'selected' : '' }}>Third</option>
+                                                            <option value="one" {{ isset($education->college_name) && $education->college_name == "first" ? 'selected' : '' }}>First</option>
+                                                            <option value="two" {{ isset($education->college_name) && $education->college_name == "second" ? 'selected' : '' }}>Second</option>
+                                                            <option value="three" {{ isset($education->college_name) && $education->college_name == "third" ? 'selected' : '' }}>Third</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -348,7 +348,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="course_data" id="course_data" value="{{ !empty($education->course_data) ? $education->course_data : old('course_data') }}">
+                                            <input type="hidden" name="course_data" id="course_data" value="{{ !empty($education->course_data)  ? $education->course_data : old('course_data') }}">
                                             <table class="table">
                                                 <tbody>
                                                     <tr class="course_data_table_row">
@@ -744,9 +744,19 @@
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/high-school-resume.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+<style>
+        .swal2-styled.swal2-default-outline:focus {
+            box-shadow: none;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #f27474;
+            color: #f27474;
+        }
+</style>
 <script>
     var courseData = [];
     var honorCourseData = [];
@@ -772,6 +782,11 @@
         let course_name = $('input[name="course_name"]').val();
         let search_college_name = $('#search_college_name').val();
         let temp_course_id = Date.now();
+
+        let course = $('#course_data').val();
+        if(course != "") {
+            courseData = JSON.parse($('#course_data').val());
+        }
 
         let html = ``;
         if (course_name != "" && search_college_name != "") {
@@ -833,6 +848,11 @@
         const deleted_course = course_data.filter(course => course.id != id)
         $('#course_data').val(JSON.stringify(deleted_course));
         $(`#course_${id}`).remove();
+
+        if ($('#course_data').val() == '[]') {
+            $('#course_data').val(null);
+        }
+            
     }
 
     function addHonorCourseData(data) {
@@ -840,6 +860,10 @@
         let honor_course_name = $('input[name="honors_course_name"]').val();
         let temp_honor_course_id = Date.now();
 
+        let honor = $('#honor_course_data').val();
+        if(honor != "") {
+            honorCourseData = JSON.parse($('#honor_course_data').val());
+        }
         let html = ``;
         if (honor_course_name != "") {
             html += `<tr id="honor_course_${temp_honor_course_id}">`;
@@ -894,6 +918,10 @@
         const deleted_honor_course = honor_course_data.filter(course => course.id != id)
         $('#honor_course_data').val(JSON.stringify(deleted_honor_course));
         $(`#honor_course_${id}`).remove();
+
+        if ($('#honor_course_data').val() == '[]') {
+            $('#honor_course_data').val(null);
+        }
     }
 
     function addTestingData(data) {
@@ -902,6 +930,10 @@
         let date = $('input[name="date"]').val();
         let temp_testing_id = Date.now();
 
+        let testing = $('#testing_data').val();
+        if(testing != "") {
+            testingData = JSON.parse($('#testing_data').val());
+        }
         let html = ``;
         if (name_of_test != "" && results_score != "" && date != "") {
             html += `<tr id="testing_${temp_testing_id}">`;
@@ -971,6 +1003,9 @@
         const deleted_testing = testing_data.filter(testing => testing.id != id)
         $('#testing_data').val(JSON.stringify(deleted_testing));
         $(`#testing_${id}`).remove();
+        if ($('#testing_data').val() == '[]') {
+            $('#testing_data').val(null);
+        }
     }
 
     $(document).on('change', '#is_graduate', function(){
@@ -986,11 +1021,18 @@
             $('#college_state').attr('disabled',false);
         }
     });
-
-
+    
     function errorMsg()
     {
-        alert('You Have to submit current form first.');    
+        Swal.fire({
+            title: 'Complete Current Step',
+            text: "You Have to submit current form",
+            icon: 'warning',
+            confirmButtonColor: '#F27474',
+            confirmButtonText: 'Okay'
+        }).then((result) => {
+            window.location.href = "{{ route('admin-dashboard.highSchoolResume.educationInfo') }}";
+        });
     }
 
     toastr.options = {
