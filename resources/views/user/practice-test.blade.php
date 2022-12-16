@@ -132,7 +132,9 @@
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                    
                 }
+
                 else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
@@ -141,11 +143,14 @@
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
+                    
                 }
+                
                 else
                 {
                     selected_answer[get_question_id] = '-';
                 }
+                
                 // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                 // selected_answer[get_question_id] = getSelectedAnswer;
                 var check_click_type = 'prev';
@@ -183,6 +188,7 @@
                 {
                     selected_answer[get_question_id] = '-';
                 }
+                
                 get_first_question(get_offset);
             });
 
@@ -202,6 +208,7 @@
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                
                 }
                 else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
@@ -310,6 +317,7 @@
                         section_id: jQuery('#section_id').val(),
                         question_type: jQuery('#get_question_type').val(),
                         get_offset: get_offset,
+                        
                     },
                     success: function(result){
                         console.log(result);

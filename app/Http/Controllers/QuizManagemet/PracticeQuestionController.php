@@ -79,6 +79,7 @@ class PracticeQuestionController extends Controller
 		$practiceSection->practice_test_type = $request->testSectionType;
 		$practiceSection->testid = 0;
 		$practiceSection->section_order = $request->order;
+		$practiceSection->is_section_completed = '';
 		$practiceSection->save();
 		return $practiceSection->id;
 	}

@@ -306,6 +306,11 @@ ul.answerOptionLsit li label input{
 						@enderror
 					</div>
 
+                    <div class="mb-2 mb-4">
+						<label for="category_type" class="form-label">Category type:</label>
+                        <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
+						
+					</div>
                     
 					<!--<div class="col-md-12 col-xl-12 mb-4">
                         <button type="button" class="btn w-25 btn-alt-success add_question_modal_btn">
