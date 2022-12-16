@@ -442,7 +442,7 @@ ul.answerOptionLsit li label input{
                     </div>
 
                     <div class="mb-2">
-                        <label class="form-label" for="tags">Tags</label>
+                        <label class="form-label" for="tags">Questions Tags</label>
                         <input type="text" maxlength="30"
                             id="tag"
                             placeholder="add tag" class="form-control" onkeypress="addTag(event)"/>
@@ -450,6 +450,11 @@ ul.answerOptionLsit li label input{
                         <div class="row items-push mt-2 tag-div">                                  
                            
                         </div>
+                    </div>
+
+                    <div class="mb-2 mb-4"> 
+                        <label for="new_question_type" class="form-label">Question type:</label>
+                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" >
                     </div>
 
 					<div class="mb-2">
@@ -840,6 +845,7 @@ ul.answerOptionLsit li label input{
                 var testSectionType = $('#testSectionTypeRead').val();
                 var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
                 var activeAnswerType = '.'+ $('#selectedAnswerType').val();
+                var new_question_type = $('#new_question_type').val();
 
                 var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
                 var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
@@ -915,6 +921,7 @@ ul.answerOptionLsit li label input{
                         'multiChoice': multiChoice,
                         'tags': tags,
 						'section_id':section_id,
+                        'new_question_type':new_question_type,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("addPracticeQuestion")}}',

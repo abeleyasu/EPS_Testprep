@@ -30,6 +30,7 @@ class PracticeQuestionController extends Controller
         } else{
             $question->tags = $request->tags;
         }
+		$question->question_type = $request->new_question_type;
         
 		$question->save();
 		return $question->id;
@@ -54,6 +55,7 @@ class PracticeQuestionController extends Controller
         } else{
             $question->tags = $request->tags;
         }
+		$question->question_type = $request->new_question_type;
 		$question->save(); 
 		return $question->id;
 	}
