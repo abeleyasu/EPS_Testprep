@@ -2,6 +2,7 @@
 
 @section('title', 'HSR | Preview : CPS')
 
+
 @section('user-content')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
@@ -86,6 +87,7 @@
                             <div class="text-border">
                                 <h1><span>{{ $personal_info->first_name }}</span> {{ $personal_info->middle_name }}
                                     {{ $personal_info->last_name }}</h1>
+                                    <p>Web Developer</p>
                             </div>
                             <div class="printableArea_main">
                                 <div class="row">
@@ -146,7 +148,7 @@
                                                 </ul>   
                                             </div>
                                             @if (!empty($featuredAttribute->featured_skills_data))
-                                                <div class="preview-list position-relative features-list-after ps-0 pb-3 mb-0 border-bottom-0">
+                                                <div class="preview-list ps-0 pb-3 position-relative features-list-before mb-0 border-bottom-0">
                                                     <h3>Features</h3>
                                                     <div class="preview-list_skill">
                                                         <h2>Featured Skills</h2>
@@ -165,7 +167,7 @@
                                                 </div>
                                             @endif
                                             @if (!empty($featuredAttribute->featured_awards_data))
-                                                <div class="preview-list pb-3 ps-0 mb-0 border-bottom-0">
+                                                <div class="preview-list pb-3  position-relative features-list-after  ps-0 mb-0 border-bottom-0">
                                                     <div class="preview-list_skill">
                                                         <h2>Featured awards</h2>
                                                         <ul class="list">

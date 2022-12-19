@@ -66,6 +66,7 @@ class PreviewController extends Controller
         
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","dompdf",'ib_courses','ap_courses'))->render();
         $dompdf->loadHTML($html);
+        $dompdf->setPaper('a4', 'portrait');
         $dompdf->render();
 
         return $dompdf->stream('resume.pdf',array('Attachment' => 0));
