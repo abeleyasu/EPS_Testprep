@@ -19,14 +19,35 @@ use Illuminate\Support\Facades\View;
 
 class PreviewController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        $education = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        $honor = Honor::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
+        $resume_id = $request->resume_id;
+        // dd($resume_id);
+        if(isset($resume_id)) {   
+            $resumedata = HighSchoolResume::where('id',$resume_id)->with([
+                'personal_info', 
+                'education',
+                'honor',
+                'activity',
+                'employmentCertification',
+                'featuredAttribute'
+            ])->first();
+            $personal_info = $resumedata->personal_info; 
+            $education = $resumedata->education; 
+            $honor = $resumedata->honor; 
+            $activity = $resumedata->activity; 
+            $employmentCertification = $resumedata->employmentCertification; 
+            $featuredAttribute = $resumedata->featuredAttribute;
+        } else {
+            $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
+            $education = Education::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
+            $honor = Honor::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
+            $activity = Activity::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
+            $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
+            $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
+                       
+        }
+        $details = 0;
 
         $ib_courses = [];
         $ap_courses = [];
@@ -34,12 +55,10 @@ class PreviewController extends Controller
         foreach ((json_decode($education->ib_courses)) as $ib) {
             array_push($ib_courses, EducationCourse::whereId($ib)->first());
         }
-        foreach((json_decode($education->ap_courses)) as $ib){
+        foreach ((json_decode($education->ap_courses)) as $ib) {
             array_push($ap_courses, EducationCourse::whereId($ib)->first());
         }
-
-        $details = 0;
-        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses'));
+        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id'));
     }
 
     public function resumePreview()

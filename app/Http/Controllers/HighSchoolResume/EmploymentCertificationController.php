@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EmploymentCertificationRequest;
+use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
 use Illuminate\Http\Request;
@@ -11,14 +12,31 @@ use Illuminate\Support\Facades\Auth;
 
 class EmploymentCertificationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user_id = Auth::id();
-        $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
-        $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
-        
+        $resume_id = $request->resume_id;
+        if(isset($resume_id)) {   
+            $resumedata = HighSchoolResume::where('id',$resume_id)->with([
+                'personal_info', 
+                'education',
+                'honor',
+                'activity',
+                'employmentCertification',
+                'featuredAttribute'
+            ])->first();
+            $personal_info = $resumedata->personal_info; 
+            $education = $resumedata->education; 
+            $honor = $resumedata->honor; 
+            $activity = $resumedata->activity; 
+            $employmentCertification = $resumedata->employmentCertification; 
+            $featuredAttribute = $resumedata->featuredAttribute;
+        } else {
+            $user_id = Auth::id();
+            $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
+            $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        } 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details'));
+        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details','resume_id'));
     }
 
     public function store(EmploymentCertificationRequest $request)
@@ -45,6 +63,7 @@ class EmploymentCertificationController extends Controller
 
     public function update(EmploymentCertificationRequest $request, EmploymentCertification $employmentCertification)
     {
+                $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
 
         if(!empty($request->employment_data)){
@@ -67,7 +86,11 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data)) {
             $employmentCertification->update($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.featuresAttributes');
+            if ($resume_id != null) {
+                return redirect('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id);
+            } else {
+                return redirect()->route('admin-dashboard.highSchoolResume.featuresAttributes');
+            }
         }
     }
 }

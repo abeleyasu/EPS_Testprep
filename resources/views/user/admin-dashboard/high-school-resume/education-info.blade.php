@@ -17,49 +17,49 @@
         <div class="custom-tab-container ">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li role="presentation">
-                    <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" id="step1-tab">
+                    <a class="nav-link" href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" id="step1-tab">
                         <p class="d-none">1</p>
                         <i class="fa-solid fa-check fa-check-block "></i>
                         <h6>Personal Info</h6>
                     </a>
                 </li>
                 <li role="presentation">
-                    <a class="nav-link active" href="{{ route('admin-dashboard.highSchoolResume.educationInfo') }}" id="step2-tab">
+                    <a class="nav-link active" href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}" id="step2-tab">
                         <p>2</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Education </h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($education) ? route('admin-dashboard.highSchoolResume.honors') : ''}}" id="step3-tab">
+                    <a class="nav-link" href="{{ isset($education) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab">
                         <p>3</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Honors </h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.activities') : ''}}" id="step4-tab">
+                    <a class="nav-link" href="{{ isset($honor) ? ( isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab">
                         <p>4</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Activities</h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification') : ''}}" id="step5-tab">
+                    <a class="nav-link" href="{{ isset($employmentCertification) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
                         <p>5</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Employment & <br> Certifications</h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}" id="step6-tab">
+                    <a class="nav-link" href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
                         <p>6</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Featured <br> Attributes</h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
+                    <a class="nav-link" href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                         <p>7</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Preview</h6>
@@ -71,6 +71,9 @@
                 @csrf
                 @if(isset($education))
                     @method('PUT')
+                @endif
+                @if(isset($resume_id))
+                    <input type="hidden" name="resume_id" value="{{ $resume_id }}">
                 @endif
                 <div class="tab-content" id="myTabContent">
                     <div class="setup-content" role="tabpanel" id="step2" aria-labelledby="step2-tab">
@@ -585,13 +588,15 @@
                 </div>
                 <div class="d-flex justify-content-between mt-3">
                     <div class="prev-btn">
-                        <a href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
+                        <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
                         </a>
                     </div>
                     <div class="next-btn d-flex">
-                        <div>
-                            @include('components.reset-all-drafts-button')
-                        </div>
+                        @if (!isset($resume_id))
+                            <div>
+                                @include('components.reset-all-drafts-button')
+                            </div>
+                        @endif
                         <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
                     </div>
                 </div>

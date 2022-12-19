@@ -171,6 +171,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
                 Route::post('/personal-info', 'store')->name('personalInfo.store');
                 Route::put('/personal-info/{personalInfo}', 'update')->name('personalInfo.update');
                 Route::get('/discard-drafts', 'discard_drafts')->name('discarddrafts');
+                Route::get('edit-fetch/{editid}','editFetch')->name('editFetch');
             }); 
             Route::controller(EducationController::class)->group(function(){
                 Route::get('/education-info', 'index')->name('educationInfo');

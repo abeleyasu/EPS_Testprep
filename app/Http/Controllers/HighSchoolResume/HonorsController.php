@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\HonorsRequest;
+use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
@@ -13,17 +14,36 @@ use Illuminate\Support\Facades\Auth;
 
 class HonorsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user_id = Auth::id();
+        $resume_id = $request->resume_id;
 
-        $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
-        $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
-        $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
-        $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        // dd($resume_id);
+        if(isset($resume_id)) {   
+            $resumedata = HighSchoolResume::where('id',$resume_id)->with([
+                'personal_info', 
+                'education',
+                'honor',
+                'activity',
+                'employmentCertification',
+                'featuredAttribute'
+            ])->first();
+            $personal_info = $resumedata->personal_info; 
+            $education = $resumedata->education; 
+            $honor = $resumedata->honor; 
+            $activity = $resumedata->activity; 
+            $employmentCertification = $resumedata->employmentCertification; 
+            $featuredAttribute = $resumedata->featuredAttribute;
+        } else {
+            $user_id = Auth::id();
 
+            $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
+            $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
+            $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
+            $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        }
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details'));
+        return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id'));
     }
 
     public function store(HonorsRequest $request)
@@ -46,6 +66,7 @@ class HonorsController extends Controller
 
     public function update(HonorsRequest $request, Honor $honor)
     {
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
 
         if(!empty($request->honors_data)){
@@ -61,7 +82,11 @@ class HonorsController extends Controller
 
         if (!empty($data)) {
             $honor->update($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.activities');
+            if ($resume_id != null) {
+                return redirect('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id);
+            } else {
+                return redirect()->route('admin-dashboard.highSchoolResume.activities');
+            }
         }
     }
 }

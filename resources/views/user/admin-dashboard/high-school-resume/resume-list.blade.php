@@ -46,6 +46,10 @@
                                             <button class="btn btn-sm" data-id="{{ $resume->id }}" onclick="showResumePreview(this)" data-bs-toggle="tooltip" title="Preview">
                                                 <i class="fa fa-fw fa-file-pdf"></i>
                                             </button>
+                                            <a href="{{route('admin-dashboard.highSchoolResume.editFetch',['editid' => $resume->id])}}"
+                                                class="btn btn-sm ms-2" data-bs-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-fw fa-pen-to-square"></i>
+                                            </a>
                                             <a href="{{ route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume->id, 'type' => 'download']) }}"
                                                 class="btn btn-sm ms-2" data-bs-toggle="tooltip" title="Download">
                                                 <i class="fa fa-fw fa-download"></i>

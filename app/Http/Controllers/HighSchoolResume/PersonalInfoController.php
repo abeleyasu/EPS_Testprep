@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\PersonalInfoRequest;
+use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\Education;
 use App\Models\HighSchoolResume\EmploymentCertification;
@@ -16,16 +17,33 @@ use Illuminate\Support\Facades\Session;
 
 class PersonalInfoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user_id = Auth::id();
-
-        $personal_info = PersonalInfo::whereUserId($user_id)->where('is_draft', 0)->first();
-        $education = Education::whereUserId($user_id)->where('is_draft', 0)->first();
-        $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
-        $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
-        $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
-        $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        $resume_id = $request->resume_id;
+        if(isset($resume_id)) {   
+            $resumedata = HighSchoolResume::where('id',$resume_id)->with([
+                'personal_info', 
+                'education',
+                'honor',
+                'activity',
+                'employmentCertification',
+                'featuredAttribute'
+            ])->first();
+            $personal_info = $resumedata->personal_info; 
+            $education = $resumedata->education; 
+            $honor = $resumedata->honor; 
+            $activity = $resumedata->activity; 
+            $employmentCertification = $resumedata->employmentCertification; 
+            $featuredAttribute = $resumedata->featuredAttribute;
+        } else {
+            $user_id = Auth::id();
+            $personal_info = PersonalInfo::whereUserId($user_id)->where('is_draft', 0)->first();
+            $education = Education::whereUserId($user_id)->where('is_draft', 0)->first();
+            $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
+            $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
+            $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
+            $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        }
 
         $details = 0;
 
@@ -33,7 +51,7 @@ class PersonalInfoController extends Controller
             $details = 1;
         }
 
-        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details'));
+        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id'));
     }
 
     public function store(PersonalInfoRequest $request)
@@ -50,11 +68,16 @@ class PersonalInfoController extends Controller
 
     public function update(PersonalInfoRequest $request, PersonalInfo $personalInfo)
     {
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
 
         if (!empty($data)) {
             $personalInfo->update($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
+            if ($resume_id != null) {
+                return redirect('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id);
+            } else {
+                return redirect()->route('admin-dashboard.highSchoolResume.educationInfo'); 
+            }
         }
     }
 
@@ -89,5 +112,9 @@ class PersonalInfoController extends Controller
         Session::put(['success' => true, "message" => "Resume data has been cleaned now!"]);
         // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
         return response()->json(['success' => true, "message" => "Resume data has been cleaned now!"]);
+    }
+    public function editFetch(Request $request ,$id)
+    {
+        return redirect('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$id);
     }
 }
