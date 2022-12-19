@@ -107,6 +107,13 @@
                         </li>
 
                         <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.careerExploration.*') ? 'active' : '' }}" href="{{ route('admin-dashboard.careerExploration') }}">
+                                <i class="fa fa-graduation-cap nav-main-link-icon"></i>
+                                <span class="nav-main-link-name">Career Exploration</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}"
                                 href="{{ route('admin-dashboard.highSchoolResume.list') }}">
                                 <i class="nav-main-link-icon si si-list"></i>

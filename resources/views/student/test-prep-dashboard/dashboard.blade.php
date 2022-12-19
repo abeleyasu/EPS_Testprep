@@ -524,7 +524,7 @@
                                                                             </th>
                                                                             <th>Status</th>
                                                                         </tr>
-                                                  <?php  $count = 0; ?>
+                                                  <?php  $count = 0; //echo "<pre>"; print_r($getAllPracticeTests); echo "</pre>"; ?>
                                                   @foreach($getAllPracticeTests as $singleGetAllPracticeTests)
                                                   <?php  //echo "<pre>"; print_r($singleGetAllPracticeTests); echo "</pre>"; ?>
                                                                         <tr>

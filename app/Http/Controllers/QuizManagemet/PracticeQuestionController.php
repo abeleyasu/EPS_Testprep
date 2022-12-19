@@ -30,6 +30,7 @@ class PracticeQuestionController extends Controller
         } else{
             $question->tags = $request->tags;
         }
+		$question->question_type = $request->new_question_type;
         
 		$question->save();
 		return $question->id;
@@ -54,6 +55,7 @@ class PracticeQuestionController extends Controller
         } else{
             $question->tags = $request->tags;
         }
+		$question->question_type = $request->new_question_type;
 		$question->save(); 
 		return $question->id;
 	}
@@ -79,6 +81,7 @@ class PracticeQuestionController extends Controller
 		$practiceSection->practice_test_type = $request->testSectionType;
 		$practiceSection->testid = 0;
 		$practiceSection->section_order = $request->order;
+		$practiceSection->is_section_completed = '';
 		$practiceSection->save();
 		return $practiceSection->id;
 	}

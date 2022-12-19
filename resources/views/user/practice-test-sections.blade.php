@@ -38,6 +38,7 @@
         </div>
         <!-- Hero -->
         @if(!$testSectionName == 0)
+
         <div class="bg-body-light">
           <div class="content content-boxed">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
@@ -112,8 +113,9 @@
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
           
+        
           @foreach($testSectionsDetails as $singletestSections)
-          
+        
             <!-- START SECTION -->
             <li class="timeline-event">
               <div class="timeline-event-icon bg-success">

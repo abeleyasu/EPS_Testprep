@@ -51,6 +51,8 @@ class PracticeTestsController extends Controller
 		$practice->title = $request->title;
 		$practice->format = $request->format;
 		$practice->description = $request->description;
+        $practice->is_test_completed = '';
+        $practice->category_type = $request->category_type;
         
 		$practice->save();
 		

@@ -120,14 +120,37 @@
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
 
+                // if($("input[name='example-radios-default']").is(':checked')) { 
+                //     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                //     selected_answer[get_question_id] = getSelectedAnswer;
+                // }
+                // else
+                // {
+                //     selected_answer[get_question_id] = '-';
+                // }
+
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                    
                 }
+
+                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        console.log(this.value);
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
+                    
+                }
+                
                 else
                 {
                     selected_answer[get_question_id] = '-';
                 }
+                
                 // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                 // selected_answer[get_question_id] = getSelectedAnswer;
                 var check_click_type = 'prev';
@@ -139,14 +162,33 @@
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
 
+                // if($("input[name='example-radios-default']").is(':checked')) { 
+                //     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                //     selected_answer[get_question_id] = getSelectedAnswer;
+                // }
+                // else
+                // {
+                //     selected_answer[get_question_id] = '-';
+                // }
+
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                }
+                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        console.log(this.value);
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
                 }
                 else
                 {
                     selected_answer[get_question_id] = '-';
                 }
+                
                 get_first_question(get_offset);
             });
 
@@ -154,9 +196,28 @@
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
 
+                // if($("input[name='example-radios-default']").is(':checked')) { 
+                //     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                //     selected_answer[get_question_id] = getSelectedAnswer;
+                // }
+                // else
+                // {
+                //     selected_answer[get_question_id] = '-';
+                // }
+
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                
+                }
+                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        console.log(this.value);
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
                 }
                 else
                 {
@@ -174,9 +235,6 @@
                 var get_question_id = jQuery('.get_question_id').val();
                 var get_section_id = jQuery('#section_id').val();
                 var get_question_type = jQuery('#get_question_type').val();
-
-                // const urlParams = new URLSearchParams(window.location.search);
-                // const get_test_id = urlParams.get('test_id');
                 var get_test_id = '';
                 if (window.location.href.indexOf("all") > -1)
                 {
@@ -193,12 +251,18 @@
                      get_test_id = urlParams.get('test_id');
                 }
                 
-                // var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-                // selected_answer[get_question_id] = getSelectedAnswer;
-
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                }
+                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        console.log(this.value);
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
                 }
                 else
                 {
@@ -239,7 +303,7 @@
             function get_first_question(get_offset)
             {
                 console.log(selected_answer);
-
+                console.log('ggg');
                
                 $.ajaxSetup({
                   headers: {
@@ -253,9 +317,11 @@
                         section_id: jQuery('#section_id').val(),
                         question_type: jQuery('#get_question_type').val(),
                         get_offset: get_offset,
+                        
                     },
                     success: function(result){
                         console.log(result);
+                        console.log(jQuery.type(result.questions[0].is_multiple_choice));
                         var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
                         var passage_title =  result.questions[0].passage_title;
                         var passage_description =  result.questions[0].passage_description;
@@ -295,21 +361,50 @@
                            
                            if(selected_answer[result.questions[0].question_id] !== '' && selected_answer[result.questions[0].question_id] !== undefined )
                            {
-                                if(selected_answer[result.questions[0].question_id] == get_option_number )
+                                if(jQuery.type(result.questions[0].is_multiple_choice) == 'null')
                                 {
-                                    set_questions_options += '<div class="space-y-2">';
-                                     set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'" checked ><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    if(selected_answer[result.questions[0].question_id] == get_option_number )
+                                    {
+                                        set_questions_options += '<div class="space-y-2">';
+                                        set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'" checked ><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    }
+                                    else
+                                    {
+                                        set_questions_options += '<div class="space-y-2">';
+                                        set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    }
                                 }
                                 else
                                 {
-                                    set_questions_options += '<div class="space-y-2">';
-                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    var array = selected_answer[result.questions[0].question_id].split(',');
+                                    if(jQuery.inArray(get_option_number, array) == -1)
+                                    {
+                                        set_questions_options += '<div class="space-y-2">';
+                                        set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default"  value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>';
+                                    }
+                                    
+                                    $.each(array, function( index, value ) {
+                                       if(value == get_option_number)
+                                       {
+                                            set_questions_options += '<div class="space-y-2">';
+                                            set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" checked value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                       }
+                                    });
                                 }
                            }
                            else
                            {
-                                set_questions_options += '<div class="space-y-2">';
-                                set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                if(jQuery.type(result.questions[0].is_multiple_choice) == 'null')
+                                {
+                                    set_questions_options += '<div class="space-y-2">';
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                }
+                                else
+                                {
+                                    set_questions_options += '<div class="space-y-2">';
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                }
+                                
                            }
                             
                         });
