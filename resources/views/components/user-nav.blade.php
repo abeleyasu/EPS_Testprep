@@ -39,7 +39,7 @@
                     <a class="nav-main-link {{ Route::is('user-dashboard') ? 'active' : '' }}" href="{{ route('user-dashboard') }}">
                         <i class="nav-main-link-icon si si-speedometer"></i>
                         <span class="nav-main-link-name">Dashboard</span>
-                    </a>
+                    </a>    
                 </li> -->
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ Route::is(['courses.index', 'courses.detail']) ? 'active' : '' }}"
@@ -78,7 +78,7 @@
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.*') ? 'active' : '' }}"
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.personalInfo') ? 'active' : '' }}"
                                 href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}">
                                 <i class="nav-main-link-icon si si-pencil"></i>
                                 <span class="nav-main-link-name">High school resume</span>
@@ -113,6 +113,15 @@
                                 <span class="nav-main-link-name">Resume listing</span>
                             </a>
                         </li>
+
+                        {{-- <li class="nav-main-item">
+                            <a class="nav-main-link"
+                                href="#">
+                                <i class="nav-main-link-icon si si-list"></i>
+                                <span class="nav-main-link-name">Career Exploration</span>
+                            </a>
+                        </li> --}}
+
 
 
                         {{-- <li class="nav-main-item {{ Route::is('admin-dashboard.*') ? 'open' : '' }}">

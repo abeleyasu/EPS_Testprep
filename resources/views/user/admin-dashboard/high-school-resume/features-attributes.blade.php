@@ -63,8 +63,8 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="{{ route('admin-dashboard.highSchoolResume.preview') }}" id="step7-tab">
+                    <li role="presentation" onclick="{{ !isset($featuredAttribute) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                        <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Preview</h6>
@@ -263,7 +263,10 @@
                                     </a> 
                                    
                                 </div>
-                                <div class="next-btn">
+                                <div class="next-btn d-flex">
+                                    <div>
+                                        @include('components.reset-all-drafts-button')
+                                    </div>
                                     <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
                                     
                                 </div>
@@ -394,6 +397,9 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
 @endsection
 
 @section('user-script')
@@ -401,6 +407,16 @@
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <style>
+        .swal2-styled.swal2-default-outline:focus {
+            box-shadow: none;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #f27474;
+            color: #f27474;
+        }
+    </style>
     <script>
 
         var featuredSkillsData = [];
@@ -413,6 +429,10 @@
             let featured_skill = $('input[name="featured_skill"]').val();
             let temp_featured_skill_id = Date.now();
 
+            let featuredSkills = $('#featured_skills_data').val();
+            if(featuredSkills != "") {
+                featuredSkillsData = JSON.parse($('#featured_skills_data').val());
+            }
             let html = ``;
             if (featured_skill != "") {
                 html += `<tr id="featured_skill_${temp_featured_skill_id}">`;
@@ -427,7 +447,7 @@
                     "featured_skill": featured_skill
                 });
             } else {
-                alert('Please Enter Featured Skills Details');
+                toastr.error('Please Enter Featured Skills Details');
             }
 
             $('.featured_skill_data_table_row').after(html);
@@ -470,6 +490,9 @@
             const deleted_featured_skill = featured_skill_data.filter(featured_skill => featured_skill.id != id)
             $('#featured_skills_data').val(JSON.stringify(deleted_featured_skill));
             $(`#featured_skill_${id}`).remove();
+            if ($('#featured_skills_data').val() == '[]') {
+                $('#featured_skills_data').val(null);
+            }
         }
 
         // Featured skills table end
@@ -479,6 +502,11 @@
         function addFeaturedAwardData(data) {
             let featured_award = $('input[name="featured_award"]').val();
             let temp_featured_award_id = Date.now();
+
+            let featuredAwards = $('#featured_awards_data').val();
+            if(featuredAwards != "") {
+                featuredAwardsData = JSON.parse($('#featured_awards_data').val());
+            }
 
             let html = ``;
             if (featured_award != "") {
@@ -494,7 +522,7 @@
                     "featured_award": featured_award
                 });
             } else {
-                alert('Please Enter Featured Awards Details');
+                toastr.error('Please Enter Featured Awards Details');
             }
 
             $('.featured_award_data_table_row').after(html);
@@ -537,6 +565,10 @@
             const deleted_featured_award = featured_award_data.filter(featured_award => featured_award.id != id)
             $('#featured_awards_data').val(JSON.stringify(deleted_featured_award));
             $(`#featured_award_${id}`).remove();
+
+            if ($('#featured_awards_data').val() == '[]') {
+                $('#featured_awards_data').val(null);
+            }
         }
 
         // Featured awards table end
@@ -547,6 +579,11 @@
             let featured_language = $('input[name="featured_language"]').val();
             let languages_level = $('input[name="languages_level"]').val();
             let temp_featured_language_id = Date.now();
+            
+            let featuredLanguages = $('#featured_languages_data').val();
+            if(featuredLanguages != "") {
+                featuredLanguagesData = JSON.parse($('#featured_languages_data').val());
+            }
 
             let html = ``;
             if (featured_language != "" && languages_level != "") {
@@ -564,7 +601,7 @@
                     "languages_level": languages_level
                 });
             } else {
-                alert('Please Enter Featured Language Details');
+                toastr.error('Please Enter Featured Language Details');
             }
 
             $('.featured_language_data_table_row').after(html);
@@ -612,8 +649,41 @@
             const deleted_featured_language = featured_languages_data.filter(featured_language => featured_language.id != id)
             $('#featured_languages_data').val(JSON.stringify(deleted_featured_language));
             $(`#featured_language_${id}`).remove();
+
+            if ($('#featured_languages_data').val() == '[]') {
+                $('#featured_languages_data').val(null);
+            }
         }
 
+        function errorMsg()
+        {
+            Swal.fire({
+                title: 'Complete Current Step',
+                text: "You Have to submit current form",
+                icon: 'warning',
+                confirmButtonColor: '#F27474',
+                confirmButtonText: 'Okay'
+            }).then((result) => {
+                window.location.href = "{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}";
+            });
+        }
+    
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
         // Featured languages table end
     </script>
 @endsection

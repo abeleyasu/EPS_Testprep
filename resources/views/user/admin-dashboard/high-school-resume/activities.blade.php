@@ -47,24 +47,24 @@
                             <h6>Activities</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
+                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                        <a class="nav-link" href="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.employmentCertification') : ''}}"
                             id="step5-tab">
                             <p>5</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)"
+                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                        <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.featuresAttributes') : ''}}"
                             id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step7-tab">
+                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                        <a class="nav-link" href="{{ isset($featuredAttribute) ? route('admin-dashboard.highSchoolResume.preview') : ''}}" id="step7-tab">
                             <p >7</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Preview</h6>
@@ -607,7 +607,10 @@
                             </a>
                         
                         </div>
-                        <div class="next-btn">
+                        <div class="next-btn d-flex">
+                            <div>
+                                @include('components.reset-all-drafts-button')
+                            </div>
                             <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
                             
                         </div>
@@ -1037,11 +1040,20 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <style>
         .select2-container .select2-selection--multiple {
             min-width: 13vw !important;
         }
-    </style>
+        .swal2-styled.swal2-default-outline:focus {
+            box-shadow: none;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #f27474;
+            color: #f27474;
+        }
+</style>
 @endsection
 
 @section('user-script')
@@ -1049,6 +1061,7 @@
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
         var demonstratedData = [];
         var leadershipData = [];
@@ -1065,6 +1078,12 @@
             let location = $('input[name="location"]').val();
             let details = $('#details').val();
             let temp_demonstrated_id = Date.now();
+
+
+            let demonstrated = $('#demonstrated_data').val();
+            if(demonstrated != "") {
+                demonstratedData = JSON.parse($('#demonstrated_data').val());
+            }
 
             let html = ``;
             if (position != "" && interest != "" && location != "" && details != "" && grade != "") {
@@ -1088,7 +1107,7 @@
                     "details": details
                 });
             } else {
-                alert('Please Enter Demonstrated Details');
+                toastr.error('Please Enter Demonstrated Details');
             }
 
             $('.demonstrated_data_table_row').after(html);
@@ -1152,6 +1171,9 @@
             const deleted_demonstrate = demonstratedData.filter(demonstrate => demonstrate.id != id)
             $('#demonstrated_data').val(JSON.stringify(deleted_demonstrate));
             $(`#demonstrated_${id}`).remove();
+            if ($('#demonstrated_data').val() == '[]') {
+                $('#demonstrated_data').val(null);
+            }
         }
 
         // Demonstrated table end 
@@ -1165,6 +1187,13 @@
             let leadership_location = $('input[name="leadership_location"]').val();
             let leadership_grade = $('#leadership_grade').val();
             let temp_leadership_id = Date.now();
+
+
+            let leadership = $('#leadership_data').val();
+            if(leadership != "") {
+                leadershipData = JSON.parse($('#leadership_data').val());
+            }
+
 
             let html = ``;
             if (leadership_status != "" && leadership_position != "" && leadership_organization != "" && leadership_location != "" && grade != "") {
@@ -1188,7 +1217,7 @@
                     "leadership_location": leadership_location
                 });
             } else {
-                alert('Please Enter Leadership Details');
+                toastr.error('Please Enter Leadership Details');
             }
 
             $('.leadership_data_table_row').after(html);
@@ -1252,6 +1281,9 @@
             const deleted_leadership = leadershipData.filter(leadership => leadership.id != id)
             $('#leadership_data').val(JSON.stringify(deleted_leadership));
             $(`#leadership_${id}`).remove();
+            if ($('#leadership_data').val() == '[]') {
+                $('#leadership_data').val(null);
+            }
         }
 
         // Leadership table end 
@@ -1265,6 +1297,12 @@
             let activity_location = $('input[name="activity_location"]').val();
             let activity_honor_award = $('input[name="activity_honor_award"]').val();
             let temp_activity_id = Date.now();
+
+
+            let activities = $('#activities_data').val();
+            if(activities != "") {
+                activityData = JSON.parse($('#activities_data').val());
+            }
 
             let html = ``;
             if (activity_position != "" && activity != "" && activity_grade != "" && activity_location != "" && activity_honor_award != "") {
@@ -1288,7 +1326,7 @@
                     "activity_honor_award": activity_honor_award
                 });
             } else {
-                alert('Please Enter Activity Details');
+                toastr.error('Please Enter Activity Details');
             }
 
             $('.activity_data_table_row').after(html);
@@ -1352,6 +1390,9 @@
             const deleted_activity = activityData.filter(activity => activity.id != id)
             $('#activities_data').val(JSON.stringify(deleted_activity));
             $(`#activity_${id}`).remove();
+            if ($('#activities_data').val() == '[]') {
+                $('#activities_data').val(null);
+            }
         }
 
         // Activity table end 
@@ -1365,6 +1406,13 @@
             let athletics_location = $('input[name="athletics_location"]').val();
             let athletics_honor = $('input[name="athletics_honor"]').val();
             let temp_athletics_id = Date.now();
+
+
+            let athletics = $('#athletics_data').val();
+            if(athletics != "") {
+                athleticsData = JSON.parse($('#athletics_data').val());
+            }
+
 
             let html = ``;
             if (athletics_position != "" && athletics_activity != "" && athletics_grade != "" && athletics_location != "" && athletics_honor != "") {
@@ -1388,7 +1436,7 @@
                     "athletics_honor": athletics_honor
                 });
             } else {
-                alert('Please Enter Athletics Details');
+                toastr.error('Please Enter Athletics Details');
             }
 
             $('.athletics_data_table_row').after(html);
@@ -1452,6 +1500,10 @@
             const deleted_athletics = athleticsData.filter(athletic => athletic.id != id)
             $('#athletics_data').val(JSON.stringify(deleted_athletics));
             $(`#athletics_${id}`).remove();
+
+            if ($('#athletics_data').val() == '[]') {
+                $('#athletics_data').val(null);
+            }
         }
 
         // Athletics table end 
@@ -1464,6 +1516,12 @@
             let community_grade = $('#community_grade').val();
             let community_location = $('input[name="community_location"]').val();
             let temp_community_id = Date.now();
+
+
+            let community = $('#community_service_data').val();
+            if(community != "") {
+                communityData = JSON.parse($('#community_service_data').val());
+            }
 
             let html = ``;
             if (participation_level != "" && community_service != "" && community_grade != "" && community_location != "") {
@@ -1485,7 +1543,7 @@
                     "community_location": community_location
                 });
             } else {
-                alert('Please Enter community Details');
+                toastr.error('Please Enter community Details');
             }
 
             $('.community_data_table_row').after(html);
@@ -1544,9 +1602,44 @@
             const deleted_community = communityServiceData.filter(community => community.id != id)
             $('#community_service_data').val(JSON.stringify(deleted_community));
             $(`#community_${id}`).remove();
+
+            if ($('#community_service_data').val() == '[]') {
+                $('#community_service_data').val(null);
+            }
         }
 
         // community service table end 
+
+
+        function errorMsg()
+        {
+            Swal.fire({
+                title: 'Complete Current Step',
+                text: "You Have to submit current form",
+                icon: 'warning',
+                confirmButtonColor: '#F27474',
+                confirmButtonText: 'Okay'
+            }).then((result) => {
+                window.location.href = "{{ route('admin-dashboard.highSchoolResume.activities') }}";
+            });
+        }
+
+        toastr.options = {
+        "closeButton": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 
     </script>
 @endsection

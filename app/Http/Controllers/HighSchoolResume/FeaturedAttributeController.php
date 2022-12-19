@@ -13,7 +13,8 @@ class FeaturedAttributeController extends Controller
     public function index()
     {
         $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
-        return view('user.admin-dashboard.high-school-resume.features-attributes', compact('featuredAttribute'));
+        $details =0;
+        return view('user.admin-dashboard.high-school-resume.features-attributes', compact('featuredAttribute','details'));
     }
 
     public function store(FeaturedAttributeRequest $request)
@@ -60,6 +61,17 @@ class FeaturedAttributeController extends Controller
 
         $data = array_filter($data);
 
+        if($data['featured_skills_data'] == "[]"){
+            $data['featured_skills_data'] = null;
+        } 
+        
+        if($data['featured_awards_data'] == "[]"){
+            $data['featured_awards_data'] = null;
+        } 
+
+        if($data['featured_languages_data'] == "[]"){
+            $data['featured_languages_data'] = null;
+        } 
         if (!empty($data)) {
             $featuredAttribute->update($data);
             return redirect()->route('admin-dashboard.highSchoolResume.preview');
