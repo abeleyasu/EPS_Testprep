@@ -79,6 +79,7 @@ class PreviewController extends Controller
         foreach((json_decode($education->ap_courses)) as $ib){
             array_push($ap_courses, EducationCourse::whereId($ib)->first());
         }
+
         $options = new Options(); 
         $options->set('isPhpEnabled', 'true'); 
         $dompdf = new Dompdf($options);
@@ -154,7 +155,17 @@ class PreviewController extends Controller
         $activity = Activity::find($highSchoolResume->activity_id);
         $employmentCertification = EmploymentCertification::find($highSchoolResume->employment_certification_id);
         $featuredAttribute = FeaturedAttribute::find($highSchoolResume->featured_attribute_id);
-        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute"))->render();
+        $ib_courses = [];
+        $ap_courses = [];
+
+        foreach ((json_decode($education->ib_courses)) as $ib) {
+            array_push($ib_courses, EducationCourse::whereId($ib)->first());
+        }
+        foreach((json_decode($education->ap_courses)) as $ib){
+            array_push($ap_courses, EducationCourse::whereId($ib)->first());
+        }
+
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute",'ib_courses','ap_courses'))->render();
         $pdf->loadHTML($html);
         $pdf->render();
         return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
