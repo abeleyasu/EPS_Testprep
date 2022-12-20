@@ -110,6 +110,7 @@ class PracticeTestsController extends Controller
 		/*$practice->format = $request->format;*/
 		$practice->description = $request->description;
         $practice->tags = $tags;
+        $practice->category_type = $request->category_type;
 		$practice->save();
         return redirect()->route('practicetests.index')->with('message','Question updated successfully');
     }

@@ -134,7 +134,7 @@
                     selected_answer[get_question_id] = getSelectedAnswer;
                     
                 }
-
+                 
                 else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
@@ -157,7 +157,7 @@
                 
                 get_first_question(get_offset);
             });
-
+            
             jQuery(".skip").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
@@ -204,7 +204,7 @@
                 // {
                 //     selected_answer[get_question_id] = '-';
                 // }
-
+                   
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
@@ -245,6 +245,7 @@
                     console.log(last_part);
                      get_test_id = last_part;
                 }
+                
                 else
                 {
                     const urlParams = new URLSearchParams(window.location.search);
@@ -268,7 +269,7 @@
                 {
                     selected_answer[get_question_id] = '-';
                 }
-
+              
                 console.log(selected_answer);
                 console.log(get_section_id);
                 //return false;
@@ -295,7 +296,7 @@
                         window.location.href = url;
                         
                 }});
-
+                console.log(get_test_id);
             });
             
             
@@ -390,6 +391,7 @@
                                             set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" checked value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
                                        }
                                     });
+                                    
                                 }
                            }
                            else

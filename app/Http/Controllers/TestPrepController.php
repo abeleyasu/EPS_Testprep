@@ -64,8 +64,51 @@ class TestPrepController extends Controller
 
     public function singleReview(Request $request , $test , $id)
     {   
+        
         $current_user_id = Auth::id();
         $get_test_name = $test;
+        $set_get_question_category = array();
+        
+
+        if(isset($_GET['test_id']) && !empty($_GET['test_id']))
+        {
+            $test_id=$_GET['test_id'];
+            $test_category_type = DB::table('practice_tests')->select('category_type')->where('practice_tests.id',$test_id)->get();
+            
+            if($_GET['type'] == 'all')
+            {
+                $get_question_category = DB::table('practice_tests')
+                    ->join('practice_test_sections','practice_test_sections.testid','=','practice_tests.id')
+                    ->join('practice_questions','practice_questions.practice_test_sections_id','=','practice_test_sections.id')
+                    ->select('practice_questions.id','practice_questions.question_type')
+                    ->where('practice_tests.id',$test_id)
+                    ->get();
+                
+                if($get_question_category->count()>0)
+                {
+                    foreach($get_question_category as $get_single_question_cat)
+                    {
+                        $set_get_question_category[$get_single_question_cat->question_type][] =  $get_single_question_cat->id;
+                    }
+                }   
+            }
+            else if($_GET['type'] == 'single'){
+
+                $get_question_category = DB::table('practice_tests')
+                    ->join('practice_test_sections','practice_test_sections.testid','=','practice_tests.id')
+                    ->join('practice_questions','practice_questions.practice_test_sections_id','=','practice_test_sections.id')
+                    ->select('practice_questions.id','practice_questions.question_type')
+                    ->where('practice_test_sections.id',$id)
+                    ->get();
+                if($get_question_category->count()>0)
+                {
+                    foreach($get_question_category as $get_single_question_cat)
+                    {
+                        $set_get_question_category[$get_single_question_cat->question_type][] =  $get_single_question_cat->id;
+                    }
+                }
+            } 
+        }
         if(isset($_GET['type']) && !empty($_GET['type']))
         {
             if($_GET['type'] == 'all')
@@ -118,7 +161,7 @@ class TestPrepController extends Controller
                 }
             }
         }
-        return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name]);
+        return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name , 'set_get_question_category' => $set_get_question_category,'test_category_type'=>$test_category_type]);
     }
 
     public function set_answers(Request $request)
