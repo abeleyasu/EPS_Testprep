@@ -78,7 +78,7 @@
               <td class="fw-semibold fs-sm">
                 <!-- Modal Button that initiates opening CATEGORY Modal -->
 
-                <button type="button" data-bs-toggle="modal" disabled data-bs-target="#modal-block-large-cg1ct1" class="btn btn-dark fs-xs fw-semibold me-1 mb-3">{{$test_category_type[0]->category_type}}</button>
+                <button type="button" data-bs-toggle="modal"  data-bs-target="#modal-block-large-cg1ct1" class="btn btn-dark fs-xs fw-semibold me-1 mb-3 categories-name" data-category-type="<?php echo $test_category_type[0]->category_type;  ?>">{{$test_category_type[0]->category_type}}</button>
 
                 <!-- Opens Modal - Has Modal Content - CATEGORY -->
 
@@ -88,7 +88,7 @@
                       <!-- Blocks API, functionality initialized in Template._uiApiBlocks() -->
                       <div class="block block-rounded">
                         <div class="block-header block-header-default">
-                          <h3 class="block-title">Category: {{$test_category_type[0]->category_type}}</h3>
+                          <h3 class="block-title">Category:<span class="set_category_type"> {{$test_category_type[0]->category_type}}</span></h3>
                         </div>
                         <div class="block-content">
                           <p class="fs-sm mb-0">
@@ -164,10 +164,21 @@
                       var get_test_type = '<?php echo $get_main_test_type_for_bar; ?>';
                       var testnewWidth = jQuery("."+get_test_type+"").data('test_id_bar')+"%";
                       jQuery("."+get_test_type+"").width(testnewWidth);
+
                     /** END */
+                    jQuery('.sentence-structure').click(function(){
+                        var get_question_type = jQuery(this).data('question-type');
+                        jQuery(".set_question_type").text(get_question_type);
+                    });
+                    jQuery('.categories-name').click(function(){
+                      var get_category_type = jQuery(this).data('category-type');
+                      jQuery(".set_category_type").text(get_category_type);
+                      
+                    });
                   });
+                  
                 </script>
-                 
+
                  <div class="progress fw-semibold fs-sm" style="height:8px; color:success">
                   <div class="progress-bar bg-dark <?php echo $get_main_test_type_for_bar; ?>" role="progressbar" data-test_id_bar="<?php echo $get_test_bar_percentage; ?>" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="height:8px; width:0%">
                   </div>
@@ -198,20 +209,19 @@
           <!-- END Category Types -->
 
           <!-- BEGIN Question Types -->
-            
           
           <tbody class="fs-sm input-main">
           @foreach($set_get_question_category as $test_question_type => $single_set_get_question_category)
             <tr>
               <td class="text-center"></td>
               <td>
-                <button type="button" class="btn btn-primary fs-xs fw-semibold me-1 mb-3">Question Type</button>
+                <button type="button" class="btn btn-primary fs-xs fw-semibold me-1 mb-3" >Question Type</button>
               </td>
               <td class="fw-semibold fs-sm">
 
                 <!-- NEW Modal Button that initiates opening QUESTION TYPE Modal -->
 
-                <button type="button" data-bs-toggle="modal" disabled data-bs-target="#modal-block-large-cg1qt1" class="btn btn-primary fs-xs fw-semibold me-1 mb-3">{{$test_question_type}}</button>
+                <button type="button" data-bs-toggle="modal"  data-bs-target="#modal-block-large-cg1qt1" class="btn btn-primary fs-xs fw-semibold me-1 mb-3 sentence-structure" data-question-type="<?php echo $test_question_type; ?>">{{$test_question_type}}</button>
 
                 <!-- Opens Modal - Has Modal Content - QUESTION TYPE -->
                 <div class="modal" id="modal-block-large-cg1qt1" tabindex="-1" aria-labelledby="modal-block-large-cg1qt1" style="display: none;" aria-hidden="true">
@@ -219,7 +229,7 @@
                     <div class="modal-content">
                       <div class="block block-rounded">
                         <div class="block-header block-header-default">
-                          <h3 class="block-title">Question Type: {{$test_question_type}}</h3>
+                          <h3 class="block-title">Question Type: <span class="set_question_type">{{$test_question_type}}<span></h3>
                         </div>
                         <div class="block-content">
                           <div id="faq1" class="mb-5" role="tablist" aria-multiselectable="true">
@@ -640,7 +650,7 @@
                    var get_correct_answer = jQuery(this).data('correct-answer');
                    var get_user_answer = jQuery(this).data('user-answer');
                    var get_answers_exp = jQuery(this).data('answers-exp');
-                  
+              
                    jQuery(".set_serial_no").text(serial_no);
                    jQuery(".set_question_title").text(get_question_title);
                    jQuery(".set_passage_title").text(get_passage_title);

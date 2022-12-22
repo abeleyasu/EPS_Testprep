@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\QuizManagemet;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\PracticeQuestion;
 use App\Models\PracticeTestSection;
+use App\Models\QuestionType;
 use App\Models\Passage;
 
 class PracticeQuestionController extends Controller
@@ -35,7 +37,55 @@ class PracticeQuestionController extends Controller
 		$question->save();
 		return $question->id;
 	}
-	
+
+	public function indexQuestionType()
+	{
+		$questionTypes = DB::table('question_types')->get();
+		return view('admin.quiz-management.questiontypes.index', compact('questionTypes'));
+	}
+	public function storeQuestionType(Request $request) {
+		$question = new QuestionType();
+		$question->question_type_title = $request->question_type_title;
+		$question->question_type_description = $request->question_type_description;
+		$question->question_type_lesson = $request->question_type_lesson;
+		$question->question_type_strategies = $request->question_type_strategies;
+		$question->question_type_identification_methods = $request->question_type_identification_methods;
+		$question->question_type_identification_activity = $request->question_type_identification_activity;
+		$question->save();
+		return $question->id;
+	}
+
+	public function addQuestionType()
+	{
+		return view('admin.quiz-management.questiontypes.create');
+	}
+
+	public function editQuestionTypes(Request $request)
+	{
+		$getquestionDetails = DB::table('question_types')->where('question_types.id', $request->id)->get();
+		
+		return view('admin.quiz-management.questiontypes.edit',['getquestionDetails'=>$getquestionDetails]);
+	}
+	public function updateQuestionType(Request $request){
+
+		$updatequestion = DB::table('question_types')
+		->where('question_types.id', $request->question_type_id)
+		->update(['question_type_title' => $request->question_type_title,
+		'question_type_description' => $request->question_type_description,
+		'question_type_lesson' => $request->question_type_lesson,
+		'question_type_strategies' => $request->question_type_strategies,
+	    'question_type_identification_methods' => $request->question_type_identification_methods,
+	    'question_type_identification_activity' => $request->question_type_identification_activity
+		]);
+		return $updatequestion;
+	}
+
+	public function deleteQuestionType(Request $request)
+	{
+		DB::delete('delete from question_types where id = ?',[$request->question_type_id]);
+		$questionTypes = DB::table('question_types')->get();
+		return view('admin.quiz-management.questiontypes.index', compact('questionTypes'));
+	}
 	public function updatePracticeQuestion(Request $request) {
 		$question = PracticeQuestion::find($request->id);
 		$question->format = $request->format;
