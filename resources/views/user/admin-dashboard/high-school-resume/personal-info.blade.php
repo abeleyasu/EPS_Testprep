@@ -26,7 +26,7 @@
                 @endif
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
-                        <a class="nav-link active" href="{{ isset($personal_info) ? ( isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')) : ''}}"
+                        <a class="nav-link active" href="{{ isset($personal_info) && $personal_info != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')) : '' }}"
                             id="step1-tab">
                             <p>1</p>
                             <i class="fa-solid fa-check "></i>
@@ -92,7 +92,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class=" text-white fw-600 collapsed">Personal info</a>
+                                        <a class=" text-white fw-600 collapsed">Personal Info</a>
                                     </div>
                                     <div id="collapseOne"
                                         class="collapse show"
@@ -221,7 +221,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                        <a class="text-white fw-600 collapsed">Contact information</a>
+                                        <a class="text-white fw-600 collapsed">Contact Information</a>
                                     </div>
                                     <div id="collapseThree"
                                         class="collapse {{ $errors->has('cell_phone') || $errors->has('email') || $errors->has('social_links') || $errors->has('parent_email_one') || $errors->has('parent_email_two') ? 'show' : '' }}"
@@ -232,7 +232,7 @@
                                                     <div class="col-lg-6">
                                                         <div>
                                                             <label class="form-label" for="cell_phone">
-                                                                Cell phone
+                                                                Cell Phone
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="tel"
@@ -257,7 +257,7 @@
                                                 </div>
                                                 <div class="mb-4 position-relative">
                                                     <label class="form-label" for="social_links">
-                                                        Social links
+                                                        Social Links
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="social_link_div">
@@ -304,7 +304,7 @@
                                                                 class="form-control @error('parent_email_one') is-invalid @enderror"
                                                                 value="{{ isset($personal_info->parent_email_one) ? $personal_info->parent_email_one : old('parent_email_one') }}"
                                                                 id="parent_email_one" name="parent_email_one"
-                                                                placeholder="Enter Parent Email 1">
+                                                                placeholder="This will not show up on your Resume.">
                                                             @error('parent_email_one')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror
@@ -320,7 +320,7 @@
                                                                 class="form-control @error('parent_email_two') is-invalid @enderror"
                                                                 value="{{ isset($personal_info->parent_email_two) ? $personal_info->parent_email_two : old('parent_email_two') }}"
                                                                 id="parent_email_two" name="parent_email_two"
-                                                                placeholder="Enter Parent Email 2">
+                                                                placeholder="This will not show up on your Resume.">
                                                             @error('parent_email_two')
                                                                 <span class="invalid">{{ $message }}</span>
                                                             @enderror

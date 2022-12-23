@@ -88,11 +88,11 @@
                             <p><a href="#">Home</a> > High School Resume</p>
                         </div>
                         <div class="mb-5">
-                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/' . isset($resume_id) ? route('admin-dashboard.highSchoolResume.resume.download',["id" => $resume_id, "type" => "preview"]) : route('admin-dashboard.highSchoolResume.pdf.preview') }}"
+                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/' . isset($resume_id) && $resume_id != null ? route('admin-dashboard.highSchoolResume.resume.download',["id" => $resume_id, "type" => "preview"]) : route('admin-dashboard.highSchoolResume.pdf.preview') }}"
                                 target="_blank" class="btn btn-alt-primary">SAVE RESUME AS FILE</a>
                         </div>
                         @if (isset($resume_id))
-                            <input type="hidden" name="resume_id" value="{{ $resume_id }}">
+                            <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                         @endif
                         <div class="printableArea">
                             <div class="text-border">

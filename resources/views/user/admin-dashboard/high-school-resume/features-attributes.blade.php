@@ -85,7 +85,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class="text-white fw-600 collapsed"> Featured skills</a>
+                                        <a class="text-white fw-600 collapsed"> Featured Skills</a>
                                     </div>
                                     <div id="collapseOne"
                                         class="collapse show"
@@ -98,7 +98,7 @@
                                                             <input type="hidden" name="feature_skill" id="feature_skill" value="{{ isset($featuredAttribute) ? $featuredAttribute->id : '' }}">
                                                             <td>
                                                                 <label class="form-label" for="featured_skill">
-                                                                    Featured skill
+                                                                    Featured Skill
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
@@ -222,7 +222,7 @@
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="languages_level">
-                                                                    Languages level
+                                                                    Languages Level
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>

@@ -15,7 +15,7 @@ class EmploymentCertificationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        if(isset($resume_id)) {   
+        if(isset($resume_id) && $resume_id != null) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([
                 'personal_info', 
                 'education',

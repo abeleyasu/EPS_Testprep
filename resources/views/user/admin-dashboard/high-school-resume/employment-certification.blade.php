@@ -98,7 +98,7 @@
                                                             <input type="hidden" name="employmentCertification" id="employmentCertification" value="{{ isset($employmentCertification) ? $employmentCertification->id : ''}}">
                                                             <td>
                                                                 <label class="form-label" for="job_title">
-                                                                    Job title
+                                                                    Job Title
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
@@ -211,8 +211,8 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        <a class="text-white fw-600 collapsed">Other Significant Responsibilities or
-                                            interests</a>
+                                        <a class="text-white fw-600 collapsed">Other Significant Responsibilities Or
+                                            Interests</a>
                                     </div>
                                     <div id="collapseTwo"
                                         class="collapse {{ $errors->has('significant_data') ? 'show' : '' }}"
@@ -225,7 +225,7 @@
                                                             <td>
                                                                  <label class="form-label"
                                                                     for="responsibility_interest">
-                                                                    Responsibility or interest
+                                                                    Responsibility Or Interest
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>

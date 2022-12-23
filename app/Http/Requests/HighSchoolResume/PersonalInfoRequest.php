@@ -15,7 +15,6 @@ class PersonalInfoRequest extends FormRequest
     {
         return [
             "first_name" => "required",
-            "middle_name" => "required",
             "last_name" => "required",
             "street_address_one" => "required",
             "street_address_two" => "required",
@@ -34,7 +33,6 @@ class PersonalInfoRequest extends FormRequest
     {
         return [
             'first_name.required' => 'First Name field is required',
-            'middle_name.required' => 'Middle Name field is required',
             'last_name.required' => 'Last Name field is required',
             'street_address_one.required' => 'Street Address 1 field is required',
             'street_address_two.required' => 'Street Address 2 field is required',
