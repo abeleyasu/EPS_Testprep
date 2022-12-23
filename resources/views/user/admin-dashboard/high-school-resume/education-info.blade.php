@@ -17,62 +17,62 @@
         <div class="custom-tab-container ">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li role="presentation">
-                    <a class="nav-link" href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" id="step1-tab">
+                    <a class="nav-link" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" id="step1-tab">
                         <p class="d-none">1</p>
                         <i class="fa-solid fa-check fa-check-block "></i>
                         <h6>Personal Info</h6>
                     </a>
                 </li>
                 <li role="presentation">
-                    <a class="nav-link active" href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}" id="step2-tab">
+                    <a class="nav-link active" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}" id="step2-tab">
                         <p>2</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Education </h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($education) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab">
+                    <a class="nav-link" href="{{ isset($education) && $education != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab">
                         <p>3</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Honors </h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($honor) ? ( isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab">
+                    <a class="nav-link" href="{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab">
                         <p>4</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Activities</h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($employmentCertification) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
+                    <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
                         <p>5</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Employment & <br> Certifications</h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
+                    <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
                         <p>6</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Featured <br> Attributes</h6>
                     </a>
                 </li>
                 <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
+                    <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                         <p>7</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Preview</h6>
                     </a>
                 </li>
             </ul>
-            <input type="hidden" name="education" id="education" value="{{ isset($education) ? $education->id : ''}}">
-            <form class="js-validation" id="form" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
+            <input type="hidden" name="education" id="education" value="{{ isset($education) && $education != null ? $education->id : ''}}">
+            <form class="js-validation" id="form" action="{{ isset($education) && $education != null ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
                 @csrf
-                @if(isset($education))
+                @if(isset($education) && $education != null)
                     @method('PUT')
                 @endif
-                @if(isset($resume_id))
+                @if(isset($resume_id) && $resume_id != null)
                     <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                 @endif
                 <div class="tab-content" id="myTabContent">
@@ -92,7 +92,7 @@
                                                             Grade
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('current_grade') is-invalid @enderror" value="{{ isset($education->current_grade) ? $education->current_grade : old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
+                                                        <input type="text" class="form-control @error('current_grade') is-invalid @enderror" value="{{ isset($education->current_grade) && $education->current_grade != null ? $education->current_grade : old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
                                                         @error('current_grade')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -105,7 +105,7 @@
                                                         <label class="form-label" for="month">Month
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="month-own form-control @error('month') is-invalid @enderror" id="month" name="month" value="{{ isset($education->month) ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
+                                                        <input class="month-own form-control @error('month') is-invalid @enderror" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
                                                         @error('month')
                                                             <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -116,7 +116,7 @@
                                                         <label class="form-label" for="year">Year
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="year-own form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{ isset($education->year) ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
+                                                        <input class="year-own form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
                                                         @error('year')
                                                             <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -127,7 +127,7 @@
                                                         <label class="form-label" for="high_school_name">High School
                                                             Name <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_name') is-invalid @enderror" id="high_school_name" value="{{ isset($education->high_school_name) ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
+                                                        <input type="text" class="form-control @error('high_school_name') is-invalid @enderror" id="high_school_name" value="{{ isset($education->high_school_name) && $education->high_school_name != null ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
                                                         @error('high_school_name')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -140,7 +140,7 @@
                                                         <label class="form-label" for="high_school_city">High School
                                                             City <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_city') is-invalid @enderror" id="high_school_city" value="{{ isset($education->high_school_city) ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
+                                                        <input type="text" class="form-control @error('high_school_city') is-invalid @enderror" id="high_school_city" value="{{ isset($education->high_school_city) && $education->high_school_city != null ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
                                                         @error('high_school_city')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -151,7 +151,7 @@
                                                         <label class="form-label" for="high_school_state">High School
                                                             State <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_state') is-invalid @enderror" id="high_school_state" value="{{ isset($education->high_school_state) ? $education->high_school_state : old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
+                                                        <input type="text" class="form-control @error('high_school_state') is-invalid @enderror" id="high_school_state" value="{{ isset($education->high_school_state) && $education->high_school_state != null ? $education->high_school_state : old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
                                                         @error('high_school_state')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -163,7 +163,7 @@
                                                             School
                                                             District <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_district') is-invalid @enderror" id="high_school_district" value="{{ isset($education->high_school_district) ? $education->high_school_district : old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
+                                                        <input type="text" class="form-control @error('high_school_district') is-invalid @enderror" id="high_school_district" value="{{ isset($education->high_school_district) && $education->high_school_district != null ? $education->high_school_district : old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
                                                         @error('high_school_district')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -195,7 +195,7 @@
                                                         <label class="form-label" for="grade_level">
                                                             Grade level
                                                         </label>
-                                                        <input type="text" class="form-control" value="{{ isset($education->grade_level) ? $education->grade_level : old('grade_level') }}" id="grade_level" name="grade_level" placeholder="Enter Grade level" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
+                                                        <input type="text" class="form-control" value="{{ isset($education->grade_level) && $education->grade_level != null ? $education->grade_level : old('grade_level') }}" id="grade_level" name="grade_level" placeholder="Enter Grade level" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -218,7 +218,7 @@
                                                         <label class="form-label" for="college_city">
                                                             College City
                                                         </label>
-                                                        <input type="text" class="form-control" value="{{ isset($education->college_city) ? $education->college_city : old('college_city') }}" id="college_city" name="college_city" placeholder="Enter College City" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
+                                                        <input type="text" class="form-control" value="{{ isset($education->college_city) && $education->college_city != null ? $education->college_city : old('college_city') }}" id="college_city" name="college_city" placeholder="Enter College City" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -226,7 +226,7 @@
                                                         <label class="form-label" for="college_state">
                                                             College State
                                                         </label>
-                                                        <input type="text" class="form-control" value="{{ isset($education->college_state) ? $education->college_state : old('college_state') }}" id="college_state" name="college_state" placeholder="Enter College State" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
+                                                        <input type="text" class="form-control" value="{{ isset($education->college_state) && $education->college_state != null ? $education->college_state : old('college_state') }}" id="college_state" name="college_state" placeholder="Enter College State" {{ isset($education->is_graduate) && $education->is_graduate == 1 ? 'disabled' : '' }}>
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,7 +247,7 @@
                                                         <label class="form-label" for="cumulative_gpa_unweighted">Cumulative
                                                             GPA
                                                             (UNWEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control @error('cumulative_gpa_unweighted') is-invalid @enderror" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
+                                                        <input type="text" class="form-control @error('cumulative_gpa_unweighted') is-invalid @enderror" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
                                                         @error('cumulative_gpa_unweighted')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -258,7 +258,7 @@
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
                                                             (WEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control @error('cumulative_gpa_weighted') is-invalid @enderror" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                        <input type="text" class="form-control @error('cumulative_gpa_weighted') is-invalid @enderror" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
                                                         @error('cumulative_gpa_weighted')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -283,7 +283,7 @@
                                                             Class Rank
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('class_rank') is-invalid @enderror" value="{{ isset($education->class_rank) ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
+                                                        <input type="text" class="form-control @error('class_rank') is-invalid @enderror" value="{{ isset($education->class_rank) && $education->class_rank != null ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
                                                         @error('class_rank')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -295,7 +295,7 @@
                                                             Total Number Of Student
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="number" class="form-control @error('total_no_of_student') is-invalid @enderror" value="{{ isset($education->total_no_of_student) ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
+                                                        <input type="number" class="form-control @error('total_no_of_student') is-invalid @enderror" value="{{ isset($education->total_no_of_student) && $education->total_no_of_student != null ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
                                                         @error('total_no_of_student')
                                                         <span class="invalid">{{ $message }}</span>
                                                         @enderror
@@ -549,9 +549,9 @@
                                                         </label>
                                                         <select class="form-select @error('intended_college_major') is-invalid @enderror" id="intended_college_major" name="intended_college_major" style="width: 100%;">
                                                             <option value="">Select Intended College Major</option>
-                                                            <option value="Test" {{ (isset($education->intended_college_major) ? $education->intended_college_major : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
-                                                            <option value="Demo" {{ (isset($education->intended_college_major) ? $education->intended_college_major : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
-                                                            <option value="Temp" {{ (isset($education->intended_college_major) ? $education->intended_college_major : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
+                                                            <option value="Test" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
+                                                            <option value="Demo" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
+                                                            <option value="Temp" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_major')
                                                         <span class="invalid">{{ $message }}</span>
@@ -566,9 +566,9 @@
                                                         </label>
                                                         <select class="form-select @error('intended_college_minor') is-invalid @enderror" id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
                                                             <option value="">Select Intended College Minor</option>
-                                                            <option value="Test" {{ (isset($education->intended_college_minor) ? $education->intended_college_minor : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
-                                                            <option value="Demo" {{ (isset($education->intended_college_minor) ? $education->intended_college_minor : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
-                                                            <option value="Temp" {{ (isset($education->intended_college_minor) ? $education->intended_college_minor : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
+                                                            <option value="Test" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
+                                                            <option value="Demo" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
+                                                            <option value="Temp" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
                                                         @error('intended_college_minor')
                                                         <span class="invalid">{{ $message }}</span>

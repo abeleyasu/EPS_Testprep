@@ -15,6 +15,7 @@ class PersonalInfoRequest extends FormRequest
     {
         return [
             "first_name" => "required",
+            "middle_name" => "",
             "last_name" => "required",
             "street_address_one" => "required",
             "street_address_two" => "required",

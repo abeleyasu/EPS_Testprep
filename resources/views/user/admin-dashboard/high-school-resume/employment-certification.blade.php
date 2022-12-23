@@ -17,7 +17,7 @@
             <div class="custom-tab-container ">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
-                        <a class="nav-link" href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')}}"
+                        <a class="nav-link" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')}}"
                             id="step1-tab">
                             <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{  isset($resume_id) ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')}}"
+                        <a class="nav-link " href="{{  isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')}}"
                             id="step2-tab">
                             <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -33,14 +33,14 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.honors')}}" id="step3-tab">
+                        <a class="nav-link " href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.honors')}}" id="step3-tab">
                             <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
                             <h6>Honors </h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.activities') }}"
+                        <a class="nav-link " href="{{isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
                             <p class="d-none">4</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -49,14 +49,14 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link active"
-                            href="{{isset($resume_id) ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')}}" id="step5-tab">
+                            href="{{isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')}}" id="step5-tab">
                             <p>5</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($employmentCertification) ? ( isset($resume_id) ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
+                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
                             id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
@@ -64,19 +64,19 @@
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) ? ( isset($resume_id) ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
+                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null  ? ( isset($resume_id) && $resume_id != null  ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
+                <form class="js-validation" id="form" action="{{ isset($employmentCertification) && $employmentCertification != null ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
                     @csrf
-                    @if(isset($employmentCertification))
+                    @if(isset($employmentCertification) && $employmentCertification != null)
                         @method('PUT')
                     @endif
-                    @if(isset($resume_id))
+                    @if(isset($resume_id) && $resume_id != null)
                         <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
                     <div class="tab-content" id="myTabContent">
@@ -95,7 +95,7 @@
                                                 <table class="table employement_table">
                                                     <tbody>
                                                         <tr>
-                                                            <input type="hidden" name="employmentCertification" id="employmentCertification" value="{{ isset($employmentCertification) ? $employmentCertification->id : ''}}">
+                                                            <input type="hidden" name="employmentCertification" id="employmentCertification" value="{{ isset($employmentCertification) && $employmentCertification != null ? $employmentCertification->id : ''}}">
                                                             <td>
                                                                 <label class="form-label" for="job_title">
                                                                     Job Title
@@ -350,7 +350,7 @@
                             </div>
                             <div class="d-flex justify-content-between mt-3">
                                 <div class="prev-btn next-btn">
-                                    <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities') }}"
+                                    <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities') }}"
                                         class="btn btn-alt-success prev-step"> Previous Step
                                     </a>
                                 </div>
@@ -398,8 +398,8 @@
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
-        let total_employment_count = "{{ isset($employmentCertification->employment_data) ? count($employmentCertification->employment_data) : 0 }}";
-        let total_significant_count = "{{ isset($employmentCertification->significant_data) ? count($employmentCertification->significant_data) : 0 }}";
+        let total_employment_count = "{{ isset($employmentCertification->employment_data) && $employmentCertification->employment_data != null ? count($employmentCertification->employment_data) : 0 }}";
+        let total_significant_count = "{{ isset($employmentCertification->significant_data) && $employmentCertification->significant_data != null ? count($employmentCertification->significant_data) : 0 }}";
 
         $(document).ready(() => {
             if(total_employment_count > 0) {
