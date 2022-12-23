@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\QuizManagemet;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CRUD;
 use App\Models\PracticeTest;
 use App\Models\PracticeQuestion;
 use App\Models\PracticeTestSection;
+use App\Models\QuestionType;
 use App\Models\Passage;
 use Illuminate\Support\Facades\View;
 
@@ -25,6 +27,7 @@ class PracticeTestsController extends Controller
 	public function index()
     {
         $tests = PracticeTest::get();
+        $getQuestionTypes = PracticeTest::get();
         return view('admin.quiz-management.practicetests.index', compact('tests'));
     }
 
@@ -36,7 +39,8 @@ class PracticeTestsController extends Controller
     public function create()
     {
 		$tests = PracticeTest::get();
-        return view('admin.quiz-management.practicetests.create', compact('tests'));
+        $getQuestionTypes = DB::table('question_types')->get();
+        return view('admin.quiz-management.practicetests.create', compact('tests'), compact('getQuestionTypes'));
     }
 
     /**
@@ -87,9 +91,14 @@ class PracticeTestsController extends Controller
 		$practicetests = PracticeTest::find($id);
 		$tests = PracticeTest::get();
 		//$testQuestions = PracticeQuestion::where('section_id', $id)->get();
-		$testQuestions = PracticeTestSection::find($id)->getPracticeQuestions();
-		$testsections = PracticeTestSection::orderBy('section_order')->where('testid', $id)->get();
-        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections'));
+		$testQuestions = PracticeTestSection::find($id)->getPracticeQuestions;
+        // dd($id);
+        // dd($testQuestions);
+        $testsections = PracticeTestSection::orderBy('section_order')->where('testid', $id)->get();
+
+        //dd($testsections);
+        $getQuestionTypes = DB::table('question_types')->get();
+        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections','getQuestionTypes'));
     }
 
     /**

@@ -255,7 +255,8 @@ ul.answerOptionLsit li label input{
 
 					<div class="sectionContainerList">	
                     <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">				
-					@foreach($testsections as $key=>$testsection)					
+					@foreach($testsections as $key=>$testsection)	
+                    		
 					<div class="sectionTypesFull" id="sectionDisplay_{{ $testsection->id }}" >
 					<div class="mb-2 mb-4">
 						<div class="sectionTypesFullMutli"> </div> 
@@ -263,7 +264,9 @@ ul.answerOptionLsit li label input{
 							<ul class="sectionListtype">
 								<li>Type: &nbsp;<strong>{{ $testsection->format }}</strong></li>
 								<li>Section Type:&nbsp;<span class="answerOption"><strong>{{ $testsection->practice_test_type }}</strong>
-								<input type="hidden" name="selectedSecTxt" value="{{ $testsection->practice_test_type }}" class="selectedSecTxt" ></span>
+								<input type="hidden" name="selectedSecTxt" value="{{ $testsection->practice_test_type }}" class="selectedSecTxt" >
+                                <input type="hidden" name="selectedQuesType" value="{{ $testsection->practice_test_type }}" class="selectedQuesType" >
+                                </span>
 								</li>
                                 <li>Order: &nbsp;<input type="number" readonly class="form-control" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button></li>
                                 <!--<li>Order: &nbsp;
@@ -284,8 +287,8 @@ ul.answerOptionLsit li label input{
                                 <li>Order</li>
 								<li>Action</li>
 							</ul>
-							@foreach($testsection->getPracticeQuestions as $practQuestion)	
-							<ul class="sectionList singleQuest_{{ $practQuestion->id }}">
+							@foreach($testsection->getPracticeQuestions as $practQuestion)
+                            <ul class="sectionList singleQuest_{{ $practQuestion->id }}">
 								<li>{!! $practQuestion->title !!}</li>
 								<li>{{ $practQuestion->answer }}</li>
 								<li>{{ $practQuestion->getpassage->title }}</li>
@@ -472,8 +475,16 @@ ul.answerOptionLsit li label input{
                     </div>
 
                     <div class="mb-2 mb-4"> 
-                        <label for="new_question_type" class="form-label">Question type:</label>
-                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" >
+                        <!-- <label for="new_question_type" class="form-label">Question type:</label>
+                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" > -->
+                        <?php //echo "<pre>"; print_r($testQuestions); echo "</pre>"; ?>
+                        <label for="new_question_type_select">Question type:</label>
+                        <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
+                            <option value="">Select Question Type</option>
+                            @foreach($getQuestionTypes as $singleQuestionTypes)
+                            <option value="{{$singleQuestionTypes->id}}" {{$testQuestions[0]->question_type_id == $singleQuestionTypes->id ? 'selected': '';}}>{{$singleQuestionTypes->question_type_title}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
 					<div class="mb-2">
@@ -630,8 +641,13 @@ ul.answerOptionLsit li label input{
                     </div>
 
                     <div class="mb-2 mb-4"> 
-                        <label for="new_question_type" class="form-label">Question type:</label>
-                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" >
+                        <label for="new_question_type_select">Question type:</label>
+                        <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
+                            <option value="">Select Question Type</option>
+                            @foreach($getQuestionTypes as $singleQuestionTypes)
+                            <option value="{{$singleQuestionTypes->id}}">{{$singleQuestionTypes->question_type_title}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="mb-2">
@@ -1153,7 +1169,7 @@ ul.answerOptionLsit li label input{
             }
                             
             var testSectionType = $('#testSectionTypeRead').val();
-            var new_question_type = $('#new_question_type').val();
+            var new_question_type_select = $('#new_question_type_select').val();
 
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
             var activeAnswerType = '.'+$('#editSelectedAnswerType').val();
@@ -1231,7 +1247,7 @@ ul.answerOptionLsit li label input{
 						'multiChoice':multiChoice,
                         'section_id':section_id,
                         'tags':tags,
-                        'new_question_type':new_question_type,
+                        'new_question_type_select':new_question_type_select,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("updatePracticeQuestion")}}',
@@ -1287,7 +1303,7 @@ ul.answerOptionLsit li label input{
             var multiChoice = '';
                 
             var testSectionType = $('#addTestSectionTypeRead').val();
-            var new_question_type = $('.new_question_type').val();
+            var new_question_type_select = $('.new_question_type_select').val();
             var question = CKEDITOR.instances['js-ckeditor-add-addQue'].getData();
             var activeAnswerType = '.add'+ $('#selectedAnswerType').val();
             var questionType = $('#addQuestionMultiModal '+activeAnswerType+' #addQuestionType').val();
@@ -1370,7 +1386,7 @@ ul.answerOptionLsit li label input{
                     'multiChoice': multiChoice,
                     'section_id':section_id,
                     'tags':tags,
-                    'new_question_type':new_question_type,
+                    'new_question_type_select':new_question_type_select,
                     '_token': $('input[name="_token"]').val()
                 },
                 url: '{{route("addPracticeQuestion")}}',
@@ -1486,6 +1502,7 @@ function practQuestioDel(id){
 
 }
 function practQuestioEdit(id){
+
     $.ajax({
         data:{
             'question_id':id,
@@ -1500,6 +1517,7 @@ function practQuestioEdit(id){
                 $('#quesFormat').val(result.format);
                 $('.sectionAddId').val(result.practice_test_sections_id);
                 $('#testSectionTypeRead').val(result.type);
+                $('#new_question_type_select').val(result.question_type_id);
                 CKEDITOR.instances['js-ckeditor-addQue'].setData(result.title);
                 var tagsString = result.tags;
                 var tags = '';
@@ -1544,7 +1562,7 @@ function practQuestioEdit(id){
 
 function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content){
             
-        
+        console.log(answerOpt);
         if(answerOpt == 'choiceOneInFour'){
             $('#editSelectedAnswerType').val('choiceOneInFour');
             $('.choiceOneInFour').show();
@@ -1599,7 +1617,9 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content)
 
         } 
         if(answerOpt =='choiceOneInFourPass'){
+            console.log('yesy');
             $('#editSelectedAnswerType').val('choiceOneInFourPass');
+            console.log($('#editSelectedAnswerType').val());
             $('.choiceOneInFour').hide();
             $('.choiceOneInFive').hide();
             $('.choiceOneInFourPass').show();
