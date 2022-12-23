@@ -47,7 +47,7 @@
 
   <div class="content">
 
-    @if($test_category_type[0]->category_type != '' )
+    @if($test_category_type[0]->category_type != '' && isset($set_get_question_category) && !empty($set_get_question_category) )
     <!-- START Table 1 -->
     <div class="block block-rounded">
       <div class="block-header block-header-default">
@@ -128,6 +128,7 @@
                 $store_wrong_answer = 0;
                 $total_question = 0;
                 $store_test_score = 0;
+                
                 if(isset($set_get_question_category) && !empty($set_get_question_category))
                 {
                   foreach($set_get_question_category as $test_question_type => $single_set_get_question_category)
@@ -151,12 +152,10 @@
                       }
                     }
                   }
-                } 
-                //dd();
-                $store_test_score += $store_correct_answer;
-                $total_question += $store_correct_answer + $store_wrong_answer;
-                $get_test_bar_percentage = ($store_test_score/$total_question) * 100;
-                $get_main_test_type_for_bar =  str_replace(' ', '', $test_category_type[0]->category_type);
+                  $store_test_score += $store_correct_answer;
+                  $total_question += $store_correct_answer + $store_wrong_answer;
+                  $get_test_bar_percentage = ($store_test_score/$total_question) * 100;
+                  $get_main_test_type_for_bar =  str_replace(' ', '', $test_category_type[0]->category_type);
                  ?>
                  <script>
                   jQuery(document).ready(function(){
@@ -192,6 +191,8 @@
                   });
                   
                 </script>
+
+                <?php } ?>
 
                  <div class="progress fw-semibold fs-sm" style="height:8px; color:success">
                   <div class="progress-bar bg-dark <?php echo $get_main_test_type_for_bar; ?>" role="progressbar" data-test_id_bar="<?php echo $get_test_bar_percentage; ?>" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="height:8px; width:0%">
