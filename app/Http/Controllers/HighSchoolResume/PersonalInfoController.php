@@ -58,26 +58,29 @@ class PersonalInfoController extends Controller
     {
         $data = $request->validated();
 
+        if(!empty($request->social_links)){
+            $data['social_links'] = array_values($request->social_links);
+        }
+
         $data['user_id'] = Auth::id();
 
         if (!empty($data)) {
             PersonalInfo::create($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
+            return response()->json(['success' => true,'data' => $data]);
         }
     }
 
     public function update(PersonalInfoRequest $request, PersonalInfo $personalInfo)
     {
-        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
+
+        if(!empty($request->social_links)){
+            $data['social_links'] = array_values($request->social_links);
+        }
 
         if (!empty($data)) {
             $personalInfo->update($data);
-            if ($resume_id != null) {
-                return redirect('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id);
-            } else {
-                return redirect()->route('admin-dashboard.highSchoolResume.educationInfo'); 
-            }
+            return response()->json(['success' => true,'data' => $data]);
         }
     }
 

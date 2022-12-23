@@ -66,14 +66,14 @@
                     </a>
                 </li>
             </ul>
-        
-            <form class="js-validation" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
+            <input type="hidden" name="education" id="education" value="{{ isset($education) ? $education->id : ''}}">
+            <form class="js-validation" id="form" action="{{ isset($education) ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
                 @csrf
                 @if(isset($education))
                     @method('PUT')
                 @endif
                 @if(isset($resume_id))
-                    <input type="hidden" name="resume_id" value="{{ $resume_id }}">
+                    <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                 @endif
                 <div class="tab-content" id="myTabContent">
                     <div class="setup-content" role="tabpanel" id="step2" aria-labelledby="step2-tab">
@@ -328,7 +328,7 @@
                                                             @endforeach
                                                         </select>
                                                         @error('ib_courses')
-                                                        <span class="invalid">{{ $message }}</span>
+                                                            <span class="invalid">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -351,109 +351,107 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="course_data" id="course_data" value="{{ !empty($education->course_data)  ? $education->course_data : old('course_data') }}">
-                                            <table class="table">
+                                            <table class="table course_table">
                                                 <tbody>
-                                                    <tr class="course_data_table_row">
+                                                    <tr>
                                                         <td>
                                                             <label class="form-label" for="course_name">
                                                                 Course Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control @error('course_data') is-invalid @enderror" value="{{ old('course_name') }}" id="course_name" name="course_name" placeholder="Ex: College English 101">
                                                         </td>
+                                                        
                                                         <td>
                                                             <label class="form-label" for="search_college_name">
                                                                 Search College Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <select class="form-control @error('course_data') is-invalid @enderror" name="search_college_name" id="search_college_name">
-                                                                <option {{ old('search_college_name') == "" ? 'selected' : "" }} value="">Search College Name</option>
-                                                                <option {{ old('search_college_name') == "first" ? 'selected' : "" }} value="first">First</option>
-                                                                <option {{ old('search_college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
-                                                                <option {{ old('search_college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
-                                                            </select>
                                                         </td>
                                                         <td>
                                                             <label class="form-label">Action</label><br>
-                                                            <a href="javascript:void(0)" onclick="addCourseData(this)" class="add-btn d-flex plus-icon">
-                                                                <i class="fa-solid fa-plus @error('course_data') bg-danger @enderror"></i>
-                                                                @error('course_data')
-                                                                    <span class="ms-2 mt-2 invalid">Click on add icon to insert course data</span>
-                                                                @enderror
-                                                            </a>
-                                                            
                                                         </td>
                                                     </tr>
-                                                    @if(!empty($education->course_data))
-                                                        @foreach(json_decode($education->course_data) as $course_data) 
-                                                            <tr id="course_{{ $course_data->id }}">
-                                                                <td class="course_name">{{ $course_data->course_name }}</td>
-                                                                <td class="search_college_name">{{ $course_data->search_college_name }}</td>
+                                                    @if (!empty($education->course_data))
+                                                        @foreach($education->course_data as $index => $course_data) 
+                                                            <tr class="course_data_table_row {{ $loop->first ? '' : 'remove_courses' }}">
                                                                 <td>
-                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $course_data->id }}" onclick="course_edit_model(this)"></i>
-                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $course_data->id }}" onclick="course_model_remove(this)"></i>
+                                                                    <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" id="course_name" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101">
                                                                 </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @elseif(!empty(old('course_data')))
-                                                        @foreach(json_decode(old('course_data')) as $course_data) 
-                                                            <tr id="course_{{ $course_data->id }}">
-                                                                <td class="course_name">{{ $course_data->course_name }}</td>
-                                                                <td class="search_college_name">{{ $course_data->search_college_name }}</td>
                                                                 <td>
-                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $course_data->id }}" onclick="course_edit_model(this)"></i>
-                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $course_data->id }}" onclick="course_model_remove(this)"></i>
+                                                                    <select class="form-control" name="course_data[{{ $index }}][search_college_name]" id="search_college_name">
+                                                                        <option value="">Search College Name</option>
+                                                                        <option {{ $course_data['search_college_name'] == "first" ? 'selected' : "" }} value="first">First</option>
+                                                                        <option {{ $course_data['search_college_name'] == "second" ? 'selected' : "" }} value="second">Second</option>
+                                                                        <option {{ $course_data['search_college_name'] == "third" ? 'selected' : "" }} value="third">Third</option>
+                                                                    </select>
                                                                 </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="add-btn d-flex plus-icon">
+                                                                        <i data-count="{{ count($education->course_data) != 0 ? count($education->course_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addCourseData(this)' : 'removeCourses(this)' }}"></i>
+                                                                    </a>
+                                                                </td>                                                                
                                                             </tr>
-                                                        @endforeach
+                                                        @endforeach                                                    
+                                                    @else
+                                                        <tr class="course_data_table_row">
+                                                            <td>
+                                                                <input type="text" class="form-control" id="course_name" name="course_data[0][course_name]" placeholder="Ex: College English 101">
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control" name="course_data[0][search_college_name]" id="search_college_name">
+                                                                    <option value="">Search College Name</option>
+                                                                    <option {{ old('search_college_name') == "first" ? 'selected' : "" }} value="first">First</option>
+                                                                    <option {{ old('search_college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
+                                                                    <option {{ old('search_college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <a href="javascript:void(0)" data-count="0" onclick="addCourseData(this)" class="add-btn d-flex plus-icon">
+                                                                    <i class="fa-solid fa-plus"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
                                                     @endif
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <input type="hidden" name="honor_course_data" id="honor_course_data" value="{{ !empty($education->honor_course_data) ? $education->honor_course_data : old('honor_course_data') }}">
-                                        <table class="table">
+                                        <table class="table honors_table">
                                             <tbody>
-                                                <tr class="honor_course_data_table_row"> 
+                                                <tr>
                                                     <td>
                                                         <label class="form-label" for="honors_course_name">
-                                                            Honors Course Name
-                                                            <span class="text-danger">*</span>
+                                                        Honors Course Name
+                                                        <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('honor_course_data') is-invalid @enderror" value="{{ old('honors_course_name') }}" id="honors_course_name" name="honors_course_name" placeholder="Ex: College English 101">
                                                     </td>
                                                     <td>
                                                         <label class="form-label">Action</label><br>
-                                                        <a href="javascript:void(0)" onclick="addHonorCourseData(this)" class="add-btn plus-icon d-flex">
-                                                            <i class="fa-solid fa-plus @error('honor_course_data') bg-danger @enderror"></i>
-                                                            @error('honor_course_data')
-                                                                <span class="ms-2 mt-2 invalid">Click on add icon to insert Honors course name</span>
-                                                            @enderror
-                                                        </a>
-                                                        
                                                     </td>
                                                 </tr>
-                                                
-                                                @if(!empty($education->honor_course_data))
-                                                    @foreach(json_decode($education->honor_course_data) as $honor_course_data)
-                                                        <tr id="honor_course_{{ $honor_course_data->id }}">
-                                                            <td class="honor_course_name">{{ $honor_course_data->honor_course_name }}</td>
+                                                @if (!empty($education->honor_course_data))
+                                                    @foreach ($education->honor_course_data as $index => $honor_course_data)
+                                                        <tr class="honor_course_data_table_row {{ $loop->first ? '' : 'remove_honors_courses' }}"> 
+                                                            <td>                                                        
+                                                                <input type="text" value="{{ $honor_course_data['course_data'] }}" class="form-control" id="honors_course_name" name="honor_course_data[{{ $index }}][course_data]" placeholder="Ex: College English 101">
+                                                            </td>
                                                             <td>
-                                                                <i class="fa-solid fa-pen me-2" data-id="{{ $honor_course_data->id }}" onclick="honor_course_edit_model(this)"></i>
-                                                                <i class="fa-solid fa-circle-xmark" data-id="{{ $honor_course_data->id }}" onclick="honor_course_model_remove(this)"></i>
+                                                                <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                    <i data-count="{{ count($education->honor_course_data) != 0 ? count($education->honor_course_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addHonorCourseData(this)' : 'removeHonorsCourses(this)' }}"></i>
+                                                                </a>                                                        
                                                             </td>
                                                         </tr>
                                                     @endforeach
-                                                @elseif(!empty(old('honor_course_data')))
-                                                    @foreach(json_decode(old('honor_course_data')) as $honor_course_data)
-                                                        <tr id="honor_course_{{ $honor_course_data->id }}">
-                                                            <td class="honor_course_name">{{ $honor_course_data->honor_course_name }}</td>
-                                                            <td>
-                                                                <i class="fa-solid fa-pen me-2" data-id="{{ $honor_course_data->id }}" onclick="honor_course_edit_model(this)"></i>
-                                                                <i class="fa-solid fa-circle-xmark" data-id="{{ $honor_course_data->id }}" onclick="honor_course_model_remove(this)"></i>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                @else
+                                                    <tr class="honor_course_data_table_row"> 
+                                                        <td>                                                        
+                                                            <input type="text" class="form-control" value="{{ old('honors_course_name') }}" id="honors_course_name" name="honor_course_data[0][course_data]" placeholder="Ex: College English 101">
+                                                        </td>
+                                                        <td>
+                                                            <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                <i data-count="0" class="fa-solid fa-plus" onclick="addHonorCourseData(this)"></i>
+                                                            </a>                                                        
+                                                        </td>
+                                                    </tr>
                                                 @endif
                                             </tbody>
                                         </table>
@@ -467,66 +465,67 @@
                                 <div id="collapseSix" class="collapse {{ $errors->first('testing_data') ? 'show' : '' }}" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
-                                            <input type="hidden" name="testing_data" id="testing_data" value="{{ !empty($education->testing_data) ? $education->testing_data : old('testing_data') }}">
-                                            <table class="table">
+                                            <table class="table testing_data_table">
                                                 <tbody>
-                                                    <tr class="testing_table_row">
+                                                    <tr>
                                                         <td>
                                                             <label class="form-label" for="name_of_test">
                                                                 Name of test
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control @error('testing_data') is-invalid @enderror" value="{{ old('name_of_test') }}" id="name_of_test" name="name_of_test" placeholder="Enter Name of test">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="results_score">
                                                                 Results Score
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="form-control @error('testing_data') is-invalid @enderror" value="{{ old('results_score') }}" id="results_score" name="results_score" placeholder="Enter Results score">
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="date">
                                                                 Date
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text" class="date-own form-control @error('testing_data') is-invalid @enderror" value="{{ old('date') }}" id="date" name="date" placeholder="Enter Date" autocomplete="off">
                                                         </td>
                                                         <td>
                                                             <label class="form-label">Action</label><br>
-                                                            <a href="javascript:void(0)" onclick="addTestingData(this)" class="add-btn plus-icon d-flex">
-                                                                <i class="fa-solid fa-plus @error('testing_data') bg-danger @enderror"></i>
-                                                                @error('testing_data') 
-                                                                    <span class="ms-2 mt-2 invalid">Click on add icon to insert Testing data</span>
-                                                                @enderror
-                                                            </a>
-                                                        
                                                         </td>
                                                     </tr>
                                                     @if(!empty($education->testing_data))
-                                                        @foreach(json_decode($education->testing_data) as $testing_data)
-                                                            <tr id="testing_{{ $testing_data->id }}">
-                                                                <td class="name_of_test">{{ $testing_data->name_of_test }}</td>
-                                                                <td class="results_score">{{ $testing_data->results_score }}</td>
-                                                                <td class="date">{{ $testing_data->date }}</td>
+                                                        @foreach($education->testing_data as $index => $testing_data)
+                                                            <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
                                                                 <td>
-                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $testing_data->id }}" onclick="testing_edit_model(this)"></i>
-                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $testing_data->id }}" onclick="testing_model_remove(this)"></i>
+                                                                    <input type="text" class="form-control" value="{{ $testing_data['name_of_test'] }}" id="name_of_test" name="testing_data[{{ $index }}][name_of_test]" placeholder="Enter Name of test">
+                                                                </td>
+                                                                <td>                                                            
+                                                                    <input type="text" class="form-control" value="{{ $testing_data['results_score'] }}" id="results_score" name="testing_data[{{ $index }}][results_score]" placeholder="Enter Results score">
+                                                                </td>
+                                                                <td>                                                            
+                                                                    <input type="text" class="form-control" value="{{ $testing_data['date'] }}" id="testing-date-{{ $index }}" name="testing_data[{{ $index }}][date]" placeholder="Enter Date" autocomplete="off">
+                                                                </td>
+                                                                <td>                                                            
+                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                        <i data-count="{{ count($education->testing_data) != 0 ? count($education->testing_data) - 1 : 0 }}" class="fa-solid  {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addTestingData(this)' : 'removeTestingData(this)' }}"></i>
+                                                                    </a>                                                        
                                                                 </td>
                                                             </tr>
                                                         @endforeach
-                                                    @elseif(!empty(old('testing_data')))
-                                                        @foreach(json_decode(old('testing_data')) as $testing_data)
-                                                            <tr id="testing_{{ $testing_data->id }}">
-                                                                <td class="name_of_test">{{ $testing_data->name_of_test }}</td>
-                                                                <td class="results_score">{{ $testing_data->results_score }}</td>
-                                                                <td class="date">{{ $testing_data->date }}</td>
-                                                                <td>
-                                                                    <i class="fa-solid fa-pen me-2" data-id="{{ $testing_data->id }}" onclick="testing_edit_model(this)"></i>
-                                                                    <i class="fa-solid fa-circle-xmark" data-id="{{ $testing_data->id }}" onclick="testing_model_remove(this)"></i>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    @else
+                                                        <tr class="testing_table_row">
+                                                            <td>
+                                                                <input type="text" class="form-control" value="{{ old('name_of_test') }}" id="name_of_test" name="testing_data[0][name_of_test]" placeholder="Enter Name of test">
+                                                            </td>
+                                                            <td>                                                            
+                                                                <input type="text" class="form-control" value="{{ old('results_score') }}" id="results_score" name="testing_data[0][results_score]" placeholder="Enter Results score">
+                                                            </td>
+                                                            <td>                                                            
+                                                                <input type="text" class="form-control" value="{{ old('date') }}" id="testing-date-0" name="testing_data[0][date]" placeholder="Enter Date" autocomplete="off">
+                                                            </td>
+                                                            <td>                                                            
+                                                                <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                    <i data-count="0" class="fa-solid fa-plus" onclick="addTestingData(this)"></i>
+                                                                </a>                                                        
+                                                            </td>
+                                                        </tr>
                                                     @endif
                                                 </tbody>
                                             </table>
@@ -577,8 +576,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -597,163 +594,21 @@
                                 @include('components.reset-all-drafts-button')
                             </div>
                         @endif
-                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
+                        <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </main>
-
-<!-- Course Modal Modal-->
-<div class="modal" id="course_name_modal" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="block block-rounded block-transparent mb-0">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">Course</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="fa fa-fw fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="block-content fs-sm">
-                    <div class="row mb-4">
-                        <div class="col-lg-6">
-                            <label class="form-label" for="course_modal_name">
-                                Course Name
-                                <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" class="form-control" id="course_modal_name" name="course_modal_name" value="{{ old('course_name') }}" placeholder="Ex: Collage English 101" required>
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-label" for="course_modal_college_name">
-                                Search College Name
-                                <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-control" name="college_name" id="course_modal_college_name" required>
-                                <option {{ old('college_name') == "" ? 'selected' : "" }} value="">Select College Name</option>
-                                <option {{ old('college_name') == "first" ? 'selected' : "" }} value="first">First</option>
-                                <option {{ old('college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
-                                <option {{ old('college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-content block-content-full text-end">
-                    <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="updateCourseForm" onclick="updateCourseForm(this)" class="btn submit-btn">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Course Modal  -->
-
-<!--Honor Courses Modal -->
-<div class="modal" id="honors_course" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="block block-rounded block-transparent mb-0">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">Courses</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="fa fa-fw fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="block-content fs-sm">
-                    <form>
-                        <label class="form-label" for="honors_course_name">
-                            Honors Course Name
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" class="form-control @error('honors_course_name') is-invalid @enderror" id="honors_course_modal_name" value="{{ old('honors_course_name') }}" name="honors_course_name" placeholder="Ex: Collage English 101">
-                    </form>
-                </div>
-                <div class="block-content block-content-full text-end">
-                    <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="updateHonorCourseForm" onclick="updateHonorCourseForm(this)" class="btn submit-btn">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Honor Courses Modal -->
-
-<!--Testing Modal -->
-<div class="modal" id="testing_course" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="block block-rounded block-transparent mb-0">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">Testing</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="fa fa-fw fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="block-content fs-sm">
-                    <form>
-                        <div class="row mb-4">
-                            <div class="col-lg-4">
-                                <label class="form-label" for="testing_name_of_test">
-                                    Name of test
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control" id="testing_name_of_test" name="testing_name_of_test" placeholder="Enter Name of test">
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label" for="testing_results_score">
-                                    Results Score
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control" id="testing_results_score" name="testing_results_score" placeholder="Enter Results score">
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label" for="testing_date">
-                                    Date
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="date-own form-control" id="testing_date" name="testing_date" placeholder="Enter Date" autocomplete="off">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="block-content block-content-full text-end">
-                    <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                    
-                    <button type="button" class="btn submit-btn" id="updateTestingForm" onclick="updateTestingForm(this)">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Testing Modal -->
 @endsection
 
 @section('page-style')
-<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
-<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
-
-@endsection
-
-@section('user-script')
-<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-<script src="{{ asset('js/high-school-resume.js') }}"></script>
-<script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
-
-
-<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
-<style>
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+    <style>
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
         }
@@ -761,301 +616,374 @@
             border-color: #f27474;
             color: #f27474;
         }
-</style>
-<script>
-    var courseData = [];
-    var honorCourseData = [];
-    var testingData = [];
+    </style>
+@endsection
 
-    $('.year-own').datepicker({
-        minViewMode: 2,
-        format: 'yyyy'
-    });
+@section('user-script')
+    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script>
+        var courseData = [];
+        var honorCourseData = [];
+        var testingData = [];
 
-    $('.month-own').datepicker({
-        minViewMode: "months",
-        startView: "months", 
-        format: 'mm'
-    });
-
-    $('.date-own').datepicker({
-        format: 'dd-mm-yyyy',
-        startDate: '-3d'
-    });
-
-    function addCourseData(data) {
-        let course_name = $('input[name="course_name"]').val();
-        let search_college_name = $('#search_college_name').val();
-        let temp_course_id = Date.now();
-
-        let course = $('#course_data').val();
-        if(course != "") {
-            courseData = JSON.parse($('#course_data').val());
-        }
-
-        let html = ``;
-        if (course_name != "" && search_college_name != "") {
-            html += `<tr id="course_${temp_course_id}">`;
-            html += `<td class="course_name">${course_name}</td>`;
-            html += `<td class="search_college_name">${search_college_name}</td>`;
-            html += `<td>`;
-            html += `<i class="fa-solid fa-pen me-2" data-id="${temp_course_id}" onclick="course_edit_model(this)"></i>`;
-            html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_course_id}" onclick="course_model_remove(this)"></i>`;
-            html += `</td>`;
-
-            courseData.push({
-                "id": temp_course_id,
-                "course_name": course_name,
-                "search_college_name": search_college_name
-            });
-        } else {
-            toastr.error('Please Enter Course Name & College name');
-        }
-        $('.course_data_table_row').after(html);
-        $('input[name="course_name"]').val('');
-        $('#search_college_name').val('');
-        $('#course_data').val(JSON.stringify(courseData));
-    }
-
-    function course_edit_model(data) {
-        let course_data = $('#course_data').val();
-        course_data = JSON.parse(course_data);
-        let id = $(data).attr('data-id');
-        let course_result = course_data.find(course => course.id == id);
-        $('#course_modal_name').val(course_result.course_name);
-        $('#course_modal_college_name').val(course_result.search_college_name);
-        $('#updateCourseForm').attr('data-id', id);
-        $('#course_name_modal').modal('show');
-    }
-
-    function updateCourseForm(data) {
-        let id = $(data).attr('data-id');
-        let course_name = $('#course_modal_name').val();
-        let search_college_name = $('#course_modal_college_name').val();
-        let course_data = $('#course_data').val();
-        course_data = JSON.parse(course_data);
-        for (let i = 0; i < course_data.length; i++) {
-            if (course_data[i].id == id) {
-                course_data[i].course_name = course_name
-                course_data[i].search_college_name = search_college_name
-            }
-        }
-        $('#course_data').val(JSON.stringify(course_data));
-        $(`#course_${id} .course_name`).text(course_name);
-        $(`#course_${id} .search_college_name`).text(search_college_name);
-        $('#course_name_modal').modal('hide');
-    }
-
-    function course_model_remove(data) {
-        let id = $(data).attr('data-id');
-        let course_data = $('#course_data').val();
-        course_data = JSON.parse(course_data);
-        const deleted_course = course_data.filter(course => course.id != id)
-        $('#course_data').val(JSON.stringify(deleted_course));
-        $(`#course_${id}`).remove();
-
-        if ($('#course_data').val() == '[]') {
-            $('#course_data').val(null);
-        }
-            
-    }
-
-    function addHonorCourseData(data) {
-
-        let honor_course_name = $('input[name="honors_course_name"]').val();
-        let temp_honor_course_id = Date.now();
-
-        let honor = $('#honor_course_data').val();
-        if(honor != "") {
-            honorCourseData = JSON.parse($('#honor_course_data').val());
-        }
-        let html = ``;
-        if (honor_course_name != "") {
-            html += `<tr id="honor_course_${temp_honor_course_id}">`;
-            html += `<td class="honor_course_name">${honor_course_name}</td>`;
-            html += `<td>`;
-            html += `<i class="fa-solid fa-pen me-2" data-id="${temp_honor_course_id}" onclick="honor_course_edit_model(this)"></i>`;
-            html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_honor_course_id}" onclick="honor_course_model_remove(this)"></i>`;
-            html += `</td>`;
-
-            honorCourseData.push({
-                "id": temp_honor_course_id,
-                "honor_course_name": honor_course_name
-            });
-        } else {
-            toastr.error    ('Please Enter Honor Course Name');
-        }
-
-        $('.honor_course_data_table_row').after(html);
-        $('input[name="honors_course_name"]').val('');
-        $('#honor_course_data').val(JSON.stringify(honorCourseData));
-    }
-
-    function honor_course_edit_model(data) {
-        let honor_course_data = $('#honor_course_data').val();
-        honor_course_data = JSON.parse(honor_course_data);
-        let id = $(data).attr('data-id');
-        let honor_course_result = honor_course_data.find(course => course.id == id);
-        $('#honors_course_modal_name').val(honor_course_result.honor_course_name);
-        $('#updateHonorCourseForm').attr('data-id', id);
-        $('#honors_course').modal('show');
-    }
-
-    function updateHonorCourseForm(data) {
-        let id = $(data).attr('data-id');
-        let honor_course_name = $('#honors_course_modal_name').val();
-        let honor_course_data = $('#honor_course_data').val();
-            honor_course_data = JSON.parse(honor_course_data);
-        for (let i = 0; i < honor_course_data.length; i++) {
-            if (honor_course_data[i].id == id) {
-                honor_course_data[i].honor_course_name = honor_course_name
-            }
-        }
-        $('#honor_course_data').val(JSON.stringify(honor_course_data));
-        $(`#honor_course_${id} .honor_course_name`).text(honor_course_name);
-        $('#honors_course').modal('hide');
-    }
-
-    function honor_course_model_remove(data) {
-        let id = $(data).attr('data-id');
-        let honor_course_data = $('#honor_course_data').val();
-            honor_course_data = JSON.parse(honor_course_data);
-        const deleted_honor_course = honor_course_data.filter(course => course.id != id)
-        $('#honor_course_data').val(JSON.stringify(deleted_honor_course));
-        $(`#honor_course_${id}`).remove();
-
-        if ($('#honor_course_data').val() == '[]') {
-            $('#honor_course_data').val(null);
-        }
-    }
-
-    function addTestingData(data) {
-        let name_of_test = $('input[name="name_of_test"]').val();
-        let results_score = $('input[name="results_score"]').val();
-        let date = $('input[name="date"]').val();
-        let temp_testing_id = Date.now();
-
-        let testing = $('#testing_data').val();
-        if(testing != "") {
-            testingData = JSON.parse($('#testing_data').val());
-        }
-        let html = ``;
-        if (name_of_test != "" && results_score != "" && date != "") {
-            html += `<tr id="testing_${temp_testing_id}">`;
-            html += `<td class="name_of_test">${name_of_test}</td>`;
-            html += `<td class="results_score">${results_score}</td>`;
-            html += `<td class="date">${date}</td>`;
-            html += `<td>`;
-            html += `<i class="fa-solid fa-pen me-2" data-id="${temp_testing_id}" onclick="testing_edit_model(this)"></i>`;
-            html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_testing_id}" onclick="testing_model_remove(this)"></i>`;
-            html += `</td>`;
-
-            testingData.push({
-                "id": temp_testing_id,
-                "name_of_test": name_of_test,
-                "results_score": results_score,
-                "date": date
-            });
-        } else {
-            toastr.error('Please Enter Testing Details');
-        }
-
-        $('.testing_table_row').after(html);
-        $('input[name="name_of_test"]').val('');
-        $('input[name="results_score"]').val('');
-        $('input[name="date"]').val('');
-        $('#testing_data').val(JSON.stringify(testingData));
-    }
-
-    function testing_edit_model(data) {
-        let testing_data = $('#testing_data').val();
-            testing_data = JSON.parse(testing_data);
-        let id = $(data).attr('data-id');
-        let testing_result = testing_data.find(testing => testing.id == id);
-        $('#testing_name_of_test').val(testing_result.name_of_test);
-        $('#testing_results_score').val(testing_result.results_score);
-        $('#testing_date').val(testing_result.date);
-        $('#updateTestingForm').attr('data-id', id);
-        $('#testing_course').modal('show');
-    }
-
-    function updateTestingForm(data) {
-        let id = $(data).attr('data-id');
-        let name_of_test = $('#testing_name_of_test').val();
-        let results_score = $('#testing_results_score').val();
-        let date = $('#testing_date').val();
-
-        let testing_data = $('#testing_data').val();
-            testing_data = JSON.parse(testing_data);
-        for (let i = 0; i < testing_data.length; i++) {
-            if (testing_data[i].id == id) {
-                testing_data[i].name_of_test = name_of_test
-                testing_data[i].results_score = results_score
-                testing_data[i].date = date
-            }
-        }
-        $('#testing_data').val(JSON.stringify(testing_data));
-        $(`#testing_${id} .name_of_test`).text(name_of_test);
-        $(`#testing_${id} .results_score`).text(results_score);
-        $(`#testing_${id} .date`).text(date);
-        $('#testing_course').modal('hide');
-    }
-
-    function testing_model_remove(data) {
-        let id = $(data).attr('data-id');
-        let testing_data = $('#testing_data').val();
-            testing_data = JSON.parse(testing_data);
-        const deleted_testing = testing_data.filter(testing => testing.id != id)
-        $('#testing_data').val(JSON.stringify(deleted_testing));
-        $(`#testing_${id}`).remove();
-        if ($('#testing_data').val() == '[]') {
-            $('#testing_data').val(null);
-        }
-    }
-
-    $(document).on('change', '#is_graduate', function(){
-        if(this.checked){
-            $('#grade_level').attr('disabled',true);
-            $('#college_name').attr('disabled',true);
-            $('#college_city').attr('disabled',true);
-            $('#college_state').attr('disabled',true);
-        } else {
-            $('#grade_level').attr('disabled',false);
-            $('#college_name').attr('disabled',false);
-            $('#college_city').attr('disabled',false);
-            $('#college_state').attr('disabled',false);
-        }
-    });
-    
-    function errorMsg()
-    {
-        Swal.fire({
-            title: 'Complete Current Step',
-            text: "You Have to submit current form",
-            icon: 'warning',
-            confirmButtonColor: '#F27474',
-            confirmButtonText: 'Okay'
-        }).then((result) => {
-            window.location.href = "{{ route('admin-dashboard.highSchoolResume.educationInfo') }}";
+        $('.year-own').datepicker({
+            minViewMode: 2,
+            format: 'yyyy'
         });
-    }
 
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
+        $('.month-own').datepicker({
+            minViewMode: "months",
+            startView: "months", 
+            format: 'mm'
+        });
 
-</script>
+        let total_testing_count = "{{ isset($education->testing_data) ? count($education->testing_data) : 0 }}";
+
+        $(document).ready(() => {
+            if(total_testing_count > 0) {
+                for (let index = 0; index < total_testing_count; index++) {
+                    $(`#testing-date-${index}`).datepicker({
+                        format: 'dd-mm-yyyy',
+                        startDate: '-3d'
+                    });
+                }
+            } else {
+                $('#testing-date-0').datepicker({
+                    format: 'dd-mm-yyyy',
+                    startDate: '-3d'
+                });
+            }
+
+            $(".select").select2({
+                tags: true,
+            });
+        });
+
+        function checkValidation()
+        {
+            let site_url = $('#site_url').val();
+            let education = $('#education').val();
+            let resume_id = $('#resume_id').val();
+            let url = `${site_url}/user/admin-dashboard/high-school-resume/education-info/store`;
+            
+            let data = $("#form").serializeArray();
+
+            let formData = new FormData();
+
+            $.each(data, function(key, value) {
+                formData.append(value['name'], value['value']);
+            });
+
+            if(education){
+                url = `${site_url}/user/admin-dashboard/high-school-resume/education-info/${education}`
+            }
+                $.ajax({
+                    url : url,
+                    type : 'POST',
+                    datatype : 'json',
+                    data : formData, 
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if(response.success){
+                            if (resume_id) {
+                                window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/honors?resume_id=${resume_id}`;
+                                education = nulll;
+                            }else{
+                                window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/honors`;
+                            }
+                        }
+                    },
+                    error:function(error){
+                        if (error.responseJSON != null) {
+                            // console.log(error.responseJSON.errors);
+                            $.each(error.responseJSON.errors , function(key,value){
+                                toastr.error(value);
+                            });
+                        }
+                    }
+                });
+        }   
+
+        // function addCourseData(data) {
+        //     let course_name = $('input[name="course_name"]').val();
+        //     let search_college_name = $('#search_college_name').val();
+        //     let temp_course_id = Date.now();
+
+        //     let course = $('#course_data').val();
+        //     if(course != "") {
+        //         courseData = JSON.parse($('#course_data').val());
+        //     }
+
+        //     let html = ``;
+        //     if (course_name != "" && search_college_name != "") {
+        //         html += `<tr id="course_${temp_course_id}">`;
+        //         html += `<td class="course_name">${course_name}</td>`;
+        //         html += `<td class="search_college_name">${search_college_name}</td>`;
+        //         html += `<td>`;
+        //         html += `<i class="fa-solid fa-pen me-2" data-id="${temp_course_id}" onclick="course_edit_model(this)"></i>`;
+        //         html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_course_id}" onclick="course_model_remove(this)"></i>`;
+        //         html += `</td>`;
+
+        //         courseData.push({
+        //             "id": temp_course_id,
+        //             "course_name": course_name,
+        //             "search_college_name": search_college_name
+        //         });
+        //     } else {
+        //         toastr.error('Please Enter Course Name & College name');
+        //     }
+        //     $('.course_data_table_row').after(html);
+        //     $('input[name="course_name"]').val('');
+        //     $('#search_college_name').val('');
+        //     $('#course_data').val(JSON.stringify(courseData));
+        // }
+
+        // function course_edit_model(data) {
+        //     let course_data = $('#course_data').val();
+        //     course_data = JSON.parse(course_data);
+        //     let id = $(data).attr('data-id');
+        //     let course_result = course_data.find(course => course.id == id);
+        //     $('#course_modal_name').val(course_result.course_name);
+        //     $('#course_modal_college_name').val(course_result.search_college_name);
+        //     $('#updateCourseForm').attr('data-id', id);
+        //     $('#course_name_modal').modal('show');
+        // }
+
+        // function updateCourseForm(data) {
+        //     let id = $(data).attr('data-id');
+        //     let course_name = $('#course_modal_name').val();
+        //     let search_college_name = $('#course_modal_college_name').val();
+        //     let course_data = $('#course_data').val();
+        //     course_data = JSON.parse(course_data);
+        //     for (let i = 0; i < course_data.length; i++) {
+        //         if (course_data[i].id == id) {
+        //             course_data[i].course_name = course_name
+        //             course_data[i].search_college_name = search_college_name
+        //         }
+        //     }
+        //     $('#course_data').val(JSON.stringify(course_data));
+        //     $(`#course_${id} .course_name`).text(course_name);
+        //     $(`#course_${id} .search_college_name`).text(search_college_name);
+        //     $('#course_name_modal').modal('hide');
+        // }
+
+        // function course_model_remove(data) {
+        //     let id = $(data).attr('data-id');
+        //     let course_data = $('#course_data').val();
+        //     course_data = JSON.parse(course_data);
+        //     const deleted_course = course_data.filter(course => course.id != id)
+        //     $('#course_data').val(JSON.stringify(deleted_course));
+        //     $(`#course_${id}`).remove();
+
+        //     if ($('#course_data').val() == '[]') {
+        //         $('#course_data').val(null);
+        //     }
+                
+        // }
+
+        // function addHonorCourseData(data) {
+
+        //     let honor_course_name = $('input[name="honors_course_name"]').val();
+        //     let temp_honor_course_id = Date.now();
+
+        //     let honor = $('#honor_course_data').val();
+        //     if(honor != "") {
+        //         honorCourseData = JSON.parse($('#honor_course_data').val());
+        //     }
+        //     let html = ``;
+        //     if (honor_course_name != "") {
+        //         html += `<tr id="honor_course_${temp_honor_course_id}">`;
+        //         html += `<td class="honor_course_name">${honor_course_name}</td>`;
+        //         html += `<td>`;
+        //         html += `<i class="fa-solid fa-pen me-2" data-id="${temp_honor_course_id}" onclick="honor_course_edit_model(this)"></i>`;
+        //         html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_honor_course_id}" onclick="honor_course_model_remove(this)"></i>`;
+        //         html += `</td>`;
+
+        //         honorCourseData.push({
+        //             "id": temp_honor_course_id,
+        //             "honor_course_name": honor_course_name
+        //         });
+        //     } else {
+        //         toastr.error    ('Please Enter Honor Course Name');
+        //     }
+
+        //     $('.honor_course_data_table_row').after(html);
+        //     $('input[name="honors_course_name"]').val('');
+        //     $('#honor_course_data').val(JSON.stringify(honorCourseData));
+        // }
+
+        // function honor_course_edit_model(data) {
+        //     let honor_course_data = $('#honor_course_data').val();
+        //     honor_course_data = JSON.parse(honor_course_data);
+        //     let id = $(data).attr('data-id');
+        //     let honor_course_result = honor_course_data.find(course => course.id == id);
+        //     $('#honors_course_modal_name').val(honor_course_result.honor_course_name);
+        //     $('#updateHonorCourseForm').attr('data-id', id);
+        //     $('#honors_course').modal('show');
+        // }
+
+        // function updateHonorCourseForm(data) {
+        //     let id = $(data).attr('data-id');
+        //     let honor_course_name = $('#honors_course_modal_name').val();
+        //     let honor_course_data = $('#honor_course_data').val();
+        //         honor_course_data = JSON.parse(honor_course_data);
+        //     for (let i = 0; i < honor_course_data.length; i++) {
+        //         if (honor_course_data[i].id == id) {
+        //             honor_course_data[i].honor_course_name = honor_course_name
+        //         }
+        //     }
+        //     $('#honor_course_data').val(JSON.stringify(honor_course_data));
+        //     $(`#honor_course_${id} .honor_course_name`).text(honor_course_name);
+        //     $('#honors_course').modal('hide');
+        // }
+
+        // function honor_course_model_remove(data) {
+        //     let id = $(data).attr('data-id');
+        //     let honor_course_data = $('#honor_course_data').val();
+        //         honor_course_data = JSON.parse(honor_course_data);
+        //     const deleted_honor_course = honor_course_data.filter(course => course.id != id)
+        //     $('#honor_course_data').val(JSON.stringify(deleted_honor_course));
+        //     $(`#honor_course_${id}`).remove();
+
+        //     if ($('#honor_course_data').val() == '[]') {
+        //         $('#honor_course_data').val(null);
+        //     }
+        // }
+
+        // function addTestingData(data) {
+        //     let name_of_test = $('input[name="name_of_test"]').val();
+        //     let results_score = $('input[name="results_score"]').val();
+        //     let date = $('input[name="date"]').val();
+        //     let temp_testing_id = Date.now();
+
+        //     let testing = $('#testing_data').val();
+        //     if(testing != "") {
+        //         testingData = JSON.parse($('#testing_data').val());
+        //     }
+        //     let html = ``;
+        //     if (name_of_test != "" && results_score != "" && date != "") {
+        //         html += `<tr id="testing_${temp_testing_id}">`;
+        //         html += `<td class="name_of_test">${name_of_test}</td>`;
+        //         html += `<td class="results_score">${results_score}</td>`;
+        //         html += `<td class="date">${date}</td>`;
+        //         html += `<td>`;
+        //         html += `<i class="fa-solid fa-pen me-2" data-id="${temp_testing_id}" onclick="testing_edit_model(this)"></i>`;
+        //         html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_testing_id}" onclick="testing_model_remove(this)"></i>`;
+        //         html += `</td>`;
+
+        //         testingData.push({
+        //             "id": temp_testing_id,
+        //             "name_of_test": name_of_test,
+        //             "results_score": results_score,
+        //             "date": date
+        //         });
+        //     } else {
+        //         toastr.error('Please Enter Testing Details');
+        //     }
+
+        //     $('.testing_table_row').after(html);
+        //     $('input[name="name_of_test"]').val('');
+        //     $('input[name="results_score"]').val('');
+        //     $('input[name="date"]').val('');
+        //     $('#testing_data').val(JSON.stringify(testingData));
+        // }
+
+        // function testing_edit_model(data) {
+        //     let testing_data = $('#testing_data').val();
+        //         testing_data = JSON.parse(testing_data);
+        //     let id = $(data).attr('data-id');
+        //     let testing_result = testing_data.find(testing => testing.id == id);
+        //     $('#testing_name_of_test').val(testing_result.name_of_test);
+        //     $('#testing_results_score').val(testing_result.results_score);
+        //     $('#testing_date').val(testing_result.date);
+        //     $('#updateTestingForm').attr('data-id', id);
+        //     $('#testing_course').modal('show');
+        // }
+
+        // function updateTestingForm(data) {
+        //     let id = $(data).attr('data-id');
+        //     let name_of_test = $('#testing_name_of_test').val();
+        //     let results_score = $('#testing_results_score').val();
+        //     let date = $('#testing_date').val();
+
+        //     let testing_data = $('#testing_data').val();
+        //         testing_data = JSON.parse(testing_data);
+        //     for (let i = 0; i < testing_data.length; i++) {
+        //         if (testing_data[i].id == id) {
+        //             testing_data[i].name_of_test = name_of_test
+        //             testing_data[i].results_score = results_score
+        //             testing_data[i].date = date
+        //         }
+        //     }
+        //     $('#testing_data').val(JSON.stringify(testing_data));
+        //     $(`#testing_${id} .name_of_test`).text(name_of_test);
+        //     $(`#testing_${id} .results_score`).text(results_score);
+        //     $(`#testing_${id} .date`).text(date);
+        //     $('#testing_course').modal('hide');
+        // }
+
+        // function testing_model_remove(data) {
+        //     let id = $(data).attr('data-id');
+        //     let testing_data = $('#testing_data').val();
+        //         testing_data = JSON.parse(testing_data);
+        //     const deleted_testing = testing_data.filter(testing => testing.id != id)
+        //     $('#testing_data').val(JSON.stringify(deleted_testing));
+        //     $(`#testing_${id}`).remove();
+        //     if ($('#testing_data').val() == '[]') {
+        //         $('#testing_data').val(null);
+        //     }
+        // }
+
+        $(document).on('change', '#is_graduate', function(){
+            if(this.checked){
+                $('#grade_level').attr('disabled',true);
+                $('#college_name').attr('disabled',true);
+                $('#college_city').attr('disabled',true);
+                $('#college_state').attr('disabled',true);
+            } else {
+                $('#grade_level').attr('disabled',false);
+                $('#college_name').attr('disabled',false);
+                $('#college_city').attr('disabled',false);
+                $('#college_state').attr('disabled',false);
+            }
+        });
+        
+        function errorMsg()
+        {
+            Swal.fire({
+                title: 'Complete Current Step',
+                text: "You Have to submit current form",
+                icon: 'warning',
+                confirmButtonColor: '#F27474',
+                confirmButtonText: 'Okay'
+            }).then((result) => {
+                window.location.href = "{{ route('admin-dashboard.highSchoolResume.educationInfo') }}";
+            });
+        }
+
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+    </script>
+    <script src="{{ asset('js/high-school-resume.js') }}"></script>
 @endsection

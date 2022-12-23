@@ -72,14 +72,14 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
+                <form class="js-validation" id="form" action="{{ isset($honor) ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
                     method="POST">
                     @csrf
                     @if(isset($honor))
                         @method('PUT')
                     @endif
                     @if(isset($resume_id))
-                        <input type="hidden" name="resume_id" value="{{ $resume_id }}">
+                        <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
@@ -95,95 +95,120 @@
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
-                                                <table class="table">
+                                                <table class="table table_honors_data">
                                                     <tbody>
-                                                        <input type="hidden" name="honors_data" id="honors_data" value="{{ !empty($honor->honors_data) ? $honor->honors_data : old('honors_data') }}">
-                                                        <tr class="honors_data_table_row">
+                                                        <input type="hidden" name="honor" id="honor" value="{{ isset($honor) ? $honor->id : ''}}">
+                                                        <tr>
                                                             <td>
-                                                                <label class="form-label" for="position">
+                                                                 <label class="form-label" for="position">
                                                                     Position
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="number"
-                                                                    class="form-control @error('honors_data') is-invalid @enderror"
-                                                                    id="position" name="position"
-                                                                    value="{{ old('position') }}"
-                                                                    placeholder="Enter Position" autocomplete="off">
-                                                                @error('position')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
-                                                                <label class="form-label" for="honor_achievement_award">
+                                                                 <label class="form-label" for="honor_achievement_award">
                                                                     Honor/Achievement/Award
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('honors_data') is-invalid @enderror"
-                                                                    id="honor_achievement_award"
-                                                                    name="honor_achievement_award"
-                                                                    value="{{ old('honor_achievement_award') }}"
-                                                                    placeholder="Ex: National Honor Society">
-                                                                @error('honor_achievement_award')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select @error('honors_data') is-invalid @enderror" id="grade"
-                                                                    name="grade[]" multiple="multiple">
-                                                                    <option {{ (in_array('1st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                    <option {{ (in_array('2st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                    <option {{ (in_array('3st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                    <option {{ (in_array('4st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                    <option {{ (in_array('5st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="5st grade">5st grade</option>
-                                                                </select>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="location">
                                                                     Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('honors_data') is-invalid @enderror"
-                                                                    value="{{ old('location') }}" id="location"
-                                                                    name="location" placeholder="Ex: DRHS">
-                                                                @error('location')
-                                                                    <span class="invalid">{{ $message }}</span>
-                                                                @enderror
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addHonorsData(this)" class="add-btn d-flex plus-icon">
-                                                                    <i class="fa-solid fa-plus @error('honors_data') bg-danger @enderror"></i>
-                                                                    @error('honors_data')
-                                                                        <span class="ms-2 mt-2 invalid">Click on add icon to insert honors data</span>
-                                                                    @enderror
-                                                                </a>
                                                             </td>
                                                         </tr>
                                                         @if(!empty($honor->honors_data))
-                                                            @foreach(json_decode($honor->honors_data) as $honors_data)
-                                                                <tr id="honors_{{ $honors_data->id }}">
-                                                                    <td class="position">{{ $honors_data->position }}</td>
-                                                                    <td class="honor_achievement_award">{{ $honors_data->honor_achievement_award }}</td>
-                                                                    <td class="grade">{{ implode(", ",json_decode($honors_data->grade)) }}</td>
-                                                                    <td class="location">{{ $honors_data->location }}</td>
+                                                            @foreach ($honor->honors_data as $index => $honors_data)
+                                                                <tr class="honors_data_table_row {{ $loop->first ? '' : 'remove_honors_data' }}">
                                                                     <td>
-                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $honors_data->id }}" onclick="honor_edit_model(this)"></i>
-                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $honors_data->id }}" onclick="honor_model_remove(this)"></i>
+                                                                        <input type="number"
+                                                                            class="form-control"
+                                                                            id="position" name="honors_data[{{ $index }}][position]"
+                                                                            value="{{ $honors_data['position'] }}"
+                                                                            placeholder="Enter Position" autocomplete="off">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="honor_achievement_award"
+                                                                            name="honors_data[{{ $index }}][honor_achievement_award]"
+                                                                            value="{{ $honors_data['honor_achievement_award'] }}"
+                                                                            placeholder="Ex: National Honor Society">
+                                                                    </td>
+                                                                    <td>                                                            
+                                                                        <select class="js-select2" id="honor_select_{{ $index }}"
+                                                                            name="honors_data[{{ $index }}][grade][]" multiple="multiple">
+                                                                            <option {{ (in_array('1st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                            <option {{ (in_array('2st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                            <option {{ (in_array('3st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                            <option {{ (in_array('4st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                            <option {{ (in_array('5st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>                                                                
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            value="{{ $honors_data['location'] }}" id="location"
+                                                                            name="honors_data[{{ $index }}][location]" placeholder="Ex: DRHS">
+                                                                    </td>
+                                                                    <td>                                                                
+                                                                        <a href="javascript:void(0)" class="add-btn d-flex plus-icon">
+                                                                            <i data-count="{{ count($honor->honors_data) != 0 ? count($honor->honors_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addHonorsData(this)' : 'removeHonorsData(this)' }}"></i>                                                                    
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
-                                                        @endif
+                                                        @else
+                                                            <tr class="honors_data_table_row">
+                                                                <td>
+                                                                    <input type="number"
+                                                                        class="form-control"
+                                                                        id="position" name="honors_data[0][position]"
+                                                                        placeholder="Enter Position" autocomplete="off">
+                                                                </td>
+                                                                <td>
+                                                                <input type="text"
+                                                                        class="form-control"
+                                                                        id="honor_achievement_award"
+                                                                        name="honors_data[0][honor_achievement_award]"
+                                                                        placeholder="Ex: National Honor Society">
+                                                                </td>
+                                                                <td>                                                                
+                                                                    <select class="js-select2" id="honor_select_0"
+                                                                        name="honors_data[0][grade][]" multiple="multiple">
+                                                                        <option {{ (in_array('1st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
+                                                                        <option {{ (in_array('2st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
+                                                                        <option {{ (in_array('3st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="3st grade">3st grade</option>
+                                                                        <option {{ (in_array('4st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="4st grade">4st grade</option>
+                                                                        <option {{ (in_array('5st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>                                                                
+                                                                    <input type="text"
+                                                                        class="form-control" id="location"
+                                                                        name="honors_data[0][location]" placeholder="Ex: DRHS">
+                                                                </td>
+                                                                <td>                                                                
+                                                                    <a href="javascript:void(0)" class="add-btn d-flex plus-icon">
+                                                                        <i class="fa-solid fa-plus" data-count="0" onclick="addHonorsData(this)"></i>                                                                    
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endif 
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +225,7 @@
                                         @include('components.reset-all-drafts-button')
                                     </div>
                                 @endif
-                                <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
+                                <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
                             </div>
                         </div>
                     </div>
@@ -208,79 +233,6 @@
             </div>
         </div>
     </main>
-
-    <!--Honors Modal -->
-        <div class="modal" id="honors_modal" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="block block-rounded block-transparent mb-0">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Academic Honors, Achievements & Other Awards</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="fa fa-fw fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="block-content fs-sm">
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="honors_modal_position">
-                                        Position
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="number" class="form-control"
-                                        id="honors_modal_position" name="position" value="{{ old('position') }}"
-                                        placeholder="Enter Position" required>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="honors_modal_achievement_award">
-                                        Honor/Achievement/Award
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control"
-                                        id="honors_modal_achievement_award" name="achievement_award"
-                                        value="{{ old('achievement_award') }}"
-                                        placeholder="Ex: National Honor Society" required>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="honors_modal_grade">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="honors_modal_grade" name="grade[]"
-                                        multiple="multiple">
-                                        <option value="1st grade">1st grade</option>
-                                        <option value="2st grade">2st grade</option>
-                                        <option value="3st grade">3st grade</option>
-                                        <option value="4st grade">4st grade</option>
-                                        <option value="5st grade">5st grade</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="honors_modal_location">
-                                        Location
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control"
-                                        value="{{ old('location') }}" id="honors_modal_location" name="location"
-                                        placeholder="Ex: DRHS">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-content block-content-full text-end">
-                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" id="updateHonorForm" onclick="updateHonorForm(this)">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!--Honors Modal -->
 @endsection
 
 @section('page-style')
@@ -292,14 +244,6 @@
             min-width: 14vw !important;
         }
     </style>
-@endsection
-
-@section('user-script')
-    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('js/high-school-resume.js') }}"></script>
-    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <style>
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
@@ -309,139 +253,104 @@
             color: #f27474;
         }
     </style>
+@endsection
+
+@section('user-script')
+    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
-        var honorsData = [];
+        let total_honors_count = "{{ isset($honor->honors_data) ? count($honor->honors_data) : 0 }}";
 
-        $('#step1-tab').click(function() {
-            toastr.success('Congratulations');
-        });
-
-        function addHonorsData(data) {
-            let position = $('input[name="position"]').val();
-            let honor_achievement_award = $('input[name="honor_achievement_award"]').val();
-            let grade = $('#grade').val();
-            let location = $('input[name="location"]').val();
-            let temp_honors_id = Date.now();
-
-            let honor = $('#honors_data').val();
-            if(honor != "") {
-                honorsData = JSON.parse($('#honors_data').val());
-            }
-
-            let html = ``;
-            if (position != "" && honor_achievement_award != "" && location != "" && grade != "") {
-                html += `<tr id="honors_${temp_honors_id}">`;
-                html += `<td class="position">${position}</td>`;
-                html += `<td class="honor_achievement_award">${honor_achievement_award}</td>`;
-                html += `<td class="grade">${grade.join(", ").toString()}</td>`;
-                html += `<td class="location">${location}</td>`;
-                html += `<td>`;
-                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_honors_id}" onclick="honor_edit_model(this)"></i>`;
-                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_honors_id}" onclick="honor_model_remove(this)"></i>`;
-                html += `</td>`;
-
-                honorsData.push({
-                    "id": temp_honors_id,
-                    "position": position,
-                    "honor_achievement_award": honor_achievement_award,
-                    "grade": JSON.stringify(grade),
-                    "location": location
-                });
-            } else {
-                toastr.error('Please Enter Honors Details');
-            }
-
-            $('.honors_data_table_row').after(html);
-            $('input[name="position"]').val('');
-            $('input[name="honor_achievement_award"]').val('');
-            $('input[name="location"]').val('');
-            $("#grade").val(null).trigger("change");
-            $('#honors_data').val(JSON.stringify(honorsData));
-        }
-
-        function honor_edit_model(data) {
-            let honor_data = $('#honors_data').val();
-                honor_data = JSON.parse(honor_data);
-            let id = $(data).attr('data-id');
-            let honor_result = honor_data.find(honor => honor.id == id);
-            let grade = JSON.parse(honor_result.grade);
-            
-            $('#honors_modal_position').val(honor_result.position);
-            $('#honors_modal_achievement_award').val(honor_result.honor_achievement_award);
-            $("#honors_modal_grade").val(grade).trigger("change");
-            $('#honors_modal_location').val(honor_result.location);
-            $('#updateHonorForm').attr('data-id', id);
-            $('#honors_modal').modal('show');
-        }
-
-        function updateHonorForm(data) {
-            let id = $(data).attr('data-id');
-            let position = $('#honors_modal_position').val();
-            let honor_achievement_award = $('#honors_modal_achievement_award').val();
-            let grade = $('#honors_modal_grade').val();
-            let location = $('#honors_modal_location').val();
-        
-            let honor_data = $('#honors_data').val();
-                honor_data = JSON.parse(honor_data);
-            for (let i = 0; i < honor_data.length; i++) {
-                if (honor_data[i].id == id) {
-                    honor_data[i].position = position
-                    honor_data[i].honor_achievement_award = honor_achievement_award
-                    honor_data[i].grade = JSON.stringify(grade)
-                    honor_data[i].location = location
+        $(document).ready(() => {
+            if(total_honors_count > 0) {
+                for (let index = 0; index < total_honors_count; index++) {
+                    $(`#honor_select_${index}`).select2({
+                        tags: true,
+                    });
                 }
+            } else {
+                $("#honor_select_0").select2({
+                    tags: true,
+                });
             }
-            $('#honors_data').val(JSON.stringify(honor_data));
-            $(`#honors_${id} .position`).text(position);
-            $(`#honors_${id} .honor_achievement_award`).text(honor_achievement_award);
-            $(`#honors_${id} .grade`).text(grade.join(", ").toString());
-            $(`#honors_${id} .location`).text(location);
+        });
 
-            $('#honors_modal').modal('hide');
-        }
-
-        function honor_model_remove(data) {
-            let id = $(data).attr('data-id');
-            let honor_data = $('#honors_data').val();
-                honor_data = JSON.parse(honor_data);
-            const deleted_honor = honor_data.filter(honor => honor.id != id)
-            $('#honors_data').val(JSON.stringify(deleted_honor));
-            $(`#honors_${id}`).remove();
+        function checkValidation()
+        {
+            let site_url = $('#site_url').val();
+            let honor = $('#honor').val();
+            let resume_id = $('#resume_id').val();
+            let url = `${site_url}/user/admin-dashboard/high-school-resume/honors/store`;
             
-            if ($('#honors_data').val() == '[]') {
-                $('#honors_data').val(null);
+            let data = $("#form").serializeArray();
+            
+            let formData = new FormData();
+            
+            $.each(data, function(key, value) {
+                formData.append(value['name'], value['value']);
+            });
+            
+            if(honor){
+                url = `${site_url}/user/admin-dashboard/high-school-resume/honors/${honor}`
             }
+
+            $.ajax({
+                url : url,
+                type : 'POST',
+                datatype : 'json',
+                data : formData, 
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if(response.success){
+                        if (resume_id) {
+                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/activities?resume_id=${resume_id}`;
+                        }else{
+                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/activities`;
+                        }
+                    }
+                },
+                error:function(error){
+                    if (error.responseJSON != null) {
+                        $.each(error.responseJSON.errors , function(key,value){
+                            toastr.error(value);
+                        });
+                    }
+                }
+            });
         }
         
-    function errorMsg()
-    {
-        Swal.fire({
-            title: 'Complete Current Step',
-            text: "You Have to submit current form",
-            icon: 'warning',
-            confirmButtonColor: '#F27474',
-            confirmButtonText: 'Okay'
-        }).then((result) => {
-            window.location.href = "{{ route('admin-dashboard.highSchoolResume.honors') }}";
-        });
-    }
+        function errorMsg()
+        {
+            Swal.fire({
+                title: 'Complete Current Step',
+                text: "You Have to submit current form",
+                icon: 'warning',
+                confirmButtonColor: '#F27474',
+                confirmButtonText: 'Okay'
+            }).then((result) => {
+                window.location.href = "{{ route('admin-dashboard.highSchoolResume.honors') }}";
+            });
+        }
 
-    toastr.options = {
-        "closeButton": true,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
-
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
     </script>   
 @endsection

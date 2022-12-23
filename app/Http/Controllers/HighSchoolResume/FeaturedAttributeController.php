@@ -41,64 +41,44 @@ class FeaturedAttributeController extends Controller
         $data = $request->validated();
 
         if(!empty($request->featured_skills_data)){
-            $data['featured_skills_data'] = $request->featured_skills_data;
+            $data['featured_skills_data'] = array_values($request->featured_skills_data);
         }
 
         if(!empty($request->featured_awards_data)){
-            $data['featured_awards_data'] = $request->featured_awards_data;
+            $data['featured_awards_data'] = array_values($request->featured_awards_data);
         }
 
         if(!empty($request->featured_languages_data)){
-            $data['featured_languages_data'] = $request->featured_languages_data;
+            $data['featured_languages_data'] = array_values($request->featured_languages_data);
         }
 
         $data['user_id'] = Auth::id();
 
-        $data = array_filter($data);
-
         if (!empty($data)) {
             FeaturedAttribute::create($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.preview');
+            return response()->json(["success" => true, "data" => $data]);
         }
     }
 
     public function update(FeaturedAttributeRequest $request, FeaturedAttribute $featuredAttribute)
     {
-                $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
 
         if(!empty($request->featured_skills_data)){
-            $data['featured_skills_data'] = $request->featured_skills_data;
+            $data['featured_skills_data'] = array_values($request->featured_skills_data);
         }
 
         if(!empty($request->featured_awards_data)){
-            $data['featured_awards_data'] = $request->featured_awards_data;
+            $data['featured_awards_data'] = array_values($request->featured_awards_data);
         }
 
         if(!empty($request->featured_languages_data)){
-            $data['featured_languages_data'] = $request->featured_languages_data;
+            $data['featured_languages_data'] = array_values($request->featured_languages_data);
         }
 
-        $data = array_filter($data);
-
-        if($data['featured_skills_data'] == "[]"){
-            $data['featured_skills_data'] = null;
-        } 
-        
-        if($data['featured_awards_data'] == "[]"){
-            $data['featured_awards_data'] = null;
-        } 
-
-        if($data['featured_languages_data'] == "[]"){
-            $data['featured_languages_data'] = null;
-        } 
         if (!empty($data)) {
             $featuredAttribute->update($data);
-             if ($resume_id != null) {
-                return redirect('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id);
-            } else {
-                return redirect()->route('admin-dashboard.highSchoolResume.preview');
-            }
+            return response()->json(["success" => true, "data" => $data]);
         }
     }
 }

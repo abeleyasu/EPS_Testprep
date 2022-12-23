@@ -19,7 +19,6 @@ class EducationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        // dd($resume_id);
 
         if(isset($resume_id)) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([
@@ -57,18 +56,16 @@ class EducationController extends Controller
     {
         $data = $request->validated();
 
-        // dd($data);
-
         if(!empty($request->course_data)){
-            $data['course_data'] = $request->course_data;
+            $data['course_data'] = array_values($request->course_data);
         }
 
         if(!empty($request->honor_course_data)){
-            $data['honor_course_data'] = $request->honor_course_data;
+            $data['honor_course_data'] = array_values($request->honor_course_data);
         }
 
         if(!empty($request->testing_data)){
-            $data['testing_data'] = $request->testing_data;
+            $data['testing_data'] = array_values($request->testing_data);
         }
 
         if(!empty($request->ib_courses)){
@@ -81,30 +78,26 @@ class EducationController extends Controller
 
         $data['user_id'] = Auth::id();
 
-        $data = array_filter($data);
-
         if (!empty($data)) {
             Education::create($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.honors');
+            return response()->json(['success' => true, 'data' => $data]);
         }
     }
 
     public function update(EducationRequest $request, Education $education)
     {
-        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
-        // dd($resume_id);
         $data = $request->validated();
-
+        
         if(!empty($request->course_data)){
-            $data['course_data'] = $request->course_data;
+            $data['course_data'] = array_values($request->course_data);
         }
 
         if(!empty($request->honor_course_data)){
-            $data['honor_course_data'] = $request->honor_course_data;
+            $data['honor_course_data'] = array_values($request->honor_course_data);
         }
 
         if(!empty($request->testing_data)){
-            $data['testing_data'] = $request->testing_data;
+            $data['testing_data'] = array_values($request->testing_data);
         }
 
         if(!empty($request->ib_courses)){
@@ -115,24 +108,9 @@ class EducationController extends Controller
             $data['ap_courses'] = json_encode($request->ap_courses);
         }
 
-        $data = array_filter($data);
-
-        if($data['course_data'] == "[]"){
-            $data['course_data'] = null;
-        }
-
-        if($data['honor_course_data'] == "[]"){
-            $data['honor_course_data'] = null;
-        }
-
         if (!empty($data)) {
             $education->update($data);
-
-            if ($resume_id != null) {
-                return redirect('user/admin-dashboard/high-school-resume/honors?resume_id=' . $resume_id);
-            }else{
-                return redirect()->route('admin-dashboard.highSchoolResume.honors');
-            }
+            return response()->json(['success' => true, 'data' => $data]);
         }
     }
 }

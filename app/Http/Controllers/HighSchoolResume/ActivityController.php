@@ -47,34 +47,30 @@ class ActivityController extends Controller
         $data = $request->validated();
 
         if(!empty($request->demonstrated_data)){
-            $data['demonstrated_data'] = $request->demonstrated_data;
+            $data['demonstrated_data'] = array_values($request->demonstrated_data);
         }
 
         if(!empty($request->leadership_data)){
-            $data['leadership_data'] = $request->leadership_data;
+            $data['leadership_data'] = array_values($request->leadership_data);
         }
 
         if(!empty($request->activities_data)){
-            $data['activities_data'] = $request->activities_data;
+            $data['activities_data'] = array_values($request->activities_data);
         }
 
         if(!empty($request->athletics_data)){
-            $data['athletics_data'] = $request->athletics_data;
+            $data['athletics_data'] = array_values($request->athletics_data);
         }
         
         if(!empty($request->community_service_data)){
-            $data['community_service_data'] = $request->community_service_data;
+            $data['community_service_data'] = array_values($request->community_service_data);
         }
 
         $data['user_id'] = Auth::id();
 
-        $data = array_filter($data);
-
-       
-        
         if (!empty($data)) {
             Activity::create($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+            return response()->json(['success' => true, 'data' => $data]);
         }
     }
 
@@ -82,56 +78,37 @@ class ActivityController extends Controller
     {
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
+        // dd($data);
 
         if(!empty($request->demonstrated_data)){
-            $data['demonstrated_data'] = $request->demonstrated_data;
+            $data['demonstrated_data'] = array_values($request->demonstrated_data);
         }
 
         if(!empty($request->leadership_data)){
-            $data['leadership_data'] = $request->leadership_data;
+            $data['leadership_data'] = array_values($request->leadership_data);
         }
 
         if(!empty($request->activities_data)){
-            $data['activities_data'] = $request->activities_data;
+            $data['activities_data'] = array_values($request->activities_data);
         }
 
         if(!empty($request->athletics_data)){
-            $data['athletics_data'] = $request->athletics_data;
+            $data['athletics_data'] = array_values($request->athletics_data);
         }
         
         if(!empty($request->community_service_data)){
-            $data['community_service_data'] = $request->community_service_data;
-        }
-
-        $data = array_filter($data);
-
-        if($data['demonstrated_data'] == "[]"){
-            $data['demonstrated_data'] = null;
-        }
-        
-        if($data['leadership_data'] == "[]"){
-            $data['leadership_data'] = null;
-        } 
-        
-        if($data['activities_data'] == "[]"){
-            $data['activities_data'] = null;
-        } 
-        
-        if($data['athletics_data'] == "[]"){
-            $data['athletics_data'] = null;
-        }
-
-        if($data['community_service_data'] == "[]"){
-            $data['community_service_data'] = null;
+            $data['community_service_data'] = array_values($request->community_service_data);
         }
 
         if (!empty($data)) {
             $activity->update($data);
-            if ($resume_id != null) {
-                return redirect('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id);
-            } else {
-                return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
-            }
+            // if ($resume_id != null) {
+            //     return redirect('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id);
+            // } else {
+            //     return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+            // }
+
+            return response()->json(['success' => true, 'data' => $data]);
         }
     }
 }
