@@ -168,34 +168,34 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
             Route::get('/list', [PreviewController::class, 'list'])->name('list');
             Route::controller(PersonalInfoController::class)->group(function(){
                 Route::get('/personal-info', 'index')->name('personalInfo');
-                Route::post('/personal-info', 'store')->name('personalInfo.store');
+                Route::post('/personal-info/store', 'store')->name('personalInfo.store');
                 Route::put('/personal-info/{personalInfo}', 'update')->name('personalInfo.update');
                 Route::get('/discard-drafts', 'discard_drafts')->name('discarddrafts');
                 Route::get('edit-fetch/{editid}','editFetch')->name('editFetch');
             }); 
             Route::controller(EducationController::class)->group(function(){
                 Route::get('/education-info', 'index')->name('educationInfo');
-                Route::post('/education-info','store')->name('educationInfo.store');
+                Route::post('/education-info/store','store')->name('educationInfo.store');
                 Route::put('/education-info/{education}', 'update')->name('educationInfo.update');
             });
             Route::controller(HonorsController::class)->group(function(){
                 Route::get('/honors', 'index')->name('honors');
-                Route::post('/honors', 'store')->name('honors.store');
+                Route::post('/honors/store', 'store')->name('honors.store');
                 Route::put('/honors/{honor}', 'update')->name('honors.update');
             });
             Route::controller(ActivityController::class)->group(function(){
                 Route::get('/activities', 'index')->name('activities');
-                Route::post('/activities', 'store')->name('activities.store');
+                Route::post('/activities/store', 'store')->name('activities.store');
                 Route::put('/activities/{activity}', 'update')->name('activities.update');
             });
             Route::controller(EmploymentCertificationController::class)->group(function(){
                 Route::get('/employment-certifications', 'index')->name('employmentCertification');
-                Route::post('/employment-certifications', 'store')->name('employmentCertification.store');
+                Route::post('/employment-certifications/store', 'store')->name('employmentCertification.store');
                 Route::put('/employment-certifications/{employmentCertification}', 'update')->name('employmentCertification.update');
             });
             Route::controller(FeaturedAttributeController::class)->group(function(){
                 Route::get('/features-attributes', 'index')->name('featuresAttributes');
-                Route::post('/features-attributes', 'store')->name('featuresAttributes.store');
+                Route::post('/features-attributes/store', 'store')->name('featuresAttributes.store');
                 Route::put('/features-attributes/{featuredAttribute}', 'update')->name('featuresAttributes.update');
             });
             Route::controller(PreviewController::class)->group(function(){

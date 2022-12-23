@@ -76,7 +76,7 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation"
+                <form class="js-validation" id="form"
                     action="{{ isset($personal_info) ? route('admin-dashboard.highSchoolResume.personalInfo.update', $personal_info->id) : route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
                     method="POST" id="personalinfo">
                     @csrf
@@ -84,7 +84,7 @@
                         @method('PUT')
                     @endif
                     @if(isset($resume_id))
-                        <input type="hidden" name="resume_id" value="{{ $resume_id }}">
+                        <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
@@ -107,13 +107,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                class="form-control @error('first_name') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->first_name) ? $personal_info->first_name : old('first_name') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->first_name) ? $personal_info->first_name : "" }}"
                                                                 id="first_name" name="first_name"
                                                                 placeholder="Enter First Name">
-                                                            @error('first_name')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -123,13 +120,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                class="form-control @error('middle_name') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->middle_name) ? $personal_info->middle_name : old('middle_name') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->middle_name) ? $personal_info->middle_name : "" }}"
                                                                 id="middle_name" name="middle_name"
                                                                 placeholder="Enter Middle Name">
-                                                            @error('middle_name')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -139,13 +133,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                class="form-control @error('last_name') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->last_name) ? $personal_info->last_name : old('last_name') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->last_name) ? $personal_info->last_name : "" }}"
                                                                 id="last_name" name="last_name"
                                                                 placeholder="Enter Last Name">
-                                                            @error('last_name')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,11 +161,8 @@
                                                                 Street Address 1
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <textarea class="form-control @error('street_address_one') is-invalid @enderror" id="street_address_one"
-                                                                name="street_address_one" placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : old('street_address_one') }}</textarea>
-                                                            @error('street_address_one')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
+                                                            <textarea class="form-control" id="street_address_one"
+                                                                name="street_address_one" placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : "" }}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -182,13 +170,9 @@
                                                             Street Address 2
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <textarea class="form-control @error('street_address_two') is-invalid @enderror" id="street_address_two"
-                                                            name="street_address_two" placeholder="Enter Street Address 2">{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : old('street_address_two') }}</textarea>
-                                                        @error('street_address_two')
-                                                            <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <textarea class="form-control" id="street_address_two"
+                                                            name="street_address_two" placeholder="Enter Street Address 2">{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : "" }}</textarea>
                                                     </div>
-
                                                 </div>
                                                 <div class="row mb-4">
                                                     <div class="col-lg-4">
@@ -198,12 +182,9 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                class="form-control @error('city') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->city) ? $personal_info->city : old('city') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->city) ? $personal_info->city : "" }}"
                                                                 id="city" name="city" placeholder="Enter city">
-                                                            @error('city')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -213,12 +194,9 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text"
-                                                                class="form-control @error('state') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->state) ? $personal_info->state : old('state') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->state) ? $personal_info->state : "" }}"
                                                                 id="state" name="state" placeholder="Enter State">
-                                                            @error('state')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
@@ -228,13 +206,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="number"
-                                                                class="form-control @error('zip_code') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->zip_code) ? $personal_info->zip_code : old('zip_code') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->zip_code) ? $personal_info->zip_code : '' }}"
                                                                 id="zip_code" name="zip_code"
                                                                 placeholder="Enter Zip Code">
-                                                            @error('zip_code')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -242,6 +217,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="personal_info" id="personal_info" value="{{ isset($personal_info) ? $personal_info->id : '' }}">
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -260,13 +236,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="tel"
-                                                                class="form-control @error('cell_phone') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->cell_phone) ? $personal_info->cell_phone : old('cell_phone') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->cell_phone) ? $personal_info->cell_phone : '' }}"
                                                                 id="cell_phone" name="cell_phone"
                                                                 placeholder="Enter cell phone no">
-                                                            @error('cell_phone')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -276,12 +249,9 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="email"
-                                                                class="form-control @error('email') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->email) ? $personal_info->email : old('email') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->email) ? $personal_info->email : '' }}"
                                                                 id="email" name="email" placeholder="Enter Email">
-                                                            @error('email')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -291,23 +261,18 @@
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="social_link_div">
-                                                        @if (!empty($personal_info->social_links) || !empty(old('social_links')))
-                                                            @php $social_links = !empty($personal_info->social_links) && array_filter($personal_info->social_links) ? $personal_info->social_links : old('social_links'); @endphp
-                                                            @foreach ($social_links as $key => $link)
-                                                                <div class="row p-0 mt-3 {{ $key == 0 ? '' : 'remove_links' }}">
+                                                        @if (!empty($personal_info->social_links))
+                                                            @foreach ($personal_info->social_links as $index => $social_link)
+                                                                <div class="row p-0 mt-3 {{ $loop->first ? '' : 'remove_links' }}">
                                                                     <div class="col-lg-11">
-                                                                        <input type="text" class="form-control  @error('social_links.*') is-invalid @enderror"
-                                                                            name="social_links[]"
-                                                                            value="{{ $link }}"
+                                                                        <input type="text" class="form-control"
+                                                                            name="social_links[{{ $index }}][link]"
+                                                                            value="{{ $social_link['link'] }}"
                                                                             placeholder="Enter Social links">
-                                                                            @error('social_links.*')
-                                                                                <span class="invalid">{{ $message }}</span>
-                                                                            @enderror
                                                                     </div>
                                                                     <div class="col-lg-1">
-                                                                        <a href="javascript:void(0)" class="add-btn"
-                                                                            onclick="{{ $key == 0 ? 'addLinks(this)' : 'removeLinks(this)' }}">
-                                                                            <i class="fa-solid {{ $key == 0 ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                        <a href="javascript:void(0)" class="add-btn">
+                                                                            <i onclick="{{ $loop->first ? 'addLinks(this)' : 'removeLinks(this)' }}" data-count="{{ count($personal_info->social_links) != 0 ? count($personal_info->social_links) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -315,18 +280,13 @@
                                                         @else
                                                             <div class="row p-0 mt-3">
                                                                 <div class="col-lg-11">
-                                                                    <input type="text" class="form-control @error('social_links.*') is-invalid @enderror"
-                                                                        name="social_links[]"
-                                                                        value="{{ old('social_links') }}"
-                                                                        placeholder="Enter Social links ">
-                                                                        @error('social_links.*')
-                                                                            <span class="invalid">{{ $message }}</span>
-                                                                        @enderror
+                                                                    <input type="text" class="form-control"
+                                                                        name="social_links[0][link]"
+                                                                        placeholder="Enter Social links">
                                                                 </div>
                                                                 <div class="col-lg-1">
-                                                                    <a href="javascript:void(0)" class="add-btn"
-                                                                        onclick="addLinks(this)">
-                                                                        <i class="fa-solid fa-plus"></i>
+                                                                    <a href="javascript:void(0)" class="add-btn">
+                                                                        <i onclick="addLinks(this)" data-count="0" class="fa-solid fa-plus"></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -378,7 +338,7 @@
                                         </div>
                                     @endif
                                     <div class="next-btn">
-                                        <input type="submit" class="btn  btn-alt-success next-step" value="Next Step"/>
+                                        <input type="button" class="btn  btn-alt-success next-step" value="Next Step" onclick="checkValidation()"/>
                                     </div>
                                 </div>
                             </div>
@@ -391,22 +351,9 @@
 @endsection
 
 @section('page-style')
-
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
     <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
-
-@endsection
-
-@section('user-script')
-    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('js/high-school-resume.js') }}"></script>
-    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
-
-
-    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <style>
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
@@ -416,9 +363,16 @@
             color: #f27474;
         }
     </style>
+@endsection
 
+@section('user-script')
+    <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>    
-
         function errorMsg()
         {
             Swal.fire({
@@ -429,6 +383,51 @@
                 confirmButtonText: 'Okay'
             }).then((result) => {
                 window.location.href = "{{ route('admin-dashboard.highSchoolResume.personalInfo') }}";
+            });
+        }
+
+        function checkValidation()
+        {
+            let site_url = $('#site_url').val();
+            let personal_info = $('#personal_info').val();
+            let resume_id = $('#resume_id').val();
+            let url = `${site_url}/user/admin-dashboard/high-school-resume/personal-info/store`;
+            
+            let data = $("#form").serializeArray();
+            
+            let formData = new FormData();
+            
+            $.each(data, function(key, value) {
+                formData.append(value['name'], value['value']);
+            });
+            
+            if(personal_info){
+                url = `${site_url}/user/admin-dashboard/high-school-resume/personal-info/${personal_info}`
+            }
+
+            $.ajax({
+                url : url,
+                type : 'POST',
+                datatype : 'json',
+                data : formData, 
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if(response.success){
+                        if (resume_id) {
+                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/education-info?resume_id=${resume_id}`;
+                        }else{
+                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/education-info`;
+                        }
+                    }
+                },
+                error:function(error){
+                    if (error.responseJSON != null) {
+                        $.each(error.responseJSON.errors , function(key,value){
+                            toastr.error(value);
+                        });
+                    }
+                }
             });
         }
     

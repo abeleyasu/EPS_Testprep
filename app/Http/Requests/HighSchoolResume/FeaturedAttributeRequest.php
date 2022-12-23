@@ -14,18 +14,20 @@ class FeaturedAttributeRequest extends FormRequest
     public function rules()
     {
         return [
-            "featured_skills_data" => "required",
-            "featured_awards_data" => "required",
-            "featured_languages_data" => "required"
+            "featured_skills_data.*.skill" => "required",
+            "featured_awards_data.*.award" => "required",
+            "featured_languages_data.*.language" => "required",
+            "featured_languages_data.*.level" => "required"
         ];
     }
 
     public function messages()
     {
         return [
-            'featured_skills_data.required' => 'Featured Skills Data is required',
-            'featured_awards_data.required' => 'Featured Awards Data is required',
-            'featured_languages_data.required' => 'Featured Languages Data is required'
+            'featured_skills_data.*.skill.required' => 'Featured skills is required',
+            'featured_awards_data.*.award.required' => 'Featured award is required',
+            'featured_languages_data.*.language.required' => 'Featured language is required',
+            'featured_languages_data.*.level.required' => 'Featured level is required'
         ];
     }
 }

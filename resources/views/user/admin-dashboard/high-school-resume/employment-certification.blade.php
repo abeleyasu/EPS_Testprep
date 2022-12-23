@@ -71,13 +71,13 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" action="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
+                <form class="js-validation" id="form" action="{{ isset($employmentCertification) ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
                     @csrf
                     @if(isset($employmentCertification))
                         @method('PUT')
                     @endif
                     @if(isset($resume_id))
-                        <input type="hidden" name="resume_id" value="{{ $resume_id }}">
+                        <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
@@ -92,83 +92,115 @@
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
-                                                <table class="table">
+                                                <table class="table employement_table">
                                                     <tbody>
-                                                        <tr class="employment_data_table_row">
-                                                            <input type="hidden" name="employment_data" id="employment_data" value="{{ !empty($employmentCertification->employment_data) ? $employmentCertification->employment_data : old('employment_data') }}">
+                                                        <tr>
+                                                            <input type="hidden" name="employmentCertification" id="employmentCertification" value="{{ isset($employmentCertification) ? $employmentCertification->id : ''}}">
                                                             <td>
                                                                 <label class="form-label" for="job_title">
                                                                     Job title
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('employment_data') is-invalid @enderror"
-                                                                    value="{{ old('job_title') }}" id="job_title"
-                                                                    name="job_title" placeholder="Enter Job title">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 @error('employment_data') is-invalid @enderror select" id="employment_grade"
-                                                                    name="employment_grade[]" multiple="multiple">
-                                                                    <option {{ in_array("1st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                    <option {{ in_array("2st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                    <option {{ in_array("3st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                    <option {{ in_array("4st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                    <option {{ in_array("5st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
-                                                                </select>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_location">
                                                                     Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('employment_data') is-invalid @enderror"
-                                                                    id="employment_location" name="employment_location"
-                                                                    value="{{ old('employment_location') }}"
-                                                                    placeholder="Enter Location">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_honor_award">
                                                                     Honor / Award
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('employment_data') is-invalid @enderror"
-                                                                    id="employment_honor_award"
-                                                                    name="employment_honor_award"
-                                                                    value="{{ old('employment_honor_award') }}"
-                                                                    placeholder="Enter Honor / Award">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addEmploymentData(this)" class="add-btn plus-icon d-flex">
-                                                                    <i class="fa-solid fa-plus @error('employment_data') bg-danger @enderror"></i>
-                                                                    @error('employment_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert employment data</span>
-                                                                    @enderror
-                                                                </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($employmentCertification->employment_data) || !empty(old('employment_data')))
-                                                            @php
-                                                                $employment_data = !empty($employmentCertification->employment_data) ? $employmentCertification->employment_data : old('employment_data');
-                                                            @endphp
-                                                            @foreach(json_decode($employment_data) as $employment_data)
-                                                                <tr id="employment_{{ $employment_data->id }}">
-                                                                    <td class="job_title">{{ $employment_data->job_title }}</td>
-                                                                    <td class="employment_grade">{{ implode(", ",json_decode($employment_data->employment_grade)) }}</td>
-                                                                    <td class="employment_location">{{ $employment_data->employment_location }}</td>
-                                                                    <td class="employment_honor_award">{{ $employment_data->employment_honor_award }}</td>
+                                                        @if(!empty($employmentCertification->employment_data))
+                                                            @foreach ($employmentCertification->employment_data as $index => $employment_data)
+                                                                <tr class="employment_data_table_row {{ $loop->first ? '' : 'remove_employement_data' }}">
                                                                     <td>
-                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $employment_data->id }}" onclick="employment_edit_model(this)"></i>
-                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $employment_data->id }}" onclick="employment_model_remove(this)"></i>
+                                                                        <input type="text"
+                                                                            class="form-control" id="job_title" value="{{ $employment_data['job_title'] }}"
+                                                                            name="employment_data[{{ $index }}][job_title]" placeholder="Enter Job title">
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="js-select2 select" id="employment_select_{{ $index }}"
+                                                                            name="employment_data[{{ $index }}][grade][]" multiple="multiple">
+                                                                            <option {{ in_array("1st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                            <option {{ in_array("2st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                            <option {{ in_array("3st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                            <option {{ in_array("4st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                            <option {{ in_array("5st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="employment_location" name="employment_data[{{ $index }}][location]"
+                                                                            value="{{ $employment_data['location'] }}"
+                                                                            placeholder="Enter Location">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="employment_honor_award"
+                                                                            name="employment_data[{{ $index }}][honor_award]"
+                                                                            value="{{ $employment_data['honor_award'] }}"
+                                                                            placeholder="Enter Honor / Award">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                            <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus'}}" data-count="{{ count($employmentCertification->employment_data) != 0 ? count($employmentCertification->employment_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addEmploymentData(this)' : 'removeEmploymentData(this)' }}"></i>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
+                                                        @else 
+                                                            <tr class="employment_data_table_row">
+                                                                <td>
+                                                                    <input type="text"
+                                                                        class="form-control" id="job_title"
+                                                                        name="employment_data[0][job_title]" placeholder="Enter Job title">
+                                                                </td>
+                                                                <td>
+                                                                    <select class="js-select2 select" id="employment_select_0"
+                                                                        name="employment_data[0][grade][]" multiple="multiple">
+                                                                        <option {{ in_array("1st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                        <option {{ in_array("2st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                        <option {{ in_array("3st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                        <option {{ in_array("4st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                        <option {{ in_array("5st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="employment_location" name="employment_data[0][location]"
+                                                                        placeholder="Enter Location">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="employment_honor_award"
+                                                                        name="employment_data[0][honor_award]"
+                                                                        placeholder="Enter Honor / Award">
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                        <i class="fa-solid fa-plus" data-count="0" onclick="addEmploymentData(this)"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+
                                                         @endif
                                                     </tbody>
                                                 </table>
@@ -187,91 +219,127 @@
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
-                                                <table class="table">
+                                                <table class="table significant_table">
                                                     <tbody>
-                                                        <tr class="significant_data_table_row">
-                                                            <input type="hidden" name="significant_data" id="significant_data" value="{{ !empty($employmentCertification->significant_data) ? $employmentCertification->significant_data : old('significant_data') }}">
+                                                        <tr>
                                                             <td>
-                                                                <label class="form-label"
+                                                                 <label class="form-label"
                                                                     for="responsibility_interest">
                                                                     Responsibility or interest
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('significant_data') is-invalid @enderror"
-                                                                    value="{{ old('responsibility_interest') }}"
-                                                                    id="responsibility_interest"
-                                                                    name="responsibility_interest"
-                                                                    placeholder="Enter Responsibility/interest">
                                                             </td>
                                                             <td>
-                                                                <label class="form-label"
+                                                                 <label class="form-label"
                                                                     for="significant_grade">
                                                                     Grade(s)
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <select class="js-select2 select @error('significant_data') is-invalid @enderror"
-                                                                    id="significant_grade"
-                                                                    name="significant_grade[]"
-                                                                    multiple="multiple">
-                                                                    <option {{ in_array("1st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                    <option {{ in_array("2st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                    <option {{ in_array("3st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                    <option {{ in_array("4st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                    <option {{ in_array("5st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
-                                                                </select>
                                                             </td>
                                                             <td>
-                                                                <label class="form-label"
+                                                                 <label class="form-label"
                                                                     for="significant_location">
                                                                     Location
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('significant_data') is-invalid @enderror"
-                                                                    id="significant_location"
-                                                                    name="significant_location"
-                                                                    value="{{ old('significant_location') }}"
-                                                                    placeholder="Enter Location">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="significant_honor_award">
                                                                     Honor / Award
                                                                     <span class="text-danger">*</span>
                                                                 </label>
-                                                                <input type="text"
-                                                                    class="form-control @error('significant_data') is-invalid @enderror"
-                                                                    value="{{ old('significant_honor_award') }}"
-                                                                    id="significant_honor_award"
-                                                                    name="significant_honor_award"
-                                                                    placeholder="Enter Honor / Award">
                                                             </td>
                                                             <td>
                                                                 <label class="form-label">Action</label><br>
-                                                                <a href="javascript:void(0)" onclick="addSignificantData(this)" class="add-btn plus-icon d-flex">
-                                                                    <i class="fa-solid fa-plus @error('significant_data') bg-danger @enderror"></i>
-                                                                    @error('significant_data') 
-                                                                        <span class="ms-2 me-2 invalid">Click on add icon to insert significant data</span>
-                                                                    @enderror
-                                                                </a>
                                                             </td>
                                                         </tr>
-                                                        @if(!empty($employmentCertification->significant_data) || !empty(old('significant_data')))
-                                                            @php
-                                                                $significant_data = !empty($employmentCertification->significant_data) ? $employmentCertification->significant_data : old('significant_data');
-                                                            @endphp
-                                                            @foreach(json_decode($significant_data) as $significant_data)
-                                                                <tr id="significant_{{ $significant_data->id }}">
-                                                                    <td class="responsibility_interest">{{ $significant_data->responsibility_interest }}</td>
-                                                                    <td class="significant_grade">{{ implode(", ",json_decode($significant_data->significant_grade)) }}</td>
-                                                                    <td class="significant_location">{{ $significant_data->significant_location }}</td>
-                                                                    <td class="significant_honor_award">{{ $significant_data->significant_honor_award }}</td>
-                                                                    <td>
-                                                                        <i class="fa-solid fa-pen me-2" data-id="{{ $significant_data->id }}" onclick="significant_edit_model(this)"></i>
-                                                                        <i class="fa-solid fa-circle-xmark" data-id="{{ $significant_data->id }}" onclick="significant_model_remove(this)"></i>
+                                                        @if(!empty($employmentCertification->significant_data))
+                                                            @foreach ($employmentCertification->significant_data as $index => $significant_data)
+                                                                <tr class="significant_data_table_row {{ $loop->first ? '' : 'remove_significant_data' }}">
+                                                                    <td>                                                               
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="responsibility_interest"
+                                                                            value="{{ $significant_data['interest'] }}"
+                                                                            name="significant_data[{{ $index }}][interest]"
+                                                                            placeholder="Enter Responsibility/interest">
+                                                                    </td>
+                                                                    <td>                                                               
+                                                                        <select class="js-select2 select"
+                                                                            id="significant_select_{{ $index }}"
+                                                                            name="significant_data[{{ $index }}][grade][]"
+                                                                            multiple="multiple">
+                                                                            <option {{ in_array("1st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                            <option {{ in_array("2st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                            <option {{ in_array("3st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                            <option {{ in_array("4st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                            <option {{ in_array("5st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>                                                               
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="significant_location"
+                                                                            value="{{ $significant_data['location'] }}"
+                                                                            name="significant_data[{{ $index }}][location]"
+                                                                            placeholder="Enter Location">
+                                                                    </td>
+                                                                    <td>                                                                
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="significant_honor_award"
+                                                                            value="{{ $significant_data['honor_award'] }}"
+                                                                            name="significant_data[{{ $index }}][honor_award]"
+                                                                            placeholder="Enter Honor / Award">
+                                                                    </td>
+                                                                    <td>                                                                
+                                                                        <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                            <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" data-count="{{ count($employmentCertification->significant_data) != 0 ? count($employmentCertification->significant_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addSignificantData(this)' : 'removeSignificantData(this)' }}"></i>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
+                                                        @else
+                                                            <tr class="significant_data_table_row">
+                                                                <td>                                                               
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="responsibility_interest"
+                                                                        name="significant_data[0][interest]"
+                                                                        placeholder="Enter Responsibility/interest">
+                                                                </td>
+                                                                <td>                                                               
+                                                                    <select class="js-select2 select"
+                                                                        id="significant_select_0"
+                                                                        name="significant_data[0][grade][]"
+                                                                        multiple="multiple">
+                                                                        <option {{ in_array("1st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
+                                                                        <option {{ in_array("2st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
+                                                                        <option {{ in_array("3st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
+                                                                        <option {{ in_array("4st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
+                                                                        <option {{ in_array("5st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>                                                               
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="significant_location"
+                                                                        name="significant_data[0][location]"
+                                                                        placeholder="Enter Location">
+                                                                </td>
+                                                                <td>                                                                
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="significant_honor_award"
+                                                                        name="significant_data[0][honor_award]"
+                                                                        placeholder="Enter Honor / Award">
+                                                                </td>
+                                                                <td>                                                                
+                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                        <i class="fa-solid fa-plus" data-count="0" onclick="addSignificantData(this)"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
                                                         @endif
                                                     </tbody>
                                                 </table>
@@ -285,7 +353,6 @@
                                     <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities') }}"
                                         class="btn btn-alt-success prev-step"> Previous Step
                                     </a>
-                                   
                                 </div>
                                 <div class="next-btn d-flex">
                                     @if (!isset($resume_id))
@@ -293,8 +360,7 @@
                                             @include('components.reset-all-drafts-button')
                                         </div>
                                     @endif
-                                    <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
-                                    
+                                    <input type="button" class="btn  btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
                                 </div>
                             </div>
                         </div>
@@ -303,156 +369,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Employment & Certifications Modal -->
-        <div class="modal" id="employment_certification_modal" tabindex="-1" role="dialog"
-            aria-labelledby="modal-block-extra-large" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="block block-rounded block-transparent mb-0">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Employment & Certifications</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="fa fa-fw fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="block-content fs-sm">
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="employment_modal_job_title">
-                                        Job title
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control"
-                                        value="{{ old('job_title') }}" id="employment_modal_job_title" name="job_title"
-                                        placeholder="Enter Job title">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="employment_modal_grade">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="employment_modal_grade"
-                                        name="grade" multiple="multiple">
-                                        <option value="1st grade">1st grade</option>
-                                        <option value="2st grade">2st grade</option>
-                                        <option value="3st grade">3st grade</option>
-                                        <option value="4st grade">4st grade</option>
-                                        <option value="5st grade">5st grade</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="employment_modal_location">
-                                        Location
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control"
-                                        id="employment_modal_location" name="location"
-                                        value="{{ old('location') }}" placeholder="Enter Location">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="employment_modal_honor_award">
-                                        Honor / Award
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control"
-                                        id="employment_modal_honor_award" name="honor_award"
-                                        value="{{ old('honor_award') }}" placeholder="Enter Honor / Award">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-content block-content-full text-end">
-                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" id="updateEmploymentForm" onclick="updateEmploymentForm(this)">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- Employment & Certifications Modal -->
-
-    <!-- Other Significant Responsibilities or interests Modal -->
-        <div class="modal" id="significant_modal" tabindex="-1" role="dialog"
-            aria-labelledby="modal-block-extra-large" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="block block-rounded block-transparent mb-0">
-                        <div class="block-header block-header-default">
-                            <h3 class="block-title">Other Significant Responsibilities or interests</h3>
-                            <div class="block-options">
-                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                                    <i class="fa fa-fw fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="block-content fs-sm">
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="significant_modal_responsibility_interest">
-                                        Responsibility or interest
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control"
-                                        value="{{ old('responsibility_interest') }}"
-                                        id="significant_modal_responsibility_interest" name="responsibility_interest"
-                                        placeholder="Enter Responsibility or interest">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="significant_modal_grade">
-                                        Grade(s)
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="js-select2 select" id="significant_modal_grade"
-                                        name="significant_grade" multiple="multiple">
-                                        <option value="1st grade">1st grade</option>
-                                        <option value="2st grade">2st grade</option>
-                                        <option value="3st grade">3st grade</option>
-                                        <option value="4st grade">4st grade</option>
-                                        <option value="5st grade">5st grade</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="significant_modal_location">
-                                        Location
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="form-control"
-                                        id="significant_modal_location"
-                                        name="significant_location"
-                                        value="{{ old('significant_location') }}"
-                                        placeholder="Enter Location">
-                                </div>
-                                <div class="col-lg-6">
-                                    <label class="form-label" for="significant_modal_honor_award">
-                                        Honor / Award
-                                        <span class="text-danger">*</span>
-                                    </label>
-                                    <textarea class="form-control" id="significant_modal_honor_award" name="significant_honor_award"
-                                        placeholder="Enter Additional details">
-                                        {{ old('significant_honor_award') }}
-                                    </textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="block-content block-content-full text-end">
-                            <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn submit-btn" id="updateSignificantForm" onclick="updateSignificantForm(this)">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- Other Significant Responsibilities or interests Modal -->
 @endsection
 
 @section('page-style')
@@ -482,205 +398,79 @@
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
-        var employmentData = [];
-        var significantData = [];
+        let total_employment_count = "{{ isset($employmentCertification->employment_data) ? count($employmentCertification->employment_data) : 0 }}";
+        let total_significant_count = "{{ isset($employmentCertification->significant_data) ? count($employmentCertification->significant_data) : 0 }}";
 
-        // Employment table start
-
-        function addEmploymentData(data) {
-            let job_title = $('input[name="job_title"]').val();
-            let employment_grade = $('#employment_grade').val();
-            let employment_location = $('input[name="employment_location"]').val();
-            let employment_honor_award = $('input[name="employment_honor_award"]').val();
-            let temp_employment_id = Date.now();
-
-            let  employment = $('#employment_data').val();
-            if( employment != "") {
-                employmentData = JSON.parse($('#employment_data').val());
-            }
-            let html = ``;
-            if (job_title != "" && employment_grade != "" && employment_location != "" && employment_honor_award != "") {
-                html += `<tr id="employment_${temp_employment_id}">`;
-                html += `<td class="job_title">${job_title}</td>`;
-                html += `<td class="employment_grade">${employment_grade.join(", ").toString()}</td>`;
-                html += `<td class="employment_location">${employment_location}</td>`;
-                html += `<td class="employment_honor_award">${employment_honor_award}</td>`;
-                html += `<td>`;
-                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_employment_id}" onclick="employment_edit_model(this)"></i>`;
-                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_employment_id}" onclick="employment_model_remove(this)"></i>`;
-                html += `</td>`;
-
-                employmentData.push({
-                    "id": temp_employment_id,
-                    "job_title": job_title,
-                    "employment_grade": JSON.stringify(employment_grade),
-                    "employment_location": employment_location,
-                    "employment_honor_award": employment_honor_award
-                });
-            } else {
-                toastr.error('Please Enter Employment Details');
-            }
-
-            $('.employment_data_table_row').after(html);
-            $('input[name="job_title"]').val('');
-            $("#employment_grade").val(null).trigger("change");
-            $('input[name="employment_location"]').val('');
-            $('input[name="employment_honor_award"]').val('');
-            $('#employment_data').val(JSON.stringify(employmentData));
-        }
-
-        function employment_edit_model(data) {
-            let employment_data = $('#employment_data').val();
-                employment_data = JSON.parse(employment_data);
-            let id = $(data).attr('data-id');
-            let employment_result = employment_data.find(employment => employment.id == id);
-            let employment_grade = JSON.parse(employment_result.employment_grade);
-            
-            $('#employment_modal_job_title').val(employment_result.job_title);
-            $("#employment_modal_grade").val(employment_grade).trigger("change");
-            $('#employment_modal_location').val(employment_result.employment_location);
-            $('#employment_modal_honor_award').val(employment_result.employment_honor_award);
-            $('#updateEmploymentForm').attr('data-id', id);
-            $('#employment_certification_modal').modal('show');
-        }
-
-        function updateEmploymentForm(data) {
-            let id = $(data).attr('data-id');
-            let job_title = $('#employment_modal_job_title').val();
-            let employment_grade = $('#employment_modal_grade').val();
-            let employment_location = $('#employment_modal_location').val();
-            let employment_honor_award = $('#employment_modal_honor_award').val();
-        
-            let employment_data = $('#employment_data').val();
-                employment_data = JSON.parse(employment_data);
-            for (let i = 0; i < employment_data.length; i++) {
-                if (employment_data[i].id == id) {
-                    employment_data[i].job_title = job_title
-                    employment_data[i].employment_grade = JSON.stringify(employment_grade)
-                    employment_data[i].employment_location = employment_location
-                    employment_data[i].employment_honor_award = employment_honor_award
+        $(document).ready(() => {
+            if(total_employment_count > 0) {
+                for (let index = 0; index < total_employment_count; index++) {
+                    $(`#employment_select_${index}`).select2({
+                        tags: true,
+                    });
                 }
-            }
-            $('#employment_data').val(JSON.stringify(employment_data));
-            $(`#employment_${id} .job_title`).text(job_title);
-            $(`#employment_${id} .employment_grade`).text(employment_grade.join(", ").toString());
-            $(`#employment_${id} .employment_location`).text(employment_location);
-            $(`#employment_${id} .employment_honor_award`).text(employment_honor_award);
-
-            $('#employment_certification_modal').modal('hide');
-        }
-
-        function employment_model_remove(data) {
-            let id = $(data).attr('data-id');
-            let employment_data = $('#employment_data').val();
-                employment_data = JSON.parse(employment_data);
-            const deleted_employment = employment_data.filter(employment => employment.id != id)
-            $('#employment_data').val(JSON.stringify(deleted_employment));
-            $(`#employment_${id}`).remove();
-
-            if ($('#employment_data').val() == '[]') {
-                $('#employment_data').val(null);
-            }
-        }
-
-        // Employment table end
-
-        // Significant table start
-
-        function addSignificantData(data) {
-            let responsibility_interest = $('input[name="responsibility_interest"]').val();
-            let significant_grade = $('#significant_grade').val();
-            let significant_location = $('input[name="significant_location"]').val();
-            let significant_honor_award = $('input[name="significant_honor_award"]').val();
-            let temp_significant_id = Date.now();
-
-            let  significant = $('#significant_data').val();
-            if( significant != "") {
-                significantData = JSON.parse($('#significant_data').val());
-            }
-            let html = ``;
-            if (responsibility_interest != "" && significant_grade != "" && significant_location != "" && significant_honor_award != "") {
-                html += `<tr id="significant_${temp_significant_id}">`;
-                html += `<td class="responsibility_interest">${responsibility_interest}</td>`;
-                html += `<td class="significant_grade">${significant_grade.join(", ").toString()}</td>`;
-                html += `<td class="significant_location">${significant_location}</td>`;
-                html += `<td class="significant_honor_award">${significant_honor_award}</td>`;
-                html += `<td>`;
-                html += `<i class="fa-solid fa-pen me-2" data-id="${temp_significant_id}" onclick="significant_edit_model(this)"></i>`;
-                html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_significant_id}" onclick="significant_model_remove(this)"></i>`;
-                html += `</td>`;
-
-                significantData.push({
-                    "id": temp_significant_id,
-                    "responsibility_interest": responsibility_interest,
-                    "significant_grade": JSON.stringify(significant_grade),
-                    "significant_location": significant_location,
-                    "significant_honor_award": significant_honor_award
-                });
             } else {
-                toastr.error('Please Enter Significant Details');
+                $("#employment_select_0").select2({
+                    tags: true,
+                });
             }
 
-            $('.significant_data_table_row').after(html);
-            $('input[name="responsibility_interest"]').val('');
-            $("#significant_grade").val(null).trigger("change");
-            $('input[name="significant_location"]').val('');
-            $('input[name="significant_honor_award"]').val(''   );
-            $('#significant_data').val(JSON.stringify(significantData));
-        }
-
-        function significant_edit_model(data) {
-            let significant_data = $('#significant_data').val();
-                significant_data = JSON.parse(significant_data);
-            let id = $(data).attr('data-id');
-            let significant_result = significant_data.find(significant => significant.id == id);
-            let significant_grade = JSON.parse(significant_result.significant_grade);
-            
-            $('#significant_modal_responsibility_interest').val(significant_result.responsibility_interest);
-            $("#significant_modal_grade").val(significant_grade).trigger("change");
-            $('#significant_modal_location').val(significant_result.significant_location);
-            $('#significant_modal_honor_award').val(significant_result.significant_honor_award);
-            $('#updateSignificantForm').attr('data-id', id);
-            $('#significant_modal').modal('show');
-        }
-
-        function updateSignificantForm(data) {
-            let id = $(data).attr('data-id');
-            let responsibility_interest = $('#significant_modal_responsibility_interest').val();
-            let significant_grade = $('#significant_modal_grade').val();
-            let significant_location = $('#significant_modal_location').val();
-            let significant_honor_award = $('#significant_modal_honor_award').val();
-        
-            let significant_data = $('#significant_data').val();
-                significant_data = JSON.parse(significant_data);
-            for (let i = 0; i < significant_data.length; i++) {
-                if (significant_data[i].id == id) {
-                    significant_data[i].responsibility_interest = responsibility_interest
-                    significant_data[i].significant_grade = JSON.stringify(significant_grade)
-                    significant_data[i].significant_location = significant_location
-                    significant_data[i].significant_honor_award = significant_honor_award
+            if(total_significant_count > 0) {
+                for (let index = 0; index < total_significant_count; index++) {
+                    $(`#significant_select_${index}`).select2({
+                        tags: true,
+                    });
                 }
+            } else {
+                $("#significant_select_0").select2({
+                    tags: true,
+                });
             }
-            $('#significant_data').val(JSON.stringify(significant_data));
-            $(`#significant_${id} .responsibility_interest`).text(responsibility_interest);
-            $(`#significant_${id} .significant_grade`).text(significant_grade.join(", ").toString());
-            $(`#significant_${id} .significant_location`).text(significant_location);
-            $(`#significant_${id} .significant_honor_award`).text(significant_honor_award);
 
-            $('#significant_modal').modal('hide');
-        }
+        });
 
-        function significant_model_remove(data) {
-            let id = $(data).attr('data-id');
-            let significant_data = $('#significant_data').val();
-                significant_data = JSON.parse(significant_data);
-            const deleted_significant = significant_data.filter(significant => significant.id != id)
-            $('#significant_data').val(JSON.stringify(deleted_significant));
-            $(`#significant_${id}`).remove();
-
-            if ($('#significant_data').val() == '[]') {
-                $('#significant_data').val(null);
+        function checkValidation()
+        {
+            let site_url = $('#site_url').val();
+            let employmentCertification = $('#employmentCertification').val();
+            let resume_id = $('#resume_id').val();
+            let url = `${site_url}/user/admin-dashboard/high-school-resume/employment-certifications/store`;
+            
+            let data = $("#form").serializeArray();
+            
+            let formData = new FormData();
+            
+            $.each(data, function(key, value) {
+                formData.append(value['name'], value['value']);
+            });
+            
+            if(employmentCertification){
+                url = `${site_url}/user/admin-dashboard/high-school-resume/employment-certifications/${employmentCertification}`
             }
+
+            $.ajax({
+                url : url,
+                type : 'POST',
+                datatype : 'json',
+                data : formData, 
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if(response.success){
+                        if (resume_id) {
+                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes?resume_id=${resume_id}`;
+                        }else{
+                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes`;
+                        }
+                    }
+                },
+                error:function(error){
+                    if (error.responseJSON != null) {
+                        $.each(error.responseJSON.errors , function(key,value){
+                            toastr.error(value);
+                        });
+                    }
+                }
+            });
         }
 
         function errorMsg()
@@ -712,6 +502,5 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        // Significant table end
     </script>
 @endsection

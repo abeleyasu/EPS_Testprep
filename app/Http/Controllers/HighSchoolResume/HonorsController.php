@@ -18,7 +18,6 @@ class HonorsController extends Controller
     {
         $resume_id = $request->resume_id;
 
-        // dd($resume_id);
         if(isset($resume_id)) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([
                 'personal_info', 
@@ -36,7 +35,6 @@ class HonorsController extends Controller
             $featuredAttribute = $resumedata->featuredAttribute;
         } else {
             $user_id = Auth::id();
-
             $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
             $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
@@ -51,42 +49,28 @@ class HonorsController extends Controller
         $data = $request->validated();
         
         if(!empty($request->honors_data)){
-            $data['honors_data'] = $request->honors_data;
+            $data['honors_data'] = array_values($request->honors_data);
         }
-
+        
         $data['user_id'] = Auth::id();
-
-        $data = array_filter($data);
 
         if (!empty($data)) {
             Honor::create($data);
-            return redirect()->route('admin-dashboard.highSchoolResume.activities');
+            return response()->json(['success' => true,'data' => $data]);
         }
     }
 
     public function update(HonorsRequest $request, Honor $honor)
-    {
-        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
+    {   
         $data = $request->validated();
-
+        
         if(!empty($request->honors_data)){
-            $data['honors_data'] = $request->honors_data;
+            $data['honors_data'] = array_values($request->honors_data);
         }
         
-        $data = array_filter($data);
-        
-        if($data['honors_data'] == "[]"){
-            $data['honors_data'] = null;
-        }
-        
-
         if (!empty($data)) {
             $honor->update($data);
-            if ($resume_id != null) {
-                return redirect('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id);
-            } else {
-                return redirect()->route('admin-dashboard.highSchoolResume.activities');
-            }
+            return response()->json(['success' => true, 'data' => $data]);
         }
     }
 }

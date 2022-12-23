@@ -22,7 +22,6 @@ class PreviewController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        // dd($resume_id);
         if(isset($resume_id)) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([
                 'personal_info', 
@@ -44,8 +43,7 @@ class PreviewController extends Controller
             $honor = Honor::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
             $activity = Activity::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
             $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
-            $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
-                       
+            $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();        
         }
         $details = 0;
 
@@ -53,16 +51,20 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         foreach ((json_decode($education->ib_courses)) as $ib) {
-            array_push($ib_courses, EducationCourse::whereId($ib)->first());
+            $ib_course = EducationCourse::whereId($ib)->first();
+            $ib_courses[] = $ib_course->name;
         }
-        foreach ((json_decode($education->ap_courses)) as $ib) {
-            array_push($ap_courses, EducationCourse::whereId($ib)->first());
+        foreach ((json_decode($education->ap_courses)) as $ap) {
+            $ap_course = EducationCourse::whereId($ap)->first();
+            $ap_courses[] = $ap_course->name;
         }
+
         return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id'));
     }
 
     public function resumePreview()
     {
+        // dd(Auth::id()); 
         $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $education = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $honor = Honor::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
@@ -74,17 +76,19 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         foreach ((json_decode($education->ib_courses)) as $ib) {
-            array_push($ib_courses, EducationCourse::whereId($ib)->first());
+            $ib_course = EducationCourse::whereId($ib)->first();
+            $ib_courses[] = $ib_course->name;
         }
-        foreach((json_decode($education->ap_courses)) as $ib){
-            array_push($ap_courses, EducationCourse::whereId($ib)->first());
+        foreach ((json_decode($education->ap_courses)) as $ap) {
+            $ap_course = EducationCourse::whereId($ap)->first();
+            $ap_courses[] = $ap_course->name;
         }
 
         $options = new Options(); 
         $options->set('isPhpEnabled', 'true'); 
         $dompdf = new Dompdf($options);
         
-        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","dompdf",'ib_courses','ap_courses'))->render();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","dompdf","ib_courses","ap_courses"))->render();
         $dompdf->loadHTML($html);
         $dompdf->setPaper('a4', 'portrait');
         $dompdf->render();
@@ -140,8 +144,7 @@ class PreviewController extends Controller
 
     public function list()
     {
-        $highSchoolResume =  HighSchoolResume::with('personal_info')->get();
-
+        $highSchoolResume =  HighSchoolResume::with('personal_info')->whereUserId(Auth::id())->get();
         return view('user.admin-dashboard.high-school-resume.resume-list',compact('highSchoolResume'));
     }
 
@@ -155,20 +158,30 @@ class PreviewController extends Controller
         $activity = Activity::find($highSchoolResume->activity_id);
         $employmentCertification = EmploymentCertification::find($highSchoolResume->employment_certification_id);
         $featuredAttribute = FeaturedAttribute::find($highSchoolResume->featured_attribute_id);
+
         $ib_courses = [];
         $ap_courses = [];
 
         foreach ((json_decode($education->ib_courses)) as $ib) {
-            array_push($ib_courses, EducationCourse::whereId($ib)->first());
+            $ib_course = EducationCourse::whereId($ib)->first();
+            $ib_courses[] = $ib_course->name;
         }
-        foreach((json_decode($education->ap_courses)) as $ib){
-            array_push($ap_courses, EducationCourse::whereId($ib)->first());
+        foreach ((json_decode($education->ap_courses)) as $ap) {
+            $ap_course = EducationCourse::whereId($ap)->first();
+            $ap_courses[] = $ap_course->name;
         }
 
-        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute",'ib_courses','ap_courses'))->render();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses"))->render();
         $pdf->loadHTML($html);
         $pdf->render();
-        return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
+
+        if($type == 'download')
+        {
+            $pdf->stream('resume_' . $id . '.pdf');
+        }else {
+            return $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
+        }
+        // return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
     }
 
     public function destroy($id)
@@ -198,10 +211,12 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         foreach ((json_decode($education->ib_courses)) as $ib) {
-            array_push($ib_courses, EducationCourse::whereId($ib)->first());
+            $ib_course = EducationCourse::whereId($ib)->first();
+            $ib_courses[] = $ib_course->name;
         }
-        foreach((json_decode($education->ap_courses)) as $ib){
-            array_push($ap_courses, EducationCourse::whereId($ib)->first());
+        foreach ((json_decode($education->ap_courses)) as $ap) {
+            $ap_course = EducationCourse::whereId($ap)->first();
+            $ap_courses[] = $ap_course->name;
         }
         $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses"))->render();
         
