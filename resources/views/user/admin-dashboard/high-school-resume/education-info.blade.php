@@ -80,7 +80,7 @@
                         <div class="accordion accordionExample2">
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <a class="text-white fw-600 collapsed"> High school information</a>
+                                    <a class="text-white fw-600 collapsed"> High School Information</a>
                                 </div>
                                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample2">
                                     <div class="block-content">
@@ -125,7 +125,7 @@
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label class="form-label" for="high_school_name">High School
-                                                            name <span class="text-danger">*</span>
+                                                            Name <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control @error('high_school_name') is-invalid @enderror" id="high_school_name" value="{{ isset($education->high_school_name) ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
                                                         @error('high_school_name')
@@ -176,7 +176,7 @@
                             </div>
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    <a class="text-white fw-600 collapsed">College information</a>
+                                    <a class="text-white fw-600 collapsed">College Information</a>
                                 </div>
                                 <div id="collapseTwo" class="collapse {{ $errors->first('grade_level') || $errors->first('college_name') || $errors->first('college_city') || $errors->first('college_state') || $errors->first('college_state') ? 'show' : '' }}" aria-labelledby="headingOne" data-parent=".accordionExample2">
                                     <div class="block-content">
@@ -271,7 +271,7 @@
                             </div>
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                    <a class="text-white fw-600 collapsed">Class rank</a>
+                                    <a class="text-white fw-600 collapsed">Class Rank</a>
                                 </div>
                                 <div id="collapseFour" class="collapse {{ $errors->first('class_rank') || $errors->first('total_no_of_student') ? 'show' : '' }}" data-parent=".accordionExample2">
                                     <div class="block-content">
@@ -280,7 +280,7 @@
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="class_rank">
-                                                            Class rank
+                                                            Class Rank
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control @error('class_rank') is-invalid @enderror" value="{{ isset($education->class_rank) ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
@@ -292,7 +292,7 @@
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="total_no_of_student">
-                                                            Total Number of Student
+                                                            Total Number Of Student
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="number" class="form-control @error('total_no_of_student') is-invalid @enderror" value="{{ isset($education->total_no_of_student) ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
@@ -470,7 +470,7 @@
                                                     <tr>
                                                         <td>
                                                             <label class="form-label" for="name_of_test">
-                                                                Name of test
+                                                                Name Of Test
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                         </td>
@@ -535,7 +535,7 @@
                             </div>
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-                                    <a class=" text-white fw-600 collapsed">Future plans</a>
+                                    <a class=" text-white fw-600 collapsed">Future Plans</a>
                                 </div>
                                 <div id="collapseSeven" class="collapse {{ $errors->first('intended_college_major') || $errors->first('intended_college_minor') ? 'show' : '' }}" aria-labelledby="headingOne" data-parent=".accordionExample2">
                                     <div class="block-content">

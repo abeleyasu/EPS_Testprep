@@ -86,7 +86,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class="text-white fw-600 collapsed"> Demonstrated interest in the area of your
+                                        <a class="text-white fw-600 collapsed"> Demonstrated Interest In The Area Of Your
                                             major</a>
                                     </div>
                                     <div id="collapseOne"
@@ -667,7 +667,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                                        <a class=" text-white fw-600 collapsed">Community service / Volunteerism</a>
+                                        <a class=" text-white fw-600 collapsed">Community Service / Volunteerism</a>
                                     </div>
                                     <div id="collapseFive"
                                         class="collapse {{ $errors->first('community_service_data') ? 'show' : '' }}"
@@ -679,7 +679,7 @@
                                                         <tr>
                                                             <td>
                                                                  <label class="form-label" for="participation_level">
-                                                                    Participation level
+                                                                    Participation Level
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
