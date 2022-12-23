@@ -17,7 +17,7 @@
             <div class="custom-tab-container">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
-                        <a class="nav-link" href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')}}"
+                        <a class="nav-link" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')}}"
                             id="step1-tab">
                             <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')  }}"
+                        <a class="nav-link " href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')  }}"
                             id="step2-tab">
                             <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -33,14 +33,14 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{isset($resume_id) ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.honors')}}" id="step3-tab">
+                        <a class="nav-link " href="{{isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.honors')}}" id="step3-tab">
                             <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
                             <h6>Honors </h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link active" href="{{isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.activities') }}"
+                        <a class="nav-link active" href="{{isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
                             <p>4</p>
                             <i class="fa-solid fa-check "></i>
@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($activity) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}"
+                        <a class="nav-link" href="{{ isset($activity) && $activity != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}"
                             id="step5-tab">
                             <p>5</p>
                             <i class="fa-solid fa-check "></i>
@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
+                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
                             id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
@@ -64,20 +64,20 @@
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
+                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p >7</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Preview</h6>
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($activity) ? route('admin-dashboard.highSchoolResume.activities.update', $activity->id) : route('admin-dashboard.highSchoolResume.activities.store') }}"
+                <form class="js-validation" id="form" action="{{ isset($activity) && $activity != null ? route('admin-dashboard.highSchoolResume.activities.update', $activity->id) : route('admin-dashboard.highSchoolResume.activities.store') }}"
                     method="post">
                     @csrf
-                    @if(isset($activity))
+                    @if(isset($activity) && $activity != null)
                         @method('PUT')
                     @endif
-                    @if(isset($resume_id))
+                    @if(isset($resume_id) && $resume_id != null)
                         <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
                     <div class="tab-content" id="myTabContent">
@@ -795,7 +795,7 @@
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <div class="prev-btn next-btn">
-                            <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors') }}"
+                            <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors') }}"
                                 class="btn btn-alt-success prev-step">
                                 Previous Step
                             </a>
@@ -842,11 +842,11 @@
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script>
 
-        let total_demonstrated_count = "{{ isset($activity->demonstrated_data) ? count($activity->demonstrated_data) : 0 }}";
-        let total_leadership_count = "{{ isset($activity->leadership_data) ? count($activity->leadership_data) : 0 }}";
-        let total_activity_count = "{{ isset($activity->activities_data) ? count($activity->activities_data) : 0 }}";
-        let total_athletics_count = "{{ isset($activity->athletics_data) ? count($activity->athletics_data) : 0 }}";
-        let total_community_count = "{{ isset($activity->community_service_data) ? count($activity->community_service_data) : 0 }}";
+        let total_demonstrated_count = "{{ isset($activity->demonstrated_data) && $activity->demonstrated_data != null ? count($activity->demonstrated_data) : 0 }}";
+        let total_leadership_count = "{{ isset($activity->leadership_data) && $activity->leadership_data != null ? count($activity->leadership_data) : 0 }}";
+        let total_activity_count = "{{ isset($activity->activities_data) && $activity->activities_data != null ? count($activity->activities_data) : 0 }}";
+        let total_athletics_count = "{{ isset($activity->athletics_data) && $activity->athletics_data != null ? count($activity->athletics_data) : 0 }}";
+        let total_community_count = "{{ isset($activity->community_service_data) && $activity->community_service_data != null ? count($activity->community_service_data) : 0 }}";
 
 
         $(document).ready(() => {

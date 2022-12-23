@@ -19,7 +19,7 @@
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
                         <a class="nav-link"
-                            href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}"
+                            href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}"
                             id="step1-tab">
                             <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -28,7 +28,7 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link "
-                            href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/education-info?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}"
+                            href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}"
                             id="step2-tab">
                             <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -37,7 +37,7 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link "
-                            href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/honors?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.honors') }}"
+                            href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.honors') }}"
                             id="step3-tab">
                             <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -46,7 +46,7 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link "
-                            href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/activities?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.activities') }}"
+                            href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.activities') }}"
                             id="step4-tab">
                             <p class="d-none">4</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -55,7 +55,7 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link"
-                            href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification') }}"
+                            href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification') }}"
                             id="step5-tab">
                             <p class="d-none">5</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -64,7 +64,7 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link"
-                            href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
+                            href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
                             id="step6-tab">
                             <p class="d-none">6</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
@@ -73,7 +73,7 @@
                     </li>
                     <li role="presentation">
                         <a class="nav-link active"
-                            href="{{ isset($featuredAttribute) ? (isset($resume_id) ? url('user/admin-dashboard/high-school-resume/preview?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.preview')) : '' }}"
+                            href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.preview')) : '' }}"
                             id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -88,10 +88,10 @@
                             <p><a href="#">Home</a> > High School Resume</p>
                         </div>
                         <div class="mb-5">
-                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/' . isset($resume_id) && $resume_id != null ? route('admin-dashboard.highSchoolResume.resume.download',["id" => $resume_id, "type" => "preview"]) : route('admin-dashboard.highSchoolResume.pdf.preview') }}"
+                            <a href="{{ 'chrome-extension://oemmndcbldboiebfnladdacbdfmadadm/' . isset($resume_id) && $resume_id != null ? route('admin-dashboard.highSchoolResume.resume.download', ['id' => $resume_id, 'type' => 'preview']) : route('admin-dashboard.highSchoolResume.pdf.preview') }}"
                                 target="_blank" class="btn btn-alt-primary">SAVE RESUME AS FILE</a>
                         </div>
-                        @if (isset($resume_id))
+                        @if (isset($resume_id) && $resume_id != null)
                             <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                         @endif
                         <div class="printableArea">
@@ -161,8 +161,7 @@
                                             </div>
                                             <div class="position-relative preview-list ps-0 pb-3 features-list-before">
                                                 @if (!empty($featuredAttribute->featured_skills_data))
-                                                    <div
-                                                        class="pb-3 mb-0 border-bottom-0">
+                                                    <div class="pb-3 mb-0 border-bottom-0">
                                                         <h3>Features</h3>
                                                         <div class="preview-list_skill">
                                                             <h2>Featured Skills</h2>
@@ -363,11 +362,13 @@
                                                             {{ $education->high_school_state }} /
                                                             {{ $education->high_school_district }}
                                                         </li>
-                                                        <li><span>Current Grade / Month / Year :
+                                                        <li>
+                                                            <span>Current Grade / Month / Year :
                                                             </span>{{ $education->current_grade }} /
                                                             {{ $education->month }} / {{ $education->year }}
                                                         </li>
-                                                        <li> <span> Weighted GPA / Unweighted GPA :</span>
+                                                        <li>
+                                                            <span> Weighted GPA / Unweighted GPA :</span>
                                                             {{ $education->cumulative_gpa_weighted }} /
                                                             {{ $education->cumulative_gpa_unweighted }}
                                                         </li>
@@ -432,205 +433,203 @@
                                                                 </div>
                                                             </li>
                                                         @endif
-                                                        <li>
-                                                            @if (isset($education->intended_college_major))
-                                                        <li>
-                                                            <span>Intended College Major(s):</span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    <li class="list-type">
-                                                                        {{ $education->intended_college_major }}
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                            @endif
-                                            @if (isset($education->intended_college_major))
-                                                <li>
-                                                    <span>Intended College Minor(s):</span>
-                                                    <div class="list_group">
-                                                        <ul class="list_items">
-                                                            <li class="list-type">
-                                                                {{ $education->intended_college_minor }}
+                                                        @if (isset($education->intended_college_major))
+                                                            <li>
+                                                                <span>Intended College Major(s):</span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        <li class="list-type">
+                                                                            {{ $education->intended_college_major }}
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
                                                             </li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
+                                                        @endif
+                                                        @if (isset($education->intended_college_major))
+                                                            <li>
+                                                                <span>Intended College Minor(s):</span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        <li class="list-type">
+                                                                            {{ $education->intended_college_minor }}
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                    </ul>
+                                                </div>
                                             @endif
-                                            </li>
-                                            </ul>
+                                            @if (!empty($activity))
+                                                <div class="preview-list ">
+                                                    <h3>Activities</h3>
+                                                    <ul class="list">
+                                                        @if (!empty($activity->demonstrated_data))
+                                                            <li>
+                                                                <span class="d-block">Demostrated Interests and
+                                                                    Position in the Area of my College
+                                                                    Major :</span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->demonstrated_data as $demonstrated_data)
+                                                                            <li class="list-type">
+                                                                                {{ $demonstrated_data['interest'] }} /
+                                                                                {{ $demonstrated_data['position'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <span class="d-block">Grade and Location with Details :
+                                                                </span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->demonstrated_data as $demonstrated_data)
+                                                                            <li class="list-type">
+                                                                                {{ implode(',', $demonstrated_data['grade']) }}
+                                                                                /
+                                                                                {{ $demonstrated_data['location'] }} /
+                                                                                {{ $demonstrated_data['details'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                        @if (!empty($activity->leadership_data))
+                                                            <li>
+                                                                <span>Leadership status with Position : </span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->leadership_data as $leadership_data)
+                                                                            <li class="list-type">
+                                                                                {{ $leadership_data['status'] }} /
+                                                                                {{ $leadership_data['position'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <span>Leadership organized By :</span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->leadership_data as $leadership_data)
+                                                                            <li class="list-type">
+                                                                                {{ $leadership_data['organization'] }} /
+                                                                                {{ $leadership_data['location'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                        @if (!empty($activity->athletics_data))
+                                                            <li>
+                                                                <span>Athletics status with Position : </span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->athletics_data as $athletics_data)
+                                                                            <li class="list-type">
+                                                                                {{ $athletics_data['activity'] }} /
+                                                                                {{ $athletics_data['position'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <span>Athletics honor by :</span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->athletics_data as $athletics_data)
+                                                                            <li class="list-type">
+                                                                                {{ $athletics_data['honor'] }} /
+                                                                                {{ $athletics_data['location'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                        @if (!empty($activity->activities_data))
+                                                            <li>
+                                                                <span>Activity with Position : </span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->activities_data as $activities_data)
+                                                                            <li class="list-type">
+                                                                                {{ $activities_data['activity'] }} /
+                                                                                {{ $activities_data['position'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <span>Activity honor by :</span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->activities_data as $activities_data)
+                                                                            <li class="list-type">
+                                                                                {{ $activities_data['honor_award'] }} /
+                                                                                {{ $activities_data['location'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                        @if (!empty($activity->community_service_data))
+                                                            <li>
+                                                                <span>Participation and service : </span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->community_service_data as $community_service_data)
+                                                                            <li class="list-type">
+                                                                                {{ $community_service_data['level'] }} /
+                                                                                {{ $community_service_data['service'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <span>Community Located at : </span>
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        @foreach ($activity->community_service_data as $community_service_data)
+                                                                            <li class="list-type">
+                                                                                {{ $community_service_data['location'] }}
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                            @endif
                                         </div>
-                                        @endif
-                                        @if (!empty($activity))
-                                            <div class="preview-list ">
-                                                <h3>Activities</h3>
-                                                <ul class="list">
-                                                    @if (!empty($activity->demonstrated_data))
-                                                        <li>
-                                                            <span class="d-block">Demostrated Interests and
-                                                                Position in the Area of my College
-                                                                Major :</span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->demonstrated_data as $demonstrated_data)
-                                                                        <li class="list-type">
-                                                                            {{ $demonstrated_data['interest'] }} /
-                                                                            {{ $demonstrated_data['position'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <span class="d-block">Grade and Location with Details :
-                                                            </span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->demonstrated_data as $demonstrated_data)
-                                                                        <li class="list-type">
-                                                                            {{ implode(',', $demonstrated_data['grade']) }} /
-                                                                            {{ $demonstrated_data['location'] }} /
-                                                                            {{ $demonstrated_data['details'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                    @if (!empty($activity->leadership_data))
-                                                        <li>
-                                                            <span>Leadership status with Position : </span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->leadership_data as $leadership_data)
-                                                                        <li class="list-type">
-                                                                            {{ $leadership_data['status'] }} /
-                                                                            {{ $leadership_data['position'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <span>Leadership organized By :</span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->leadership_data as $leadership_data)
-                                                                        <li class="list-type">
-                                                                            {{ $leadership_data['organization'] }} /
-                                                                            {{ $leadership_data['location'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                    @if (!empty($activity->athletics_data))
-                                                        <li>
-                                                            <span>Athletics status with Position : </span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->athletics_data as $athletics_data)
-                                                                        <li class="list-type">
-                                                                            {{ $athletics_data['activity'] }} /
-                                                                            {{ $athletics_data['position'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <span>Athletics honor by :</span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->athletics_data as $athletics_data)
-                                                                        <li class="list-type">
-                                                                            {{ $athletics_data['honor'] }} /
-                                                                            {{ $athletics_data['location'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                    @if (!empty($activity->activities_data))
-                                                        <li>
-                                                            <span>Activity with Position : </span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->activities_data as $activities_data)
-                                                                        <li class="list-type">
-                                                                            {{ $activities_data['activity'] }} /
-                                                                            {{ $activities_data['position'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <span>Activity honor by :</span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->activities_data as $activities_data)
-                                                                        <li class="list-type">
-                                                                            {{ $activities_data['honor_award'] }} /
-                                                                            {{ $activities_data['location'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                    @if (!empty($activity->community_service_data))
-                                                        <li>
-                                                            <span>Participation and service : </span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->community_service_data as $community_service_data)
-                                                                        <li class="list-type">
-                                                                            {{ $community_service_data['level'] }} /
-                                                                            {{ $community_service_data['service'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <span>Community Located at : </span>
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    @foreach ($activity->community_service_data as $community_service_data)
-                                                                        <li class="list-type">
-                                                                            {{ $community_service_data['location'] }}
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-                <div class="prev-btn next-btn">
-                    <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
-                        class="btn btn-alt-success prev-step"> Previous
-                    </a>
+                <div class="d-flex justify-content-between mt-3">
+                    <div class="prev-btn next-btn">
+                        <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes') }}"
+                            class="btn btn-alt-success prev-step"> Previous
+                        </a>
+                    </div>
+                    <div class="next-btn">
+                        <a href="{{ isset($resume_id) && $resume_id != null ? route('admin-dashboard.highSchoolResume.list') : route('admin-dashboard.highSchoolResume.resume.complete') }}"
+                            class="btn btn-alt-success submit_btn">{{ isset($resume_id) && $resume_id != null ? 'Update' : 'Submit' }}</a>
+                    </div>
                 </div>
-                <div class="next-btn">
-                    <a href="{{ isset($resume_id) ? route('admin-dashboard.highSchoolResume.list') : route('admin-dashboard.highSchoolResume.resume.complete') }}"
-                        class="btn btn-alt-success submit_btn">{{ isset($resume_id) ? 'Update' : 'Submit' }}</a>
-
-                </div>
             </div>
-        </div>
         </div>
     </main>
 @endsection
