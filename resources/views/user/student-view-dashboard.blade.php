@@ -47,7 +47,7 @@
 
   <div class="content">
 
-    @if($test_category_type[0]->category_type != '' )
+    @if($test_category_type[0]->category_type != '' && isset($set_get_question_category) && !empty($set_get_question_category) )
     <!-- START Table 1 -->
     <div class="block block-rounded">
       <div class="block-header block-header-default">
@@ -128,11 +128,13 @@
                 $store_wrong_answer = 0;
                 $total_question = 0;
                 $store_test_score = 0;
+                
                 if(isset($set_get_question_category) && !empty($set_get_question_category))
                 {
                   foreach($set_get_question_category as $test_question_type => $single_set_get_question_category)
                   {
-                    foreach($single_set_get_question_category as $single_question_id)
+                    
+                    foreach($single_set_get_question_category['question_id'] as $single_question_id )
                     {
                       foreach($user_selected_answers as $single_answer_user_selected)
                       {
@@ -150,11 +152,10 @@
                       }
                     }
                   }
-                } 
-                $store_test_score += $store_correct_answer;
-                $total_question += $store_correct_answer + $store_wrong_answer;
-                $get_test_bar_percentage = ($store_test_score/$total_question) * 100;
-                $get_main_test_type_for_bar =  str_replace(' ', '', $test_category_type[0]->category_type);
+                  $store_test_score += $store_correct_answer;
+                  $total_question += $store_correct_answer + $store_wrong_answer;
+                  $get_test_bar_percentage = ($store_test_score/$total_question) * 100;
+                  $get_main_test_type_for_bar =  str_replace(' ', '', $test_category_type[0]->category_type);
                  ?>
                  <script>
                   jQuery(document).ready(function(){
@@ -168,7 +169,19 @@
                     /** END */
                     jQuery('.sentence-structure').click(function(){
                         var get_question_type = jQuery(this).data('question-type');
+                        var question_type_description = jQuery(this).data('question-type-desc');
+                        var question_type_lesson = jQuery(this).data('question-lesson');
+                        var question_type_strategies = jQuery(this).data('question-strat');
+                        var question_type_identification_methods = jQuery(this).data('question-methods');
+                        var question_type_identification_activity = jQuery(this).data('question-activity');
+
                         jQuery(".set_question_type").text(get_question_type);
+
+                        jQuery(".set_type_desc").text(question_type_description);
+                        jQuery(".set_type_lesson").text(question_type_lesson);
+                        jQuery(".set_type_strat").text(question_type_strategies);
+                        jQuery(".set_type_methods").text(question_type_identification_methods);
+                        jQuery(".set_type_activity").text(question_type_identification_activity);
                     });
                     jQuery('.categories-name').click(function(){
                       var get_category_type = jQuery(this).data('category-type');
@@ -178,6 +191,8 @@
                   });
                   
                 </script>
+
+                <?php } ?>
 
                  <div class="progress fw-semibold fs-sm" style="height:8px; color:success">
                   <div class="progress-bar bg-dark <?php echo $get_main_test_type_for_bar; ?>" role="progressbar" data-test_id_bar="<?php echo $get_test_bar_percentage; ?>" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="height:8px; width:0%">
@@ -212,6 +227,11 @@
           
           <tbody class="fs-sm input-main">
           @foreach($set_get_question_category as $test_question_type => $single_set_get_question_category)
+          <?php
+            // echo "<pre>";
+            // print_r($single_set_get_question_category[0][0]->question_type_title);
+            // echo "</pre>";
+          ?>
             <tr>
               <td class="text-center"></td>
               <td>
@@ -221,15 +241,15 @@
 
                 <!-- NEW Modal Button that initiates opening QUESTION TYPE Modal -->
 
-                <button type="button" data-bs-toggle="modal"  data-bs-target="#modal-block-large-cg1qt1" class="btn btn-primary fs-xs fw-semibold me-1 mb-3 sentence-structure" data-question-type="<?php echo $test_question_type; ?>">{{$test_question_type}}</button>
+                <button type="button" data-bs-toggle="modal"  data-bs-target="#modal-block-large-cg1qt1" class="btn btn-primary fs-xs fw-semibold me-1 mb-3 sentence-structure" data-question-type="<?php echo $single_set_get_question_category['type_details']['question_type_title']; ?>" data-question-type-desc="<?php echo $single_set_get_question_category['type_details']['question_type_description']; ?>" data-question-lesson="<?php echo $single_set_get_question_category['type_details']['question_type_lesson']; ?>" data-question-strat="<?php echo $single_set_get_question_category['type_details']['question_type_strategies']; ?>" data-question-methods="<?php echo $single_set_get_question_category['type_details']['question_type_identification_methods']; ?>" data-question-activity="<?php echo $single_set_get_question_category['type_details']['question_type_identification_activity']; ?>">{{$single_set_get_question_category['type_details']['question_type_title']}}</button>
 
                 <!-- Opens Modal - Has Modal Content - QUESTION TYPE -->
-                <div class="modal" id="modal-block-large-cg1qt1" tabindex="-1" aria-labelledby="modal-block-large-cg1qt1" style="display: none;" aria-hidden="true">
+                <div class="modal" id="modal-block-large-cg1qt1" tabindex="-1"      aria-labelledby="modal-block-large-cg1qt1" style="display: none;" aria-hidden="true">
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="block block-rounded">
                         <div class="block-header block-header-default">
-                          <h3 class="block-title">Question Type: <span class="set_question_type">{{$test_question_type}}<span></h3>
+                          <h3 class="block-title">Question Type: <span class="set_question_type">{{$single_set_get_question_category['type_details']['question_type_title']}}<span></h3>
                         </div>
                         <div class="block-content">
                           <div id="faq1" class="mb-5" role="tablist" aria-multiselectable="true">
@@ -239,7 +259,7 @@
                                 <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq1" href="#faq1_q1" aria-expanded="true" aria-controls="faq1_q1">Description</a>
                               </div>
                               <div id="faq1_q1" class="collapse show" role="tabpanel" aria-labelledby="faq1_h1" data-bs-parent="#faq1">
-                                <div class="block-content">
+                                <div class="block-content set_type_desc">
                                   <p>Choose the word that fits best with the intended meaning of the sentence.</p>
                                 </div>
                               </div>
@@ -249,7 +269,7 @@
                                 <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq1" href="#faq1_q2" aria-expanded="true" aria-controls="faq1_q2">Lesson</a>
                               </div>
                               <div id="faq1_q2" class="collapse" role="tabpanel" aria-labelledby="faq1_h2" data-bs-parent="#faq1">
-                                <div class="block-content">
+                                <div class="block-content set_type_lesson">
                                   <p>It's critical to focus on the context outside of the vocabulary word itself, because context can affect the meaning of any given word. Compare Example 1 and Example 2 below with the word “arm”.</p>
 
                                   <p>Example 1</p>
@@ -272,7 +292,7 @@
                                 <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq1" href="#faq1_q3" aria-expanded="true" aria-controls="faq1_q3">Strategies</a>
                               </div>
                               <div id="faq1_q3" class="collapse" role="tabpanel" aria-labelledby="faq1_h3" data-bs-parent="#faq1">
-                                <div class="block-content">
+                                <div class="block-content set_type_strat">
                                   <p><b>Strategy 1: Vocabulary in Context Step by Step Strategy</b></p>
                                   <p>1. Read the entire paragraph and get the paragraph’s main idea.</p>
                                   <p>2. Focus most of your attention on the intended meaning of the given and surrounding sentences.</p>
@@ -288,7 +308,7 @@
                                 <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq1" href="#faq1_q4" aria-expanded="true" aria-controls="faq1_q4">Identification Methods</a>
                               </div>
                               <div id="faq1_q4" class="collapse" role="tabpanel" aria-labelledby="faq1_h4" data-bs-parent="#faq1">
-                                <div class="block-content">
+                                <div class="block-content set_type_methods">
                                   <p><b>Identification Method 1</b></p>
                                   <p>The question has an underlined word and answer choices with similar-meaning words.
                                   </p>
@@ -306,7 +326,7 @@
                                 <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq1" href="#faq1_q5" aria-expanded="true" aria-controls="faq1_q5">Identification Activity</a>
                               </div>
                               <div id="faq1_q5" class="collapse" role="tabpanel" aria-labelledby="faq1_h5" data-bs-parent="#faq1">
-                                <div class="block-content">
+                                <div class="block-content set_type_activity">
                                   <p><b>Identification Activity 1</b></p>
                                   <p>Which of the following questions test Dangling Modifiers?</p>
 
@@ -356,10 +376,10 @@
                 $store_wrong_answer = 0;
                 $total_question = 0;
                 
-                $get_test_type_for_bar =  str_replace(' ', '', $test_question_type);
+                $get_test_type_for_bar =  str_replace(' ', '', $single_set_get_question_category['type_details']['question_type_title']);
                 if(isset($single_set_get_question_category) && !empty($single_set_get_question_category))
                 {
-                  foreach($single_set_get_question_category as $single_question_id)
+                  foreach($single_set_get_question_category['question_id'] as $single_question_id )
                   {
                     foreach($user_selected_answers as $single_answer_user_selected)
                     {
