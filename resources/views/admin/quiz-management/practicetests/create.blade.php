@@ -452,9 +452,16 @@ ul.answerOptionLsit li label input{
                         </div>
                     </div>
 
-                    <div class="mb-2 mb-4"> 
-                        <label for="new_question_type" class="form-label">Question type:</label>
-                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" >
+                    <div class="mb-2 mb-4 add_question_type_select"> 
+                        <!-- <label for="new_question_type" class="form-label">Question type:</label>
+                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" > -->
+                        <label for="new_question_type_select">Question type:</label>
+                        <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
+                            <option value="">Select Question Type</option>
+                            @foreach($getQuestionTypes as $singleQuestionTypes)
+                            <option value="{{$singleQuestionTypes->id}}">{{$singleQuestionTypes->question_type_title}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
 					<div class="mb-2">
@@ -845,8 +852,11 @@ ul.answerOptionLsit li label input{
                 var testSectionType = $('#testSectionTypeRead').val();
                 var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
                 var activeAnswerType = '.'+ $('#selectedAnswerType').val();
-                var new_question_type = $('#new_question_type').val();
+                //var new_question_type = $('#new_question_type').val();
+                var new_question_type_select = $('#new_question_type_select').val();
 
+                // console.log(new_question_type);
+                // return false;
                 var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
                 var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
                 var passNumber = $('#questionMultiModal .passNumber').val();
@@ -921,7 +931,7 @@ ul.answerOptionLsit li label input{
                         'multiChoice': multiChoice,
                         'tags': tags,
 						'section_id':section_id,
-                        'new_question_type':new_question_type,
+                        'new_question_type_select':new_question_type_select,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("addPracticeQuestion")}}',
