@@ -7,12 +7,12 @@ function addLinks(data) {
 
     let value = $('.social_link_div .row:nth-last-child(1) .col-lg-11 input').val();
     if (value == '') {
-        toastr.error('Please Fill up leatest social link');
-    }else{
+        toastr.error('Please Fill up latest social link');
+    } else {
         let html = ``;
         html += `<div class="row p-0 mt-3 remove_links">`;
         html += `<div class="col-lg-11">`;
-        html += `<input type="text" class="form-control" name="social_links[${$count}][link]" placeholder="Enter Social links">`;
+        html += `<input type="text" class="form-control social_links" name="social_links[${$count}][link]" placeholder="Enter Social links">`;
         html += `</div>`;
         html += `<div class="col-lg-1">`;
         html += `<a href="javascript:void(0)" class="add-btn" onclick="removeLinks(this)">`;
@@ -25,6 +25,17 @@ function addLinks(data) {
 
         $(data).attr('data-count', $count);
     }
+
+    let social_links = $('input[name^="social_links"]');
+
+    social_links.filter('input[name$="[link]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "social link field is required"
+            }
+        });
+    });
 }
 
 function removeLinks(data) {

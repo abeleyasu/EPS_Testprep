@@ -13,6 +13,7 @@ use App\Models\HighSchoolResume\Honor;
 use App\Models\HighSchoolResume\PersonalInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 class PersonalInfoController extends Controller
@@ -44,6 +45,8 @@ class PersonalInfoController extends Controller
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         }
+        $validations_rules = Config::get('validation.personal_info.rules');
+        $validations_messages = Config::get('validation.personal_info.messages');
 
         $details = 0;
 
@@ -51,7 +54,7 @@ class PersonalInfoController extends Controller
             $details = 1;
         }
 
-        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id'));
+        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages'));
     }
 
     public function store(PersonalInfoRequest $request)
@@ -66,7 +69,7 @@ class PersonalInfoController extends Controller
 
         if (!empty($data)) {
             PersonalInfo::create($data);
-            return response()->json(['success' => true,'data' => $data]);
+            return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
         }
     }
 

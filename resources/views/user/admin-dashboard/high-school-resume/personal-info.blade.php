@@ -76,9 +76,9 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form"
+                <form class="js-validation" id="personal_info_form"
                     action="{{ isset($personal_info) && $personal_info != null ? route('admin-dashboard.highSchoolResume.personalInfo.update', $personal_info->id) : route('admin-dashboard.highSchoolResume.personalInfo.store') }}"
-                    method="POST" id="personalinfo">
+                    method="POST" onSubmit="event.preventDefault();">
                     @csrf
                     @if (isset($personal_info) && $personal_info != null)
                         @method('PUT')
@@ -150,7 +150,7 @@
                                         <a class="text-white fw-600 collapsed">Address</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('street_address_one') || $errors->has('street_address_two') || $errors->has('city') || $errors->has('state') || $errors->has('zip_code') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -224,7 +224,7 @@
                                         <a class="text-white fw-600 collapsed">Contact Information</a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse {{ $errors->has('cell_phone') || $errors->has('email') || $errors->has('social_links') || $errors->has('parent_email_one') || $errors->has('parent_email_two') ? 'show' : '' }}"
+                                        class="collapse"
                                         data-parent=".accordionExample">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -265,7 +265,7 @@
                                                             @foreach ($personal_info->social_links as $index => $social_link)
                                                                 <div class="row p-0 mt-3 {{ $loop->first ? '' : 'remove_links' }}">
                                                                     <div class="col-lg-11">
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="text" class="form-control social_links"
                                                                             name="social_links[{{ $index }}][link]"
                                                                             value="{{ $social_link['link'] }}"
                                                                             placeholder="Enter Social links">
@@ -280,7 +280,7 @@
                                                         @else
                                                             <div class="row p-0 mt-3">
                                                                 <div class="col-lg-11">
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control social_links"
                                                                         name="social_links[0][link]"
                                                                         placeholder="Enter Social links">
                                                                 </div>
@@ -301,13 +301,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="email"
-                                                                class="form-control @error('parent_email_one') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->parent_email_one) && $personal_info->parent_email_one != null ? $personal_info->parent_email_one : old('parent_email_one') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->parent_email_one) && $personal_info->parent_email_one != null ? $personal_info->parent_email_one : '' }}"
                                                                 id="parent_email_one" name="parent_email_one"
                                                                 placeholder="This will not show up on your Resume.">
-                                                            @error('parent_email_one')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -317,13 +314,10 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="email"
-                                                                class="form-control @error('parent_email_two') is-invalid @enderror"
-                                                                value="{{ isset($personal_info->parent_email_two) && $personal_info->parent_email_two != null ? $personal_info->parent_email_two : old('parent_email_two') }}"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->parent_email_two) && $personal_info->parent_email_two != null ? $personal_info->parent_email_two : '' }}"
                                                                 id="parent_email_two" name="parent_email_two"
                                                                 placeholder="This will not show up on your Resume.">
-                                                            @error('parent_email_two')
-                                                                <span class="invalid">{{ $message }}</span>
-                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -338,7 +332,7 @@
                                         </div>
                                     @endif
                                     <div class="next-btn">
-                                        <input type="button" class="btn  btn-alt-success next-step" value="Next Step" onclick="checkValidation()"/>
+                                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step"/>
                                     </div>
                                 </div>
                             </div>
@@ -368,10 +362,11 @@
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script>    
         function errorMsg()
         {
@@ -386,50 +381,39 @@
             });
         }
 
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let personal_info = $('#personal_info').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/personal-info/store`;
-            
-            let data = $("#form").serializeArray();
-            
-            let formData = new FormData();
-            
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
-            });
-            
-            if(personal_info){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/personal-info/${personal_info}`
-            }
+        $(document).ready(function() {
+            let validations_rules = @json($validations_rules);
+            let validations_messages = @json($validations_messages);
 
-            $.ajax({
-                url : url,
-                type : 'POST',
-                datatype : 'json',
-                data : formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if(response.success){
-                        if (resume_id) {
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/education-info?resume_id=${resume_id}`;
-                        }else{
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/education-info`;
-                        }
-                    }
+            $("#personal_info_form").validate({
+                rules: validations_rules,
+                messages: validations_messages,
+                ignore: false,
+                submitHandler: function(form) {
+                    form.submit();
                 },
-                error:function(error){
-                    if (error.responseJSON != null) {
-                        $.each(error.responseJSON.errors , function(key,value){
-                            toastr.error(value);
-                        });
+                errorPlacement: function(error, element) {
+                    var placement = $(element).data('error');
+                    if (placement) {
+                        $(placement).append(error)
+                    } else {
+                        error.insertAfter(element);
+                        element.parents().find('.collapse').addClass('show');
                     }
                 }
             });
-        }
+
+            let social_links = $('input[name^="social_links"]');
+
+            social_links.filter('input[name$="[link]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "social link field is required"
+                    }
+                });
+            });
+        });
     
         toastr.options = {
             "closeButton": true,
