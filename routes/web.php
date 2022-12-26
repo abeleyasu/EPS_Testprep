@@ -123,6 +123,14 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
     Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
     Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
+    Route::get('/question-type/add', [PracticeQuestionController::class, 'addQuestionType'])->name('add_question_type');
+    Route::get('/question-type/edit/{id}', [PracticeQuestionController::class, 'editQuestionTypes'])->name('edit_question_type');
+    Route::post('/storequestiontype', [PracticeQuestionController::class, 'storeQuestionType'])->name('storeQuestionType');
+    Route::post('/updatequestiontype', [PracticeQuestionController::class, 'updateQuestionType'])->name('updateQuestionType');
+    Route::post('/deletequestiontype', [PracticeQuestionController::class, 'deleteQuestionType'])->name('deleteQuestionType');
+    Route::get('/question-type', [PracticeQuestionController::class, 'indexQuestionType'])->name('indexQuestionType');
+    
+   
 });
 
 //User Routes
