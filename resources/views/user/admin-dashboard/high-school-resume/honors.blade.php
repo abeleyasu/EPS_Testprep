@@ -145,7 +145,7 @@
                                                                             value="{{ $honors_data['honor_achievement_award'] }}"
                                                                             placeholder="Ex: National Honor Society">
                                                                     </td>
-                                                                    <td>                                                            
+                                                                <td class="select2-container_main">                                                            
                                                                         <select class="required js-select2" id="honor_select_{{ $index }}"
                                                                             name="honors_data[{{ $index }}][grade][]" multiple="multiple">
                                                                             <option {{ (in_array('1st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
@@ -177,7 +177,7 @@
                                                                         placeholder="Enter Position" autocomplete="off">
                                                                 </td>
                                                                 <td>
-                                                                <input type="text"
+                                                                <input type="text"      
                                                                         class="form-control"
                                                                         id="honor_achievement_award"
                                                                         name="honors_data[0][honor_achievement_award]"
@@ -243,14 +243,19 @@
         .select2-container .select2-selection--multiple {
             min-width: 14vw !important;
         }
-    </style>
-    <style>
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
         }
         .swal2-icon.swal2-warning {
             border-color: #f27474;
             color: #f27474;
+        }
+        .table>:not(caption)>*>* {
+            padding: 10px 30px 20px 0;
+        }
+        .select2-container_main .error {
+            position: absolute;
+            top: 51px;
         }
     </style>
 @endsection
@@ -319,14 +324,16 @@
                         required: "Achivement awars field is required"
                     }
                 });
-            });honors_data.filter('input[name$="[grade]"]').each(function() {
+            });
+            honors_data.filter('input[name$="[grade][]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
                         required: "Grade field is required"
                     }
                 });
-            });honors_data.filter('input[name$="[location]"]').each(function() {
+            });
+            honors_data.filter('input[name$="[location]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {

@@ -71,7 +71,7 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($activity) && $activity != null ? route('admin-dashboard.highSchoolResume.activities.update', $activity->id) : route('admin-dashboard.highSchoolResume.activities.store') }}"
+                <form class="js-validation" id="activities_form" action="{{ isset($activity) && $activity != null ? route('admin-dashboard.highSchoolResume.activities.update', $activity->id) : route('admin-dashboard.highSchoolResume.activities.store') }}"
                     method="post">
                     @csrf
                     @if(isset($activity) && $activity != null)
@@ -151,11 +151,11 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="demonstrated_select_{{ $index }}"
                                                                             name="demonstrated_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("1st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("2st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("3st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("4st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("5st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -306,11 +306,11 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="leadership_select_{{ $index }}"
                                                                             name="leadership_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("1st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="1st grade">1st grade</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("2st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="2st grade">2st grade</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("3st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="3st grade">3st grade</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("4st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="4st grade">4st grade</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("5st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="5st grade">5st grade</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -436,11 +436,11 @@
                                                                     <td> 
                                                                         <select class="js-select2 select" id="activity_select_{{ $index }}"
                                                                             name="activities_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("1st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("2st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("3st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("4st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("5st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -581,11 +581,11 @@
                                                                     <td>                                                                
                                                                         <select class="js-select2 select" id="athletics_select_{{ $index }}"
                                                                             name="athletics_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("1st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("2st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("3st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("4st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("5st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>                                                                
@@ -725,11 +725,11 @@
                                                                     <td>                                                               
                                                                         <select class="js-select2 select" id="community_select_{{ $index }}"
                                                                             name="community_service_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("1st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("2st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("3st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("4st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("5st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -806,7 +806,7 @@
                                     @include('components.reset-all-drafts-button')
                                 </div>
                             @endif
-                            <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()"> 
+                            <input type="submit" class="btn btn-alt-success next-step" value="Next Step"> 
                         </div>
                     </div>
                 </form>
@@ -908,54 +908,12 @@
                 $("#community_select_0").select2({
                     tags: true,
                 });
-            }         
+            } 
 
+            let validations_rules = @json($validations_rules);
+            let validations_messages = @json($validations_messages);
+            console.log(validations_rules, validations_messages);
         });
-
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let activity = $('#activity').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/activities/store`;
-            
-            let data = $("#form").serializeArray();
-            
-            let formData = new FormData();
-            
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
-            });
-            
-            if(activity){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/activities/${activity}`
-            }
-
-            $.ajax({
-                url : url,
-                type : 'POST',
-                datatype : 'json',
-                data : formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if(response.success){
-                        if (resume_id) {
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/employment-certifications?resume_id=${resume_id}`;
-                        }else{
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/employment-certifications`;
-                        }
-                    }
-                },
-                error:function(error){
-                    if (error.responseJSON != null) {
-                        $.each(error.responseJSON.errors , function(key,value){
-                            toastr.error(value);
-                        });
-                    }
-                }
-            });
-        }
 
         function errorMsg()
         {

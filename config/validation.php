@@ -47,27 +47,27 @@ return [
             ]
         ],
         "messages" => [
-            "first_name" => "first name field is required",
-            "middle_name" => "middle name field is required",
-            "last_name" => "last name field is required",
-            "street_address_one" => "street address one field is required",
-            "street_address_two" => "street address two field is required",
-            "city" => "city field is required",
-            "state" => "state field is required",
-            "zip_code" => "zip code field is required",
-            "cell_phone" => "cell phone field is required",
+            "first_name" => "First name field is required",
+            "middle_name" => "Middle name field is required",
+            "last_name" => "Last name field is required",
+            "street_address_one" => "Street address one field is required",
+            "street_address_two" => "Street address two field is required",
+            "city" => "City field is required",
+            "state" => "State field is required",
+            "zip_code" => "Zip code field is required",
+            "cell_phone" => "Cell phone field is required",
             "email" => [
-                "required" => "email field is required",
-                "email" => "email must be a valid email"
+                "required" => "Email field is required",
+                "email" => "Email must be a valid email"
             ],
-            "social_links[*][link]" => "social link field is required",
+            "social_links[*][link]" => "Social link field is required",
             "parent_email_one" => [
-                "required" => "parent email one field is required",
-                "email" => "parent email one must be a valid email"
+                "required" => "Parent email one field is required",
+                "email" => "Parent email one must be a valid email"
             ],
             "parent_email_two" => [
-                "required" => "parent email two field is required",
-                "email" => "parent email two must be a valid email"
+                "required" => "Parent email two field is required",
+                "email" => "Parent email two must be a valid email"
             ]
         ]
     ],
@@ -120,21 +120,21 @@ return [
             ],
         ],
         "messages" => [
-            "current_grade" => "current grade field is required",
-            "month" => "month field is required",
-            "year" => "year field is required",
-            "high_school_name" => "high school name field is required",
-            "high_school_city" => "high school city field is required",
-            "high_school_state" => "high school state field is required",
-            "high_school_district" => "high school district field is required",
-            "ib_courses[]" => "ib courses field is required",
-            "ap_courses[]" => "ap courses field is required",
-            "course_data[*][course_name]" => "course name field is required",
-            "course_data[*][search_college_name]" => "search college name field is required",
-            "honor_course_data[*][course_data]" => "honors course name field is required",
-            "testing_data[*][name_of_test]" => "name of test field is required",
-            "testing_data[*][results_score]" => "result score field is required",
-            "testing_data[*][date]" => "date field is required",
+            "current_grade" => "Current grade field is required",
+            "month" => "Month field is required",
+            "year" => "Year field is required",
+            "high_school_name" => "High school name field is required",
+            "high_school_city" => "High school city field is required",
+            "high_school_state" => "High school state field is required",
+            "high_school_district" => "High school district field is required",
+            "ib_courses[]" => "Ib courses field is required",
+            "ap_courses[]" => "Ap courses field is required",
+            "course_data[*][course_name]" => "Course name field is required",
+            "course_data[*][search_college_name]" => "Search college name field is required",
+            "honor_course_data[*][course_data]" => "Honors course name field is required",
+            "testing_data[*][name_of_test]" => "Name of test field is required",
+            "testing_data[*][results_score]" => "Result score field is required",
+            "testing_data[*][date]" => "Date field is required",
         ]   
     ],
     "honors"=>[
@@ -145,7 +145,7 @@ return [
             "honors_data[*][honor_achievement_award]" =>[
                 "required" =>true,
             ],
-            "honors_data[*][grade]" =>[
+            "honors_data[*][grade][]" =>[
                 "required" =>true,
             ],
             "honors_data[*][location]" =>[
@@ -153,10 +153,10 @@ return [
             ],
         ],
         "messages"=>[
-            "honors_data[*][position]" => "honors position field is required",
-            "honors_data[*][honor_achievement_award]" => "honors achievement award field is required",
-            "honors_data[*][grade]" => "honors grade field is required",
-            "honors_data[*][location]" => "honors location field is required",
+            "honors_data[*][position]" => "Honors position field is required",
+            "honors_data[*][honor_achievement_award]" => "Honors achievement award field is required",
+            "honors_data[*][grade][]" => "Honors grade field is required",
+            "honors_data[*][location]" => "Honors location field is required",
 
         ]
     ]

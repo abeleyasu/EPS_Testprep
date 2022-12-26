@@ -100,109 +100,121 @@
                                 <div class="position-relative preview-list ps-0 pb-3 features-list-before">
                                     @if (!empty($featuredAttribute->featured_skills_data))
                                         <div class="pb-3 mb-0 border-bottom-0">
-                                            <h3>Features</h3>
+                                            @if ($featuredAttribute->featured_awards_data[0]['award'] != null || $featuredAttribute->featured_languages_data[0]['language'] != null || $featuredAttribute->featured_skills_data[0]['skill'] != null)
+                                                <h3>Features</h3>
+                                            @endif
                                             <div class="preview-list_skill">
-                                                <h2>Featured Skills</h2>
-                                                <ul class="list">
-                                                    @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
-                                                        <div class="list_group">
-                                                            <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ $featured_skills['skill'] }}
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    @endforeach
-                                                </ul>
+                                                @if($featuredAttribute->featured_skills_data[0]['skill'] != null)
+                                                    <h2>Featured Skills</h2>
+                                                    <ul class="list">
+                                                        @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    <li class="list-type">
+                                                                        {{ $featured_skills['skill'] }}
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
                                             </div>
                                         </div>
                                     @endif
                                     @if (!empty($featuredAttribute->featured_awards_data))
-                                        <div class="preview-list pb-3 features-list-after  ps-0 mb-0 border-bottom-0">
+                                        <div
+                                            class="preview-list pb-3 features-list-after  ps-0 mb-0 border-bottom-0">
                                             <div class="preview-list_skill">
-                                                <h2>Featured awards</h2>
-                                                <ul class="list">
-                                                    @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
-                                                        <div class="list_group">
-                                                            <ul class="list_items">
-                                                                <li class="list-type">
-                                                                    {{ $featured_awards['award'] }}
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    @endforeach
-                                                </ul>
+                                                @if($featuredAttribute->featured_awards_data[0]['award'] != null)
+                                                    <h2>Featured awards</h2>
+                                                    <ul class="list">
+                                                        @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    <li class="list-type">
+                                                                        {{ $featured_awards['award'] }}
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
                                             </div>
                                         </div>
                                     @endif
                                     @if (!empty($featuredAttribute->featured_languages_data))
                                         <div class="preview-list mb-0 ps-0 ">
                                             <div class="preview-list_skill ">
-                                                <h2>Featured languages</h2>
-                                                <ul class="list">
-                                                    @foreach ($featuredAttribute->featured_languages_data as $featured_languages)
-                                                        <li class="mb-0">
-                                                            <div class="list_group">
-                                                                <ul class="list_items">
-                                                                    <li class="list-type">
-                                                                        {{ $featured_languages['language'] }}
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                                @if($featuredAttribute->featured_languages_data[0]['language'] != null)
+                                                    <h2>Featured languages</h2>
+                                                    <ul class="list">
+                                                        @foreach ($featuredAttribute->featured_languages_data as $featured_languages)
+                                                            <li class="mb-0">
+                                                                <div class="list_group">
+                                                                    <ul class="list_items">
+                                                                        <li class="list-type">
+                                                                            {{ $featured_languages['language'] }}
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
                                             </div>
                                         </div>
                                     @endif
                                 </div>
                                 @if (!empty($employmentCertification->significant_data))
-                                    <div class="preview-list list_group  ps-0   pb-0 border-bottom-0">
-                                        <h3>Employment & Certifications</h3>
-                                        <ul class="list_items">
-                                            @foreach ($employmentCertification->employment_data as $employment_data)
-                                                <li class="list-type">
-                                                    <span>Job </span>
-                                                    {{ $employment_data['job_title'] }}
-                                                    <span> with </span>
-                                                    {{ implode(',', $employment_data['grade']) }}
-                                                </li>
-                                            @endforeach
+                                    <div class="preview-list list_group  ps-0 pb-0 border-bottom-0">
+                                        @if (!empty($employmentCertification->employment_data[0]['job_title']) || !empty($employmentCertification->employment_data[0]['honor_awards']) ||!empty($employmentCertification->employment_data[0]['location']) ) 
+                                            <h3>Employment & Certifications</h3>
+                                            <ul class="list_items">
+                                                @foreach ($employmentCertification->employment_data as $employment_data)
+                                                    <li class="list-type">
+                                                        <span>Job </span>
+                                                        {{ $employment_data['job_title'] }}
+                                                        <span> with </span>
+                                                        {{ isset($employment_data['grade']) && $employment_data['grade'] != null ? (implode(',', $employment_data['grade'])) : ''}}
+                                                    </li>
+                                                @endforeach
 
-                                            @foreach ($employmentCertification->employment_data as $employment_data)
-                                                <li class="list-type">
-                                                    <span> Honor by </span>
-                                                    {{ $employment_data['honor_award'] }}
-                                                    <span> at </span>
-                                                    {{ $employment_data['location'] }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                                @foreach ($employmentCertification->employment_data as $employment_data)
+                                                    <li class="list-type">
+                                                        <span> Honor by </span>
+                                                        {{ $employment_data['honor_award'] }}
+                                                        <span> at </span>
+                                                        {{ $employment_data['location'] }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     </div>
                                 @endif
                                 @if (!empty($employmentCertification->employment_data))
                                     <div class="preview-list position-relative list_group ps-0 honor-list-after">
-                                        <h3>Responsibilities or interests</h3>
-                                        <ul class="list_items">
+                                        @if (!empty($employmentCertification->significant_data[0]['interest']) || !empty($employmentCertification->significant_data[0]['honor_award']) ||!empty($employmentCertification->significant_data[0]['location']) ) 
+                                            <h3>Responsibilities or interests</h3>
+                                            <ul class="list_items">
+                                                @foreach ($employmentCertification->significant_data as $significant_data)
+                                                    <li class="list-type">
+                                                        <span>Responsibility or interest :</span>
+                                                        {{ $significant_data['interest'] }}
+                                                        <span> with </span>
+                                                        {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (implode(',', $significant_data['grade'])) : '' }}
+                                                    </li>
+                                                @endforeach
 
-                                            @foreach ($employmentCertification->significant_data as $significant_data)
-                                                <li class="list-type">
-                                                    <span>Responsibility or interest :</span>
-                                                    {{ $significant_data['interest'] }}
-                                                    <span> with </span>
-                                                    {{ implode(',', $significant_data['grade']) }}
-                                                </li>
-                                            @endforeach
-
-                                            @foreach ($employmentCertification->significant_data as $significant_data)
-                                                <li class="list-type">
-                                                    <span>Honor by</span>
-                                                    {{ $significant_data['honor_award'] }}
-                                                    <span> at </span>
-                                                    {{ $significant_data['location'] }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                                @foreach ($employmentCertification->significant_data as $significant_data)
+                                                    <li class="list-type">
+                                                        <span>Honor by</span>
+                                                        {{ $significant_data['honor_award'] }}
+                                                        <span> at </span>
+                                                        {{ $significant_data['location'] }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     </div>
                                 @endif
                                 @if (!empty($honor))
@@ -400,7 +412,7 @@
                                 <div class="preview-list ">
                                     <h3>Activities</h3>
                                     <ul class="list">
-                                        @if (!empty($activity->demonstrated_data))
+                                        @if (!empty($activity->demonstrated_data[0]['position']) || !empty($activity->demonstrated_data[0]['interest']) || !empty($activity->demonstrated_data[0]['location']))
                                             <li>
                                                 <span class="d-block">Demostrated Interests and
                                                     Position in the Area of my College
@@ -423,7 +435,8 @@
                                                     <ul class="list_items">
                                                         @foreach ($activity->demonstrated_data as $demonstrated_data)
                                                             <li class="list-type">
-                                                                {{ implode(',', $demonstrated_data['grade']) }}
+                                                                {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ?  (implode(',', $demonstrated_data['grade'])) : '' }}
+                                                                /
                                                                 {{ $demonstrated_data['location'] }} /
                                                                 {{ $demonstrated_data['details'] }}
                                                             </li>
@@ -432,7 +445,7 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if (!empty($activity->leadership_data))
+                                        @if (!empty($activity->leadership_data[0]['status']) || !empty($activity->leadership_data[0]['position']) || !empty($activity->leadership_data[0]['organization']))
                                             <li>
                                                 <span>Leadership status with Position : </span>
                                                 <div class="list_group">
@@ -460,7 +473,7 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if (!empty($activity->athletics_data))
+                                        @if (!empty($activity->athletics_data[0]['activity']) || !empty($activity->athletics_data[0]['position']) || !empty($activity->athletics_data[0]['location']))
                                             <li>
                                                 <span>Athletics status with Position : </span>
                                                 <div class="list_group">
@@ -488,7 +501,7 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if (!empty($activity->activities_data))
+                                        @if (!empty($activity->activities_data[0]['activity']) || !empty($activity->activities_data[0]['position']) || !empty($activity->activities_data[0]['honor_award']) || !empty($activity->activities_data[0]['location']))
                                             <li>
                                                 <span>Activity with Position : </span>
                                                 <div class="list_group">
@@ -516,7 +529,7 @@
                                                 </div>
                                             </li>
                                         @endif
-                                        @if (!empty($activity->community_service_data))
+                                        @if (!empty($activity->community_service_data[0]['level']) || !empty($activity->community_service_data[0]['service']) || !empty($activity->community_service_data[0]['location']) )  
                                             <li>
                                                 <span>Participation and service : </span>
                                                 <div class="list_group">

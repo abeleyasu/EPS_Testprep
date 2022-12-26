@@ -32,7 +32,7 @@ function addLinks(data) {
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "social link field is required"
+                required: "Social link field is required"
             }
         });
     });
@@ -82,7 +82,7 @@ function addCourseData(data){
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "course name field is required"
+                required: "Course name field is required"
             }
         });
     });
@@ -91,7 +91,7 @@ function addCourseData(data){
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "search college name field is required"
+                required: "Search college name field is required"
             }
         });
     });
@@ -133,7 +133,7 @@ function addHonorCourseData(data){
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "honors course name field is required"
+                required: "Honors course name field is required"
             }
         });
     });
@@ -188,7 +188,7 @@ function addTestingData(data){
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "name of test field is required"
+                required: "Name of test field is required"
             }
         });
     });
@@ -196,7 +196,7 @@ function addTestingData(data){
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "result score field is required"
+                required: "Result score field is required"
             }
         });
     });
@@ -204,7 +204,7 @@ function addTestingData(data){
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "date field is required"
+                required: "Date field is required"
             }
         });
     }); 
@@ -239,8 +239,8 @@ function addHonorsData(data){
             html += `<td>`;
             html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
             html += `</td>`;
-            html += `<td>`;
-            html += `<select class="js-select2" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
+            html += `<td class="select2-container_main">`;
+            html += `<select class="required js-select2" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
             html += `<option value="1st grade">1st grade</option>`;
             html += `<option value="2st grade">2st grade</option>`;
             html += `<option value="3st grade">3st grade</option>`;
@@ -279,14 +279,16 @@ function addHonorsData(data){
                 required: "Achivement awars field is required"
             }
         });
-    });honors_data.filter('input[name$="[grade]"]').each(function() {
+    });
+    honors_data.filter('input[name$="[grade][]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {
                 required: "Grade field is required"
             }
         });
-    });honors_data.filter('input[name$="[location]"]').each(function() {
+    });
+    honors_data.filter('input[name$="[location]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {

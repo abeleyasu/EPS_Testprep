@@ -287,11 +287,11 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
                                     <a class=" text-white fw-600 collapsed">Courses</a>
                                 </div>
-                                <div id="collapseFive" class="collapse {{ $errors->first('ib_courses') || $errors->first('ap_courses') || $errors->first('course_name') || $errors->first('course_data') || $errors->first('honor_course_data') ? 'show' : '' }}" data-parent=".accordionExample2">
+                                <div id="collapseFive" class="collapse" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 select2-container_main">
                                                     <div>
                                                         <label class="form-label" for="ib_courses">
                                                             IB Courses
@@ -307,7 +307,7 @@
                                                        
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 select2-container_main">
                                                     <div>
                                                         <label class="form-label" for="ap_courses">
                                                             AP Courses
@@ -335,6 +335,7 @@
                                                         
                                                         <td>
                                                             <label class="form-label" for="search_college_name">
+
                                                                 Search College Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
@@ -376,7 +377,7 @@
                                                                     <option {{ old('search_college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
                                                                     <option {{ old('search_college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
                                                                 </select>
-                                                            </td>
+                                                            </td>   
                                                             <td>
                                                                 <a href="javascript:void(0)" data-count="0" onclick="addCourseData(this)" class="add-btn d-flex plus-icon">
                                                                     <i class="fa-solid fa-plus"></i>
@@ -584,6 +585,7 @@
             border-color: #f27474;
             color: #f27474;
         }
+       
     </style>
 @endsection
 
@@ -638,6 +640,7 @@
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
+            // console.log(validations_rules, validations_messages);
             
             $("#education_form").validate({
                 rules: validations_rules,
@@ -647,7 +650,7 @@
                     form.submit();
                 },
                 errorPlacement: function(error, element) {
-                    console.log(element);
+                    console.log(error, element);
                     var placement = $(element).data('error');
                     if (placement) {
                         $(placement).append(error)
@@ -664,7 +667,7 @@
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "course name field is required"
+                        required: "Course name field is required"
                     }
                 });
             });
@@ -672,7 +675,8 @@
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "search college name field is required"
+                        required: "Search college name field is required"
+                        
                     }
                 });
             });
@@ -683,7 +687,7 @@
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "honors course name field is required"
+                        required: "Honors course name field is required"
                     }
                 });
             });
@@ -694,7 +698,7 @@
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "name of test field is required"
+                        required: "Name of test field is required"
                     }
                 });
             });
@@ -702,7 +706,7 @@
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "result score field is required"
+                        required: "Result score field is required"
                     }
                 });
             });
@@ -710,7 +714,7 @@
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "date field is required"
+                        required: "Date field is required"
                     }
                 });
             });

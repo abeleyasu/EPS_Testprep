@@ -638,3 +638,15 @@
         border-color: #198754;
         box-shadow: 0 0 0 0.25rem rgb(25 135 84 / 25%);
     }
+
+    .error+.select2-container--default .select2-selection--multiple {
+        border: 1px solid #f27474 !important;
+        box-shadow: 0 0 0 0.25rem rgb(220 38 38 / 25%); 
+    }
+    .select2-container_main{
+        position: relative;
+    }
+    .select2-container_main .error {
+        position: absolute;
+        top: 70px;
+    }

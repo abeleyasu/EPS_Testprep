@@ -20,7 +20,7 @@ class EducationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-
+        
         if(isset($resume_id) && $resume_id != null) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([
                 'personal_info', 
@@ -51,7 +51,6 @@ class EducationController extends Controller
 
         $validations_rules = Config::get('validation.educations.rules');
         $validations_messages = Config::get('validation.educations.messages');
-        // dd($validations_messages, $validations_rules);
 
         $details = 0;
         return view('user.admin-dashboard.high-school-resume.education-info', compact('education','honor','activity','employmentCertification','featuredAttribute', 'courses_list','details','resume_id', 'validations_rules', 'validations_messages'));
@@ -85,7 +84,6 @@ class EducationController extends Controller
 
         if (!empty($data)) {
             Education::create($data);
-            // return response()->json(['success' => true, 'data' => $data]);
             return redirect()->route('admin-dashboard.highSchoolResume.honors');
         }
     }
@@ -93,6 +91,7 @@ class EducationController extends Controller
     public function update(EducationRequest $request, Education $education)
     {
         $data = $request->validated();
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         
         if(!empty($request->course_data)){
             $data['course_data'] = array_values($request->course_data);
@@ -116,8 +115,12 @@ class EducationController extends Controller
 
         if (!empty($data)) {
             $education->update($data);
-            // return response()->json(['success' => true, 'data' => $data]);
-            return redirect()->route('admin-dashboard.highSchoolResume.honors');
+            if($resume_id != null)
+            {
+                return redirect("user/admin-dashboard/high-school-resume/honors?resume_id=".$resume_id);
+            }else{
+                return redirect()->route('admin-dashboard.highSchoolResume.honors');
+            }
 
         }
     }

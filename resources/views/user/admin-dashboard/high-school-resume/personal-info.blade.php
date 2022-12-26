@@ -356,6 +356,7 @@
             border-color: #f27474;
             color: #f27474;
         }
+        
     </style>
 @endsection
 

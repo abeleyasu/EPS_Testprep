@@ -14,10 +14,10 @@ class FeaturedAttributeRequest extends FormRequest
     public function rules()
     {
         return [
-            "featured_skills_data.*.skill" => "required",
-            "featured_awards_data.*.award" => "required",
-            "featured_languages_data.*.language" => "required",
-            "featured_languages_data.*.level" => "required"
+            "featured_skills_data.*.skill" => "",
+            "featured_awards_data.*.award" => "",
+            "featured_languages_data.*.language" => "",
+            "featured_languages_data.*.level" => ""
         ];
     }
 

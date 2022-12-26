@@ -10,6 +10,7 @@ use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class ActivityController extends Controller
 {
@@ -38,8 +39,11 @@ class ActivityController extends Controller
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         }
+        $validations_rules = Config::get('validation.activities.rules');
+        $validations_messages = Config::get('validation.activities.messages');
+
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.activities', compact('activity','employmentCertification','featuredAttribute','details','resume_id'));
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages'));
     }
 
     public function store(ActivityRequest $request)
@@ -70,7 +74,8 @@ class ActivityController extends Controller
 
         if (!empty($data)) {
             Activity::create($data);
-            return response()->json(['success' => true, 'data' => $data]);
+            return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+
         }
     }
 
@@ -78,7 +83,6 @@ class ActivityController extends Controller
     {
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
-        // dd($data);
 
         if(!empty($request->demonstrated_data)){
             $data['demonstrated_data'] = array_values($request->demonstrated_data);
@@ -102,13 +106,11 @@ class ActivityController extends Controller
 
         if (!empty($data)) {
             $activity->update($data);
-            // if ($resume_id != null) {
-            //     return redirect('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id);
-            // } else {
-            //     return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
-            // }
-
-            return response()->json(['success' => true, 'data' => $data]);
+            if ($resume_id != null) {
+                return redirect('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id);
+            } else {
+                return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+            }
         }
     }
 }

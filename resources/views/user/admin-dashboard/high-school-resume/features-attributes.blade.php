@@ -71,7 +71,7 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($featuredAttribute) && $featuredAttribute != null ? route('admin-dashboard.highSchoolResume.featuresAttributes.update', $featuredAttribute->id) : route('admin-dashboard.highSchoolResume.featuresAttributes.store') }}" method="POST">
+                <form class="js-validation" id="features_attributes_form" action="{{ isset($featuredAttribute) && $featuredAttribute != null ? route('admin-dashboard.highSchoolResume.featuresAttributes.update', $featuredAttribute->id) : route('admin-dashboard.highSchoolResume.featuresAttributes.store') }}" method="POST">
                     @csrf
                     @if(isset($featuredAttribute) && $featuredAttribute != null)
                         @method('PUT')
@@ -295,7 +295,7 @@
                                             @include('components.reset-all-drafts-button')
                                         </div>
                                     @endif
-                                    <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
+                                    <input type="submit" class="btn btn-alt-success next-step" value="Next Step" >
                                 </div>
                             </div>
                         </div>
@@ -342,51 +342,6 @@
             });
         }
 
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let feature_skill = $('#feature_skill').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes/store`;
-            
-            let data = $("#form").serializeArray();
-            
-            let formData = new FormData();
-            
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
-            });
-            
-            if(feature_skill){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes/${feature_skill}`
-            }
-
-            $.ajax({
-                url : url,
-                type : 'POST',
-                datatype : 'json',
-                data : formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if(response.success){
-                        if (resume_id) {
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/preview?resume_id=${resume_id}`;
-                        }else{
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/preview`;
-                        }
-                    }
-                },
-                error:function(error){
-                    if (error.responseJSON != null) {
-                        $.each(error.responseJSON.errors , function(key,value){
-                            toastr.error(value);
-                        });
-                    }
-                }
-            });
-        }
-    
         toastr.options = {
             "closeButton": true,
             "newestOnTop": false,

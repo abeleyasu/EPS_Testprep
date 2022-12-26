@@ -67,6 +67,7 @@ class HonorsController extends Controller
     public function update(HonorsRequest $request, Honor $honor)
     {   
         $data = $request->validated();
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         
         if(!empty($request->honors_data)){
             $data['honors_data'] = array_values($request->honors_data);
@@ -75,7 +76,12 @@ class HonorsController extends Controller
         if (!empty($data)) {
             $honor->update($data);
             // return response()->json(['success' => true, 'data' => $data]);
-            return redirect()->route('admin-dashboard.highSchoolResume.activities');
+            if($resume_id != null)
+            {
+                return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
+            }else{
+                return redirect()->route('admin-dashboard.highSchoolResume.activities');
+            }
 
         }
     }
