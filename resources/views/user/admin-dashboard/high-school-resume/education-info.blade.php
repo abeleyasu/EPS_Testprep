@@ -67,7 +67,7 @@
                 </li>
             </ul>
             <input type="hidden" name="education" id="education" value="{{ isset($education) && $education != null ? $education->id : ''}}">
-            <form class="js-validation" id="form" action="{{ isset($education) && $education != null ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST">
+            <form class="js-validation" id="education_form" action="{{ isset($education) && $education != null ? route('admin-dashboard.highSchoolResume.educationInfo.update',$education->id) : route('admin-dashboard.highSchoolResume.educationInfo.store') }}" method="POST" onSubmit="event.preventDefault();">
                 @csrf
                 @if(isset($education) && $education != null)
                     @method('PUT')
@@ -92,11 +92,8 @@
                                                             Grade
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('current_grade') is-invalid @enderror" value="{{ isset($education->current_grade) && $education->current_grade != null ? $education->current_grade : old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
-                                                        @error('current_grade')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                                        <input type="text" class="form-control" value="{{ isset($education->current_grade) && $education->current_grade != null ? $education->current_grade : old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
+                                                        </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-4">
@@ -105,10 +102,8 @@
                                                         <label class="form-label" for="month">Month
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="month-own form-control @error('month') is-invalid @enderror" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
-                                                        @error('month')
-                                                            <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input class="month-own form-control" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
+                                                      
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -116,10 +111,8 @@
                                                         <label class="form-label" for="year">Year
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="year-own form-control @error('year') is-invalid @enderror" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
-                                                        @error('year')
-                                                            <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input class="year-own form-control" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
+                                                       
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -127,10 +120,8 @@
                                                         <label class="form-label" for="high_school_name">High School
                                                             Name <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_name') is-invalid @enderror" id="high_school_name" value="{{ isset($education->high_school_name) && $education->high_school_name != null ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
-                                                        @error('high_school_name')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" id="high_school_name" value="{{ isset($education->high_school_name) && $education->high_school_name != null ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,10 +131,8 @@
                                                         <label class="form-label" for="high_school_city">High School
                                                             City <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_city') is-invalid @enderror" id="high_school_city" value="{{ isset($education->high_school_city) && $education->high_school_city != null ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
-                                                        @error('high_school_city')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" id="high_school_city" value="{{ isset($education->high_school_city) && $education->high_school_city != null ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
+                                                       
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -151,10 +140,8 @@
                                                         <label class="form-label" for="high_school_state">High School
                                                             State <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_state') is-invalid @enderror" id="high_school_state" value="{{ isset($education->high_school_state) && $education->high_school_state != null ? $education->high_school_state : old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
-                                                        @error('high_school_state')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control " id="high_school_state" value="{{ isset($education->high_school_state) && $education->high_school_state != null ? $education->high_school_state : old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -163,10 +150,8 @@
                                                             School
                                                             District <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('high_school_district') is-invalid @enderror" id="high_school_district" value="{{ isset($education->high_school_district) && $education->high_school_district != null ? $education->high_school_district : old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
-                                                        @error('high_school_district')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" id="high_school_district" value="{{ isset($education->high_school_district) && $education->high_school_district != null ? $education->high_school_district : old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
+                                                      
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,10 +232,8 @@
                                                         <label class="form-label" for="cumulative_gpa_unweighted">Cumulative
                                                             GPA
                                                             (UNWEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control @error('cumulative_gpa_unweighted') is-invalid @enderror" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
-                                                        @error('cumulative_gpa_unweighted')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -258,10 +241,8 @@
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
                                                             (WEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control @error('cumulative_gpa_weighted') is-invalid @enderror" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
-                                                        @error('cumulative_gpa_weighted')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -283,10 +264,8 @@
                                                             Class Rank
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control @error('class_rank') is-invalid @enderror" value="{{ isset($education->class_rank) && $education->class_rank != null ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
-                                                        @error('class_rank')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="text" class="form-control" value="{{ isset($education->class_rank) && $education->class_rank != null ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -295,10 +274,8 @@
                                                             Total Number Of Student
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="number" class="form-control @error('total_no_of_student') is-invalid @enderror" value="{{ isset($education->total_no_of_student) && $education->total_no_of_student != null ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
-                                                        @error('total_no_of_student')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                        <input type="number" class="form-control" value="{{ isset($education->total_no_of_student) && $education->total_no_of_student != null ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -320,16 +297,14 @@
                                                             IB Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select @error('ib_courses') is-invalid @enderror" id="ib_courses" name="ib_courses[]" multiple="multiple">
+                                                        <select class="js-select2 select" id="ib_courses" name="ib_courses[]" multiple="multiple" >
                                                             @foreach($courses_list as $course_list)
                                                                 @if($course_list->course_type == 1)
                                                                     <option value="{{ $course_list->id }}" {{ (!empty($education->ib_courses) && in_array($course_list->id,json_decode($education->ib_courses))) || in_array($course_list->id, is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>{{ $course_list->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
-                                                        @error('ib_courses')
-                                                            <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                       
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -338,16 +313,13 @@
                                                             AP Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select @error('ap_courses') is-invalid @enderror" id="ap_courses" name="ap_courses[]" multiple="multiple">
+                                                        <select class="required js-select2 select" id="ap_courses" name="ap_courses[]" multiple="multiple">
                                                             @foreach($courses_list as $course_list)
                                                                 @if($course_list->course_type == 2)
                                                                     <option value="{{ $course_list->id }}" {{ (!empty($education->ap_courses) && in_array($course_list->id,json_decode($education->ap_courses))) || in_array($course_list->id, is_array(old('ap_courses')) ? old('ap_courses') : []) ? 'selected' : '' }}>{{ $course_list->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
-                                                        @error('ap_courses')
-                                                            <span class="invalid">{{ $message }}</span>
-                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,7 +370,7 @@
                                                                 <input type="text" class="form-control" id="course_name" name="course_data[0][course_name]" placeholder="Ex: College English 101">
                                                             </td>
                                                             <td>
-                                                                <select class="form-control" name="course_data[0][search_college_name]" id="search_college_name">
+                                                                <select class="required form-control" name="course_data[0][search_college_name]">
                                                                     <option value="">Search College Name</option>
                                                                     <option {{ old('search_college_name') == "first" ? 'selected' : "" }} value="first">First</option>
                                                                     <option {{ old('search_college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
@@ -432,7 +404,7 @@
                                                     @foreach ($education->honor_course_data as $index => $honor_course_data)
                                                         <tr class="honor_course_data_table_row {{ $loop->first ? '' : 'remove_honors_courses' }}"> 
                                                             <td>                                                        
-                                                                <input type="text" value="{{ $honor_course_data['course_data'] }}" class="form-control" id="honors_course_name" name="honor_course_data[{{ $index }}][course_data]" placeholder="Ex: College English 101">
+                                                                <input type="text" value="{{ $honor_course_data['course_data'] }}" class="form-control" name="honor_course_data[{{ $index }}][course_data]" placeholder="Ex: College English 101">
                                                             </td>
                                                             <td>
                                                                 <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -547,15 +519,13 @@
                                                             Intended College Major
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="form-select @error('intended_college_major') is-invalid @enderror" id="intended_college_major" name="intended_college_major" style="width: 100%;">
+                                                        <select class="form-select" id="intended_college_major" name="intended_college_major" style="width: 100%;">
                                                             <option value="">Select Intended College Major</option>
                                                             <option value="Test" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
                                                             <option value="Demo" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
                                                             <option value="Temp" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
-                                                        @error('intended_college_major')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                      
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -564,15 +534,13 @@
                                                             Intended College Minor
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="form-select @error('intended_college_minor') is-invalid @enderror" id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
+                                                        <select class="form-select " id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
                                                             <option value="">Select Intended College Minor</option>
                                                             <option value="Test" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
                                                             <option value="Demo" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
                                                             <option value="Temp" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
-                                                        @error('intended_college_minor')
-                                                        <span class="invalid">{{ $message }}</span>
-                                                        @enderror
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -594,7 +562,7 @@
                                 @include('components.reset-all-drafts-button')
                             </div>
                         @endif
-                        <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
+                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
                     </div>
                 </div>
             </form>
@@ -605,9 +573,9 @@
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}">
     <style>
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
@@ -622,14 +590,17 @@
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
-    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
-    <script>
-        var courseData = [];
-        var honorCourseData = [];
-        var testingData = [];
+    <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    
+    <script>    
+        // var courseData = [];
+        // var honorCourseData = [];
+        // var testingData = [];
 
         $('.year-own').datepicker({
             minViewMode: 2,
@@ -664,281 +635,86 @@
             });
         });
 
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let education = $('#education').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/education-info/store`;
+        $(document).ready(function() {
+            let validations_rules = @json($validations_rules);
+            let validations_messages = @json($validations_messages);
             
-            let data = $("#form").serializeArray();
-
-            let formData = new FormData();
-
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
+            $("#education_form").validate({
+                rules: validations_rules,
+                messages: validations_messages,
+                ignore: false,
+                submitHandler: function(form) {
+                    form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    console.log(element);
+                    var placement = $(element).data('error');
+                    if (placement) {
+                        $(placement).append(error)
+                    } else {
+                        error.insertAfter(element);
+                        element.parents().find('.collapse').addClass('show');
+                    }
+                }
             });
 
-            if(education){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/education-info/${education}`
-            }
-                $.ajax({
-                    url : url,
-                    type : 'POST',
-                    datatype : 'json',
-                    data : formData, 
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if(response.success){
-                            if (resume_id) {
-                                window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/honors?resume_id=${resume_id}`;
-                                education = nulll;
-                            }else{
-                                window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/honors`;
-                            }
-                        }
-                    },
-                    error:function(error){
-                        if (error.responseJSON != null) {
-                            // console.log(error.responseJSON.errors);
-                            $.each(error.responseJSON.errors , function(key,value){
-                                toastr.error(value);
-                            });
-                        }
+            let course_data = $('input[name^="course_data"]');
+
+            course_data.filter('input[name$="[course_name]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "course name field is required"
                     }
                 });
-        }   
+            });
+            course_data.filter('input[name$="[search_college_name]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "search college name field is required"
+                    }
+                });
+            });
 
-        // function addCourseData(data) {
-        //     let course_name = $('input[name="course_name"]').val();
-        //     let search_college_name = $('#search_college_name').val();
-        //     let temp_course_id = Date.now();
+            let honor_course_data = $('input[name^="honor_course_data"]');
 
-        //     let course = $('#course_data').val();
-        //     if(course != "") {
-        //         courseData = JSON.parse($('#course_data').val());
-        //     }
+            honor_course_data.filter('input[name$="[course_data]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "honors course name field is required"
+                    }
+                });
+            });
 
-        //     let html = ``;
-        //     if (course_name != "" && search_college_name != "") {
-        //         html += `<tr id="course_${temp_course_id}">`;
-        //         html += `<td class="course_name">${course_name}</td>`;
-        //         html += `<td class="search_college_name">${search_college_name}</td>`;
-        //         html += `<td>`;
-        //         html += `<i class="fa-solid fa-pen me-2" data-id="${temp_course_id}" onclick="course_edit_model(this)"></i>`;
-        //         html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_course_id}" onclick="course_model_remove(this)"></i>`;
-        //         html += `</td>`;
+            let testing_data = $('input[name^="testing_data"]');
 
-        //         courseData.push({
-        //             "id": temp_course_id,
-        //             "course_name": course_name,
-        //             "search_college_name": search_college_name
-        //         });
-        //     } else {
-        //         toastr.error('Please Enter Course Name & College name');
-        //     }
-        //     $('.course_data_table_row').after(html);
-        //     $('input[name="course_name"]').val('');
-        //     $('#search_college_name').val('');
-        //     $('#course_data').val(JSON.stringify(courseData));
-        // }
-
-        // function course_edit_model(data) {
-        //     let course_data = $('#course_data').val();
-        //     course_data = JSON.parse(course_data);
-        //     let id = $(data).attr('data-id');
-        //     let course_result = course_data.find(course => course.id == id);
-        //     $('#course_modal_name').val(course_result.course_name);
-        //     $('#course_modal_college_name').val(course_result.search_college_name);
-        //     $('#updateCourseForm').attr('data-id', id);
-        //     $('#course_name_modal').modal('show');
-        // }
-
-        // function updateCourseForm(data) {
-        //     let id = $(data).attr('data-id');
-        //     let course_name = $('#course_modal_name').val();
-        //     let search_college_name = $('#course_modal_college_name').val();
-        //     let course_data = $('#course_data').val();
-        //     course_data = JSON.parse(course_data);
-        //     for (let i = 0; i < course_data.length; i++) {
-        //         if (course_data[i].id == id) {
-        //             course_data[i].course_name = course_name
-        //             course_data[i].search_college_name = search_college_name
-        //         }
-        //     }
-        //     $('#course_data').val(JSON.stringify(course_data));
-        //     $(`#course_${id} .course_name`).text(course_name);
-        //     $(`#course_${id} .search_college_name`).text(search_college_name);
-        //     $('#course_name_modal').modal('hide');
-        // }
-
-        // function course_model_remove(data) {
-        //     let id = $(data).attr('data-id');
-        //     let course_data = $('#course_data').val();
-        //     course_data = JSON.parse(course_data);
-        //     const deleted_course = course_data.filter(course => course.id != id)
-        //     $('#course_data').val(JSON.stringify(deleted_course));
-        //     $(`#course_${id}`).remove();
-
-        //     if ($('#course_data').val() == '[]') {
-        //         $('#course_data').val(null);
-        //     }
-                
-        // }
-
-        // function addHonorCourseData(data) {
-
-        //     let honor_course_name = $('input[name="honors_course_name"]').val();
-        //     let temp_honor_course_id = Date.now();
-
-        //     let honor = $('#honor_course_data').val();
-        //     if(honor != "") {
-        //         honorCourseData = JSON.parse($('#honor_course_data').val());
-        //     }
-        //     let html = ``;
-        //     if (honor_course_name != "") {
-        //         html += `<tr id="honor_course_${temp_honor_course_id}">`;
-        //         html += `<td class="honor_course_name">${honor_course_name}</td>`;
-        //         html += `<td>`;
-        //         html += `<i class="fa-solid fa-pen me-2" data-id="${temp_honor_course_id}" onclick="honor_course_edit_model(this)"></i>`;
-        //         html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_honor_course_id}" onclick="honor_course_model_remove(this)"></i>`;
-        //         html += `</td>`;
-
-        //         honorCourseData.push({
-        //             "id": temp_honor_course_id,
-        //             "honor_course_name": honor_course_name
-        //         });
-        //     } else {
-        //         toastr.error    ('Please Enter Honor Course Name');
-        //     }
-
-        //     $('.honor_course_data_table_row').after(html);
-        //     $('input[name="honors_course_name"]').val('');
-        //     $('#honor_course_data').val(JSON.stringify(honorCourseData));
-        // }
-
-        // function honor_course_edit_model(data) {
-        //     let honor_course_data = $('#honor_course_data').val();
-        //     honor_course_data = JSON.parse(honor_course_data);
-        //     let id = $(data).attr('data-id');
-        //     let honor_course_result = honor_course_data.find(course => course.id == id);
-        //     $('#honors_course_modal_name').val(honor_course_result.honor_course_name);
-        //     $('#updateHonorCourseForm').attr('data-id', id);
-        //     $('#honors_course').modal('show');
-        // }
-
-        // function updateHonorCourseForm(data) {
-        //     let id = $(data).attr('data-id');
-        //     let honor_course_name = $('#honors_course_modal_name').val();
-        //     let honor_course_data = $('#honor_course_data').val();
-        //         honor_course_data = JSON.parse(honor_course_data);
-        //     for (let i = 0; i < honor_course_data.length; i++) {
-        //         if (honor_course_data[i].id == id) {
-        //             honor_course_data[i].honor_course_name = honor_course_name
-        //         }
-        //     }
-        //     $('#honor_course_data').val(JSON.stringify(honor_course_data));
-        //     $(`#honor_course_${id} .honor_course_name`).text(honor_course_name);
-        //     $('#honors_course').modal('hide');
-        // }
-
-        // function honor_course_model_remove(data) {
-        //     let id = $(data).attr('data-id');
-        //     let honor_course_data = $('#honor_course_data').val();
-        //         honor_course_data = JSON.parse(honor_course_data);
-        //     const deleted_honor_course = honor_course_data.filter(course => course.id != id)
-        //     $('#honor_course_data').val(JSON.stringify(deleted_honor_course));
-        //     $(`#honor_course_${id}`).remove();
-
-        //     if ($('#honor_course_data').val() == '[]') {
-        //         $('#honor_course_data').val(null);
-        //     }
-        // }
-
-        // function addTestingData(data) {
-        //     let name_of_test = $('input[name="name_of_test"]').val();
-        //     let results_score = $('input[name="results_score"]').val();
-        //     let date = $('input[name="date"]').val();
-        //     let temp_testing_id = Date.now();
-
-        //     let testing = $('#testing_data').val();
-        //     if(testing != "") {
-        //         testingData = JSON.parse($('#testing_data').val());
-        //     }
-        //     let html = ``;
-        //     if (name_of_test != "" && results_score != "" && date != "") {
-        //         html += `<tr id="testing_${temp_testing_id}">`;
-        //         html += `<td class="name_of_test">${name_of_test}</td>`;
-        //         html += `<td class="results_score">${results_score}</td>`;
-        //         html += `<td class="date">${date}</td>`;
-        //         html += `<td>`;
-        //         html += `<i class="fa-solid fa-pen me-2" data-id="${temp_testing_id}" onclick="testing_edit_model(this)"></i>`;
-        //         html += `<i class="fa-solid fa-circle-xmark" data-id="${temp_testing_id}" onclick="testing_model_remove(this)"></i>`;
-        //         html += `</td>`;
-
-        //         testingData.push({
-        //             "id": temp_testing_id,
-        //             "name_of_test": name_of_test,
-        //             "results_score": results_score,
-        //             "date": date
-        //         });
-        //     } else {
-        //         toastr.error('Please Enter Testing Details');
-        //     }
-
-        //     $('.testing_table_row').after(html);
-        //     $('input[name="name_of_test"]').val('');
-        //     $('input[name="results_score"]').val('');
-        //     $('input[name="date"]').val('');
-        //     $('#testing_data').val(JSON.stringify(testingData));
-        // }
-
-        // function testing_edit_model(data) {
-        //     let testing_data = $('#testing_data').val();
-        //         testing_data = JSON.parse(testing_data);
-        //     let id = $(data).attr('data-id');
-        //     let testing_result = testing_data.find(testing => testing.id == id);
-        //     $('#testing_name_of_test').val(testing_result.name_of_test);
-        //     $('#testing_results_score').val(testing_result.results_score);
-        //     $('#testing_date').val(testing_result.date);
-        //     $('#updateTestingForm').attr('data-id', id);
-        //     $('#testing_course').modal('show');
-        // }
-
-        // function updateTestingForm(data) {
-        //     let id = $(data).attr('data-id');
-        //     let name_of_test = $('#testing_name_of_test').val();
-        //     let results_score = $('#testing_results_score').val();
-        //     let date = $('#testing_date').val();
-
-        //     let testing_data = $('#testing_data').val();
-        //         testing_data = JSON.parse(testing_data);
-        //     for (let i = 0; i < testing_data.length; i++) {
-        //         if (testing_data[i].id == id) {
-        //             testing_data[i].name_of_test = name_of_test
-        //             testing_data[i].results_score = results_score
-        //             testing_data[i].date = date
-        //         }
-        //     }
-        //     $('#testing_data').val(JSON.stringify(testing_data));
-        //     $(`#testing_${id} .name_of_test`).text(name_of_test);
-        //     $(`#testing_${id} .results_score`).text(results_score);
-        //     $(`#testing_${id} .date`).text(date);
-        //     $('#testing_course').modal('hide');
-        // }
-
-        // function testing_model_remove(data) {
-        //     let id = $(data).attr('data-id');
-        //     let testing_data = $('#testing_data').val();
-        //         testing_data = JSON.parse(testing_data);
-        //     const deleted_testing = testing_data.filter(testing => testing.id != id)
-        //     $('#testing_data').val(JSON.stringify(deleted_testing));
-        //     $(`#testing_${id}`).remove();
-        //     if ($('#testing_data').val() == '[]') {
-        //         $('#testing_data').val(null);
-        //     }
-        // }
+            testing_data.filter('input[name$="[name_of_test]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "name of test field is required"
+                    }
+                });
+            });
+            testing_data.filter('input[name$="[results_score]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "result score field is required"
+                    }
+                });
+            });
+            testing_data.filter('input[name$="[date]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "date field is required"
+                    }
+                });
+            });
+        });
 
         $(document).on('change', '#is_graduate', function(){
             if(this.checked){
@@ -985,5 +761,4 @@
         }
 
     </script>
-    <script src="{{ asset('js/high-school-resume.js') }}"></script>
 @endsection

@@ -72,8 +72,8 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($honor) && $honor != null ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
-                    method="POST">
+                <form class="js-validation" id="honors_form" action="{{ isset($honor) && $honor != null ? route('admin-dashboard.highSchoolResume.honors.update', $honor->id) : route('admin-dashboard.highSchoolResume.honors.store') }}"
+                    method="POST" onSubmit="event.preventDefault();">
                     @csrf
                     @if(isset($honor) && $honor != null)
                         @method('PUT')
@@ -146,7 +146,7 @@
                                                                             placeholder="Ex: National Honor Society">
                                                                     </td>
                                                                     <td>                                                            
-                                                                        <select class="js-select2" id="honor_select_{{ $index }}"
+                                                                        <select class="required js-select2" id="honor_select_{{ $index }}"
                                                                             name="honors_data[{{ $index }}][grade][]" multiple="multiple">
                                                                             <option {{ (in_array('1st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
                                                                             <option {{ (in_array('2st grade' ,(is_array($honors_data['grade']) ? $honors_data['grade'] : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
@@ -184,7 +184,7 @@
                                                                         placeholder="Ex: National Honor Society">
                                                                 </td>
                                                                 <td>                                                                
-                                                                    <select class="js-select2" id="honor_select_0"
+                                                                    <select class="required js-select2" id="honor_select_0"
                                                                         name="honors_data[0][grade][]" multiple="multiple">
                                                                         <option {{ (in_array('1st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="1st grade">1st grade</option>
                                                                         <option {{ (in_array('2st grade' ,(is_array(old('grade')) ? old('grade') : []))) ? 'selected' : '' }} value="2st grade">2st grade</option>
@@ -225,7 +225,7 @@
                                         @include('components.reset-all-drafts-button')
                                     </div>
                                 @endif
-                                <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
+                                <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
                             </div>
                         </div>
                     </div>
@@ -258,6 +258,7 @@
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
@@ -278,51 +279,63 @@
             }
         });
 
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let honor = $('#honor').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/honors/store`;
-            
-            let data = $("#form").serializeArray();
-            
-            let formData = new FormData();
-            
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
-            });
-            
-            if(honor){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/honors/${honor}`
-            }
+        $(document).ready(function() {
+            let validations_rules = @json($validations_rules);
+            let validations_messages = @json($validations_messages);
+            console.log(validations_rules, validations_messages);
 
-            $.ajax({
-                url : url,
-                type : 'POST',
-                datatype : 'json',
-                data : formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if(response.success){
-                        if (resume_id) {
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/activities?resume_id=${resume_id}`;
-                        }else{
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/activities`;
-                        }
-                    }
+            $("#honors_form").validate({
+                rules: validations_rules,
+                messages: validations_messages,
+                ignore: false,
+                submitHandler: function(form) {
+                    form.submit();
                 },
-                error:function(error){
-                    if (error.responseJSON != null) {
-                        $.each(error.responseJSON.errors , function(key,value){
-                            toastr.error(value);
-                        });
+                errorPlacement: function(error, element) {
+                    var placement = $(element).data('error');
+                    if (placement) {
+                        $(placement).append(error)
+                    } else {
+                        error.insertAfter(element);
+                        element.parents().find('.collapse').addClass('show');
                     }
                 }
             });
-        }
-        
+
+            let honors_data = $('input[name^="honors_data"]');
+
+            honors_data.filter('input[name$="[position]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Position field is required"
+                    }
+                });
+            });
+            honors_data.filter('input[name$="[honor_achievement_award]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Achivement awars field is required"
+                    }
+                });
+            });honors_data.filter('input[name$="[grade]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });honors_data.filter('input[name$="[location]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Location field is required"
+                    }
+                });
+            });
+        });
+              
         function errorMsg()
         {
             Swal.fire({

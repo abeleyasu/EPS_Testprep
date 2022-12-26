@@ -45,8 +45,10 @@ class PersonalInfoController extends Controller
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         }
+
         $validations_rules = Config::get('validation.personal_info.rules');
         $validations_messages = Config::get('validation.personal_info.messages');
+        // dd($validations_messages, $validations_rules);
 
         $details = 0;
 
@@ -83,7 +85,9 @@ class PersonalInfoController extends Controller
 
         if (!empty($data)) {
             $personalInfo->update($data);
-            return response()->json(['success' => true,'data' => $data]);
+                return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
+
+            // return response()->json(['success' => true,'data' => $data]);
         }
     }
 
@@ -116,8 +120,8 @@ class PersonalInfoController extends Controller
             FeaturedAttribute::where('id', $featuredAttribute->id)->delete();
         }
         Session::put(['success' => true, "message" => "Resume data has been cleaned now!"]);
-        // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
         return response()->json(['success' => true, "message" => "Resume data has been cleaned now!"]);
+        // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
     }
     public function editFetch(Request $request ,$id)
     {

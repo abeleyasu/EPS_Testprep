@@ -13,6 +13,7 @@ use App\Models\HighSchoolResume\FeaturedAttribute;
 use App\Models\HighSchoolResume\Honor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class EducationController extends Controller
 {
@@ -48,8 +49,12 @@ class EducationController extends Controller
         }
         $courses_list = EducationCourse::all();
 
+        $validations_rules = Config::get('validation.educations.rules');
+        $validations_messages = Config::get('validation.educations.messages');
+        // dd($validations_messages, $validations_rules);
+
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education','honor','activity','employmentCertification','featuredAttribute', 'courses_list','details','resume_id'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education','honor','activity','employmentCertification','featuredAttribute', 'courses_list','details','resume_id', 'validations_rules', 'validations_messages'));
     }
 
     public function store(EducationRequest $request)
@@ -80,7 +85,8 @@ class EducationController extends Controller
 
         if (!empty($data)) {
             Education::create($data);
-            return response()->json(['success' => true, 'data' => $data]);
+            // return response()->json(['success' => true, 'data' => $data]);
+            return redirect()->route('admin-dashboard.highSchoolResume.honors');
         }
     }
 
@@ -110,7 +116,9 @@ class EducationController extends Controller
 
         if (!empty($data)) {
             $education->update($data);
-            return response()->json(['success' => true, 'data' => $data]);
+            // return response()->json(['success' => true, 'data' => $data]);
+            return redirect()->route('admin-dashboard.highSchoolResume.honors');
+
         }
     }
 }

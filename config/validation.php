@@ -70,5 +70,94 @@ return [
                 "email" => "parent email two must be a valid email"
             ]
         ]
+    ],
+    "educations" => [
+        "rules" => [
+            "current_grade" => [
+                "required" => true,
+            ],
+            "month" => [
+                "required" => true,
+            ],
+            "year" => [
+                "required" => true,
+            ],
+            "high_school_name" => [
+                "required" => true,
+            ],
+            "high_school_city" => [
+                "required" => true,
+            ],
+            "high_school_state" => [
+                "required" => true,
+            ],
+            "high_school_district" => [
+                "required" => true,
+            ],
+            "ib_courses[]" => [
+                "required" => true,
+            ],
+            "ap_courses[]" => [
+                "required" => true,
+            ],
+            "course_data[*][course_name]" => [
+                "required" => true,
+            ],
+            "course_data[*][search_college_name]" => [
+                "required" => true,
+            ],
+            "honor_course_data[*][course_data]" => [
+                "required" => true,
+            ],
+            "testing_data[*][name_of_test]" => [
+                "required" => true,
+            ],
+            "testing_data[*][results_score]" => [
+                "required" => true,
+            ],
+            "testing_data[*][date]" => [
+                "required" => true,
+            ],
+        ],
+        "messages" => [
+            "current_grade" => "current grade field is required",
+            "month" => "month field is required",
+            "year" => "year field is required",
+            "high_school_name" => "high school name field is required",
+            "high_school_city" => "high school city field is required",
+            "high_school_state" => "high school state field is required",
+            "high_school_district" => "high school district field is required",
+            "ib_courses[]" => "ib courses field is required",
+            "ap_courses[]" => "ap courses field is required",
+            "course_data[*][course_name]" => "course name field is required",
+            "course_data[*][search_college_name]" => "search college name field is required",
+            "honor_course_data[*][course_data]" => "honors course name field is required",
+            "testing_data[*][name_of_test]" => "name of test field is required",
+            "testing_data[*][results_score]" => "result score field is required",
+            "testing_data[*][date]" => "date field is required",
+        ]   
+    ],
+    "honors"=>[
+        "rules"=>[
+            "honors_data[*][position]" =>[
+                "required" =>true,
+            ],
+            "honors_data[*][honor_achievement_award]" =>[
+                "required" =>true,
+            ],
+            "honors_data[*][grade]" =>[
+                "required" =>true,
+            ],
+            "honors_data[*][location]" =>[
+                "required" =>true,
+            ],
+        ],
+        "messages"=>[
+            "honors_data[*][position]" => "honors position field is required",
+            "honors_data[*][honor_achievement_award]" => "honors achievement award field is required",
+            "honors_data[*][grade]" => "honors grade field is required",
+            "honors_data[*][location]" => "honors location field is required",
+
+        ]
     ]
 ];

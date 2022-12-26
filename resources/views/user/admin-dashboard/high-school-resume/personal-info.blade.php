@@ -384,6 +384,7 @@
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
+            console.log(validations_rules, validations_messages);
 
             $("#personal_info_form").validate({
                 rules: validations_rules,

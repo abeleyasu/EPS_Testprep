@@ -54,10 +54,10 @@ function addCourseData(data){
         let html = ``;
         html += `<tr class="course_data_table_row remove_courses">`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="course_name" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
+        html += `<input type="text" class="form-control" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
         html += `</td>`;
         html += `<td>`;
-        html += `<select class="form-control" name="course_data[${$count}][search_college_name]" id="search_college_name">`;
+        html += `<select class="required form-control" name="course_data[${$count}][search_college_name]" id="search_college_name">`;
         html += `<option value="">Search College Name</option>`;
         html += `<option value="first">First</option>`;
         html += `<option value="second">Second</option>`;
@@ -74,7 +74,27 @@ function addCourseData(data){
         $('.course_table tbody').append(html);
 
         $(data).attr('data-count', $count);
+        
     }
+    let course_data = $('input[name^="course_data"]');
+
+    course_data.filter('input[name$="[course_name]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "course name field is required"
+            }
+        });
+    });
+    
+    course_data.filter('input[name$="[search_college_name]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "search college name field is required"
+            }
+        });
+    });
 }
 
 function removeCourses(data) {
@@ -93,7 +113,7 @@ function addHonorCourseData(data){
         let html =``;
             html += `<tr class="honor_course_data_table_row remove_honors_courses"> `;
             html += `<td>                                                        `;
-            html += `<input type="text" class="form-control" id="honors_course_name" name="honor_course_data[${$count}][course_data]" placeholder="Ex: College English 101">`;
+            html += `<input type="text" class="form-control" name="honor_course_data[${$count}][course_data]" placeholder="Ex: College English 101">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -106,6 +126,18 @@ function addHonorCourseData(data){
 
         $(data).attr('data-count', $count);
     }  
+
+   let honor_course_data = $('input[name^="honor_course_data"]');
+
+    honor_course_data.filter('input[name$="[course_data]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "honors course name field is required"
+            }
+        });
+    });
+
 }
 
 function removeHonorsCourses(data) {
@@ -131,10 +163,10 @@ function addTestingData(data){
         let html =``;
             html += `<tr class="testing_table_row remove_testing_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="name_of_test" name="testing_data[${$count}][name_of_test]" placeholder="Enter Name of test">`;
+            html += `<input type="text" class="form-control"  name="testing_data[${$count}][name_of_test]" placeholder="Enter Name of test">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="results_score" name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
+            html += `<input type="text" class="form-control"  name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="testing-date-${$count}" name="testing_data[${$count}][date]" placeholder="Enter Date" autocomplete="off">`;
@@ -149,8 +181,34 @@ function addTestingData(data){
         $('.testing_data_table tbody').append(html);
 
         $(data).attr('data-count', $count);
-    }  
+    } 
+    let testing_data = $('input[name^="testing_data"]');
 
+    testing_data.filter('input[name$="[name_of_test]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "name of test field is required"
+            }
+        });
+    });
+    testing_data.filter('input[name$="[results_score]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "result score field is required"
+            }
+        });
+    });
+    testing_data.filter('input[name$="[date]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "date field is required"
+            }
+        });
+    }); 
+    
 }
 
 function removeTestingData(data){
@@ -176,10 +234,10 @@ function addHonorsData(data){
         let html = ``;
             html += `<tr class="honors_data_table_row remove_honors_data">`;
             html += `<td>`;
-            html += `<input type="number" class="form-control" id="position" name="honors_data[${$count}][position]" placeholder="Enter position" autocomplete="off">`;
+            html += `<input type="number" class="form-control"  name="honors_data[${$count}][position]" placeholder="Enter position" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="honor_achievement_award" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
+            html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
@@ -204,6 +262,38 @@ function addHonorsData(data){
 
         $(data).attr('data-count', $count);
     }
+    let honors_data = $('input[name^="honors_data"]');
+
+    honors_data.filter('input[name$="[position]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Position field is required"
+            }
+        });
+    });
+    honors_data.filter('input[name$="[honor_achievement_award]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Achivement awars field is required"
+            }
+        });
+    });honors_data.filter('input[name$="[grade]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Grade field is required"
+            }
+        });
+    });honors_data.filter('input[name$="[location]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Location field is required"
+            }
+        });
+    });
     
 }
 
