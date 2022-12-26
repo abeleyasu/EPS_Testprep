@@ -47,7 +47,7 @@
                             <h6>Activities</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($activity) && $activity != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}"
                             id="step5-tab">
                             <p>5</p>
@@ -55,15 +55,15 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
+                    <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
                             id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p >7</p>
                             <i class="fa-solid fa-check "></i>
@@ -139,7 +139,7 @@
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             value="{{ $demonstrated_data['position'] }}" id="position"
-                                                                            name="demonstrated_data[{{ $index }}][position]" placeholder="Enter Position" autocomplete="off">
+                                                                            name="demonstrated_data[{{ $index }}][position]" placeholder="Vice President" autocomplete="off">
                                                                     </td>
                                                                     <td> 
                                                                         <input type="text"
@@ -182,7 +182,7 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         value="{{ old('position') }}" id="position"
-                                                                        name="demonstrated_data[0][position]" placeholder="Enter Position" autocomplete="off">
+                                                                        name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off">
                                                                 </td>
                                                                 <td> 
                                                                     <input type="text"

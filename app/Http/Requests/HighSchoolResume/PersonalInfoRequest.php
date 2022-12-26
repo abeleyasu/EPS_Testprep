@@ -15,18 +15,19 @@ class PersonalInfoRequest extends FormRequest
     {
         return [
             "first_name" => "required",
-            "middle_name" => "required",
+            "middle_name" => "",
+            "nick_name" => "",
             "last_name" => "required",
             "street_address_one" => "required",
-            "street_address_two" => "required",
+            "apartment_no" => "",
             "city" => "required",
             "state" => "required",
             "zip_code" => "required",
             "cell_phone" => "required",
             "email" => "required|email",
-            "social_links.*.link" => "required",
+            "social_links.*.link" => "",
             "parent_email_one" => "required|email",
-            "parent_email_two" => "required|email",
+            "parent_email_two" => "",
         ];
     }
 

@@ -55,7 +55,7 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
                             id="step6-tab">
                             <p>6</p>
@@ -63,7 +63,7 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null  ? ( isset($resume_id) && $resume_id != null  ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -223,6 +223,13 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>
+                                                                <label class="form-label"
+                                                                   for="name_of_company">
+                                                                   Name Of The Company
+                                                                   <span class="text-danger">*</span>
+                                                               </label>
+                                                            </td>
+                                                            <td>
                                                                  <label class="form-label"
                                                                     for="responsibility_interest">
                                                                     Responsibility Or Interest
@@ -256,6 +263,14 @@
                                                         @if(!empty($employmentCertification->significant_data))
                                                             @foreach ($employmentCertification->significant_data as $index => $significant_data)
                                                                 <tr class="significant_data_table_row {{ $loop->first ? '' : 'remove_significant_data' }}">
+                                                                    <td>                                                               
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="name_of_company"
+                                                                            value="{{ $significant_data['name_of_company'] }}"
+                                                                            name="significant_data[{{ $index }}][name_of_company]"
+                                                                            placeholder="Enter Name Of Company">
+                                                                    </td>
                                                                     <td>                                                               
                                                                         <input type="text"
                                                                             class="form-control"
@@ -301,6 +316,13 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="significant_data_table_row">
+                                                                <td>                                                               
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="name_of_company"
+                                                                        name="significant_data[0][name_of_company]"
+                                                                        placeholder="Enter Name Of Company">
+                                                                </td>
                                                                 <td>                                                               
                                                                     <input type="text"
                                                                         class="form-control"

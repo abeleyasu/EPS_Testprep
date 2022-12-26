@@ -63,7 +63,7 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($featuredAttribute) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($featuredAttribute) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null  ? (isset($resume_id) && $resume_id != null  ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -143,7 +143,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        <a class="text-white fw-600 collapsed"> Featured Award </a>
+                                        <a class="text-white fw-600 collapsed"> Featured Awards </a>
                                     </div>
                                     <div id="collapseTwo"
                                         class="collapse {{ $errors->has('featured_awards_data') ? 'show' : '' }}"
@@ -155,7 +155,7 @@
                                                         <tr>
                                                             <td>
                                                                 <label class="form-label" for="featured_award">
-                                                                    Featured Award
+                                                                    Featured Awards
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>

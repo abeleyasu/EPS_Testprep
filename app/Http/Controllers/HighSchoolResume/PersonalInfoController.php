@@ -73,7 +73,6 @@ class PersonalInfoController extends Controller
     public function update(PersonalInfoRequest $request, PersonalInfo $personalInfo)
     {
         $data = $request->validated();
-
         if(!empty($request->social_links)){
             $data['social_links'] = array_values($request->social_links);
         }

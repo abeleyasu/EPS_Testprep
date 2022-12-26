@@ -256,17 +256,6 @@
                             {{ $personal_info->zip_code }}
                         </span>
                     </span>
-                    <span class="d-inline-block ">
-                        <span class="span_list span_mail ">
-                            <img
-                                src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/email.svg'))) }} ">
-                        </span>
-                        <span class="d-inline-block span_text" style="width: 180px">
-                            <span class="d-block span_bold">Parent Email 1 / Parent Email 2 </span>
-                            {{ $personal_info->parent_email_one }} 
-                            {{ $personal_info->parent_email_two }}
-                        </span>
-                    </span>
                     <span class="d-inline-block">
                         <span class="span_list span_location">
                             <img

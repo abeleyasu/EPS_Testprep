@@ -65,15 +65,6 @@
                                                 {{ $personal_info->zip_code }}
                                             </div>
                                         </li>
-                                        <li class="d-flex mb-2"><span><i class="fa-solid fa-envelope-open-text"></i>
-                                            </span>
-                                            <div class="ms-2">
-                                                <span class="d-block">Parent Email 1 / Parent Email 2 :</span>
-                                                {{ $personal_info->parent_email_one }}
-                                                <br>
-                                                {{ $personal_info->parent_email_two }}
-                                            </div>
-                                        </li>
                                         <li class="d-flex mb-2"><span><i class="fa-solid fa-location-dot"></i>
                                             </span>
                                             <div class="ms-2">

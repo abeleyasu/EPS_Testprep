@@ -120,7 +120,12 @@ function addTestingData(data){
         let html =``;
             html += `<tr class="testing_table_row remove_testing_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="name_of_test" name="testing_data[${$count}][name_of_test]" placeholder="Enter Name of test">`;
+            html += `<select class="form-select" id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
+            html += `<option value="">Select Name Of Test</option>`;
+            html += `<option value="PSAT">PSAT</option>`;
+            html += `<option value="SAT">SAT</option>`;
+            html += `<option value="ACT">ACT</option>`;
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="results_score" name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
@@ -559,6 +564,9 @@ function addSignificantData(data)
     }else{
         let html = ``;
             html += `<tr class="significant_data_table_row remove_significant_data">`;
+            html += `<td>                                                               `;
+            html += `<input type="text" class="form-control" id="name_of_company" name="significant_data[${$count}][name_of_company]" placeholder="Enter Name Of Company">`;
+            html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="responsibility_interest" name="significant_data[${$count}][interest]" placeholder="Enter Responsibility/interest">`;
             html += `</td>`;
