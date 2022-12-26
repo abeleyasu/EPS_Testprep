@@ -319,9 +319,9 @@ ul.answerOptionLsit li label input{
 							@endforeach
 						</div>
 					</div>
-					<div class="mb-2 mb-4 partTestOrder">
+					<div class="mb-2 mb-4  partTestOrder" style="display:none;">
 
-                        <button type="button" data-id="{{ $testsection->id }}" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button>
+                        <button type="button"  data-id="{{ $testsection->id }}" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button>
                         <div class="part_order">
                             <input type="number" readonly class="form-control" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderQuesDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button>
                         </div>
@@ -330,7 +330,7 @@ ul.answerOptionLsit li label input{
 					</div>
 					@endforeach                        
                     </div>
-                    <div class="col-md-12 col-xl-12 mb-4">
+                    <div class="col-md-12 col-xl-12 mb-4" style="display:none;">
                         <button type="button" data-id="0" class="btn w-25 btn-alt-success add_section_modal_btn">
                             <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Practice Test Section
                         </button>
@@ -342,7 +342,7 @@ ul.answerOptionLsit li label input{
 					</div>-->
 					<div class="col-md-6">
 						<ul class="list-group">
-						@foreach($testQuestions as $key => $question)
+                        @foreach($testQuestions as $key => $question)
 							<li class="list-group-item question_{{$question->id}}"><span style="width: 84%; float: left;">Question {{($key+1)}}</span> <span style="width: 15%; float: right;"><i class="fa fa-fw fa-pencil-alt edit_question" data-id="{{$question->id}}" style="margin-right: 4px;"></i><i class="fa fa-fw fa-times delete_question" data-id="{{$question->id}}"></i></span></li>
 						@endforeach
 						</ul>
@@ -473,19 +473,20 @@ ul.answerOptionLsit li label input{
                             
                         </div>
                     </div>
-
+                    
+                    <?php if (!$testQuestions->isEmpty()) { ?>
                     <div class="mb-2 mb-4"> 
-                        <!-- <label for="new_question_type" class="form-label">Question type:</label>
-                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" > -->
-                        <?php //echo "<pre>"; print_r($testQuestions); echo "</pre>"; ?>
                         <label for="new_question_type_select">Question type:</label>
                         <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
                             <option value="">Select Question Type</option>
+
                             @foreach($getQuestionTypes as $singleQuestionTypes)
                             <option value="{{$singleQuestionTypes->id}}" {{$testQuestions[0]->question_type_id == $singleQuestionTypes->id ? 'selected': '';}}>{{$singleQuestionTypes->question_type_title}}</option>
                             @endforeach
                         </select>
                     </div>
+                    <?php } ?>
+                    
 
 					<div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Passages:</label>
@@ -1169,7 +1170,8 @@ ul.answerOptionLsit li label input{
             }
                             
             var testSectionType = $('#testSectionTypeRead').val();
-            var new_question_type_select = $('#new_question_type_select').val();
+            //var new_question_type_select = $('#new_question_type_select').val();
+            var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
 
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
             var activeAnswerType = '.'+$('#editSelectedAnswerType').val();
@@ -1303,7 +1305,13 @@ ul.answerOptionLsit li label input{
             var multiChoice = '';
                 
             var testSectionType = $('#addTestSectionTypeRead').val();
-            var new_question_type_select = $('.new_question_type_select').val();
+            var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
+            
+            // console.log(new_question_type_select);
+            // return false;
+            
+
+
             var question = CKEDITOR.instances['js-ckeditor-add-addQue'].getData();
             var activeAnswerType = '.add'+ $('#selectedAnswerType').val();
             var questionType = $('#addQuestionMultiModal '+activeAnswerType+' #addQuestionType').val();
