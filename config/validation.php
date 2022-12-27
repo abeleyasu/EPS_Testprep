@@ -6,16 +6,10 @@ return [
             "first_name" => [
                 "required" => true,
             ],
-            "middle_name" => [
-                "required" => true,
-            ],
             "last_name" => [
                 "required" => true,
             ],
             "street_address_one" => [
-                "required" => true,
-            ],
-            "street_address_two" => [
                 "required" => true,
             ],
             "city" => [
@@ -29,46 +23,38 @@ return [
             ],
             "cell_phone" => [
                 "required" => true,
-            ],
+            ], 
             "email" => [
                 "required" => true,
                 "email" => true
-            ],
-            "social_links[*][link]" => [
-                "required" => true,
             ],
             "parent_email_one" => [
                 "required" => true,
                 "email" => true
             ],
             "parent_email_two" => [
-                "required" => true,
                 "email" => true
             ]
         ],
         "messages" => [
             "first_name" => "First name field is required",
-            "middle_name" => "Middle name field is required",
             "last_name" => "Last name field is required",
             "street_address_one" => "Street address one field is required",
-            "street_address_two" => "Street address two field is required",
             "city" => "City field is required",
             "state" => "State field is required",
             "zip_code" => "Zip code field is required",
-            "cell_phone" => "Cell phone field is required",
+            "cell_phone" => [
+                "required" => "Cell phone field is required",
+            ],
             "email" => [
                 "required" => "Email field is required",
                 "email" => "Email must be a valid email"
             ],
-            "social_links[*][link]" => "Social link field is required",
             "parent_email_one" => [
                 "required" => "Parent email one field is required",
                 "email" => "Parent email one must be a valid email"
             ],
-            "parent_email_two" => [
-                "required" => "Parent email two field is required",
-                "email" => "Parent email two must be a valid email"
-            ]
+            "parent_email_two" => "Parent email two must be a valid email"
         ]
     ],
     "educations" => [
@@ -94,6 +80,14 @@ return [
             "high_school_district" => [
                 "required" => true,
             ],
+            "cumulative_gpa_unweighted" => [
+                "min" => 0,
+                "max" => 4
+            ],
+            "cumulative_gpa_weighted" => [
+                "min" => 0,
+                "max" => 5
+            ],
             "ib_courses[]" => [
                 "required" => true,
             ],
@@ -103,7 +97,7 @@ return [
             "course_data[*][course_name]" => [
                 "required" => true,
             ],
-            "course_data[*][search_college_name]" => [
+            "course_data[*][search_college_name][]" => [
                 "required" => true,
             ],
             "honor_course_data[*][course_data]" => [
@@ -127,10 +121,18 @@ return [
             "high_school_city" => "High school city field is required",
             "high_school_state" => "High school state field is required",
             "high_school_district" => "High school district field is required",
+            "cumulative_gpa_unweighted" =>[
+                "min" => "Cumulative unweighted GPA must be greater than zero",
+                "max" => "Cumulative unweighted GPA must be less than four",
+            ],
+            "cumulative_gpa_weighted" =>[
+                "min" => "Cumulative weighted GPA must be greater than zero",
+                "max" => "Cumulative weighted GPA must be less than five",
+            ],  
             "ib_courses[]" => "Ib courses field is required",
             "ap_courses[]" => "Ap courses field is required",
             "course_data[*][course_name]" => "Course name field is required",
-            "course_data[*][search_college_name]" => "Search college name field is required",
+            "course_data[*][search_college_name][]" => "Search college name field is required",
             "honor_course_data[*][course_data]" => "Honors course name field is required",
             "testing_data[*][name_of_test]" => "Name of test field is required",
             "testing_data[*][results_score]" => "Result score field is required",
@@ -140,16 +142,16 @@ return [
     "honors"=>[
         "rules"=>[
             "honors_data[*][position]" =>[
-                "required" =>true,
+                "required" => true,
             ],
             "honors_data[*][honor_achievement_award]" =>[
-                "required" =>true,
+                "required" => true,
             ],
             "honors_data[*][grade][]" =>[
-                "required" =>true,
+                "required" => true,
             ],
             "honors_data[*][location]" =>[
-                "required" =>true,
+                "required" => true,
             ],
         ],
         "messages"=>[

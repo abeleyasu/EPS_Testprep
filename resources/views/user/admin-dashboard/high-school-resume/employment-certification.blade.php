@@ -55,7 +55,7 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
                             id="step6-tab">
                             <p>6</p>
@@ -63,7 +63,7 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($employmentCertification) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null  ? ( isset($resume_id) && $resume_id != null  ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -99,25 +99,21 @@
                                                             <td>
                                                                 <label class="form-label" for="job_title">
                                                                     Job Title
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_honor_award">
                                                                     Honor / Award
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -135,11 +131,10 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="employment_select_{{ $index }}"
                                                                             name="employment_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("1st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("2st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("3st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("4st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("5st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("9th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="9th">9th</option>
+                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("10th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="10th">10th</option>
+                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("11th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="11th">11th</option>
+                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("12th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -174,11 +169,10 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="employment_select_0"
                                                                         name="employment_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -200,7 +194,6 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
-
                                                         @endif
                                                     </tbody>
                                                 </table>
@@ -215,7 +208,7 @@
                                             Interests</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('significant_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -223,30 +216,32 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>
+                                                                <label class="form-label"
+                                                                   for="name_of_company">
+                                                                   Name Of The Company
+                                                               </label>
+                                                            </td>
+                                                            <td>
                                                                  <label class="form-label"
                                                                     for="responsibility_interest">
                                                                     Responsibility Or Interest
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label"
                                                                     for="significant_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label"
                                                                     for="significant_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="significant_honor_award">
                                                                     Honor / Award
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -256,6 +251,14 @@
                                                         @if(!empty($employmentCertification->significant_data))
                                                             @foreach ($employmentCertification->significant_data as $index => $significant_data)
                                                                 <tr class="significant_data_table_row {{ $loop->first ? '' : 'remove_significant_data' }}">
+                                                                    <td>                                                               
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="name_of_company"
+                                                                            value="{{ $significant_data['name_of_company'] }}"
+                                                                            name="significant_data[{{ $index }}][name_of_company]"
+                                                                            placeholder="Ex: Starbucks">
+                                                                    </td>
                                                                     <td>                                                               
                                                                         <input type="text"
                                                                             class="form-control"
@@ -269,11 +272,10 @@
                                                                             id="significant_select_{{ $index }}"
                                                                             name="significant_data[{{ $index }}][grade][]"
                                                                             multiple="multiple">
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("1st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("2st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("3st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("4st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("5st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("9th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="9th">9th</option>
+                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("10th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="10th">10th</option>
+                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("11th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="11th">11th</option>
+                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("12th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>                                                               
@@ -304,6 +306,13 @@
                                                                 <td>                                                               
                                                                     <input type="text"
                                                                         class="form-control"
+                                                                        id="name_of_company"
+                                                                        name="significant_data[0][name_of_company]"
+                                                                        placeholder="Ex: Starbucks">
+                                                                </td>
+                                                                <td>                                                               
+                                                                    <input type="text"
+                                                                        class="form-control"
                                                                         id="responsibility_interest"
                                                                         name="significant_data[0][interest]"
                                                                         placeholder="Enter Responsibility/interest">
@@ -313,11 +322,10 @@
                                                                         id="significant_select_0"
                                                                         name="significant_data[0][grade][]"
                                                                         multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>                                                               

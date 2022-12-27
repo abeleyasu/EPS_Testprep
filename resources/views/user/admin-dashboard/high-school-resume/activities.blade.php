@@ -47,7 +47,7 @@
                             <h6>Activities</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($activity) && $activity != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}"
                             id="step5-tab">
                             <p>5</p>
@@ -55,15 +55,15 @@
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
+                    <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
                             id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($activity) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p >7</p>
                             <i class="fa-solid fa-check "></i>
@@ -94,38 +94,33 @@
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
+                                                <input type="hidden" name="activity" id="activity" value="{{ isset($activity) ? $activity->id : ''}}">
                                                 <table class="table table_demonstrated_data">
                                                     <tbody>
-                                                        <input type="hidden" name="activity" id="activity" value="{{ isset($activity) ? $activity->id : ''}}">
                                                         <tr>
                                                             <td>
                                                                 <label class="form-label" for="position">
                                                                     Position
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="interest">
                                                                     Interest
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="details">
                                                                     Details
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -139,7 +134,7 @@
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             value="{{ $demonstrated_data['position'] }}" id="position"
-                                                                            name="demonstrated_data[{{ $index }}][position]" placeholder="Enter Position" autocomplete="off">
+                                                                            name="demonstrated_data[{{ $index }}][position]" placeholder="Vice President" autocomplete="off">
                                                                     </td>
                                                                     <td> 
                                                                         <input type="text"
@@ -151,11 +146,10 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="demonstrated_select_{{ $index }}"
                                                                             name="demonstrated_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("1st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("2st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("3st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("4st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("5st grade" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("9th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("10th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("11th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
+                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("12th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -181,36 +175,35 @@
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control"
-                                                                        value="{{ old('position') }}" id="position"
-                                                                        name="demonstrated_data[0][position]" placeholder="Enter Position" autocomplete="off">
+                                                                        value="" id="position"
+                                                                        name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off">
                                                                 </td>
                                                                 <td> 
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="interest" name="demonstrated_data[0][interest]"
-                                                                        value="{{ old('interest') }}"
+                                                                        value=""
                                                                         placeholder="Enter Interest">
                                                                 </td>
                                                                 <td>
                                                                     <select class="js-select2 select" id="demonstrated_select_0"
                                                                         name="demonstrated_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('demonstrated_data')) ? old('demonstrated_data') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="location" name="demonstrated_data[0][location]"
-                                                                        value="{{ old('location') }}"
+                                                                        value=""
                                                                         placeholder="Enter Location">
                                                                 </td>
                                                                 <td>
                                                                     <textarea class="form-control" id="details" name="demonstrated_data[0][details]" rows="1"
-                                                                        placeholder="Enter Details">{{ old('details') }}</textarea>
+                                                                        placeholder="Enter Details"></textarea>
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -231,7 +224,7 @@
                                         <a class=" text-white fw-600 collapsed">Leadership</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->first('leadership_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -241,31 +234,26 @@
                                                             <td>
                                                                 <label class="form-label" for="leadership_status">
                                                                     Status
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="leadership_position">
                                                                     Position
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="leadership_organization">
                                                                     Organization
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="leadership_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="leadership_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -287,7 +275,7 @@
                                                                             class="form-control"
                                                                             id="leadership_position" name="leadership_data[{{ $index }}][position]"
                                                                             value="{{ $leadership_data['position'] }}"
-                                                                            placeholder="Enter Position" autocomplete="off">
+                                                                            placeholder="Vice President" autocomplete="off">
                                                                     </td>
                                                                     <td>
                                                                         <input type="text"
@@ -306,11 +294,10 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="leadership_select_{{ $index }}"
                                                                             name="leadership_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("1st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("2st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("3st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("4st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("5st grade" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("9th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="9th">9th</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("10th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="10th">10th</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("11th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="11th">11th</option>
+                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("12th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -332,7 +319,7 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="leadership_position" name="leadership_data[0][position]"
-                                                                        placeholder="Enter Position" autocomplete="off">
+                                                                        placeholder="Vice President" autocomplete="off">
                                                                 </td>
                                                                 <td>
                                                                     <input type="text"
@@ -349,11 +336,10 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="leadership_select_0"
                                                                         name="leadership_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('leadership_grade')) ? old('leadership_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -375,7 +361,7 @@
                                         <a class=" text-white fw-600 collapsed">Activities & Clubs</a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse {{ $errors->first('activities_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="collapseThree" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -385,31 +371,26 @@
                                                             <td>
                                                                 <label class="form-label" for="activity_position">
                                                                     Position
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="activity">
                                                                     Activity
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="activity_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="activity_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="activity_honor_award">
                                                                     Honor/Award
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -424,7 +405,7 @@
                                                                             class="form-control"
                                                                             id="activity_position" name="activities_data[{{ $index }}][position]"
                                                                             value="{{ $activities_data['position'] }}"
-                                                                            placeholder="Enter Position" autocomplete="off">
+                                                                            placeholder="Vice President" autocomplete="off">
                                                                     </td>
                                                                     <td>
                                                                         <input type="text"
@@ -436,11 +417,10 @@
                                                                     <td> 
                                                                         <select class="js-select2 select" id="activity_select_{{ $index }}"
                                                                             name="activities_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("1st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("2st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("3st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("4st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("5st grade" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("9th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("10th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("11th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
+                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("12th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -470,7 +450,7 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="activity_position" name="activities_data[0][position]"
-                                                                        placeholder="Enter Position" autocomplete="off">
+                                                                        placeholder="Vice President" autocomplete="off">
                                                                 </td>
                                                                 <td>
                                                                     <input type="text"
@@ -481,11 +461,10 @@
                                                                 <td> 
                                                                     <select class="js-select2 select" id="activity_select_0"
                                                                         name="activities_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('activity_grade')) ? old('activity_grade') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -519,7 +498,7 @@
                                         <a class=" text-white fw-600 collapsed">Athletics</a>
                                     </div>
                                     <div id="collapseFour"
-                                        class="collapse {{ $errors->first('athletics_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="collapseFour" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -529,47 +508,41 @@
                                                             <td>
                                                                  <label class="form-label" for="athletics_position">
                                                                     Position
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="athletics_activity">
                                                                      Activity
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="athletics_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="athletics_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="athletics_honor">
                                                                     Honor
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
-
                                                                 <label class="form-label">Action</label><br>
                                                             </td>
                                                         </tr>
                                                         @if(!empty($activity->athletics_data))
                                                             @foreach ($activity->athletics_data as $index => $athletics_data)
                                                                 <tr class="athletics_data_table_row {{ $loop->first ? '' : 'remove_athletics_data' }}">
-                                                                    <td>                                                                
+                                                                    <td>
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             id="athletics_positions" name="athletics_data[{{ $index }}][position]"
                                                                             value="{{ $athletics_data['position'] }}"
-                                                                            placeholder="Enter Position" autocomplete="off">
+                                                                            placeholder="Vice President" autocomplete="off">
                                                                         </td>
                                                                     <td>
                                                                         <input type="text"
@@ -578,17 +551,16 @@
                                                                             value="{{ $athletics_data['activity'] }}"
                                                                             placeholder="Enter Activity">
                                                                     </td>
-                                                                    <td>                                                                
+                                                                    <td>
                                                                         <select class="js-select2 select" id="athletics_select_{{ $index }}"
                                                                             name="athletics_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("1st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("2st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("3st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("4st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("5st grade" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("9th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("10th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("11th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
+                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("12th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td>                                                                
+                                                                    <td> 
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             value="{{ $athletics_data['location'] }}"
@@ -596,7 +568,6 @@
                                                                             placeholder="Ex: DRHS">
                                                                     </td>
                                                                     <td>
-                                                                        
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             id="athletics_honor" name="athletics_data[{{ $index }}][honor]"
@@ -612,34 +583,33 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="athletics_data_table_row">
-                                                                <td>                                                                
+                                                                <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="athletics_positions" name="athletics_data[0][position]"
-                                                                        value="{{ old('athletics_position') }}"
-                                                                        placeholder="Enter Position" autocomplete="off">
+                                                                        value=""
+                                                                        placeholder="Vice President" autocomplete="off">
                                                                     </td>
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="athletics_activity" name="athletics_data[0][activity]"
-                                                                        value="{{ old('athletics_activity') }}"
+                                                                        value=""
                                                                         placeholder="Enter Activity">
                                                                 </td>
-                                                                <td>                                                                
+                                                                <td>
                                                                     <select class="js-select2 select" id="athletics_select_0"
                                                                         name="athletics_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('athletics_grade')) ? old('athletics_grade') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
-                                                                <td>                                                                
+                                                                <td>
                                                                     <input type="text"
                                                                         class="form-control"
-                                                                        value="{{ old('athletics_location') }}"
+                                                                        value=""
                                                                         id="athletics_location" name="athletics_data[0][location]"
                                                                         placeholder="Ex: DRHS">
                                                                 </td>
@@ -648,7 +618,7 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="athletics_honor" name="athletics_data[0][honor]"
-                                                                        value="{{ old('athletics_honor') }}"
+                                                                        value=""
                                                                         placeholder="Enter Honor">
                                                                 </td>
                                                                 <td>
@@ -670,7 +640,7 @@
                                         <a class=" text-white fw-600 collapsed">Community Service / Volunteerism</a>
                                     </div>
                                     <div id="collapseFive"
-                                        class="collapse {{ $errors->first('community_service_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="collapseFive" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -680,25 +650,21 @@
                                                             <td>
                                                                  <label class="form-label" for="participation_level">
                                                                     Participation Level
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label" for="community_service">
                                                                     Service
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label" for="community_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="community_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -708,28 +674,27 @@
                                                         @if(!empty($activity->community_service_data))
                                                             @foreach ($activity->community_service_data as $index => $community_service_data)
                                                                 <tr class="community_data_table_row {{ $loop->first ? '' : 'remove_comunity_data' }}">
-                                                                    <td>                                                                
+                                                                    <td>
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             id="participation_level" name="community_service_data[{{ $index }}][level]"
                                                                             value = "{{ $community_service_data['level'] }}"
                                                                             placeholder="Enter Participation level">
                                                                     </td>
-                                                                    <td>                                                                
+                                                                    <td>
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             id="community_service" name="community_service_data[{{ $index }}][service]"
                                                                             value = "{{ $community_service_data['service'] }}"
                                                                             placeholder="Enter Service">
                                                                     </td>
-                                                                    <td>                                                               
+                                                                    <td>
                                                                         <select class="js-select2 select" id="community_select_{{ $index }}"
                                                                             name="community_service_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("1st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("2st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("3st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("4st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("5st grade" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("9th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("10th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("11th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
+                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("12th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -748,13 +713,13 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="community_data_table_row">
-                                                                <td>                                                                
+                                                                <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="participation_level" name="community_service_data[0][level]"
                                                                         placeholder="Enter Participation level">
                                                                 </td>
-                                                                <td>                                                                
+                                                                <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="community_service" name="community_service_data[0][service]"
@@ -763,11 +728,10 @@
                                                                 <td>                                                               
                                                                     <select class="js-select2 select" id="community_select_0"
                                                                         name="community_service_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('community_grade')) ? old('community_grade') : []) ? 'selected' : '' }} value="5st grade">5st grade</option>
+                                                                        <option value="9th">9th</option>
+                                                                        <option value="10th">10th</option>
+                                                                        <option value="11th">11th</option>
+                                                                        <option value="12th">12th</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -786,7 +750,6 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -847,7 +810,6 @@
         let total_activity_count = "{{ isset($activity->activities_data) && $activity->activities_data != null ? count($activity->activities_data) : 0 }}";
         let total_athletics_count = "{{ isset($activity->athletics_data) && $activity->athletics_data != null ? count($activity->athletics_data) : 0 }}";
         let total_community_count = "{{ isset($activity->community_service_data) && $activity->community_service_data != null ? count($activity->community_service_data) : 0 }}";
-
 
         $(document).ready(() => {
             if(total_demonstrated_count > 0) {
@@ -912,7 +874,6 @@
 
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
-            console.log(validations_rules, validations_messages);
         });
 
         function errorMsg()
@@ -944,6 +905,5 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
-
     </script>
 @endsection

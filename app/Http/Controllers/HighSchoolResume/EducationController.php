@@ -31,7 +31,7 @@ class EducationController extends Controller
                 'featuredAttribute'
             ])->first();
             $personal_info = $resumedata->personal_info; 
-            $education = $resumedata->education; 
+            $education = $resumedata->education;
             $honor = $resumedata->honor; 
             $activity = $resumedata->activity; 
             $employmentCertification = $resumedata->employmentCertification; 
@@ -59,29 +59,34 @@ class EducationController extends Controller
     public function store(EducationRequest $request)
     {
         $data = $request->validated();
+        // dd($data['testing_data'][0]['name_of_test']);
+
+        if(!empty($request->current_grade)){
+            $data['current_grade'] = json_encode($request->current_grade);
+        }
 
         if(!empty($request->course_data)){
             $data['course_data'] = array_values($request->course_data);
         }
-
+        
         if(!empty($request->honor_course_data)){
             $data['honor_course_data'] = array_values($request->honor_course_data);
         }
-
+        
         if(!empty($request->testing_data)){
             $data['testing_data'] = array_values($request->testing_data);
         }
-
+        
         if(!empty($request->ib_courses)){
             $data['ib_courses'] = json_encode($request->ib_courses);
         }
-
+        
         if(!empty($request->ap_courses)){
             $data['ap_courses'] = json_encode($request->ap_courses);
         }
-
+        
         $data['user_id'] = Auth::id();
-
+        
         if (!empty($data)) {
             Education::create($data);
             return redirect()->route('admin-dashboard.highSchoolResume.honors');

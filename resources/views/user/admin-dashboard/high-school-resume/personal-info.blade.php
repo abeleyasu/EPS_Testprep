@@ -33,43 +33,43 @@
                             <h6>Personal Info</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($personal_info) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($personal_info) && $personal_info != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step2-tab">
                             <p>2</p>
                             <i class="fa-solid fa-check  "></i>
                             <h6>Education</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($personal_info) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($education) && $education != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step3-tab">
+                    <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($education) && $education != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab">
                             <p>3</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Honors</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($personal_info) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step4-tab">
+                    <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab">
                             <p>4</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Activities</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($personal_info) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step5-tab">
+                    <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($activity) && $activity != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
                             <p>5</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($personal_info) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step6-tab">
+                    <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
                             <p>6</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($personal_info) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step7-tab">
+                    <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Preview</h6>
@@ -100,7 +100,7 @@
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <div class="row mb-4">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="first_name">
                                                                 First Name
@@ -113,11 +113,10 @@
                                                                 placeholder="Enter First Name">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="middle_name">
                                                                 Middle Name
-                                                                <span class="text-danger">*</span>
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control"
@@ -126,7 +125,7 @@
                                                                 placeholder="Enter Middle Name">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
                                                         <div class="mb-4">
                                                             <label class="form-label" for="last_name">
                                                                 Last Name
@@ -137,6 +136,18 @@
                                                                 value="{{ isset($personal_info->last_name) && $personal_info->last_name != null ? $personal_info->last_name : "" }}"
                                                                 id="last_name" name="last_name"
                                                                 placeholder="Enter Last Name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="mb-4">
+                                                            <label class="form-label" for="nick_name">
+                                                                Nick Name
+                                                            </label>
+                                                            <input type="text"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? $personal_info->nick_name : "" }}"
+                                                                id="nick_name" name="nick_name"
+                                                                placeholder="Enter Nick Name">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -155,7 +166,7 @@
                                         <div class="block-content">
                                             <div class="main-form-input">
                                                 <div class="row mb-4">
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-12">
                                                         <div>
                                                             <label class="form-label" for="street_address_one">
                                                                 Street Address 1
@@ -165,17 +176,28 @@
                                                                 name="street_address_one" placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : "" }}</textarea>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    {{-- <div class="col-lg-6">
                                                         <label class="form-label" for="street_address_two">
                                                             Street Address 2
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <textarea class="form-control" id="street_address_two"
                                                             name="street_address_two" placeholder="Enter Street Address 2">{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : "" }}</textarea>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 <div class="row mb-4">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
+                                                        <div>
+                                                            <label class="form-label" for="city">
+                                                                Apartment No
+                                                            </label>
+                                                            <input type="text"
+                                                                class="form-control"
+                                                                value="{{ isset($personal_info->apartment_no) && $personal_info->apartment_no != null ? $personal_info->apartment_no : "" }}"
+                                                                id="apartment_no" name="apartment_no" placeholder="Enter Apartment No">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="city">
                                                                 City
@@ -187,7 +209,7 @@
                                                                 id="city" name="city" placeholder="Enter city">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="state">
                                                                 State
@@ -199,7 +221,7 @@
                                                                 id="state" name="state" placeholder="Enter State">
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="zip_code">
                                                                 Zip Code
@@ -240,6 +262,7 @@
                                                                 value="{{ isset($personal_info->cell_phone) && $personal_info->cell_phone != null  ? $personal_info->cell_phone : '' }}"
                                                                 id="cell_phone" name="cell_phone"
                                                                 placeholder="Enter cell phone no">
+                                                                <span id="cell_phone_error" class="text-danger"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -258,7 +281,6 @@
                                                 <div class="mb-4 position-relative">
                                                     <label class="form-label" for="social_links">
                                                         Social Links
-                                                        <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="social_link_div">
                                                         @if (!empty($personal_info->social_links))
@@ -311,13 +333,10 @@
                                                         <div class="mb-4">
                                                             <label class="form-label" for="parent_email_two">
                                                                 Parent Email 2
-                                                                <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="email"
-                                                                class="form-control"
+                                                            <input type="email" class="form-control"
                                                                 value="{{ isset($personal_info->parent_email_two) && $personal_info->parent_email_two != null ? $personal_info->parent_email_two : '' }}"
-                                                                id="parent_email_two" name="parent_email_two"
-                                                                placeholder="This will not show up on your Resume.">
+                                                                id="parent_email_two" name="parent_email_two" placeholder="This will not show up on your Resume.">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -356,7 +375,6 @@
             border-color: #f27474;
             color: #f27474;
         }
-        
     </style>
 @endsection
 
@@ -382,10 +400,30 @@
             });
         }
 
+        
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
-            console.log(validations_rules, validations_messages);
+
+            $("#cell_phone").keypress(function(){
+
+                let value = $('#cell_phone').val();
+                
+                let pettern = /^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?\d{3}[\s\-]?\d{3}$/;
+                
+                var check = value.match(pettern);
+                    
+                if(check == null){
+                    $('#cell_phone_error').parents().find('#collapseThree').addClass('show');
+                    $('#cell_phone_error').parents().find('#cell_phone').addClass('is-invalid');
+                    $('#cell_phone_error').html('Invalid number format');
+                }else{
+                    $('#cell_phone_error').parents().find('#cell_phone').removeClass('is-invalid');
+
+                    $('#cell_phone_error').html('');
+
+                }
+            });
 
             $("#personal_info_form").validate({
                 rules: validations_rules,
@@ -404,19 +442,8 @@
                     }
                 }
             });
-
-            let social_links = $('input[name^="social_links"]');
-
-            social_links.filter('input[name$="[link]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "social link field is required"
-                    }
-                });
-            });
         });
-    
+
         toastr.options = {
             "closeButton": true,
             "newestOnTop": false,

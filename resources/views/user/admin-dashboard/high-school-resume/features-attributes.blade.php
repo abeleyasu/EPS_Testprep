@@ -63,7 +63,7 @@
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
-                    <li role="presentation" onclick="{{ !isset($featuredAttribute) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                    <li role="presentation" onclick="{{ !isset($featuredAttribute) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                         <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null  ? (isset($resume_id) && $resume_id != null  ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                             <p>7</p>
                             <i class="fa-solid fa-check "></i>
@@ -85,7 +85,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class="text-white fw-600 collapsed"> Featured Skills</a>
+                                        <a class="text-white fw-600 collapsed"> Featured Qualities</a>
                                     </div>
                                     <div id="collapseOne"
                                         class="collapse show"
@@ -98,8 +98,7 @@
                                                             <input type="hidden" name="feature_skill" id="feature_skill" value="{{ isset($featuredAttribute) && $featuredAttribute != null ? $featuredAttribute->id : '' }}">
                                                             <td>
                                                                 <label class="form-label" for="featured_skill">
-                                                                    Featured Skill
-                                                                    <span class="text-danger">*</span>
+                                                                    Featured Qualities
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -111,7 +110,7 @@
                                                                 <tr class="featured_skill_data_table_row {{ $loop->first ? '' : 'remove_featured_skill_data' }}">
                                                                     <td>
                                                                         <input type="text" class="form-control" value="{{ $featured_skills_data['skill'] }}" id="featured_skill"
-                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Skill">
+                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Qualities">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -143,10 +142,10 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        <a class="text-white fw-600 collapsed"> Featured Award </a>
+                                        <a class="text-white fw-600 collapsed"> Featured Awards </a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('featured_awards_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -155,8 +154,7 @@
                                                         <tr>
                                                             <td>
                                                                 <label class="form-label" for="featured_award">
-                                                                    Featured Award
-                                                                    <span class="text-danger">*</span>
+                                                                    Featured Awards
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -207,7 +205,7 @@
                                         <a class="text-white fw-600 collapsed"> Featured Languages </a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse {{ $errors->has('featured_languages_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -217,13 +215,11 @@
                                                             <td>
                                                                 <label class="form-label" for="featured_language">
                                                                     Language
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="languages_level">
                                                                     Languages Level
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -358,6 +354,5 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        // Featured languages table end
     </script>
 @endsection

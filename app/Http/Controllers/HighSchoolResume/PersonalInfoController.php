@@ -48,7 +48,6 @@ class PersonalInfoController extends Controller
 
         $validations_rules = Config::get('validation.personal_info.rules');
         $validations_messages = Config::get('validation.personal_info.messages');
-        // dd($validations_messages, $validations_rules);
 
         $details = 0;
 
@@ -87,14 +86,11 @@ class PersonalInfoController extends Controller
 
         if (!empty($data)) {
             $personalInfo->update($data);
-            if($resume_id != null)
-            {
+            if($resume_id != null) {
                 return redirect("user/admin-dashboard/high-school-resume/education-info?resume_id=".$resume_id);
-            }else{
+            } else {
                 return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
             }
-
-            // return response()->json(['success' => true,'data' => $data]);
         }
     }
 

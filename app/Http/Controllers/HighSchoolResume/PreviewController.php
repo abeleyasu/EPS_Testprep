@@ -46,7 +46,29 @@ class PreviewController extends Controller
             $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();        
         }
         $details = 0;
+     
+        $demonstrated_data = array_filter($activity->demonstrated_data[0]);
+        $leadership_data = array_filter($activity->leadership_data[0]);
+        $athletics_data = array_filter($activity->athletics_data[0]);
+        $activities_data = array_filter($activity->activities_data[0]);
+        $community_service_data = array_filter($activity->community_service_data[0]);
 
+        $significant_data = array_filter($employmentCertification->significant_data[0]);
+        $employment_data = array_filter($employmentCertification->employment_data[0]);
+
+        $featured_skills_data = array_filter($featuredAttribute->featured_skills_data[0]);
+        $featured_awards_data = array_filter($featuredAttribute->featured_awards_data[0]);
+        $featured_languages_data = array_filter($featuredAttribute->featured_languages_data[0]);
+
+        if($demonstrated_data == null && $leadership_data == null && $community_service_data == null && $activities_data == null && $activities_data == null)
+        {
+            $activity = null;
+        }
+
+        if($featured_skills_data == null && $featured_awards_data == null && $featured_languages_data == null)
+        {
+            $featuredAttribute = null;
+        }
         $ib_courses = [];
         $ap_courses = [];
 
@@ -59,7 +81,7 @@ class PreviewController extends Controller
             $ap_courses[] = $ap_course->name;
         }
 
-        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id'));
+        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data'));
     }
 
     public function resumePreview()
@@ -71,6 +93,7 @@ class PreviewController extends Controller
         $activity = Activity::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
+
 
         $ib_courses = [];
         $ap_courses = [];
@@ -207,6 +230,29 @@ class PreviewController extends Controller
         $employmentCertification = EmploymentCertification::find($highSchoolResume->employment_certification_id);
         $featuredAttribute = FeaturedAttribute::find($highSchoolResume->featured_attribute_id);
 
+        $demonstrated_data = array_filter($activity->demonstrated_data[0]);
+        $leadership_data = array_filter($activity->leadership_data[0]);
+        $athletics_data = array_filter($activity->athletics_data[0]);
+        $activities_data = array_filter($activity->activities_data[0]);
+        $community_service_data = array_filter($activity->community_service_data[0]);
+
+        $significant_data = array_filter($employmentCertification->significant_data[0]);
+        $employment_data = array_filter($employmentCertification->employment_data[0]);
+
+        $featured_skills_data = array_filter($featuredAttribute->featured_skills_data[0]);
+        $featured_awards_data = array_filter($featuredAttribute->featured_awards_data[0]);
+        $featured_languages_data = array_filter($featuredAttribute->featured_languages_data[0]);
+
+        if($demonstrated_data == null && $leadership_data == null && $community_service_data == null && $activities_data == null && $activities_data == null)
+        {
+            $activity = null;
+        }
+
+        if($featured_skills_data == null && $featured_awards_data == null && $featured_languages_data == null)
+        {
+            $featuredAttribute = null;
+        }
+
         $ib_courses = [];
         $ap_courses = [];
 
@@ -218,7 +264,7 @@ class PreviewController extends Controller
             $ap_course = EducationCourse::whereId($ap)->first();
             $ap_courses[] = $ap_course->name;
         }
-        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses"))->render();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data'))->render();
         
         return response()->json(["success" => true, "html" => $html]);
     }

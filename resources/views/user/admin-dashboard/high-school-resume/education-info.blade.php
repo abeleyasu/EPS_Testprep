@@ -30,35 +30,35 @@
                         <h6>Education </h6>
                     </a>
                 </li>
-                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                <li role="presentation" onclick="{{ !isset($education) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                     <a class="nav-link" href="{{ isset($education) && $education != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab">
                         <p>3</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Honors </h6>
                     </a>
                 </li>
-                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                <li role="presentation" onclick="{{ !isset($education) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                     <a class="nav-link" href="{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab">
                         <p>4</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Activities</h6>
                     </a>
                 </li>
-                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
+                <li role="presentation" onclick="{{ !isset($education) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                    <a class="nav-link" href="{{ isset($activity) && $activity != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
                         <p>5</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Employment & <br> Certifications</h6>
                     </a>
                 </li>
-                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
-                    <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
+                <li role="presentation" onclick="{{ !isset($education) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
+                    <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
                         <p>6</p>
                         <i class="fa-solid fa-check "></i>
                         <h6>Featured <br> Attributes</h6>
                     </a>
                 </li>
-                <li role="presentation" onclick="{{ !isset($education) ? "errorMsg(); return false;" : "javascript:void(0)" }}">
+                <li role="presentation" onclick="{{ !isset($education) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
                     <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
                         <p>7</p>
                         <i class="fa-solid fa-check "></i>
@@ -87,32 +87,36 @@
                                         <div class="main-form-input">
                                             <div class="row mb-4">
                                                 <div class="col-lg-6">
-                                                    <div>
+                                                    <div class="select2-container_main">
                                                         <label class="form-label" for="current_grade">Current
                                                             Grade
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control" value="{{ isset($education->current_grade) && $education->current_grade != null ? $education->current_grade : old('current_grade') }}" id="current_grade" name="current_grade" placeholder="Enter Current Grade">
-                                                        </div>
+                                                        <select class="required js-select2" id="current_grade" name="current_grade[]" multiple="multiple">
+                                                            <option {{ isset($education) && $education != null ? ((in_array('1st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
+                                                            <option {{ isset($education) && $education != null ? ((in_array('2st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
+                                                            <option {{ isset($education) && $education != null ? ((in_array('3st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
+                                                            <option {{ isset($education) && $education != null ? ((in_array('4st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="4st grade">4st grade</option>
+                                                            <option {{ isset($education) && $education != null ? ((in_array('5st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="5st grade">5st grade</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-4">
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label class="form-label" for="month">Month
+                                                        <label class="form-label" for="month">Intended Graduation Month
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="month-own form-control" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
-                                                      
+                                                        <input class="month-own form-control" placeholder="Intended Graduation Month" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label class="form-label" for="year">Year
+                                                        <label class="form-label" for="year">Intended Graduation Year
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="year-own form-control" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
-                                                       
+                                                        <input class="year-own form-control" placeholder="Intended Graduation Year Ex:2022" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -121,37 +125,31 @@
                                                             Name <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control" id="high_school_name" value="{{ isset($education->high_school_name) && $education->high_school_name != null ? $education->high_school_name : old('high_school_name') }}" name="high_school_name" placeholder="Enter High School name">
-                                                       
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-4">
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label class="form-label" for="high_school_city">High School
+                                                        <label class="form-label" for="high_school_city">
                                                             City <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control" id="high_school_city" value="{{ isset($education->high_school_city) && $education->high_school_city != null ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
-                                                       
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label class="form-label" for="high_school_state">High School
+                                                        <label class="form-label" for="high_school_state">
                                                             State <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control " id="high_school_state" value="{{ isset($education->high_school_state) && $education->high_school_state != null ? $education->high_school_state : old('high_school_state') }}" name="high_school_state" placeholder="Enter High School State">
-                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label class="form-label" for="high_school_district">High
-                                                            School
-                                                            District <span class="text-danger">*</span>
+                                                        <label class="form-label" for="high_school_district">School District Name <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control" id="high_school_district" value="{{ isset($education->high_school_district) && $education->high_school_district != null ? $education->high_school_district : old('high_school_district') }}" name="high_school_district" placeholder="Enter High School District">
-                                                      
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,7 +157,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                            {{-- <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                     <a class="text-white fw-600 collapsed">College Information</a>
                                 </div>
@@ -218,12 +216,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                                     <a class=" text-white fw-600 collapsed">Grades</a>
                                 </div>
-                                <div id="collapseThree" class="collapse {{ $errors->first('cumulative_gpa_unweighted') || $errors->first('cumulative_gpa_weighted') || $errors->first('cumulative_gpa_unweighted') ? 'show' : '' }}" data-parent=".accordionExample2">
+                                <div id="collapseThree" class="collapse" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
@@ -231,19 +229,18 @@
                                                     <div>
                                                         <label class="form-label" for="cumulative_gpa_unweighted">Cumulative
                                                             GPA
-                                                            (UNWEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
-                                                        
+                                                            (UNWEIGHTED)
+                                                        </label>
+                                                        <input type="number" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
-                                                            (WEIGHTED) <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
-                                                       
-                                                    </div>
+                                                            (WEIGHTED)</label>
+                                                        <input type="number" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                       </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -254,7 +251,7 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                     <a class="text-white fw-600 collapsed">Class Rank</a>
                                 </div>
-                                <div id="collapseFour" class="collapse {{ $errors->first('class_rank') || $errors->first('total_no_of_student') ? 'show' : '' }}" data-parent=".accordionExample2">
+                                <div id="collapseFour" class="collapse" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
@@ -262,20 +259,16 @@
                                                     <div>
                                                         <label class="form-label" for="class_rank">
                                                             Class Rank
-                                                            <span class="text-danger">*</span>
                                                         </label>
                                                         <input type="text" class="form-control" value="{{ isset($education->class_rank) && $education->class_rank != null ? $education->class_rank : old('class_rank') }}" id="class_rank" name="class_rank" placeholder="Enter Class Rank">
-                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="total_no_of_student">
-                                                            Total Number Of Student
-                                                            <span class="text-danger">*</span>
+                                                            Total Number Of Students In Your Class
                                                         </label>
                                                         <input type="number" class="form-control" value="{{ isset($education->total_no_of_student) && $education->total_no_of_student != null ? $education->total_no_of_student : old('total_no_of_student') }}" id="total_no_of_student" name="total_no_of_student" placeholder="Enter Total Number Of Students">
-                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -291,8 +284,8 @@
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
-                                                <div class="col-lg-6 select2-container_main">
-                                                    <div>
+                                                <div class="col-lg-6 ">
+                                                    <div class="select2-container_main">
                                                         <label class="form-label" for="ib_courses">
                                                             IB Courses
                                                             <span class="text-danger">*</span>
@@ -304,11 +297,10 @@
                                                                 @endif
                                                             @endforeach
                                                         </select>
-                                                       
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 select2-container_main">
-                                                    <div>
+                                                <div class="col-lg-6">
+                                                    <div class="select2-container_main">
                                                         <label class="form-label" for="ap_courses">
                                                             AP Courses
                                                             <span class="text-danger">*</span>
@@ -326,16 +318,15 @@
                                             <table class="table course_table">
                                                 <tbody>
                                                     <tr>
+                                                        
                                                         <td>
                                                             <label class="form-label" for="course_name">
-                                                                Course Name
+                                                                Concurrent Course Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                         </td>
-                                                        
                                                         <td>
                                                             <label class="form-label" for="search_college_name">
-
                                                                 Search College Name
                                                                 <span class="text-danger">*</span>
                                                             </label>
@@ -350,12 +341,23 @@
                                                                 <td>
                                                                     <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" id="course_name" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101">
                                                                 </td>
-                                                                <td>
-                                                                    <select class="form-control" name="course_data[{{ $index }}][search_college_name]" id="search_college_name">
-                                                                        <option value="">Search College Name</option>
-                                                                        <option {{ $course_data['search_college_name'] == "first" ? 'selected' : "" }} value="first">First</option>
-                                                                        <option {{ $course_data['search_college_name'] == "second" ? 'selected' : "" }} value="second">Second</option>
-                                                                        <option {{ $course_data['search_college_name'] == "third" ? 'selected' : "" }} value="third">Third</option>
+                                                                <td class="select2-container_main">
+                                                                    <select class="required js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple">
+                                                                        <option
+                                                                                {{ in_array('1st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
+                                                                                value="1st grade">1st grade</option>
+                                                                            <option
+                                                                                {{ in_array('2st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
+                                                                                value="2st grade">2st grade</option>
+                                                                            <option
+                                                                                {{ in_array('3st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
+                                                                                value="3st grade">3st grade</option>
+                                                                            <option
+                                                                                {{ in_array('4st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
+                                                                                value="4st grade">4st grade</option>
+                                                                            <option
+                                                                                {{ in_array('5st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
+                                                                                value="5st grade">5st grade</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -370,12 +372,15 @@
                                                             <td>
                                                                 <input type="text" class="form-control" id="course_name" name="course_data[0][course_name]" placeholder="Ex: College English 101">
                                                             </td>
-                                                            <td>
-                                                                <select class="required form-control" name="course_data[0][search_college_name]">
-                                                                    <option value="">Search College Name</option>
-                                                                    <option {{ old('search_college_name') == "first" ? 'selected' : "" }} value="first">First</option>
-                                                                    <option {{ old('search_college_name') == "second" ? 'selected' : "" }} value="second">Second</option>
-                                                                    <option {{ old('search_college_name') == "third" ? 'selected' : "" }} value="third">Third</option>
+                                                            <td class="select2-container_main">
+                                                                <select class="required js-select2"
+                                                                    id="search_college_name_0" name="course_data[0][search_college_name][]"
+                                                                    multiple="multiple">
+                                                                    <option value="1st grade">1st grade</option>
+                                                                    <option value="2st grade">2st grade</option>
+                                                                    <option value="3st grade">3st grade</option>
+                                                                    <option value="4st grade">4st grade</option>
+                                                                    <option value="5st grade">5st grade</option>
                                                                 </select>
                                                             </td>   
                                                             <td>
@@ -393,8 +398,8 @@
                                                 <tr>
                                                     <td>
                                                         <label class="form-label" for="honors_course_name">
-                                                        Honors Course Name
-                                                        <span class="text-danger">*</span>
+                                                            Honors Course Name
+                                                            <span class="text-danger">*</span>
                                                         </label>
                                                     </td>
                                                     <td>
@@ -404,8 +409,26 @@
                                                 @if (!empty($education->honor_course_data))
                                                     @foreach ($education->honor_course_data as $index => $honor_course_data)
                                                         <tr class="honor_course_data_table_row {{ $loop->first ? '' : 'remove_honors_courses' }}"> 
-                                                            <td>                                                        
-                                                                <input type="text" value="{{ $honor_course_data['course_data'] }}" class="form-control" name="honor_course_data[{{ $index }}][course_data]" placeholder="Ex: College English 101">
+                                                            <td class="select2-container_main">                                                        
+                                                                <select class="required js-select2"
+                                                                    id="honor_course_data_{{ $index }}" name="honor_course_data[{{ $index }}][course_data][]"
+                                                                    multiple="multiple">
+                                                                    <option
+                                                                        {{ in_array('1st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
+                                                                        value="1st grade">1st grade</option>
+                                                                    <option
+                                                                        {{ in_array('2st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
+                                                                        value="2st grade">2st grade</option>
+                                                                    <option
+                                                                        {{ in_array('3st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
+                                                                        value="3st grade">3st grade</option>
+                                                                    <option
+                                                                        {{ in_array('4st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
+                                                                        value="4st grade">4st grade</option>
+                                                                    <option
+                                                                        {{ in_array('5st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
+                                                                        value="5st grade">5st grade</option>
+                                                                </select>
                                                             </td>
                                                             <td>
                                                                 <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -416,8 +439,16 @@
                                                     @endforeach
                                                 @else
                                                     <tr class="honor_course_data_table_row"> 
-                                                        <td>                                                        
-                                                            <input type="text" class="form-control" value="{{ old('honors_course_name') }}" id="honors_course_name" name="honor_course_data[0][course_data]" placeholder="Ex: College English 101">
+                                                        <td class="select2-container_main">                                                        
+                                                            <select class="required js-select2"
+                                                                id="honor_course_data_0" name="honor_course_data[0][course_data][]"
+                                                                multiple="multiple">
+                                                                <option value="1st grade">1st grade</option>
+                                                                <option value="2st grade">2st grade</option>
+                                                                <option value="3st grade">3st grade</option>
+                                                                <option value="4st grade">4st grade</option>
+                                                                <option value="5st grade">5st grade</option>
+                                                            </select>
                                                         </td>
                                                         <td>
                                                             <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -465,9 +496,14 @@
                                                     </tr>
                                                     @if(!empty($education->testing_data))
                                                         @foreach($education->testing_data as $index => $testing_data)
-                                                            <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
-                                                                <td>
-                                                                    <input type="text" class="form-control" value="{{ $testing_data['name_of_test'] }}" id="name_of_test" name="testing_data[{{ $index }}][name_of_test]" placeholder="Enter Name of test">
+                                                            <tr class="testing_table_row select2-container_main {{ $loop->first ? '' : 'remove_testing_data' }}">
+                                                                <td class="select2-container_main">
+                                                                    <select class="required form-select" id="name_of_test" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
+                                                                        <option value="">Select Name Of Test</option>
+                                                                        <option value="PSAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>PSAT</option>
+                                                                        <option value="SAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>SAT</option>
+                                                                        <option value="ACT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td>                                                            
                                                                     <input type="text" class="form-control" value="{{ $testing_data['results_score'] }}" id="results_score" name="testing_data[{{ $index }}][results_score]" placeholder="Enter Results score">
@@ -485,7 +521,12 @@
                                                     @else
                                                         <tr class="testing_table_row">
                                                             <td>
-                                                                <input type="text" class="form-control" value="{{ old('name_of_test') }}" id="name_of_test" name="testing_data[0][name_of_test]" placeholder="Enter Name of test">
+                                                                <select class="required form-select" id="name_of_test" name="testing_data[0][name_of_test]" style="width: 100%;">
+                                                                    <option value="">Select name of test</option>
+                                                                    <option value="PSAT">PSAT</option>
+                                                                    <option value="SAT">SAT</option>
+                                                                    <option value="ACT">ACT</option>
+                                                                </select>
                                                             </td>
                                                             <td>                                                            
                                                                 <input type="text" class="form-control" value="{{ old('results_score') }}" id="results_score" name="testing_data[0][results_score]" placeholder="Enter Results score">
@@ -510,7 +551,7 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
                                     <a class=" text-white fw-600 collapsed">Future Plans</a>
                                 </div>
-                                <div id="collapseSeven" class="collapse {{ $errors->first('intended_college_major') || $errors->first('intended_college_minor') ? 'show' : '' }}" aria-labelledby="headingOne" data-parent=".accordionExample2">
+                                <div id="collapseSeven" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <div class="row mb-4">
@@ -518,7 +559,6 @@
                                                     <div>
                                                         <label class="form-label" for="intended_college_major">
                                                             Intended College Major
-                                                            <span class="text-danger">*</span>
                                                         </label>
                                                         <select class="form-select" id="intended_college_major" name="intended_college_major" style="width: 100%;">
                                                             <option value="">Select Intended College Major</option>
@@ -526,14 +566,12 @@
                                                             <option value="Demo" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
                                                             <option value="Temp" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
-                                                      
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div>
                                                         <label class="form-label" for="intended_college_minor">
                                                             Intended College Minor
-                                                            <span class="text-danger">*</span>
                                                         </label>
                                                         <select class="form-select " id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
                                                             <option value="">Select Intended College Minor</option>
@@ -541,7 +579,6 @@
                                                             <option value="Demo" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
                                                             <option value="Temp" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
                                                         </select>
-                                                       
                                                     </div>
                                                 </div>
                                             </div>
@@ -585,6 +622,11 @@
             border-color: #f27474;
             color: #f27474;
         }
+
+        .select2-container_main .error {
+            position: absolute;
+            top: 51px;
+        }
        
     </style>
 @endsection
@@ -598,12 +640,7 @@
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
-    
     <script>    
-        // var courseData = [];
-        // var honorCourseData = [];
-        // var testingData = [];
-
         $('.year-own').datepicker({
             minViewMode: 2,
             format: 'yyyy'
@@ -616,6 +653,10 @@
         });
 
         let total_testing_count = "{{ isset($education->testing_data) ? count($education->testing_data) : 0 }}";
+
+        let total_search_college_name_count = "{{ isset($education->course_data) && $education->course_data != null ? count($education->course_data) : 0 }}";
+
+        let total_honor_course_count = "{{ isset($education->honor_course_data) && $education->honor_course_data != null ? count($education->honor_course_data) : 0 }}";
 
         $(document).ready(() => {
             if(total_testing_count > 0) {
@@ -632,6 +673,30 @@
                 });
             }
 
+            if (total_search_college_name_count > 0) {
+                for (let index = 0; index < total_search_college_name_count; index++) {
+                    $(`#search_college_name_${index}`).select2({
+                        tags: true,
+                    });
+                }
+            } else {
+                $("#search_college_name_0").select2({
+                    tags: true,
+                });
+            }
+
+            if (total_honor_course_count > 0) {
+                for (let index = 0; index < total_honor_course_count; index++) {
+                    $(`#honor_course_data_${index}`).select2({
+                        tags: true,
+                    });
+                }
+            } else {
+                $("#honor_course_data_0").select2({
+                    tags: true,
+                });
+            }
+
             $(".select").select2({
                 tags: true,
             });
@@ -640,7 +705,6 @@
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
-            // console.log(validations_rules, validations_messages);
             
             $("#education_form").validate({
                 rules: validations_rules,
@@ -650,16 +714,17 @@
                     form.submit();
                 },
                 errorPlacement: function(error, element) {
-                    console.log(error, element);
                     var placement = $(element).data('error');
                     if (placement) {
                         $(placement).append(error)
                     } else {
                         error.insertAfter(element);
+                        $(element).parents("div.select2-container_main").css("margin-bottom",'20px');
                         element.parents().find('.collapse').addClass('show');
                     }
-                }
-            });
+                },
+                
+            })
 
             let course_data = $('input[name^="course_data"]');
 
@@ -676,7 +741,6 @@
                     required: true,
                     messages: {
                         required: "Search college name field is required"
-                        
                     }
                 });
             });
@@ -720,19 +784,23 @@
             });
         });
 
-        $(document).on('change', '#is_graduate', function(){
-            if(this.checked){
-                $('#grade_level').attr('disabled',true);
-                $('#college_name').attr('disabled',true);
-                $('#college_city').attr('disabled',true);
-                $('#college_state').attr('disabled',true);
-            } else {
-                $('#grade_level').attr('disabled',false);
-                $('#college_name').attr('disabled',false);
-                $('#college_city').attr('disabled',false);
-                $('#college_state').attr('disabled',false);
-            }
+        $("#current_grade").select2({
+            tags: true,
         });
+
+        // $(document).on('change', '#is_graduate', function(){
+        //     if(this.checked){
+        //         $('#grade_level').attr('disabled',true);
+        //         $('#college_name').attr('disabled',true);
+        //         $('#college_city').attr('disabled',true);
+        //         $('#college_state').attr('disabled',true);
+        //     } else {
+        //         $('#grade_level').attr('disabled',false);
+        //         $('#college_name').attr('disabled',false);
+        //         $('#college_city').attr('disabled',false);
+        //         $('#college_state').attr('disabled',false);
+        //     }
+        // });
         
         function errorMsg()
         {

@@ -159,6 +159,15 @@
                  ?>
                  <script>
                   jQuery(document).ready(function(){
+
+                    function removeTags(str) {
+                      if ((str===null) || (str===''))
+                          return false;
+                      else
+                          str = str.toString();
+                            
+                      return str.replace( /(<([^>]+)>)/ig, '');
+                    }
                     /**
                      * progress bar for main test
                      */
@@ -169,11 +178,11 @@
                     /** END */
                     jQuery('.sentence-structure').click(function(){
                         var get_question_type = jQuery(this).data('question-type');
-                        var question_type_description = jQuery(this).data('question-type-desc');
-                        var question_type_lesson = jQuery(this).data('question-lesson');
-                        var question_type_strategies = jQuery(this).data('question-strat');
-                        var question_type_identification_methods = jQuery(this).data('question-methods');
-                        var question_type_identification_activity = jQuery(this).data('question-activity');
+                        var question_type_description = removeTags(jQuery(this).data('question-type-desc'));
+                        var question_type_lesson = removeTags(jQuery(this).data('question-lesson'));
+                        var question_type_strategies = removeTags(jQuery(this).data('question-strat'));
+                        var question_type_identification_methods = removeTags(jQuery(this).data('question-methods'));
+                        var question_type_identification_activity = removeTags(jQuery(this).data('question-activity'));
 
                         jQuery(".set_question_type").text(get_question_type);
 

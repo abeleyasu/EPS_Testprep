@@ -47,6 +47,12 @@ function addCourseData(data){
     let $count = $(data).attr("data-count");
         $count++;
 
+        $(document).ready(() => {
+            $(`#search_college_name_${$count}`).select2({
+                tags: true,
+            });
+        })
+
     let value = $('.course_table tbody tr:nth-last-child(1) td input').val();
     if (value == '') {
         toastr.error('Please Fill up correct value in course data.');
@@ -56,12 +62,14 @@ function addCourseData(data){
         html += `<td>`;
         html += `<input type="text" class="form-control" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
         html += `</td>`;
-        html += `<td>`;
-        html += `<select class="required form-control" name="course_data[${$count}][search_college_name]" id="search_college_name">`;
+        html += `<td class="select2-container_main">`;
+        html += `<select class="required js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}">`;
         html += `<option value="">Search College Name</option>`;
-        html += `<option value="first">First</option>`;
-        html += `<option value="second">Second</option>`;
-        html += `<option value="third">Third</option>`;
+        html += `<option value="1st grade">1st grade</option>`;
+        html += `<option value="2st grade">2st grade</option>`;
+        html += `<option value="3st grade">3st grade</option>`;
+        html += `<option value="4st grade">4st grade</option>`;
+        html += `<option value="5st grade">5st grade</option>`;
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -106,14 +114,26 @@ function addHonorCourseData(data){
     let $count = $(data).attr("data-count");
         $count++;
 
+        $(document).ready(() => {
+            $(`#honor_course_data_${$count}`).select2({
+                tags: true,
+            });
+        })
+
     let value = $('.honors_table tr:nth-last-child(1) td input').val();
     if (value == '') {
         toastr.error('Please Fill up leatest Honors data field');
     } else {
         let html =``;
             html += `<tr class="honor_course_data_table_row remove_honors_courses"> `;
-            html += `<td>                                                        `;
-            html += `<input type="text" class="form-control" name="honor_course_data[${$count}][course_data]" placeholder="Ex: College English 101">`;
+            html += `<td class="select2-container_main">                                                        `;
+            html += `<select class="required js-select2 select" multiple="multiple" name="honor_course_data[${$count}][course_data][]" id="honor_course_data_${$count}">`;
+            html += `<option value="1st grade">1st grade</option>`;
+            html += `<option value="2st grade">2st grade</option>`;
+            html += `<option value="3st grade">3st grade</option>`;
+            html += `<option value="4st grade">4st grade</option>`;
+            html += `<option value="5st grade">5st grade</option>`;
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -163,7 +183,12 @@ function addTestingData(data){
         let html =``;
             html += `<tr class="testing_table_row remove_testing_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control"  name="testing_data[${$count}][name_of_test]" placeholder="Enter Name of test">`;
+            html += `<select class="required form-select" id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
+            html += `<option value="">Select name of test</option>`;
+            html += `<option value="PSAT">PSAT</option>`;
+            html += `<option value="SAT">SAT</option>`;
+            html += `<option value="ACT">ACT</option>`;
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control"  name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
@@ -234,18 +259,17 @@ function addHonorsData(data){
         let html = ``;
             html += `<tr class="honors_data_table_row remove_honors_data">`;
             html += `<td>`;
-            html += `<input type="number" class="form-control"  name="honors_data[${$count}][position]" placeholder="Enter position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" name="honors_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
             html += `</td>`;
             html += `<td class="select2-container_main">`;
             html += `<select class="required js-select2" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<option value="9th">9th</option>`;
+            html += `<option value="10th">10th</option>`;
+            html += `<option value="11th">11th</option>`;
+            html += `<option value="12th">12th</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -321,18 +345,17 @@ function addDemonstratedData(data) {
         let html = ``;
             html += `<tr class="demonstrated_data_table_row remove_demonstrated_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="position" name="demonstrated_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="position" name="demonstrated_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="interest" name="demonstrated_data[${$count}][interest]" placeholder="Enter Interest">`;
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" id="demonstrated_select_${$count}" name="demonstrated_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<option value="9th">9th</option>`;
+            html += `<option value="10th">10th</option>`;
+            html += `<option value="11th">11th</option>`;
+            html += `<option value="12th">12th</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -378,7 +401,7 @@ function addLeadershipData(data) {
             html += `<input type="text" class="form-control" id="leadership_status" name="leadership_data[${$count}][status]" placeholder="Enter Status">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="leadership_position" name="leadership_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="leadership_position" name="leadership_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="leadership_organization" name="leadership_data[${$count}][organization]" placeholder="Enter Organization">`;
@@ -388,11 +411,10 @@ function addLeadershipData(data) {
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" id="leadership_select_${$count}" name="leadership_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<option value="9th">9th</option>`;
+            html += `<option value="10th">10th</option>`;
+            html += `<option value="11th">11th</option>`;
+            html += `<option value="12th">12th</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -430,18 +452,17 @@ function addActivityData(data) {
         let html = ``;
             html += `<tr class="activity_data_table_row remove_activity_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="activity_position" name="activities_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="activity_position" name="activities_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="activity" name="activities_data[${$count}][activity]" placeholder="Enter Activity">`;
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<option value="9th">9th</option>`;
+            html += `<option value="10th">10th</option>`;
+            html += `<option value="11th">11th</option>`;
+            html += `<option value="12th">12th</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -488,18 +509,17 @@ function addAthleticsData(data){
         let html = ``;
         html += `<tr class="athletics_data_table_row remove_athletics_data">`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="athletics_positions" name="athletics_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+        html += `<input type="text" class="form-control" id="athletics_positions" name="athletics_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
         html += `<input type="text" class="form-control" id="athletics_activity" name="athletics_data[${$count}][activity]" placeholder="Enter Activity">`;
         html += `</td>`;
         html += `<td>`;
         html += `<select class="js-select2 select" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;
-        html += `<option value="1st grade">1st grade</option>`;
-        html += `<option value="2st grade">2st grade</option>`;
-        html += `<option value="3st grade">3st grade</option>`;
-        html += `<option value="4st grade">4st grade</option>`;
-        html += `<option value="5st grade">5st grade</option>`;
+        html += `<option value="9th">9th</option>`;
+        html += `<option value="10th">10th</option>`;
+        html += `<option value="11th">11th</option>`;
+        html += `<option value="12th">12th</option>`;
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -555,11 +575,10 @@ function addCommunityData(data){
         html += `</td>`;
         html += `<td>`;
         html += `<select class="js-select2 select" id="community_select_${$count}" name="community_service_data[${$count}][grade][]" multiple="multiple">`;
-        html += `<option value="1st grade">1st grade</option>`;
-        html += `<option value="2st grade">2st grade</option>`;
-        html += `<option value="3st grade">3st grade</option>`;
-        html += `<option value="4st grade">4st grade</option>`;
-        html += `<option value="5st grade">5st grade</option>`;
+        html += `<option value="9th">9th</option>`;
+        html += `<option value="10th">10th</option>`;
+        html += `<option value="11th">11th</option>`;
+        html += `<option value="12th">12th</option>`;
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -612,11 +631,10 @@ function addEmploymentData(data){
         html += `</td>`;
         html += `<td>`;
         html += `<select class="js-select2 select" id="employment_select_${$count}" name="employment_data[${$count}][grade][]" multiple="multiple">`;
-        html += `<option value="1st grade">1st grade</option>`;
-        html += `<option value="2st grade">2st grade</option>`;
-        html += `<option value="3st grade">3st grade</option>`;
-        html += `<option value="4st grade">4st grade</option>`;
-        html += `<option value="5st grade">5st grade</option>`;
+        html += `<option value="9th">9th</option>`;
+        html += `<option value="10th">10th</option>`;
+        html += `<option value="11th">11th</option>`;
+        html += `<option value="12th">12th</option>`;
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -662,16 +680,18 @@ function addSignificantData(data)
     }else{
         let html = ``;
             html += `<tr class="significant_data_table_row remove_significant_data">`;
+            html += `<td>                                                               `;
+            html += `<input type="text" class="form-control" id="name_of_company" name="significant_data[${$count}][name_of_company]" placeholder="Ex: Starbucks">`;
+            html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="responsibility_interest" name="significant_data[${$count}][interest]" placeholder="Enter Responsibility/interest">`;
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" id="significant_select_${$count}" name="significant_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<option value="9th">9th</option>`;
+            html += `<option value="10th">10th</option>`;
+            html += `<option value="11th">11th</option>`;
+            html += `<option value="12th">12th</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -704,13 +724,13 @@ function addFeaturedSkillData(data) {
     let value = $('.featured_skill_table tbody tr:nth-last-child(1) td input').val();
 
     if (value == '') {
-        toastr.error('Please Fill up featured skill data field');
+        toastr.error('Please Fill up featured qualities field');
     }else{
 
         let html = ``;
             html += `<tr class="featured_skill_data_table_row remove_featured_skill_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="featured_skill" name="featured_skills_data[${$count}][skill]" placeholder="Enter Featured Skill">`;
+            html += `<input type="text" class="form-control" id="featured_skill" name="featured_skills_data[${$count}][skill]" placeholder="Enter Featured Qualities">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -804,14 +824,3 @@ $("form").on("focus", "input[type=number]", function (e) {
 $("form").on("blur", "input[type=number]", function (e) {
     $(this).off("wheel.disableScroll");
 });
-
-function printDiv(divName) {
-    var printContents = document.getElementById(divName).innerHTML;
-    var originalContents = document.body.innerHTML;
-
-    document.body.innerHTML = printContents;
-
-    window.print();
-
-    document.body.innerHTML = originalContents;
-}
