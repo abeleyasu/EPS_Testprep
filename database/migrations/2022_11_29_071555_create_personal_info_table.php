@@ -16,20 +16,21 @@ return new class extends Migration
         if (!Schema::hasTable('personal_info')) {
             Schema::create('personal_info', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_id');
-                $table->string('first_name');
-                $table->string('middle_name');
-                $table->string('last_name');
-                $table->string('street_address_one');
-                $table->string('street_address_two');
-                $table->string('city');
-                $table->string('state');
-                $table->integer('zip_code');
-                $table->string('cell_phone');
-                $table->string('email');
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->string('first_name')->nullable();
+                $table->string('middle_name')->nullable();
+                $table->string('last_name')->nullable();
+                $table->string('nick_name')->nullable();
+                $table->string('street_address_one')->nullable();
+                $table->string('apartment_no')->nullable();
+                $table->string('city')->nullable();
+                $table->string('state')->nullable();
+                $table->integer('zip_code')->nullable();
+                $table->string('cell_phone')->nullable();
+                $table->string('email')->nullable();
                 $table->longText('social_links')->nullable();
-                $table->string('parent_email_one');
-                $table->string('parent_email_two');
+                $table->string('parent_email_one')->nullable();
+                $table->string('parent_email_two')->nullable();
                 $table->tinyInteger('is_draft')->default(0)->comment('0 => draft, 1 => published');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();

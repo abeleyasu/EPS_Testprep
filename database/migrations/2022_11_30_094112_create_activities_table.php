@@ -16,7 +16,7 @@ return new class extends Migration
         if (!Schema::hasTable('activities')) {
             Schema::create('activities', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->longText('demonstrated_data')->nullable();
                 $table->longText('leadership_data')->nullable();
                 $table->longText('activities_data')->nullable();
