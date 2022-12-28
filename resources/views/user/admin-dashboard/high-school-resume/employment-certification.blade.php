@@ -131,10 +131,9 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="employment_select_{{ $index }}"
                                                                             name="employment_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("9th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="9th">9th</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("10th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="10th">10th</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("11th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="11th">11th</option>
-                                                                            <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array("12th" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array($grade->id ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -169,10 +168,9 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="employment_select_0"
                                                                         name="employment_data[0][grade][]" multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -272,10 +270,9 @@
                                                                             id="significant_select_{{ $index }}"
                                                                             name="significant_data[{{ $index }}][grade][]"
                                                                             multiple="multiple">
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("9th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="9th">9th</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("10th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="10th">10th</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("11th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="11th">11th</option>
-                                                                            <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array("12th" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array($grade->id ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>                                                               
@@ -322,10 +319,9 @@
                                                                         id="significant_select_0"
                                                                         name="significant_data[0][grade][]"
                                                                         multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>                                                               
@@ -414,11 +410,13 @@
                 for (let index = 0; index < total_employment_count; index++) {
                     $(`#employment_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select employment grade"
                     });
                 }
             } else {
                 $("#employment_select_0").select2({
                     tags: true,
+                    placeholder : "Select employment grade"
                 });
             }
 
@@ -426,11 +424,13 @@
                 for (let index = 0; index < total_significant_count; index++) {
                     $(`#significant_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select significant grade"
                     });
                 }
             } else {
                 $("#significant_select_0").select2({
                     tags: true,
+                    placeholder : "Select significant grade"
                 });
             }
 

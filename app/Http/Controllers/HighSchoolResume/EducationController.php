@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EducationRequest;
+use App\Models\CollegeInformation;
 use App\Models\EducationCourse;
 use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\Activity;
@@ -36,31 +37,36 @@ class EducationController extends Controller
             $activity = $resumedata->activity; 
             $employmentCertification = $resumedata->employmentCertification; 
             $featuredAttribute = $resumedata->featuredAttribute;
-        }else{
-
+        } else {
             $user_id = Auth::id();
-    
             $education = Education::whereUserId($user_id)->where('is_draft', 0)->first();
             $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
             $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
-    
         }
         $courses_list = EducationCourse::all();
+        $colleges_list = CollegeInformation::all();
 
         $validations_rules = Config::get('validation.educations.rules');
         $validations_messages = Config::get('validation.educations.messages');
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education','honor','activity','employmentCertification','featuredAttribute', 'courses_list','details','resume_id', 'validations_rules', 'validations_messages'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education','honor','activity','employmentCertification','featuredAttribute', 'courses_list','details','resume_id', 'validations_rules', 'validations_messages', 'colleges_list'));
     }
 
     public function store(EducationRequest $request)
     {
         $data = $request->validated();
-        // dd($data['testing_data'][0]['name_of_test']);
-
+        
+        if(!empty($request->intended_college_major)){
+            $data['intended_college_major'] = json_encode($request->intended_college_major);
+        }
+        
+        if(!empty($request->intended_college_minor)){
+            $data['intended_college_minor'] = json_encode($request->intended_college_minor);
+        }
+        
         if(!empty($request->current_grade)){
             $data['current_grade'] = json_encode($request->current_grade);
         }
@@ -96,8 +102,21 @@ class EducationController extends Controller
     public function update(EducationRequest $request, Education $education)
     {
         $data = $request->validated();
+
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         
+        if(!empty($request->intended_college_major)){
+            $data['intended_college_major'] = json_encode($request->intended_college_major);
+        }
+        
+        if(!empty($request->intended_college_minor)){
+            $data['intended_college_minor'] = json_encode($request->intended_college_minor);
+        }
+
+        if(!empty($request->current_grade)){
+            $data['current_grade'] = json_encode($request->current_grade);
+        }
+
         if(!empty($request->course_data)){
             $data['course_data'] = array_values($request->course_data);
         }

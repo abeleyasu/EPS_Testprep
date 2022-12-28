@@ -52,6 +52,10 @@ class FeaturedAttributeController extends Controller
             $data['featured_languages_data'] = array_values($request->featured_languages_data);
         }
 
+        if(!empty($request->dual_citizenship_data)){
+            $data['dual_citizenship_data'] = array_values($request->dual_citizenship_data);
+        }
+
         $data['user_id'] = Auth::id();
 
         if (!empty($data)) {
@@ -75,6 +79,10 @@ class FeaturedAttributeController extends Controller
 
         if(!empty($request->featured_languages_data)){
             $data['featured_languages_data'] = array_values($request->featured_languages_data);
+        }
+
+        if(!empty($request->dual_citizenship_data)){
+            $data['dual_citizenship_data'] = array_values($request->dual_citizenship_data);
         }
 
         if (!empty($data)) {

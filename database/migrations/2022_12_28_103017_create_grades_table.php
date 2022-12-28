@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('featured_attributes', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable()->change();
-            $table->longText('dual_citizenship_data')->nullable()->after('featured_languages_data');
+        Schema::create('grades', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('featured_attributes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('grades');
     }
 };

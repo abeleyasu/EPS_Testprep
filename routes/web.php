@@ -16,9 +16,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CareerExplorationController;
 use App\Http\Controllers\CollegeApplicationDeadlineController;
+use App\Http\Controllers\CollegeInformationController;
 use App\Http\Controllers\CourseManagement\MilestoneController;
 use App\Http\Controllers\CourseManagement\CourseController;
 use App\Http\Controllers\EducationCourseController;
+use App\Http\Controllers\GradesController;
 use App\Http\Controllers\HighSchoolResume\ActivityController;
 use App\Http\Controllers\HighSchoolResume\EducationController;
 use App\Http\Controllers\HighSchoolResume\EmploymentCertificationController;
@@ -230,6 +232,9 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
         Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
         Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
     });
+
+    Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');
+    Route::get('/grades/list', [GradesController::class, 'getGradeList'])->name('gradesList');
     
     Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
 

@@ -226,7 +226,7 @@
                                                                 <span>Job </span>
                                                                 {{ $employment_data['job_title'] }}
                                                                 <span> with </span>
-                                                                {{ isset($employment_data['grade']) && $employment_data['grade'] != null ? (implode(',', $employment_data['grade'])) : ''}}
+                                                                {{ \App\Helpers\Helper::getGradeByIdArray($employment_data['grade']) }}
                                                             </li>
                                                         @endforeach
 
@@ -251,7 +251,7 @@
                                                                     <span>Responsibility or interest :</span>
                                                                     {{ $significant_data['interest'] }}
                                                                     <span> with </span>
-                                                                    {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (implode(',', $significant_data['grade'])) : '' }}
+                                                                    {{ \App\Helpers\Helper::getGradeByIdArray($significant_data['grade']) }}
                                                                 </li>
                                                             @endforeach
 
@@ -290,7 +290,7 @@
                                                                     @foreach ($honor->honors_data as $honor_data)
                                                                         <li class="list-type">
                                                                             {{ $honor_data['honor_achievement_award'] }} /
-                                                                            {{ implode(',', $honor_data['grade']) }}
+                                                                            {{ \App\Helpers\Helper::getGradeByIdArray($honor_data['grade']) }}
                                                                         </li>
                                                                     @endforeach
                                                                 </ul>
@@ -409,7 +409,7 @@
                                                                         @foreach ($education->course_data as $course_data)
                                                                             <li class="list-type">
                                                                                 {{ $course_data['course_name'] }} /
-                                                                                {{ implode(',', $course_data['search_college_name']) }}
+                                                                                {{ \App\Helpers\Helper::getCollegeNameByIdArray($course_data['search_college_name']) }}
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>
@@ -437,7 +437,7 @@
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
                                                                         <li class="list-type">
-                                                                            {{ $education->intended_college_major }}
+                                                                            {{ implode(',', json_decode($education->intended_college_major)) }}
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -449,7 +449,7 @@
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
                                                                         <li class="list-type">
-                                                                            {{ $education->intended_college_minor }}
+                                                                            {{ implode(',', json_decode($education->intended_college_minor)) }}
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -485,7 +485,7 @@
                                                                     <ul class="list_items">
                                                                         @foreach ($activity->demonstrated_data as $demonstrated_data)
                                                                             <li class="list-type">
-                                                                                {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ?  (implode(',', $demonstrated_data['grade'])) : '' }}
+                                                                                {{ \App\Helpers\Helper::getGradeByIdArray($demonstrated_data['grade']) }}
                                                                                 /
                                                                                 {{ $demonstrated_data['location'] }} /
                                                                                 {{ $demonstrated_data['details'] }}

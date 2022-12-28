@@ -262,7 +262,6 @@
                                                                 value="{{ isset($personal_info->cell_phone) && $personal_info->cell_phone != null  ? $personal_info->cell_phone : '' }}"
                                                                 id="cell_phone" name="cell_phone"
                                                                 placeholder="Enter cell phone no">
-                                                                <span id="cell_phone_error" class="text-danger"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -382,6 +381,7 @@
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/jquery-validation/additional-methods.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
@@ -400,30 +400,9 @@
             });
         }
 
-        
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
-
-            $("#cell_phone").keypress(function(){
-
-                let value = $('#cell_phone').val();
-                
-                let pettern = /^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?\d{3}[\s\-]?\d{3}$/;
-                
-                var check = value.match(pettern);
-                    
-                if(check == null){
-                    $('#cell_phone_error').parents().find('#collapseThree').addClass('show');
-                    $('#cell_phone_error').parents().find('#cell_phone').addClass('is-invalid');
-                    $('#cell_phone_error').html('Invalid number format');
-                }else{
-                    $('#cell_phone_error').parents().find('#cell_phone').removeClass('is-invalid');
-
-                    $('#cell_phone_error').html('');
-
-                }
-            });
 
             $("#personal_info_form").validate({
                 rules: validations_rules,
@@ -441,6 +420,17 @@
                         element.parents().find('.collapse').addClass('show');
                     }
                 }
+            });
+
+            let social_links = $('input[name^="social_links"]');
+
+            social_links.filter('input[name$="[link]"]').each(function() {
+                $(this).rules("add", {
+                    url: true,
+                    messages: {
+                        "url": "Social link must be a valid url"
+                    }
+                });
             });
         });
 

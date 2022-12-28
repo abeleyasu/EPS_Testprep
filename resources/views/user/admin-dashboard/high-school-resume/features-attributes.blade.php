@@ -110,7 +110,7 @@
                                                                 <tr class="featured_skill_data_table_row {{ $loop->first ? '' : 'remove_featured_skill_data' }}">
                                                                     <td>
                                                                         <input type="text" class="form-control" value="{{ $featured_skills_data['skill'] }}" id="featured_skill"
-                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Qualities">
+                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Quality">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -124,7 +124,7 @@
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control" id="featured_skill"
-                                                                        name="featured_skills_data[0][skill]" placeholder="Enter Featured Skill">
+                                                                        name="featured_skills_data[0][skill]" placeholder="Enter Featured Quality">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -267,6 +267,66 @@
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                         <i data-count="0" onclick="addFeaturedLanguageData(this)" class="fa-solid fa-plus"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                    <div class="block-header block-header-tab" type="button" data-toggle="collapse"
+                                        data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                        <a class="text-white fw-600 collapsed">Dual Citizenship</a>
+                                    </div>
+                                    <div id="collapseFour"
+                                        class="collapse"
+                                        aria-labelledby="headingOne" data-parent=".accordionExample2">
+                                        <div class="block-content">
+                                            <div class="main-form-input">
+                                                <table class="table dual_citizenship_table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <label class="form-label" for="countries">
+                                                                    Countries
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="form-label">Action</label><br>
+                                                            </td>
+                                                        </tr>
+                                                        @if(!empty($featuredAttribute->dual_citizenship_data))
+                                                            @foreach ($featuredAttribute->dual_citizenship_data as $index => $dual_citizenship)   
+                                                                <tr class="dual_citizenship_table_row {{ $loop->first ? '' : 'remove_dual_citizenship_data' }}">
+                                                                    <td>
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            value="{{ $dual_citizenship['country'] }}"
+                                                                            id="countries" name="dual_citizenship_data[{{ $index }}][country]"
+                                                                            placeholder="Ex: Canada">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                            <i data-count="{{ count($featuredAttribute->dual_citizenship_data) != 0 ? count($featuredAttribute->dual_citizenship_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addDualCitizenShipData(this)' : 'removeDualCitizenShipData(this)' }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @else    
+                                                            <tr class="dual_citizenship_table_row">
+                                                                <td>
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="countries" name="dual_citizenship_data[0][country]"
+                                                                        placeholder="Ex: Canada">
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                        <i data-count="0" onclick="addDualCitizenShipData(this)" class="fa-solid fa-plus"></i>
                                                                     </a>
                                                                 </td>
                                                             </tr>

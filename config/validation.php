@@ -23,10 +23,14 @@ return [
             ],
             "cell_phone" => [
                 "required" => true,
+                "phoneUS" => true
             ], 
             "email" => [
                 "required" => true,
                 "email" => true
+            ],
+            "social_links[*][link]" => [
+                "url" => true
             ],
             "parent_email_one" => [
                 "required" => true,
@@ -45,11 +49,13 @@ return [
             "zip_code" => "Zip code field is required",
             "cell_phone" => [
                 "required" => "Cell phone field is required",
+                "phoneUS" => "Cell Phone format is invalid"
             ],
             "email" => [
                 "required" => "Email field is required",
                 "email" => "Email must be a valid email"
             ],
+            "social_links[*][link]" => "Social link must be a valid url",
             "parent_email_one" => [
                 "required" => "Parent email one field is required",
                 "email" => "Parent email one must be a valid email"
@@ -81,12 +87,10 @@ return [
                 "required" => true,
             ],
             "cumulative_gpa_unweighted" => [
-                "min" => 0,
-                "max" => 4
+                "range" => [0,4]
             ],
             "cumulative_gpa_weighted" => [
-                "min" => 0,
-                "max" => 5
+                "range" => [0,5]
             ],
             "ib_courses[]" => [
                 "required" => true,
@@ -122,12 +126,11 @@ return [
             "high_school_state" => "High school state field is required",
             "high_school_district" => "High school district field is required",
             "cumulative_gpa_unweighted" =>[
-                "min" => "Cumulative unweighted GPA must be greater than zero",
-                "max" => "Cumulative unweighted GPA must be less than four",
+                "range" => "Unweighted GPA must between 0 and 4"
             ],
             "cumulative_gpa_weighted" =>[
-                "min" => "Cumulative weighted GPA must be greater than zero",
-                "max" => "Cumulative weighted GPA must be less than five",
+                "range" => "Weighted GPA must between 0 and 5"
+
             ],  
             "ib_courses[]" => "Ib courses field is required",
             "ap_courses[]" => "Ap courses field is required",

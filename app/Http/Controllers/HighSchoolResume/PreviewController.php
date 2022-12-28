@@ -59,13 +59,14 @@ class PreviewController extends Controller
         $featured_skills_data = array_filter($featuredAttribute->featured_skills_data[0]);
         $featured_awards_data = array_filter($featuredAttribute->featured_awards_data[0]);
         $featured_languages_data = array_filter($featuredAttribute->featured_languages_data[0]);
+        $dual_citizenship_data = array_filter($featuredAttribute->dual_citizenship_data[0]);
 
         if($demonstrated_data == null && $leadership_data == null && $community_service_data == null && $activities_data == null && $activities_data == null)
         {
             $activity = null;
         }
 
-        if($featured_skills_data == null && $featured_awards_data == null && $featured_languages_data == null)
+        if($featured_skills_data == null && $featured_awards_data == null && $featured_languages_data == null && $dual_citizenship_data == null)
         {
             $featuredAttribute = null;
         }
@@ -81,7 +82,7 @@ class PreviewController extends Controller
             $ap_courses[] = $ap_course->name;
         }
 
-        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data'));
+        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data'));
     }
 
     public function resumePreview()
@@ -242,13 +243,14 @@ class PreviewController extends Controller
         $featured_skills_data = array_filter($featuredAttribute->featured_skills_data[0]);
         $featured_awards_data = array_filter($featuredAttribute->featured_awards_data[0]);
         $featured_languages_data = array_filter($featuredAttribute->featured_languages_data[0]);
+        $dual_citizenship_data = array_filter($featuredAttribute->dual_citizenship_data[0]);
 
         if($demonstrated_data == null && $leadership_data == null && $community_service_data == null && $activities_data == null && $activities_data == null)
         {
             $activity = null;
         }
 
-        if($featured_skills_data == null && $featured_awards_data == null && $featured_languages_data == null)
+        if($featured_skills_data == null && $featured_awards_data == null && $featured_languages_data == null && $dual_citizenship_data == null)
         {
             $featuredAttribute = null;
         }

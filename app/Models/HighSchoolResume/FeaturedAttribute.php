@@ -17,7 +17,8 @@ class FeaturedAttribute extends Model
     protected $casts = [
         'featured_skills_data' => 'array',
         'featured_awards_data' => 'array',
-        'featured_languages_data' => 'array'
+        'featured_languages_data' => 'array',
+        'dual_citizenship_data' => 'array',
     ];
 
     protected function featuredSkillsData(): Attribute
@@ -37,6 +38,14 @@ class FeaturedAttribute extends Model
     } 
 
     protected function featuredLanguagesData(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => json_decode($value, true),
+            set: fn ($value) => json_encode($value),
+        );
+    } 
+
+    protected function dualCitizenshipData(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => json_decode($value, true),

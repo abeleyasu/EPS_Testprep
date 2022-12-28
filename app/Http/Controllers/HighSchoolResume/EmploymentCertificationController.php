@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EmploymentCertificationRequest;
+use App\Models\Grade;
 use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
@@ -36,7 +37,8 @@ class EmploymentCertificationController extends Controller
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         } 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details','resume_id'));
+        $grades = Grade::all();
+        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details','resume_id', 'grades'));
     }
 
     public function store(EmploymentCertificationRequest $request)

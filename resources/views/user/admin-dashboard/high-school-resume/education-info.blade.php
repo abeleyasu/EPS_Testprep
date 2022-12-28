@@ -92,7 +92,7 @@
                                                             Grade
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <select class="required js-select2" id="current_grade" name="current_grade[]" multiple="multiple">
+                                                        <select class="js-select2" id="current_grade" name="current_grade[]" multiple="multiple">
                                                             <option {{ isset($education) && $education != null ? ((in_array('1st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="1st grade">1st grade</option>
                                                             <option {{ isset($education) && $education != null ? ((in_array('2st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="2st grade">2st grade</option>
                                                             <option {{ isset($education) && $education != null ? ((in_array('3st grade' ,(is_array(json_decode($education->current_grade)) ? json_decode($education->current_grade) : []))) ? 'selected' : '') : '' }} value="3st grade">3st grade</option>
@@ -231,7 +231,7 @@
                                                             GPA
                                                             (UNWEIGHTED)
                                                         </label>
-                                                        <input type="number" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
+                                                        <input type="number" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" min="0" max="4" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -239,7 +239,7 @@
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
                                                             (WEIGHTED)</label>
-                                                        <input type="number" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                        <input type="number" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" min="0" max="5" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
                                                        </div>
                                                 </div>
                                             </div>
@@ -290,10 +290,10 @@
                                                             IB Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="js-select2 select" id="ib_courses" name="ib_courses[]" multiple="multiple" >
+                                                        <select class="js-select2 select" data-placeholder="Select IB courses" id="ib_courses" name="ib_courses[]" multiple="multiple" >
                                                             @foreach($courses_list as $course_list)
                                                                 @if($course_list->course_type == 1)
-                                                                    <option value="{{ $course_list->id }}" {{ (!empty($education->ib_courses) && in_array($course_list->id,json_decode($education->ib_courses))) || in_array($course_list->id, is_array(old('ib_courses')) ? old('ib_courses') : []) ? 'selected' : '' }}>{{ $course_list->name }}</option>
+                                                                    <option value="{{ $course_list->id }}" {{ (!empty($education->ib_courses) && in_array($course_list->id,json_decode($education->ib_courses))) ? 'selected' : '' }}>{{ $course_list->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
@@ -305,10 +305,10 @@
                                                             AP Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
-                                                        <select class="required js-select2 select" id="ap_courses" name="ap_courses[]" multiple="multiple">
+                                                        <select class="required js-select2 select" data-placeholder="Select AP courses" id="ap_courses" name="ap_courses[]" multiple="multiple">
                                                             @foreach($courses_list as $course_list)
                                                                 @if($course_list->course_type == 2)
-                                                                    <option value="{{ $course_list->id }}" {{ (!empty($education->ap_courses) && in_array($course_list->id,json_decode($education->ap_courses))) || in_array($course_list->id, is_array(old('ap_courses')) ? old('ap_courses') : []) ? 'selected' : '' }}>{{ $course_list->name }}</option>
+                                                                    <option value="{{ $course_list->id }}" {{ (!empty($education->ap_courses) && in_array($course_list->id,json_decode($education->ap_courses))) ? 'selected' : '' }}>{{ $course_list->name }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
@@ -341,23 +341,14 @@
                                                                 <td>
                                                                     <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" id="course_name" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101">
                                                                 </td>
-                                                                <td class="select2-container_main">
-                                                                    <select class="required js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple">
-                                                                        <option
-                                                                                {{ in_array('1st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
-                                                                                value="1st grade">1st grade</option>
+                                                                <td class="select2-container_main select2-container_main-position">
+                                                                    <select class="required js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name">
+                                                                        @foreach ($colleges_list as $college_info)
                                                                             <option
-                                                                                {{ in_array('2st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
-                                                                                value="2st grade">2st grade</option>
-                                                                            <option
-                                                                                {{ in_array('3st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
-                                                                                value="3st grade">3st grade</option>
-                                                                            <option
-                                                                                {{ in_array('4st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
-                                                                                value="4st grade">4st grade</option>
-                                                                            <option
-                                                                                {{ in_array('5st grade', is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
-                                                                                value="5st grade">5st grade</option>
+                                                                                {{ in_array($college_info->id, is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
+                                                                                value="{{ $college_info->id }}">{{ $college_info->name }}
+                                                                            </option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -372,15 +363,14 @@
                                                             <td>
                                                                 <input type="text" class="form-control" id="course_name" name="course_data[0][course_name]" placeholder="Ex: College English 101">
                                                             </td>
-                                                            <td class="select2-container_main">
+                                                            <td class="select2-container_main select2-container_main-position">
                                                                 <select class="required js-select2"
                                                                     id="search_college_name_0" name="course_data[0][search_college_name][]"
-                                                                    multiple="multiple">
-                                                                    <option value="1st grade">1st grade</option>
-                                                                    <option value="2st grade">2st grade</option>
-                                                                    <option value="3st grade">3st grade</option>
-                                                                    <option value="4st grade">4st grade</option>
-                                                                    <option value="5st grade">5st grade</option>
+                                                                    multiple="multiple" data-placeholder="Select college name">
+                                                                    @foreach ($colleges_list as $college_info)
+                                                                        <option value="{{ $college_info->id }}">{{ $college_info->name }}
+                                                                        </option>
+                                                                    @endforeach
                                                                 </select>
                                                             </td>   
                                                             <td>
@@ -409,7 +399,7 @@
                                                 @if (!empty($education->honor_course_data))
                                                     @foreach ($education->honor_course_data as $index => $honor_course_data)
                                                         <tr class="honor_course_data_table_row {{ $loop->first ? '' : 'remove_honors_courses' }}"> 
-                                                            <td class="select2-container_main">                                                        
+                                                            <td class="select2-container_main select2-container_main-position">                                                        
                                                                 <select class="required js-select2"
                                                                     id="honor_course_data_{{ $index }}" name="honor_course_data[{{ $index }}][course_data][]"
                                                                     multiple="multiple">
@@ -439,7 +429,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr class="honor_course_data_table_row"> 
-                                                        <td class="select2-container_main">                                                        
+                                                        <td class="select2-container_main select2-container_main-position">                                                        
                                                             <select class="required js-select2"
                                                                 id="honor_course_data_0" name="honor_course_data[0][course_data][]"
                                                                 multiple="multiple">
@@ -466,7 +456,7 @@
                                 <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                                     <a class=" text-white fw-600 collapsed">Testing</a>
                                 </div>
-                                <div id="collapseSix" class="collapse {{ $errors->first('testing_data') ? 'show' : '' }}" data-parent=".accordionExample2">
+                                <div id="collapseSix" class="collapse" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
                                             <table class="table testing_data_table">
@@ -496,8 +486,8 @@
                                                     </tr>
                                                     @if(!empty($education->testing_data))
                                                         @foreach($education->testing_data as $index => $testing_data)
-                                                            <tr class="testing_table_row select2-container_main {{ $loop->first ? '' : 'remove_testing_data' }}">
-                                                                <td class="select2-container_main">
+                                                            <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
+                                                                <td>
                                                                     <select class="required form-select" id="name_of_test" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
                                                                         <option value="">Select Name Of Test</option>
                                                                         <option value="PSAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>PSAT</option>
@@ -556,28 +546,26 @@
                                         <div class="main-form-input">
                                             <div class="row mb-4">
                                                 <div class="col-lg-6">
-                                                    <div>
+                                                    <div class="select2-container_main">
                                                         <label class="form-label" for="intended_college_major">
                                                             Intended College Major
                                                         </label>
-                                                        <select class="form-select" id="intended_college_major" name="intended_college_major" style="width: 100%;">
-                                                            <option value="">Select Intended College Major</option>
-                                                            <option value="Test" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
-                                                            <option value="Demo" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
-                                                            <option value="Temp" {{ (isset($education->intended_college_major) && $education->intended_college_major != null ? $education->intended_college_major : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
+                                                        <select class="required js-select2" id="intended_college_major" name="intended_college_major[]" multiple="multiple">
+                                                            <option value="Test" {{ isset($education) && $education != null ? ((in_array('Test' ,(is_array(json_decode($education->intended_college_major)) ? json_decode($education->intended_college_major) : []))) ? 'selected' : '') : '' }} >Test</option>
+                                                            <option value="Demo" {{ isset($education) && $education != null ? ((in_array('Demo' ,(is_array(json_decode($education->intended_college_major)) ? json_decode($education->intended_college_major) : []))) ? 'selected' : '') : '' }}>Demo</option>
+                                                            <option value="Temp" {{ isset($education) && $education != null ? ((in_array('Temp' ,(is_array(json_decode($education->intended_college_major)) ? json_decode($education->intended_college_major) : []))) ? 'selected' : '') : '' }}>Temp</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <div>
+                                                    <div class="select2-container_main">
                                                         <label class="form-label" for="intended_college_minor">
                                                             Intended College Minor
                                                         </label>
-                                                        <select class="form-select " id="intended_college_minor" name="intended_college_minor" style="width: 100%;">
-                                                            <option value="">Select Intended College Minor</option>
-                                                            <option value="Test" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Test' ? 'selected' : '' }}>Test</option>
-                                                            <option value="Demo" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Demo' ? 'selected' : '' }}>Demo</option>
-                                                            <option value="Temp" {{ (isset($education->intended_college_minor) && $education->intended_college_minor != null ? $education->intended_college_minor : old('intended_college_minor')) == 'Temp' ? 'selected' : '' }}>Temp</option>
+                                                        <select class="required js-select2" id="intended_college_minor" name="intended_college_minor[]" multiple="multiple">
+                                                            <option value="Test" {{ isset($education) && $education != null ? ((in_array('Test' ,(is_array(json_decode($education->intended_college_minor)) ? json_decode($education->intended_college_minor) : []))) ? 'selected' : '') : '' }}>Test</option>
+                                                            <option value="Demo" {{ isset($education) && $education != null ? ((in_array('Demo' ,(is_array(json_decode($education->intended_college_minor)) ? json_decode($education->intended_college_minor) : []))) ? 'selected' : '') : '' }}>Demo</option>
+                                                            <option value="Temp" {{ isset($education) && $education != null ? ((in_array('Temp' ,(is_array(json_decode($education->intended_college_minor)) ? json_decode($education->intended_college_minor) : []))) ? 'selected' : '') : '' }}>Temp</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -622,12 +610,17 @@
             border-color: #f27474;
             color: #f27474;
         }
-
-        .select2-container_main .error {
-            position: absolute;
-            top: 51px;
+        .select2-container_main-position{
+            display: block;
         }
-       
+        .select2-container_main-position .error{
+            position: absolute;
+            top: 50px;
+            left: 0;
+        }
+        /* .form-label{
+            margin-bottom: 10px;
+        } */
     </style>
 @endsection
 
@@ -635,6 +628,7 @@
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/jquery-validation/additional-methods.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
@@ -645,6 +639,7 @@
             minViewMode: 2,
             format: 'yyyy'
         });
+        
 
         $('.month-own').datepicker({
             minViewMode: "months",
@@ -677,11 +672,15 @@
                 for (let index = 0; index < total_search_college_name_count; index++) {
                     $(`#search_college_name_${index}`).select2({
                         tags: true,
+                        placeholder: "Select search college name ",
+                        allowClear: true
                     });
                 }
             } else {
                 $("#search_college_name_0").select2({
                     tags: true,
+                    placeholder: "Select search college name ",
+                    allowClear: true
                 });
             }
 
@@ -689,11 +688,15 @@
                 for (let index = 0; index < total_honor_course_count; index++) {
                     $(`#honor_course_data_${index}`).select2({
                         tags: true,
+                        placeholder: "Select honor course name",
+                        allowClear: true
                     });
                 }
             } else {
                 $("#honor_course_data_0").select2({
                     tags: true,
+                    placeholder: "Select honor course name",
+                    allowClear: true
                 });
             }
 
@@ -715,17 +718,39 @@
                 },
                 errorPlacement: function(error, element) {
                     var placement = $(element).data('error');
+
                     if (placement) {
-                        $(placement).append(error)
+                        $(placement).append(error);
+                        $(element).parents("div.select2-container_main").css("margin-bottom",'0');
+                        $(element).parents("td.select2-container_main").css("margin-bottom",'0');
                     } else {
                         error.insertAfter(element);
                         $(element).parents("div.select2-container_main").css("margin-bottom",'20px');
+                        $(element).parents("td.select2-container_main").css("margin-bottom",'20px');
                         element.parents().find('.collapse').addClass('show');
+                        if($(element).is('.js-select2.error')){
+                            $(element).parents('div.select2-container_main').find('.select2-selection--multiple').removeAttr('style')
+                            $(element).parents('td.select2-container_main').find('.select2-selection--multiple').removeAttr('style')
+                        }
                     }
                 },
-                
+                success: function(label,element) {
+                    label.parent().removeClass('error');
+                    label.remove(); 
+                    $(element).parents('div.select2-container_main').find('.select2-selection--multiple').attr('style', 'border: 1px solid #198754 !important');
+                    $(element).parents('td.select2-container_main').find('.select2-selection--multiple').attr('style', 'border: 1px solid #198754 !important');
+                },
             })
 
+            $('#current_grade').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Course grade field is required"
+                    }
+                });
+            });
+            
             let course_data = $('input[name^="course_data"]');
 
             course_data.filter('input[name$="[course_name]"]').each(function() {
@@ -786,21 +811,18 @@
 
         $("#current_grade").select2({
             tags: true,
+            placeholder : "Select Current grade"            
         });
 
-        // $(document).on('change', '#is_graduate', function(){
-        //     if(this.checked){
-        //         $('#grade_level').attr('disabled',true);
-        //         $('#college_name').attr('disabled',true);
-        //         $('#college_city').attr('disabled',true);
-        //         $('#college_state').attr('disabled',true);
-        //     } else {
-        //         $('#grade_level').attr('disabled',false);
-        //         $('#college_name').attr('disabled',false);
-        //         $('#college_city').attr('disabled',false);
-        //         $('#college_state').attr('disabled',false);
-        //     }
-        // });
+        $("#intended_college_major").select2({
+            tags: true,
+            placeholder : "Select intended college major"            
+        });
+        $("#intended_college_minor").select2({
+            tags: true,
+            placeholder : "Select intended college minor"            
+        });
+        
         
         function errorMsg()
         {

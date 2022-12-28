@@ -161,21 +161,13 @@
                                                                     </td>
                                                                     <td class="select2-container_main">
                                                                         <select class="required js-select2"
+                                                                            data-placeholder="Select Grade"
                                                                             id="honor_select_{{ $index }}"
                                                                             name="honors_data[{{ $index }}][grade][]"
                                                                             multiple="multiple">
-                                                                            <option
-                                                                                {{ in_array('9th', is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }}
-                                                                                value="9th">9th</option>
-                                                                            <option
-                                                                                {{ in_array('10th', is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }}
-                                                                                value="10th">10th</option>
-                                                                            <option
-                                                                                {{ in_array('11th', is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }}
-                                                                                value="11th">11th</option>
-                                                                            <option
-                                                                                {{ in_array('12th', is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }}
-                                                                                value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ in_array($grade->id, is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -210,12 +202,12 @@
                                                                 </td>
                                                                 <td class="select2-container_main">
                                                                     <select class="required js-select2"
+                                                                        data-placeholder="Select Grade"
                                                                         id="honor_select_0" name="honors_data[0][grade][]"
                                                                         multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -279,13 +271,18 @@
             border-color: #f27474;
             color: #f27474;
         }
+
         .select2-container_main .error {
             position: absolute;
             top: 51px;
         }
 
-         .table tbody  tr:nth-child(0) td {
+        .table tbody tr:nth-child(0) td {
             padding: 0 !important;
+        }
+
+        .select2-container_main {
+            display: inline-block;
         }
     </style>
 @endsection
@@ -298,8 +295,7 @@
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     <script>
-        let total_honors_count =
-            "{{ isset($honor->honors_data) && $honor->honors_data != null ? count($honor->honors_data) : 0 }}";
+        let total_honors_count = "{{ isset($honor->honors_data) && $honor->honors_data != null ? count($honor->honors_data) : 0 }}";
 
         $(document).ready(() => {
             if (total_honors_count > 0) {
@@ -331,11 +327,23 @@
                     var placement = $(element).data('error');
                     if (placement) {
                         $(placement).append(error)
+                        $(element).parents("td.select2-container_main").css("margin-bottom", '0');
                     } else {
                         error.insertAfter(element);
                         element.parents().find('.collapse').addClass('show');
+                        $(element).parents("td.select2-container_main").css("margin-bottom", '20px');
                     }
-                }
+                    if ($(element).is('.js-select2.error')) {
+                        $(element).parents('td.select2-container_main').find(
+                            '.select2-selection--multiple').removeAttr('style')
+                    }
+                },
+                success: function(label, element) {
+                    label.parent().removeClass('error');
+                    label.remove();
+                    $(element).parents('td.select2-container_main').find('.select2-selection--multiple')
+                        .attr('style', 'border: 1px solid #198754 !important');
+                },
             });
 
             let honors_data = $('input[name^="honors_data"]');

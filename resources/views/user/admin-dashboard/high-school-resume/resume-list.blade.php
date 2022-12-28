@@ -87,6 +87,9 @@
         .btn:focus {
             box-shadow: none
         }
+        .table tbody tr:nth-child(1) td{
+            padding: 10px 30px 10px 30px;
+        }
     </style>
 @endsection
 

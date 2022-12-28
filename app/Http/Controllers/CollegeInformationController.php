@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 
 class CollegeInformationController extends Controller
 {
-    public function index()
+    public function getCollegeList()
     {
-        //
+        $colleges_list = CollegeInformation::all();
+
+        return response()->json(['success' => true, 'dropdown_list' => $colleges_list]);
     }
 
     public function create()

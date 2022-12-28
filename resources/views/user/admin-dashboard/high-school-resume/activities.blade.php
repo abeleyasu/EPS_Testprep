@@ -146,10 +146,9 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="demonstrated_select_{{ $index }}"
                                                                             name="demonstrated_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("9th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("10th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("11th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
-                                                                            <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array("12th" ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array($grade->id ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -188,10 +187,9 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="demonstrated_select_0"
                                                                         name="demonstrated_data[0][grade][]" multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -294,10 +292,9 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="leadership_select_{{ $index }}"
                                                                             name="leadership_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("9th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="9th">9th</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("10th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="10th">10th</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("11th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="11th">11th</option>
-                                                                            <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array("12th" ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array($grade->id ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -336,10 +333,9 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="leadership_select_0"
                                                                         name="leadership_data[0][grade][]" multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -417,10 +413,9 @@
                                                                     <td> 
                                                                         <select class="js-select2 select" id="activity_select_{{ $index }}"
                                                                             name="activities_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("9th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("10th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("11th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
-                                                                            <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array("12th" ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array($grade->id ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -461,10 +456,9 @@
                                                                 <td> 
                                                                     <select class="js-select2 select" id="activity_select_0"
                                                                         name="activities_data[0][grade][]" multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -554,10 +548,9 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="athletics_select_{{ $index }}"
                                                                             name="athletics_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("9th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("10th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("11th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
-                                                                            <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array("12th" ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array($grade->id ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td> 
@@ -600,10 +593,9 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="athletics_select_0"
                                                                         name="athletics_data[0][grade][]" multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -691,10 +683,9 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="community_select_{{ $index }}"
                                                                             name="community_service_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("9th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="9th">9th</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("10th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="10th">10th</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("11th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="11th">11th</option>
-                                                                            <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array("12th" ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="12th">12th</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array($grade->id ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -728,10 +719,9 @@
                                                                 <td>                                                               
                                                                     <select class="js-select2 select" id="community_select_0"
                                                                         name="community_service_data[0][grade][]" multiple="multiple">
-                                                                        <option value="9th">9th</option>
-                                                                        <option value="10th">10th</option>
-                                                                        <option value="11th">11th</option>
-                                                                        <option value="12th">12th</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -816,11 +806,15 @@
                 for (let index = 0; index < total_demonstrated_count; index++) {
                     $(`#demonstrated_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select Demonstrated Grade"
+
                     });
                 }
             } else {
                 $("#demonstrated_select_0").select2({
                     tags: true,
+                    placeholder : "Select Demonstrated Grade"
+
                 });
             }
 
@@ -828,11 +822,15 @@
                 for (let index = 0; index < total_leadership_count; index++) {
                     $(`#leadership_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select leadership Grade"
+
                     });
                 }
             } else {
                 $("#leadership_select_0").select2({
                     tags: true,
+                        placeholder : "Select leadership Grade"
+
                 });
             }
 
@@ -840,11 +838,15 @@
                 for (let index = 0; index < total_activity_count; index++) {
                     $(`#activity_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select activity Grade"
+
                     });
                 }
             } else {
                 $("#activity_select_0").select2({
                     tags: true,
+                        placeholder : "Select activity Grade"
+
                 });
             }
             
@@ -852,11 +854,15 @@
                 for (let index = 0; index < total_athletics_count; index++) {
                     $(`#athletics_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select athletics Grade"
+
                     });
                 }
             }else{
                 $("#athletics_select_0").select2({
                     tags: true,
+                        placeholder : "Select athletics Grade"
+
                 });
             }
 
@@ -864,11 +870,15 @@
                 for (let index = 0; index < total_community_count; index++) {
                     $(`#community_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select community Grade"
+
                     });
                 }
             }else{
                 $("#community_select_0").select2({
                     tags: true,
+                        placeholder : "Select community Grade"
+
                 });
             } 
 
@@ -890,20 +900,20 @@
         }
 
         toastr.options = {
-        "closeButton": true,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
     </script>
 @endsection

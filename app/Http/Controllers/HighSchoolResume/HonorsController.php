@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\HonorsRequest;
+use App\Models\Grade;
 use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\EmploymentCertification;
@@ -43,8 +44,9 @@ class HonorsController extends Controller
         }
         $validations_rules = Config::get('validation.honors.rules');
         $validations_messages = Config::get('validation.honors.messages');
+        $grades = Grade::all();
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages'));
+        return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages', 'grades'));
     }
 
     public function store(HonorsRequest $request)
@@ -59,7 +61,6 @@ class HonorsController extends Controller
 
         if (!empty($data)) {
             Honor::create($data);
-            // return response()->json(['success' => true,'data' => $data]);
             return redirect()->route('admin-dashboard.highSchoolResume.activities');
         }
     }
@@ -75,7 +76,6 @@ class HonorsController extends Controller
         
         if (!empty($data)) {
             $honor->update($data);
-            // return response()->json(['success' => true, 'data' => $data]);
             if($resume_id != null)
             {
                 return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
