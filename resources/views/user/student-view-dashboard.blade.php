@@ -759,26 +759,22 @@
 
           <?php
              $count = 1;
-             //dd($user_selected_answers);
+             
             ?>
              
             @foreach($user_selected_answers as $key => $single_user_selected_answers)
-
-            <?php
-              // echo "<pre>";
-              // print_r(json_decode($single_user_selected_answers['get_question_details'][0]->question_answer_options));
-              // ech<o "</pre>";
-              // echo "<pre>";
-              // print_r($key);
-              // print_r($single_user_selected_answers);
-              // echo "</pre>";
-            ?>
-              
+              <?php //echo "<pre>"; print_r($single_user_selected_answers); echo "</pre>"; ?>
               <tr class="odd">
               <td class="text-center fs-sm dtr-control sorting_1" tabindex="0">
                 {{$count++}}
+                @if($single_user_selected_answers['user_selected_flag'] == 'yes' )
                 <i class="fa fa-fw fa-flag me-1" style="color:red"></i>
+                @endif
+
+                @if($single_user_selected_answers['user_selected_guess'] == 'yes' )
                 <i class="fa fa-fw fa-circle-question me-1" style="color:blue"></i>
+                @endif
+
                 <i style="color:black" class="fa fa-fw fa-forward me-1"></i>
               </td>
 
