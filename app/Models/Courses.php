@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Courses;
 use App\Models\CourseManagement\Milestone;
 use App\Models\CourseManagement\Module;
 use App\Models\CourseManagement\Section;
@@ -25,7 +24,6 @@ class Courses extends Model
         'order',
         'status',
         'coverimage'
-
     ];
 	public function milestones() {
         return $this->hasMany(Milestone::class)->where('published', true);

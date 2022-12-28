@@ -71,7 +71,7 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($featuredAttribute) && $featuredAttribute != null ? route('admin-dashboard.highSchoolResume.featuresAttributes.update', $featuredAttribute->id) : route('admin-dashboard.highSchoolResume.featuresAttributes.store') }}" method="POST">
+                <form class="js-validation" id="features_attributes_form" action="{{ isset($featuredAttribute) && $featuredAttribute != null ? route('admin-dashboard.highSchoolResume.featuresAttributes.update', $featuredAttribute->id) : route('admin-dashboard.highSchoolResume.featuresAttributes.store') }}" method="POST">
                     @csrf
                     @if(isset($featuredAttribute) && $featuredAttribute != null)
                         @method('PUT')
@@ -85,7 +85,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class="text-white fw-600 collapsed"> Featured Skills</a>
+                                        <a class="text-white fw-600 collapsed"> Featured Qualities</a>
                                     </div>
                                     <div id="collapseOne"
                                         class="collapse show"
@@ -98,8 +98,7 @@
                                                             <input type="hidden" name="feature_skill" id="feature_skill" value="{{ isset($featuredAttribute) && $featuredAttribute != null ? $featuredAttribute->id : '' }}">
                                                             <td>
                                                                 <label class="form-label" for="featured_skill">
-                                                                    Featured Skill
-                                                                    <span class="text-danger">*</span>
+                                                                    Featured Qualities
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -111,7 +110,7 @@
                                                                 <tr class="featured_skill_data_table_row {{ $loop->first ? '' : 'remove_featured_skill_data' }}">
                                                                     <td>
                                                                         <input type="text" class="form-control" value="{{ $featured_skills_data['skill'] }}" id="featured_skill"
-                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Skill">
+                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Quality">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -125,7 +124,7 @@
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control" id="featured_skill"
-                                                                        name="featured_skills_data[0][skill]" placeholder="Enter Featured Skill">
+                                                                        name="featured_skills_data[0][skill]" placeholder="Enter Featured Quality">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -146,7 +145,7 @@
                                         <a class="text-white fw-600 collapsed"> Featured Awards </a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('featured_awards_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -156,7 +155,6 @@
                                                             <td>
                                                                 <label class="form-label" for="featured_award">
                                                                     Featured Awards
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -207,7 +205,7 @@
                                         <a class="text-white fw-600 collapsed"> Featured Languages </a>
                                     </div>
                                     <div id="collapseThree"
-                                        class="collapse {{ $errors->has('featured_languages_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -217,13 +215,11 @@
                                                             <td>
                                                                 <label class="form-label" for="featured_language">
                                                                     Language
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="languages_level">
                                                                     Languages Level
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -281,6 +277,66 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                    <div class="block-header block-header-tab" type="button" data-toggle="collapse"
+                                        data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                        <a class="text-white fw-600 collapsed">Dual Citizenship</a>
+                                    </div>
+                                    <div id="collapseFour"
+                                        class="collapse"
+                                        aria-labelledby="headingOne" data-parent=".accordionExample2">
+                                        <div class="block-content">
+                                            <div class="main-form-input">
+                                                <table class="table dual_citizenship_table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <label class="form-label" for="countries">
+                                                                    Countries
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="form-label">Action</label><br>
+                                                            </td>
+                                                        </tr>
+                                                        @if(!empty($featuredAttribute->dual_citizenship_data))
+                                                            @foreach ($featuredAttribute->dual_citizenship_data as $index => $dual_citizenship)   
+                                                                <tr class="dual_citizenship_table_row {{ $loop->first ? '' : 'remove_dual_citizenship_data' }}">
+                                                                    <td>
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            value="{{ $dual_citizenship['country'] }}"
+                                                                            id="countries" name="dual_citizenship_data[{{ $index }}][country]"
+                                                                            placeholder="Ex: Canada">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                            <i data-count="{{ count($featuredAttribute->dual_citizenship_data) != 0 ? count($featuredAttribute->dual_citizenship_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addDualCitizenShipData(this)' : 'removeDualCitizenShipData(this)' }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @else    
+                                                            <tr class="dual_citizenship_table_row">
+                                                                <td>
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="countries" name="dual_citizenship_data[0][country]"
+                                                                        placeholder="Ex: Canada">
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                        <i data-count="0" onclick="addDualCitizenShipData(this)" class="fa-solid fa-plus"></i>
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="d-flex justify-content-between mt-3">
                                 <div class="prev-btn next-btn">
@@ -295,7 +351,7 @@
                                             @include('components.reset-all-drafts-button')
                                         </div>
                                     @endif
-                                    <input type="button" class="btn btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
+                                    <input type="submit" class="btn btn-alt-success next-step" value="Next Step" >
                                 </div>
                             </div>
                         </div>
@@ -342,51 +398,6 @@
             });
         }
 
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let feature_skill = $('#feature_skill').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes/store`;
-            
-            let data = $("#form").serializeArray();
-            
-            let formData = new FormData();
-            
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
-            });
-            
-            if(feature_skill){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes/${feature_skill}`
-            }
-
-            $.ajax({
-                url : url,
-                type : 'POST',
-                datatype : 'json',
-                data : formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if(response.success){
-                        if (resume_id) {
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/preview?resume_id=${resume_id}`;
-                        }else{
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/preview`;
-                        }
-                    }
-                },
-                error:function(error){
-                    if (error.responseJSON != null) {
-                        $.each(error.responseJSON.errors , function(key,value){
-                            toastr.error(value);
-                        });
-                    }
-                }
-            });
-        }
-    
         toastr.options = {
             "closeButton": true,
             "newestOnTop": false,
@@ -403,6 +414,5 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        // Featured languages table end
     </script>
 @endsection

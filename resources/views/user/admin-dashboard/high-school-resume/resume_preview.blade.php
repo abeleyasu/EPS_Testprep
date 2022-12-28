@@ -286,39 +286,48 @@
             </span>
             <span class="border-bottom d-block">        
                 @if (!empty($featuredAttribute->featured_skills_data))
-                    <span class="preview-list">
-                        <h3>Features</h3>
-                        <span class="preview-list_skill">
-                            <h2 class="span_h2">Featured Skills</h2>
-                            <span class="span_text">
-                                <div class="list_group">
-                                    <ul class="list_items">
-                                        @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
-                                            <li class="list-type">
-                                                {{ $featured_skills['skill'] }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </span>
-                        </span>
-                    </span>
-                @endif
-                @if (!empty($featuredAttribute->featured_awards_data))
-                    <span class="preview-list pb-3 ps-0 mb-0 ">
-                        <span class="span_h2">Featured awards</span>
-                        <span class="span_text">
-                            <div class="list_group">
-                                <ul class="list_items">
-                                    @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
-                                        <li class="list-type">
-                                            {{ $featured_awards['award'] }}
-                                        </li>
+                    <div class="pb-3 mb-0 border-bottom-0">
+                        @if ($featuredAttribute->featured_awards_data[0]['award'] != null || $featuredAttribute->featured_languages_data[0]['language'] != null || $featuredAttribute->featured_skills_data[0]['skill'] != null)
+                            <h3>Features</h3>
+                        @endif
+                        <div class="preview-list_skill">
+                            @if($featuredAttribute->featured_skills_data[0]['skill'] != null)
+                                <h2>Featured Skills</h2>
+                                <ul class="list">
+                                    @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
+                                        <div class="list_group">
+                                            <ul class="list_items">
+                                                <li class="list-type">
+                                                    {{ $featured_skills['skill'] }}
+                                                </li>
+                                            </ul>
+                                        </div>
                                     @endforeach
                                 </ul>
-                            </div>
-                        </span>
-                    </span>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+                @if (!empty($featuredAttribute->featured_awards_data))
+                    <div
+                        class="preview-list pb-3 features-list-after  ps-0 mb-0 border-bottom-0">
+                        <div class="preview-list_skill">
+                            @if($featuredAttribute->featured_awards_data[0]['award'] != null)
+                                <h2>Featured awards</h2>
+                                <ul class="list">
+                                    @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
+                                        <div class="list_group">
+                                            <ul class="list_items">
+                                                <li class="list-type">
+                                                    {{ $featured_awards['award'] }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
                 @endif
                 @if (!empty($featuredAttribute->featured_languages_data))
                     <span class="preview-list pb-3 ps-0 ">

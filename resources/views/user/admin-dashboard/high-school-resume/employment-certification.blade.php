@@ -71,7 +71,7 @@
                         </a>
                     </li>
                 </ul>
-                <form class="js-validation" id="form" action="{{ isset($employmentCertification) && $employmentCertification != null ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
+                <form class="js-validation" id="employment_form" action="{{ isset($employmentCertification) && $employmentCertification != null ? route('admin-dashboard.highSchoolResume.employmentCertification.update', $employmentCertification->id) : route('admin-dashboard.highSchoolResume.employmentCertification.store') }}" method="POST">
                     @csrf
                     @if(isset($employmentCertification) && $employmentCertification != null)
                         @method('PUT')
@@ -99,25 +99,21 @@
                                                             <td>
                                                                 <label class="form-label" for="job_title">
                                                                     Job Title
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="employment_honor_award">
                                                                     Honor / Award
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -135,11 +131,9 @@
                                                                     <td>
                                                                         <select class="js-select2 select" id="employment_select_{{ $index }}"
                                                                             name="employment_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array($grade->id ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>
@@ -174,11 +168,9 @@
                                                                 <td>
                                                                     <select class="js-select2 select" id="employment_select_0"
                                                                         name="employment_data[0][grade][]" multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('employment_grade')) ? old('employment_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -200,7 +192,6 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
-
                                                         @endif
                                                     </tbody>
                                                 </table>
@@ -215,7 +206,7 @@
                                             Interests</a>
                                     </div>
                                     <div id="collapseTwo"
-                                        class="collapse {{ $errors->has('significant_data') ? 'show' : '' }}"
+                                        class="collapse"
                                         aria-labelledby="headingOne" data-parent=".accordionExample2">
                                         <div class="block-content">
                                             <div class="main-form-input">
@@ -226,34 +217,29 @@
                                                                 <label class="form-label"
                                                                    for="name_of_company">
                                                                    Name Of The Company
-                                                                   <span class="text-danger">*</span>
                                                                </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label"
                                                                     for="responsibility_interest">
                                                                     Responsibility Or Interest
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label"
                                                                     for="significant_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                  <label class="form-label"
                                                                     for="significant_location">
                                                                     Location
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
                                                                 <label class="form-label" for="significant_honor_award">
                                                                     Honor / Award
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -269,7 +255,7 @@
                                                                             id="name_of_company"
                                                                             value="{{ $significant_data['name_of_company'] }}"
                                                                             name="significant_data[{{ $index }}][name_of_company]"
-                                                                            placeholder="Enter Name Of Company">
+                                                                            placeholder="Ex: Starbucks">
                                                                     </td>
                                                                     <td>                                                               
                                                                         <input type="text"
@@ -284,11 +270,9 @@
                                                                             id="significant_select_{{ $index }}"
                                                                             name="significant_data[{{ $index }}][grade][]"
                                                                             multiple="multiple">
-                                                                            <option {{ in_array("1st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                            <option {{ in_array("2st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                            <option {{ in_array("3st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                            <option {{ in_array("4st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                            <option {{ in_array("5st grade" ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                            @foreach ($grades as $grade)
+                                                                                <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array($grade->id ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </td>
                                                                     <td>                                                               
@@ -321,7 +305,7 @@
                                                                         class="form-control"
                                                                         id="name_of_company"
                                                                         name="significant_data[0][name_of_company]"
-                                                                        placeholder="Enter Name Of Company">
+                                                                        placeholder="Ex: Starbucks">
                                                                 </td>
                                                                 <td>                                                               
                                                                     <input type="text"
@@ -335,11 +319,9 @@
                                                                         id="significant_select_0"
                                                                         name="significant_data[0][grade][]"
                                                                         multiple="multiple">
-                                                                        <option {{ in_array("1st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="1st grade">1st grade</option>
-                                                                        <option {{ in_array("2st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="2st grade">2st grade</option>
-                                                                        <option {{ in_array("3st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="3st grade">3st grade</option>
-                                                                        <option {{ in_array("4st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="4st grade">4st grade</option>
-                                                                        <option {{ in_array("5st grade" ,is_array(old('significant_grade')) ? old('significant_grade') : []) ? 'selected' : ' '}} value="5st grade">5st grade</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </td>
                                                                 <td>                                                               
@@ -382,7 +364,7 @@
                                             @include('components.reset-all-drafts-button')
                                         </div>
                                     @endif
-                                    <input type="button" class="btn  btn-alt-success next-step" value="Next Step" onclick="checkValidation()">
+                                    <input type="submit" class="btn  btn-alt-success next-step" value="Next Step">
                                 </div>
                             </div>
                         </div>
@@ -428,11 +410,13 @@
                 for (let index = 0; index < total_employment_count; index++) {
                     $(`#employment_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select employment grade"
                     });
                 }
             } else {
                 $("#employment_select_0").select2({
                     tags: true,
+                    placeholder : "Select employment grade"
                 });
             }
 
@@ -440,60 +424,17 @@
                 for (let index = 0; index < total_significant_count; index++) {
                     $(`#significant_select_${index}`).select2({
                         tags: true,
+                        placeholder : "Select significant grade"
                     });
                 }
             } else {
                 $("#significant_select_0").select2({
                     tags: true,
+                    placeholder : "Select significant grade"
                 });
             }
 
         });
-
-        function checkValidation()
-        {
-            let site_url = $('#site_url').val();
-            let employmentCertification = $('#employmentCertification').val();
-            let resume_id = $('#resume_id').val();
-            let url = `${site_url}/user/admin-dashboard/high-school-resume/employment-certifications/store`;
-            
-            let data = $("#form").serializeArray();
-            
-            let formData = new FormData();
-            
-            $.each(data, function(key, value) {
-                formData.append(value['name'], value['value']);
-            });
-            
-            if(employmentCertification){
-                url = `${site_url}/user/admin-dashboard/high-school-resume/employment-certifications/${employmentCertification}`
-            }
-
-            $.ajax({
-                url : url,
-                type : 'POST',
-                datatype : 'json',
-                data : formData, 
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if(response.success){
-                        if (resume_id) {
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes?resume_id=${resume_id}`;
-                        }else{
-                            window.location.href = `${site_url}/user/admin-dashboard/high-school-resume/features-attributes`;
-                        }
-                    }
-                },
-                error:function(error){
-                    if (error.responseJSON != null) {
-                        $.each(error.responseJSON.errors , function(key,value){
-                            toastr.error(value);
-                        });
-                    }
-                }
-            });
-        }
 
         function errorMsg()
         {

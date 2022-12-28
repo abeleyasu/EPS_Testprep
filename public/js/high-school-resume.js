@@ -7,12 +7,12 @@ function addLinks(data) {
 
     let value = $('.social_link_div .row:nth-last-child(1) .col-lg-11 input').val();
     if (value == '') {
-        toastr.error('Please Fill up leatest social link');
-    }else{
+        toastr.error('Please fill up a current row of social links!');
+    } else {
         let html = ``;
         html += `<div class="row p-0 mt-3 remove_links">`;
         html += `<div class="col-lg-11">`;
-        html += `<input type="text" class="form-control" name="social_links[${$count}][link]" placeholder="Enter Social links">`;
+        html += `<input type="text" class="form-control social_links" name="social_links[${$count}][link]" placeholder="Enter Social links">`;
         html += `</div>`;
         html += `<div class="col-lg-1">`;
         html += `<a href="javascript:void(0)" class="add-btn" onclick="removeLinks(this)">`;
@@ -25,45 +25,103 @@ function addLinks(data) {
 
         $(data).attr('data-count', $count);
     }
+
+    let social_links = $('input[name^="social_links"]');
+
+    social_links.filter('input[name$="[link]"]').each(function() {
+        $(this).rules("add", {
+            url: true,
+            messages: {
+                "url": "Social link must be a valid url"
+            }
+        });
+    });
 }
 
 function removeLinks(data) {
     $(data).parents(".remove_links").remove();
 }
 
+function dropdown_lists(url)
+{
+    let site_url = $('#site_url').val();
+    let option = ``;
+    return $.ajax({
+        url: `${site_url}${url}`,
+        type: "GET",
+        async: true,
+        dataType: "JSON",
+    }).then((resp) => {
+        if (resp.success) {
+            $(resp.dropdown_list).each((index,value) => {
+                option += `<option value="${value.id}">`;
+                option += `${value.name}`;
+                option += `</option>`;
+            });
+            return option;
+        } else {
+            return option;
+        }
+    });
+}
+
 // course data
-function addCourseData(data){
+async function addCourseData(data){
     let $count = $(data).attr("data-count");
         $count++;
 
     let value = $('.course_table tbody tr:nth-last-child(1) td input').val();
     if (value == '') {
-        toastr.error('Please Fill up correct value in course data.');
+        toastr.error('Please fill up a current row of courses!.');
     } else {
         let html = ``;
-        html += `<tr class="course_data_table_row remove_courses">`;
-        html += `<td>`;
-        html += `<input type="text" class="form-control" id="course_name" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
-        html += `</td>`;
-        html += `<td>`;
-        html += `<select class="form-control" name="course_data[${$count}][search_college_name]" id="search_college_name">`;
-        html += `<option value="">Search College Name</option>`;
-        html += `<option value="first">First</option>`;
-        html += `<option value="second">Second</option>`;
-        html += `<option value="third">Third</option>`;
-        html += `</select>`;
-        html += `</td>`;
-        html += `<td>`;
-        html += `<a href="javascript:void(0)" data-count="${$count}" onclick="removeCourses(this)" class="add-btn d-flex plus-icon">`;
-        html += `<i class="fa-solid fa-minus"></i>`;
-        html += `</a>`;
-        html += `</td>`;
-        html += `</tr>`;
+            html += `<tr class="course_data_table_row remove_courses">`;
+            html += `<td>`;
+            html += `<input type="text" class="form-control" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
+            html += `</td>`;
+            html += `<td class="select2-container_main select2-container_main-position">`;
+            html += `<select class="required js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name">`;
+            html += await dropdown_lists(`/user/colleges/list`);
+            html += `</select>`;
+            html += `</td>`;
+            html += `<td>`;
+            html += `<a href="javascript:void(0)" data-count="${$count}" onclick="removeCourses(this)" class="add-btn d-flex plus-icon">`;
+            html += `<i class="fa-solid fa-minus"></i>`;
+            html += `</a>`;
+            html += `</td>`;
+            html += `</tr>`;
     
         $('.course_table tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#search_college_name_${$count}`).select2({
+                tags: true,
+                placeholder: "Select search college name",
+            });
+        })
+
         $(data).attr('data-count', $count);
     }
+
+    let course_data = $('input[name^="course_data"]');
+
+    course_data.filter('input[name$="[course_name]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Course name field is required"
+            }
+        });
+    });
+    
+    course_data.filter('input[name$="[search_college_name]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Search college name field is required"
+            }
+        });
+    });
 }
 
 function removeCourses(data) {
@@ -75,14 +133,27 @@ function addHonorCourseData(data){
     let $count = $(data).attr("data-count");
         $count++;
 
-    let value = $('.honors_table tr:nth-last-child(1) td input').val();
+        $(document).ready(() => {
+            $(`#honor_course_data_${$count}`).select2({
+                tags: true,
+                placeholder: "Select honor course name",
+            });
+        })
+
+    let value = $('.honors_table tr:nth-last-child(1) td select').val();
     if (value == '') {
-        toastr.error('Please Fill up leatest Honors data field');
+        toastr.error('Please fill up a current row of honor courses!');
     } else {
         let html =``;
             html += `<tr class="honor_course_data_table_row remove_honors_courses"> `;
-            html += `<td>                                                        `;
-            html += `<input type="text" class="form-control" id="honors_course_name" name="honor_course_data[${$count}][course_data]" placeholder="Ex: College English 101">`;
+            html += `<td class="select2-container_main select2-container_main-position">`;
+            html += `<select class="required js-select2 select" data-placeholder="Select honor course name" multiple="multiple" name="honor_course_data[${$count}][course_data][]" id="honor_course_data_${$count}">`;
+            html += `<option value="1st grade">1st grade</option>`;
+            html += `<option value="2st grade">2st grade</option>`;
+            html += `<option value="3st grade">3st grade</option>`;
+            html += `<option value="4st grade">4st grade</option>`;
+            html += `<option value="5st grade">5st grade</option>`;
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -95,6 +166,18 @@ function addHonorCourseData(data){
 
         $(data).attr('data-count', $count);
     }  
+
+   let honor_course_data = $('input[name^="honor_course_data"]');
+
+    honor_course_data.filter('input[name$="[course_data]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Honors course name field is required"
+            }
+        });
+    });
+
 }
 
 function removeHonorsCourses(data) {
@@ -115,20 +198,20 @@ function addTestingData(data){
 
     let value = $('.testing_data_table tr:nth-last-child(1) td input').val();
     if (value == '') {
-        toastr.error('Please Fill up leatest Honors data fuild');
+        toastr.error('Please fill up a current row of testing!');
     } else {
         let html =``;
             html += `<tr class="testing_table_row remove_testing_data">`;
             html += `<td>`;
-            html += `<select class="form-select" id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
-            html += `<option value="">Select Name Of Test</option>`;
+            html += `<select class="required form-select"    id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
+            html += `<option value="">Select name of test</option>`;
             html += `<option value="PSAT">PSAT</option>`;
             html += `<option value="SAT">SAT</option>`;
             html += `<option value="ACT">ACT</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="results_score" name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
+            html += `<input type="text" class="form-control"  name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="testing-date-${$count}" name="testing_data[${$count}][date]" placeholder="Enter Date" autocomplete="off">`;
@@ -143,8 +226,34 @@ function addTestingData(data){
         $('.testing_data_table tbody').append(html);
 
         $(data).attr('data-count', $count);
-    }  
+    } 
+    let testing_data = $('input[name^="testing_data"]');
 
+    testing_data.filter('input[name$="[name_of_test]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Name of test field is required"
+            }
+        });
+    });
+    testing_data.filter('input[name$="[results_score]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Result score field is required"
+            }
+        });
+    });
+    testing_data.filter('input[name$="[date]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Date field is required"
+            }
+        });
+    }); 
+    
 }
 
 function removeTestingData(data){
@@ -152,36 +261,26 @@ function removeTestingData(data){
 
 }
 //Honors Academic Honors, Achievements & Other Awards data
-function addHonorsData(data){
+async function addHonorsData(data){
     let $count = $(data).attr('data-count');
         $count++;
-
-        $(document).ready(() => {
-            $(`#honor_select_${$count}`).select2({
-                tags: true,
-            });
-        })
 
     let value = $('.table_honors_data tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up leatest Honors data field');
+        toastr.error('Please fill up a current row of honors!');
     }else{
         let html = ``;
             html += `<tr class="honors_data_table_row remove_honors_data">`;
             html += `<td>`;
-            html += `<input type="number" class="form-control" id="position" name="honors_data[${$count}][position]" placeholder="Enter position" autocomplete="off">`;
+            html += `<input type="text" class="form-control"  name="honors_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="honor_achievement_award" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
+            html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
             html += `</td>`;
-            html += `<td>`;
-            html += `<select class="js-select2" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<td class="select2-container_main">`;
+            html += `<select class="required js-select2" data-placeholder="Select Grade" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
+            html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -196,8 +295,48 @@ function addHonorsData(data){
 
         $('.table_honors_data tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#honor_select_${$count}`).select2({
+                tags: true,
+            });
+        })
+
         $(data).attr('data-count', $count);
     }
+    let honors_data = $('input[name^="honors_data"]');
+
+    honors_data.filter('input[name$="[position]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Position field is required"
+            }
+        });
+    });
+    honors_data.filter('input[name$="[honor_achievement_award]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Achivement awars field is required"
+            }
+        });
+    });
+    honors_data.filter('input[name$="[grade][]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Grade field is required"
+            }
+        });
+    });
+    honors_data.filter('input[name$="[location]"]').each(function() {
+        $(this).rules("add", {
+            required: true,
+            messages: {
+                required: "Location field is required"
+            }
+        });
+    });
     
 }
 
@@ -205,36 +344,26 @@ function removeHonorsData(data){
     $(data).parents(".remove_honors_data").remove();
 }
 
-function addDemonstratedData(data) {
+async function addDemonstratedData(data) {
     let $count = $(data).attr('data-count');
         $count++;
-
-    $(document).ready(() => {
-        $(`#demonstrated_select_${$count}`).select2({
-            tags: true,
-        });
-    })
 
     let value = $('.table_demonstrated_data tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up leatest Demonstrated data field');
+        toastr.error('Please fill up a current row of demonstrated!');
     }else{
         let html = ``;
             html += `<tr class="demonstrated_data_table_row remove_demonstrated_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="position" name="demonstrated_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="position" name="demonstrated_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="interest" name="demonstrated_data[${$count}][interest]" placeholder="Enter Interest">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="demonstrated_select_${$count}" name="demonstrated_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<select class="js-select2 select" id="demonstrated_select_${$count}" data-placeholder="Select Demonstrated Grade" name="demonstrated_data[${$count}][grade][]" multiple="multiple">`;
+            html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -252,6 +381,12 @@ function addDemonstratedData(data) {
 
         $('.table_demonstrated_data tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#demonstrated_select_${$count}`).select2({
+                tags: true,
+            });
+        })
+
         $(data).attr('data-count', $count);
     }
 }
@@ -260,19 +395,14 @@ function removeDemonstratedData(data) {
     $(data).parents(".remove_demonstrated_data").remove();
 }
 
-function addLeadershipData(data) {
+async function addLeadershipData(data) {
     let $count = $(data).attr('data-count');
         $count++;
 
-    $(document).ready(() => {
-        $(`#leadership_select_${$count}`).select2({
-            tags: true,
-        });
-    });
     let value = $('.table_leadership_data tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up leatest leadership data field');
+        toastr.error('Please fill up a current row of leadership!');
     }else{
         let html = ``;
             html += `<tr class="leadership_data_table_row remove_leadership_data">`;
@@ -280,7 +410,7 @@ function addLeadershipData(data) {
             html += `<input type="text" class="form-control" id="leadership_status" name="leadership_data[${$count}][status]" placeholder="Enter Status">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="leadership_position" name="leadership_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="leadership_position" name="leadership_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="leadership_organization" name="leadership_data[${$count}][organization]" placeholder="Enter Organization">`;
@@ -289,12 +419,8 @@ function addLeadershipData(data) {
             html += `<input type="text" class="form-control" id="leadership_location" name="leadership_data[${$count}][location]" placeholder="Ex: DRHS">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="leadership_select_${$count}" name="leadership_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<select class="js-select2 select" data-placeholder="Select leadership Grade" id="leadership_select_${$count}" name="leadership_data[${$count}][grade][]" multiple="multiple">`;
+            html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -306,6 +432,12 @@ function addLeadershipData(data) {
 
         $('.table_leadership_data tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#leadership_select_${$count}`).select2({
+                tags: true,
+            });
+        });
+
         $(data).attr('data-count', $count);
     }
 
@@ -315,35 +447,26 @@ function removeLeadershipData(data) {
     $(data).parents(".remove_leadership_data").remove();
 }
 
-function addActivityData(data) {
+async function addActivityData(data) {
     let $count = $(data).attr('data-count');
         $count++;
 
-    $(document).ready(() => {
-        $(`#activity_select_${$count}`).select2({
-            tags: true,
-        });
-    })
     let value = $('.table_activities_data tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up activities data field');
+        toastr.error('Please fill up a current row of activities!');
     }else{
         let html = ``;
             html += `<tr class="activity_data_table_row remove_activity_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="activity_position" name="activities_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="activity_position" name="activities_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="activity" name="activities_data[${$count}][activity]" placeholder="Enter Activity">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<select class="js-select2 select" data-placeholder="Select activities Grade" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
+            html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -361,6 +484,12 @@ function addActivityData(data) {
 
         $('.table_activities_data tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#activity_select_${$count}`).select2({
+                tags: true,
+            });
+        })
+
         $(data).attr('data-count', $count);
     }
 }
@@ -372,36 +501,26 @@ function removeActivityData(data) {
 
 // addAthleticsData functions
 
-function addAthleticsData(data){
+async function addAthleticsData(data){
     let $count = $(data).attr('data-count');
         $count++;
-
-    $(document).ready(() => {
-        $(`#athletics_select_${$count}`).select2({
-            tags: true,
-        });
-    });
 
     let value = $('.athletics_table tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up atheletics data field');
+        toastr.error('Please fill up a current row of atheletics!');
     }else{
         let html = ``;
         html += `<tr class="athletics_data_table_row remove_athletics_data">`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="athletics_positions" name="athletics_data[${$count}][position]" placeholder="Enter Position" autocomplete="off">`;
+        html += `<input type="text" class="form-control" id="athletics_positions" name="athletics_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
         html += `<input type="text" class="form-control" id="athletics_activity" name="athletics_data[${$count}][activity]" placeholder="Enter Activity">`;
         html += `</td>`;
         html += `<td>`;
-        html += `<select class="js-select2 select" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;
-        html += `<option value="1st grade">1st grade</option>`;
-        html += `<option value="2st grade">2st grade</option>`;
-        html += `<option value="3st grade">3st grade</option>`;
-        html += `<option value="4st grade">4st grade</option>`;
-        html += `<option value="5st grade">5st grade</option>`;
+        html += `<select class="js-select2 select" data-placeholder="Select atheletics Grade" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;
+        html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -418,6 +537,12 @@ function addAthleticsData(data){
         html += `</tr>`;
 
         $('.athletics_table tbody').append(html);
+
+        $(document).ready(() => {
+            $(`#athletics_select_${$count}`).select2({
+                tags: true
+            });
+        });
         
         $(data).attr('data-count', $count);
     }
@@ -431,20 +556,14 @@ function removeAthleticsData(data){
 
 // Comunity service data
 
-function addCommunityData(data){
+async function addCommunityData(data){
     let $count = $(data).attr('data-count');
     $count++;
-
-    $(document).ready(() => {
-        $(`#community_select_${$count}`).select2({
-            tags: true,
-        });
-    });
 
     let value = $('.comunity_table tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up comunity data field');
+        toastr.error('Please fill up a current row of community services!');
     }else{
         let html = ``;
 
@@ -456,12 +575,8 @@ function addCommunityData(data){
         html += `<input type="text" class="form-control" id="community_service" name="community_service_data[${$count}][service]" placeholder="Enter Service">`;
         html += `</td>`;
         html += `<td>`;
-        html += `<select class="js-select2 select" id="community_select_${$count}" name="community_service_data[${$count}][grade][]" multiple="multiple">`;
-        html += `<option value="1st grade">1st grade</option>`;
-        html += `<option value="2st grade">2st grade</option>`;
-        html += `<option value="3st grade">3st grade</option>`;
-        html += `<option value="4st grade">4st grade</option>`;
-        html += `<option value="5st grade">5st grade</option>`;
+        html += `<select class="js-select2 select" data-placeholder="Select community Grade" id="community_select_${$count}" name="community_service_data[${$count}][grade][]" multiple="multiple">`;
+        html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -475,6 +590,12 @@ function addCommunityData(data){
         html += `</tr>`;
 
         $('.comunity_table tbody').append(html);
+
+        $(document).ready(() => {
+            $(`#community_select_${$count}`).select2({
+                tags: true
+            });
+        });
 
         $(data).attr('data-count', $count);
     }
@@ -490,20 +611,14 @@ function removeCommunityData(data){
 
 // employment functions
 
-function addEmploymentData(data){
+async function addEmploymentData(data){
     let $count = $(data).attr('data-count');
     $count++;
-
-    $(document).ready(() => {
-        $(`#employment_select_${$count}`).select2({
-            tags: true,
-        });
-    });
 
     let value = $('.employement_table tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up employement data field');
+        toastr.error('Please fill up a current row of employement!');
     }else{
 
         let html = ``;
@@ -513,12 +628,8 @@ function addEmploymentData(data){
         html += `<input type="text" class="form-control" id="job_title" name="employment_data[${$count}][job_title]" placeholder="Enter Job title">`;
         html += `</td>`;
         html += `<td>`;
-        html += `<select class="js-select2 select" id="employment_select_${$count}" name="employment_data[${$count}][grade][]" multiple="multiple">`;
-        html += `<option value="1st grade">1st grade</option>`;
-        html += `<option value="2st grade">2st grade</option>`;
-        html += `<option value="3st grade">3st grade</option>`;
-        html += `<option value="4st grade">4st grade</option>`;
-        html += `<option value="5st grade">5st grade</option>`;
+        html += `<select class="js-select2 select" data-placeholder="Select employment grade" id="employment_select_${$count}" name="employment_data[${$count}][grade][]" multiple="multiple">`;
+        html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -536,6 +647,12 @@ function addEmploymentData(data){
 
         $('.employement_table tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#employment_select_${$count}`).select2({
+                tags: true
+            });
+        });
+
         $(data).attr('data-count', $count);
     }
 }
@@ -546,37 +663,27 @@ function removeEmploymentData(data){
 
 // SignificantData function
 
-function addSignificantData(data)
+async function addSignificantData(data)
 {
     let $count = $(data).attr('data-count');
     $count++;
 
-    $(document).ready(() => {
-        $(`#significant_select_${$count}`).select2({
-            tags: true,
-        });
-    });
-
     let value = $('.significant_table tbody tr:nth-last-child(1) td input').val();
     
     if (value == '') {
-        toastr.error('Please Fill up significant data field');
+        toastr.error('Please fill up a current row of significant!');
     }else{
         let html = ``;
             html += `<tr class="significant_data_table_row remove_significant_data">`;
             html += `<td>                                                               `;
-            html += `<input type="text" class="form-control" id="name_of_company" name="significant_data[${$count}][name_of_company]" placeholder="Enter Name Of Company">`;
+            html += `<input type="text" class="form-control" id="name_of_company" name="significant_data[${$count}][name_of_company]" placeholder="Ex: Starbucks">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="responsibility_interest" name="significant_data[${$count}][interest]" placeholder="Enter Responsibility/interest">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="significant_select_${$count}" name="significant_data[${$count}][grade][]" multiple="multiple">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<select class="js-select2 select" data-placeholder="Select significant grade" id="significant_select_${$count}" name="significant_data[${$count}][grade][]" multiple="multiple">`;
+            html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -594,6 +701,12 @@ function addSignificantData(data)
 
         $('.significant_table tbody').append(html);
 
+        $(document).ready(() => {
+            $(`#significant_select_${$count}`).select2({
+                tags: true
+            });
+        });
+
         $(data).attr('data-count', $count);
     }
 }
@@ -609,13 +722,13 @@ function addFeaturedSkillData(data) {
     let value = $('.featured_skill_table tbody tr:nth-last-child(1) td input').val();
 
     if (value == '') {
-        toastr.error('Please Fill up featured skill data field');
+        toastr.error('Please fill up a current row of featured qualities!');
     }else{
 
         let html = ``;
             html += `<tr class="featured_skill_data_table_row remove_featured_skill_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="featured_skill" name="featured_skills_data[${$count}][skill]" placeholder="Enter Featured Skill">`;
+            html += `<input type="text" class="form-control" id="featured_skill" name="featured_skills_data[${$count}][skill]" placeholder="Enter Featured Qualities">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -640,7 +753,7 @@ function addFeaturedAwardData(data) {
     let value = $('.featured_award_table tbody tr:nth-last-child(1) td input').val();
 
     if (value == '') {
-        toastr.error('Please Fill up featured award data field');
+        toastr.error('Please fill up a current row of featured awards!');
     }else{
         let html = ``;
             html += `<tr class="featured_award_data_table_row remove_featured_award_data">`;
@@ -664,6 +777,37 @@ function removeFeaturedAwardData(data) {
     $(data).parents(".remove_featured_award_data").remove();
 }
 
+function addDualCitizenShipData(data) {
+    let $count = $(data).attr('data-count');
+    $count++;
+
+    let value = $('.dual_citizenship_table tbody tr:nth-last-child(1) td input').val();
+
+    if (value == '') {
+        toastr.error('Please fill up a current row of dual citizenship!');
+    } else {
+        let html = ``;
+            html += `<tr class="dual_citizenship_table_table_row remove_dual_citizenship_data">`;
+            html += `<td>`;
+            html += `<input type="text" class="form-control" id="countries" name="dual_citizenship_data[${$count}][country]" placeholder="Ex: Canada">`;
+            html += `</td>`;
+            html += `<td>`;
+            html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
+            html += `<i data-count="${$count}" onclick="removeDualCitizenShipData(this)" class="fa-solid fa-minus"></i>`;
+            html += `</a>`;
+            html += `</td>`;
+            html += `</tr>`;
+
+            $('.dual_citizenship_table tbody').append(html);
+
+            $(data).attr('data-count', $count);
+    }
+}
+
+function removeDualCitizenShipData(data) {
+    $(data).parents(".remove_dual_citizenship_data").remove();
+}
+
 function addFeaturedLanguageData(data) {
     let $count = $(data).attr('data-count');
         $count++;
@@ -671,7 +815,7 @@ function addFeaturedLanguageData(data) {
     let value = $('.featured_language_table tbody tr:nth-last-child(1) td input').val();
 
     if (value == '') {
-        toastr.error('Please Fill up featured language data field');
+        toastr.error('Please fill up a current row of featured languages!');
     }else{
         let html = ``;
             html += `<tr class="featured_language_data_table_row remove_featured_language_data">`;            
@@ -709,14 +853,3 @@ $("form").on("focus", "input[type=number]", function (e) {
 $("form").on("blur", "input[type=number]", function (e) {
     $(this).off("wheel.disableScroll");
 });
-
-function printDiv(divName) {
-    var printContents = document.getElementById(divName).innerHTML;
-    var originalContents = document.body.innerHTML;
-
-    document.body.innerHTML = printContents;
-
-    window.print();
-
-    document.body.innerHTML = originalContents;
-}

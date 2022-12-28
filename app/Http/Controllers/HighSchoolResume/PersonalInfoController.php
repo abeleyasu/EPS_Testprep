@@ -13,6 +13,7 @@ use App\Models\HighSchoolResume\Honor;
 use App\Models\HighSchoolResume\PersonalInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
 class PersonalInfoController extends Controller
@@ -45,13 +46,16 @@ class PersonalInfoController extends Controller
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         }
 
+        $validations_rules = Config::get('validation.personal_info.rules');
+        $validations_messages = Config::get('validation.personal_info.messages');
+
         $details = 0;
 
         if (empty($personal_info) && empty($education) && empty($honor) && empty($activity) && empty($employmentCertification) && empty($featuredAttribute)) {
             $details = 1;
         }
 
-        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id'));
+        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages'));
     }
 
     public function store(PersonalInfoRequest $request)
@@ -66,20 +70,27 @@ class PersonalInfoController extends Controller
 
         if (!empty($data)) {
             PersonalInfo::create($data);
-            return response()->json(['success' => true,'data' => $data]);
+            return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
         }
     }
 
     public function update(PersonalInfoRequest $request, PersonalInfo $personalInfo)
     {
         $data = $request->validated();
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
+
         if(!empty($request->social_links)){
             $data['social_links'] = array_values($request->social_links);
         }
 
+
         if (!empty($data)) {
             $personalInfo->update($data);
-            return response()->json(['success' => true,'data' => $data]);
+            if($resume_id != null) {
+                return redirect("user/admin-dashboard/high-school-resume/education-info?resume_id=".$resume_id);
+            } else {
+                return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
+            }
         }
     }
 
@@ -112,8 +123,8 @@ class PersonalInfoController extends Controller
             FeaturedAttribute::where('id', $featuredAttribute->id)->delete();
         }
         Session::put(['success' => true, "message" => "Resume data has been cleaned now!"]);
-        // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
         return response()->json(['success' => true, "message" => "Resume data has been cleaned now!"]);
+        // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
     }
     public function editFetch(Request $request ,$id)
     {

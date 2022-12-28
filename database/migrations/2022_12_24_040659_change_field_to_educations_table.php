@@ -28,8 +28,8 @@ return new class extends Migration
             $table->integer('total_no_of_student')->nullable()->change();
             $table->string('ib_courses')->nullable()->change();
             $table->string('ap_courses')->nullable()->change();
-            $table->string('intended_college_major')->nullable()->change();
-            $table->string('intended_college_minor')->nullable()->change();
+            $table->longText('intended_college_major')->nullable()->change();
+            $table->longText('intended_college_minor')->nullable()->change();
         });
     }
 

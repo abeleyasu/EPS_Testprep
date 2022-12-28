@@ -14,34 +14,34 @@ class ActivityRequest extends FormRequest
     public function rules()
     {
         return [
-            "demonstrated_data.*.position" => "required",
-            "demonstrated_data.*.interest" => "required",
-            "demonstrated_data.*.grade" => "required",
-            "demonstrated_data.*.location" => "required",
-            "demonstrated_data.*.details" => "required",
+            "demonstrated_data.*.position" => "",
+            "demonstrated_data.*.interest" => "",
+            "demonstrated_data.*.grade" => "",
+            "demonstrated_data.*.location" => "",
+            "demonstrated_data.*.details" => "",
 
-            "leadership_data.*.status" => "required",
-            "leadership_data.*.position" => "required",
-            "leadership_data.*.organization" => "required",
-            "leadership_data.*.location" => "required",
-            "leadership_data.*.grade" => "required",
+            "leadership_data.*.status" => "",
+            "leadership_data.*.position" => "",
+            "leadership_data.*.organization" => "",
+            "leadership_data.*.location" => "",
+            "leadership_data.*.grade" => "",
 
-            "activities_data.*.position" => "required",
-            "activities_data.*.activity" => "required",
-            "activities_data.*.grade" => "required",
-            "activities_data.*.location" => "required",
-            "activities_data.*.honor_award" => "required",
+            "activities_data.*.position" => "",
+            "activities_data.*.activity" => "",
+            "activities_data.*.grade" => "",
+            "activities_data.*.location" => "",
+            "activities_data.*.honor_award" => "",
 
-            "athletics_data.*.position" => "required",
-            "athletics_data.*.activity" => "required",
-            "athletics_data.*.grade" => "required",
-            "athletics_data.*.location" => "required",
-            "athletics_data.*.honor" => "required",
+            "athletics_data.*.position" => "",
+            "athletics_data.*.activity" => "",
+            "athletics_data.*.grade" => "",
+            "athletics_data.*.location" => "",
+            "athletics_data.*.honor" => "",
 
-            "community_service_data.*.level" => "required",
-            "community_service_data.*.service" => "required",
-            "community_service_data.*.grade" => "required",
-            "community_service_data.*.location" => "required",
+            "community_service_data.*.level" => "",
+            "community_service_data.*.service" => "",
+            "community_service_data.*.grade" => "",
+            "community_service_data.*.location" => "",
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HighSchoolResume\EmploymentCertificationRequest;
+use App\Models\Grade;
 use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
@@ -36,7 +37,8 @@ class EmploymentCertificationController extends Controller
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         } 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details','resume_id'));
+        $grades = Grade::all();
+        return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification','featuredAttribute','details','resume_id', 'grades'));
     }
 
     public function store(EmploymentCertificationRequest $request)
@@ -55,13 +57,14 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data)) {
             EmploymentCertification::create($data);
-            return response()->json(['success' => true, 'data' => $data]);
+            return redirect()->route('admin-dashboard.highSchoolResume.featuresAttributes');
         }
     }
 
     public function update(EmploymentCertificationRequest $request, EmploymentCertification $employmentCertification)
     {
         $data = $request->validated();
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
 
         if(!empty($request->employment_data)){
             $data['employment_data'] = array_values($request->employment_data);
@@ -73,7 +76,13 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data)) {
             $employmentCertification->update($data);
-            return response()->json(['success' => true, 'data' => $data]);
+            if($resume_id != null)
+            {
+                return redirect("user/admin-dashboard/high-school-resume/features-attributes?resume_id=".$resume_id);
+            }else{
+                return redirect()->route('admin-dashboard.highSchoolResume.featuresAttributes');
+            }
+
         }
     }
 }
