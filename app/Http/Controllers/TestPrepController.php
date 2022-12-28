@@ -77,13 +77,6 @@ class TestPrepController extends Controller
             
             if($_GET['type'] == 'all')
             {
-                // $get_question_category = DB::table('practice_tests')
-                //     ->join('practice_test_sections','practice_test_sections.testid','=','practice_tests.id')
-                //     ->join('practice_questions','practice_questions.practice_test_sections_id','=','practice_test_sections.id')
-                //     ->select('practice_questions.id','practice_questions.question_type_id')
-                //     ->where('practice_tests.id',$test_id)
-                //     ->get();
-
                 $get_question_category = DB::table('question_types')
                 ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
                 ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
@@ -100,17 +93,8 @@ class TestPrepController extends Controller
                         $set_get_question_category[$get_single_question_cat->question_type_id]['type_details'] = array("question_type_title" => $get_single_question_cat->question_type_title,"question_type_description" => $get_single_question_cat->question_type_description,"question_type_lesson" => $get_single_question_cat->question_type_lesson,"question_type_strategies" => $get_single_question_cat->question_type_strategies,"question_type_identification_methods" => $get_single_question_cat->question_type_identification_methods,"question_type_identification_activity" => $get_single_question_cat->question_type_identification_activity );
                     }
                 }
-
-                //dd($set_get_question_category);
             }
             else if($_GET['type'] == 'single'){
-
-                // $get_question_category = DB::table('practice_tests')
-                //     ->join('practice_test_sections','practice_test_sections.testid','=','practice_tests.id')
-                //     ->join('practice_questions','practice_questions.practice_test_sections_id','=','practice_test_sections.id')
-                //     ->select('practice_questions.id','practice_questions.question_type_id')
-                //     ->where('practice_test_sections.id',$id)
-                //     ->get();
 
                 $get_question_category = DB::table('question_types')
                     ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
@@ -118,7 +102,6 @@ class TestPrepController extends Controller
                     ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','question_types.*')
                     ->where('practice_test_sections.id',$id)
                     ->get();
-
                     
                 if($get_question_category->count()>0)
                 {
@@ -148,6 +131,9 @@ class TestPrepController extends Controller
                         if(isset($user_selected_answers) && !empty($user_selected_answers))
                         {
                             $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                            $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
+                            $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
+                            
                             foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
                             {
                                 $get_question_details = DB::table('practice_questions')
@@ -155,8 +141,7 @@ class TestPrepController extends Controller
                                 ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
                                 ->where('practice_questions.id', $question_id)
                                 ->get();
-                                $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'get_question_details' => $get_question_details); 
-                            
+                                $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'user_selected_guess' => $json_decoded_guess->$question_id,'user_selected_flag' => $json_decoded_flag->$question_id,'get_question_details' => $get_question_details); 
                             }
                         }
                     }
@@ -169,6 +154,8 @@ class TestPrepController extends Controller
                 if(isset($user_selected_answers) && !empty($user_selected_answers))
                 {
                     $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                    $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
+                    $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
                     foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
                     {
                         $get_question_details = DB::table('practice_questions')
@@ -176,8 +163,7 @@ class TestPrepController extends Controller
                         ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
                         ->where('practice_questions.id', $question_id)
                         ->get();
-                        $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'get_question_details' => $get_question_details); 
-                    
+                        $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'user_selected_guess' => $json_decoded_guess->$question_id,'user_selected_flag' => $json_decoded_flag->$question_id,'get_question_details' => $get_question_details); 
                     }
                 }
             }
@@ -207,13 +193,14 @@ class TestPrepController extends Controller
             ->join('practice_questions', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
             ->select('practice_tests.*','practice_test_sections.id as test_section_id','practice_questions.id as test_question_id')
             ->where('practice_tests.id', $get_section_id)->get(); 
-            //dd('On Development');
         }
         
 
         $get_test_name = $get_question_title[0]->title;
         
         $filtered_answers = array_filter($request->selected_answer);
+        $filtered_guess = array_filter($request->selected_gusess_details);
+        $filtered_flag = array_filter($request->selected_flag_details);
         
 
         if($get_question_type == 'single')
@@ -226,7 +213,7 @@ class TestPrepController extends Controller
             if (DB::table('user_answers')->where('section_id', $get_section_id)->where('user_id', $current_user_id)->exists()) {
                 DB::table('user_answers')
                 ->where('section_id', $get_section_id)
-                ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers)]);
+                ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($filtered_answers),'guess' => json_encode($filtered_guess),'flag' => json_encode($filtered_flag)]);
 
                 DB::table('practice_test_sections')
                 ->where('practice_test_sections.id', $get_section_id)
@@ -239,6 +226,8 @@ class TestPrepController extends Controller
                 $userAnswers->section_id = $get_section_id;
                 $userAnswers->question_id = json_encode($get_question_ids_array);
                 $userAnswers->answer = json_encode($filtered_answers);
+                $userAnswers->guess = json_encode($filtered_guess);
+                $userAnswers->flag = json_encode($filtered_flag);
                 $userAnswers->save();
 
                 DB::table('practice_test_sections')
@@ -259,22 +248,54 @@ class TestPrepController extends Controller
                         {
                             if($single_get_questions_title->test_question_id == $user_question_id )
                             {
-                                $store_querstion_answer_details[$single_get_questions_title->test_section_id][$single_get_questions_title->test_question_id] = $single_filtered_answers;
+                                $store_querstion_answer_details[$single_get_questions_title->test_section_id]['answers'][$single_get_questions_title->test_question_id] = $single_filtered_answers;
                             }
                         }
                     }
                 }
             }
-                
+            if(isset($get_question_title) && !empty($get_question_title))
+            {
+                foreach($get_question_title as $single_get_questions_title)
+                {
+                    if(isset($filtered_guess) && !empty($filtered_guess))
+                    {
+                        foreach($filtered_guess as $user_question_id => $single_filtered_guess)
+                        {
+                            if($single_get_questions_title->test_question_id == $user_question_id )
+                            {
+                                $store_querstion_answer_details[$single_get_questions_title->test_section_id]['guess'][$single_get_questions_title->test_question_id] = $single_filtered_guess;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(isset($get_question_title) && !empty($get_question_title))
+            {
+                foreach($get_question_title as $single_get_questions_title)
+                {
+                    if(isset($filtered_flag) && !empty($filtered_flag))
+                    {
+                        foreach($filtered_flag as $user_question_id => $single_filtered_flag)
+                        {
+                            if($single_get_questions_title->test_question_id == $user_question_id )
+                            {
+                                $store_querstion_answer_details[$single_get_questions_title->test_section_id]['flag'][$single_get_questions_title->test_question_id] = $single_filtered_flag;
+                            }
+                        }
+                    }
+                }
+            }
             if(isset($store_querstion_answer_details) && !empty($store_querstion_answer_details))
             {
                 foreach($store_querstion_answer_details as $key => $values)
                 {
-                    $get_question_ids_array = array_keys($values);
+                    $get_question_ids_array = array_keys($values['answers']);
                     if (DB::table('user_answers')->where('section_id', $key)->where('user_id', $current_user_id)->exists()) {
                         DB::table('user_answers')
                         ->where('section_id', $key)
-                        ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($values)]);
+                        ->update(['question_id'=> json_encode($get_question_ids_array) ,'answer' => json_encode($values['answers']),'guess' => json_encode($values['guess']),'flag' => json_encode($values['flag'])]);
 
                         DB::table('practice_test_sections')
                         ->where('practice_test_sections.id', $key)
@@ -286,7 +307,9 @@ class TestPrepController extends Controller
                         $userAnswers->user_id = $current_user_id;
                         $userAnswers->section_id = $key;
                         $userAnswers->question_id = json_encode($get_question_ids_array);
-                        $userAnswers->answer = json_encode($values);
+                        $userAnswers->answer = json_encode($values['answers']);
+                        $userAnswers->guess = json_encode($values['guess']);
+                        $userAnswers->flag = json_encode($values['flag']);
                         $userAnswers->save();
 
                         DB::table('practice_test_sections')
