@@ -161,10 +161,20 @@
             var selected_answer = [];
             var selected_gusess_details = [];
             var selected_flag_details = [];
+            var selected_skip_details = [];
             var get_offset = jQuery('#get_offset').val();
             
             var getSelectedAnswer ;
             var check_click_type = 'onload';
+            get_first_question(get_offset);
+
+            $('.content').on('click', 'input[name=example-radios-default]:radio', function() {
+                var get_question_id = jQuery('.get_question_id').val();
+                $('.skip').css("color", "#0891b2");
+                $('.skip').css("background-color", "white");
+                selected_skip_details[get_question_id] = 'no';
+            });
+
             jQuery(".prev").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
@@ -172,6 +182,7 @@
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
@@ -181,10 +192,12 @@
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 else
                 {
                     selected_answer[get_question_id] = '-';
+                    selected_skip_details[get_question_id] = 'yes';
                 }
 
                 if(!$(".guess").is(':checked'))
@@ -206,9 +219,21 @@
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
 
+                if ( $('input:radio[name=example-radios-default]').length ) {
+                        $('input:radio[name=example-radios-default]').prop('checked', false);
+                        selected_skip_details[get_question_id] = 'no';
+                }
+                else{
+                    $('input[type=checkbox]').prop('checked', false);
+                    selected_skip_details[get_question_id] = 'no';
+                }
+
+                $('.skip').css("color", "white");
+                $('.skip').css("background-color", "#0891b2");
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
@@ -218,35 +243,12 @@
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 else
                 {
                     selected_answer[get_question_id] = '-';
-                }
-                
-                get_first_question(get_offset);
-            });
-
-            jQuery(".next").click(function(){
-                var get_offset = jQuery(this).val();
-                var get_question_id = jQuery('.get_question_id').val();
-
-                if($("input[name='example-radios-default']").is(':checked')) { 
-                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-                    selected_answer[get_question_id] = getSelectedAnswer;
-                }
-                else if($("input[name='example-checkbox-default']").is(':checked')) { 
-                    var store_multi = '';
-                    $('input[name="example-checkbox-default"]:checked').each(function() {
-                        console.log(this.value);
-                        store_multi += this.value+','; 
-                    });
-                    store_multi = store_multi.replace(/,\s*$/, "");
-                    selected_answer[get_question_id] = store_multi;
-                }
-                else
-                {
-                    selected_answer[get_question_id] = '-';
+                    selected_skip_details[get_question_id] = 'yes';
                 }
 
                 if(!$(".guess").is(':checked'))
@@ -258,13 +260,56 @@
                 {
                     selected_flag_details[get_question_id] = 'no';
                 }
-                console.log(selected_gusess_details);
+                get_first_question(get_offset);
+            });
+
+            jQuery(".next").click(function(){
+                var get_offset = jQuery(this).val();
+                var get_question_id = jQuery('.get_question_id').val();
+
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                    selected_skip_details[get_question_id] = 'no';
+                }
+                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        console.log(this.value);
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
+                }
+                else
+                {
+                    selected_answer[get_question_id] = '-';
+                    selected_skip_details[get_question_id] = 'yes';
+                    $("#set_question_data").find('.mb-4').append('<span class="custom_error" style="color:red;" >Please pick any option!</span>');
+                    setTimeout(function() { $(".custom_error").remove(); }, 5000);
+                    return false;
+                }
+
+                if(!$(".guess").is(':checked'))
+                {
+                    selected_gusess_details[get_question_id] = 'no';
+                }
+
+                if(!$(".flag").is(':checked'))
+                {
+                    selected_flag_details[get_question_id] = 'no';
+                }
                 get_first_question(get_offset);
             });
 
             jQuery(".guess").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
                 if( $(this).is(':checked') ){
+
+                    $('.skip').css("color", "#0891b2");
+                    $('.skip').css("background-color", "white");
+                    selected_skip_details[get_question_id] = 'no';
 
                     $('.main_guess_section').css("color", "white");
                     $('.main_guess_section').css("background-color", "#ea580c");
@@ -307,8 +352,6 @@
                 }
             });
             
-            
-            
             jQuery(".submit_section_btn").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
                 var get_section_id = jQuery('#section_id').val();
@@ -322,9 +365,7 @@
                     last_part = parts[parts.length-1];
                     console.log(last_part);
                      get_test_id = last_part;
-                }
-                
-                else
+                }else
                 {
                     const urlParams = new URLSearchParams(window.location.search);
                      get_test_id = urlParams.get('test_id');
@@ -333,6 +374,7 @@
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
@@ -342,10 +384,12 @@
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 else
                 {
                     selected_answer[get_question_id] = '-';
+                    selected_skip_details[get_question_id] = 'yes';
                 }
 
                 if(!$(".guess").is(':checked'))
@@ -358,11 +402,12 @@
                     selected_flag_details[get_question_id] = 'no';
                 }
               
-                console.log(selected_answer);
-                console.log(get_section_id);
-                console.log(selected_gusess_details);
-                console.log(selected_flag_details);
-                //return false;
+                // console.log(selected_answer);
+                // console.log(get_section_id);
+                // console.log(selected_gusess_details);
+                // console.log(selected_flag_details);
+                // console.log(selected_skip_details);
+                // return false;
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -376,6 +421,7 @@
                         selected_answer:selected_answer,
                         selected_gusess_details:selected_gusess_details,
                         selected_flag_details:selected_flag_details,
+                        // selected_skip_details:selected_skip_details,
                         get_section_id:get_section_id,
                         get_question_type:get_question_type
                     },
@@ -391,8 +437,6 @@
                 console.log(get_test_id);
             });
             
-            
-            get_first_question(get_offset);
             function get_first_question(get_offset)
             {
                 console.log(selected_answer);
@@ -411,9 +455,9 @@
                     },
                     success: function(result){
                         console.log(result);
-                        
                         var check_if_flag_selected = selected_flag_details[result.questions[0].question_id];
                         var check_if_guess_selected = selected_gusess_details[result.questions[0].question_id];
+                        var check_if_skip_selected = selected_skip_details[result.questions[0].question_id];
                         
                         var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
                         var passage_title =  result.questions[0].passage_title;
@@ -524,7 +568,18 @@
                             $('.main_guess_section').css("color", "white");
                             $('.main_guess_section').css("background-color", "#ea580c");
                         }
-                    
+
+                        console.log('-----');
+                        console.log(check_if_skip_selected);
+                        if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
+                        {
+                            $('.skip').css("color", "#0891b2");
+                            $('.skip').css("background-color", "white");
+                        }else{
+                            $('.skip').css("color", "white");
+                            $('.skip').css("background-color", "#0891b2");
+                        }
+
                         jQuery('#set_question_data').html(set_questions_options);
                         jQuery('#passage_type').text(passage_type);
                         jQuery('#passage_title').text(passage_title);

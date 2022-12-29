@@ -763,7 +763,6 @@
             ?>
              
             @foreach($user_selected_answers as $key => $single_user_selected_answers)
-              <?php //echo "<pre>"; print_r($single_user_selected_answers); echo "</pre>"; ?>
               <tr class="odd">
               <td class="text-center fs-sm dtr-control sorting_1" tabindex="0">
                 {{$count++}}
@@ -775,7 +774,9 @@
                 <i class="fa fa-fw fa-circle-question me-1" style="color:blue"></i>
                 @endif
 
+                @if($single_user_selected_answers['user_selected_answer'] == '-' )
                 <i style="color:black" class="fa fa-fw fa-forward me-1"></i>
+                @endif
               </td>
 
               <td class="fw-semibold fs-sm">{{$single_user_selected_answers['user_selected_answer']}}</td>
