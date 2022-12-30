@@ -51,24 +51,86 @@ class ActivityController extends Controller
     {
         $data = $request->validated();
 
-        if(!empty($request->demonstrated_data)){
-            $data['demonstrated_data'] = array_values($request->demonstrated_data);
+        $grade_ids = Grade::pluck('id')->toArray();
+
+        if(!empty($data['demonstrated_data'])) {
+            foreach($data['demonstrated_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['demonstrated_data'] = array_values($data['demonstrated_data']);
         }
 
-        if(!empty($request->leadership_data)){
-            $data['leadership_data'] = array_values($request->leadership_data);
+        if (!empty($data['leadership_data'])) {
+            foreach($data['leadership_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['leadership_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['leadership_data'] = array_values($data['leadership_data']);
         }
 
-        if(!empty($request->activities_data)){
-            $data['activities_data'] = array_values($request->activities_data);
+        if (!empty($data['activities_data'])) {
+            foreach ($data['activities_data'] as $key => $value) {
+                if (!empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['activities_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['activities_data'] = array_values($data['activities_data']);
         }
 
-        if(!empty($request->athletics_data)){
-            $data['athletics_data'] = array_values($request->athletics_data);
+        if (!empty($data['athletics_data'])) {
+            foreach($data['athletics_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['athletics_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['athletics_data'] = array_values($data['athletics_data']);
         }
-        
-        if(!empty($request->community_service_data)){
-            $data['community_service_data'] = array_values($request->community_service_data);
+
+        if (!empty($data['community_service_data'])) {
+            foreach($data['community_service_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['community_service_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['community_service_data'] = array_values($data['community_service_data']);
         }
 
         $data['user_id'] = Auth::id();
@@ -85,24 +147,86 @@ class ActivityController extends Controller
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
 
-        if(!empty($request->demonstrated_data)){
-            $data['demonstrated_data'] = array_values($request->demonstrated_data);
+        $grade_ids = Grade::pluck('id')->toArray();
+
+        if(!empty($data['demonstrated_data'])) {
+            foreach($data['demonstrated_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['demonstrated_data'] = array_values($data['demonstrated_data']);
         }
 
-        if(!empty($request->leadership_data)){
-            $data['leadership_data'] = array_values($request->leadership_data);
+        if (!empty($data['leadership_data'])) {
+            foreach($data['leadership_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['leadership_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['leadership_data'] = array_values($data['leadership_data']);
         }
 
-        if(!empty($request->activities_data)){
-            $data['activities_data'] = array_values($request->activities_data);
+        if (!empty($data['activities_data'])) {
+            foreach ($data['activities_data'] as $key => $value) {
+                if (!empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['activities_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['activities_data'] = array_values($data['activities_data']);
         }
 
-        if(!empty($request->athletics_data)){
-            $data['athletics_data'] = array_values($request->athletics_data);
+        if (!empty($data['athletics_data'])) {
+            foreach($data['athletics_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['athletics_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['athletics_data'] = array_values($data['athletics_data']);
         }
-        
-        if(!empty($request->community_service_data)){
-            $data['community_service_data'] = array_values($request->community_service_data);
+
+        if (!empty($data['community_service_data'])) {
+            foreach($data['community_service_data'] as $key => $value){
+                if (!empty(array_filter($value))) {
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['community_service_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
+            }
+            $data['community_service_data'] = array_values($data['community_service_data']);
         }
 
         if (!empty($data)) {

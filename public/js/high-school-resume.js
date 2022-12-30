@@ -253,6 +253,52 @@ function addTestingData(data){
             }
         });
     }); 
+
+    $("#is_tested").click(function () {    
+        if($(this).is(':checked')){
+            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function(index,val){
+                $(val).removeClass('required');
+            })
+
+            testing_data.filter('input[name$="[results_score]"]').each(function() {
+                $(this).rules("add", {
+                    required: false,
+                    messages: {
+                        required: "Result score field is required"
+                    }
+                });
+            });
+            testing_data.filter('input[name$="[date]"]').each(function() {
+                $(this).rules("add", {
+                    required: false,
+                    messages: {
+                        required: "Date field is required"
+                    }
+                });
+            });
+        }else{
+            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function(index,val){
+                $(val).addClass('required');
+            })
+
+            testing_data.filter('input[name$="[results_score]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Result score field is required"
+                    }
+                });
+            });
+            testing_data.filter('input[name$="[date]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Date field is required"
+                    }
+                });
+            });
+        }
+    });
     
 }
 
@@ -625,6 +671,9 @@ async function addEmploymentData(data){
 
         html += `<tr class="employment_data_table_row remove_employement_data">`;
         html += `<td>`;
+        html += `<input type="text" class="form-control" id="name_of_company" name="employment_data[${$count}][name_of_company]" placeholder="Ex: Starbucks">`;
+        html += `</td>`;
+        html += `<td>`;
         html += `<input type="text" class="form-control" id="job_title" name="employment_data[${$count}][job_title]" placeholder="Enter Job title">`;
         html += `</td>`;
         html += `<td>`;
@@ -675,9 +724,6 @@ async function addSignificantData(data)
     }else{
         let html = ``;
             html += `<tr class="significant_data_table_row remove_significant_data">`;
-            html += `<td>                                                               `;
-            html += `<input type="text" class="form-control" id="name_of_company" name="significant_data[${$count}][name_of_company]" placeholder="Ex: Starbucks">`;
-            html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="responsibility_interest" name="significant_data[${$count}][interest]" placeholder="Enter Responsibility/interest">`;
             html += `</td>`;

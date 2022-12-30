@@ -14,10 +14,12 @@ class EmploymentCertificationRequest extends FormRequest
     public function rules()
     {
         return [
+            "employment_data.*.name_of_company" => "",
             "employment_data.*.job_title" => "",
             "employment_data.*.grade" => "",
             "employment_data.*.location" => "",
             "employment_data.*.honor_award" => "",
+            // "significant_data.*.name_of_company" => "",
             "significant_data.*.interest" => "",
             "significant_data.*.grade" => "",
             "significant_data.*.location" => "",
@@ -32,6 +34,7 @@ class EmploymentCertificationRequest extends FormRequest
             'employment_data.*.grade.required' => 'Employment Data achievement award is required',
             'employment_data.*.location.required' => 'Employment Data grade is required',
             'employment_data.*.honor_award.required' => 'Employment Data location is required',
+            'significant_data.*.name_of_company.required' => 'Significant Data name f company is required',
             'significant_data.*.interest.required' => 'Significant Data interest is required',
             'significant_data.*.grade.required' => 'Significant Data grade is required',
             'significant_data.*.location.required' => 'Significant Data location is required',

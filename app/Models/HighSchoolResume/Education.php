@@ -23,7 +23,7 @@ class Education extends Model
     protected function courseData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -31,7 +31,7 @@ class Education extends Model
     protected function honorCourseData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -39,7 +39,7 @@ class Education extends Model
     protected function testingData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 

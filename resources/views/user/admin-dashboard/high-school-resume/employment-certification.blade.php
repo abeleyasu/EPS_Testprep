@@ -97,6 +97,12 @@
                                                         <tr>
                                                             <input type="hidden" name="employmentCertification" id="employmentCertification" value="{{ isset($employmentCertification) && $employmentCertification != null ? $employmentCertification->id : ''}}">
                                                             <td>
+                                                                <label class="form-label"
+                                                                   for="name_of_company">
+                                                                   Name Of The Company
+                                                               </label>
+                                                            </td>
+                                                            <td>
                                                                 <label class="form-label" for="job_title">
                                                                     Job Title
                                                                 </label>
@@ -123,6 +129,14 @@
                                                         @if(!empty($employmentCertification->employment_data))
                                                             @foreach ($employmentCertification->employment_data as $index => $employment_data)
                                                                 <tr class="employment_data_table_row {{ $loop->first ? '' : 'remove_employement_data' }}">
+                                                                    <td>                                                               
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="name_of_company"
+                                                                            value="{{ $employment_data['name_of_company'] }}"
+                                                                            name="employment_data[{{ $index }}][name_of_company]"
+                                                                            placeholder="Ex: Starbucks">
+                                                                    </td>
                                                                     <td>
                                                                         <input type="text"
                                                                             class="form-control" id="job_title" value="{{ $employment_data['job_title'] }}"
@@ -160,6 +174,13 @@
                                                             @endforeach
                                                         @else 
                                                             <tr class="employment_data_table_row">
+                                                                <td>                                                               
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="name_of_company"
+                                                                        name="employment_data[0][name_of_company]"
+                                                                        placeholder="Ex: Starbucks">
+                                                                </td>
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control" id="job_title"
@@ -214,12 +235,6 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                                <label class="form-label"
-                                                                   for="name_of_company">
-                                                                   Name Of The Company
-                                                               </label>
-                                                            </td>
-                                                            <td>
                                                                  <label class="form-label"
                                                                     for="responsibility_interest">
                                                                     Responsibility Or Interest
@@ -249,14 +264,6 @@
                                                         @if(!empty($employmentCertification->significant_data))
                                                             @foreach ($employmentCertification->significant_data as $index => $significant_data)
                                                                 <tr class="significant_data_table_row {{ $loop->first ? '' : 'remove_significant_data' }}">
-                                                                    <td>                                                               
-                                                                        <input type="text"
-                                                                            class="form-control"
-                                                                            id="name_of_company"
-                                                                            value="{{ $significant_data['name_of_company'] }}"
-                                                                            name="significant_data[{{ $index }}][name_of_company]"
-                                                                            placeholder="Ex: Starbucks">
-                                                                    </td>
                                                                     <td>                                                               
                                                                         <input type="text"
                                                                             class="form-control"
@@ -300,13 +307,6 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="significant_data_table_row">
-                                                                <td>                                                               
-                                                                    <input type="text"
-                                                                        class="form-control"
-                                                                        id="name_of_company"
-                                                                        name="significant_data[0][name_of_company]"
-                                                                        placeholder="Ex: Starbucks">
-                                                                </td>
                                                                 <td>                                                               
                                                                     <input type="text"
                                                                         class="form-control"

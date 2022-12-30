@@ -123,9 +123,9 @@
                                                                     Details
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label class="form-label">Action</label><br>
-                                                            </td>
+                                                            </td> --}}
                                                         </tr>
                                                         @if(!empty($activity->demonstrated_data))
                                                             @foreach ($activity->demonstrated_data as $index => $demonstrated_data)
@@ -162,11 +162,11 @@
                                                                         <textarea class="form-control" id="details" name="demonstrated_data[{{ $index }}][details]" rows="1"
                                                                             placeholder="Enter Details">{{ $demonstrated_data['details'] }}</textarea>
                                                                     </td>
-                                                                    <td>
+                                                                    {{-- <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                             <i data-count="{{ count($activity->demonstrated_data) != 0 ? count($activity->demonstrated_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addDemonstratedData(this)' : 'removeDemonstratedData(this)' }}"></i>
                                                                         </a>
-                                                                    </td>
+                                                                    </td> --}}
                                                                 </tr>
                                                             @endforeach
                                                         @else
@@ -203,11 +203,11 @@
                                                                     <textarea class="form-control" id="details" name="demonstrated_data[0][details]" rows="1"
                                                                         placeholder="Enter Details"></textarea>
                                                                 </td>
-                                                                <td>
+                                                                {{-- <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                         <i data-count="0" class="fa-solid fa-plus" onclick="addDemonstratedData(this)"></i>
                                                                     </a>
-                                                                </td>
+                                                                </td> --}}
                                                             </tr>
                                                         @endif
                                                     </tbody>
@@ -659,9 +659,9 @@
                                                                     Location
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <label class="form-label">Action</label><br>
-                                                            </td>
+                                                            </td> --}}
                                                         </tr>
                                                         @if(!empty($activity->community_service_data))
                                                             @foreach ($activity->community_service_data as $index => $community_service_data)
@@ -695,11 +695,11 @@
                                                                             value = "{{ $community_service_data['location'] }}"
                                                                             placeholder="Enter Location">
                                                                     </td>
-                                                                    <td>
+                                                                    {{-- <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                             <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus'}}" onclick="{{ $loop->first ? 'addCommunityData(this)' :'removeCommunityData(this)' }}" data-count="{{ count($activity->community_service_data) != 0 ? count($activity->community_service_data) - 1 : 0 }}"></i>
                                                                         </a>
-                                                                    </td>
+                                                                    </td> --}}
                                                                 </tr>
                                                             @endforeach
                                                         @else
@@ -730,11 +730,11 @@
                                                                         id="community_location" name="community_service_data[0][location]"
                                                                         placeholder="Enter Location">
                                                                 </td>
-                                                                <td>
+                                                                {{-- <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                         <i class="fa-solid fa-plus" onclick="addCommunityData(this)" data-count="0"></i>
                                                                     </a>
-                                                                </td>
+                                                                </td> --}}
                                                             </tr>
                                                         @endif
                                                     </tbody>
