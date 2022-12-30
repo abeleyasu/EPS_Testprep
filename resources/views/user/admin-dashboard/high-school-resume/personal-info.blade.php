@@ -229,6 +229,7 @@
                                                             </label>
                                                             <input type="number"
                                                                 class="form-control"
+                                                                onkeydown="javascript: return event.keyCode == 69 ? false : true"
                                                                 value="{{ isset($personal_info->zip_code) && $personal_info->zip_code != null ? $personal_info->zip_code : '' }}"
                                                                 id="zip_code" name="zip_code"
                                                                 placeholder="Enter Zip Code">

@@ -20,6 +20,7 @@ return [
             ],
             "zip_code" => [
                 "required" => true,
+                "zipcodeUS" => true
             ],
             "cell_phone" => [
                 "required" => true,
@@ -46,10 +47,13 @@ return [
             "street_address_one" => "Street address one field is required",
             "city" => "City field is required",
             "state" => "State field is required",
-            "zip_code" => "Zip code field is required",
+            "zip_code" => [
+                "required" => "Zip code field is required",
+                "zipcodeUS" => "Zip code format should be US"   
+            ],
             "cell_phone" => [
                 "required" => "Cell phone field is required",
-                "phoneUS" => "Cell Phone format is invalid"
+                "phoneUS" => "Cell Phone format should be US"
             ],
             "email" => [
                 "required" => "Email field is required",

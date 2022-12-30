@@ -24,7 +24,7 @@ class FeaturedAttribute extends Model
     protected function featuredSkillsData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -32,7 +32,7 @@ class FeaturedAttribute extends Model
     protected function featuredAwardsData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -40,7 +40,7 @@ class FeaturedAttribute extends Model
     protected function featuredLanguagesData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -48,7 +48,7 @@ class FeaturedAttribute extends Model
     protected function dualCitizenshipData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 

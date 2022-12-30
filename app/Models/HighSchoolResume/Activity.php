@@ -25,7 +25,7 @@ class Activity extends Model
     protected function demonstratedData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -33,7 +33,7 @@ class Activity extends Model
     protected function leadershipData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -41,7 +41,7 @@ class Activity extends Model
     protected function activitiesData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -49,7 +49,7 @@ class Activity extends Model
     protected function athleticsData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -57,7 +57,7 @@ class Activity extends Model
     protected function communityServiceData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 

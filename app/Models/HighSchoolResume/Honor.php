@@ -26,7 +26,7 @@ class Honor extends Model
     protected function honorsData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 

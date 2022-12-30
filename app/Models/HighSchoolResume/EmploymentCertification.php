@@ -22,7 +22,7 @@ class EmploymentCertification extends Model
     protected function employmentData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 
@@ -30,7 +30,7 @@ class EmploymentCertification extends Model
     protected function significantData(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
+            // get: fn ($value) => json_decode($value, true),
             set: fn ($value) => json_encode($value),
         );
     } 

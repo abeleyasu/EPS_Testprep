@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HighSchoolResume;
 
 use App\Http\Controllers\Controller;
 use App\Models\EducationCourse;
+use App\Models\Grade;
 use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\Education;
@@ -11,6 +12,7 @@ use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
 use App\Models\HighSchoolResume\Honor;
 use App\Models\HighSchoolResume\PersonalInfo;
+use App\Models\IntendedCollegeList;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -73,21 +75,49 @@ class PreviewController extends Controller
         $ib_courses = [];
         $ap_courses = [];
 
-        foreach ((json_decode($education->ib_courses)) as $ib) {
-            $ib_course = EducationCourse::whereId($ib)->first();
-            $ib_courses[] = $ib_course->name;
+        if(!empty($education->ib_courses)){
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
+            }
         }
-        foreach ((json_decode($education->ap_courses)) as $ap) {
-            $ap_course = EducationCourse::whereId($ap)->first();
-            $ap_courses[] = $ap_course->name;
+        if(!empty($education->ap_courses)){
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
+            }
         }
 
-        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data'));
+        $intended_major = [];
+        $intended_minor = [];
+
+        if(!empty($education->intended_college_major)){
+            foreach ((json_decode($education->intended_college_major)) as $major) {
+                $major_data = IntendedCollegeList::whereId($major)->first();
+                $intended_major[] = $major_data->name;
+            }
+        }
+        if(!empty($education->intended_college_minor)){
+            foreach ((json_decode($education->intended_college_minor)) as $minor) {
+                $minor_data = IntendedCollegeList::whereId($minor)->first();
+                $intended_minor[] = $minor_data->name;
+            }
+        }
+
+        $current_grade = [];
+
+        if(!empty($education->current_grade)){
+            foreach ((json_decode($education->current_grade)) as $grade) {
+                $grade_data = Grade::whereId($grade)->first();
+                $current_grade[] = $grade_data->name;
+            }
+        }
+        
+        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade'));
     }
 
     public function resumePreview()
     {
-        // dd(Auth::id()); 
         $personal_info = PersonalInfo::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $education = Education::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
         $honor = Honor::where('user_id', Auth::id())->where('is_draft',0)->latest()->first();
@@ -99,13 +129,18 @@ class PreviewController extends Controller
         $ib_courses = [];
         $ap_courses = [];
 
-        foreach ((json_decode($education->ib_courses)) as $ib) {
-            $ib_course = EducationCourse::whereId($ib)->first();
-            $ib_courses[] = $ib_course->name;
-        }
-        foreach ((json_decode($education->ap_courses)) as $ap) {
-            $ap_course = EducationCourse::whereId($ap)->first();
-            $ap_courses[] = $ap_course->name;
+        if(!empty($education->ib_courses))
+        {            
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
+            }
+        } 
+        if(!empty($education->ap_courses)){
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
+            }
         }
 
         $options = new Options(); 
@@ -186,13 +221,17 @@ class PreviewController extends Controller
         $ib_courses = [];
         $ap_courses = [];
 
-        foreach ((json_decode($education->ib_courses)) as $ib) {
-            $ib_course = EducationCourse::whereId($ib)->first();
-            $ib_courses[] = $ib_course->name;
+        if(!empty($education->ib_courses)){
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
+            }
         }
-        foreach ((json_decode($education->ap_courses)) as $ap) {
-            $ap_course = EducationCourse::whereId($ap)->first();
-            $ap_courses[] = $ap_course->name;
+        if(!empty($education->ap_courses)){
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
+            }
         }
 
         $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses"))->render();
@@ -257,16 +296,44 @@ class PreviewController extends Controller
 
         $ib_courses = [];
         $ap_courses = [];
+        if(!empty($education->ib_courses)){
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
+            }
+        }
+        if(!empty($education->ap_courses)){
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
+            }
+        }
 
-        foreach ((json_decode($education->ib_courses)) as $ib) {
-            $ib_course = EducationCourse::whereId($ib)->first();
-            $ib_courses[] = $ib_course->name;
+        $intended_major = [];
+        $intended_minor = [];
+
+        if(!empty($education->intended_college_major)){
+            foreach ((json_decode($education->intended_college_major)) as $major) {
+                $major_data = IntendedCollegeList::whereId($major)->first();
+                $intended_major[] = $major_data->name;
+            }
         }
-        foreach ((json_decode($education->ap_courses)) as $ap) {
-            $ap_course = EducationCourse::whereId($ap)->first();
-            $ap_courses[] = $ap_course->name;
+        if(!empty($education->intended_college_minor)){
+            foreach ((json_decode($education->intended_college_minor)) as $minor) {
+                $minor_data = IntendedCollegeList::whereId($minor)->first();
+                $intended_minor[] = $minor_data->name;
+            }
         }
-        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data'))->render();
+
+        $current_grade = [];
+        if(!empty($education->current_grade)){
+            foreach ((json_decode($education->current_grade)) as $grade) {
+                $grade_data = Grade::whereId($grade)->first();
+                $current_grade[] = $grade_data->name;
+            }
+        }
+
+        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data','intended_major','intended_minor','current_grade'))->render();
         
         return response()->json(["success" => true, "html" => $html]);
     }

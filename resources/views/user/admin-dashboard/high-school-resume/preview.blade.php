@@ -362,7 +362,7 @@
                                                         </li>
                                                         <li>
                                                             <span>Current Grade / Month / Year :
-                                                            </span>{{ implode(',', json_decode($education->current_grade)) }} /
+                                                            </span>{{ implode(',', ($current_grade)) }} /
                                                             {{ $education->month }} / {{ $education->year }}
                                                         </li>
                                                         <li>
@@ -437,7 +437,7 @@
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
                                                                         <li class="list-type">
-                                                                            {{ implode(',', json_decode($education->intended_college_major)) }}
+                                                                            {{ implode(',', $intended_major) }}
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -449,7 +449,7 @@
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
                                                                         <li class="list-type">
-                                                                            {{ implode(',', json_decode($education->intended_college_minor)) }}
+                                                                            {{ implode(',', $intended_minor) }}
                                                                         </li>
                                                                     </ul>
                                                                 </div>

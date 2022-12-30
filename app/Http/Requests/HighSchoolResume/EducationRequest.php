@@ -37,9 +37,9 @@ class EducationRequest extends FormRequest
             "course_data.*.course_name" => "required",
             "course_data.*.search_college_name" => "required",
             "honor_course_data.*.course_data"=>"required",
-            "testing_data.*.name_of_test" => "required",
-            "testing_data.*.results_score" => "required",
-            "testing_data.*.date" => "required"
+            "testing_data.*.name_of_test" => "",
+            "testing_data.*.results_score" => "",
+            "testing_data.*.date" => ""
         ];
     }
 
