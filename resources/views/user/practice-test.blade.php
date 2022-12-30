@@ -356,6 +356,7 @@
                 var get_question_id = jQuery('.get_question_id').val();
                 var get_section_id = jQuery('#section_id').val();
                 var get_question_type = jQuery('#get_question_type').val();
+                var get_practice_id = jQuery(this).attr('data-practice_test_id');
                 var get_test_id = '';
                 if (window.location.href.indexOf("all") > -1)
                 {
@@ -402,12 +403,6 @@
                     selected_flag_details[get_question_id] = 'no';
                 }
               
-                // console.log(selected_answer);
-                // console.log(get_section_id);
-                // console.log(selected_gusess_details);
-                // console.log(selected_flag_details);
-                // console.log(selected_skip_details);
-                // return false;
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -421,8 +416,8 @@
                         selected_answer:selected_answer,
                         selected_gusess_details:selected_gusess_details,
                         selected_flag_details:selected_flag_details,
-                        // selected_skip_details:selected_skip_details,
                         get_section_id:get_section_id,
+                        get_practice_id:get_practice_id,
                         get_question_type:get_question_type
                     },
                     success: function(result){
@@ -454,7 +449,7 @@
                         get_offset: get_offset,
                     },
                     success: function(result){
-                        console.log(result);
+                        $('.submit_section_btn').attr('data-practice_test_id', result.practice_test_id);
                         var check_if_flag_selected = selected_flag_details[result.questions[0].question_id];
                         var check_if_guess_selected = selected_gusess_details[result.questions[0].question_id];
                         var check_if_skip_selected = selected_skip_details[result.questions[0].question_id];
@@ -589,13 +584,11 @@
                         if(result.set_prev_offset < 0)
                         {
                             jQuery('#get_previous_question_btn').prop('disabled', true);
-                            
                             jQuery('.prev').prop('disabled', true);      
                         }
                         else
                         {
                             jQuery('#get_previous_question_btn').prop('disabled', false);
-
                             jQuery('.prev').prop('disabled', false);    
                         }
 
