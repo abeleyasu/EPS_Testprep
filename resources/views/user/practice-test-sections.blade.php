@@ -52,8 +52,7 @@
                   This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
                 
                 </h2>
-                
-                @if($testSections[0]->is_test_completed == 'yes')
+                @if($check_test_completed == 'yes')
                 <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
                   <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
                 </a>
