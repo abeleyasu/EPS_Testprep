@@ -28,6 +28,7 @@ use App\Http\Controllers\HighSchoolResume\FeaturedAttributeController;
 use App\Http\Controllers\HighSchoolResume\HonorsController;
 use App\Http\Controllers\HighSchoolResume\PersonalInfoController;
 use App\Http\Controllers\HighSchoolResume\PreviewController;
+use App\Http\Controllers\HonorsCourseNameListController;
 use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
 use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
 use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
@@ -233,6 +234,7 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
         Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
     });
 
+    Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
     Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');
     Route::get('/grades/list', [GradesController::class, 'getGradeList'])->name('gradesList');
     

@@ -11,6 +11,7 @@ class EducationCourse extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
         'course_type'
     ];
 }

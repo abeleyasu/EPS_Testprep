@@ -152,14 +152,16 @@ class ActivityController extends Controller
         if(!empty($data['demonstrated_data'])) {
             foreach($data['demonstrated_data'] as $key => $value){
                 if (!empty(array_filter($value))) {
-                    foreach($value['grade'] as $grade){
-                        if(!in_array($grade , $grade_ids)){
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);                    
-                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
-                        }    
-                    }  
+                    if(isset($value['grade'])){
+                        foreach($value['grade'] as $grade){
+                            if(!in_array($grade , $grade_ids)){
+                                $grade_info = Grade::create(['name' => $grade]);
+                                $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);                    
+                                $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                                $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                            }    
+                        }  
+                    }
                 }
             }
             $data['demonstrated_data'] = array_values($data['demonstrated_data']);
@@ -168,14 +170,16 @@ class ActivityController extends Controller
         if (!empty($data['leadership_data'])) {
             foreach($data['leadership_data'] as $key => $value){
                 if (!empty(array_filter($value))) {
-                    foreach($value['grade'] as $grade){
-                        if(!in_array($grade , $grade_ids)){
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);                    
-                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['leadership_data'][$key]['grade'] = $grade_array;
-                        }    
-                    }  
+                    if (isset($value['grade'])) {
+                        foreach ($value['grade'] as $grade) {
+                            if (!in_array($grade, $grade_ids)) {
+                                $grade_info = Grade::create(['name' => $grade]);
+                                $index = array_search($grade, $data['leadership_data'][$key]['grade']);
+                                $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                                $data['leadership_data'][$key]['grade'] = $grade_array;
+                            }
+                        }
+                    }
                 }
             }
             $data['leadership_data'] = array_values($data['leadership_data']);
@@ -184,12 +188,14 @@ class ActivityController extends Controller
         if (!empty($data['activities_data'])) {
             foreach ($data['activities_data'] as $key => $value) {
                 if (!empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
-                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['activities_data'][$key]['grade'] = $grade_array;
+                    if (isset($value['grade'])) {
+                        foreach ($value['grade'] as $grade) {
+                            if (!in_array($grade, $grade_ids)) {
+                                $grade_info = Grade::create(['name' => $grade]);
+                                $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                                $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                                $data['activities_data'][$key]['grade'] = $grade_array;
+                            }
                         }
                     }
                 }
@@ -200,14 +206,16 @@ class ActivityController extends Controller
         if (!empty($data['athletics_data'])) {
             foreach($data['athletics_data'] as $key => $value){
                 if (!empty(array_filter($value))) {
-                    foreach($value['grade'] as $grade){
-                        if(!in_array($grade , $grade_ids)){
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);                    
-                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['athletics_data'][$key]['grade'] = $grade_array;
-                        }    
-                    }  
+                    if (isset($value['grade'])) {
+                        foreach ($value['grade'] as $grade) {
+                            if (!in_array($grade, $grade_ids)) {
+                                $grade_info = Grade::create(['name' => $grade]);
+                                $index = array_search($grade, $data['athletics_data'][$key]['grade']);
+                                $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                                $data['athletics_data'][$key]['grade'] = $grade_array;
+                            }
+                        }
+                    }
                 }
             }
             $data['athletics_data'] = array_values($data['athletics_data']);
@@ -216,14 +224,16 @@ class ActivityController extends Controller
         if (!empty($data['community_service_data'])) {
             foreach($data['community_service_data'] as $key => $value){
                 if (!empty(array_filter($value))) {
-                    foreach($value['grade'] as $grade){
-                        if(!in_array($grade , $grade_ids)){
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);                    
-                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['community_service_data'][$key]['grade'] = $grade_array;
-                        }    
-                    }  
+                    if (isset($value['grade'])) {   
+                        foreach ($value['grade'] as $grade) {
+                            if (!in_array($grade, $grade_ids)) {
+                                $grade_info = Grade::create(['name' => $grade]);
+                                $index = array_search($grade, $data['community_service_data'][$key]['grade']);
+                                $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                                $data['community_service_data'][$key]['grade'] = $grade_array;
+                            }
+                        }
+                    }
                 }
             }
             $data['community_service_data'] = array_values($data['community_service_data']);

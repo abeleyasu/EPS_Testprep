@@ -129,7 +129,7 @@ function removeCourses(data) {
 }
 
 // Honors data
-function addHonorCourseData(data){
+async function addHonorCourseData(data){
     let $count = $(data).attr("data-count");
         $count++;
 
@@ -147,12 +147,8 @@ function addHonorCourseData(data){
         let html =``;
             html += `<tr class="honor_course_data_table_row remove_honors_courses"> `;
             html += `<td class="select2-container_main select2-container_main-position">`;
-            html += `<select class="required js-select2 select" data-placeholder="Select honor course name" multiple="multiple" name="honor_course_data[${$count}][course_data][]" id="honor_course_data_${$count}">`;
-            html += `<option value="1st grade">1st grade</option>`;
-            html += `<option value="2st grade">2st grade</option>`;
-            html += `<option value="3st grade">3st grade</option>`;
-            html += `<option value="4st grade">4st grade</option>`;
-            html += `<option value="5st grade">5st grade</option>`;
+            html += `<select class="js-select2 select" data-placeholder="Select honor course name" multiple="multiple" name="honor_course_data[${$count}][course_data][]" id="honor_course_data_${$count}">`;
+            html += await dropdown_lists(`/user/honors/courses/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -164,12 +160,19 @@ function addHonorCourseData(data){
 
         $('.honors_table tbody').append(html);  
 
+        $(document).ready(() => {
+            $(`#honor_course_data_${$count}`).select2({
+                tags: true,
+                placeholder: "Select honors course name",
+            });
+        })
+
         $(data).attr('data-count', $count);
     }  
 
-   let honor_course_data = $('input[name^="honor_course_data"]');
+   let honor_course_data = $('select[name^="honor_course_data"]');
 
-    honor_course_data.filter('input[name$="[course_data]"]').each(function() {
+    honor_course_data.filter('select[name$="[course_data][]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {
@@ -203,7 +206,7 @@ function addTestingData(data){
         let html =``;
             html += `<tr class="testing_table_row remove_testing_data">`;
             html += `<td>`;
-            html += `<select class="required form-select"    id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
+            html += `<select class="form-select" id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
             html += `<option value="">Select name of test</option>`;
             html += `<option value="PSAT">PSAT</option>`;
             html += `<option value="SAT">SAT</option>`;
@@ -211,10 +214,10 @@ function addTestingData(data){
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control"  name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
+            html += `<input type="text" class="form-control" id="results_score" name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="testing-date-${$count}" name="testing_data[${$count}][date]" placeholder="Enter Date" autocomplete="off">`;
+            html += `<input type="text" class="form-control" id="testing-date-${$count}" name="testing_data[${$count}][date]" placeholder="Enter Date" autocomplete="off" readonly>`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -227,9 +230,10 @@ function addTestingData(data){
 
         $(data).attr('data-count', $count);
     } 
+
     let testing_data = $('input[name^="testing_data"]');
 
-    testing_data.filter('input[name$="[name_of_test]"]').each(function() {
+    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {
@@ -255,32 +259,26 @@ function addTestingData(data){
     }); 
 
     $("#is_tested").click(function () {    
-        if($(this).is(':checked')){
-            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function(index,val){
-                $(val).removeClass('required');
-            })
-
-            testing_data.filter('input[name$="[results_score]"]').each(function() {
+        if($(this).is(':checked')){ 
+            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
                 $(this).rules("add", {
                     required: false,
-                    messages: {
-                        required: "Result score field is required"
-                    }
                 });
             });
-            testing_data.filter('input[name$="[date]"]').each(function() {
+            testing_data.filter('input[name$="[date]"],input[name$="[results_score]"]').each(function() {
                 $(this).rules("add", {
-                    required: false,
-                    messages: {
-                        required: "Date field is required"
-                    }
+                    required: false
                 });
             });
         }else{
-            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function(index,val){
-                $(val).addClass('required');
-            })
-
+            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Name of test field is required"
+                    }
+                });
+            });
             testing_data.filter('input[name$="[results_score]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
@@ -304,7 +302,6 @@ function addTestingData(data){
 
 function removeTestingData(data){
     $(data).parents(".remove_testing_data").remove();
-
 }
 //Honors Academic Honors, Achievements & Other Awards data
 async function addHonorsData(data){
@@ -544,7 +541,6 @@ function removeActivityData(data) {
     $(data).parents(".remove_activity_data").remove();
 }
 
-
 // addAthleticsData functions
 
 async function addAthleticsData(data){
@@ -599,7 +595,6 @@ function removeAthleticsData(data){
 
 }
 
-
 // Comunity service data
 
 async function addCommunityData(data){
@@ -648,12 +643,10 @@ async function addCommunityData(data){
 
 }
 
-
 function removeCommunityData(data){
     $(data).parents(".remove_comunity_data").remove();
 
 }
-
 
 // employment functions
 
