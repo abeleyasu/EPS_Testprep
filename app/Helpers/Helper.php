@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\CollegeInformation;
 use App\Models\Grade;
+use App\Models\HonorCourseNameList;
 
 class Helper
 {
@@ -33,5 +34,22 @@ class Helper
         $grade = Grade::whereIn('id', $id_array)->pluck('name')->toArray();
 
         return !empty($grade) ? implode(',', $grade) : "-";
+    }
+
+    public static function getGradeAllByIdArray($id_array)
+    {
+        $grade = [];
+        foreach ($id_array as $a) {
+            $grade = Grade::whereIn('id', $a)->pluck('name')->toArray();
+        }
+
+        return !empty($grade) ? implode(',', $grade) : "-";
+    }
+
+    public static function getHonorCourseByIdArray($id_array)
+    {
+        $honor_course_array = HonorCourseNameList::whereIn('id', $id_array)->pluck('name')->toArray();
+
+        return !empty($honor_course_array) ? implode(',', $honor_course_array) : "-";
     }
 }

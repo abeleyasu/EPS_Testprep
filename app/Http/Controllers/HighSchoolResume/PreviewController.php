@@ -136,15 +136,6 @@ class PreviewController extends Controller
                 $current_grade[] = $grade_data->name;
             }
         }
-
-        // Incomplate***
-        // For Honors Course name data get from table 
-
-        // if(!empty($education['honor_course_data'])){
-        //     foreach($education['honor_course_data'] as $key => $courses_name) {
-        //         $honors_course_name = HonorCourseNameList::whereIn('id', $courses_name['course_data'])->pluck('name')->toArray();                
-        //     }
-        // }
         
         return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data'));
     }
@@ -422,7 +413,6 @@ class PreviewController extends Controller
         }else {
             return $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
         }
-        // return $type == 'download' ? $pdf->stream('resume_'.$id.'.pdf') : $pdf->stream('resume_'.$id.'.pdf', array('Attachment' => 0));
     }
     public function destroy($id)
     {
@@ -459,7 +449,6 @@ class PreviewController extends Controller
         $featured_awards_data = $this->array_empty($featuredAttribute->featured_awards_data);
         $featured_languages_data = $this->array_empty($featuredAttribute->featured_languages_data);
         $dual_citizenship_data = $this->array_empty($featuredAttribute->dual_citizenship_data);
-        // dd($leadership_data);
 
         if(empty($demonstrated_data) && empty($leadership_data) && empty($community_service_data) && empty($activities_data) && empty($activities_data))
         {

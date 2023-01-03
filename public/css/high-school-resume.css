@@ -547,6 +547,7 @@
         position: relative;
         text-align: left;
         padding-left: 30px;
+        display: block;
     }
 
     .preview-list_skill h2 {
@@ -683,3 +684,23 @@
         margin-top: 8px;
         margin-left: 10px;
     }
+
+    .activity-list-after:before{
+        width: 20px;
+        height: 20px;
+        content: '';
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 999;
+        left: -12px;
+        top: -42px;
+        position: absolute;
+        border: 2px solid #a8a8a8;
+    
+    }
+
+    .activity-list-after{
+        position: relative;
+    }
+
+   

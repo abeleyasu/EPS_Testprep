@@ -2,7 +2,6 @@
 
 @section('title', 'HSR | Preview : CPS')
 
-
 @section('user-content')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
@@ -96,9 +95,13 @@
                         @endif
                         <div class="printableArea">
                             <div class="text-border">
-                                <h1><span>{{ $personal_info->first_name }}</span> {{ $personal_info->middle_name }}
-                                    {{ $personal_info->last_name }}</h1>
-                                <p>Web Developer</p>
+                                <h1>
+                                    <span>
+                                        {{ $personal_info->first_name }}
+                                    </span> 
+                                    {{ $personal_info->middle_name }}
+                                    {{ $personal_info->last_name }}
+                                </h1>
                             </div>
                             <div class="printableArea_main">
                                 <div class="row">
@@ -107,32 +110,48 @@
                                             <div class="preview-list position-relative ps-0 contact-list-after">
                                                 <h3>Contact</h3>
                                                 <ul class="list">
-                                                    <li>
-                                                        <span><i class="fa-solid fa-envelope-open-text"></i>
-                                                        </span>{{ $personal_info->email }}
-                                                    </li>
-                                                    <li>
-                                                        <span><i class="fa-solid fa-phone"></i>
-                                                        </span>{{ $personal_info->cell_phone }}
-                                                    </li>
-                                                    <li class="d-flex"><span><i class="fa-solid fa-location-dot"></i>
-                                                        </span>
-                                                        <div class="ms-2">
-                                                            <span class="d-block">Address1 / Address2 / Zip Code :</span>
-                                                            {{ $personal_info->street_address_one }}
-                                                            <br>
-                                                            {{ $personal_info->street_address_two }}
-                                                            <br>
-                                                            {{ $personal_info->zip_code }}
-                                                        </div>
-                                                    </li>
-                                                    <li class="d-flex mb-2"><span><i class="fa-solid fa-location-dot"></i>
-                                                        </span>
-                                                        <div class="ms-2">
-                                                            <span class="d-block">City / State :</span>
-                                                            {{ $personal_info->city . ', ' . $personal_info->state }}
-                                                        </div>
-                                                    </li>
+                                                    @if(isset($personal_info->email))
+                                                        <li>
+                                                            <span>
+                                                                <i class="fa-solid fa-envelope-open-text"></i>
+                                                            </span>
+                                                            {{ $personal_info->email }}
+                                                        </li>
+                                                    @endif
+                                                    @if(isset($personal_info->cell_phone))
+                                                        <li>
+                                                            <span>
+                                                                <i class="fa-solid fa-phone"></i>
+                                                            </span>
+                                                            {{ $personal_info->cell_phone }}
+                                                        </li>
+                                                    @endif
+                                                    @if(isset($personal_info->street_address_one) || isset($personal_info->street_address_two) || isset($personal_info->zip_code))
+                                                        <li class="d-flex">
+                                                            <span>
+                                                                <i class="fa-solid fa-location-dot"></i>
+                                                            </span>
+                                                            <div class="ms-2">
+                                                                <span class="d-block">Address1 / Address2 / Zip Code </span>
+                                                                {{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : '' }}
+                                                                @if(isset($personal_info->street_address_one)) <br /> @endif
+                                                                {{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : '' }}
+                                                                @if(isset($personal_info->street_address_two)) <br /> @endif
+                                                                {{ isset($personal_info->zip_code) ? $personal_info->zip_code : '' }}
+                                                            </div>
+                                                        </li>
+                                                    @endif
+                                                    @if(isset($personal_info->city) || isset($personal_info->state))
+                                                        <li class="d-flex mb-2">
+                                                            <span>
+                                                                <i class="fa-solid fa-location-dot"></i>
+                                                            </span>
+                                                            <div class="ms-2">
+                                                                <span class="d-block">City / State</span>
+                                                                {{ $personal_info->city . '/' . $personal_info->state }}
+                                                            </div>
+                                                        </li>
+                                                    @endif
                                                     @if($social_links != null)
                                                         <li class="d-flex "><span> <i class="fa-solid fa-link"></i> </span>
                                                             <div class="ms-2">
@@ -151,7 +170,7 @@
                                                     @endif
                                                 </ul>
                                             </div>
-                                            <div class="position-relative preview-list ps-0 pb-3 features-list-before {{ !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($featured_skills_data) ? '' : 'd-none' }}">
+                                            <div class="position-relative preview-list ps-0 pb-3 {{ !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($featured_skills_data) ? '' : 'd-none' }}">
                                                 @if (!empty($featured_skills_data))  
                                                     <div class="pb-3 mb-0 border-bottom-0">
                                                         @if ($featuredAttribute)
@@ -197,7 +216,7 @@
                                                     </div>
                                                 @endif
                                                 @if (!empty($featured_languages_data))
-                                                    <div class="preview-list mb-0 ps-0 ">
+                                                    <div class="preview-list pb-3 features-list-after  ps-0 mb-0 border-bottom-0">
                                                         <div class="preview-list_skill ">
                                                             @if(!empty($featured_languages_data))
                                                                 <h2>Featured languages</h2>
@@ -218,67 +237,119 @@
                                                         </div>
                                                     </div>
                                                 @endif
+                                                @if (!empty($dual_citizenship_data))
+                                                    <div class="preview-list mb-0 ps-0 ">
+                                                        <div class="preview-list_skill ">
+                                                            @if(!empty($dual_citizenship_data))
+                                                                <h2>Dual Citizen</h2>
+                                                                <ul class="list">
+                                                                    @foreach ($featuredAttribute->dual_citizenship_data as $dual_citizenship)
+                                                                        <li class="mb-0">
+                                                                            <div class="list_group">
+                                                                                <ul class="list_items">
+                                                                                    <li class="list-type">
+                                                                                        {{ $dual_citizenship['country'] }}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
-                                            <div class="preview-list list_group  ps-0 pb-0 border-bottom-0">
+                                            <div class="preview-list list_group ps-0 pb-0 border-bottom-0">
                                                 @if (!empty($employment_data)) 
                                                     <h3>Employment & Certifications</h3>
-                                                    <ul class="list_items">
-                                                        @foreach ($employmentCertification->employment_data as $employment_data)
-                                                            <li class="list-type">
-                                                                <span>Job </span>
-                                                                {{ $employment_data['job_title'] }}
-                                                                <span> with </span>
-                                                                @if (isset($employment_data['grade']))
-                                                                    {{ \App\Helpers\Helper::getGradeByIdArray($employment_data['grade']) }}
-                                                                @endif
-                                                            </li>
-                                                        @endforeach
-
-                                                        @foreach ($employmentCertification->employment_data as $employment_data)
-                                                            <li class="list-type">
-                                                                <span> Honor by </span>
-                                                                {{ $employment_data['honor_award'] }}
-                                                                <span> at </span>
-                                                                {{ $employment_data['location'] }}
-                                                            </li>
-                                                        @endforeach
+                                                    <ul class="list">
+                                                        <li>
+                                                            <span>Name Of The Company:</span>
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    @foreach ($employment_data as $data)
+                                                                        @if(!is_null($data['name_of_company']))
+                                                                            <li class="list-type">
+                                                                                {{ $data['name_of_company'] }}
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <span>Job Title</span>
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    @foreach ($employment_data as $data)
+                                                                        @if(!is_null($data['job_title']))
+                                                                            <li class="list-type">
+                                                                                {{ $data['job_title'] }}
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <span>Grade(s)</span>
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    @foreach ($employment_data as $data)
+                                                                        @if(isset($data['grade']) && !empty($data['grade']))
+                                                                            <li class="list-type">
+                                                                                {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </li>
                                                     </ul>
                                                 @endif
                                             </div>
                                             <div class="preview-list position-relative list_group ps-0 honor-list-after {{ !empty($significant_data) || !empty($employment_data) ? '' : 'd-none' }}">
                                                 @if (!empty($significant_data)) 
                                                     <h3>Responsibilities or interests</h3>
-                                                    <ul class="list_items">
-                                                        @foreach ($employmentCertification->significant_data as $significant_data)
-                                                            <li class="list-type">
-                                                                <span>Responsibility or interest :</span>
-                                                                {{ $significant_data['interest'] }}
-                                                                <span> with </span>
-                                                                @if (isset($significant_data['grade']))
-                                                                {{ \App\Helpers\Helper::getGradeByIdArray($significant_data['grade']) }}
-                                                                    
-                                                                @endif
-                
-                                                            </li>
-                                                        @endforeach
-
-                                                        @foreach ($employmentCertification->significant_data as $significant_data)
-                                                            <li class="list-type">
-                                                                <span>Honor by</span>
-                                                                {{ $significant_data['honor_award'] }}
-                                                                <span> at </span>
-                                                                {{ $significant_data['location'] }}
-                                                            </li>
-                                                        @endforeach
+                                                    <ul class="list">
+                                                        <li>
+                                                            <span>
+                                                                Responsibility Or Interest
+                                                            </span>
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    @foreach ($significant_data as $data)
+                                                                        <li class="list-type">
+                                                                            {{ $data['interest'] }}
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <span>Grade(s)</span>
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    @foreach ($significant_data as $data)
+                                                                        @if(isset($data['grade']) && !empty($data['grade']))
+                                                                            <li class="list-type">
+                                                                                {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </li>
                                                     </ul>
                                                 @endif
                                             </div>
                                             @if (!empty($honor))
-                                                <div class="preview-list  ps-0">
+                                                <div class="preview-list ps-0">
                                                     <h3>Honor</h3>
                                                     <ul class="list">
                                                         <li>
-                                                            <span>Honor Position : </span>
+                                                            <span>Position</span>
                                                             <div class="list_group">
                                                                 <ul class="list_items">
                                                                     @foreach ($honor->honors_data as $honor_data)
@@ -290,13 +361,24 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <span class="d-block">Achivement / Grade : </span>
+                                                            <span>Achivement</span>
                                                             <div class="list_group">
                                                                 <ul class="list_items">
                                                                     @foreach ($honor->honors_data as $honor_data)
                                                                         <li class="list-type">
-                                                                            {{ $honor_data['honor_achievement_award'] }} /
-                                                                            @if(isset($honor_data['grade']))
+                                                                            {{ $honor_data['honor_achievement_award'] }}
+                                                                        </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <span class="d-block">Grade(s)</span>
+                                                            <div class="list_group">
+                                                                <ul class="list_items">
+                                                                    @foreach ($honor->honors_data as $honor_data)
+                                                                        <li class="list-type">
+                                                                            @if(isset($honor_data['grade']) && !empty($honor_data['grade']))
                                                                                 {{ \App\Helpers\Helper::getGradeByIdArray($honor_data['grade']) }}
                                                                             @endif
                                                                         </li>
@@ -305,7 +387,7 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <span>Location : </span>
+                                                            <span>Location</span>
                                                             <div class="list_group">
                                                                 <ul class="list_items">
                                                                     @foreach ($honor->honors_data as $honor_data)
@@ -369,8 +451,12 @@
                                                             {{ $education->high_school_district }}
                                                         </li>
                                                         <li>
-                                                            <span>Current Grade / Month / Year :
-                                                            </span>{{ implode(',', ($current_grade)) }} /
+                                                            <span>Current Grade:
+                                                            </span>{{ implode(',', ($current_grade)) }}
+                                                        </li>
+                                                        <li>
+                                                            <span> Month / Year :
+                                                            </span>
                                                             {{ $education->month }} / {{ $education->year }}
                                                         </li>
                                                         @if(!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
@@ -404,11 +490,12 @@
                                                                 <span> Honors Course :</span>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        {{-- {{dd($education->honor_course_data )}} --}}
                                                                         @foreach ($education->honor_course_data as $honor_course_data)
-                                                                            <li class="list-type">
-                                                                                {{ implode(',', $honor_course_data['course_data']) }}
-                                                                            </li>
+                                                                            @if(isset($honor_course_data['course_data']) && !empty($honor_course_data['course_data']))
+                                                                                <li class="list-type">
+                                                                                    {{ \App\Helpers\Helper::getHonorCourseByIdArray($honor_course_data['course_data']) }}
+                                                                                </li>
+                                                                            @endif
                                                                         @endforeach
                                                                     </ul>
                                                                 </div>
@@ -450,185 +537,273 @@
                                                         @if (!empty($intended_major))
                                                             <li>
                                                                 <span>Intended College Major(s):</span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        <li class="list-type">
-                                                                            {{ implode(',', $intended_major) }}
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
+                                                                {{ implode(',', $intended_major) }}
                                                             </li>
                                                         @endif
                                                         @if (!empty($intended_major))
                                                             <li>
                                                                 <span>Intended College Minor(s):</span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        <li class="list-type">
-                                                                            {{ implode(',', $intended_minor) }}
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
+                                                                    {{ implode(',', $intended_minor) }}
                                                             </li>
                                                         @endif
                                                     </ul>
                                                 </div>
                                             @endif
                                             @if (!empty($activity))
-                                                <div class="preview-list">
+                                                <div class="preview-list activity-list-after">
                                                     <h3>Activities</h3>
                                                     <ul class="list">
                                                         @if (!empty($demonstrated_data))
                                                             <li>
-                                                                <span class="d-block">Demostrated Interests and
-                                                                    Position in the Area of my College
-                                                                    Major :</span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        @foreach ($activity->demonstrated_data as $demonstrated_data)
-                                                                            <li class="list-type">
-                                                                                {{ $demonstrated_data['interest'] }} 
-                                                                                /
-                                                                                {{ $demonstrated_data['position'] }}
-                                                                            </li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span class="d-block">Grade and Location with Details :
+                                                                <span class="d-block">
+                                                                    Demostrated Interests Major
                                                                 </span>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        @foreach ($activity->demonstrated_data as $demonstrated_data)
-                                                                            <li class="list-type">
-                                                                                @if (isset($demonstrated_data['grade']))
-                                                                                {{ \App\Helpers\Helper::getGradeByIdArray($demonstrated_data['grade']) }}                                                                                    
-                                                                                /
-                                                                                @endif
-                                                                                {{ $demonstrated_data['location'] }} /
-                                                                                {{ $demonstrated_data['details'] }}
-                                                                            </li>
+                                                                        @php
+                                                                            $demonstrated_array = [];
+                                                                        @endphp
+                                                                        @foreach ($demonstrated_data as $data)
+                                                                            @php
+                                                                                if(isset($data['position'])){
+                                                                                    $demonstrated_array['position'][] = $data['position'];
+                                                                                }
+                                                                                if(isset($data['interest'])){
+                                                                                    $demonstrated_array['interest'][] = $data['interest'];
+                                                                                }
+                                                                                if(isset($data['grade'])){
+                                                                                    $demonstrated_array['grade'][] = $data['grade'];
+                                                                                }
+                                                                                if(isset($data['details'])){
+                                                                                    $demonstrated_array['details'][] = $data['details'];
+                                                                                }
+                                                                            @endphp
                                                                         @endforeach
+                                                                        @if(!empty($demonstrated_array['position']))
+                                                                            <li>
+                                                                                <span>Position:</span>
+                                                                                {{ implode(",", $demonstrated_array['position']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($demonstrated_array['interest']))
+                                                                            <li>
+                                                                                <span>Interest:</span>
+                                                                                {{ implode(",", $demonstrated_array['interest']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($demonstrated_array['grade']))
+                                                                            <li>
+                                                                                <span>Grade(s):</span>
+                                                                                {{ \App\Helpers\Helper::getGradeAllByIdArray($demonstrated_array['grade']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($demonstrated_array['details']))
+                                                                            <li>
+                                                                                <span>Details:</span>
+                                                                                {{ implode(",", $demonstrated_array['details']) }}
+                                                                            </li>
+                                                                        @endif
                                                                     </ul>
                                                                 </div>
                                                             </li>
                                                         @endif
-                                                        @if (!empty($leadership_data))
+                                                        @if(!empty($leadership_data))    
                                                             <li>
-                                                                <span>Leadership status with Position : </span>
+                                                                <span class="d-block">Leadership</span>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        @foreach ($leadership_data as $data)
-                                                                            <li class="list-type">
-                                                                                {{ isset($data['status']) ? $data['status']  : ''}}
-                                                                                {{ isset($data['status']) && isset($data['position']) ? '/' : ''}}
-                                                                                {{ isset($data['position']) ? $data['position'] : ''}}
-                                                                            </li>
+                                                                        @php
+                                                                            $leadership_array = [];
+                                                                        @endphp
+                                                                        @foreach($leadership_data as $data)
+                                                                            @php
+                                                                                if(isset($data['status'])){
+                                                                                    $leadership_array['status'][] = $data['status'];
+                                                                                }
+                                                                                if(isset($data['position'])){
+                                                                                    $leadership_array['position'][] = $data['position'];
+                                                                                }
+                                                                                if(isset($data['organization'])){
+                                                                                    $leadership_array['organization'][] = $data['organization'];
+                                                                                }
+                                                                                if(isset($data['grade'])){
+                                                                                    $leadership_array['grade'][] = $data['grade'];
+                                                                                }
+                                                                            @endphp
                                                                         @endforeach
+                                                                        @if(!empty($leadership_array['status']))
+                                                                            <li>
+                                                                                <span>Status:</span>
+                                                                                {{ implode(",", $leadership_array['status']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($leadership_array['position']))
+                                                                            <li>
+                                                                                <span>Position:</span>
+                                                                                {{ implode(",", $leadership_array['position']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($leadership_array['organization']))
+                                                                            <li>
+                                                                                <span>Organization:</span>
+                                                                                {{ implode(",", $leadership_array['organization']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($leadership_array['grade']))
+                                                                            <li>
+                                                                                <span>Grade(s):</span>
+                                                                                {{ \App\Helpers\Helper::getGradeAllByIdArray($leadership_array['grade']) }}
+                                                                            </li>
+                                                                        @endif
                                                                     </ul>
                                                                 </div>
                                                             </li>
+                                                        @endif    
+                                                        @if(!empty($activities_data))    
                                                             <li>
-                                                                <span>Leadership organized By :</span>
+                                                                <span class="d-block">Activities & Clubs</span>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        @foreach ($leadership_data as $data)
-
-                                                                            <li class="list-type">
-                                                                                {{ $data['organization'] }} 
-                                                                                {{ isset($data['organization']) && isset($data['location']) ? '/' : ''}}
-                                                                                {{ $data['location'] }}
-                                                                            </li>
+                                                                        @php
+                                                                            $activities_array = [];
+                                                                        @endphp
+                                                                        @foreach ($activities_data as $data)
+                                                                            @php
+                                                                                if(isset($data['position'])){
+                                                                                    $activities_array['position'][] = $data['position'];
+                                                                                }
+                                                                                if(isset($data['activity'])){
+                                                                                    $activities_array['activity'][] = $data['activity'];
+                                                                                }
+                                                                                if(isset($data['honor_award'])){
+                                                                                    $activities_array['honor_award'][] = $data['honor_award'];
+                                                                                }
+                                                                                if(isset($data['grade'])){
+                                                                                    $activities_array['grade'][] = $data['grade'];
+                                                                                }
+                                                                            @endphp
                                                                         @endforeach
+                                                                        @if(!empty($data['position']))
+                                                                            <li>
+                                                                                <span>Position:</span>
+                                                                                {{ implode(",", $activities_array['position']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($data['activity']))
+                                                                            <li>
+                                                                                <span>Activity:</span>
+                                                                                {{ implode(",", $activities_array['activity']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($data['honor_award']))
+                                                                            <li>
+                                                                                <span>Honor/Award:</span>
+                                                                                {{ implode(",", $activities_array['honor_award']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(!empty($data['grade']))
+                                                                            <li>
+                                                                                <span>Grade(s):</span>
+                                                                                {{ \App\Helpers\Helper::getGradeAllByIdArray($activities_array['grade']) }}
+                                                                            </li>
+                                                                        @endif
                                                                     </ul>
                                                                 </div>
                                                             </li>
                                                         @endif
-                                                        @if (!empty($athletics_data))
+                                                        @if(!empty($athletics_data))    
                                                             <li>
-                                                                <span>Athletics status with Position : </span>
+                                                                <span class="d-block">Athletics</span>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        @foreach ($activity->athletics_data as $athletics_data)
-                                                                            <li class="list-type">
-                                                                                {{ $athletics_data['activity'] }} 
-                                                                                {{ !empty($athletics_data['activity']) && !empty($athletics_data['position']) ? '/' : '' }}
-                                                                                {{ $athletics_data['position'] }}
-                                                                            </li>
+                                                                        @php
+                                                                            $athletics_array = [];
+                                                                        @endphp
+                                                                        @foreach ($athletics_data as $data)
+                                                                            @php
+                                                                                if(isset($data['position'])){
+                                                                                    $athletics_array['position'][] = $data['position'];
+                                                                                }
+                                                                                if(isset($data['activity'])){
+                                                                                    $athletics_array['activity'][] = $data['activity'];
+                                                                                }
+                                                                                if(isset($data['grade'])){
+                                                                                    $athletics_array['grade'][] = $data['grade'];
+                                                                                }
+                                                                                if(isset($data['honor'])){
+                                                                                    $athletics_array['honor'][] = $data['honor'];
+                                                                                }
+                                                                            @endphp
                                                                         @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span>Athletics honor by :</span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        @foreach ($activity->athletics_data as $athletics_data)
-                                                                            <li class="list-type">
-                                                                                {{ $athletics_data['honor'] }} 
-                                                                                {{ !empty($athletics_data['honor']) && !empty($athletics_data['location']) ? '/' : '' }}
-                                                                                {{ $athletics_data['location'] }}
+                                                                        @if(isset($data['position']))
+                                                                            <li>
+                                                                                <span>Position:</span>
+                                                                                {{ implode(",", $athletics_array['position']) }}
                                                                             </li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                        @endif
-                                                        @if (!empty($activities_data))
-                                                            <li>
-                                                                <span>Activity with Position : </span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        @foreach ($activity->activities_data as $activities_data)
-                                                                            <li class="list-type">
-                                                                                {{ $activities_data['activity'] }} 
-                                                                                {{ !empty($activities_data['activity']) && !empty($activities_data['position']) ? '/' : '' }}
-                                                                                {{ $activities_data['position'] }}
+                                                                        @endif
+                                                                        @if(isset($data['activity']))
+                                                                            <li>
+                                                                                <span>Activity:</span>
+                                                                                {{ implode(",", $athletics_array['activity']) }}
                                                                             </li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span>Activity honor by :</span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        @foreach ($activity->activities_data as $activities_data)
-                                                                            <li class="list-type">
-                                                                                {{ $activities_data['honor_award'] }} 
-                                                                                {{ !empty($activities_data['honor_award']) && !empty($activities_data['location']) ? '/' : '' }}
-                                                                                {{ $activities_data['location'] }}
+                                                                        @endif
+                                                                        @if(!empty($data['grade']))
+                                                                            <li>
+                                                                                <span>Grade(s):</span>
+                                                                                {{ \App\Helpers\Helper::getGradeAllByIdArray($athletics_array['grade']) }}
                                                                             </li>
-                                                                        @endforeach
+                                                                        @endif
+                                                                        @if(isset($data['honor']))
+                                                                            <li>
+                                                                                <span>Honor:</span>
+                                                                                {{ implode(",", $athletics_array['honor']) }}
+                                                                            </li>
+                                                                        @endif
                                                                     </ul>
                                                                 </div>
                                                             </li>
                                                         @endif
-                                                        @if (!empty($community_service_data))  
+                                                        @if(!empty($community_service_data))    
                                                             <li>
-                                                                <span>Participation and service : </span>
+                                                                <span class="d-block">
+                                                                    Community Service / Volunteerism
+                                                                </span>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        @foreach ($activity->community_service_data as $community_service_data)
-                                                                            <li class="list-type">
-                                                                                {{ $community_service_data['level'] }} 
-                                                                                {{ !empty($community_service_data['level']) && !empty($community_service_data['service']) ? '/' : '' }}
-                                                                                {{ $community_service_data['service'] }}
-                                                                            </li>
+                                                                        @php
+                                                                            $community_service_array = [];
+                                                                        @endphp
+                                                                        @foreach ($community_service_data as $data)
+                                                                            @php
+                                                                                if(isset($data['level'])){
+                                                                                    $community_service_array['level'][] = $data['level'];
+                                                                                }
+                                                                                if(isset($data['service'])){
+                                                                                    $community_service_array['service'][] = $data['service'];
+                                                                                }
+                                                                                if(isset($data['grade'])){
+                                                                                    $community_service_array['grade'][] = $data['grade'];
+                                                                                }
+                                                                            @endphp
                                                                         @endforeach
-                                                                    </ul>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span>Community Located at : </span>
-                                                                <div class="list_group">
-                                                                    <ul class="list_items">
-                                                                        @foreach ($activity->community_service_data as $community_service_data)
-                                                                            <li class="list-type">
-                                                                                {{ $community_service_data['location'] }}
+                                                                        @if(isset($data['level']))
+                                                                            <li>
+                                                                                <span>Participation Level:</span>
+                                                                                {{ implode(",", $community_service_array['level']) }}
                                                                             </li>
-                                                                        @endforeach
+                                                                        @endif
+                                                                        @if(isset($data['service']))
+                                                                            <li>
+                                                                                <span>Service:</span>
+                                                                                {{ implode(",", $community_service_array['service']) }}
+                                                                            </li>
+                                                                        @endif
+                                                                        @if(isset($data['grade']) && !empty($data['grade']))
+                                                                            <li>
+                                                                                <span>Grade(s):</span>
+                                                                                {{ \App\Helpers\Helper::getGradeAllByIdArray($community_service_array['grade']) }}
+                                                                            </li>
+                                                                        @endif
                                                                     </ul>
                                                                 </div>
                                                             </li>
