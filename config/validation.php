@@ -69,7 +69,7 @@ return [
     ],
     "educations" => [
         "rules" => [
-            "current_grade" => [
+            "current_grade[]" => [
                 "required" => true,
             ],
             "month" => [
@@ -122,7 +122,7 @@ return [
             ],
         ],
         "messages" => [
-            "current_grade" => "Current grade field is required",
+            "current_grade[]" => "Current grade field is required",
             "month" => "Month field is required",
             "year" => "Year field is required",
             "high_school_name" => "High school name field is required",

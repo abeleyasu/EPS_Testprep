@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->id();
                 $table->string('name');
                 $table->tinyInteger('course_type')->nullable()->comment('1 = IB Courses, 2 = AP Courses');
+                $table->integer('user_id')->nullable();
                 $table->timestamps();
             });
         }

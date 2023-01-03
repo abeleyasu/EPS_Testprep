@@ -109,7 +109,7 @@
                                                         <label class="form-label" for="month">Intended Graduation Month
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="month-own form-control" placeholder="Intended Graduation Month" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="text" autocomplete="off">
+                                                        <input class="month-own form-control" onkeydown="javascript: return event.keyCode == 69 ? false : true" placeholder="Intended Graduation Month" min="1" max="12" id="month" name="month" value="{{ isset($education->month) && $education->month != null ? $education->month : old('month') }}" style="width: 100%;" type="number" autocomplete="off" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -117,7 +117,7 @@
                                                         <label class="form-label" for="year">Intended Graduation Year
                                                             <span class="text-danger">*</span>
                                                         </label>
-                                                        <input class="year-own form-control" placeholder="Intended Graduation Year Ex:2022" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="text" autocomplete="off">
+                                                        <input class="year-own form-control" onkeydown="javascript: return event.keyCode == 69 ? false : true" placeholder="Intended Graduation Year Ex:2022" id="year" name="year" value="{{ isset($education->year)  && $education->year != null  ? $education->year : old('year') }}" style="width: 100%;" type="number" autocomplete="off" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -306,6 +306,7 @@
                                                             AP Courses
                                                             <span class="text-danger">*</span>
                                                         </label><br>
+                                                        
                                                         <select class="required js-select2 select" data-placeholder="Select AP courses" id="ap_courses" name="ap_courses[]" multiple="multiple">
                                                             @foreach($courses_list as $course_list)
                                                                 @if($course_list->course_type == 2)
@@ -318,8 +319,7 @@
                                             </div>
                                             <table class="table course_table">
                                                 <tbody>
-                                                    <tr>
-                                                        
+                                                    <tr>                                                        
                                                         <td>
                                                             <label class="form-label" for="course_name">
                                                                 Concurrent Course Name
@@ -343,7 +343,7 @@
                                                                     <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" id="course_name" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101">
                                                                 </td>
                                                                 <td class="select2-container_main select2-container_main-position">
-                                                                    <select class="required js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name">
+                                                                    <select class=" js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name">
                                                                         @foreach ($colleges_list as $college_info)
                                                                             <option
                                                                                 {{ in_array($college_info->id, is_array($course_data['search_college_name']) ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
@@ -365,7 +365,7 @@
                                                                 <input type="text" class="form-control" id="course_name" name="course_data[0][course_name]" placeholder="Ex: College English 101">
                                                             </td>
                                                             <td class="select2-container_main select2-container_main-position">
-                                                                <select class="required js-select2"
+                                                                <select class=" js-select2"
                                                                     id="search_college_name_0" name="course_data[0][search_college_name][]"
                                                                     multiple="multiple" data-placeholder="Select college name">
                                                                     @foreach ($colleges_list as $college_info)
@@ -398,28 +398,20 @@
                                                     </td>
                                                 </tr>
                                                 @if (!empty($education->honor_course_data))
-                                                    @foreach ($education->honor_course_data as $index => $honor_course_data)
+                                                @foreach ($education->honor_course_data as $index => $honor_course_data)
                                                         <tr class="honor_course_data_table_row {{ $loop->first ? '' : 'remove_honors_courses' }}"> 
-                                                            <td class="select2-container_main select2-container_main-position">                                                        
-                                                                <select class="required js-select2"
-                                                                    id="honor_course_data_{{ $index }}" name="honor_course_data[{{ $index }}][course_data][]"
-                                                                    multiple="multiple">
+                                                            <td class="select2-container_main select2-container_main-position"> 
+                                                                <select class="js-select2"
+                                                                id="honor_course_data_{{$index}}" name="honor_course_data[{{$index}}][course_data][]"
+                                                                multiple="multiple" data-placeholder="Select honors course name">
+                                                                @foreach ($honors_course_list as $honors_course_name)
                                                                     <option
-                                                                        {{ in_array('1st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
-                                                                        value="1st grade">1st grade</option>
-                                                                    <option
-                                                                        {{ in_array('2st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
-                                                                        value="2st grade">2st grade</option>
-                                                                    <option
-                                                                        {{ in_array('3st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
-                                                                        value="3st grade">3st grade</option>
-                                                                    <option
-                                                                        {{ in_array('4st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
-                                                                        value="4st grade">4st grade</option>
-                                                                    <option
-                                                                        {{ in_array('5st grade', is_array($honor_course_data['course_data']) ? $honor_course_data['course_data'] : []) ? 'selected' : '' }}
-                                                                        value="5st grade">5st grade</option>
-                                                                </select>
+                                                                        {{ in_array($honors_course_name->id,$honor_course_data['course_data']) ? 'selected' : ''  }}
+                                                                        value="{{ $honors_course_name->id }}">{{ $honors_course_name->name }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                                
                                                             </td>
                                                             <td>
                                                                 <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -430,15 +422,14 @@
                                                     @endforeach
                                                 @else
                                                     <tr class="honor_course_data_table_row"> 
-                                                        <td class="select2-container_main select2-container_main-position">                                                        
-                                                            <select class="required js-select2"
+                                                        <td class="select2-container_main select2-container_main-position">  
+                                                            <select class="js-select2"
                                                                 id="honor_course_data_0" name="honor_course_data[0][course_data][]"
-                                                                multiple="multiple">
-                                                                <option value="1st grade">1st grade</option>
-                                                                <option value="2st grade">2st grade</option>
-                                                                <option value="3st grade">3st grade</option>
-                                                                <option value="4st grade">4st grade</option>
-                                                                <option value="5st grade">5st grade</option>
+                                                                multiple="multiple" data-placeholder="Select honors course name">
+                                                                @foreach ($honors_course_list as $honors_course_name)
+                                                                    <option value="{{ $honors_course_name->id }}">{{ $honors_course_name->name }}
+                                                                    </option>
+                                                                @endforeach
                                                             </select>
                                                         </td>
                                                         <td>
@@ -497,7 +488,7 @@
                                                         @foreach($education->testing_data as $index => $testing_data)
                                                             <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
                                                                 <td>
-                                                                    <select class="required form-select" id="name_of_test" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
+                                                                    <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
                                                                         <option value="">Select Name Of Test</option>
                                                                         <option value="PSAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>PSAT</option>
                                                                         <option value="SAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>SAT</option>
@@ -505,10 +496,10 @@
                                                                     </select>
                                                                 </td>
                                                                 <td>                                                            
-                                                                    <input type="text" class="form-control" value="{{ $testing_data['results_score'] }}" id="results_score" name="testing_data[{{ $index }}][results_score]" placeholder="Enter Results score">
+                                                                    <input type="text" class="form-control" value="{{ $testing_data['results_score'] }}" name="testing_data[{{ $index }}][results_score]" placeholder="Enter Results score">
                                                                 </td>
                                                                 <td>                                                            
-                                                                    <input type="text" class="form-control" value="{{ $testing_data['date'] }}" id="testing-date-{{ $index }}" name="testing_data[{{ $index }}][date]" placeholder="Enter Date" autocomplete="off">
+                                                                    <input type="text" class="form-control" value="{{ $testing_data['date'] }}" id="testing-date-{{ $index }}" name="testing_data[{{ $index }}][date]" placeholder="Enter Date" autocomplete="off" readonly>
                                                                 </td>
                                                                 <td>                                                            
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -520,7 +511,7 @@
                                                     @else
                                                         <tr class="testing_table_row">
                                                             <td>
-                                                                <select class="required form-select" id="name_of_test" name="testing_data[0][name_of_test]" style="width: 100%;">
+                                                                <select class="form-select" id="name_of_test" name="testing_data[0][name_of_test]" style="width: 100%;">
                                                                     <option value="">Select name of test</option>
                                                                     <option value="PSAT">PSAT</option>
                                                                     <option value="SAT">SAT</option>
@@ -531,7 +522,7 @@
                                                                 <input type="text" class="form-control" value="{{ old('results_score') }}" id="results_score" name="testing_data[0][results_score]" placeholder="Enter Results score">
                                                             </td>
                                                             <td>                                                            
-                                                                <input type="text" class="form-control" value="{{ old('date') }}" id="testing-date-0" name="testing_data[0][date]" placeholder="Enter Date" autocomplete="off">
+                                                                <input type="text" class="form-control" value="{{ old('date') }}" id="testing-date-0" name="testing_data[0][date]" placeholder="Enter Date" autocomplete="off" readonly>
                                                             </td>
                                                             <td>                                                            
                                                                 <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -559,7 +550,7 @@
                                                         <label class="form-label" for="intended_college_major">
                                                             Intended College Major
                                                         </label>
-                                                        <select class="required js-select2 select"
+                                                        <select class="js-select2 select"
                                                             id="intended_college_major"
                                                             name="intended_college_major[]"
                                                             data-placeholder="Select intended College Major"
@@ -575,7 +566,7 @@
                                                         <label class="form-label" for="intended_college_minor">
                                                             Intended College Minor
                                                         </label>
-                                                        <select class="required js-select2 select"
+                                                        <select class="js-select2 select"
                                                             id="intended_college_minor"
                                                             name="intended_college_minor[]"
                                                             data-placeholder="Select intended College Minor"
@@ -740,12 +731,14 @@
                         $(element).parents("td.select2-container_main").css("margin-bottom",'0');
                     } else {
                         error.insertAfter(element);
+                        if(element.hasClass('error')){
+                            element.parents().find('.collapse').addClass('show');
+                        }
                         $(element).parents("div.select2-container_main").css("margin-bottom",'20px');
                         $(element).parents("td.select2-container_main").css("margin-bottom",'20px');    
-                        element.parents().find('.collapse').addClass('show');
-                        if($(element).is('.js-select2.error')){
-                            $(element).parents('div.select2-container_main').find('.select2-selection--multiple').removeAttr('style')
-                            $(element).parents('td.select2-container_main').find('.select2-selection--multiple').removeAttr('style')
+                        if($(element).is('.js-select2 .error')){
+                            $(element).parents('div.select2-container_main').find('.select2-selection--multiple').removeAttr('style');
+                            $(element).parents('td.select2-container_main').find('.select2-selection--multiple').removeAttr('style');
                         }
                     }
                 },
@@ -757,7 +750,7 @@
                 },
             })
 
-            $('#current_grade').each(function() {
+            $('select[name^="current_grade[]"]').filter().each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
@@ -765,6 +758,7 @@
                     }
                 });
             });
+         
             
             let course_data = $('input[name^="course_data"]');
 
@@ -776,7 +770,7 @@
                     }
                 });
             });
-            course_data.filter('input[name$="[search_college_name]"]').each(function() {
+            $('select[name^="course_data"]').filter('select[name$="[search_college_name][]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
@@ -785,9 +779,9 @@
                 });
             });
 
-            let honor_course_data = $('input[name^="honor_course_data"]');
+            let honor_course_data = $('select[name^="honor_course_data"]');
 
-            honor_course_data.filter('input[name$="[course_data]"]').each(function() {
+            honor_course_data.filter('select[name$="[course_data][]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
@@ -798,58 +792,31 @@
 
             let testing_data = $('input[name^="testing_data"]');
 
-            testing_data.filter('input[name$="[name_of_test]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Name of test field is required"
-                    }
-                });
-            });
-            testing_data.filter('input[name$="[results_score]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Result score field is required"
-                    }
-                });
-            });
-            testing_data.filter('input[name$="[date]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Date field is required"
-                    }
-                });
-            });
-
-
             $("#is_tested").click(function () {    
                 if($(this).is(':checked')){
-                    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function(index,val){
-                        $(val).removeClass('required');
-                    })
+                    $('.testing_data_table td select').removeClass('error');
+                    $('.testing_data_table td input').removeClass('error');
+                    $('.testing_data_table label.error').remove();
 
-                    testing_data.filter('input[name$="[results_score]"]').each(function() {
+                    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
                         $(this).rules("add", {
-                            required: false,
-                            messages: {
-                                required: "Result score field is required"
-                            }
+                            required: false
                         });
                     });
-                    testing_data.filter('input[name$="[date]"]').each(function() {
+                    testing_data.filter('input[name$="[date]"],input[name$="[results_score]"]').each(function() {
                         $(this).rules("add", {
-                            required: false,
-                            messages: {
-                                required: "Date field is required"
-                            }
+                            required: false
                         });
                     });
                 }else{
-                    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function(index,val){
-                        $(val).addClass('required');
-                    })
+                    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
+                        $(this).rules("add", {
+                            required: true,
+                            messages: {
+                                required: "Name of test field is required"
+                            }
+                        });
+                    });
 
                     testing_data.filter('input[name$="[results_score]"]').each(function() {
                         $(this).rules("add", {
@@ -870,6 +837,48 @@
                 }
             });
 
+            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Name of test field is required"
+                    }
+                });
+            });
+
+            testing_data.filter('input[name$="[results_score]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Result score field is required"
+                    }
+                });
+            });
+            testing_data.filter('input[name$="[date]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Date field is required"
+                    }
+                });
+            });
+
+            $("#intended_college_major").filter("#intended_college_major").each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Intended college major field is required"
+                    }
+                });
+            });
+            $("#intended_college_minor").filter("#intended_college_minor").each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Intended college minor field is required"
+                    }
+                });
+            });
         });
 
         $("#current_grade").select2({
