@@ -95,15 +95,17 @@ class EducationController extends Controller
 
         $honor_course_name_ids = HonorCourseNameList::pluck('id')->toArray();
 
-        if(!empty($data['honor_course_data'])){
+        if(isset($data['honor_course_data']) && !empty($data['honor_course_data'])){
             foreach ($data['honor_course_data'] as $key1 => $course_name) {
-                foreach($course_name['course_data'] as $key => $course){
-                    if(!in_array($course ,$honor_course_name_ids)){
-                        $course_name_info = HonorCourseNameList::create(['name' => $course, 'user_id' => Auth::id()]);
-                        $index = array_search($course, $course_name['course_data']);
-                        $course_name_array = array_replace($course_name['course_data'], [$index => $course_name_info->id]);
-                        $course_name['course_data'] = $course_name_array;
-
+                if(isset($course_name['course_data']) && !empty($course_name['course_data'])){
+                    foreach($course_name['course_data'] as $key => $course){
+                        if(!in_array($course ,$honor_course_name_ids)){
+                            $course_name_info = HonorCourseNameList::create(['name' => $course, 'user_id' => Auth::id()]);
+                            $index = array_search($course, $course_name['course_data']);
+                            $course_name_array = array_replace($course_name['course_data'], [$index => $course_name_info->id]);
+                            $course_name['course_data'] = $course_name_array;
+    
+                        }
                     }
                 }
                 $data['honor_course_data'][$key1] = $course_name;
@@ -112,10 +114,9 @@ class EducationController extends Controller
 
         $education_courses_ids = EducationCourse::pluck('id')->toArray();
 
-        if(!empty($data['ib_courses'])){
+        if(isset($data['ib_courses']) && !empty($data['ib_courses'])){
             foreach($data['ib_courses'] as $ib_data){
                 if(!in_array($ib_data, $education_courses_ids)){
-
                     $ib_info = EducationCourse::create(['name' => $ib_data , 'course_type' => 1 , 'user_id' => Auth::id()])  ;                
                     $index = array_search($ib_data, $data['ib_courses']);
                     $ib_array = array_replace($data['ib_courses'], [$index => $ib_info->id]);
@@ -124,7 +125,7 @@ class EducationController extends Controller
             }
         }
 
-        if(!empty($data['ap_courses'])){
+        if(isset($data['ap_courses']) && !empty($data['ap_courses'])){
             foreach($data['ap_courses'] as $ap_data){
                 if(!in_array($ap_data, $education_courses_ids)){
                     $ap_info = EducationCourse::create(['name' => $ap_data , 'course_type' => 2 , 'user_id' => Auth::id()])  ;                
@@ -140,7 +141,7 @@ class EducationController extends Controller
         $gpa_unweighted = sprintf("%.2f", $data['cumulative_gpa_unweighted']);
         $gpa_weighted = sprintf("%.2f", $data['cumulative_gpa_weighted']);
         
-        if (!empty($data['current_grade'])) {
+        if (isset($data['current_grade']) && !empty($data['current_grade'])) {
             foreach ($data['current_grade'] as $grade) {
                 if (!in_array($grade, $grade_ids)) {
                     $grade_info = Grade::create(['name' => $grade]);
@@ -154,7 +155,7 @@ class EducationController extends Controller
         $intended_major_ids = IntendedCollegeList::whereType('1')->pluck('id')->toArray();
         $intended_minor_ids = IntendedCollegeList::whereType('2')->pluck('id')->toArray();
         
-        if(!empty($data['intended_college_major'])){
+        if(isset($data['intended_college_major']) && !empty($data['intended_college_major'])){
             foreach ($data['intended_college_major'] as $major) {
                 if (!in_array($major, $intended_major_ids)) {                
                     $major_info = IntendedCollegeList::create(['name' => $major,'type' => 1]);                
@@ -165,7 +166,7 @@ class EducationController extends Controller
             }
         }
 
-        if(!empty($data['intended_college_minor'])){
+        if(isset($data['intended_college_minor']) && !empty($data['intended_college_minor'])){
             foreach ($data['intended_college_minor'] as $minor) {            
                 if (!in_array($minor, $intended_minor_ids)) {                
                     $minor_info = IntendedCollegeList::create(['name' => $minor,'type' => 2]);                
@@ -230,15 +231,17 @@ class EducationController extends Controller
         $data = $request->validated();
         $honor_course_name_ids = HonorCourseNameList::pluck('id')->toArray();
 
-        if(!empty($data['honor_course_data'])){
+        if(isset($data['honor_course_data']) && !empty($data['honor_course_data'])){
             foreach ($data['honor_course_data'] as $key1 => $course_name) {
-                foreach($course_name['course_data'] as $key => $course){
-                    if(!in_array($course ,$honor_course_name_ids)){
-                        $course_name_info = HonorCourseNameList::create(['name' => $course, 'user_id' => Auth::id()]);
-                        $index = array_search($course, $course_name['course_data']);
-                        $course_name_array = array_replace($course_name['course_data'], [$index => $course_name_info->id]);
-                        $course_name['course_data'] = $course_name_array;
-
+                if(isset($course_name['course_data']) && !empty($course_name['course_data'])){
+                    foreach($course_name['course_data'] as $key => $course){
+                        if(!in_array($course ,$honor_course_name_ids)){
+                            $course_name_info = HonorCourseNameList::create(['name' => $course, 'user_id' => Auth::id()]);
+                            $index = array_search($course, $course_name['course_data']);
+                            $course_name_array = array_replace($course_name['course_data'], [$index => $course_name_info->id]);
+                            $course_name['course_data'] = $course_name_array;
+    
+                        }
                     }
                 }
                 $data['honor_course_data'][$key1] = $course_name;
@@ -248,26 +251,27 @@ class EducationController extends Controller
 
         $college_ids = CollegeInformation::pluck('id')->toArray();
 
-        if(!empty($data['course_data'])){
+        if(isset($data['course_data']) && !empty($data['course_data'])){
             foreach ($data['course_data'] as $key1 => $course_data) {
-                foreach($course_data['search_college_name'] as $key => $college_name){
-                    if(!in_array($college_name, $college_ids)){
-                        $college_info = CollegeInformation::create(['name' => $college_name , 'user_id' => Auth::id()]);
-                        $index = array_search($college_name, $course_data['search_college_name']);
-                        $college_array = array_replace($course_data['search_college_name'], [$index => $college_info->id]);
-                        $course_data['search_college_name'] = $college_array;
-                    }
-                }              
+                if (isset($course_data['search_college_name']) && !empty($course_data['search_college_name'])) {
+                    foreach($course_data['search_college_name'] as $key => $college_name){
+                        if(!in_array($college_name, $college_ids)){
+                            $college_info = CollegeInformation::create(['name' => $college_name , 'user_id' => Auth::id()]);
+                            $index = array_search($college_name, $course_data['search_college_name']);
+                            $college_array = array_replace($course_data['search_college_name'], [$index => $college_info->id]);
+                            $course_data['search_college_name'] = $college_array;
+                        }
+                    }              
+                }
                 $data['course_data'][$key1] = $course_data;
             }
         }
 
         $education_courses_ids = EducationCourse::pluck('id')->toArray();
 
-        if(!empty($data['ib_courses'])){
+        if(isset($data['ib_courses']) && !empty($data['ib_courses'])){
             foreach($data['ib_courses'] as $ib_data){
                 if(!in_array($ib_data, $education_courses_ids)){
-
                     $ib_info = EducationCourse::create(['name' => $ib_data , 'course_type' => 1 , 'user_id' => Auth::id()])  ;                
                     $index = array_search($ib_data, $data['ib_courses']);
                     $ib_array = array_replace($data['ib_courses'], [$index => $ib_info->id]);
@@ -276,7 +280,7 @@ class EducationController extends Controller
             }
         }
         
-        if(!empty($data['ap_courses'])){
+        if(isset($data['ap_courses']) && !empty($data['ap_courses'])){
             foreach($data['ap_courses'] as $ap_data){
                 if(!in_array($ap_data, $education_courses_ids)){
                     $ap_info = EducationCourse::create(['name' => $ap_data , 'course_type' => 2 , 'user_id' => Auth::id()])  ;                
@@ -292,7 +296,7 @@ class EducationController extends Controller
 
         $grade_ids = Grade::pluck('id')->toArray();
 
-        if(!empty($data['current_grade'])){
+        if(isset($data['current_grade']) && !empty($data['current_grade'])){
             foreach ($data['current_grade'] as $grade) {
                 if (!in_array($grade, $grade_ids)) {
                     $grade_info = Grade::create(['name' => $grade]);
@@ -304,7 +308,7 @@ class EducationController extends Controller
         }
         $intended_major_ids = IntendedCollegeList::whereType('1')->pluck('id')->toArray();
         $intended_minor_ids = IntendedCollegeList::whereType('2')->pluck('id')->toArray();
-        if(!empty($data['intended_college_major'])){
+        if(isset($data['intended_college_major']) && !empty($data['intended_college_major'])){
             foreach ($data['intended_college_major'] as $major) {            
                 if (!in_array($major, $intended_major_ids)) {                
                     $major_info = IntendedCollegeList::create(['name' => $major,'type' => 1]);                
@@ -314,7 +318,7 @@ class EducationController extends Controller
                 }
             }
         }
-        if (!empty(['intended_college_minor'])) {
+        if (isset($data['intended_college_minor']) && !empty($data['intended_college_minor'])) {
             foreach ($data['intended_college_minor'] as $minor) {
                 if (!in_array($minor, $intended_minor_ids)) {
                     $minor_info = IntendedCollegeList::create(['name' => $minor, 'type' => 2]);

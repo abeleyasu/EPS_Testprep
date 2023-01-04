@@ -124,7 +124,6 @@ class PersonalInfoController extends Controller
         }
         Session::put(['success' => true, "message" => "Resume data has been cleaned now!"]);
         return response()->json(['success' => true, "message" => "Resume data has been cleaned now!"]);
-        // return redirect()->route('admin-dashboard.highSchoolResume.personalInfo')->with(["success" => true, "message" => "Resume data has been cleaned now!"]);
     }
     public function editFetch(Request $request ,$id)
     {

@@ -54,15 +54,13 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data['employment_data'])) {
             foreach ($data['employment_data'] as $key => $value) {
-                if (!empty(array_filter($value))) {
-                    if(isset($value['grade'])){
-                        foreach ($value['grade'] as $grade) {
-                            if (!in_array($grade, $grade_ids)) {
-                                $grade_info = Grade::create(['name' => $grade]);
-                                $index = array_search($grade, $data['employment_data'][$key]['grade']);
-                                $grade_array = array_replace($data['employment_data'][$key]['grade'], [$index => $grade_info->id]);
-                                $data['employment_data'][$key]['grade'] = $grade_array;
-                            }
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['employment_data'][$key]['grade']);
+                            $grade_array = array_replace($data['employment_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['employment_data'][$key]['grade'] = $grade_array;
                         }
                     }
                 }
@@ -72,15 +70,13 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data['significant_data'])) {
             foreach ($data['significant_data'] as $key => $value) {
-                if (!empty(array_filter($value))) {
-                    if (isset($value['grade'])) {
-                        foreach ($value['grade'] as $grade) {
-                            if (!in_array($grade, $grade_ids)) {
-                                $grade_info = Grade::create(['name' => $grade]);
-                                $index = array_search($grade, $data['significant_data'][$key]['grade']);
-                                $grade_array = array_replace($data['significant_data'][$key]['grade'], [$index => $grade_info->id]);
-                                $data['significant_data'][$key]['grade'] = $grade_array;
-                            }
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['significant_data'][$key]['grade']);
+                            $grade_array = array_replace($data['significant_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['significant_data'][$key]['grade'] = $grade_array;
                         }
                     }
                 }
@@ -105,15 +101,13 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data['employment_data'])) {
             foreach ($data['employment_data'] as $key => $value) {
-                if (!empty(array_filter($value))) {
-                    if (isset($value['grade'])) {
-                        foreach ($value['grade'] as $grade) {
-                            if (!in_array($grade, $grade_ids)) {
-                                $grade_info = Grade::create(['name' => $grade]);
-                                $index = array_search($grade, $data['employment_data'][$key]['grade']);
-                                $grade_array = array_replace($data['employment_data'][$key]['grade'], [$index => $grade_info->id]);
-                                $data['employment_data'][$key]['grade'] = $grade_array;
-                            }
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['employment_data'][$key]['grade']);
+                            $grade_array = array_replace($data['employment_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['employment_data'][$key]['grade'] = $grade_array;
                         }
                     }
                 }
@@ -123,16 +117,14 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data['significant_data'])) {
             foreach ($data['significant_data'] as $key => $value) {
-                if (!empty(array_filter($value))) {
-                    if(isset($value['grade'])) {
-                        foreach ($value['grade'] as $grade) {
-                            if (!in_array($grade, $grade_ids)) {
-                                $grade_info = Grade::create(['name' => $grade]);
-                                $index = array_search($grade, $data['significant_data'][$key]['grade']);
-                                $grade_array = array_replace($data['significant_data'][$key]['grade'], [$index => $grade_info->id]);
-                                $data['significant_data'][$key]['grade'] = $grade_array;
-                            }
-                        } 
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['significant_data'][$key]['grade']);
+                            $grade_array = array_replace($data['significant_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['significant_data'][$key]['grade'] = $grade_array;
+                        }
                     }
                 }
             }

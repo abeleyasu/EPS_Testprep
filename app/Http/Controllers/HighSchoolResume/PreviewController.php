@@ -52,7 +52,7 @@ class PreviewController extends Controller
 
         $social_links = [];
 
-        if(!empty($personal_info->social_links)){
+        if(isset($personal_info->social_links) && !empty($personal_info->social_links)){
             foreach($personal_info->social_links as $social_link){
                 if($social_link['link'] != null){
                     array_push($social_links , ($social_link['link']));
@@ -62,7 +62,7 @@ class PreviewController extends Controller
 
         $testing_data = [];
 
-        if(!empty($education->testing_data)){
+        if(isset($education->testing_data) && !empty($education->testing_data)){
             foreach($education->testing_data as $data){
                 $filterTest = array_filter($data);
                 if($filterTest != null ){
@@ -98,14 +98,14 @@ class PreviewController extends Controller
         $ib_courses = [];
         $ap_courses = [];
 
-        if(!empty($education->ib_courses)){
+        if(isset($education->ib_courses) && !empty($education->ib_courses)){
             foreach ((json_decode($education->ib_courses)) as $ib) {
                 $ib_course = EducationCourse::whereId($ib)->first();
                 $ib_courses[] = $ib_course->name;
             }
         }
         
-        if(!empty($education->ap_courses)){
+        if(isset($education->ap_courses) && !empty($education->ap_courses)){
             foreach ((json_decode($education->ap_courses)) as $ap) {
                 $ap_course = EducationCourse::whereId($ap)->first();
                 $ap_courses[] = $ap_course->name;
@@ -115,13 +115,13 @@ class PreviewController extends Controller
         $intended_major = [];
         $intended_minor = [];
 
-        if(!empty($education->intended_college_major)){
+        if(isset($education->intended_college_major) && !empty($education->intended_college_major)){
             foreach ((json_decode($education->intended_college_major)) as $major) {
                 $major_data = IntendedCollegeList::whereId($major)->first();
                 $intended_major[] = $major_data->name;
             }
         }
-        if(!empty($education->intended_college_minor)){
+        if(isset($education->intended_college_minor) && !empty($education->intended_college_minor)){
             foreach ((json_decode($education->intended_college_minor)) as $minor) {
                 $minor_data = IntendedCollegeList::whereId($minor)->first();
                 $intended_minor[] = $minor_data->name;
@@ -130,7 +130,7 @@ class PreviewController extends Controller
 
         $current_grade = [];
 
-        if(!empty($education->current_grade)){
+        if(isset($education->current_grade) && !empty($education->current_grade)){
             foreach ((json_decode($education->current_grade)) as $grade) {
                 $grade_data = Grade::whereId($grade)->first();
                 $current_grade[] = $grade_data->name;
@@ -187,7 +187,7 @@ class PreviewController extends Controller
 
         $social_links = [];
 
-        if(!empty($personal_info->social_links)){
+        if(isset($personal_info->social_links) && !empty($personal_info->social_links)){
             foreach($personal_info->social_links as $social_link){
                 if($social_link['link'] != null){
                     array_push($social_links , ($social_link['link']));
@@ -195,9 +195,9 @@ class PreviewController extends Controller
             }
         }
 
-         $testing_data = [];
+        $testing_data = [];
 
-        if(!empty($education->testing_data)){
+        if(isset($education->testing_data) && !empty($education->testing_data)){
             foreach($education->testing_data as $data){
                 $filterTest = array_filter($data);
                 if($filterTest != null ){
@@ -205,16 +205,17 @@ class PreviewController extends Controller
                 }
             }
         }
+
         $intended_major = [];
         $intended_minor = [];
 
-        if(!empty($education->intended_college_major)){
+        if(isset($education->intended_college_major) && !empty($education->intended_college_major)){
             foreach ((json_decode($education->intended_college_major)) as $major) {
                 $major_data = IntendedCollegeList::whereId($major)->first();
                 $intended_major[] = $major_data->name;
             }
         }
-        if(!empty($education->intended_college_minor)){
+        if(isset($education->intended_college_minor) && !empty($education->intended_college_minor)){
             foreach ((json_decode($education->intended_college_minor)) as $minor) {
                 $minor_data = IntendedCollegeList::whereId($minor)->first();
                 $intended_minor[] = $minor_data->name;
@@ -223,24 +224,24 @@ class PreviewController extends Controller
 
         $current_grade = [];
 
-        if(!empty($education->current_grade)){
+        if(isset($education->current_grade) && !empty($education->current_grade)){
             foreach ((json_decode($education->current_grade)) as $grade) {
                 $grade_data = Grade::whereId($grade)->first();
                 $current_grade[] = $grade_data->name;
             }
-        }   
+        }
 
         $ib_courses = [];
         $ap_courses = [];
 
-        if(!empty($education->ib_courses))
-        {            
+        if(isset($education->ib_courses) && !empty($education->ib_courses)){
             foreach ((json_decode($education->ib_courses)) as $ib) {
                 $ib_course = EducationCourse::whereId($ib)->first();
                 $ib_courses[] = $ib_course->name;
             }
-        } 
-        if(!empty($education->ap_courses)){
+        }
+        
+        if(isset($education->ap_courses) && !empty($education->ap_courses)){
             foreach ((json_decode($education->ap_courses)) as $ap) {
                 $ap_course = EducationCourse::whereId($ap)->first();
                 $ap_courses[] = $ap_course->name;
@@ -345,7 +346,7 @@ class PreviewController extends Controller
 
         $social_links = [];
 
-        if(!empty($personal_info->social_links)){
+        if(isset($personal_info->social_links) && !empty($personal_info->social_links)){
             foreach($personal_info->social_links as $social_link){
                 if($social_link['link'] != null){
                     array_push($social_links , ($social_link['link']));
@@ -355,7 +356,7 @@ class PreviewController extends Controller
 
         $testing_data = [];
 
-        if(!empty($education->testing_data)){
+        if(isset($education->testing_data) && !empty($education->testing_data)){
             foreach($education->testing_data as $data){
                 $filterTest = array_filter($data);
                 if($filterTest != null ){
@@ -363,31 +364,17 @@ class PreviewController extends Controller
                 }
             }
         }
-        $ib_courses = [];
-        $ap_courses = [];
 
-        if(!empty($education->ib_courses)){
-            foreach ((json_decode($education->ib_courses)) as $ib) {
-                $ib_course = EducationCourse::whereId($ib)->first();
-                $ib_courses[] = $ib_course->name;
-            }
-        }
-        if(!empty($education->ap_courses)){
-            foreach ((json_decode($education->ap_courses)) as $ap) {
-                $ap_course = EducationCourse::whereId($ap)->first();
-                $ap_courses[] = $ap_course->name;
-            }
-        }
         $intended_major = [];
         $intended_minor = [];
 
-        if(!empty($education->intended_college_major)){
+        if(isset($education->intended_college_major) && !empty($education->intended_college_major)){
             foreach ((json_decode($education->intended_college_major)) as $major) {
                 $major_data = IntendedCollegeList::whereId($major)->first();
                 $intended_major[] = $major_data->name;
             }
         }
-        if(!empty($education->intended_college_minor)){
+        if(isset($education->intended_college_minor) && !empty($education->intended_college_minor)){
             foreach ((json_decode($education->intended_college_minor)) as $minor) {
                 $minor_data = IntendedCollegeList::whereId($minor)->first();
                 $intended_minor[] = $minor_data->name;
@@ -396,10 +383,27 @@ class PreviewController extends Controller
 
         $current_grade = [];
 
-        if(!empty($education->current_grade)){
+        if(isset($education->current_grade) && !empty($education->current_grade)){
             foreach ((json_decode($education->current_grade)) as $grade) {
                 $grade_data = Grade::whereId($grade)->first();
                 $current_grade[] = $grade_data->name;
+            }
+        }
+
+        $ib_courses = [];
+        $ap_courses = [];
+
+        if(isset($education->ib_courses) && !empty($education->ib_courses)){
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
+            }
+        }
+        
+        if(isset($education->ap_courses) && !empty($education->ap_courses)){
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
             }
         }
 
@@ -462,7 +466,7 @@ class PreviewController extends Controller
         
         $social_links = [];
 
-        if(!empty($personal_info->social_links)){
+        if(isset($personal_info->social_links) && !empty($personal_info->social_links)){
             foreach($personal_info->social_links as $social_link){
                 if($social_link['link'] != null){
                     array_push($social_links , ($social_link['link']));
@@ -470,48 +474,9 @@ class PreviewController extends Controller
             }
         }
 
-        $ib_courses = [];
-        $ap_courses = [];
-        if(!empty($education->ib_courses)){
-            foreach ((json_decode($education->ib_courses)) as $ib) {
-                $ib_course = EducationCourse::whereId($ib)->first();
-                $ib_courses[] = $ib_course->name;
-            }
-        }
-        if(!empty($education->ap_courses)){
-            foreach ((json_decode($education->ap_courses)) as $ap) {
-                $ap_course = EducationCourse::whereId($ap)->first();
-                $ap_courses[] = $ap_course->name;
-            }
-        }
-
-        $intended_major = [];
-        $intended_minor = [];
-
-        if(!empty($education->intended_college_major)){
-            foreach ((json_decode($education->intended_college_major)) as $major) {
-                $major_data = IntendedCollegeList::whereId($major)->first();
-                $intended_major[] = $major_data->name;
-            }
-        }
-        if(!empty($education->intended_college_minor)){
-            foreach ((json_decode($education->intended_college_minor)) as $minor) {
-                $minor_data = IntendedCollegeList::whereId($minor)->first();
-                $intended_minor[] = $minor_data->name;
-            }
-        }
-
-        $current_grade = [];
-        if(!empty($education->current_grade)){
-            foreach ((json_decode($education->current_grade)) as $grade) {
-                $grade_data = Grade::whereId($grade)->first();
-                $current_grade[] = $grade_data->name;
-            }
-        }
-
         $testing_data = [];
 
-        if(!empty($education->testing_data)){
+        if(isset($education->testing_data) && !empty($education->testing_data)){
             foreach($education->testing_data as $data){
                 $filterTest = array_filter($data);
                 if($filterTest != null ){
@@ -519,6 +484,49 @@ class PreviewController extends Controller
                 }
             }
         }
+
+        $intended_major = [];
+        $intended_minor = [];
+
+        if(isset($education->intended_college_major) && !empty($education->intended_college_major)){
+            foreach ((json_decode($education->intended_college_major)) as $major) {
+                $major_data = IntendedCollegeList::whereId($major)->first();
+                $intended_major[] = $major_data->name;
+            }
+        }
+        if(isset($education->intended_college_minor) && !empty($education->intended_college_minor)){
+            foreach ((json_decode($education->intended_college_minor)) as $minor) {
+                $minor_data = IntendedCollegeList::whereId($minor)->first();
+                $intended_minor[] = $minor_data->name;
+            }
+        }
+
+        $current_grade = [];
+
+        if(isset($education->current_grade) && !empty($education->current_grade)){
+            foreach ((json_decode($education->current_grade)) as $grade) {
+                $grade_data = Grade::whereId($grade)->first();
+                $current_grade[] = $grade_data->name;
+            }
+        }
+
+        $ib_courses = [];
+        $ap_courses = [];
+
+        if(isset($education->ib_courses) && !empty($education->ib_courses)){
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
+            }
+        }
+        
+        if(isset($education->ap_courses) && !empty($education->ap_courses)){
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
+            }
+        }
+        
         $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data','intended_major','intended_minor','current_grade','social_links','testing_data'))->render();
         
         return response()->json(["success" => true, "html" => $html]);

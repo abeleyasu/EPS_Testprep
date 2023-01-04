@@ -55,16 +55,18 @@ class HonorsController extends Controller
 
         $grade_ids = Grade::pluck('id')->toArray();
 
-        if(!empty($data['honors_data'])){
+        if(isset($data['honors_data']) && !empty($data['honors_data'])){
             foreach($data['honors_data'] as $key => $value){
-                foreach($value['grade'] as $grade){
-                    if(!in_array($grade , $grade_ids)){
-                        $grade_info = Grade::create(['name' => $grade]);
-                        $index = array_search($grade, $data['honors_data'][$key]['grade']);                    
-                        $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
-                        $data['honors_data'][$key]['grade'] = $grade_array;
-                    }    
-                }  
+                if(isset($value['grade']) && !empty($value['grade'])){
+                    foreach($value['grade'] as $grade){
+                        if(!in_array($grade , $grade_ids)){
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['honors_data'][$key]['grade']);                    
+                            $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['honors_data'][$key]['grade'] = $grade_array;
+                        }    
+                    }  
+                }
             }
         }
 
@@ -86,16 +88,18 @@ class HonorsController extends Controller
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         
         $grade_ids = Grade::pluck('id')->toArray();
-        if(!empty($data['honors_data'])){
+        if(isset($data['honors_data']) && !empty($data['honors_data'])){
             foreach($data['honors_data'] as $key => $value){
-                foreach($value['grade'] as $grade){
-                    if(!in_array($grade , $grade_ids)){
-                        $grade_info = Grade::create(['name' => $grade]);
-                        $index = array_search($grade, $data['honors_data'][$key]['grade']);                    
-                        $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
-                        $data['honors_data'][$key]['grade'] = $grade_array;
-                    }    
-                }  
+                if (isset($value['grade']) && !empty($value['grade'])) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['honors_data'][$key]['grade']);
+                            $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['honors_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
             }
         }
         if(!empty($data['honors_data'])){
