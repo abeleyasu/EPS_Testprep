@@ -200,11 +200,11 @@
                                         <h3>Employment & Certifications</h3>
                                         <ul class="list">
                                             <li>
-                                                <span>Name Of The Company:</span>
                                                 <div class="list_group">
                                                     <ul class="list_items">
                                                         @foreach ($employment_data as $data)
                                                             @if(!is_null($data['name_of_company']))
+                                                                <span>Name Of The Company:</span>
                                                                 <li class="list-type">
                                                                     {{ $data['name_of_company'] }}
                                                                 </li>
@@ -214,11 +214,11 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <span>Job Title</span>
                                                 <div class="list_group">
                                                     <ul class="list_items">
                                                         @foreach ($employment_data as $data)
                                                             @if(!is_null($data['job_title']))
+                                                                <span>Job Title</span>
                                                                 <li class="list-type">
                                                                     {{ $data['job_title'] }}
                                                                 </li>
@@ -228,11 +228,11 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <span>Grade(s)</span>
                                                 <div class="list_group">
                                                     <ul class="list_items">
                                                         @foreach ($employment_data as $data)
                                                             @if(isset($data['grade']) && !empty($data['grade']))
+                                                                <span>Grade(s)</span>
                                                                 <li class="list-type">
                                                                     {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
                                                                 </li>
@@ -249,25 +249,25 @@
                                         <h3>Responsibilities or interests</h3>
                                         <ul class="list">
                                             <li>
-                                                <span>
-                                                    Responsibility Or Interest
-                                                </span>
                                                 <div class="list_group">
                                                     <ul class="list_items">
                                                         @foreach ($significant_data as $data)
-                                                            <li class="list-type">
-                                                                {{ $data['interest'] }}
-                                                            </li>
+                                                            @if(isset($data['interest']) && !empty($data['interest']))
+                                                                <span>Responsibility Or Interest</span>
+                                                                <li class="list-type">
+                                                                    {{ $data['interest'] }}
+                                                                </li>
+                                                            @endif
                                                         @endforeach
                                                     </ul>
                                                 </div>
                                             </li>
                                             <li>
-                                                <span>Grade(s)</span>
                                                 <div class="list_group">
                                                     <ul class="list_items">
                                                         @foreach ($significant_data as $data)
                                                             @if(isset($data['grade']) && !empty($data['grade']))
+                                                                <span>Grade(s)</span>
                                                                 <li class="list-type">
                                                                     {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
                                                                 </li>

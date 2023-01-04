@@ -313,124 +313,132 @@
                 </span>
                 <span class="contact-list-after"></span>
             </div>
-            <div class="border-bottom d-block" >
-                @if (!empty($featured_skills_data))
-                    <div class="pb-3 border-bottom-0 preview-list ps-0 ">
-                        @if ($featuredAttribute)
-                            <h3>Features</h3>
-                        @endif
-                        <div class="preview-list_skill ">
-                            @if ($featuredAttribute->featured_skills_data[0]['skill'] != null)
-                                <span class="span_h2">Featured Skills</span>
-                                @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
+            @if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
+                <div class="border-bottom d-block " >
+                    @if (!empty($featured_skills_data))
+                        <div class="pb-3 border-bottom-0 preview-list ps-0 ">
+                            @if ($featuredAttribute)
+                                <h3>Features</h3>
+                            @endif
+                            <div class="preview-list_skill ">
+                                @if ($featuredAttribute->featured_skills_data[0]['skill'] != null)
+                                    <span class="span_h2">Featured Skills</span>
+                                    @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
+                                        <span class="list-type">
+                                            {{ $featured_skills['skill'] }}
+                                        </span>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($featured_awards_data))
+                        <div class="preview-list pb-3  ps-0 border-bottom-0">
+                            <div class="preview-list_skill">
+                                @if ($featuredAttribute->featured_awards_data[0]['award'] != null)
+                                    <span class="span_h2">Featured awards</span>
+                                    @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
+                                        <span class="list-type">
+                                            {{ $featured_awards['award'] }}
+                                        </span>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($featured_languages_data))
+                        <span class="preview-list">
+                            <span class="preview-list_skill">
+                                <span class="span_h2">Featured languages</span>
+                                @foreach ($featuredAttribute->featured_languages_data as $featured_languages)
                                     <span class="list-type">
-                                        {{ $featured_skills['skill'] }}
+                                        {{ $featured_languages['language'] }}
                                     </span>
                                 @endforeach
-                            @endif
-                        </div>
-                    </div>
-                @endif
-                @if (!empty($featured_awards_data))
-                    <div class="preview-list pb-3  ps-0 border-bottom-0">
-                        <div class="preview-list_skill">
-                            @if ($featuredAttribute->featured_awards_data[0]['award'] != null)
-                                <span class="span_h2">Featured awards</span>
-                                @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
+                            </span>
+                        </span>
+                    @endif
+                    @if (!empty($dual_citizenship_data))
+                        <span class="preview-list"
+                            style="margin-top: 10px;display: inline-block;padding-left: 0;margin-bottom: 10px;">
+                            <span class="preview-list_skill ">
+                                <span class="span_h2">Dual Citizen</span>
+                                @foreach ($featuredAttribute->dual_citizenship_data as $dual_citizenship)
                                     <span class="list-type">
-                                        {{ $featured_awards['award'] }}
+                                        {{ $dual_citizenship['country'] }}
                                     </span>
                                 @endforeach
-                            @endif
-                        </div>
-                    </div>
-                @endif
-                @if (!empty($featured_languages_data))
-                    <span class="preview-list">
-                        <span class="preview-list_skill">
-                            <span class="span_h2">Featured languages</span>
-                            @foreach ($featuredAttribute->featured_languages_data as $featured_languages)
-                                <span class="list-type">
-                                    {{ $featured_languages['language'] }}
-                                </span>
-                            @endforeach
+                            </span>
                         </span>
-                    </span>
-                @endif
-                @if (!empty($dual_citizenship_data))
-                    <span class="preview-list"
-                        style="margin-top: 10px;display: inline-block;padding-left: 0;margin-bottom: 10px;">
-                        <span class="preview-list_skill ">
-                            <span class="span_h2">Dual Citizen</span>
-                            @foreach ($featuredAttribute->dual_citizenship_data as $dual_citizenship)
-                                <span class="list-type">
-                                    {{ $dual_citizenship['country'] }}
-                                </span>
-                            @endforeach
-                        </span>
-                    </span>
-                @endif
-            </div>
-            <div class="border-bottom d-block">
-                @if (!empty($employment_data)) 
-                    <span class="preview-list">
-                        <h3>Employment & Certifications</h3>
-                        <span style="margin-bottom: 5px;display: block">
-                            <span class="span_h2"> Name Of The Company:</span>
-                            @foreach ($employment_data as $data)
+                    @endif
+                </div>
+            @endif
+
+            @if (!empty($employment_data) | !empty($significant_data))
+                <div class="border-bottom d-block">
+                    @if (!empty($employment_data)) 
+                        <span class="preview-list">
+                            <h3>Employment & Certifications</h3>
+                            <span style="margin-bottom: 5px;display: block">
+                                @foreach ($employment_data as $data)
                                 @if(!is_null($data['name_of_company']))
-                                <span class="list-type">
-                                        {{ $data['name_of_company'] }}
-                                    </span>
-                                @endif
-                            @endforeach
-                        </span>
-                        <span style="margin-bottom: 5px;display: block">
-                            <span class="span_h2"> Job Title</span>
-                            @foreach ($employment_data as $data)
-                                @if(!is_null($data['job_title']))
+                                    <span class="span_h2"> Name Of The Company:</span>
                                     <span class="list-type">
-                                        {{ $data['job_title'] }}
-                                    </span>
-                                @endif
-                            @endforeach
+                                            {{ $data['name_of_company'] }}
+                                        </span>
+                                    @endif
+                                @endforeach
+                            </span>
+                            <span style="margin-bottom: 5px;display: block">
+                                @foreach ($employment_data as $data)
+                                    @if(!is_null($data['job_title']))
+                                        <span class="span_h2"> Job Title</span>
+                                        <span class="list-type">
+                                            {{ $data['job_title'] }}
+                                        </span>
+                                    @endif
+                                @endforeach
+                            </span>
+                            <span style="display: block">
+                                @foreach ($employment_data as $data)
+                                    @if(isset($data['grade']) && !empty($data['grade']))
+                                        <span class="span_h2">Grade(s)</span>
+                                        <span class="list-type">
+                                            {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                        </span>
+                                    @endif
+                                @endforeach
+                            </span>
                         </span>
-                        <span style="display: block">
-                            <span class="span_h2">Grade(s)</span>
-                            @foreach ($employment_data as $data)
-                                @if(isset($data['grade']) && !empty($data['grade']))
-                                    <span class="list-type">
-                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                    </span>
-                                @endif
-                            @endforeach
+                    @endif
+                    @if (!empty($significant_data)) 
+                        <span class="preview-list">
+                            <h3>RESPONSIBILITIES OR INTERESTS</h3>
+                            <span style="margin-bottom: 5px; display: block">
+                                @foreach ($significant_data as $data)
+                                    @if(isset($data['interest']) && !empty($data['interest']))
+                                        <span class="span_h2"> Responsibility Or Interest:</span>
+                                        <span class="list-type">
+                                            {{ $data['interest'] }}
+                                        </span>
+                                    @endif
+                                @endforeach
+                            </span>
+                            <span style="margin-bottom: 10px;display: block">
+                                @foreach ($significant_data as $data)
+                                    @if(isset($data['grade']) && !empty($data['grade']))
+                                        <span class="span_h2">Grade(s)</span>
+                                        <span class="list-type">
+                                            {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                        </span>
+                                    @endif
+                                @endforeach
+                            </span>
                         </span>
-                    </span>
-                @endif
-                @if (!empty($significant_data)) 
-                    <span class="preview-list">
-                        <h3>RESPONSIBILITIES OR INTERESTS</h3>
-                        <span style="margin-bottom: 5px; display: block">
-                            <span class="span_h2"> Responsibility Or Interest:</span>
-                            @foreach ($significant_data as $data)
-                                <span class="list-type">
-                                    {{ $data['interest'] }}
-                                </span>
-                            @endforeach
-                        </span>
-                        <span style="margin-bottom: 10px;display: block">
-                            <span class="span_h2">Grade(s)</span>
-                            @foreach ($significant_data as $data)
-                                @if(isset($data['grade']) && !empty($data['grade']))
-                                    <span class="list-type">
-                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                    </span>
-                                @endif
-                            @endforeach
-                        </span>
-                    </span>
-                @endif
-            </div>
+                    @endif
+                </div>
+            @endif
+
             @if (!empty($honor))
                 <span class="preview-list">
                     <h3>HONOR</h3>
