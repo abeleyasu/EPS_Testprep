@@ -37,9 +37,9 @@
             margin-bottom: 8px;
 
         }
-
+        
         @page {
-            margin: 0;
+            margin: 10px 0;
             padding: 0;
         }
 
@@ -97,37 +97,68 @@
             border-bottom: 2px solid #a8a8a8;
         }
 
-        /* .contact-list-after {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: #fff;
-            z-index: 999;
-            right: -8px;
-            top: 34%;
-            position: absolute;
+        .contact-list-after{
+            position: relative;
         }
-        .features-list-after {
+        .contact-list-after:after {
             width: 15px;
             height: 15px;
             border-radius: 50%;
             background-color: #fff;
             z-index: 999;
-            right: -8px;
-            top: 21%;
+            right: -11px;
+            top: 14.5%;
             position: absolute;
+            content: "";
+            border: 2px solid #a8a8a8;
         }
 
-        .honor-list-after {
+        .features-list-after{
+            position: relative;
+        }
+        .features-list-after:after {
             width: 15px;
             height: 15px;
             border-radius: 50%;
             background-color: #fff;
             z-index: 999;
-            right: -8px;
-            top: 9%;
+            right: -11px;
+            top: 22%;
             position: absolute;
-        } */
+            content: "";
+            border: 2px solid #a8a8a8;
+        }
+        .honor-list-after{
+            position: relative;
+        }
+        .honor-list-after:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #fff;
+            z-index: 999;
+            right: -11px;
+            top: -23px;
+            position: absolute;
+            content: "";
+            border: 2px solid #a8a8a8;
+        } 
+
+        .activity-list-after{
+            position: relative;
+        }
+        .activity-list-after:after {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #fff;
+            z-index: 999;
+            left: -15px;
+            top: -23px;
+            position: absolute;
+            content: "";
+            border: 2px solid #a8a8a8;
+        } 
 
         .span_list {
             width: 20px;
@@ -245,9 +276,9 @@
                 </b>
         </p>
     </div>
-    <div class="clear-both" style="margin-top: -30px">
+    <div class="clear-both" style="margin-top: -20px">
         <div class="preview-left col-lg-6">
-            <div class="preview-list border-bottom d-block ps-0">
+            <div class="preview-list border-bottom d-block ps-0 contact-list-after">
                 <h3>Contact</h3>
                 <span class="list">
                     @if(isset($personal_info->email))
@@ -314,12 +345,12 @@
                         </span>
                     @endif
                 </span>
-                <span class="contact-list-after"></span>
+              
             </div>
             @if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
                 <div class="border-bottom d-block " >
                     @if (!empty($featured_skills_data))
-                        <div class="pb-3 border-bottom-0 preview-list ps-0 ">
+                        <div class="pb-3 border-bottom-0 preview-list ps-0 features-list-after ">
                             @if ($featuredAttribute)
                                 <h3>Features</h3>
                             @endif
@@ -402,7 +433,7 @@
                                     @endif
                                 @endforeach
                             </span>
-                            <span style="display: block">
+                            <span style="display: block;margin-bottom: 5px">
                                 @foreach ($employment_data as $data)
                                     @if(isset($data['grade']) && !empty($data['grade']))
                                         <span class="span_h2">Grade(s)</span>
@@ -443,7 +474,7 @@
             @endif
 
             @if (!empty($honor))
-                <span class="preview-list">
+                <div class="preview-list honor-list-after">
                     <h3>HONOR</h3>
                     <span style="margin-bottom: 5px;display: block">
                         <span class="span_h2">Position</span>
@@ -479,7 +510,7 @@
                             </span>
                         @endforeach
                     </span>
-                </span>
+                </div>
             @endif
         </div>
         <div class="preview-right">
@@ -624,7 +655,7 @@
                 </span>
             @endif
             @if (!empty($activity))
-                <span class="preview-list d-block">
+                <div class="preview-list d-block activity-list-after">
                     <h3>Activities</h3>
                     @if (!empty($demonstrated_data))
                         <span style="margin-bottom: 5px;display: block">
@@ -857,7 +888,7 @@
                             @endif
                         </span>
                     @endif
-                </span>
+                </div>
             @endif
         </div>
     </div>
