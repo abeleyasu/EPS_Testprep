@@ -19,12 +19,13 @@
         }
 
         .preview-left {
-            width: 300px;
+            width: 320px;
             border-right: 2px solid #a8a8a8;
             vertical-align: top;
             display: inline-block !important;
 
         }
+      
 
         .preview-list_skill h2 {
             font-size: 12px;
@@ -46,7 +47,6 @@
             width: 350px;
             vertical-align: top;
             display: inline-block !important;
-            page-break-before: avoid;
         }
 
 
@@ -77,6 +77,9 @@
             padding-left: 30px;
             font-size: 12px;
             color: #45464b;
+            width: 280px; 
+            word-break:break-all;
+            word-wrap:break-word;
         }
 
         .list-type:before {
@@ -481,7 +484,7 @@
         </div>
         <div class="preview-right">
             @if (!empty($education))
-                <span class="preview-list border-bottom d-block">
+                <span class="preview-list d-block {{ (!empty($activity)) ? 'border-bottom' : '' }}">
                     <h3>Education</h3>
                     <span>
                         <span class="span_text">
@@ -545,13 +548,17 @@
                         @if (!empty($education->ib_courses))
                             <span class="span_text">
                                 <span class="span_bold">IB Courses:</span>
-                                {{ implode(',', $ib_courses) }}
+                                <span class="list-type">
+                                    {{ implode(',', $ib_courses) }}
+                                </span>
                             </span>
                         @endif
                         @if (!empty($education->ap_courses))
                             <span class="span_text">
                                 <span class="span_bold">AP Courses:</span>
-                                {{ implode(',', $ap_courses) }}
+                                <span class="list-type">
+                                    {{ implode(',', $ap_courses) }}
+                                </span>
                             </span>
                         @endif
                         @if (!empty($education->honor_course_data))
@@ -561,7 +568,7 @@
                                 @foreach ($education->honor_course_data as $honor_course_data)
                                     @foreach ($education->honor_course_data as $honor_course_data)
                                         @if(isset($honor_course_data['course_data']) && !empty($honor_course_data['course_data']))
-                                            <span class="list-type">
+                                            <span class="list-type" >
                                                 {{ \App\Helpers\Helper::getHonorCourseByIdArray($honor_course_data['course_data']) }}
                                             </span>
                                         @endif
@@ -599,14 +606,17 @@
                             @if (!empty($intended_major))
                                 <span class="span_text">
                                     <span class="span_bold">Intended College Major(s):</span>
-                                    {{ implode(',', $intended_major) }}
+                                    <span class="list-type">
+                                        {{ implode(',', $intended_major) }}
+                                    </span>
                                 </span>
                             @endif
                             @if (!empty($intended_major))
                                 <span class="span_text">
                                     <span class="span_bold">Intended College Minor(s):</span>
-
-                                    {{ implode(',', $intended_minor) }}
+                                    <span class="list-type">
+                                        {{ implode(',', $intended_minor) }}
+                                    </span>
                                 </span>
                             @endif
                         </span>

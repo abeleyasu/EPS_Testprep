@@ -80,7 +80,7 @@ async function addCourseData(data){
             html += `<input type="text" class="form-control" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
             html += `</td>`;
             html += `<td class="select2-container_main select2-container_main-position">`;
-            html += `<select class="required js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name">`;
+            html += `<select class="js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name">`;
             html += await dropdown_lists(`/user/colleges/list`);
             html += `</select>`;
             html += `</td>`;
@@ -114,7 +114,7 @@ async function addCourseData(data){
         });
     });
     
-    course_data.filter('input[name$="[search_college_name]"]').each(function() {
+    $('select[name^="course_data"]').filter('select[name$="[search_college_name][]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {
@@ -322,7 +322,7 @@ async function addHonorsData(data){
             html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
             html += `</td>`;
             html += `<td class="select2-container_main">`;
-            html += `<select class="required js-select2" data-placeholder="Select Grade" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
+            html += `<select class="js-select2" data-placeholder="Select Grade" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
             html += `</td>`;
@@ -364,7 +364,7 @@ async function addHonorsData(data){
             }
         });
     });
-    honors_data.filter('input[name$="[grade][]"]').each(function() {
+    $('select[name^="honors_data"]').filter('select[name$="[grade][]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {

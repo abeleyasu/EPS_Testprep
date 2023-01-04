@@ -550,6 +550,7 @@
                                                         <label class="form-label" for="intended_college_major">
                                                             Intended College Major
                                                         </label>
+                                                        <span class="text-danger">*</span>
                                                         <select class="js-select2 select"
                                                             id="intended_college_major"
                                                             name="intended_college_major[]"
@@ -566,6 +567,7 @@
                                                         <label class="form-label" for="intended_college_minor">
                                                             Intended College Minor
                                                         </label>
+                                                        <span class="text-danger">*</span>
                                                         <select class="js-select2 select"
                                                             id="intended_college_minor"
                                                             name="intended_college_minor[]"

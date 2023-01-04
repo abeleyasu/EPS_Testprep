@@ -160,7 +160,7 @@
                                                                             placeholder="Ex: National Honor Society">
                                                                     </td>
                                                                     <td class="select2-container_main">
-                                                                        <select class="required js-select2"
+                                                                        <select class="js-select2"
                                                                             data-placeholder="Select Grade"
                                                                             id="honor_select_{{ $index }}"
                                                                             name="honors_data[{{ $index }}][grade][]"
@@ -201,7 +201,7 @@
                                                                         placeholder="Ex: National Honor Society">
                                                                 </td>
                                                                 <td class="select2-container_main">
-                                                                    <select class="required js-select2"
+                                                                    <select class="js-select2"
                                                                         data-placeholder="Select Grade"
                                                                         id="honor_select_0" name="honors_data[0][grade][]"
                                                                         multiple="multiple">
@@ -364,7 +364,7 @@
                     }
                 });
             });
-            honors_data.filter('input[name$="[grade][]"]').each(function() {
+            $('select[name^="honors_data"]').filter('select[name$="[grade][]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
