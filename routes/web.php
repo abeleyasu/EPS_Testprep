@@ -234,6 +234,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
         Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
     });
 
+    Route::view('/test_review', 'user.test-review')->name('test_review');
+
     Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
     Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');
     Route::get('/grades/list', [GradesController::class, 'getGradeList'])->name('gradesList');
