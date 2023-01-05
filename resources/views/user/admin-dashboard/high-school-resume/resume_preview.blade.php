@@ -107,7 +107,7 @@
             background-color: #fff;
             z-index: 999;
             right: -11px;
-            top: 14.5%;
+            top: 150px;
             position: absolute;
             content: "";
             border: 2px solid #a8a8a8;
@@ -123,7 +123,7 @@
             background-color: #fff;
             z-index: 999;
             right: -11px;
-            top: 22%;
+            top: 185px;
             position: absolute;
             content: "";
             border: 2px solid #a8a8a8;
@@ -388,6 +388,7 @@
                                     <span class="list-type">
                                         {{ $featured_languages['language'] }}
                                     </span>
+
                                 @endforeach
                             </span>
                         </span>

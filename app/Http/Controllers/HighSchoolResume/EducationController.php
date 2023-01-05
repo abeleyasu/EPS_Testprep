@@ -79,19 +79,21 @@ class EducationController extends Controller
 
         $college_ids = CollegeInformation::pluck('id')->toArray();
 
-        if(!empty($data['course_data'])){
+        if(isset($data['course_data']) && !empty($data['course_data'])){
             foreach ($data['course_data'] as $key1 => $course_data) {
-                foreach($course_data['search_college_name'] as $key => $college_name){
-                    if(!in_array($college_name, $college_ids)){
-                        $college_info = CollegeInformation::create(['name' => $college_name , 'user_id' => Auth::id()]);
-                        $index = array_search($college_name, $course_data['search_college_name']);
-                        $college_array = array_replace($course_data['search_college_name'], [$index => $college_info->id]);
-                        $course_data['search_college_name'] = $college_array;
+                if (isset($course_data['search_college_name']) && !empty($course_data['search_college_name'])) {
+                    foreach ($course_data['search_college_name'] as $key => $college_name) {
+                        if (!in_array($college_name, $college_ids)) {
+                            $college_info = CollegeInformation::create(['name' => $college_name, 'user_id' => Auth::id()]);
+                            $index = array_search($college_name, $course_data['search_college_name']);
+                            $college_array = array_replace($course_data['search_college_name'], [$index => $college_info->id]);
+                            $course_data['search_college_name'] = $college_array;
+                        }
                     }
                 }
                 $data['course_data'][$key1] = $course_data;
             }
-        }
+        }     
 
         $honor_course_name_ids = HonorCourseNameList::pluck('id')->toArray();
 
@@ -240,14 +242,12 @@ class EducationController extends Controller
                             $index = array_search($course, $course_name['course_data']);
                             $course_name_array = array_replace($course_name['course_data'], [$index => $course_name_info->id]);
                             $course_name['course_data'] = $course_name_array;
-    
                         }
                     }
                 }
                 $data['honor_course_data'][$key1] = $course_name;
             }
         }
-        // dd($data);
 
         $college_ids = CollegeInformation::pluck('id')->toArray();
 
@@ -342,7 +342,6 @@ class EducationController extends Controller
         if (!empty($data['intended_college_major'])) {
             $data['intended_college_major'] = json_encode($data['intended_college_major']);
         }
-
 
         if (!empty($data['intended_college_minor'])) {
             $data['intended_college_minor'] = json_encode($data['intended_college_minor']);
