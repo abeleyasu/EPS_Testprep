@@ -1,0 +1,76 @@
+/*================== 
+        Common css 
+    ==============================*/
+
+table,
+th,
+td {
+    border: none;
+}
+
+ul,
+li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.nav-tabs {
+    border: 0;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.block-header-tab {
+    background-color: #1f2937;
+    text-align: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.block-header-default {
+    background-color: #1f2937;
+}
+
+.block-title {
+    color: #fff;
+}
+
+.block-header-default .btn-block-option {
+    color: #ffffff;
+}
+
+.btn-alt-primary,
+.btn-alt-primary:hover {
+    background-color: #1f2937;
+    color: #fff;
+    font-size: 14px;
+}
+
+.table > :not(caption) > * > * {
+    padding: 10px 30px 10px 0;
+}
+
+[aria-expanded="true"] .accordian-icon {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+[aria-expanded="false"] .accordian-icon {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+.incorrect{
+    font-size: 14px;
+}
+
+.block-header-modal{
+    color: #1f2937;
+}
+.nav .nav-item{
+    margin-right: 5px;
+}

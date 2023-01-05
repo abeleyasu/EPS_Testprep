@@ -38,6 +38,7 @@ use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
 use \App\Http\Controllers\QuizManagemet\PracticeQuestionController;
 use App\Http\Controllers\ResumeSettingsController;
 use App\Http\Controllers\TestPrepController;
+use App\Http\Controllers\TestReview\TestReviewController;
 use App\Http\Controllers\UserCalendarController;
 
 /*
@@ -234,7 +235,12 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
         Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
     });
 
-    Route::view('/test_review', 'user.test-review')->name('test_review');
+    Route::group(['prefix' => 'test-review', 'as' => 'test-review.'], function () { 
+        Route::get('/', [TestReviewController::class, 'index'])->name('review');
+        Route::get('/question-concept-review', [TestReviewController::class, 'questionConceptReview'])->name('question-concept-review');
+        Route::get('/category-question-type', [TestReviewController::class, 'categoryQuestionType'])->name('category-question-type');
+        Route::get('/answer-type', [TestReviewController::class, 'answerType'])->name('answer-type');
+    });
 
     Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
     Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');

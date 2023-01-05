@@ -2,8 +2,6 @@
 
 @section('title', 'Test Review Dashboard : CPS')
 
-
-
 @section('user-content')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
@@ -40,7 +38,7 @@
             <h2 class="content-heading">Pick a Review Option</h2>
             <div class="row">
                 <div class="col-md-4 col-xl-4">
-                    <a class="block block-rounded bg-primary-dark" href="testreviewmock-qa-review-new.html">
+                    <a class="block block-rounded bg-primary-dark" href="{{ route('test-review.question-concept-review') }}">
                         <div class="block-content block-content-full d-flex justify-content-between">
                             <div class="me-3">
                                 <p class="fw-semibold text-white mb-0">Question & Concept Review MOBILE</p>
@@ -52,7 +50,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 col-xl-4">
-                    <a class="block block-rounded bg-primary-dark" href="testreviewmock-ctqt-summary.html">
+                    <a class="block block-rounded bg-primary-dark" href="{{ route('test-review.category-question-type') }}">
                         <div class="block-content block-content-full d-flex justify-content-between">
                             <div class="me-3">
                                 <p class="fw-semibold text-white mb-0">Category & Question Type Summary</p>
@@ -64,7 +62,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 col-xl-4">
-                    <a class="block block-rounded bg-primary-dark" href="testreviewmock-at-summary.html">
+                    <a class="block block-rounded bg-primary-dark" href="{{ route('test-review.answer-type') }}">
                         <div class="block-content block-content-full d-flex justify-content-between">
                             <div class="me-3">
                                 <p class="fw-semibold text-white mb-0">Answer Type Summary</p>
@@ -116,12 +114,12 @@
                                         <table>
                                             <tr >
                                                 <td class="text-center">
-                                                    <i class="fa fa-angle-right text-white me-2"></i>
+                                                    <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">1</button>
-                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
-                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> E</button>
+                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">1</button>
+                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
+                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> E</button>
                                                     <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
                                                     <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
                                                     <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
@@ -151,7 +149,7 @@
                                                                             </div>
                                                                         </div>
             
-                                                                        <div id="my-block" class="block block-rounded block-bordered">
+                                                                        <div id="question_one_review" class="block block-rounded block-bordered p-0">
                                                                             <div class="block-header block-header-default">
                                                                                 <h3 class="block-title">Question 1</h3>
                                                                                 <div class="block-options">
@@ -172,7 +170,7 @@
                                                                         <div class="block block-rounded">
                                                                             <ul class="nav nav-tabs nav-tabs-alt" role="tablist">
                                                                                 <li class="nav-item">
-                                                                                    <button class="nav-link active bg-danger text-gray" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1a" role="tab" aria-controls="btabs-alt-static-home" aria-selected="true">Answer A</button>
+                                                                                    <button class="nav-link active bg-danger text-white" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1a" role="tab" aria-controls="btabs-alt-static-home" aria-selected="true">Answer A</button>
                                                                                 </li>
                                                                                 <li class="nav-item">
                                                                                     <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1b" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer B</button>
@@ -214,7 +212,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -242,7 +240,7 @@
                                                     <tbody>
                                                         <tr class="odd">
                                                             <td>
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1ct1" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white">
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
                                                                     <i class="fa fa-lg fa-circle-xmark me-1"></i>
                                                                     Probability
                                                                 </button>
@@ -259,7 +257,7 @@
                                                                                     <div id="q1ct1" class="mb-5" role="tablist" aria-multiselectable="true">
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="q1ct1_description">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#q1ct1" href="#q1ct1_description" aria-expanded="true" aria-controls="q1ct1_description">Description</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#q1ct1" href="#q1ct1_description" aria-expanded="true" aria-controls="q1ct1_description">Description</a>
                                                                                             </div>
                                                                                             <div id="q1ct1_description" class="collapse show" role="tabpanel" aria-labelledby="q1ct1_description" data-bs-parent="#q1ct1">
                                                                                                 <div class="block-content">
@@ -269,7 +267,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="block-content block-content-full text-end bg-body">
-                                                                                        <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -281,7 +279,7 @@
                                                             
                                                             <td style="">
                                         
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1qt1" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white">
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
                                                                     <i class="fa fa-lg fa-circle-xmark me-1"></i>
                                                                     Simple Probability
                                                                 </button>
@@ -297,7 +295,7 @@
                                                                                     <div id="faq_q1" class="mb-5" role="tablist" aria-multiselectable="true">
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_description_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_description" aria-expanded="true" aria-controls="faq_q1_qt1_description">Description</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_description" aria-expanded="true" aria-controls="faq_q1_qt1_description">Description</a>
                                                                                             </div>
                                                                                             <div id="faq_q1_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q1_qt1_description_aria-label" data-bs-parent="#faq_q1">
                                                                                                 <div class="block-content">
@@ -307,7 +305,7 @@
                                                                                         </div>
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_lesson_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_lesson" aria-expanded="true" aria-controls="faq_q1_qt1_lesson">Lesson</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_lesson" aria-expanded="true" aria-controls="faq_q1_qt1_lesson">Lesson</a>
                                                                                             </div>
                                                                                             <div id="faq_q1_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_lesson_aria-label" data-bs-parent="#faq_q1">
                                                                                                 <div class="block-content">
@@ -342,7 +340,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">                                                                                <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_strategies_aria-label">
-                                                                                            <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_strategies" aria-expanded="true" aria-controls="faq_q1_qt1_strategies">Strategies</a>
+                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_strategies" aria-expanded="true" aria-controls="faq_q1_qt1_strategies">Strategies</a>
                                                                                         </div>
                                                                                         <div id="faq_q1_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_strategies_aria-label" data-bs-parent="#faq_q1">
                                                                                             <div class="block-content">
@@ -356,7 +354,7 @@
                                                                                     </div>
                                                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                         <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idmethods_aria-label">
-                                                                                            <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idmethods" aria-expanded="true" aria-controls="faq_q1_qt1_idmethods">Identification Methods</a>
+                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idmethods" aria-expanded="true" aria-controls="faq_q1_qt1_idmethods">Identification Methods</a>
                                                                                         </div>
                                                                                         <div id="faq_q1_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idmethods_aria-label" data-bs-parent="#faq_q1">
                                                                                             <div class="block-content">
@@ -374,7 +372,7 @@
                                                                                     </div>
                                                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                         <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idactivity_aria-label">
-                                                                                            <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idactivity" aria-expanded="true" aria-controls="faq_q1_qt1_idactivity">Identification Activity</a>
+                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idactivity" aria-expanded="true" aria-controls="faq_q1_qt1_idactivity">Identification Activity</a>
                                                                                         </div>
                                                                                         <div id="faq_q1_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idactivity_aria-label" data-bs-parent="#faq_q1">
                                                                                             <div class="block-content">
@@ -411,7 +409,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="block-content block-content-full text-end bg-body">
-                                                                                <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                                <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -428,17 +426,17 @@
                                 {{-- accordion tab 2 --}}
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseTwo"
-                                        aria-expanded="true" aria-controls="collapseTwo">
+                                        aria-expanded="false" aria-controls="collapseTwo">
                                 
                                         <table>
                                             <tr >
                                                 <td class="text-center">
-                                                    <i class="fa fa-angle-right text-white me-2"></i>
+                                                    <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">2</button>
-                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> H</button>
-                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> J</button>
+                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">2</button>
+                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> H</button>
+                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> J</button>
                                                     <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
                                                     <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
                                                     <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
@@ -463,7 +461,7 @@
                                                                 <div class="block-content">
                                                                     <div class="row items-push">
             
-                                                                        <div id="my-block" class="block block-rounded block-bordered">
+                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
                                                                             <div class="block-header block-header-default">
                                                                                 <h3 class="block-title">Question 2</h3>
                                                                                 <div class="block-options">
@@ -526,7 +524,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -554,7 +552,7 @@
                                                     <tbody>
                                                         <tr class="odd">
                                                             <td style="">
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2ct1" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Expressions & Equations</button>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Expressions & Equations</button>
                                                 
                                                                 <div class="modal" id="modal-block-large-q2ct1" tabindex="-1" aria-labelledby="modal-block-large-q2ct1" style="display: none;" aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
@@ -567,7 +565,7 @@
                                                                                     <div id="q2ct1" class="mb-5" role="tablist" aria-multiselectable="true">
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="q2ct1_description">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#q2ct1" href="#q2ct1_description" aria-expanded="true" aria-controls="q2ct1_description">Description</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#q2ct1" href="#q2ct1_description" aria-expanded="true" aria-controls="q2ct1_description">Description</a>
                                                                                             </div>
                                                                                             <div id="q2ct1_description" class="collapse show" role="tabpanel" aria-labelledby="q2ct1_description" data-bs-parent="#q2ct1">
                                                                                                 <div class="block-content">
@@ -577,7 +575,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="block-content block-content-full text-end bg-body">
-                                                                                        <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -587,7 +585,7 @@
                                                             </td>
                                                             
                                                             <td style="">
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2qt1" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Simplify/Evaluate/Find Equivalent Expressions</button>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Simplify/Evaluate/Find Equivalent Expressions</button>
                             
                                                                 <div class="modal" id="modal-block-large-q2qt1" tabindex="-1" aria-labelledby="modal-block-large-q2qt1" style="display: none;" aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
@@ -600,7 +598,7 @@
                                                                                     <div id="faq_q2" class="mb-5" role="tablist" aria-multiselectable="true">
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_description_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_description" aria-expanded="true" aria-controls="faq_q2_qt1_description">Description</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_description" aria-expanded="true" aria-controls="faq_q2_qt1_description">Description</a>
                                                                                             </div>
                                                                                             <div id="faq_q2_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q2_qt1_description_aria-label" data-bs-parent="#faq_q2">
                                                                                                 <div class="block-content">
@@ -612,7 +610,7 @@
                                                                                         </div>
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_lesson_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_lesson" aria-expanded="true" aria-controls="faq_q2_qt1_lesson">Lesson</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_lesson" aria-expanded="true" aria-controls="faq_q2_qt1_lesson">Lesson</a>
                                                                                             </div>
                                                                                             <div id="faq_q2_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_lesson_aria-label" data-bs-parent="#faq_q2">
                                                                                                 <div class="block-content">
@@ -640,7 +638,7 @@
                                                                                         </div>
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_strategies_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_strategies" aria-expanded="true" aria-controls="faq_q2_qt1_strategies">Strategies</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_strategies" aria-expanded="true" aria-controls="faq_q2_qt1_strategies">Strategies</a>
                                                                                             </div>
                                                                                             <div id="faq_q2_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_strategies_aria-label" data-bs-parent="#faq_q2">
                                                                                                 <div class="block-content">
@@ -651,7 +649,7 @@
                                                                                         </div>
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_idmethods_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idmethods" aria-expanded="true" aria-controls="faq_q2_qt1_idmethods">Identification Methods</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idmethods" aria-expanded="true" aria-controls="faq_q2_qt1_idmethods">Identification Methods</a>
                                                                                             </div>
                                                                                             <div id="faq_q2_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_idmethods_aria-label" data-bs-parent="#faq_q2">
                                                                                                 <div class="block-content">
@@ -681,7 +679,7 @@
                                                                                         </div>
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_idactivity_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idactivity" aria-expanded="true" aria-controls="faq_q2_qt1_idactivity">Identification Activity</a>
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idactivity" aria-expanded="true" aria-controls="faq_q2_qt1_idactivity">Identification Activity</a>
                                                                                             </div>
                                                                                             <div id="faq_q2_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_idactivity_aria-label" data-bs-parent="#faq_q2">
                                                                                                 <div class="block-content">
@@ -704,7 +702,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -714,7 +712,7 @@
             
                                                         <tr class="odd">
                                                             <td style="">
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2ct1" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Expressions & Equations</button>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Expressions & Equations</button>
                             
                                                                 <div class="modal" id="modal-block-large-q2ct1" tabindex="-1" aria-labelledby="modal-block-large-q2ct1" style="display: none;" aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
@@ -727,7 +725,7 @@
                                                                                 <div id="q2ct1" class="mb-5" role="tablist" aria-multiselectable="true">
                                                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                         <div class="block-header block-header-default" role="tab" id="q2ct1_description">
-                                                                                            <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#q2ct1" href="#q2ct1_description" aria-expanded="true" aria-controls="q2ct1_description">Description</a>
+                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#q2ct1" href="#q2ct1_description" aria-expanded="true" aria-controls="q2ct1_description">Description</a>
                                                                                         </div>
                                                                                         <div id="q2ct1_description" class="collapse show" role="tabpanel" aria-labelledby="q2ct1_description" data-bs-parent="#q2ct1">
                                                                                             <div class="block-content">
@@ -737,7 +735,7 @@
                                                                                 </div>
                                                                                 </div>
                                                                             <div class="block-content block-content-full text-end bg-body">
-                                                                                <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                                <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                             </div>
                                                                             </div>
                                                                             </div>
@@ -749,7 +747,7 @@
             
                                                             <td style="">
                                                 
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2qt2" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Combine Like Terms</button>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2qt2" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Combine Like Terms</button>
                                                 
             
                                                 
@@ -766,7 +764,7 @@
                                                                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                             <!-- Description Block -->
                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt2_description_aria-label">
-                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_description" aria-expanded="true" aria-controls="faq_q2_qt2_description">Description</a>
+                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_description" aria-expanded="true" aria-controls="faq_q2_qt2_description">Description</a>
                                                                             </div>
                                                                             <div id="faq_q2_qt2_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q2_qt2_description_aria-label" data-bs-parent="#faq_q2">
                                                                                 <div class="block-content">
@@ -780,7 +778,7 @@
                                                                             </div>
                                                                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt2_lesson_aria-label">
-                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_lesson" aria-expanded="true" aria-controls="faq_q2_qt2_lesson">Lesson</a>
+                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_lesson" aria-expanded="true" aria-controls="faq_q2_qt2_lesson">Lesson</a>
                                                                             </div>
                                                                             <div id="faq_q2_qt2_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt2_lesson_aria-label" data-bs-parent="#faq_q2">
                                                                                 <div class="block-content">
@@ -800,7 +798,7 @@
                                                                             </div>
                                                                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt2_strategies_aria-label">
-                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_strategies" aria-expanded="true" aria-controls="faq_q2_qt2_strategies">Strategies</a>
+                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_strategies" aria-expanded="true" aria-controls="faq_q2_qt2_strategies">Strategies</a>
                                                                             </div>
                                                                             <div id="faq_q2_qt2_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt2_strategies_aria-label" data-bs-parent="#faq_q2">
                                                                                 <div class="block-content">
@@ -812,7 +810,7 @@
                                                                             </div>
                                                                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt2_idmethods_aria-label">
-                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_idmethods" aria-expanded="true" aria-controls="faq_q2_qt2_idmethods">Identification Methods</a>
+                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_idmethods" aria-expanded="true" aria-controls="faq_q2_qt2_idmethods">Identification Methods</a>
                                                                             </div>
                                                                             <div id="faq_q2_qt2_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt2_idmethods_aria-label" data-bs-parent="#faq_q2">
                                                                                 <div class="block-content">
@@ -842,7 +840,7 @@
                                                                             </div>
                                                                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                             <div class="block-header block-header-default" role="tab" id="faq_q2_qt2_idactivity_aria-label">
-                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_idactivity" aria-expanded="true" aria-controls="faq_q2_qt2_idactivity">Identification Activity</a>
+                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt2_idactivity" aria-expanded="true" aria-controls="faq_q2_qt2_idactivity">Identification Activity</a>
                                                                             </div>
                                                                             <div id="faq_q2_qt2_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt2_idactivity_aria-label" data-bs-parent="#faq_q2">
                                                                                 <div class="block-content">
@@ -865,7 +863,7 @@
                                                                             </div>
                                                                         </div>
                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                                 </div>
                                                                 </div>
@@ -882,16 +880,16 @@
                                 {{-- accordion tab 3 --}}
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseThree"
-                                        aria-expanded="true" aria-controls="collapseThree">
+                                        aria-expanded="false" aria-controls="collapseThree">
                                         <table>
                                             <tr>
                                                 <td class="text-center">
-                                                    <i class="fa fa-angle-right text-white me-2"></i>
+                                                    <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">3</button>
-                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
-                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1 mb-3" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> B</button>
+                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">3</button>
+                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
+                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> B</button>
                                                     <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
                                                     <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
                                                     <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
@@ -934,7 +932,7 @@
                                                                         <div class="block block-rounded">
                                                                             <ul class="nav nav-tabs nav-tabs-alt" role="tablist">
                                                                                 <li class="nav-item">
-                                                                                    <button class="nav-link active bg-danger text-gray" id="btabs-alt-static-home-tab"
+                                                                                    <button class="nav-link active bg-danger text-white" id="btabs-alt-static-home-tab"
                                                                                     data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q3a" role="tab"
                                                                                     aria-controls="btabs-alt-static-home" aria-selected="true">Answer A</button>
                                                                                 </li>
@@ -995,7 +993,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1026,7 +1024,7 @@
                                                     <tbody>
                                                         <tr class="odd">
                                                             <td style="">
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q3ct1" class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Arithmetic</button>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q3ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Arithmetic</button>
 
                                                                 <div class="modal" id="modal-block-large-q3ct1" tabindex="-1" aria-labelledby="modal-block-large-q3ct1" style="display: none;" aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
@@ -1040,7 +1038,7 @@
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab"
                                                                                             id="q3ct1_description">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#q3ct1"
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#q3ct1"
                                                                                                 href="#q3ct1_description" aria-expanded="true"
                                                                                                 aria-controls="q3ct1_description">Description</a>
                                                                                             </div>
@@ -1055,7 +1053,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="block-content block-content-full text-end bg-body">
-                                                                                        <button type="button" class="btn btn-sm btn-primary"
+                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white  "
                                                                                         data-bs-dismiss="modal">Close</button>
                                                                                     </div>
                                                                                 </div>
@@ -1067,7 +1065,7 @@
                                                             <td style="">
 
                                                                 <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q3qt1"
-                                                                    class="btn btn-danger fs-xs fw-semibold me-1 mb-3 bg-danger text-white"><i
+                                                                    class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i
                                                                     class="fa fa-lg fa-circle-xmark me-1"></i>Order of Operations</button>
 
                                                                 <div class="modal" id="modal-block-large-q3qt1" tabindex="-1" aria-labelledby="modal-block-large-q3qt1" style="display: none;" aria-hidden="true">
@@ -1082,7 +1080,7 @@
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab"
                                                                                             id="faq_q3_qt1_description_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
                                                                                                 href="#faq_q3_qt1_description" aria-expanded="true"
                                                                                                 aria-controls="faq_q3_qt1_description">Description</a>
                                                                                             </div>
@@ -1100,7 +1098,7 @@
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab"
                                                                                             id="faq_q3_qt1_lesson_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
                                                                                                 href="#faq_q3_qt1_lesson" aria-expanded="true"
                                                                                                 aria-controls="faq_q3_qt1_lesson">Lesson</a>
                                                                                             </div>
@@ -1115,7 +1113,7 @@
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab"
                                                                                             id="faq_q3_qt1_strategies_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
                                                                                                 href="#faq_q3_qt1_strategies" aria-expanded="true"
                                                                                                 aria-controls="faq_q3_qt1_strategies">Strategies</a>
                                                                                             </div>
@@ -1132,7 +1130,7 @@
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab"
                                                                                             id="faq_q3_qt1_idmethods_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
                                                                                                 href="#faq_q3_qt1_idmethods" aria-expanded="true"
                                                                                                 aria-controls="faq_q3_qt1_idmethods">Identification Methods</a>
                                                                                             </div>
@@ -1167,7 +1165,7 @@
                                                                                         <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                                                             <div class="block-header block-header-default" role="tab"
                                                                                             id="faq_q3_qt1_idactivity_aria-label">
-                                                                                                <a class="text-muted" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
+                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
                                                                                                 href="#faq_q3_qt1_idactivity" aria-expanded="true"
                                                                                                 aria-controls="faq_q3_qt1_idactivity">Identification Activity</a>
                                                                                             </div>
@@ -1196,7 +1194,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                                    <button type="button" class="btn btn-sm btn-primary"
+                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  "
                                                                                     data-bs-dismiss="modal">Close</button>
                                                                                 </div>
                                                                             </div>
@@ -1221,350 +1219,11 @@
 @endsection
 
 @section('page-style')
-<style>
-        /*================== 
-        Common css 
-    ==============================*/
-
-    table,
-    th,
-    td {
-        border: none;
-    }
-
-    ul,
-    li {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
-    .nav-tabs {
-        border: 0;
-    }
-
-    p {
-        margin-bottom: 0;
-    }
-
-    /*================== 
-    All pages css 
-    ==============================*/
-
-
-    .main-tab-container {
-        padding: 40px 30px;
-    }
-
-    .custom-tab-container {
-        padding: 50px 30px;
-    }
-
-    .custom-tab-container ul li:focus-visible,
-    .nav-link:focus-visible {
-        outline: 0 !important;
-    }
-
-    .invalid {
-        width: 100%;
-        margin-top: 0.375rem;
-        font-size: 13px;
-        color: #dc2626;
-        display: block;
-    }
-
-    .select2-container {
-        width: 100% !important;
-    }
-
-    .is-invalid {
-        border-color: #dc2626
-    }
-
-    .custom-dropdown-course,
-    .custom-dropdown-college {
-        width: 100%;
-        border: 1px solid #dfe3ea;
-        border-radius: 5px;
-        display: none
-    }
-
-    .fa-pen {
-        color: #1f2937;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .fa-circle-xmark {
-        color: #ff3b3b;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    body {
-        overflow-x: hidden;
-    }
-
-    .nav-link {
-        background: transparent !important;
-    }
-
-
-
-    .select2-container .select2-selection--multiple {
-        box-sizing: border-box;
-        cursor: pointer;
-        display: block;
-        min-height: 37px !important;
-        user-select: none;
-        -webkit-user-select: none;
-    }
-
-    .custom-tab-container ul li p {
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
-        background-color: #a8a8a8;
-        text-align: center;
-        border-radius: 50%;
-        line-height: 50px;
-        margin-bottom: 20px !important;
-        color: #fff;
-        margin: auto;
-    }
-
-    .custom-tab-container ul li i {
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
-        background-color: #d9e8c3;
-        text-align: center;
-        border-radius: 50%;
-        line-height: 50px;
-        margin-bottom: 20px !important;
-        color: #3d6208;
-        border: 1px solid #d9e8c3;
-        ;
-        margin: auto;
-    }
-
-
-
-    .select2-container--default .select2-selection--multiple,
-    .select2-container--default .select2-selection--single {
-        border: 1px solid #dfe3ea !important;
-
-    }
-
-    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove,
-    .select2-hidden-accessible {
-        color: #232d3a;
-        position: absolute;
-        top: -2px;
-    }
-
-    .select2-container--default .select2-selection--multiple .select2-selection__choice__display,
-    .select2-hidden-accessible {
-        color: #1f2937 !important;
-    }
-
-    .select2-container .select2-selection--single {
-        height: 35px;
-    }
-
-    .select2-container .select2-selection--single .select2-selection__rendered {
-        margin-top: 2px;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        top: 4px;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #7b838a !important;
-    }
-
-    .fa-check {
-        display: none;
-    }
-
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    /* Firefox */
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-
-    .custom-tab-container ul li a.active p {
-        background-color: #1f2937;
-        color: #fff;
-    }
-
-    .custom-tab-container ul li a {
-        color: #1f2937;
-    }
-
-    .custom-tab-container ul li {
-        margin-right: 50px;
-        text-align: center;
-        display: inline-block;
-        cursor: pointer;
-    }
-
-    .nav-link {
-        font-size: 16px !important;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin: 0;
-        color: #545454 !important;
-        padding: 0 !important;
-        border: unset !important;
-    }
-
-    .resume-list-table {
-        background: #fff;
-        box-shadow: 0 0 10px rgb(183 183 183 / 45%);
-        margin: 26px 0;
-        border-radius: 15px;
-    }
-
-    .custom-tab-container ul {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 35px;
-    }
-
-
-
-    .block-header-tab {
-        background-color: #1f2937;
-        text-align: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-
-    .custom-tab-main {
-        padding: 20px 0;
-    }
-
-    .add-btn i {
-        width: 30px;
-        height: 30px;
-        background-color: #1f2937;
-        color: #fff;
-        text-align: center;
-        border-radius: 50%;
-        line-height: 33px;
-        font-size: 16px;
-    }
-
-    .block-header-default {
-        background-color: #1f2937;
-    }
-
-    .block-title {
-        color: #fff;
-    }
-
-    .block-header-default .btn-block-option {
-        color: #ffffff;
-    }
-
-    .submit-btn {
-        background-color: #1f2937;
-        color: #fff;
-        font-size: 14px;
-    }
-
-
-
-    .btn-alt-primary,
-    .btn-alt-primary:hover {
-        background-color: #1f2937;
-        color: #fff;
-        font-size: 14px;
-    }
-
-
-    .next-step {
-        padding: 5px 64px 5px 45px;
-        background-image: url(../Image/arrow-right.png);
-        background-repeat: no-repeat;
-        background-size: 18px;
-        background-position: 130px 9px;
-        font-size: 15px;
-    }
-
-    .prev-step {
-        padding: 5px 45px 5px 58px;
-        background-image: url(../Image/arrow-left.png);
-        background-repeat: no-repeat;
-        background-size: 18px;
-        background-position: 28px 9px;
-        font-size: 15px;
-    }
-
-    .submit_btn {
-        padding: 5px 45px 5px 45px;
-    }
-
-
-    .modal-dialog-centered {
-        position: relative;
-        left: 140px;
-    }
-
-    .select2-container .select2-dropdown {
-        z-index: 999999;
-    }
-
-    .table>:not(caption)>*>* {
-        padding: 10px 30px 10px 0;
-    }
-
-    .plus-icon i {
-        position: relative;
-        top: 6px;
-        color: #fff;
-        text-align: center;
-        border-radius: 50%;
-        line-height: 17px;
-        font-size: 14px;
-        padding: 8px;
-    }
-
-    .addButton {
-        display: flex;
-        justify-content: end;
-        position: relative;
-        top: -34px;
-        right: 7px;
-    }
-
-    .input-margin {
-        margin-bottom: -20px;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/test-review.css') }}">
 @endsection
 
 @section('page-script')
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('assets/js/plugins/jquery-validation/additional-methods.js') }}"></script>
-<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
-<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
-<script src="{{ asset('js/high-school-resume.js') }}"></script>
-
-<script>
-    $('button[type="button"]').click(function(e){
-        e.stopPropagation()
-    })
-</script>
+<script src="{{ asset('js/test-review.js') }}"></script>
 @endsection
