@@ -77,9 +77,10 @@
             padding-left: 30px;
             font-size: 12px;
             color: #45464b;
-            width: 280px; 
+            width: 250px; 
             word-break:break-all;
             word-wrap:break-word;
+            padding-right: 20px
         }
 
         .list-type:before {
@@ -414,30 +415,30 @@
                     @if (!empty($employment_data)) 
                         <span class="preview-list">
                             <h3>Employment & Certifications</h3>
+                            <span class="span_h2"> Name Of The Company:</span>
                             <span style="margin-bottom: 5px;display: block">
                                 @foreach ($employment_data as $data)
                                 @if(!is_null($data['name_of_company']))
-                                    <span class="span_h2"> Name Of The Company:</span>
                                     <span class="list-type">
                                             {{ $data['name_of_company'] }}
                                         </span>
                                     @endif
                                 @endforeach
                             </span>
+                            <span class="span_h2"> Job Title</span>
                             <span style="margin-bottom: 5px;display: block">
                                 @foreach ($employment_data as $data)
                                     @if(!is_null($data['job_title']))
-                                        <span class="span_h2"> Job Title</span>
                                         <span class="list-type">
                                             {{ $data['job_title'] }}
                                         </span>
                                     @endif
                                 @endforeach
                             </span>
+                            <span class="span_h2">Grade(s)</span>
                             <span style="display: block;margin-bottom: 5px">
                                 @foreach ($employment_data as $data)
                                     @if(isset($data['grade']) && !empty($data['grade']))
-                                        <span class="span_h2">Grade(s)</span>
                                         <span class="list-type">
                                             {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
                                         </span>
@@ -449,20 +450,20 @@
                     @if (!empty($significant_data)) 
                         <span class="preview-list">
                             <h3>RESPONSIBILITIES OR INTERESTS</h3>
+                            <span class="span_h2"> Responsibility Or Interest:</span>
                             <span style="margin-bottom: 5px; display: block">
                                 @foreach ($significant_data as $data)
                                     @if(isset($data['interest']) && !empty($data['interest']))
-                                        <span class="span_h2"> Responsibility Or Interest:</span>
                                         <span class="list-type">
                                             {{ $data['interest'] }}
                                         </span>
                                     @endif
                                 @endforeach
                             </span>
+                            <span class="span_h2">Grade(s)</span>
                             <span style="margin-bottom: 10px;display: block">
                                 @foreach ($significant_data as $data)
                                     @if(isset($data['grade']) && !empty($data['grade']))
-                                        <span class="span_h2">Grade(s)</span>
                                         <span class="list-type">
                                             {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
                                         </span>
@@ -659,53 +660,35 @@
                 <div class="preview-list d-block activity-list-after">
                     <h3>Activities</h3>
                     @if (!empty($demonstrated_data))
-                        <span style="margin-bottom: 5px;display: block">
-                            <span class="span_h2">Demostrated Interests Major</span>
-                            @php
-                                $demonstrated_array = [];
-                            @endphp
-                            @foreach ($demonstrated_data as $data)
-                                @php
-                                    if(isset($data['position'])){
-                                        $demonstrated_array['position'][] = $data['position'];
-                                    }
-                                    if(isset($data['interest'])){
-                                        $demonstrated_array['interest'][] = $data['interest'];
-                                    }
-                                    if(isset($data['grade'])){
-                                        $demonstrated_array['grade'][] = $data['grade'];
-                                    }
-                                    if(isset($data['details'])){
-                                        $demonstrated_array['details'][] = $data['details'];
-                                    }
-                                @endphp
-                            @endforeach
-                            @if(!empty($demonstrated_array['position']))
-                                <span class="list-type">
-                                    <span class="span_h2">Position:</span>
-                                    {{ implode(",", $demonstrated_array['position']) }}
-                                </span>
-                            @endif
-                            @if(!empty($demonstrated_array['interest']))
-                                <span class="list-type">
-                                    <span class="span_h2">Interest:</span>
-                                    {{ implode(",", $demonstrated_array['interest']) }}
-                                </span>
-                            @endif
-                            @if(!empty($demonstrated_array['grade']))
-                                <span class="list-type">
-                                    <span class="span_h2">Grade(s):</span>
-                                    {{ \App\Helpers\Helper::getGradeAllByIdArray($demonstrated_array['grade']) }}
-                                </span>
-                            @endif
-                            @if(!empty($demonstrated_array['details']))
-                                <span class="list-type">
-                                    <span class="span_h2">Details:</span>
-                                    {{ implode(",", $demonstrated_array['details']) }}
-                                </span>
-                            @endif
-                        </span>
+                            <span class="d-block mb-3 span_h2">
+                                Demostrated Interests Major
+                            </span>
+                            <span class="span_h2" >Position:</span>
+                                @foreach ($demonstrated_data as $data)
+                                    <span class="list-type">
+                                        {{ $data['position'] }}
+                                    </span>
+                                @endforeach
+                            <span class="span_h2">Interest:</span>
+                                @foreach ($demonstrated_data as $data)
+                                    <span class="list-type">
+                                        {{ $data['interest'] }}
+                                    </span>
+                                @endforeach
+                            <span class="span_h2">Grade(s):</span>
+                                @foreach ($demonstrated_data as $data)
+                                    <span class="list-type">
+                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                    </span>
+                                @endforeach
+                            <span class="span_h2">Details:</span>
+                                @foreach ($demonstrated_data as $data)
+                                    <span class="list-type">
+                                        {{ $data['details'] }}
+                                    </span>
+                                @endforeach
                     @endif
+                            
                     @if(!empty($leadership_data))   
                         <span style="margin-bottom: 5px;display: block">
                             <span class="span_h2">Leadership</span>

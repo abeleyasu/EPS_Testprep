@@ -550,6 +550,7 @@
         padding-left: 30px;
         display: block;
         word-break: break-all;
+        padding-right: 30px;
     }
 
     .preview-list_skill h2 {
