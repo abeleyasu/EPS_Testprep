@@ -64,8 +64,8 @@
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['test_review']) ? 'active' : '' }}"
-                        href="{{ route('test_review') }}">
+                    <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}"
+                        href="{{ route('test-review.review') }}">
                         <i class="nav-main-link-icon si si-book-open"></i>
                         <span class="nav-main-link-name">Test Review</span>
                     </a>
