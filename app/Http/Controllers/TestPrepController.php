@@ -68,51 +68,51 @@ class TestPrepController extends Controller
         $current_user_id = Auth::id();
         $get_test_name = $test;
         $set_get_question_category = array();
-        
+        $test_category_type = array();
 
-        if(isset($_GET['test_id']) && !empty($_GET['test_id']))
-        {
-            $test_id=$_GET['test_id'];
-            $test_category_type = DB::table('practice_tests')->select('category_type')->where('practice_tests.id',$test_id)->get();
+        // if(isset($_GET['test_id']) && !empty($_GET['test_id']))
+        // {
+        //     $test_id=$_GET['test_id'];
+        //     $test_category_type = DB::table('practice_tests')->select('category_type')->where('practice_tests.id',$test_id)->get();
             
-            if($_GET['type'] == 'all')
-            {
-                $get_question_category = DB::table('question_types')
-                ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
-                ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
-                ->join('practice_tests','practice_tests.id','=','practice_test_sections.testid')
-                ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','question_types.*')
-                ->where('practice_tests.id',$test_id)
-                ->get();
+        //     if($_GET['type'] == 'all')
+        //     {
+        //         $get_question_category = DB::table('question_types')
+        //         ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
+        //         ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
+        //         ->join('practice_tests','practice_tests.id','=','practice_test_sections.testid')
+        //         ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','question_types.*')
+        //         ->where('practice_tests.id',$test_id)
+        //         ->get();
 
-                if($get_question_category->count()>0)
-                {
-                    foreach($get_question_category as $get_single_question_cat)
-                    {
-                        $set_get_question_category[$get_single_question_cat->question_type_id]['question_id'][] =  $get_single_question_cat->test_question_id;
-                        $set_get_question_category[$get_single_question_cat->question_type_id]['type_details'] = array("question_type_title" => $get_single_question_cat->question_type_title,"question_type_description" => $get_single_question_cat->question_type_description,"question_type_lesson" => $get_single_question_cat->question_type_lesson,"question_type_strategies" => $get_single_question_cat->question_type_strategies,"question_type_identification_methods" => $get_single_question_cat->question_type_identification_methods,"question_type_identification_activity" => $get_single_question_cat->question_type_identification_activity );
-                    }
-                }
-            }
-            else if($_GET['type'] == 'single'){
+        //         if($get_question_category->count()>0)
+        //         {
+        //             foreach($get_question_category as $get_single_question_cat)
+        //             {
+        //                 $set_get_question_category[$get_single_question_cat->question_type_id]['question_id'][] =  $get_single_question_cat->test_question_id;
+        //                 $set_get_question_category[$get_single_question_cat->question_type_id]['type_details'] = array("question_type_title" => $get_single_question_cat->question_type_title,"question_type_description" => $get_single_question_cat->question_type_description,"question_type_lesson" => $get_single_question_cat->question_type_lesson,"question_type_strategies" => $get_single_question_cat->question_type_strategies,"question_type_identification_methods" => $get_single_question_cat->question_type_identification_methods,"question_type_identification_activity" => $get_single_question_cat->question_type_identification_activity );
+        //             }
+        //         }
+        //     }
+        //     else if($_GET['type'] == 'single'){
 
-                $get_question_category = DB::table('question_types')
-                    ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
-                    ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
-                    ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','question_types.*')
-                    ->where('practice_test_sections.id',$id)
-                    ->get();
+        //         $get_question_category = DB::table('question_types')
+        //             ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
+        //             ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
+        //             ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','question_types.*')
+        //             ->where('practice_test_sections.id',$id)
+        //             ->get();
                     
-                if($get_question_category->count()>0)
-                {
-                    foreach($get_question_category as $get_single_question_cat)
-                    {
-                        $set_get_question_category[$get_single_question_cat->question_type_id]['question_id'][] =  $get_single_question_cat->test_question_id;
-                        $set_get_question_category[$get_single_question_cat->question_type_id]['type_details'] = array("question_type_title" => $get_single_question_cat->question_type_title,"question_type_description" => $get_single_question_cat->question_type_description,"question_type_lesson" => $get_single_question_cat->question_type_lesson,"question_type_strategies" => $get_single_question_cat->question_type_strategies,"question_type_identification_methods" => $get_single_question_cat->question_type_identification_methods,"question_type_identification_activity" => $get_single_question_cat->question_type_identification_activity );
-                    }
-                }
-            } 
-        }
+        //         if($get_question_category->count()>0)
+        //         {
+        //             foreach($get_question_category as $get_single_question_cat)
+        //             {
+        //                 $set_get_question_category[$get_single_question_cat->question_type_id]['question_id'][] =  $get_single_question_cat->test_question_id;
+        //                 $set_get_question_category[$get_single_question_cat->question_type_id]['type_details'] = array("question_type_title" => $get_single_question_cat->question_type_title,"question_type_description" => $get_single_question_cat->question_type_description,"question_type_lesson" => $get_single_question_cat->question_type_lesson,"question_type_strategies" => $get_single_question_cat->question_type_strategies,"question_type_identification_methods" => $get_single_question_cat->question_type_identification_methods,"question_type_identification_activity" => $get_single_question_cat->question_type_identification_activity );
+        //             }
+        //         }
+        //     } 
+        // }
         if(isset($_GET['type']) && !empty($_GET['type']))
         {
             if($_GET['type'] == 'all')

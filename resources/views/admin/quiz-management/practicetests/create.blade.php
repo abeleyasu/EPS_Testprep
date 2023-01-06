@@ -306,11 +306,11 @@ ul.answerOptionLsit li label input{
 						@enderror
 					</div>
 
-                    <div class="mb-2 mb-4">
+                    <!-- <div class="mb-2 mb-4">
 						<label for="category_type" class="form-label">Category type:</label>
                         <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
 						
-					</div>
+					</div> -->
                     
 					<!--<div class="col-md-12 col-xl-12 mb-4">
                         <button type="button" class="btn w-25 btn-alt-success add_question_modal_btn">
@@ -451,6 +451,11 @@ ul.answerOptionLsit li label input{
                            
                         </div>
                     </div>
+
+                    <div class="mb-2 mb-4">
+						<label for="category_type" class="form-label">Category type:</label>
+                        <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
+					</div>
 
                     <div class="mb-2 mb-4 add_question_type_select"> 
                         <!-- <label for="new_question_type" class="form-label">Question type:</label>
@@ -855,6 +860,8 @@ ul.answerOptionLsit li label input{
                 //var new_question_type = $('#new_question_type').val();
                 var new_question_type_select = $('#new_question_type_select').val();
 
+                var question_category_type_value = $('#category_type').val();
+
                 // console.log(new_question_type);
                 // return false;
                 var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
@@ -932,21 +939,22 @@ ul.answerOptionLsit li label input{
                         'tags': tags,
 						'section_id':section_id,
                         'new_question_type_select':new_question_type_select,
+                        'question_category_type_value':question_category_type_value,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("addPracticeQuestion")}}',
 					method: 'post',
 					success: (res) => {
-                        $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderRearnge_'+res+'">0</li></ul>');
+                        $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderRearnge_'+res.question_id+'">'+res.question_order+'</li></ul>');
 
 						$('.addQuestion').val('');
 						$('.validError').text('');
-                        $('.questionAddId').val(res);
-                        $('#listWithHandleQuestion').append('<div class="list-group-item" data-id="'+res+'">\n' +
+                        $('.questionAddId').val(res.question_id);
+                        $('#listWithHandleQuestion').append('<div class="list-group-item" data-id="'+res.question_id+'">\n' +
                         '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                         '<i class="fa-solid fa-grip-vertical"></i>\n' +
                         '</span>\n' +
-                        '<button class="btn btn-primary" value="'+res+'">'+question+'</button>\n' +
+                        '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
                         '</div>');
 					} 
 				});	
@@ -1278,7 +1286,7 @@ Sortable.create(listWithHandle, {
     }
 },);
 // List with handle
-Sortable.create(listWithHandleQuestion, {
+var test  = Sortable.create(listWithHandleQuestion, {
     handle: '.glyphicon-move',
     animation: 150,
     onEnd: function(evt) {
@@ -1290,24 +1298,53 @@ Sortable.create(listWithHandleQuestion, {
             item: evt.item.children[1].value,
             currentMileId: 1
         };*/
-        var question_id = dataSet.id; 
-        console.log(question_id+'---=-=-=-=');
-        var orderId = '#order_'+question_id;
-        $(orderId).val(evt.newIndex+1);
-        $('.orderRearnge_'+question_id).text(evt.newIndex+1);
-        $.ajax({
-            data:{
-                'question_order': evt.newIndex+1,
-                'question_id': question_id,
-                '_token': $('input[name="_token"]').val()
-            },
-            url: '{{route("questionOrder")}}',
-            method: 'post',
-            success: (res) => {
-               console.log(res);
-            }
+        console.log('$$$$$$');
+        var indices = test.toArray();
+        console.log(indices);
+        console.log('$$$$$$');
+        $.each(indices, function( index, value ) {
+            var new_question_id = value;
+            var new_question_id_order = index + 1;
+            var orderId = '#orderRearnge_'+new_question_id;
+            $(orderId).val(new_question_id_order);
+            $('.orderRearnge_'+new_question_id).text(new_question_id_order);
+            $.ajax({
+                data:{
+                    'question_order': new_question_id_order,
+                    'question_id': new_question_id,
+                    '_token': $('input[name="_token"]').val()
+                },
+                url: '{{route("questionOrder")}}',
+                method: 'post',
+                success: (res) => {
+                    console.log(res);
+                }
+            });
         });
+
+        
+
+        // var question_id = dataSet.id; 
+        // var orderId = '#orderRearnge_'+question_id;
+         
+        // $(orderId).val(evt.newIndex+1);
+        // $('.orderRearnge_'+question_id).text(evt.newIndex+1);
+        // $.ajax({
+        //     data:{
+        //         'question_order': evt.newIndex+1,
+        //         'question_id': question_id,
+        //         '_token': $('input[name="_token"]').val()
+        //     },
+        //     url: '{{route("questionOrder")}}',
+        //     method: 'post',
+        //     success: (res) => {
+        //        console.log(res);
+        //     }
+        // });
     }
-},);        
+},);    
+
+var indices = test.toArray();
+  console.log(indices);
 </script>
 @endsection

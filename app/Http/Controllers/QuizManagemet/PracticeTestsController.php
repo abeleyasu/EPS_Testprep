@@ -40,6 +40,10 @@ class PracticeTestsController extends Controller
     {
 		$tests = PracticeTest::get();
         $getQuestionTypes = DB::table('question_types')->get();
+        // echo "<pre>";
+        // print_r($getQuestionTypes);
+        // echo "</pre>";
+        // die('p');
         return view('admin.quiz-management.practicetests.create', compact('tests'), compact('getQuestionTypes'));
     }
 
@@ -56,9 +60,8 @@ class PracticeTestsController extends Controller
 		$practice->format = $request->format;
 		$practice->description = $request->description;
         $practice->is_test_completed = '';
-        $practice->category_type = $request->category_type;
         
-		$practice->save();
+        $practice->save();
 		
 		$sections = PracticeTestSection::where('testid', 0)->get();
 		foreach($sections as $section) {
