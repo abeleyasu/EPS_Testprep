@@ -248,10 +248,10 @@ ul.answerOptionLsit li label input{
 							<div class="invalid-feedback">{{$message}}</div>
 						@enderror
 					</div>
-                    <div class="mb-2 mb-4">
+                    <!-- <div class="mb-2 mb-4">
 						<label for="category_type" class="form-label">Category type:</label>
                         <input type="text" value="{{$practicetests->category_type}}" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
-					</div>
+					</div> -->
 
 					<div class="sectionContainerList">	
                     <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">				
@@ -486,6 +486,11 @@ ul.answerOptionLsit li label input{
                         </select>
                     </div>
                     <?php } ?>
+
+                    <div class="mb-2 mb-4">
+						<label for="category_type" class="form-label">Category type:</label>
+                        <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
+					</div>
                     
 
 					<div class="mb-2">
@@ -1173,6 +1178,11 @@ ul.answerOptionLsit li label input{
             //var new_question_type_select = $('#new_question_type_select').val();
             var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
 
+            var new_question_category_type_value = $(this).parent().parent().find('#category_type').val();
+
+            console.log(new_question_category_type_value);
+            
+
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
             var activeAnswerType = '.'+$('#editSelectedAnswerType').val();
             var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
@@ -1250,6 +1260,7 @@ ul.answerOptionLsit li label input{
                         'section_id':section_id,
                         'tags':tags,
                         'new_question_type_select':new_question_type_select,
+                        'new_question_category_type_value':new_question_category_type_value,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("updatePracticeQuestion")}}',
@@ -1307,11 +1318,6 @@ ul.answerOptionLsit li label input{
             var testSectionType = $('#addTestSectionTypeRead').val();
             var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
             
-            // console.log(new_question_type_select);
-            // return false;
-            
-
-
             var question = CKEDITOR.instances['js-ckeditor-add-addQue'].getData();
             var activeAnswerType = '.add'+ $('#selectedAnswerType').val();
             var questionType = $('#addQuestionMultiModal '+activeAnswerType+' #addQuestionType').val();
@@ -1526,6 +1532,7 @@ function practQuestioEdit(id){
                 $('.sectionAddId').val(result.practice_test_sections_id);
                 $('#testSectionTypeRead').val(result.type);
                 $('#new_question_type_select').val(result.question_type_id);
+                $('#category_type').val(result.category_type);
                 CKEDITOR.instances['js-ckeditor-addQue'].setData(result.title);
                 var tagsString = result.tags;
                 var tags = '';

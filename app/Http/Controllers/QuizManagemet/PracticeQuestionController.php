@@ -13,6 +13,27 @@ use App\Models\Passage;
 class PracticeQuestionController extends Controller
 {
     public function addPracticeQuestion(Request $request) {
+
+		$setQuestionOrder = null;
+		$getTestSectionData = DB::table('practice_questions')
+		->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+        ->where('practice_test_sections.id', $request->section_id)
+		->get();
+		
+		if(!$getTestSectionData->isEmpty())
+		{
+			foreach($getTestSectionData as $singleTestSectionData)
+			{
+				if ($setQuestionOrder === null || $singleTestSectionData->question_order > $setQuestionOrder) {
+					$setQuestionOrder = $singleTestSectionData->question_order;
+				}
+			}
+			$setQuestionOrder = $setQuestionOrder + 1;
+		}
+		else
+		{
+			$setQuestionOrder = 1;
+		}
 		
 		$question = new PracticeQuestion();
 		$question->format = $request->format;
@@ -27,15 +48,19 @@ class PracticeQuestionController extends Controller
 		$question->fill = $request->fill;
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
+		$question->question_order = $setQuestionOrder;
 		if(is_array($request->tags)){
             $question->tags = implode(",", $request->tags);
         } else{
             $question->tags = $request->tags;
         }
 		$question->question_type_id = $request->new_question_type_select;
+		$question->category_type = $request->question_category_type_value;
         
 		$question->save();
-		return $question->id;
+
+		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order]);
+		//return $question->id;
 	}
 
 	public function indexQuestionType()
@@ -106,6 +131,7 @@ class PracticeQuestionController extends Controller
             $question->tags = $request->tags;
         }
 		$question->question_type_id = $request->new_question_type_select;
+		$question->category_type = $request->new_question_category_type_value;
 		$question->save(); 
 		return $question->id;
 	}
