@@ -48,6 +48,19 @@ class PreviewController extends Controller
             $employmentCertification = EmploymentCertification::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();
             $featuredAttribute = FeaturedAttribute::where('user_id', Auth::id())->where('is_draft', 0)->latest()->first();        
         }
+
+        $college_list = [];
+
+        foreach ($education['course_data'] as $course_data) {
+            if(isset($course_data['search_college_name'])){
+                foreach ($course_data['search_college_name'] as $college_name) {
+                    if (!in_array($college_name, $college_list)) {
+                        array_push($college_list, $college_name);
+                    }
+                }
+            }
+        }
+        
         $details = 0;
 
         $social_links = [];
@@ -59,6 +72,7 @@ class PreviewController extends Controller
                 }
             }
         }
+        
 
         $testing_data = [];
 
@@ -84,6 +98,8 @@ class PreviewController extends Controller
         $featured_awards_data = $this->array_empty($featuredAttribute->featured_awards_data);
         $featured_languages_data = $this->array_empty($featuredAttribute->featured_languages_data);
         $dual_citizenship_data = $this->array_empty($featuredAttribute->dual_citizenship_data);
+
+        $course_data = $this->array_empty($education->course_data);
 
         if(empty($demonstrated_data) && empty($leadership_data) && empty($community_service_data) && empty($activities_data) && empty($activities_data))
         {
@@ -137,7 +153,7 @@ class PreviewController extends Controller
             }
         }
         
-        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data'));
+        return view('user.admin-dashboard.high-school-resume.preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","details",'ib_courses','ap_courses','resume_id','demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data','college_list','course_data'));
     }
 
     public function array_empty($mixed) {
@@ -175,6 +191,8 @@ class PreviewController extends Controller
         $featured_languages_data = $this->array_empty($featuredAttribute->featured_languages_data);
         $dual_citizenship_data = $this->array_empty($featuredAttribute->dual_citizenship_data);
 
+        $course_data = $this->array_empty($education->course_data);
+
         if(empty($demonstrated_data) && empty($leadership_data) && empty($community_service_data) && empty($activities_data) && empty($activities_data))
         {
             $activity = null;
@@ -185,6 +203,19 @@ class PreviewController extends Controller
             $featuredAttribute = null;
         }
 
+
+        $college_list = [];
+
+        foreach ($education['course_data'] as $course_data) {
+            if(isset($course_data['search_college_name'])){
+                foreach ($course_data['search_college_name'] as $college_name) {
+                    if (!in_array($college_name, $college_list)) {
+                        array_push($college_list, $college_name);
+                    }
+                }
+            }
+        }
+        
         $social_links = [];
 
         if(isset($personal_info->social_links) && !empty($personal_info->social_links)){
@@ -252,7 +283,7 @@ class PreviewController extends Controller
         $options->set('isPhpEnabled', 'true'); 
         $dompdf = new Dompdf($options);
         
-        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","dompdf","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data'))->render();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","dompdf","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data','college_list','course_data'))->render();
         $dompdf->loadHTML($html);
         $dompdf->setPaper('a4', 'portrait');
         $dompdf->render();
@@ -334,6 +365,9 @@ class PreviewController extends Controller
         $featured_languages_data = $this->array_empty($featuredAttribute->featured_languages_data);
         $dual_citizenship_data = $this->array_empty($featuredAttribute->dual_citizenship_data);
 
+        $course_data = $this->array_empty($education->course_data);
+
+
         if(empty($demonstrated_data) && empty($leadership_data) && empty($community_service_data) && empty($activities_data) && empty($activities_data))
         {
             $activity = null;
@@ -350,6 +384,18 @@ class PreviewController extends Controller
             foreach($personal_info->social_links as $social_link){
                 if($social_link['link'] != null){
                     array_push($social_links , ($social_link['link']));
+                }
+            }
+        }
+
+        $college_list = [];
+
+        foreach ($education['course_data'] as $course_data) {
+            if(isset($course_data['search_college_name'])){
+                foreach ($course_data['search_college_name'] as $college_name) {
+                    if (!in_array($college_name, $college_list)) {
+                        array_push($college_list, $college_name);
+                    }
                 }
             }
         }
@@ -407,7 +453,7 @@ class PreviewController extends Controller
             }
         }
 
-        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data'))->render();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume_preview', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data', 'dual_citizenship_data','intended_major','intended_minor','current_grade','social_links','testing_data','college_list','course_data'))->render();
         $pdf->loadHTML($html);
         $pdf->render();
 
@@ -454,6 +500,9 @@ class PreviewController extends Controller
         $featured_languages_data = $this->array_empty($featuredAttribute->featured_languages_data);
         $dual_citizenship_data = $this->array_empty($featuredAttribute->dual_citizenship_data);
 
+        $course_data = $this->array_empty($education->course_data);
+
+        
         if(empty($demonstrated_data) && empty($leadership_data) && empty($community_service_data) && empty($activities_data) && empty($activities_data))
         {
             $activity = null;
@@ -481,6 +530,17 @@ class PreviewController extends Controller
                 $filterTest = array_filter($data);
                 if($filterTest != null ){
                     array_push($testing_data, $filterTest);
+                }
+            }
+        }
+        $college_list = [];
+
+        foreach ($education['course_data'] as $course_data) {
+            if(isset($course_data['search_college_name'])){
+                foreach ($course_data['search_college_name'] as $college_name) {
+                    if (!in_array($college_name, $college_list)) {
+                        array_push($college_list, $college_name);
+                    }
                 }
             }
         }
@@ -527,7 +587,7 @@ class PreviewController extends Controller
             }
         }
         
-        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data','intended_major','intended_minor','current_grade','social_links','testing_data'))->render();
+        $html = View::make('user.admin-dashboard.high-school-resume.resume-preview-modal', compact("personal_info", "education", "honor", "activity", "employmentCertification", "featuredAttribute","ib_courses","ap_courses",'demonstrated_data','leadership_data','athletics_data','activities_data','community_service_data','significant_data','employment_data','featured_skills_data','featured_awards_data','featured_languages_data','intended_major','intended_minor','current_grade','social_links','testing_data','college_list','course_data'))->render();
         
         return response()->json(["success" => true, "html" => $html]);
     }

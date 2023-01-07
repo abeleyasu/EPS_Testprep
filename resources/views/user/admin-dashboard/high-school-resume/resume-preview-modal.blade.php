@@ -281,7 +281,7 @@
                                 </div>
                                 @if (!empty($honor))
                                     <div class="preview-list ps-0">
-                                        <h3>Honor</h3>
+                                        <h3>Honors</h3>
                                         <ul class="list">
                                             <li>
                                                 <span>Position</span>
@@ -436,17 +436,28 @@
                                                     </div>
                                                 </li>
                                             @endif
-                                            @if (!empty($education->course_data))
+                                            @if (!empty($course_data))
                                                 <li>
                                                     <span>Course and College name: </span>
+
                                                     <div class="list_group">
                                                         <ul class="list_items">
-                                                            @foreach ($education->course_data as $course_data)
-                                                                <li class="list-type">
-                                                                    {{ $course_data['course_name'] }} /
-                                                                    {{ \App\Helpers\Helper::getCollegeNameByIdArray($course_data['search_college_name']) }}
-                                                                </li>
-                                                            @endforeach
+                                                            @foreach ($college_list as $college)
+                                                                <div>
+                                                                    - {{\App\Helpers\Helper::getCollegeNameByIdArray($college)}} 
+                                                                    @foreach ($education->course_data as $course_data)
+                                                                        @if(isset($course_data['search_college_name']))
+                                                                            @if (in_array($college, $course_data['search_college_name']))
+                                                                                @if (isset($course_data['course_name']))      
+                                                                                    <li class="list-type">
+                                                                                        {{$course_data['course_name']}}
+                                                                                    </li>
+                                                                                @endif
+                                                                            @endif
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            @endforeach                                                            
                                                         </ul>
                                                     </div>
                                                 </li>
