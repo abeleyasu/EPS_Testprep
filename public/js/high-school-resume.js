@@ -102,26 +102,6 @@ async function addCourseData(data){
 
         $(data).attr('data-count', $count);
     }
-
-    let course_data = $('input[name^="course_data"]');
-
-    course_data.filter('input[name$="[course_name]"]').each(function() {
-        $(this).rules("add", {
-            required: true,
-            messages: {
-                required: "Course name field is required"
-            }
-        });
-    });
-    
-    $('select[name^="course_data"]').filter('select[name$="[search_college_name][]"]').each(function() {
-        $(this).rules("add", {
-            required: true,
-            messages: {
-                required: "Search college name field is required"
-            }
-        });
-    });
 }
 
 function removeCourses(data) {
@@ -195,7 +175,7 @@ function addTestingData(data){
         $(document).ready(() => {
             $(`#testing-date-${$count}`).datepicker({
                 format: 'dd-mm-yyyy',
-                startDate: '-3d'
+                endDate : '-1d'
             });
         });
 

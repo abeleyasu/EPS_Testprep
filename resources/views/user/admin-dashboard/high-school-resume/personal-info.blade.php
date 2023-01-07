@@ -210,15 +210,17 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
-                                                        <div>
+                                                        <div class="select2-container_main">
                                                             <label class="form-label" for="state">
                                                                 State
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                value="{{ isset($personal_info->state) && $personal_info->state != null ? $personal_info->state : "" }}"
-                                                                id="state" name="state" placeholder="Enter State">
+                                                            <select class="js-select2 form-select" name="state" style="width: 100%;" data-placeholder="Choose one..">
+                                                                <option></option>
+                                                                @foreach($states as $state)
+                                                                    <option value="{{$state}}" {{ isset($personal_info->state) && $personal_info->state != null ? ($personal_info->state  == $state ? 'selected' : '') : '' }} > {{$state}} </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
@@ -379,6 +381,7 @@
 @endsection
 
 @section('user-script')
+    <script>One.helpersOnLoad(['jq-select2']);</script>
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
@@ -401,6 +404,31 @@
             });
         }
 
+        const cell_phone = document.getElementById("cell_phone");
+
+        function autoFormatPhoneNumber(phoneNumberString) {
+            try {
+                var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+                var match = cleaned.match(/^(1|)?(\d{0,3})?(\d{0,3})?(\d{0,4})?$/);
+                var intlCode = match[1] ? "+1 " : "";
+                return [
+                    intlCode,
+                    match[2] ? "(" : "",
+                    match[2],
+                    match[3] ? ") " : "",
+                    match[3],
+                    match[4] ? "-" : "",
+                    match[4],
+                ].join("");
+            } catch (err) {
+                return phoneNumberString;
+            }
+        }
+
+        cell_phone.oninput = (e) => {
+            e.target.value = autoFormatPhoneNumber(e.target.value);
+        };
+
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
@@ -415,11 +443,16 @@
                 errorPlacement: function(error, element) {
                     var placement = $(element).data('error');
                     if (placement) {
-                        $(placement).append(error)
+                        $(placement).append(error);
                     } else {
                         error.insertAfter(element);
                         element.parents().find('.collapse').addClass('show');
                     }
+                },
+                success: function(label,element) {
+                    label.parent().removeClass('error');
+                    label.remove(); 
+                    $(element).parents('div.select2-container_main').find('.select2-selection--single').attr('style', 'border: 1px solid #198754 !important');
                 }
             });
 

@@ -20,6 +20,7 @@ class PersonalInfoController extends Controller
 {
     public function index(Request $request)
     {
+        $states = Config::get('constants.STATES');
         $resume_id = $request->resume_id;
         if(isset($resume_id) && $resume_id != null) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([
@@ -55,7 +56,7 @@ class PersonalInfoController extends Controller
             $details = 1;
         }
 
-        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages'));
+        return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages','states'));
     }
 
     public function store(PersonalInfoRequest $request)

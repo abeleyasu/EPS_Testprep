@@ -477,7 +477,7 @@
 
             @if (!empty($honor))
                 <div class="preview-list honor-list-after">
-                    <h3>HONOR</h3>
+                    <h3>HONORS</h3>
                     <span style="margin-bottom: 5px;display: block">
                         <span class="span_h2">Position</span>
                         @foreach ($honor->honors_data as $honor_data)
@@ -609,15 +609,24 @@
                                 @endforeach
                             </span>
                         @endif
-                        @if (!empty($education->course_data))
+                        @if (!empty($course_data))
                             <span class="span_text">
                                 <span class="span_bold">Course and College name: </span>
-                                @foreach ($education->course_data as $course_data)
-                                    <span class="list-type">
-                                        {{ $course_data['course_name'] }} /
-                                        {{ \App\Helpers\Helper::getCollegeNameByIdArray($course_data['search_college_name']) }}
-
-                                    </span>
+                                @foreach ($college_list as $college)
+                                    <div>
+                                        - {{\App\Helpers\Helper::getCollegeNameByIdArray($college)}} 
+                                        @foreach ($education->course_data as $course_data)
+                                            @if(isset($course_data['search_college_name']))
+                                                @if (in_array($college, $course_data['search_college_name']))
+                                                    @if (isset($course_data['course_name']))      
+                                                        <li class="list-type">
+                                                            {{$course_data['course_name']}}
+                                                        </li>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 @endforeach
                             </span>
                         @endif

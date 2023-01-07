@@ -24,6 +24,7 @@ class EducationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
+        $states = Config::get('constants.STATES');
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -70,13 +71,12 @@ class EducationController extends Controller
         $intended_minor = IntendedCollegeList::whereType('2')->get();
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states'));
     }
 
     public function store(EducationRequest $request)
     {
         $data = $request->validated();
-
         $college_ids = CollegeInformation::pluck('id')->toArray();
 
         if(isset($data['course_data']) && !empty($data['course_data'])){
@@ -198,21 +198,28 @@ class EducationController extends Controller
             $data['current_grade'] = json_encode($data['current_grade']);
         }
 
-        if (!empty($data['honor_course_data'])) {
-            $data['honor_course_data'] = array_values($data['honor_course_data']    );
+        if (isset($data['honor_course_data']) && !empty($data['honor_course_data'])) {
+            $data['honor_course_data'] = array_values($data['honor_course_data']);
+        }else{
+            $data['honor_course_data'] = null;
         }
 
         if (!empty($request->testing_data)) {
             $data['testing_data'] = array_values($request->testing_data);
         }
 
-        if (!empty($data['ib_courses'])) {
+        if (isset($data['ib_courses']) && !empty($data['ib_courses'])) {
             $data['ib_courses'] = json_encode($data['ib_courses']);
+        }else{
+            $data['ib_courses'] = null;
         }
 
-        if (!empty($data['ap_courses'])) {
+        if (isset($data['ap_courses']) && !empty($data['ap_courses'])) {
             $data['ap_courses'] = json_encode($data['ap_courses']);
+        }else{
+            $data['ap_courses'] = null;
         }
+
 
         if (!empty($data['course_data'])) {
             $data['course_data'] = array_values($data['course_data']);
@@ -350,20 +357,27 @@ class EducationController extends Controller
             $data['current_grade'] = json_encode($data['current_grade']);
         }
 
-        if (!empty($data['honor_course_data'])) {
+        if (isset($data['honor_course_data']) && !empty($data['honor_course_data'])) {
             $data['honor_course_data'] = array_values($data['honor_course_data']);
+        }else{
+            $data['honor_course_data'] = null;
         }
 
         if (!empty($request->testing_data)) {
             $data['testing_data'] = array_values($request->testing_data);
         }
 
-        if (!empty($data['ib_courses'])) {
+        if (isset($data['ib_courses']) && !empty($data['ib_courses'])) {
             $data['ib_courses'] = json_encode($data['ib_courses']);
+        }else{
+            $data['ib_courses'] = null;
         }
 
-        if (!empty($data['ap_courses'])) {
+        if (isset($data['ap_courses']) &&!empty($data['ap_courses'])) {
             $data['ap_courses'] = json_encode($data['ap_courses']);
+        }else{
+            $data['ap_courses'] = null;
+
         }
         
         if (!empty($data['course_data'])) {

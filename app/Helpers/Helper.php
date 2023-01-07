@@ -24,9 +24,17 @@ class Helper
 
     public static function getCollegeNameByIdArray($id_array)
     {
-        $collegeInfo = CollegeInformation::whereIn('id', $id_array)->pluck('name')->toArray();
+        // $collegeInfo = CollegeInformation::whereIn('id', $id_array)->pluck('name')->toArray();
 
-        return !empty($collegeInfo) ? implode(',', $collegeInfo) : "-";
+        // return !empty($collegeInfo) ? implode(',', $collegeInfo) : "-";
+
+        /* -----------------------------------------------------------------------------------------
+           For get single college name by passing id , which is passed as a parameter of function 
+        ------------------------------------------------------------------------------------------ */
+
+        $collegeInfo = CollegeInformation::where('id', $id_array)->first();
+
+        return $collegeInfo['name'];
     }
 
     public static function getGradeByIdArray($id_array)
