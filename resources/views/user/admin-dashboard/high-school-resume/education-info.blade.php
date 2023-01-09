@@ -345,10 +345,10 @@
                                                         @foreach($education->course_data as $index => $course_data) 
                                                             <tr class="course_data_table_row {{ $loop->first ? '' : 'remove_courses' }}">
                                                                 <td>
-                                                                    <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" id="course_name" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101">
+                                                                    <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" data-count="{{$index}}" id="course_name_{{$index}}" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101" onchange="change(this)">
                                                                 </td>
                                                                 <td class="select2-container_main select2-container_main-position">
-                                                                    <select class=" js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name">
+                                                                    <select class=" js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name" disabled>
                                                                         @foreach ($colleges_list as $college_info)
                                                                             <option
                                                                                 {{ in_array($college_info->id,  (isset($course_data['search_college_name']) ?  is_array($course_data['search_college_name']) : '') ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
@@ -367,12 +367,12 @@
                                                     @else
                                                         <tr class="course_data_table_row">
                                                             <td>
-                                                                <input type="text" class="form-control" id="course_name" name="course_data[0][course_name]" placeholder="Ex: College English 101">
+                                                                <input type="text" class="form-control" id="course_name_0" data-count="0" name="course_data[0][course_name]" placeholder="Ex: College English 101" onchange="change(this)">
                                                             </td>
                                                             <td class="select2-container_main select2-container_main-position">
                                                                 <select class=" js-select2"
                                                                     id="search_college_name_0" name="course_data[0][search_college_name][]"
-                                                                    multiple="multiple" data-placeholder="Select college name">
+                                                                    multiple="multiple" data-placeholder="Select college name" disabled>
                                                                     @foreach ($colleges_list as $college_info)
                                                                         <option value="{{ $college_info->id }}">{{ $college_info->name }}
                                                                         </option>
@@ -856,8 +856,49 @@
                     }
                 });
             });
+
+            
         });
 
+        for (let key = 0; key < $('.course_data_table_row').length; key++) {
+            console.log('yes'); 
+            $(`input[name='course_data[${key}][course_name]']`).each(function(i,e){
+                let course_name = $(e).val();
+                if(course_name != ''){
+                    if($(`#search_college_name_${key}`).length && $(`#search_college_name_${key}`).length > 0){
+                        $(`#search_college_name_${key}`).removeAttr('disabled');
+                        $(`#search_college_name_${key}`).attr('required','true');
+
+                        // $(`#search_college_name_${key}`).rules("add",{
+                        //     required: true,
+                        //     messages: {
+                        //         required: "search college name is required"
+                        //     }
+                        // });                        
+                    } 
+                } 
+            });
+        }
+
+        function change(value) {
+            let id = $(value).attr("data-count");
+            let course_name = $(`#course_name_${id}`).val();
+            if(course_name != ''){
+                $(`#search_college_name_${id}`).removeAttr('disabled');
+                $(`#search_college_name_${id}`).attr('required','true');
+
+                // $(`#search_college_name_${id}`).rules("add",{
+                //     required: true,
+                //     messages: {
+                //         required: "search college name is required"
+                //     }
+                // })
+            }else{
+                $(`#search_college_name_${id}`).attr('disabled','true');
+            }
+        }
+
+            
         $("#current_grade").select2({
             tags: true,
             placeholder : "Select Current grade"            
