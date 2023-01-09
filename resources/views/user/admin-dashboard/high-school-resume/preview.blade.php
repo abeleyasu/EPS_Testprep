@@ -507,16 +507,6 @@
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
 
-                                                                        @foreach ($education->course_data as $course_data)
-                                                                            @if (!isset($course_data['search_college_name']))
-                                                                                @if (isset($course_data['course_name']))                                                                                            
-                                                                                    <li class="list-type">
-                                                                                        {{$course_data['course_name']}}
-                                                                                    </li>
-                                                                                @endif
-                                                                            @endif
-                                                                        @endforeach
-
                                                                         @foreach ($college_list as $college)
                                                                             <div>
                                                                                 - {{\App\Helpers\Helper::getCollegeNameByIdArray($college)}} 
