@@ -238,8 +238,6 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::group(['prefix' => 'test-review', 'as' => 'test-review.'], function () { 
         Route::get('/', [TestReviewController::class, 'index'])->name('review');
         Route::get('/question-concept-review', [TestReviewController::class, 'questionConceptReview'])->name('question-concept-review');
-        Route::get('/category-question-type', [TestReviewController::class, 'categoryQuestionType'])->name('category-question-type');
-        Route::get('/answer-type', [TestReviewController::class, 'answerType'])->name('answer-type');
     });
 
     Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
