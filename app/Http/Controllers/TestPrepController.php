@@ -64,7 +64,7 @@ class TestPrepController extends Controller
 
     public function singleReview(Request $request , $test , $id)
     {   
-
+        
         $current_user_id = Auth::id();
         $get_test_name = $test;
         $set_get_question_category = array();
@@ -168,7 +168,7 @@ class TestPrepController extends Controller
                 }
             }
         }
-        return view('user.test-review.question_concepts_review' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name , 'set_get_question_category' => $set_get_question_category,'test_category_type'=>$test_category_type]);
+        return view('user.student-view-dashboard' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name , 'set_get_question_category' => $set_get_question_category,'test_category_type'=>$test_category_type]);
     }
 
     public function set_answers(Request $request)

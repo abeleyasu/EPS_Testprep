@@ -3,7 +3,6 @@
 @section('title', 'Question & Concept Review : CPS')
 
 @section('user-content')
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             {{-- Test review title  --}}
