@@ -50,7 +50,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 col-xl-4">
-                    <a class="block block-rounded bg-primary-dark" href="{{ route('test-review.category-question-type') }}">
+                    <a class="block block-rounded bg-primary-dark" >
                         <div class="block-content block-content-full d-flex justify-content-between">
                             <div class="me-3">
                                 <p class="fw-semibold text-white mb-0">Category & Question Type Summary</p>
@@ -62,7 +62,7 @@
                     </a>
                 </div>
                 <div class="col-md-4 col-xl-4">
-                    <a class="block block-rounded bg-primary-dark" href="{{ route('test-review.answer-type') }}">
+                    <a class="block block-rounded bg-primary-dark" >
                         <div class="block-content block-content-full d-flex justify-content-between">
                             <div class="me-3">
                                 <p class="fw-semibold text-white mb-0">Answer Type Summary</p>

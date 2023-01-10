@@ -77,10 +77,10 @@ async function addCourseData(data){
         let html = ``;
             html += `<tr class="course_data_table_row remove_courses">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
+            html += `<input type="text" class="form-control" id="course_name_${$count}" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
             html += `</td>`;
             html += `<td class="select2-container_main select2-container_main-position">`;
-            html += `<select class="js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name">`;
+            html += `<select class="js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name" disabled>`;
             html += await dropdown_lists(`/user/colleges/list`);
             html += `</select>`;
             html += `</td>`;
@@ -97,8 +97,28 @@ async function addCourseData(data){
             $(`#search_college_name_${$count}`).select2({
                 tags: true,
                 placeholder: "Select search college name",
-            });
-        })
+            });            
+        });
+
+        let course_name = $(`#course_name_${$count}`).val();
+    
+        $(`#course_name_${$count}`).change(function(){
+            course_name = $(`#course_name_${$count}`).val();
+            if(course_name != ''){
+                $(`#search_college_name_${$count}`).removeAttr('disabled');
+                $(`#search_college_name_${$count}`).attr('required','true');
+
+                // $(`#search_college_name_${$count}`).rules("add",{
+                //     required: true,
+                //     messages: {
+                //         required: "search college name is required"
+                //     }
+                // })
+            }else{
+                $(`#search_college_name_${$count}`).attr('disabled','true');
+
+            }
+        });
 
         $(data).attr('data-count', $count);
     }
