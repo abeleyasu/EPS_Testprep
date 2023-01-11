@@ -24,7 +24,8 @@ class EducationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        $states = Config::get('constants.STATES');
+        $states = Config::get('constants.states');
+        $graduation_designations = Config::get('constants.graduation_designation');
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -71,7 +72,7 @@ class EducationController extends Controller
         $intended_minor = IntendedCollegeList::whereType('2')->get();
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations'));
     }
 
     public function store(EducationRequest $request)

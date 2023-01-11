@@ -27,7 +27,7 @@
         <div class="block block-rounded block-transparent mb-0">
             <div class="block-header block-header-preview text-border rounded-0">
                 <div class="">
-                    <h1><span>{{ $personal_info->first_name }}</span> {{ $personal_info->middle_name }}
+                    <h1><span>{{ $personal_info->first_name }}</span>{{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}} {{ $personal_info->middle_name }}
                         {{ $personal_info->last_name }}</h1>
                 </div>
                 <div class="block-options">

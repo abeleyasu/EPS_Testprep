@@ -101,6 +101,17 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                    <!-- start  -->
+                                                    <div class="select2-container_main mt-3">
+                                                        <label class="form-label" for="high_school_state">
+                                                            Graduation Designation <span class="text-danger">*</span>
+                                                        </label>
+                                                        <select class="js-select2 form-select" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
+                                                            @foreach($graduation_designations as $graduation_designation)
+                                                                <option value="{{ $graduation_designation }}" {{ $education->graduation_designation == $graduation_designation ? 'selected' : '' }} > {{ $graduation_designation }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-4">

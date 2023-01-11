@@ -116,7 +116,7 @@
                                                     <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="middle_name">
-                                                                Middle Name
+                                                                Middle
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control"
