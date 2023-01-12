@@ -18,6 +18,8 @@ class ActivityController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
+        $demonstrated_positions = Config::get('constants.demonstrated_positions');
+
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
                 'personal_info',
@@ -44,7 +46,7 @@ class ActivityController extends Controller
         $validations_messages = Config::get('validation.activities.messages');
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades'));
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions'));
     }
 
     public function store(ActivityRequest $request)

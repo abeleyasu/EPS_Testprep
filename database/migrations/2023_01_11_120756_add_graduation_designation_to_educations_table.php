@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('educations', function (Blueprint $table) {
-            $tabel->string('graduation_designation')->after('current_grade');
+            $table->string('graduation_designation')->after('current_grade');
         });
     }
 

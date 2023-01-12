@@ -92,27 +92,12 @@ return [
             ],
             "cumulative_gpa_unweighted" => [
                 "maxlength" => 4,
-                "range" => [0,4],
+                "range" => [0,8]
             ],
             "cumulative_gpa_weighted" => [
                 "maxlength" => 4,
-                "range" => [0,5]
+                "range" => [0,8]
             ],
-            // "ib_courses[]" => [
-            //     "required" => true,
-            // ],
-            // "ap_courses[]" => [
-            //     "required" => true,
-            // ],
-            // "course_data[*][course_name]" => [
-            //     "required" => true,
-            // ],
-            // "course_data[*][search_college_name][]" => [
-            //     "required" => true,
-            // ],
-            // "honor_course_data[*][course_data]" => [
-            //     "required" => true,
-            // ],
             "testing_data[*][name_of_test]" => [
                 "required" => true,
             ],
@@ -132,22 +117,17 @@ return [
             "high_school_state" => "High school state field is required",
             "high_school_district" => "High school district field is required",
             "cumulative_gpa_unweighted" =>[
-                "max" => "Unweighted GPA must between 0 and 4",
-                "range" => "Unweighted GPA must between 0 and 4",
+                "max" => "Unweighted GPA must between 0 and 8",
+                "range" => "Unweighted GPA must between 0 and 8",
                 "maxlength" => "Unweighted GPA must have two decimal value"
             ],
             "cumulative_gpa_weighted" =>[
-                "max" => "Weighted GPA must between 0 and 5",
-                "range" => "Weighted GPA must between 0 and 5",
+                "max" => "Weighted GPA must between 0 and 8",
+                "range" => "Weighted GPA must between 0 and 8",
                 "maxlength" => "Weighted GPA must have two decimal value"
 
 
-            ],  
-            // "ib_courses[]" => "Ib courses field is required",
-            // "ap_courses[]" => "Ap courses field is required",
-            // "course_data[*][course_name]" => "Course name field is required",
-            // "course_data[*][search_college_name][]" => "Search college name field is required",
-            // "honor_course_data[*][course_data]" => "Honors course name field is required",
+            ],
             "testing_data[*][name_of_test]" => "Name of test field is required",
             "testing_data[*][results_score]" => "Result score field is required",
             "testing_data[*][date]" => "Date field is required",

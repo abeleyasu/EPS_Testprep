@@ -114,7 +114,7 @@
                                                         <tr>
                                                             <td>
                                                                 <label class="form-label" for="position">
-                                                                    Position
+                                                                    Status
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>

@@ -86,7 +86,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class="text-white fw-600 collapsed"> Demonstrated Interest In The Area Of Your
+                                        <a class="text-white fw-600 collapsed"> Demonstrated Activity In The Area Of Your
                                             major</a>
                                     </div>
                                     <div id="collapseOne"
@@ -131,10 +131,12 @@
                                                             @foreach ($activity->demonstrated_data as $index => $demonstrated_data)
                                                                 <tr class="demonstrated_data_table_row {{ $loop->first ? '' : 'remove_demonstrated_data' }}">
                                                                     <td>
-                                                                        <input type="text"
-                                                                            class="form-control"
-                                                                            value="{{ $demonstrated_data['position'] }}" id="position"
-                                                                            name="demonstrated_data[{{ $index }}][position]" placeholder="Vice President" autocomplete="off">
+                                                                        <select class="js-select2 form-select" name="demonstrated_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Vice President">
+                                                                            <option></option>
+                                                                            @foreach($demonstrated_positions as $position)
+                                                                                <option value="{{$position}}" {{ isset($demonstrated_data['position']) && $demonstrated_data['position'] != null ? ($demonstrated_data['position']  == $position ? 'selected' : '') : '' }}> {{$position}} </option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </td>
                                                                     <td> 
                                                                         <input type="text"
@@ -172,10 +174,17 @@
                                                         @else
                                                             <tr class="demonstrated_data_table_row">
                                                                 <td>
-                                                                    <input type="text"
+                                                                    {{-- <input type="text"
                                                                         class="form-control"
                                                                         value="" id="position"
-                                                                        name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off">
+                                                                        name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off"> --}}
+
+                                                                    <select class="js-select2 form-select" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Vice President">
+                                                                        <option></option>
+                                                                        @foreach($demonstrated_positions as $position)
+                                                                            <option value="{{$position}}"> {{$position}} </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </td>
                                                                 <td> 
                                                                     <input type="text"
@@ -787,6 +796,7 @@
 @endsection
 
 @section('user-script')
+    <script>One.helpersOnLoad(['jq-select2']);</script>
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>

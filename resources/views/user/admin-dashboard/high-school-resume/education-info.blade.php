@@ -104,11 +104,11 @@
                                                     <!-- start  -->
                                                     <div class="select2-container_main mt-3">
                                                         <label class="form-label" for="high_school_state">
-                                                            Graduation Designation <span class="text-danger">*</span>
+                                                            Graduation Designation 
                                                         </label>
                                                         <select class="js-select2 form-select" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
                                                             @foreach($graduation_designations as $graduation_designation)
-                                                                <option value="{{ $graduation_designation }}" {{ $education->graduation_designation == $graduation_designation ? 'selected' : '' }} > {{ $graduation_designation }} </option>
+                                                                <option {{ isset($education->graduation_designation) && $education->graduation_designation != null ? ($education->graduation_designation == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -248,7 +248,7 @@
                                                             GPA
                                                             (UNWEIGHTED)
                                                         </label>
-                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" min="0" max="4" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
+                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" min="0" max="8" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -256,7 +256,7 @@
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
                                                             (WEIGHTED)</label>
-                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" min="0" max="5" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" min="0" max="8" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
                                                        </div>
                                                 </div>
                                             </div>
@@ -872,7 +872,6 @@
         });
 
         for (let key = 0; key < $('.course_data_table_row').length; key++) {
-            console.log('yes'); 
             $(`input[name='course_data[${key}][course_name]']`).each(function(i,e){
                 let course_name = $(e).val();
                 if(course_name != ''){

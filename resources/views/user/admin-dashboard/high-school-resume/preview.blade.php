@@ -99,6 +99,7 @@
                                     <span>
                                         {{ $personal_info->first_name }}
                                     </span> 
+                                    {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
                                     {{ $personal_info->middle_name }}
                                     {{ $personal_info->last_name }}
                                 </h1>
