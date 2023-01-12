@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="container education-container">
+    <div class="education-container">
         <div class="custom-tab-container ">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li role="presentation">
@@ -101,14 +101,16 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="col-lg-6">
                                                     <!-- start  -->
                                                     <div class="select2-container_main mt-3">
-                                                        <label class="form-label" for="high_school_state">
+                                                        <label class="form-label" for="graduation_designation">
                                                             Graduation Designation 
                                                         </label>
                                                         <select class="js-select2 form-select" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
                                                             @foreach($graduation_designations as $graduation_designation)
-                                                                <option {{ isset($education->graduation_designation) && $education->graduation_designation != null ? ($education->graduation_designation == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
+                                                                <option {{ isset($education['graduation_designation']) && $education['graduation_designation'] != null ? ($education['graduation_designation'] == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -505,11 +507,11 @@
                                                             <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
                                                                 <td>
                                                                     <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
-                                                                        <option value="">Select Name Of Test</option>
+                                                                        <option value="" disabled selected hidden>Select Name Of Test</option>
                                                                         <option value="SAT – 400 – 1600" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>SAT – 400 – 1600</option>
                                                                         <option value="PSAT 320-1520" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>PSAT 320-1520</option>
                                                                         <option value="ACT 1-36" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT 1-36</option>
-                                                                    </select>
+                                                                    </select>   
                                                                 </td>
                                                                 <td>                                                            
                                                                     <input type="text" class="form-control" value="{{ $testing_data['results_score'] }}" name="testing_data[{{ $index }}][results_score]" placeholder="Enter Results score">

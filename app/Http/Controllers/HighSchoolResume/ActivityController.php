@@ -44,9 +44,11 @@ class ActivityController extends Controller
         $grades = Grade::all();
         $validations_rules = Config::get('validation.activities.rules');
         $validations_messages = Config::get('validation.activities.messages');
+        $organizations = Config::get('constants.leadership_organization');
+        $athletics_positions = Config::get('constants.athletics_position');
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions'));
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions','organizations','athletics_positions'));
     }
 
     public function store(ActivityRequest $request)

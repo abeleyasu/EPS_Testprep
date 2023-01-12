@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="container honors-container">
+        <div class="honors-container">
             <div class="custom-tab-container">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
@@ -144,25 +144,19 @@
                                                             @foreach ($honor->honors_data as $index => $honors_data)
                                                                 <tr
                                                                     class="honors_data_table_row {{ $loop->first ? '' : 'remove_honors_data' }}">
-                                                                    <td>
+                                                                    <td style="min-width:270px;">
                                                                         <!-- <input type="text" class="form-control"
                                                                             id="position"
                                                                             name="honors_data[{{ $index }}][position]"
                                                                             value="{{ $honors_data['position'] }}"
                                                                             placeholder="Vice President"
                                                                             autocomplete="off"> -->
-                                                                            <select class="js-select2 form-select" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Graduation Designation">
-                                                                                @foreach($graduation_designations as $graduation_designation)
-                                                                                    <option {{ isset($education->graduation_designation) && $education->graduation_designation != null ? ($education->graduation_designation == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
+                                                                            <select class="js-select2 form-select" id="honor_position" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Status">
+                                                                                <option></option>
+                                                                                @foreach($status as $sta)
+                                                                                    <option value="{{ $sta }}" {{ isset($honors_data['position']) && $honors_data['position'] != null ? ($honors_data['position'] == $sta ? 'selected' : '') : '' }} > {{ $sta }} </option>
                                                                                 @endforeach
                                                                             </select>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            id="honor_achievement_award"
-                                                                            name="honors_data[{{ $index }}][honor_achievement_award]"
-                                                                            value="{{ $honors_data['honor_achievement_award'] }}"
-                                                                            placeholder="Ex: National Honor Society">
                                                                     </td>
                                                                     <td class="select2-container_main">
                                                                         <select class="js-select2"
@@ -194,10 +188,17 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="honors_data_table_row">
-                                                                <td>
-                                                                    <input type="text" class="form-control"
+                                                                <td class="select2-container_main">
+                                                                    {{-- <input type="text" class="form-control"
                                                                         id="position" name="honors_data[0][position]"
-                                                                        placeholder="Vice President" autocomplete="off">
+                                                                        placeholder="Vice President" autocomplete="off"> --}}
+                                                                        <select class="js-select2"
+                                                                            data-placeholder="Select Status"
+                                                                            id="position" name="honors_data[0][position]">
+                                                                            @foreach ($status as $sta)
+                                                                                <option value="{{ $sta }}">{{ $sta }}</option>
+                                                                            @endforeach
+                                                                        </select>
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
@@ -314,6 +315,7 @@
                     tags: true,
                 });
             }
+            $('#honor_position').select2();
         });
 
         $(document).ready(function() {

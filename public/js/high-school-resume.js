@@ -208,9 +208,9 @@ function addTestingData(data){
             html += `<td>`;
             html += `<select class="form-select" id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
             html += `<option value="">Select name of test</option>`;
-            html += `<option value="PSAT">PSAT</option>`;
-            html += `<option value="SAT">SAT</option>`;
-            html += `<option value="ACT">ACT</option>`;
+            html += `<option value="SAT – 400 – 1600">SAT – 400 – 1600</option>`;
+            html += `<option value="ACT 1-36">ACT 1-36</option>`;
+            html += `<option value="PSAT 320-1520">PSAT 320-1520</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -316,7 +316,9 @@ async function addHonorsData(data){
         let html = ``;
             html += `<tr class="honors_data_table_row remove_honors_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control"  name="honors_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
+            html += `<select class="js-select2" name="honors_data[${$count}][position]" id="position" data-placeholder="Select Status">`;
+            html += await dropdown_lists(`/user/grades/list`);
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
@@ -340,6 +342,9 @@ async function addHonorsData(data){
 
         $(document).ready(() => {
             $(`#honor_select_${$count}`).select2({
+                tags: true,
+            });
+            $('#position').select2({
                 tags: true,
             });
         })
@@ -456,7 +461,9 @@ async function addLeadershipData(data) {
             html += `<input type="text" class="form-control" id="leadership_position" name="leadership_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="leadership_organization" name="leadership_data[${$count}][organization]" placeholder="Enter Organization">`;
+            html += `<select class="js-select2 select" id="leadership_organization" name="leadership_data[${$count}][organization]" data-placeholder="Enter Organization">`;
+            html += await dropdown_lists(`/user/grades/list`);
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="leadership_location" name="leadership_data[${$count}][location]" placeholder="Ex: DRHS">`;
@@ -479,7 +486,11 @@ async function addLeadershipData(data) {
             $(`#leadership_select_${$count}`).select2({
                 tags: true,
             });
+            $(`#leadership_organization`).select2({
+                tags: true,
+            });
         });
+        
 
         $(data).attr('data-count', $count);
     }

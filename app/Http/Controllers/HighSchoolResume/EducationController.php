@@ -27,6 +27,7 @@ class EducationController extends Controller
         $states = Config::get('constants.states');
         
         $graduation_designations = Config::get('constants.graduation_designation');
+        
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -198,6 +199,10 @@ class EducationController extends Controller
 
         if (!empty($data['current_grade'])) {
             $data['current_grade'] = json_encode($data['current_grade']);
+        }
+
+        if (!empty($data['graduation_designation'])) {
+            $data['graduation_designation'] = json_encode($data['graduation_designation']);
         }
 
         if (isset($data['honor_course_data']) && !empty($data['honor_course_data'])) {

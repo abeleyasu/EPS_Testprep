@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="">
             <div class="custom-tab-container">
                 @if (Session::has('success'))
                     <div class="alert alert-success alert-dismissible" role="alert">
