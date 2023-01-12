@@ -145,12 +145,17 @@
                                                                 <tr
                                                                     class="honors_data_table_row {{ $loop->first ? '' : 'remove_honors_data' }}">
                                                                     <td>
-                                                                        <input type="text" class="form-control"
+                                                                        <!-- <input type="text" class="form-control"
                                                                             id="position"
                                                                             name="honors_data[{{ $index }}][position]"
                                                                             value="{{ $honors_data['position'] }}"
                                                                             placeholder="Vice President"
-                                                                            autocomplete="off">
+                                                                            autocomplete="off"> -->
+                                                                            <select class="js-select2 form-select" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Graduation Designation">
+                                                                                @foreach($graduation_designations as $graduation_designation)
+                                                                                    <option {{ isset($education->graduation_designation) && $education->graduation_designation != null ? ($education->graduation_designation == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
+                                                                                @endforeach
+                                                                            </select>
                                                                     </td>
                                                                     <td>
                                                                         <input type="text" class="form-control"

@@ -241,6 +241,27 @@ return [
         "Volunteer",
         "Worker",
         "Fillable"
+    ],
+
+    "status" => [
+        "Appointed",
+        "Assigned",
+        "Awardee",
+        "Awarded",
+        "Created",
+        "Developed",
+        "Earned",
+        "Elected",
+        "Finalist",
+        "Member",
+        "Nominated",
+        "Recipient",
+        "Runner-Up",
+        "Selected",
+        "Semi-Finalist",
+        "Fillable"
+
+        
     ]
 
 

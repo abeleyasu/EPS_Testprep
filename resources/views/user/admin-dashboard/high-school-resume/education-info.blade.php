@@ -506,9 +506,9 @@
                                                                 <td>
                                                                     <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
                                                                         <option value="">Select Name Of Test</option>
-                                                                        <option value="PSAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>PSAT</option>
-                                                                        <option value="SAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>SAT</option>
-                                                                        <option value="ACT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT</option>
+                                                                        <option value="SAT – 400 – 1600" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>SAT – 400 – 1600</option>
+                                                                        <option value="PSAT 320-1520" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>PSAT 320-1520</option>
+                                                                        <option value="ACT 1-36" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT 1-36</option>
                                                                     </select>
                                                                 </td>
                                                                 <td>                                                            
@@ -529,9 +529,9 @@
                                                             <td>
                                                                 <select class="form-select" id="name_of_test" name="testing_data[0][name_of_test]" style="width: 100%;">
                                                                     <option value="">Select name of test</option>
-                                                                    <option value="PSAT">PSAT</option>
-                                                                    <option value="SAT">SAT</option>
-                                                                    <option value="ACT">ACT</option>
+                                                                    <option value="SAT – 400 – 1600">SAT – 400 – 1600</option>
+                                                                    <option value="PSAT 320-1520">PSAT 320-1520</option>
+                                                                    <option value="ACT 1-36">ACT 1-36</option>
                                                                 </select>
                                                             </td>
                                                             <td>                                                            
