@@ -149,7 +149,6 @@ class ActivityController extends Controller
     {
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
-
         $grade_ids = Grade::pluck('id')->toArray();
 
         if (isset($data['demonstrated_data']) && !empty($data['demonstrated_data'])) {

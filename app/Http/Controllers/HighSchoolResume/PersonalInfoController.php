@@ -22,7 +22,6 @@ class PersonalInfoController extends Controller
     {
         $states = Config::get('constants.states');
         $cities = Config::get('constants.cities');
-        // dd($cities);
         $resume_id = $request->resume_id;
         if(isset($resume_id) && $resume_id != null) {   
             $resumedata = HighSchoolResume::where('id',$resume_id)->with([

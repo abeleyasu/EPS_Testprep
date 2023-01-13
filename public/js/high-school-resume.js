@@ -65,6 +65,29 @@ function dropdown_lists(url)
     });
 }
 
+function single_dropdown_lists(url)
+{
+    let site_url = $('#site_url').val();
+    let option = ``;
+    return $.ajax({
+        url: `${site_url}${url}`,
+        type: "GET",
+        async: true,
+        dataType: "JSON",
+    }).then((resp) => {
+        if (resp.success) {
+            $(resp.dropdown_list).each((index,value) => {
+                option += `<option value="${value}">`;
+                option += `${value}`;
+                option += `</option>`;
+            });
+            return option;
+        } else {
+            return option;
+        }
+    });
+}
+
 // course data
 async function addCourseData(data){
     let $count = $(data).attr("data-count");
@@ -209,8 +232,8 @@ function addTestingData(data){
             html += `<select class="form-select" id="name_of_test" name="testing_data[${$count}][name_of_test]" style="width: 100%;">`;
             html += `<option value="">Select name of test</option>`;
             html += `<option value="SAT – 400 – 1600">SAT – 400 – 1600</option>`;
-            html += `<option value="ACT 1-36">ACT 1-36</option>`;
             html += `<option value="PSAT 320-1520">PSAT 320-1520</option>`;
+            html += `<option value="ACT 1-36">ACT 1-36</option>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -316,17 +339,27 @@ async function addHonorsData(data){
         let html = ``;
             html += `<tr class="honors_data_table_row remove_honors_data">`;
             html += `<td>`;
-            html += `<select class="js-select2" name="honors_data[${$count}][position]" id="position" data-placeholder="Select Status">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += `<div class="select2-container_main">`;
+            html += `<select class="js-select2" data-placeholder="Select Status" name="honors_data[${$count}][position]" id="honor_position_${$count}" >`;
+            html += `<option value="">Select Status</option>`;
+            html += await single_dropdown_lists(`/user/status/list`);
             html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" name="honors_data[${$count}][honor_achievement_award]" placeholder="Ex: National Honor Society">`;
+            html += `<div class="select2-container_main ">`;
+            html += `<select class="js-select2" data-placeholder="Select Award" id="honors_award_${$count}" name="honors_data[${$count}][honor_achievement_award]" >`;
+            html += `<option value="">Select Award</option>`;
+            html += await single_dropdown_lists(`/user/awards/list`);
+            html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
-            html += `<td class="select2-container_main">`;
+            html += `<td class="select2-container_main ">`;
+            html += `<div class="select2-container_main ">`;
             html += `<select class="js-select2" data-placeholder="Select Grade" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" name="honors_data[${$count}][location]" placeholder="Ex: DRHS">`;
@@ -344,7 +377,10 @@ async function addHonorsData(data){
             $(`#honor_select_${$count}`).select2({
                 tags: true,
             });
-            $('#position').select2({
+            $(`#honor_position_${$count}`).select2({
+                tags: true,
+            });
+            $(`#honors_award_${$count}`).select2({
                 tags: true,
             });
         })
@@ -353,19 +389,19 @@ async function addHonorsData(data){
     }
     let honors_data = $('input[name^="honors_data"]');
 
-    honors_data.filter('input[name$="[position]"]').each(function() {
+    $('select[name^="honors_data"]').filter('select[name$="[position]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "Position field is required"
+                required: "Status field is required"
             }
         });
     });
-    honors_data.filter('input[name$="[honor_achievement_award]"]').each(function() {
+    $('select[name^="honors_data"]').filter('select[name$="[honor_achievement_award]"]').each(function() {
         $(this).rules("add", {
             required: true,
             messages: {
-                required: "Achivement awars field is required"
+                required: "Achivement awards field is required"
             }
         });
     });
@@ -458,11 +494,15 @@ async function addLeadershipData(data) {
             html += `<input type="text" class="form-control" id="leadership_status" name="leadership_data[${$count}][status]" placeholder="Enter Status">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="leadership_position" name="leadership_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
+            html += `<select class="js-select2 select" id="leadership_position_${$count}" name="leadership_data[${$count}][position]" data-placeholder="Select Position">`;
+            html += `<option value="">Select Position</option>`;
+            html += await single_dropdown_lists(`/user/position/list`);
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="leadership_organization" name="leadership_data[${$count}][organization]" data-placeholder="Enter Organization">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += `<select class="js-select2 select" id="leadership_organization_${$count}" name="leadership_data[${$count}][organization]" data-placeholder="Select Organization">`;
+            html += `<option value="">Select Organization</option>`;
+            html += await single_dropdown_lists(`/user/organizations/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -486,7 +526,10 @@ async function addLeadershipData(data) {
             $(`#leadership_select_${$count}`).select2({
                 tags: true,
             });
-            $(`#leadership_organization`).select2({
+            $(`#leadership_organization_${$count}`).select2({
+                tags: true,
+            });
+            $(`#leadership_position_${$count}`).select2({
                 tags: true,
             });
         });
@@ -513,10 +556,16 @@ async function addActivityData(data) {
         let html = ``;
             html += `<tr class="activity_data_table_row remove_activity_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="activity_position" name="activities_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
+            html += `<select class="js-select2 select" id="activity_position_${$count}" name="activities_data[${$count}][position]" data-placeholder="Vice President">`;
+            html += `<option value="">Select Position</option>`;
+            html += await single_dropdown_lists(`/user/position/list`);
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="activity" name="activities_data[${$count}][activity]" placeholder="Enter Activity">`;
+            html += `<select class="js-select2 select" id="activity_organization_${$count}" name="activities_data[${$count}][activity]" data-placeholder="Enter Organization">`;
+            html += `<option value="">Select Organization</option>`;
+            html += await single_dropdown_lists(`/user/organizations/list`);
+            html += `</select>`;
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" data-placeholder="Select activities Grade" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
@@ -540,6 +589,12 @@ async function addActivityData(data) {
 
         $(document).ready(() => {
             $(`#activity_select_${$count}`).select2({
+                tags: true,
+            }); 
+            $(`#activity_organization_${$count}`).select2({
+                tags: true,
+            });
+            $(`#activity_position_${$count}`).select2({
                 tags: true,
             });
         })
@@ -566,7 +621,10 @@ async function addAthleticsData(data){
         let html = ``;
         html += `<tr class="athletics_data_table_row remove_athletics_data">`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="athletics_positions" name="athletics_data[${$count}][position]" placeholder="Vice President" autocomplete="off">`;
+        html += `<select class="js-select2 select" id="athletics_positions_${$count}" name="athletics_data[${$count}][position]" data-placeholder="Enter Position">`;
+        html += `<option value="">Select Position</option>`;
+        html += await single_dropdown_lists(`/user/position/list`);
+        html += `</select>`;
         html += `</td>`;
         html += `<td>`;
         html += `<input type="text" class="form-control" id="athletics_activity" name="athletics_data[${$count}][activity]" placeholder="Enter Activity">`;
@@ -593,6 +651,9 @@ async function addAthleticsData(data){
 
         $(document).ready(() => {
             $(`#athletics_select_${$count}`).select2({
+                tags: true
+            });
+            $(`#athletics_positions_${$count}`).select2({
                 tags: true
             });
         });

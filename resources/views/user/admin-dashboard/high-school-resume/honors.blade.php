@@ -142,32 +142,35 @@
                                                         </tr>
                                                         @if (!empty($honor->honors_data))
                                                             @foreach ($honor->honors_data as $index => $honors_data)
-                                                                <tr
-                                                                    class="honors_data_table_row {{ $loop->first ? '' : 'remove_honors_data' }}">
-                                                                    <td style="min-width:270px;">
-                                                                        <!-- <input type="text" class="form-control"
-                                                                            id="position"
-                                                                            name="honors_data[{{ $index }}][position]"
-                                                                            value="{{ $honors_data['position'] }}"
-                                                                            placeholder="Vice President"
-                                                                            autocomplete="off"> -->
-                                                                            <select class="js-select2 form-select" id="honor_position" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Status">
-                                                                                <option></option>
-                                                                                @foreach($status as $sta)
-                                                                                    <option value="{{ $sta }}" {{ isset($honors_data['position']) && $honors_data['position'] != null ? ($honors_data['position'] == $sta ? 'selected' : '') : '' }} > {{ $sta }} </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                    </td>
-                                                                    <td class="select2-container_main">
-                                                                        <select class="js-select2"
-                                                                            data-placeholder="Select Grade"
-                                                                            id="honor_select_{{ $index }}"
-                                                                            name="honors_data[{{ $index }}][grade][]"
-                                                                            multiple="multiple">
-                                                                            @foreach ($grades as $grade)
-                                                                                <option {{ in_array($grade->id, is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                <tr class="honors_data_table_row {{ $loop->first ? '' : 'remove_honors_data' }}">
+                                                                    <td style=" min-width: 300px;">
+                                                                        <select class="js-select2 form-select" id="honor_position_{{ $index }}" name="honors_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Status">
+                                                                            <option value="">Select Status</option>
+                                                                            @foreach($status as $sta)
+                                                                                <option value="{{ $sta }}" {{ isset($honors_data['position']) && $honors_data['position'] != null ? ($honors_data['position'] == $sta ? 'selected' : '') : '' }} > {{ $sta }} </option>
                                                                             @endforeach
                                                                         </select>
+                                                                    </td>
+                                                                    <td style=" min-width: 300px;">
+                                                                        <select class="js-select2 form-select" id="honor_award_{{ $index }}" name="honors_data[{{ $index }}][honor_achievement_award]" style="width: 100%;" data-placeholder="Select Award">
+                                                                            <option value="">Select Award</option>
+                                                                            @foreach($awards as $award)
+                                                                                <option value="{{ $award }}" {{ isset($honors_data['honor_achievement_award']) && $honors_data['honor_achievement_award'] != null ? ($honors_data['honor_achievement_award'] == $award ? 'selected' : '') : '' }}  > {{ $award }} </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                    <td >
+                                                                        <div class="select2-container_main">
+                                                                            <select class="js-select2 form-select"
+                                                                                data-placeholder="Select Grade"
+                                                                                id="honor_select_{{ $index }}"
+                                                                                name="honors_data[{{ $index }}][grade][]"
+                                                                                multiple="multiple">
+                                                                                @foreach ($grades as $grade)
+                                                                                    <option {{ in_array($grade->id, is_array($honors_data['grade']) ? $honors_data['grade'] : []) ? 'selected' : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input type="text" class="form-control"
@@ -188,33 +191,37 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="honors_data_table_row">
-                                                                <td class="select2-container_main">
-                                                                    {{-- <input type="text" class="form-control"
-                                                                        id="position" name="honors_data[0][position]"
-                                                                        placeholder="Vice President" autocomplete="off"> --}}
-                                                                        <select class="js-select2"
-                                                                            data-placeholder="Select Status"
-                                                                            id="position" name="honors_data[0][position]">
-                                                                            @foreach ($status as $sta)
-                                                                                <option value="{{ $sta }}">{{ $sta }}</option>
+                                                                <td style="min-width:220px;">
+                                                                    <div class="select2-container_main ">
+                                                                        <select class="js-select2 form-select" data-placeholder="Select Status" id="honor_position_0" name="honors_data[0][position]" style="width: 100%;">
+                                                                            <option selected="true" style='display: none'></option>
+                                                                            @foreach($status as $sta)
+                                                                                <option value="{{ $sta }}" > {{ $sta }} </option>
                                                                             @endforeach
                                                                         </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="min-width:220px;">
+                                                                    <div class="select2-container_main ">
+                                                                        <select class="js-select2 form-select" data-placeholder="Select Award" id="honor_award_0" name="honors_data[0][honor_achievement_award]" style="width: 100%;" >
+                                                                            <option selected="true" style='display: none'></option>
+                                                                            @foreach($awards as $award)
+                                                                                <option value="{{ $award }}" > {{ $award }} </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control"
-                                                                        id="honor_achievement_award"
-                                                                        name="honors_data[0][honor_achievement_award]"
-                                                                        placeholder="Ex: National Honor Society">
-                                                                </td>
-                                                                <td class="select2-container_main">
-                                                                    <select class="js-select2"
-                                                                        data-placeholder="Select Grade"
-                                                                        id="honor_select_0" name="honors_data[0][grade][]"
-                                                                        multiple="multiple">
-                                                                        @foreach ($grades as $grade)
-                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
+                                                                    <div class="select2-container_main">
+                                                                        <select class="js-select2 form-select" 
+                                                                            data-placeholder="Select Grade"
+                                                                            id="honor_select_0" name="honors_data[0][grade][]"
+                                                                            multiple="multiple">
+                                                                            @foreach ($grades as $grade)
+                                                                                <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
@@ -269,6 +276,10 @@
             min-width: 14vw !important;
         }
 
+        .select2-container .select2-selection--single {
+            min-width: 14vw !important;
+        }
+
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
         }
@@ -279,8 +290,9 @@
         }
 
         .select2-container_main .error {
-            position: absolute;
-            top: 51px;
+             position: absolute;
+            top: 40px;
+            white-space: nowrap;
         }
 
         .table tbody tr:nth-child(0) td {
@@ -288,8 +300,14 @@
         }
 
         .select2-container_main {
-            display: inline-block;
+            position: relative;
+            max-width: 340px;
         }
+        .select2-container_main .error{
+
+        }
+
+
     </style>
 @endsection
 
@@ -309,13 +327,26 @@
                     $(`#honor_select_${index}`).select2({
                         tags: true,
                     });
+                    $(`#honor_position_${index}`).select2({
+                        tags: true,
+                    });
+                    $(`#honor_award_${index}`).select2({
+                        tags: true,
+                    });
                 }
             } else {
                 $("#honor_select_0").select2({
                     tags: true,
                 });
+                $('#honor_position_0').select2({
+                    tags: true,
+                });
+                $('#honor_award_0').select2({
+                    tags: true,
+                });
             }
-            $('#honor_position').select2();
+            
+            
         });
 
         $(document).ready(function() {
@@ -334,15 +365,17 @@
                     var placement = $(element).data('error');
                     if (placement) {
                         $(placement).append(error)
-                        $(element).parents("td.select2-container_main").css("margin-bottom", '0');
+                        $(element).parents(".select2-container_main").css("margin-bottom", '0');
                     } else {
                         error.insertAfter(element);
                         element.parents().find('.collapse').addClass('show');
-                        $(element).parents("td.select2-container_main").css("margin-bottom", '20px');
+                        $(element).parents(".select2-container_main").css("margin-bottom", '20px');
                     }
                     if ($(element).is('.js-select2.error')) {
                         $(element).parents('td.select2-container_main').find(
-                            '.select2-selection--multiple').removeAttr('style')
+                            '.select2-selection--multiple').removeAttr('style');
+                        $(element).parents('td.select2-container_main').find(
+                            '.select2-selection--single').removeAttr('style');    
                     }
                 },
                 success: function(label, element) {
@@ -350,24 +383,26 @@
                     label.remove();
                     $(element).parents('td.select2-container_main').find('.select2-selection--multiple')
                         .attr('style', 'border: 1px solid #198754 !important');
+                    $(element).parents('td.select2-container_main').find('.select2-selection--single')
+                        .attr('style', 'border: 1px solid #198754 !important');        
                 },
             });
 
             let honors_data = $('input[name^="honors_data"]');
 
-            honors_data.filter('input[name$="[position]"]').each(function() {
+            $('select[name^="honors_data"]').filter('select[name$="[position]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "Position field is required"
+                        required: "Status field is required"
                     }
                 });
             });
-            honors_data.filter('input[name$="[honor_achievement_award]"]').each(function() {
+            $('select[name^="honors_data"]').filter('select[name$="[honor_achievement_award]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {
-                        required: "Achivement awars field is required"
+                        required: "Achivement award field is required"
                     }
                 });
             });

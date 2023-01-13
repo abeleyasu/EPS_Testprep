@@ -40,6 +40,10 @@ use App\Http\Controllers\ResumeSettingsController;
 use App\Http\Controllers\TestPrepController;
 use App\Http\Controllers\TestReview\TestReviewController;
 use App\Http\Controllers\UserCalendarController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\AwardController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PositionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -243,6 +247,10 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
     Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');
     Route::get('/grades/list', [GradesController::class, 'getGradeList'])->name('gradesList');
+    Route::get('/status/list', [StatusController::class, 'getStatusList'])->name('statusList');
+    Route::get('/awards/list', [AwardController::class, 'getAwardList'])->name('awardsList');
+    Route::get('/organizations/list', [OrganizationController::class, 'getOrganizationList'])->name('organizationsList');
+    Route::get('/position/list', [PositionController::class, 'getPositionsList'])->name('positionsList');
     
     Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
 

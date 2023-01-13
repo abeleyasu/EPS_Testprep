@@ -25,7 +25,9 @@ class EducationController extends Controller
     {
         $resume_id = $request->resume_id;
         $states = Config::get('constants.states');
-        
+        $ib_courses = Config::get('constants.ib_courses');
+        $ap_courses = Config::get('constants.ap_courses');
+
         $graduation_designations = Config::get('constants.graduation_designation');
         
 

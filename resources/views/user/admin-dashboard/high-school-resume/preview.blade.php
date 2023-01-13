@@ -597,7 +597,7 @@
                                                                     <ul class="list_items">
                                                                         @foreach ($demonstrated_data as $data)
                                                                             <li>
-                                                                                {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                                                                {{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>

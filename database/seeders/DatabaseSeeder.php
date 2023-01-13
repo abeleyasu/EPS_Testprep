@@ -16,5 +16,9 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(AdminSeeder::class);
         // $this->call(UserRolesTableSeeder::class);
+        // $this->call(IbCoursesSeeder::class);
+        // $this->call(ApCoursesSeeder::class);
+        $this->call(HonorsCoursesSeeder::class);
+
     }
 }

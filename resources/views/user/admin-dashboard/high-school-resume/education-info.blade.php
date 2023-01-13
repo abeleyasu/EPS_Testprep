@@ -508,9 +508,9 @@
                                                                 <td>
                                                                     <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
                                                                         <option value="" disabled selected hidden>Select Name Of Test</option>
-                                                                        <option value="SAT – 400 – 1600" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>SAT – 400 – 1600</option>
-                                                                        <option value="PSAT 320-1520" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>PSAT 320-1520</option>
-                                                                        <option value="ACT 1-36" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT 1-36</option>
+                                                                        <option value="SAT – 400 – 1600" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT – 400 – 1600' ? 'selected' : '' ) : '' ) }}>SAT – 400 – 1600</option>
+                                                                        <option value="PSAT 320-1520" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT 320-1520' ? 'selected' : '' ) : '' ) }}>PSAT 320-1520</option>
+                                                                        <option value="ACT 1-36" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT 1-36' ? 'selected' : '' ) : '' ) }}>ACT 1-36</option>
                                                                     </select>   
                                                                 </td>
                                                                 <td>                                                            

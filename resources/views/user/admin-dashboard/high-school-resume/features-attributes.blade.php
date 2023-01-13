@@ -110,7 +110,7 @@
                                                                 <tr class="featured_skill_data_table_row {{ $loop->first ? '' : 'remove_featured_skill_data' }}">
                                                                     <td>
                                                                         <input type="text" class="form-control" value="{{ $featured_skills_data['skill'] }}" id="featured_skill"
-                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="Enter Featured Quality">
+                                                                            name="featured_skills_data[{{ $index }}][skill]" placeholder="EX:Leadership">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -124,7 +124,7 @@
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control" id="featured_skill"
-                                                                        name="featured_skills_data[0][skill]" placeholder="Enter Featured Quality">
+                                                                        name="featured_skills_data[0][skill]" placeholder="EX:Leadership">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -169,7 +169,7 @@
                                                                             class="form-control"
                                                                             value="{{ $featured_awards_data['award'] }}"
                                                                             id="featured_award" name="featured_awards_data[{{ $index }}][award]"
-                                                                            placeholder="Enter Featured Award">
+                                                                            placeholder="EX:National AP Scholar w/ Honors">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -184,7 +184,7 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="featured_award" name="featured_awards_data[0][award]"
-                                                                        placeholder="Enter Featured Award">
+                                                                        placeholder="EX:National AP Scholar w/ Honors">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -234,14 +234,14 @@
                                                                             class="form-control"
                                                                             value="{{ $featured_languages_data['language'] }}"
                                                                             id="featured_language" name="featured_languages_data[{{ $index }}][language]"
-                                                                            placeholder="Enter Language">
+                                                                            placeholder="EX:Multilingual (French, English, Spanish)">
                                                                     </td>
                                                                     <td>
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             value="{{ $featured_languages_data['level'] }}"
                                                                             id="languages_level" name="featured_languages_data[{{ $index }}][level]"
-                                                                            placeholder="Fluent">
+                                                                            placeholder="EX:Fluent">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -256,13 +256,13 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="featured_language" name="featured_languages_data[0][language]"
-                                                                        placeholder="Enter Language">
+                                                                        placeholder="EX:Multilingual (French, English, Spanish)">
                                                                 </td>
                                                                 <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="languages_level" name="featured_languages_data[0][level]"
-                                                                        placeholder="Fluent">
+                                                                        placeholder="EX:Fluent">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -307,7 +307,7 @@
                                                                             class="form-control"
                                                                             value="{{ $dual_citizenship['country'] }}"
                                                                             id="countries" name="dual_citizenship_data[{{ $index }}][country]"
-                                                                            placeholder="Ex: Canada">
+                                                                            placeholder="EX:France & The United States">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -322,7 +322,7 @@
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="countries" name="dual_citizenship_data[0][country]"
-                                                                        placeholder="Ex: Canada">
+                                                                        placeholder="EX:France & The United States">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
