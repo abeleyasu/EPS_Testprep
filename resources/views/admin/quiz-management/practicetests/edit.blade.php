@@ -458,7 +458,7 @@ ul.answerOptionLsit li label input{
                         <input id="testSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
                     </div>
                     <div class="mb-2">
-                        <label class="form-label" style="font-size: 13px;">Questions:</label>
+                        <label class="form-label" style="font-size: 13px;">Question:</label>
                         <textarea id="js-ckeditor-addQue" name="js-ckeditor-addQue" class="form-control form-control-lg form-control-alt addQuestion" placeholder="update Question" ></textarea>
 						
                     </div>
@@ -630,7 +630,7 @@ ul.answerOptionLsit li label input{
                         <input id="addTestSectionTypeRead" readonly name="addTestSectionTypeRead" class="form-control">
                     </div>
                     <div class="mb-2">
-                        <label class="form-label" style="font-size: 13px;">Questions:</label>
+                        <label class="form-label" style="font-size: 13px;">Question:</label>
                         <textarea id="js-ckeditor-add-addQue" name="js-ckeditor-add-addQue" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                         
                     </div>
@@ -1865,6 +1865,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content)
         method: 'post',
         success: (res) => {
             var opt = '';
+            //opt += '<option value="0">No Passage</option>';
             $.each(res, function( key, val){
                 opt +='<option value="'+val.id+'">'+val.title+'</option>';
             });

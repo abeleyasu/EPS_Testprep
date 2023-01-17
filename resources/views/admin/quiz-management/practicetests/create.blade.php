@@ -459,7 +459,7 @@ ul.answerOptionLsit li label input{
                         <input id="testSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
                     </div>
                     <div class="mb-2">
-                        <label class="form-label" style="font-size: 13px;">Questions:</label>
+                        <label class="form-label" style="font-size: 13px;">Question:</label>
                         <textarea id="js-ckeditor-addQue" name="js-ckeditor-addQue" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
 						
                     </div>
@@ -500,10 +500,6 @@ ul.answerOptionLsit li label input{
                                 <input type="text" value="" name="search-input" data-search_id="" id="search-input" placeholder="Question Type" class="form-control form-control-lg form-control-alt get_question_type" >
                                 <ul id="search-results"></ul>
                             </div>
-                            
-                            <!-- <input type="text" class="form-control" id="input1">
-
-                            <input type="text" class="form-control" id="input2"> -->
                             <button class="btn btn-primary plus-button">+</button>
                         </div>
                     </div>
@@ -1291,6 +1287,7 @@ function getPassages(format){
 		method: 'post',
 		success: (res) => {
 			var opt = '';
+            opt += '<option value="0">No Passage</option>';
 			$.each(res, function( key, val){
 				opt +='<option value="'+val.id+'">'+val.title+'</option>';
 			});
