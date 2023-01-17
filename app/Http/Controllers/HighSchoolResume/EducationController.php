@@ -72,8 +72,8 @@ class EducationController extends Controller
 
         $grades = Grade::all();
 
-        $intended_major = IntendedCollegeList::whereType('1')->get();
-        $intended_minor = IntendedCollegeList::whereType('2')->get();
+        $intended_major = IntendedCollegeList::whereType('1')->orderBy('name','ASC')->get();
+        $intended_minor = IntendedCollegeList::whereType('2')->orderBy('name','ASC')->get();
 
         $details = 0;
         return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations'));

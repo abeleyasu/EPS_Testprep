@@ -685,13 +685,13 @@
             if(total_testing_count > 0) {
                 for (let index = 0; index < total_testing_count; index++) {
                     $(`#testing-date-${index}`).datepicker({
-                        format: 'dd-mm-yyyy',
+                        format: 'mm-dd-yyyy',
                         endDate: '-1d'
                     });
                 }
             } else {
                 $('#testing-date-0').datepicker({
-                    format: 'dd-mm-yyyy',
+                    format: 'mm-dd-yyyy',
                     endDate: '-1d'
                 });
             }

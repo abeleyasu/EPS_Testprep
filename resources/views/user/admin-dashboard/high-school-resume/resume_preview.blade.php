@@ -273,7 +273,7 @@
     <div style="margin-bottom: 0">
         <p
             style="font-weight:400; padding:10px 50px 10px;background-color: #f4f4f4; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0">
-            <b>{{ $personal_info->first_name }}<b> {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}} {{ $personal_info->middle_name }} {{ $personal_info->last_name }}
+            <b>{{ $personal_info->first_name }}<b>  {{ $personal_info->middle_name }} {{ $personal_info->last_name }} {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
                 </b>
         </p>
     </div>

@@ -217,7 +217,7 @@ function addTestingData(data){
 
         $(document).ready(() => {
             $(`#testing-date-${$count}`).datepicker({
-                format: 'dd-mm-yyyy',
+                format: 'mm-dd-yyyy',
                 endDate : '-1d'
             });
         });
