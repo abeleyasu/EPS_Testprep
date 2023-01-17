@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\PracticeQuestion;
 use App\Models\PracticeTestSection;
+use App\Models\PracticeCategoryType;
 use App\Models\QuestionType;
 use App\Models\Passage;
 
@@ -54,13 +55,11 @@ class PracticeQuestionController extends Controller
         } else{
             $question->tags = $request->tags;
         }
-		$question->question_type_id = $request->new_question_type_select;
-		$question->category_type = $request->question_category_type_value;
-        
-		$question->save();
+		$question->question_type_id = json_encode($request->get_question_type_values);
+		$question->category_type = json_encode($request->get_category_type_values);
+        $question->save();
 
 		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order]);
-		//return $question->id;
 	}
 
 	public function indexQuestionType()
@@ -154,6 +153,7 @@ class PracticeQuestionController extends Controller
 	public function addPracticeTestSection(Request $request) {
 		$practiceSection = new PracticeTestSection();
 		$practiceSection->format = $request->format;
+		$practiceSection->section_title = $request->testSectionTitle;
 		$practiceSection->practice_test_type = $request->testSectionType;
 		$practiceSection->testid = 0;
 		$practiceSection->section_order = $request->order;
@@ -161,6 +161,30 @@ class PracticeQuestionController extends Controller
 		$practiceSection->save();
 		return $practiceSection->id;
 	}
+
+	public function addPracticeCategoryType(Request $request)
+	{
+		if(empty($request->searchId))
+		{
+			$practiceCatType = new PracticeCategoryType();
+			$practiceCatType->category_type_title = $request->searchValue;
+			$practiceCatType->save();
+			return $practiceCatType->id;
+		}
+	}
+
+	public function addPracticeQuestionType(Request $request)
+	{
+		if(empty($request->searchId))
+		{
+			$practiceQuesType = new QuestionType();
+			$practiceQuesType->question_type_title = $request->searchValue;
+			$practiceQuesType->save();
+			return $practiceQuesType->id;
+		}
+	}
+	
+
 	public function sectionOrder(Request $request){
 		$partSection = PracticeTestSection::find($request->section_id);
 		$partSection->section_order = $request->section_order;

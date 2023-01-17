@@ -3,6 +3,7 @@
 @section('title', 'Question & Concept Review : CPS')
 
 @section('user-content')
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             {{-- Test review title  --}}
@@ -142,15 +143,111 @@
                                     </table>
 
                                     {{-- END header --}}
+                                    <script>
+                                        jQuery(document).ready(function(){
+                                            function removeTags(str) {
+                                                if ((str===null) || (str===''))
+                                                    return false;
+                                                else
+                                                    str = str.toString();
+                                                return str.replace( /(<([^>]+)>)/ig, '');
+                                            }
+                                            
+                                            jQuery(".text-info").click(function () {
+                                                jQuery(this).next("div.modal").css("display", "block");
+                                                
+                                                
+                                                jQuery(this).next("div.modal").find(".nav-link").removeClass('active');
+                                                jQuery(this).next("div.modal").find(".tab-pane").removeClass('active');
+                                                jQuery(this).next("div.modal").find(".tab-pane:first").addClass('active');
+                                                
+                                                //jQuery('.nav-link').removeClass('active');
+                                                //jQuery('.tab-pane').removeClass('active');
+                                                //jQuery(".tab-pane:first").addClass('active');
+                                            
+                                                var get_question_title = removeTags(jQuery(this).data('question-title'));
+                                                jQuery(".text-info").addClass(get_question_title);
+                                                var get_passage_title = removeTags(jQuery(this).data('passage-title'));
+                                                var serial_no = jQuery(this).data('serial-no');
+                                                var get_correct_answer = jQuery(this).data('correct-answer');
+                                                var get_user_answer = jQuery(this).data('user-answer');
+                                                var get_answers_exp = jQuery(this).data('answers-exp');
+                                            
+                                                jQuery(".set_serial_no").text(serial_no);
+                                                jQuery(".set_question_title").text(get_question_title);
+                                                jQuery(".set_passage_title").text(get_passage_title);
+
+                                                var array_correct = get_correct_answer.split(',');
+                                                console.log(array_correct);
+                                                array_correct = $.map(array_correct, function(value){
+                                                    return value.replace(/ /g, '');
+                                                    });
+                                                var array_user_answer = get_user_answer.split(',');
+                                                console.log(array_user_answer);
+                                                array_user_answer = $.map(array_user_answer, function(value){
+                                                    return value.replace(/ /g, '');
+                                                    });
+
+                                                jQuery(".text-info").parent().find('.nav-tabs-alt .nav-item').find('.text-gray').each(function( index ) {
+                                                    console.log(get_answers_exp);
+                                                    $.each(get_answers_exp, function( index, value ) {
+                                                        var new_txt = removeTags(value);
+                                                        $("div").find('[data-option='+index+']').html( $( "<p>"+value+"</p>" ) );
+                                                    });
+                                                    $(this ).addClass('gand');
+                                                    console.log(this);
+                                                    if($(this ).data('option-value') == 'a')
+                                                    {
+                                                        $(this).addClass('active');
+                                                    }
+                                                    
+                                                    var option_value = $(this ).data('option-value');
+                                                    console.log(option_value);
+                                                    if(jQuery.inArray(option_value, array_correct) != -1)
+                                                    {
+                                                        console.log('if');
+                                                        $(this).removeClass('bg-city-dark');
+                                                        $(this).removeClass('bg-success');
+                                                        $(this).removeClass('bg-danger');
+                                                        $(this).addClass('bg-success');
+                                                    }
+                                                    else if(jQuery.inArray(option_value, array_user_answer) != -1)
+                                                    {
+                                                        console.log('else if');
+                                                        $(this).addClass('bg-danger');
+                                                        $(this).addClass('text-gray');
+                                                        $(this).removeClass('bg-success');
+                                                        $(this).removeClass('bg-city-dark');
+                                                    }
+                                                    else 
+                                                    {
+                                                        console.log('else');
+                                                        $(this).removeClass('bg-success');
+                                                        $(this).addClass('text-gray');
+                                                        $(this).addClass('bg-city-dark');
+                                                    }
+                                                });
+                                            });
+                                            jQuery(".cat_type_desc_btn").click(function(){
+                                                var get_question_desc = jQuery(this).data('question_desc');
+                                                var get_question_title = jQuery(this).data('question_title');
+                                                jQuery('.set_question_type_title').html(get_question_title);
+                                                jQuery('.set_question_type_desc').html(get_question_desc);
+                                            });
+                                        });
+                                    </script>
 
                                     <div class="tab-content" id="myTabContent">
                                         <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                                             <div class="accordion accordionExample">
-
+                                                <?php
+                                                    $count = 1;
+                                                ?>
                                                 {{-- accordian tab 1 --}}
+                                                @foreach($user_selected_answers as $key => $single_user_selected_answers)
                                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                    <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                                        aria-expanded="true" aria-controls="collapseOne">
+                                                    <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                        aria-expanded="false" aria-controls="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>">
                                                 
                                                         <table>
                                                             <tr >
@@ -158,29 +255,44 @@
                                                                     <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">1</button>
-                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
-                                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> E</button>
+                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">{{$count++}}</button>
+                                                                    <?php $correct =  str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
+                                                                    @if($single_user_selected_answers['user_selected_answer'] == $correct)
+                                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>
+                                                                    @else
+                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>       
+                                                                    @endif
+
+                                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['get_question_details'][0]->question_answer}}</button>
+
+                                                                    @if($single_user_selected_answers['user_selected_flag'] == 'yes' )
                                                                     <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
+                                                                    @endif
+                                                                    
+                                                                    @if($single_user_selected_answers['user_selected_guess'] == 'yes' )
                                                                     <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
+                                                                    @endif
+
+                                                                    @if($single_user_selected_answers['user_selected_answer'] == '-' )
                                                                     <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         </table>
-
                                                     </div>
-                                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
+                                                    <div id="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                         <div class="odd">    
                                                             <div class="fw-semibold fs-sm p-4 ">
                             
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1r" class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white"><i class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
+                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" data-question-title="{{$single_user_selected_answers['get_question_details'][0]->question_title}}" data-passage-title="{{$single_user_selected_answers['get_question_details'][0]->title}}" data-correct-answer = "{{$single_user_selected_answers['get_question_details'][0]->question_answer}}"
+                                                                data-user-answer = "{{$single_user_selected_answers['user_selected_answer']}}" data-answers-exp="{{($single_user_selected_answers['get_question_details'][0]->question_answer_options)}}" data-serial-no = "{{$key + 1}}" class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white text-info"><i class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
                             
-                                                                <div class="modal" id="modal-block-large-q1r" tabindex="-1" aria-labelledby="modal-block-large-q1r" style="display: none;" aria-hidden="true">
+                                                                <div class="modal" id="modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" tabindex="-1" aria-labelledby="modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" style="display: none;" aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
                                                                         <div class="modal-content">
                                                                             <div class="block block-rounded">
                                                                                 <div class="block-header block-header-default">
-                                                                                    <h3 class="block-title">Question 1 Review</h3>
+                                                                                    <h3 class="block-title">Question <span class="set_serial_no">{{$key + 1}}</span> Review</h3>
                                                                                 </div>
                                                                                 <div class="block-content">
                                                                                     <div class="row items-push">
@@ -192,59 +304,53 @@
                             
                                                                                         <div id="my-block" class="block block-rounded block-bordered p-0">
                                                                                             <div class="block-header block-header-default">
-                                                                                                <h3 class="block-title">Question 1</h3>
+                                                                                                <h3 class="block-title">Question <span class="set_serial_no">{{$key + 1}}</span></h3>
                                                                                                 <div class="block-options">
                                                                                                     <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="block-content">
-                                                                                                <p>
-                                                                                                    <b>Please refer to the PDF, book, or downloaded file for this question. Test 1576C / Z04 can be found here: 
-                                                                                                        <a href="https://www.act.org/content/dam/act/unsecured/documents/Preparing-for-the-ACT.pdf">
-                                                                                                            <u>Test Link</u>
-                                                                                                        </a>
-                                                                                                    </b>
-                                                                                                </p>
+                                                                                            <p class="set_question_title">{{strip_tags($single_user_selected_answers['get_question_details'][0]->question_title)}}</p>
                                                                                             </div>
                                                                                         </div>
                             
                                                                                         <div class="block block-rounded">
                                                                                             <ul class="nav nav-tabs nav-tabs-alt" role="tablist">
                                                                                                 <li class="nav-item">
-                                                                                                    <button class="nav-link active bg-danger text-white" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1a" role="tab" aria-controls="btabs-alt-static-home" aria-selected="true">Answer A</button>
+                                                                                                    <button class="nav-link active bg-danger 
+                                                                                                    text-gray
+                                                                                                    text-white" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" role="tab" aria-controls="btabs-alt-static-home" data-option-value='a' aria-selected="true">Answer A</button>
                                                                                                 </li>
                                                                                                 <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1b" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer B</button>
+                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" role="tab" aria-controls="btabs-alt-static-profile"
+                                                                                                    data-option-value='b' aria-selected="false">Answer B</button>
                                                                                                 </li>
                                                                                                 <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1c" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer C</button>
+                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" role="tab" aria-controls="btabs-alt-static-profile" data-option-value='c' aria-selected="false">Answer C</button>
                                                                                                 </li>
                                                                                                 <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1d" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer D</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-success text-gray" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1e" role="tab" aria-controls="btabs-alt-static-home" aria-selected="true">Answer E</button>
+                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" role="tab" aria-controls="btabs-alt-static-profile" data-option-value='d'  aria-selected="false">Answer D</button>
                                                                                                 </li>
                                                                                             </ul>
                             
                                                                                             <div class="block-content tab-content">
-                                                                                                <div class="tab-pane active" id="btabs-alt-static-q1a" role="tabpanel" aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                <div class="tab-pane active" id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" data-option="0" role="tabpanel" aria-labelledby="btabs-alt-static-home-tab">
                                                                                                     <p>NO CHANGE: 1/9</p>
                                                                                                     <p><b>Explanation: </b>Reasons...</p>
                                                                                                 </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q1b" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                <div class="tab-pane" id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" data-option="1" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
                                                                                                     <p>1/15</p>
                                                                                                     <p><b>Explanation: </b>Reasons...</p>
                                                                                                 </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q1c" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                <div class="tab-pane" id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" data-option="2" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
                                                                                                     <p>6/15</p>
                                                                                                     <p><b>Explanation: </b>Reasons...</p>
                                                                                                 </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q1d" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                <div class="tab-pane" id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" data-option="3" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
                                                                                                     <p>7/15</p>
                                                                                                     <p><b>Explanation: </b>Reasons...</p>
                                                                                                 </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q1e" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                <div class="tab-pane" id="btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
                                                                                                     <p>8/15</p>
                                                                                                     <p><b>Explanation: </b>Reasons...</p>
                                                                                                 </div>
@@ -253,7 +359,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
+                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white review_model_close" data-bs-dismiss="modal">Close</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -308,7 +414,7 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div class="block-content block-content-full text-end bg-body">
-                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
+                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white" data-bs-dismiss="modal">Close</button>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -465,796 +571,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                {{-- accordion tab 2 --}}
-                                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                    <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseTwo"
-                                                        aria-expanded="false" aria-controls="collapseTwo">
-                                                
-                                                        <table>
-                                                            <tr >
-                                                                <td class="text-center">
-                                                                    <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
-                                                                </td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">2</button>
-                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> H</button>
-                                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> J</button>
-                                                                    <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
-                                                                    <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
-                                                                    <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-
-                                                    </div>
-                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
-                                                        <div class="even">
-                                                            <div class="fw-semibold fs-sm p-4">
-                                        
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2r" class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white"><i class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
-                                            
-                                                                <div class="modal" id="modal-block-large-q2r" tabindex="-1" aria-labelledby="modal-block-large-q2r" style="display: none;" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="block block-rounded">
-                                                                                <div class="block-header block-header-default">
-                                                                                    <h3 class="block-title">Question 2 Review</h3>
-                                                                                </div>
-                                                                                <div class="block-content">
-                                                                                    <div class="row items-push">
-                            
-                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                            <div class="block-header block-header-default">
-                                                                                                <h3 class="block-title">Question 2</h3>
-                                                                                                <div class="block-options">
-                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"></button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="block-content">
-                                                                                                <p>
-                                                                                                    <b>Please refer to the PDF, book, or downloaded file for this question. Test 1576C / Z04 can be found here: <a href="https://www.act.org/content/dam/act/unsecured/documents/Preparing-for-the-ACT.pdf"><u>Test Link</u></a>
-                                                                                                    </b>
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        
-                                                                                        <div class="block block-rounded">
-                                                                                            <ul class="nav nav-tabs nav-tabs-alt" role="tablist">
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link active bg-city-dark text-gray" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q2a" role="tab" aria-controls="btabs-alt-static-home" aria-selected="true">Answer F</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q2b" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer G</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-danger text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q2c" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer H</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-success text-gray" id="btabs-alt-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q2d" role="tab" aria-controls="btabs-alt-static-profile" aria-selected="false">Answer J</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q2e" role="tab" aria-controls="btabs-alt-static-home" aria-selected="true">Answer K</button>
-                                                                                                </li>
-                                                                                            </ul>
-                                                                                            
-                                                                                            <div class="block-content tab-content">
-                                                                                                <div class="tab-pane active" id="btabs-alt-static-q2a" role="tabpanel" aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                    <p>NO CHANGE: x^8</p>
-                                                                                                    <p>
-                                                                                                        <b>Explanation: </b>
-                                                                                                        Adding exponents only works when the base variables are being multiplied. x^3 + x^3 + x^2 is NOT x^8.
-                                                                                                    </p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q2b" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>-7x^8</p>
-                                                                                                    <p><b>Explanation: </b>Adding exponents only works when the base variables are being multiplied. x^3 + x^3 + x^2 is NOT x^8. Also, x^3 and x^2 are NOT like terms, so all three of these terms cannot be added. The coefficient -7 is only possible when adding/subtracting all three of the terms' coefficients, but only the two x^3 terms are like terms and can be combined.</p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q2c" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>-8x^3 + 9x^2</p>
-                                                                                                    <p><b>Explanation: </b>The terms -4x^2 and -12x^2 can be combined, but -4 - 12 = -16, not -8 like answer H shows.</p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q2d" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>-16x^3 + 9x^2</p>
-                                                                                                    <p><b>Explanation: </b>This answer correctly combines the two x^3 terms and leaves the unlike x^2 term on its own. -4x^3 - 12x^3 = -16x^3, which then gets added to the lone 9x^2 term, which equals -16x^3 + 9x^2.</p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q2e" role="tabpanel" aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>-16x^6 + 9x^2</p>
-                                                                                                    <p><b>Explanation: </b>Combining like terms only adds/subtracts their <b>coefficients</b>, NOT their exponents. x^3 + x^3 is NOT x^6. x^3*x^3 is x^6, but that's not happening in this problem.</p>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                            
-                                                                <br />
-                            
-                                                                <div class="col-md-6 mb-2">
-                                                                    <select class="form-select" id="example-select" name="example-select">
-                                                                        <option selected>Mistake Type (Select One)</option>
-                                                                        <option value="1">Content Misunderstanding</option>
-                                                                        <option value="2">Random Error</option>
-                                                                        <option value="3">Timing Issue</option>
-                                                                    </select>
-                                                                </div>
-                                            
-                                                                <table class="table table-bordered table-striped table-vcenter js-dataTable-responsive">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th style="width: 30%;" class="sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Category</th><th style="width: 70%;" class="sorting" tabindex="0" aria-controls="DataTables_Table_4" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Question Type</th>
-                                                                        </tr>
-                                                                    </thead>
-                            
-                                                                    <tbody>
-                                                                        <tr class="odd">
-                                                                            <td style="">
-                                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Expressions & Equations</button>
-                                                                
-                                                                                <div class="modal" id="modal-block-large-q2ct1" tabindex="-1" aria-labelledby="modal-block-large-q2ct1" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="block block-rounded">
-                                                                                                <div class="block-header block-header-default">
-                                                                                                    <h3 class="block-title">Category: Expressions & Equations</h3>
-                                                                                                </div>
-                                                                                                <div class="block-content">
-                                                                                                    <div id="q2ct1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="q2ct1_description-expressions">
-                                                                                                                <a class="text-white collapsed" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#q2ct1_description" aria-expanded="false" aria-controls="q2ct1_description">Description</a>
-                                                                                                            </div>
-                                                                                                            <div id="q2ct1_description" class="collapse" role="tabpanel" aria-labelledby="q2ct1_description-expressions" data-bs-parent="#faq_q1" style="">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>Questions in the Category Type "Expressions & Equations" test how to solve, simplify, rearrange, and work with expressions and equations.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            
-                                                                            <td style="">
-                                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Simplify/Evaluate/Find Equivalent Expressions</button>
-                                            
-                                                                                <div class="modal" id="modal-block-large-q2qt1" tabindex="-1" aria-labelledby="modal-block-large-q2qt1" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="block block-rounded">
-                                                                                                <div class="block-header block-header-default">
-                                                                                                    <h3 class="block-title">Simplify/Evaluate/Find Equivalent Expressions</h3>
-                                                                                                </div>
-                                                                                                <div class="block-content">
-                                                                                                    <div id="faq_q2" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_description_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_description" aria-expanded="true" aria-controls="faq_q2_qt1_description">Description</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q2_qt1_description_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>
-                                                                                                                    This question type covers a broad range of questions with one simple idea - use different types of combining like terms, simplifying, or substitution to match the expression/equation in the original problem to one in the answer choices.
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_lesson_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_lesson" aria-expanded="true" aria-controls="faq_q2_qt1_lesson">Lesson</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_lesson_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                To simplify, evaluate, or find an equivalent expression, determine which types of simplifying need to occur in the problem.
-                                                                                                                    <br/>
-                                                                                                                        <br/>
-                                                                                    
-                                                                                                                    Types of Simplifying
-                                                                                                                    <br/>
-                                                                                                                        <br/>
-                                                                                                                    1. Combine Like Terms
-                                                                                                                    <br/>
-                                                                                                                    2. Substitution
-                                                                                                                    <br/>
-                                                                                                                    3. Distribution
-                                                                                                                    <br/>
-                                                                                                                    4. Factoring
-                                                                                                                    <br />
-                                                                                                                    <br />
-                                                                                    
-                                                                                                                    When any of the above types of simplifying occur in the question, that specific question type will be attached to the question and you can click the button to see the lesson for Combining Like Terms, Substitution, Distribution, or Factoring.
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_strategies_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_strategies" aria-expanded="true" aria-controls="faq_q2_qt1_strategies">Strategies</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_strategies_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Strategy 1: Identify which type of simplifying to perform and know the rules </b></p>
-                                                                                                                    <p>Identify which type of simplifying that the question is calling for and make sure you know the rules for each type.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_idmethods_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idmethods" aria-expanded="true" aria-controls="faq_q2_qt1_idmethods">Identification Methods</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_idmethods_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Identification Method 1</b></p>
-                                                                                                                        <p>The question asks you to "find equivalent expressions".</p>
-                                                                                                                        <p><b>Example 1</b></p>
-                                                                                                                        <p>Question: Find equivalent expression for (x^2 - 3)/x</p>
-                                                                                                                        <b>A. x - (3/x)</b><br />
-                                                                                                                        B. x^2 - (3/x)<br />
-                                                                                                                        C. x - 3<br />
-                                                                                                                        D. x^2 - 3x<br />
-                                                                                                                        E. -2x<br />
-                                                                                                                    <br />
-                                                                                    
-                                                                                                                    <b>Identification Method 2</b></p>
-                                                                                                                        <p>The question implies or asks you to "simplify", "solve", or "combine like terms".</p>
-                                                                                                                        <p><b>Example 1</b></p>
-                                                                                                                        <p>Question: Simplify 3x + 4x^2 - 2x - 8</p>
-                                                                                                                        A. x^4<br />
-                                                                                                                        B. -3x^4<br />
-                                                                                                                        C. 10x^2 - 8<br />
-                                                                                                                        <b>D. 4x^2 + x - 8</b><br />
-                                                                                                                        E. 5x^2 - 8<br />
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_idactivity_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idactivity" aria-expanded="true" aria-controls="faq_q2_qt1_idactivity">Identification Activity</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_idactivity_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Identification Activity 1</b></p>
-                                                                                                                    <p>Which of the following questions test Simplify/Evaluate/Find Equivalent Expressions?</p>
-                                                                                    
-                                                                                                                    <p>Question 1</p>
-                                                                                                                    <p>Question 2</p>
-                                                                                
-                                                                                                                    <p>1. 3x + 4x^2 - 2x - 8 = ?</p>
-                                                                                
-                                                                                                                    <p>2. Graph 3x - 2y = 7</p>
-                                                                                
-                                                                                                                    <p>Key: </p>
-                                                                                                                    <p>#1: Yes, this question implies that it wants you to simplify the problem and combine like terms.</p>
-                                                                                                                    <p>#2: No, this question is asking you to match the equation of a line to its graph.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                            
-                                                                        <tr class="odd">
-                                                                            <td style="">
-                                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Expressions & Equations</button>
-                                            
-                                                                                <div class="modal" id="modal-block-large-q2ct1" tabindex="-1" aria-labelledby="modal-block-large-q2ct1" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="block block-rounded">
-                                                                                                <div class="block-header block-header-default">
-                                                                                                    <h3 class="block-title">Category: Expressions & Equations</h3>
-                                                                                                </div>
-                                                                                                <div class="block-content">
-                                                                                                <div id="q2ct1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                        <div class="block-header block-header-default" role="tab" id="q2ct1_description">
-                                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#q2ct1" href="#q2ct1_description" aria-expanded="true" aria-controls="q2ct1_description">Description</a>
-                                                                                                        </div>
-                                                                                                        <div id="q2ct1_description" class="collapse show" role="tabpanel" aria-labelledby="q2ct1_description" data-bs-parent="#q2ct1">
-                                                                                                            <div class="block-content">
-                                                                                                                <p>Questions in the Category Type "Expressions & Equations" test how to solve, simplify, rearrange, and work with expressions and equations.</p>
-                                                                                                            </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                </div>
-                                                                                            <div class="block-content block-content-full text-end bg-body">
-                                                                                                <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                            </div>
-                                                                                            </div>
-                                                                                            </div>
-                                                                                    </div>
-                                                                                    </div>
-                                                                                </div>
-                                                    
-                                                                            </td>
-                            
-                                                                            <td style="">
-                                                                
-                                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q2qt2" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Combine Like Terms</button>
-
-                                                                                <div class="modal" id="modal-block-large-q2qt2" tabindex="-1" aria-labelledby="modal-block-large-q2qt2" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="block block-rounded">
-                                                                                                <div class="block-header block-header-default">
-                                                                                                    <h3 class="block-title">Simplify/Evaluate/Find Equivalent Expressions</h3>
-                                                                                                </div>
-                                                                                                <div class="block-content">
-                                                                                                    <div id="faq_q2" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_description_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_description" aria-expanded="true" aria-controls="faq_q2_qt1_description">Description</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q2_qt1_description_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>
-                                                                                                                    This question type covers a broad range of questions with one simple idea - use different types of combining like terms, simplifying, or substitution to match the expression/equation in the original problem to one in the answer choices.
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_lesson_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_lesson" aria-expanded="true" aria-controls="faq_q2_qt1_lesson">Lesson</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_lesson_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                To simplify, evaluate, or find an equivalent expression, determine which types of simplifying need to occur in the problem.
-                                                                                                                    <br/>
-                                                                                                                        <br/>
-                                                                                    
-                                                                                                                    Types of Simplifying
-                                                                                                                    <br/>
-                                                                                                                        <br/>
-                                                                                                                    1. Combine Like Terms
-                                                                                                                    <br/>
-                                                                                                                    2. Substitution
-                                                                                                                    <br/>
-                                                                                                                    3. Distribution
-                                                                                                                    <br/>
-                                                                                                                    4. Factoring
-                                                                                                                    <br />
-                                                                                                                    <br />
-                                                                                    
-                                                                                                                    When any of the above types of simplifying occur in the question, that specific question type will be attached to the question and you can click the button to see the lesson for Combining Like Terms, Substitution, Distribution, or Factoring.
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_strategies_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_strategies" aria-expanded="true" aria-controls="faq_q2_qt1_strategies">Strategies</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_strategies_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Strategy 1: Identify which type of simplifying to perform and know the rules </b></p>
-                                                                                                                    <p>Identify which type of simplifying that the question is calling for and make sure you know the rules for each type.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_idmethods_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idmethods" aria-expanded="true" aria-controls="faq_q2_qt1_idmethods">Identification Methods</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_idmethods_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Identification Method 1</b></p>
-                                                                                                                        <p>The question asks you to "find equivalent expressions".</p>
-                                                                                                                        <p><b>Example 1</b></p>
-                                                                                                                        <p>Question: Find equivalent expression for (x^2 - 3)/x</p>
-                                                                                                                        <b>A. x - (3/x)</b><br />
-                                                                                                                        B. x^2 - (3/x)<br />
-                                                                                                                        C. x - 3<br />
-                                                                                                                        D. x^2 - 3x<br />
-                                                                                                                        E. -2x<br />
-                                                                                                                    <br />
-                                                                                    
-                                                                                                                    <b>Identification Method 2</b></p>
-                                                                                                                        <p>The question implies or asks you to "simplify", "solve", or "combine like terms".</p>
-                                                                                                                        <p><b>Example 1</b></p>
-                                                                                                                        <p>Question: Simplify 3x + 4x^2 - 2x - 8</p>
-                                                                                                                        A. x^4<br />
-                                                                                                                        B. -3x^4<br />
-                                                                                                                        C. 10x^2 - 8<br />
-                                                                                                                        <b>D. 4x^2 + x - 8</b><br />
-                                                                                                                        E. 5x^2 - 8<br />
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q2_qt1_idactivity_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q2" href="#faq_q2_qt1_idactivity" aria-expanded="true" aria-controls="faq_q2_qt1_idactivity">Identification Activity</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q2_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q2_qt1_idactivity_aria-label" data-bs-parent="#faq_q2">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Identification Activity 1</b></p>
-                                                                                                                    <p>Which of the following questions test Simplify/Evaluate/Find Equivalent Expressions?</p>
-                                                                                    
-                                                                                                                    <p>Question 1</p>
-                                                                                                                    <p>Question 2</p>
-                                                                                
-                                                                                                                    <p>1. 3x + 4x^2 - 2x - 8 = ?</p>
-                                                                                
-                                                                                                                    <p>2. Graph 3x - 2y = 7</p>
-                                                                                
-                                                                                                                    <p>Key: </p>
-                                                                                                                    <p>#1: Yes, this question implies that it wants you to simplify the problem and combine like terms.</p>
-                                                                                                                    <p>#2: No, this question is asking you to match the equation of a line to its graph.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- accordion tab 3 --}}
-                                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                    <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseThree"
-                                                        aria-expanded="false" aria-controls="collapseThree">
-                                                        <table>
-                                                            <tr>
-                                                                <td class="text-center">
-                                                                    <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
-                                                                </td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">3</button>
-                                                                    <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
-                                                                    <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> B</button>
-                                                                    <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
-                                                                    <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
-                                                                    <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                    <div id="collapseThree" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
-                                                        <div class="odd">
-                                                            <div class="fw-semibold fs-sm p-4">
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q3r" class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white"><i class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
-
-                                                                <div class="modal" id="modal-block-large-q3r" tabindex="-1" aria-labelledby="modal-block-large-q3r" style="display: none;" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="block block-rounded">
-                                                                                <div class="block-header block-header-default">
-                                                                                    <h3 class="block-title">Question 3 Review</h3>
-                                                                                </div>
-                                                                                <div class="block-content">
-                                                                                    <div class="row items-push">
-                                                                                        <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                            <div class="block-header block-header-default">
-                                                                                                <h3 class="block-title">Question 3</h3>
-                                                                                                <div class="block-options">
-                                                                                                    <button type="button" class="btn-block-option" data-toggle="block-option"
-                                                                                                    data-action="content_toggle"></button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="block-content">
-                                                                                                <p>
-                                                                                                    <b>Please refer to the PDF, book, or downloaded file for this question. Test 1576C
-                                                                                                    / Z04 can be found here: <a
-                                                                                                        href="https://www.act.org/content/dam/act/unsecured/documents/Preparing-for-the-ACT.pdf"><u>Test
-                                                                                                        Link</u></a>
-                                                                                                    </b>
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="block block-rounded">
-                                                                                            <ul class="nav nav-tabs nav-tabs-alt" role="tablist">
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link active bg-danger text-white" id="btabs-alt-static-home-tab"
-                                                                                                    data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q3a" role="tab"
-                                                                                                    aria-controls="btabs-alt-static-home" aria-selected="true">Answer A</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-success text-gray" id="btabs-alt-static-profile-tab"
-                                                                                                    data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q3b" role="tab"
-                                                                                                    aria-controls="btabs-alt-static-profile" aria-selected="false">Answer B</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab"
-                                                                                                    data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q3c" role="tab"
-                                                                                                    aria-controls="btabs-alt-static-profile" aria-selected="false">Answer C</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-city-dark text-gray" id="btabs-alt-static-profile-tab"
-                                                                                                    data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q3d" role="tab"
-                                                                                                    aria-controls="btabs-alt-static-profile" aria-selected="false">Answer D</button>
-                                                                                                </li>
-                                                                                                <li class="nav-item">
-                                                                                                    <button class="nav-link bg-danger text-gray" id="btabs-alt-static-home-tab"
-                                                                                                    data-bs-toggle="tab" data-bs-target="#btabs-alt-static-q3e" role="tab"
-                                                                                                    aria-controls="btabs-alt-static-home" aria-selected="true">Answer E</button>
-                                                                                                </li>
-                                                                                            </ul>
-                                                                                            <div class="block-content tab-content">
-                                                                                                <div class="tab-pane active" id="btabs-alt-static-q3a" role="tabpanel"
-                                                                                                    aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                    <p>NO CHANGE: 12</p>
-                                                                                                    <p><b>Explanation: </b>Incorrect order of operations. Use PEMDAS. See Order of
-                                                                                                    Operations lesson in the Question Type column.</p>
-
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q3b" role="tabpanel"
-                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>16</p>
-                                                                                                    <p><b>Explanation: </b>Correct order of operations. Use PEMDAS. </p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q3c" role="tabpanel"
-                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>26</p>
-                                                                                                    <p><b>Explanation: </b>Incorrect order of operations. Use PEMDAS. See Order of
-                                                                                                    Operations lesson in the Question Type column.</p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q3d" role="tabpanel"
-                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>34</p>
-                                                                                                    <p><b>Explanation: </b>Incorrect order of operations. Use PEMDAS. See Order of
-                                                                                                    Operations lesson in the Question Type column.</p>
-                                                                                                </div>
-                                                                                                <div class="tab-pane" id="btabs-alt-static-q3e" role="tabpanel"
-                                                                                                    aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                    <p>104</p>
-                                                                                                    <p><b>Explanation: </b>Incorrect order of operations. Use PEMDAS. See Order of
-                                                                                                    Operations lesson in the Question Type column.</p>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <br />
-
-                                                                <div class="col-md-6 mb-2">
-                                                                    <select class="form-select" id="example-select" name="example-select">
-                                                                        <option selected>Mistake Type (Select One)</option>
-                                                                        <option value="1">Content Misunderstanding</option>
-                                                                        <option value="2">Random Error</option>
-                                                                        <option value="3">Timing Issue</option>
-                                                                    </select>
-                                                                </div>
-
-                                                                <table class="table table-bordered table-striped table-vcenter js-dataTable-responsive">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th style="width: 30%;" class="sorting" tabindex="0" aria-controls="DataTables_Table_4"
-                                                                            rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Category</th>
-                                                                            <th style="width: 70%;" class="sorting" tabindex="0" aria-controls="DataTables_Table_4"
-                                                                            rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Question Type
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr class="odd">
-                                                                            <td style="">
-                                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q3ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i class="fa fa-lg fa-circle-xmark me-1"></i>Arithmetic</button>
-
-                                                                                <div class="modal" id="modal-block-large-q3ct1" tabindex="-1" aria-labelledby="modal-block-large-q3ct1" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="block block-rounded">
-                                                                                                <div class="block-header block-header-default">
-                                                                                                    <h3 class="block-title">Arithmetic</h3>
-                                                                                                </div>
-                                                                                                <div class="block-content">
-                                                                                                    <div id="q3ct1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab"
-                                                                                                            id="q3ct1_description">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#q3ct1"
-                                                                                                                href="#q3ct1_description-arithmetic" aria-expanded="true"
-                                                                                                                aria-controls="q3ct1_description">Description</a>
-                                                                                                            </div>
-                                                                                                            <div id="q3ct1_description-arithmetic" class="collapse show" role="tabpanel"
-                                                                                                            aria-labelledby="q3ct1_description" data-bs-parent="#q3ct1">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>Questions in the Category Type "Arithmetic" test how to add, subtract,
-                                                                                                                    multiply, divide, use exponents, use parentheses, and perform order of
-                                                                                                                    operations.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white  "
-                                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td style="">
-
-                                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q3qt1"
-                                                                                    class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white"><i
-                                                                                    class="fa fa-lg fa-circle-xmark me-1"></i>Order of Operations</button>
-
-                                                                                <div class="modal" id="modal-block-large-q3qt1" tabindex="-1" aria-labelledby="modal-block-large-q3qt1" style="display: none;" aria-hidden="true">
-                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                        <div class="modal-content">
-                                                                                            <div class="block block-rounded">
-                                                                                                <div class="block-header block-header-default">
-                                                                                                    <h3 class="block-title">Order of Operations</h3>
-                                                                                                </div>
-                                                                                                <div class="block-content">
-                                                                                                    <div id="faq_q3" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab"
-                                                                                                            id="faq_q3_qt1_description_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
-                                                                                                                href="#faq_q3_qt1_description" aria-expanded="true"
-                                                                                                                aria-controls="faq_q3_qt1_description_aria-label">Description</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q3_qt1_description" class="collapse show" role="tabpanel"
-                                                                                                            aria-labelledby="faq_q3_qt1_description_aria-label" data-bs-parent="#faq_q3">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>
-                                                                                                                    This question type covers arithmetic operations, which are types of
-                                                                                                                    arithmetic including addition, subtraction, multiplication, division,
-                                                                                                                    using exponents, and distributing values into parentheses.
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab"
-                                                                                                            id="faq_q3_qt1_lesson_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3_LESSON"
-                                                                                                                href="#faq_q3_qt1_lesson" aria-expanded="true"
-                                                                                                                aria-controls="faq_q3_qt1_lesson_aria-label">Lesson</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q3_qt1_lesson" class="collapse" role="tabpanel"
-                                                                                                            aria-labelledby="faq_q3_qt1_lesson_aria-label" data-bs-parent="#faq_q3_LESSON">
-                                                                                                                <div class="block-content">
-                                                                                                                    <img style="width: 550px;" src="assets/cpsmedia/orderofoperations.jpg"
-                                                                                                                    alt="">
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab"
-                                                                                                            id="faq_q3_qt1_strategies_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
-                                                                                                                href="#faq_q3_qt1_strategies" aria-expanded="true"
-                                                                                                                aria-controls="faq_q3_qt1_strategies_aria-label">Strategies</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q3_qt1_strategies" class="collapse" role="tabpanel"
-                                                                                                            aria-labelledby="faq_q3_qt1_strategies_aria-label" data-bs-parent="#faq_q3">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Strategy 1: Identify which type of simplifying to perform and know the
-                                                                                                                        rules </b></p>
-                                                                                                                    <p>Identify which type of simplifying that the question is calling for and
-                                                                                                                    make sure you know the rules for each type.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab"
-                                                                                                            id="faq_q3_qt1_idmethods_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
-                                                                                                                href="#faq_q3_qt1_idmethods" aria-expanded="true"
-                                                                                                                aria-controls="faq_q3_qt1_idmethods_aria-label">Identification Methods</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q3_qt1_idmethods" class="collapse" role="tabpanel"
-                                                                                                            aria-labelledby="faq_q3_qt1_idmethods_aria-label" data-bs-parent="#faq_q3">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Identification Method 1</b></p>
-                                                                                                                    <p>The question asks you to "find equivalent expressions".</p>
-                                                                                                                    <p><b>Example 1</b></p>
-                                                                                                                    <p>Question: Find equivalent expression for (x^2 - 3)/x</p>
-                                                                                                                    <b>A. x - (3/x)</b><br />
-                                                                                                                    B. x^2 - (3/x)<br />
-                                                                                                                    C. x - 3<br />
-                                                                                                                    D. x^2 - 3x<br />
-                                                                                                                    E. -2x<br />
-                                                                                                                    <br />
-
-                                                                                                                    <b>Identification Method 2</b></p>
-                                                                                                                    <p>The question implies or asks you to "simplify", "solve", or "combine like
-                                                                                                                    terms".</p>
-                                                                                                                    <p><b>Example 1</b></p>
-                                                                                                                    <p>Question: Simplify 3x + 4x^2 - 2x - 8</p>
-                                                                                                                    A. x^4<br />
-                                                                                                                    B. -3x^4<br />
-                                                                                                                    C. 10x^2 - 8<br />
-                                                                                                                    <b>D. 4x^2 + x - 8</b><br />
-                                                                                                                    E. 5x^2 - 8<br />
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                            <div class="block-header block-header-default" role="tab"
-                                                                                                            id="faq_q3_qt1_idactivity_aria-label">
-                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q3"
-                                                                                                                href="#faq_q3_qt1_idactivity" aria-expanded="true"
-                                                                                                                aria-controls="faq_q3_qt1_idactivity_aria-label">Identification Activity</a>
-                                                                                                            </div>
-                                                                                                            <div id="faq_q3_qt1_idactivity" class="collapse" role="tabpanel"
-                                                                                                            aria-labelledby="faq_q3_qt1_idactivity_aria-label" data-bs-parent="#faq_q3">
-                                                                                                                <div class="block-content">
-                                                                                                                    <p><b>Identification Activity 1</b></p>
-                                                                                                                    <p>Which of the following questions test Simplify/Evaluate/Find Equivalent
-                                                                                                                    Expressions?</p>
-
-                                                                                                                    <p>Question 1</p>
-                                                                                                                    <p>Question 2</p>
-
-                                                                                                                    <p>1. 3x + 4x^2 - 2x - 8 = ?</p>
-
-                                                                                                                    <p>2. Graph 3x - 2y = 7</p>
-
-                                                                                                                    <p>Key: </p>
-                                                                                                                    <p>#1: Yes, this question implies that it wants you to simplify the problem
-                                                                                                                    and combine like terms.</p>
-                                                                                                                    <p>#2: No, this question is asking you to match the equation of a line to
-                                                                                                                    its graph.</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  "
-                                                                                                    data-bs-dismiss="modal">Close</button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -1270,15 +587,50 @@
                                 </div>
                                 <div class="block-content">
                                     <div class="block-content p-0">       
-                    
+                                        @if(isset($set_get_question_category) && !empty($set_get_question_category))
                                         <div class="tab-content" id="myTabContent">
                                             <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                                                 <div class="accordion accordionExample">
                     
                                                     {{-- accordian tab 1 --}}
+                                                   <?php 
+                                                    $count = 1;
+                                                    $new_count = 1;
+                                                    ?>
+                                                    
+                                                    @foreach($set_get_question_category as $get_question_type => $single_question_data)
+                                                    <?php
+                                                        $test = $count++;
+                                                        $store_total_wrong_answer = 0;
+                                                        
+                                                        foreach($single_question_data as $question_type_val => $single_question_details_item)
+                                                        {
+                                                            $store_correct_answer = 0;
+                                                            $store_wrong_answer = 0;
+                                                            
+                                                            foreach($single_question_details_item as $get_single_ques_data)
+                                                            {
+                                                                foreach($user_selected_answers as $single_answer_user_selected)
+                                                                {
+                                                                    if($get_single_ques_data->test_question_id == $single_answer_user_selected['get_question_details'][0]->question_id)
+                                                                    {
+                                                                        if($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer)
+                                                                        {
+                                                                            $store_correct_answer++;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            $store_wrong_answer++;
+                                                                            $store_total_wrong_answer += $store_wrong_answer;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            } 
+                                                        }
+                                                     ?>
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                        <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                        <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseOne_<?php echo $test; ?>"
+                                                            aria-expanded="false" aria-controls="collapseOne_<?php echo $test; ?>">
                                                             <table>
                                                                 <tr >
                                                                     <td class="text-center">
@@ -1286,7 +638,7 @@
                                                                     </td>
                                                                     <td class="pl-4">
                                                                         <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Category Type">CT</button>
-                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1" class="btn btn-dark fs-xs fw-semibold me-1">Arithmetic</button>
+                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1_remove" class="btn btn-dark fs-xs fw-semibold me-1">{{$get_question_type}}</button>
             
                                                                         <!-- MODAL -->
                                                                         <div class="modal" id="modal-block-large-ct1" tabindex="-1" aria-labelledby="modal-block-large-ct1" style="display: none;" aria-hidden="true">
@@ -1323,33 +675,43 @@
                                                                             </div>
                                                                         </div>
                                                                          <!-- END MODAL -->
-            
+                                                                        @if($store_total_wrong_answer > 0)
                                                                         <div class="text-white text-start mt-2 incorrect">
-                                                                            2 Incorrect
+                                                                            <?php echo $store_total_wrong_answer; ?> Incorrect
                                                                         </div>
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
                                                             </table>
                                                         </div>
-                                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
+                                                        <div id="collapseOne_<?php echo $test; ?>" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="odd">    
                                                                 <div class="fw-semibold fs-sm">
                                                                    <div>
                                                                         <div>
+
+                                                                            @foreach($single_question_data as $question_type_val => $single_question_details_item)
+                                                                            <?php 
+                                                                            
+                                                                            ?>
+                                                                            <?php $new_test = $new_count++; ?>
                                                                             <div class="odd p-3 ps-4">
                                                                                 <div></div>
                                                         
                                                                                 <div class="fw-semibold fs-sm">
                                                                                     <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Question Type">QT</button>
-                                                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-cg1ct1" class="btn btn-dark fs-xs fw-semibold me-1 mb-3">Arithmetic Operations</button>
+                                                                                    <button type="button" data-bs-toggle="modal" 
+                                                                                    data-question_desc="<?php echo $single_question_details_item[0]->question_type_description ?>"
+                                                                                    data-question_title="<?php echo $single_question_details_item[0]->question_type_title ?>"
+                                                                                    data-bs-target="#modal-block-large-cg1ct1_<?php echo $new_test; ?>" class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{$question_type_val}}</button>
                                                             
                                                                                     <!-- MODAL -->
-                                                                                    <div class="modal" id="modal-block-large-cg1ct1" tabindex="-1" aria-labelledby="modal-block-large-cg1ct1" style="display: none;" aria-hidden="true">
+                                                                                    <div class="modal" id="modal-block-large-cg1ct1_<?php echo $new_test; ?>" tabindex="-1" aria-labelledby="modal-block-large-cg1ct1_<?php echo $new_test; ?>" style="display: none;" aria-hidden="true">
                                                                                         <div class="modal-dialog modal-lg" role="document">
                                                                                             <div class="modal-content">
                                                                                                 <div class="block block-rounded">
                                                                                                     <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">Arithmetic Operations</h3>
+                                                                                                        <h3 class="block-title set_question_type_title">Arithmetic Operations</h3>
                                                                                                     </div>
                                                                                                     <div class="block-content">
                                                                                                         <p class="fs-sm mb-0"></p>
@@ -1363,7 +725,7 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                                 <div class="block-content">
-                                                                                                                    <p>words</p>
+                                                                                                                    <p class="set_question_type_desc">words</p>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
@@ -1377,228 +739,28 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <!-- END MODAL -->
-                                                                                    
+                                                                                    @if($store_wrong_answer > 0)
                                                                                     <div class="text-danger">
-                                                                                        1 Incorrect
+                                                                                        <?php echo $store_wrong_answer; ?> Incorrect
                                                                                     </div>
+                                                                                    @endif
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="border-top-tr p-3 ps-4">
-                                                                                <div></div>
-                                                                                <div class="fw-semibold fs-sm">
-                                                                                    <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Question Type">QT</button>
-                                                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-cg1ct1qt2" class="btn btn-dark fs-xs fw-semibold me-1 mb-3">Order of Operations</button>
-                                                    
-                                                                                    <!-- MODAL -->
-                                                                                    <div class="modal" id="modal-block-large-cg1ct1qt2" tabindex="-1" aria-labelledby="modal-block-large-cg1ct1qt2" style="display: none;" aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-lg" role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="block block-rounded">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">Order of Operations</h3>
-                                                                                                    </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="fs-sm mb-0"></p>
-                                                                                            
-                                                                                                        <div class="row items-push">
-                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Description</h3>
-                                                                                                                    <div class="block-options">
-                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>words dddd</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                    
-                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                        <button type="button" class="btn btn-sm block-header-default text-white" data-bs-dismiss="modal">Close</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!-- END MODAL -->
-                                                                                    <div class="text-danger">
-                                                                                    1 Incorrect
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                                            @endforeach
                                                                         </div>
                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @endforeach
                                                     {{-- END accordian tab 1 --}}
             
-                                                    {{-- accordian tab 2 --}}
-                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                        <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseTwo"
-                                                            aria-expanded="false" aria-controls="collapseTwo">
-                                                            <table>
-                                                                <tr >
-                                                                    <td class="text-center">
-                                                                        <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
-                                                                    </td>
-                                                                    <td class="pl-4">
-                                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Category Type">CT</button>
-                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1" class="btn btn-dark fs-xs fw-semibold me-1">Fractions</button>
-            
-                                                                        <!-- MODAL -->
-                                                                        <div class="modal" id="modal-block-large-ct1" tabindex="-1" aria-labelledby="modal-block-large-ct1" style="display: none;" aria-hidden="true">
-                                                                            <div class="modal-dialog modal-lg" role="document">
-                                                                                <div class="modal-content">
-                                                                                    <div class="block block-rounded">
-                                                                                        <div class="block-header block-header-default">
-                                                                                            <h3 class="block-title">FRACTIONS </h3>
-                                                                                        </div>
-                                                                                        <div class="block-content">
-                                                                                            <p class="fs-sm mb-0">
-                                                                                            </p>
-                                                                                    
-                                                                                            <div class="row items-push">
-                                                                                                <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">Description</h3>
-                                                                                                        <div class="block-options">
-                                                                                                            <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p>frac words</p>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
                                                     
-                                                                                        <div class="block-content block-content-full text-end bg-body">
-                                                                                            <button type="button" class="btn btn-sm block-header-default text-white" data-bs-dismiss="modal">Close</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                         <!-- END MODAL -->
-            
-                                                                        <div class="text-white text-start mt-2 incorrect">
-                                                                            4 Incorrect
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
-                                                            <div class="odd">    
-                                                                <div class="fw-semibold fs-sm">
-                                                                   <div>
-                                                                        <div>
-                                                                            <div class="odd p-3 ps-4">
-                                                                                <div></div>
-                                                        
-                                                                                <div class="fw-semibold fs-sm">
-                                                                                    <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Question Type">QT</button>
-                                                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-cg1ct2qt1" class="btn btn-dark fs-xs fw-semibold me-1 mb-3">Converting Between Fractions, Decimals, and Percents</button>
-                                                            
-                                                                                    <!-- MODAL -->
-                                                                                    <div class="modal" id="modal-block-large-cg1ct2qt1" tabindex="-1" aria-labelledby="modal-block-large-cg1ct2qt1" style="display: none;" aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-lg" role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="block block-rounded">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">Converting Between Fractions, Decimals, and Percents</h3>
-                                                                                                    </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="fs-sm mb-0"></p>
-                                                                                            
-                                                                                                        <div class="row items-push">
-                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Description</h3>
-                                                                                                                    <div class="block-options">
-                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>conv frac words</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                    
-                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                        <button type="button" class="btn btn-sm block-header-default text-white" data-bs-dismiss="modal">Close</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!-- END MODAL -->
-                                                                                    
-                                                                                    <div class="text-danger">
-                                                                                        3 Incorrect
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="border-top-tr p-3 ps-4">
-                                                                                <div></div>
-                                                                                <div class="fw-semibold fs-sm">
-                                                                                    <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Question Type">QT</button>
-                                                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-cg1ct2qt2" class="btn btn-dark fs-xs fw-semibold me-1 mb-3">Find New Value</button>
-                                                    
-                                                                                    <!-- MODAL -->
-                                                                                    <div class="modal" id="modal-block-large-cg1ct2qt2" tabindex="-1" aria-labelledby="modal-block-large-cg1ct2qt2" style="display: none;" aria-hidden="true">
-                                                                                        <div class="modal-dialog modal-lg" role="document">
-                                                                                            <div class="modal-content">
-                                                                                                <div class="block block-rounded">
-                                                                                                    <div class="block-header block-header-default">
-                                                                                                        <h3 class="block-title">ORDER OF OPERATIONS</h3>
-                                                                                                    </div>
-                                                                                                    <div class="block-content">
-                                                                                                        <p class="fs-sm mb-0"></p>
-                                                                                            
-                                                                                                        <div class="row items-push">
-                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Description</h3>
-                                                                                                                    <div class="block-options">
-                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <p>new words dddd</p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                    
-                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                        <button type="button" class="btn btn-sm block-header-default text-white" data-bs-dismiss="modal">Close</button>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!-- END MODAL -->
-                                                                                    <div class="text-danger">
-                                                                                    1 Incorrect
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                   </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    {{-- END accordian tab 2 --}}
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
