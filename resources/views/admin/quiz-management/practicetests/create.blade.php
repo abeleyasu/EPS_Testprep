@@ -258,6 +258,23 @@ ul.answerOptionLsit li label input{
     padding: 0px;
     margin: 0px;
 }
+
+.input-container {
+  margin-bottom: 10px;
+}
+
+.input-group {
+  display: flex;
+}
+
+.form-control {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.plus-button {
+  margin-left: 5px;
+}
 </style>
 @endsection
 @section('admin-content')
@@ -284,8 +301,8 @@ ul.answerOptionLsit li label input{
                 <div class="tab">
                     <div class="row mb-4">
 						<div class="col-md-12 mb-2">
-							<label class="form-label">Name:</label>
-							<input type="text" class="form-control test_title required" placeholder="Enter practice test name" name="title" value=""/>
+							<label class="form-label">Title:</label>
+							<input type="text" class="form-control test_title required" placeholder="Enter Practice Test Title" name="title" value=""/>
 						</div>
 						<div class="col-md-12 ptype">
 							<label class="form-label">Test Type:</label>
@@ -399,6 +416,12 @@ ul.answerOptionLsit li label input{
                     <div class="mb-2">
                         <label class="form-label validError" style="font-size: 13px; color: red;"></label>
                     </div>
+
+                    <div class="mb-2">
+                        <label class="form-label" style="font-size: 13px;">Practice Test Section Title:</label>
+                        <input id="testSectiontitle" value="" name="testSectiontitle" placeholder="Enter Practice Section Title" class="form-control">
+                    </div> 
+
                     <div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
                         <select id="testSectionType" name="testSectionType" class="form-control">
@@ -452,14 +475,40 @@ ul.answerOptionLsit li label input{
                         </div>
                     </div>
 
-                    <div class="mb-2 mb-4">
+                    <!-- <div class="mb-2 mb-4">
 						<label for="category_type" class="form-label">Category type:</label>
                         <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
+                        <ul id="category_type_results"></ul>
 					</div>
 
+                    
                     <div class="mb-2 mb-4 add_question_type_select"> 
-                        <!-- <label for="new_question_type" class="form-label">Question type:</label>
-                        <input type="text" value="" name="new_question_type" id="new_question_type" placeholder="Question type" class="form-control form-control-lg form-control-alt" > -->
+                        <label for="search-input" class="form-label">Question type:</label>
+                        <input type="text" value="" name="search-input" id="search-input" placeholder="Question Type" class="form-control form-control-lg form-control-alt" >
+                        <ul id="search-results"></ul>
+                    </div> -->
+
+                    <div class="input-container">
+                        <div class="input-group">
+                            
+                            <div class="mb-2 mb-4">
+                                <input type="text" value="" data-search_id="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt get_category_type" >
+                                <ul id="category_type_results"></ul>
+                            </div>
+
+                            <div class="mb-2 mb-4 add_question_type_select"> 
+                                <input type="text" value="" name="search-input" data-search_id="" id="search-input" placeholder="Question Type" class="form-control form-control-lg form-control-alt get_question_type" >
+                                <ul id="search-results"></ul>
+                            </div>
+                            
+                            <!-- <input type="text" class="form-control" id="input1">
+
+                            <input type="text" class="form-control" id="input2"> -->
+                            <button class="btn btn-primary plus-button">+</button>
+                        </div>
+                    </div>
+
+                    <!-- <div class="mb-2 mb-4 add_question_type_select"> 
                         <label for="new_question_type_select">Question type:</label>
                         <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
                             <option value="">Select Question Type</option>
@@ -467,7 +516,7 @@ ul.answerOptionLsit li label input{
                             <option value="{{$singleQuestionTypes->id}}">{{$singleQuestionTypes->question_type_title}}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> -->
 
 					<div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Passages:</label>
@@ -719,7 +768,106 @@ ul.answerOptionLsit li label input{
 			extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
 			allowedContent
 		});*/
-		$('.add_question_modal_btn').click(function() {
+
+        $(document).ready(function(){
+            $(".plus-button").on("click", function() {
+                if ($(this).closest('.input-group').is(":first-child")) {
+                    var newInputGroup = $(this).closest(".input-group").clone();
+                    console.log(newInputGroup);
+                    newInputGroup.find('#category_type').val('');
+                    newInputGroup.find('#search-input').val('');
+
+                    newInputGroup.find('.plus-button').remove();
+                    var newMinusButton = $("<button>").addClass("btn btn-danger minus-button").text("-");
+                    newMinusButton.insertAfter(newInputGroup.find(".add_question_type_select"));
+                    newInputGroup.appendTo(".input-container");
+                }
+            });
+            
+            $(document).on("click", ".minus-button", function() {
+                $(this).closest(".input-group").remove();
+            });
+        });
+        
+
+        var categories = <?php echo json_encode($getQuestionTypes); ?>;
+        var practice_category_types = <?php echo json_encode($getCategoryTypes); ?>;
+        
+        $(document).on("keyup", "#search-input", function() {
+            var searchValue = $(this).val();
+            const check  = $(this);
+            
+            var filteredCategories = categories.filter(function(category) {
+                var test = category.question_type_title;
+                return test.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
+            });
+            
+            if(searchValue.length > 0) {
+                if(filteredCategories.length>0){
+                    check.next("#search-results").empty();
+                    filteredCategories.forEach(function(category) {
+                        check.next("#search-results").append("<li class='search-result' data-search_id='"+category.id+"'>" + category.question_type_title + "</li>");
+                    });
+                }else{
+                    check.next("#search-results").empty();
+                    check.next("#search-results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+                }
+                
+                $(".search-result").on("click", function() {
+                    var selectedValue = $(this).text();
+                    var selectedValueId = $(this).data('search_id');
+                    check.val(selectedValue);
+                    check.data('search_id',selectedValueId);
+                    check.next("#search-results").empty();
+                });
+            } else {
+                check.next("#search-results").empty();
+            }
+        });
+
+        $(document).on("keyup", "#category_type", function() {
+            var searchValue = $(this).val();
+            const check  = $(this);
+            
+            
+            var filteredCategories = practice_category_types.filter(function(practice_category_type) {
+                console.log(practice_category_type.category_type_title);
+                var test = practice_category_type.category_type_title;
+                return test.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
+            });
+            
+            if(searchValue.length > 0) {
+                console.log('1');
+                
+                if(filteredCategories.length>0){
+                    console.log('2');
+                    check.next("#category_type_results").empty();
+                    
+                    
+                    filteredCategories.forEach(function(practice_category_type) {
+                        console.log('3');
+                        console.log(check);
+                        
+                        check.next("#category_type_results").append("<li class='search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
+                    });
+                }else{
+                    check.next("#category_type_results").empty();
+                    check.next("#category_type_results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+                }
+
+                $(".search-result").on("click", function() {
+                    var selectedValue = $(this).text();
+                    var selectedValueId = $(this).data('search_id');
+                    check.val(selectedValue);
+                    check.data('search_id',selectedValueId);
+                    check.next("#category_type_results").empty();
+                });
+            }else{
+                check.next("#category_type_results").empty();
+            }
+        });
+
+        $('.add_question_modal_btn').click(function() {
 			var title = $('.test_title').val();
 			if ( $("#practicetestid option[value=0]").length > 0 ){
 				$("#practicetestid option[value=0]").remove();
@@ -797,6 +945,8 @@ ul.answerOptionLsit li label input{
             var format = $('.ptype #format').val();
             var currentModelId = $('#currentModelId').val();
             var currentModelQueId = $('#currentModelQueId').val();
+
+            var testSectionTitle = $('#testSectiontitle').val();
             var testSectionType = $('#testSectionType').val();
             var tags = '';
             var QuesTags = $('.tag-div input[name="tags[]"]').map(function(){return $(this).val();}).get();
@@ -814,7 +964,7 @@ ul.answerOptionLsit li label input{
             
             if(whichModel == 'section'){
                 
-                if(format =='' || testSectionType ==''){
+                if(format =='' || testSectionType =='' || testSectionTitle == ''){
                     $('#sectionModal .validError').text('Below fields are required!');
                     return false;
                 }else{
@@ -828,6 +978,7 @@ ul.answerOptionLsit li label input{
 				$.ajax({
 					data:{
 						'format': format,
+                        'testSectionTitle':testSectionTitle,
 						'testSectionType': testSectionType,
                         'order': 1,
 						'_token': $('input[name="_token"]').val()
@@ -862,7 +1013,72 @@ ul.answerOptionLsit li label input{
 
                 var question_category_type_value = $('#category_type').val();
 
-                // console.log(new_question_type);
+                var get_category_type_values = $('.get_category_type').map(function(){
+                    var store_id = 0;
+                    var check_id = $(this).data('search_id');
+                    var check_value = $(this).val();
+
+                    if(check_id == '' && check_value != '' )
+                    {
+                        $.ajax({
+                            data:{
+                                'searchId': $(this).data('search_id'),
+                                'searchValue': $(this).val(),
+                                '_token': $('input[name="_token"]').val()
+                            },
+                            url: '{{route("addPracticeCategoryType")}}',
+                            method: 'post',
+                            async: false,
+                            success: (res) => {
+                                store_id = parseInt(res);
+                            } 
+                        });	
+                    }
+                    else if(check_id == '' && check_value == '')
+                    {
+                        store_id = 0;
+                    }
+                    else
+                    {
+                        store_id = check_id;
+                    }
+                    return store_id;
+                }).get();
+
+                var get_question_type_values = $('.get_question_type').map(function(){
+                    var store_id = 0;
+                    var check_id = $(this).data('search_id');
+                    var check_value = $(this).val();
+                    if(check_id == '' && check_value != '')
+                    {
+                        $.ajax({
+                            data:{
+                                'searchId': $(this).data('search_id'),
+                                'searchValue': $(this).val(),
+                                '_token': $('input[name="_token"]').val()
+                            },
+                            url: '{{route("addPracticeQuestionType")}}',
+                            method: 'post',
+                            async: false,
+                            success: (res) => {
+                                store_id = parseInt(res);
+                            } 
+                        });	
+                    }
+                    else if(check_id == '' && check_value == '')
+                    {
+                        store_id = 0;
+                    }
+                    else
+                    {
+                        store_id = check_id;
+                    }
+                    return store_id;
+                
+                }).get();
+                
+                // console.log(get_category_type_values);
+                // console.log(get_question_type_values);
                 // return false;
                 var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
                 var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
@@ -939,8 +1155,9 @@ ul.answerOptionLsit li label input{
                         'tags': tags,
 						'section_id':section_id,
                         'new_question_type_select':new_question_type_select,
-                        'question_category_type_value':question_category_type_value,
-						'_token': $('input[name="_token"]').val()
+                        'get_category_type_values':get_category_type_values,
+                        'get_question_type_values':get_question_type_values,
+                        '_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("addPracticeQuestion")}}',
 					method: 'post',
