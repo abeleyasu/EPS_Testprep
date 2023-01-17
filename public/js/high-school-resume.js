@@ -623,7 +623,7 @@ async function addAthleticsData(data){
         html += `<td>`;
         html += `<select class="js-select2 select" id="athletics_positions_${$count}" name="athletics_data[${$count}][position]" data-placeholder="Enter Position">`;
         html += `<option value="">Select Position</option>`;
-        html += await single_dropdown_lists(`/user/position/list`);
+        html += await single_dropdown_lists(`/user/athletic/position/list`);
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;

@@ -657,5 +657,21 @@ return [
         "Social Sciences, General",
         "Sociology"
     ],
+
+    "languages" => [
+        "Ancient Greek",
+        "Arabic",
+        "Chinese",
+        "French",
+        "German",
+        "Hebrew",
+        "Italian",
+        "Japanese",
+        "Korean",
+        "Latin",
+        "Portuguese",
+        "Russian",
+        "Spanish"
+    ]
 ]
 ?>

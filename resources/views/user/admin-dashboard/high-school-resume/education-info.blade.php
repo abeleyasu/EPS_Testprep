@@ -109,6 +109,7 @@
                                                             Graduation Designation 
                                                         </label>
                                                         <select class="js-select2 form-select" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
+                                                            <option value="">Select Graduation Designation</option>
                                                             @foreach($graduation_designations as $graduation_designation)
                                                                 <option {{ isset($education['graduation_designation']) && $education['graduation_designation'] != null ? ($education['graduation_designation'] == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
                                                             @endforeach

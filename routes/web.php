@@ -44,6 +44,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\AwardController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\AthleticPositionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -251,7 +252,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::get('/awards/list', [AwardController::class, 'getAwardList'])->name('awardsList');
     Route::get('/organizations/list', [OrganizationController::class, 'getOrganizationList'])->name('organizationsList');
     Route::get('/position/list', [PositionController::class, 'getPositionsList'])->name('positionsList');
-    
+    Route::get('/athletic/position/list', [AthleticPositionController::class, 'getAthleticPositionsList'])->name('positionsList');
+
     Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
 
     Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
