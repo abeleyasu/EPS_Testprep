@@ -95,6 +95,7 @@
         user-select: none;
         -webkit-user-select: none;
     }
+    
 
     .custom-tab-container ul li p {
         width: 50px;
@@ -426,7 +427,6 @@
         color: #4e4e4e;
         cursor: unset;
         position: relative;
-        margin-bottom: 10px;
         word-break: break-all;
     }
 

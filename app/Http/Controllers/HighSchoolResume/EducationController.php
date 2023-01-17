@@ -24,7 +24,12 @@ class EducationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        $states = Config::get('constants.STATES');
+        $states = Config::get('constants.states');
+        $ib_courses = Config::get('constants.ib_courses');
+        $ap_courses = Config::get('constants.ap_courses');
+
+        $graduation_designations = Config::get('constants.graduation_designation');
+        
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -67,11 +72,11 @@ class EducationController extends Controller
 
         $grades = Grade::all();
 
-        $intended_major = IntendedCollegeList::whereType('1')->get();
-        $intended_minor = IntendedCollegeList::whereType('2')->get();
+        $intended_major = IntendedCollegeList::whereType('1')->orderBy('name','ASC')->get();
+        $intended_minor = IntendedCollegeList::whereType('2')->orderBy('name','ASC')->get();
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations'));
     }
 
     public function store(EducationRequest $request)
@@ -196,6 +201,10 @@ class EducationController extends Controller
 
         if (!empty($data['current_grade'])) {
             $data['current_grade'] = json_encode($data['current_grade']);
+        }
+
+        if (!empty($data['graduation_designation'])) {
+            $data['graduation_designation'] = json_encode($data['graduation_designation']);
         }
 
         if (isset($data['honor_course_data']) && !empty($data['honor_course_data'])) {

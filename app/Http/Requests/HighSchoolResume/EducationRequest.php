@@ -15,6 +15,7 @@ class EducationRequest extends FormRequest
     {
         return [
             "current_grade" => "required",
+            "graduation_designation" => "",
             "month" => "required",
             "year" => "required",
             "high_school_name" => "required",

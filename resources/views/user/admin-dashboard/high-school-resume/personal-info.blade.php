@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="">
             <div class="custom-tab-container">
                 @if (Session::has('success'))
                     <div class="alert alert-success alert-dismissible" role="alert">
@@ -116,7 +116,7 @@
                                                     <div class="col-lg-3">
                                                         <div>
                                                             <label class="form-label" for="middle_name">
-                                                                Middle Name
+                                                                Middle
                                                             </label>
                                                             <input type="text"
                                                                 class="form-control"
@@ -198,15 +198,17 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
-                                                        <div>
+                                                        <div class="select2-container_main">
                                                             <label class="form-label" for="city">
                                                                 City
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                value="{{ isset($personal_info->city) && $personal_info->city != null ? $personal_info->city : "" }}"
-                                                                id="city" name="city" placeholder="Enter city">
+                                                            <select class="js-select2 form-select" name="city" style="width: 100%;" data-placeholder="Enter city">
+                                                                <option></option>
+                                                                @foreach($cities as $city)
+                                                                    <option value="{{$city}}" {{ isset($personal_info->city) && $personal_info->city != null ? ($personal_info->city  == $city ? 'selected' : '') : '' }} > {{$city}} </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">

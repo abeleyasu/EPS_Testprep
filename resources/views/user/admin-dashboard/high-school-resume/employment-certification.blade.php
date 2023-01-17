@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="">
             <div class="custom-tab-container ">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">

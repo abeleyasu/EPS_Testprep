@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="container education-container">
+    <div class="education-container">
         <div class="custom-tab-container ">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li role="presentation">
@@ -98,6 +98,20 @@
                                                             multiple="multiple">
                                                             @foreach ($grades as $grade)
                                                                 <option {{ isset($education['current_grade']) && $education['current_grade'] != null ? (in_array($grade->id, json_decode($education['current_grade'])) ? 'selected' : '') : ''}}  value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <!-- start  -->
+                                                    <div class="select2-container_main mt-3">
+                                                        <label class="form-label" for="graduation_designation">
+                                                            Graduation Designation 
+                                                        </label>
+                                                        <select class="js-select2 form-select" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
+                                                            <option value="">Select Graduation Designation</option>
+                                                            @foreach($graduation_designations as $graduation_designation)
+                                                                <option {{ isset($education['graduation_designation']) && $education['graduation_designation'] != null ? ($education['graduation_designation'] == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -237,7 +251,7 @@
                                                             GPA
                                                             (UNWEIGHTED)
                                                         </label>
-                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" min="0" max="4" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
+                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_unweighted" class="form-control" id="cumulative_gpa_unweighted" min="0" max="8" value="{{ isset($education->cumulative_gpa_unweighted) && $education->cumulative_gpa_unweighted != null ? $education->cumulative_gpa_unweighted : old('cumulative_gpa_unweighted') }}" name="cumulative_gpa_unweighted" placeholder="Enter Cumulative GPA (UNWEIGHTED)">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -245,7 +259,7 @@
                                                         <label class="form-label" for="cumulative_gpa_weighted">Cumulative
                                                             GPA
                                                             (WEIGHTED)</label>
-                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" min="0" max="5" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
+                                                        <input type="number" onkeydown="javascript: return event.keyCode == 69 ? false : true" id="cumulative_gpa_weighted" class="form-control" id="cumulative_gpa_weighted" min="0" max="8" value="{{ isset($education->cumulative_gpa_weighted) && $education->cumulative_gpa_weighted != null ? $education->cumulative_gpa_weighted : old('cumulative_gpa_weighted') }}" name="cumulative_gpa_weighted" placeholder="Enter Cumulative GPA (WEIGHTED)">
                                                        </div>
                                                 </div>
                                             </div>
@@ -494,11 +508,11 @@
                                                             <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
                                                                 <td>
                                                                     <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
-                                                                        <option value="">Select Name Of Test</option>
-                                                                        <option value="PSAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>PSAT</option>
-                                                                        <option value="SAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>SAT</option>
-                                                                        <option value="ACT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT</option>
-                                                                    </select>
+                                                                        <option value="" disabled selected hidden>Select Name Of Test</option>
+                                                                        <option value="SAT – 400 – 1600" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT – 400 – 1600' ? 'selected' : '' ) : '' ) }}>SAT – 400 – 1600</option>
+                                                                        <option value="PSAT 320-1520" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT 320-1520' ? 'selected' : '' ) : '' ) }}>PSAT 320-1520</option>
+                                                                        <option value="ACT 1-36" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT 1-36' ? 'selected' : '' ) : '' ) }}>ACT 1-36</option>
+                                                                    </select>   
                                                                 </td>
                                                                 <td>                                                            
                                                                     <input type="text" class="form-control" value="{{ $testing_data['results_score'] }}" name="testing_data[{{ $index }}][results_score]" placeholder="Enter Results score">
@@ -518,9 +532,9 @@
                                                             <td>
                                                                 <select class="form-select" id="name_of_test" name="testing_data[0][name_of_test]" style="width: 100%;">
                                                                     <option value="">Select name of test</option>
-                                                                    <option value="PSAT">PSAT</option>
-                                                                    <option value="SAT">SAT</option>
-                                                                    <option value="ACT">ACT</option>
+                                                                    <option value="SAT – 400 – 1600">SAT – 400 – 1600</option>
+                                                                    <option value="PSAT 320-1520">PSAT 320-1520</option>
+                                                                    <option value="ACT 1-36">ACT 1-36</option>
                                                                 </select>
                                                             </td>
                                                             <td>                                                            
@@ -672,13 +686,13 @@
             if(total_testing_count > 0) {
                 for (let index = 0; index < total_testing_count; index++) {
                     $(`#testing-date-${index}`).datepicker({
-                        format: 'dd-mm-yyyy',
+                        format: 'mm-dd-yyyy',
                         endDate: '-1d'
                     });
                 }
             } else {
                 $('#testing-date-0').datepicker({
-                    format: 'dd-mm-yyyy',
+                    format: 'mm-dd-yyyy',
                     endDate: '-1d'
                 });
             }
@@ -861,7 +875,6 @@
         });
 
         for (let key = 0; key < $('.course_data_table_row').length; key++) {
-            console.log('yes'); 
             $(`input[name='course_data[${key}][course_name]']`).each(function(i,e){
                 let course_name = $(e).val();
                 if(course_name != ''){

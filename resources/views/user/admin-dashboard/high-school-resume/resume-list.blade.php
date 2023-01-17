@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="">
             <div class="block-content resume-list-table">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-vcenter" id="resumeTable">

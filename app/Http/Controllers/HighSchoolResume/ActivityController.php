@@ -18,6 +18,8 @@ class ActivityController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
+        $demonstrated_positions = Config::get('constants.demonstrated_positions');
+
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
                 'personal_info',
@@ -42,9 +44,11 @@ class ActivityController extends Controller
         $grades = Grade::all();
         $validations_rules = Config::get('validation.activities.rules');
         $validations_messages = Config::get('validation.activities.messages');
+        $organizations = Config::get('constants.leadership_organization');
+        $athletics_positions = Config::get('constants.athletics_position');
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades'));
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions','organizations','athletics_positions'));
     }
 
     public function store(ActivityRequest $request)
@@ -145,7 +149,6 @@ class ActivityController extends Controller
     {
         $resume_id = isset($request->resume_id) ? $request->resume_id : null;
         $data = $request->validated();
-
         $grade_ids = Grade::pluck('id')->toArray();
 
         if (isset($data['demonstrated_data']) && !empty($data['demonstrated_data'])) {

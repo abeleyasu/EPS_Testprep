@@ -44,9 +44,11 @@ class HonorsController extends Controller
         }
         $validations_rules = Config::get('validation.honors.rules');
         $validations_messages = Config::get('validation.honors.messages');
+        $status = Config::get('constants.status');
+        $awards = Config::get('constants.honor_achievement_awards');
         $grades = Grade::all();
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages', 'grades'));
+        return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages', 'grades','status','awards'));
     }
 
     public function store(HonorsRequest $request)

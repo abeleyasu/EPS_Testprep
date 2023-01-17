@@ -271,16 +271,15 @@
 
 <body>
     <div style="margin-bottom: 0">
-        <p
+        <h1
             style="font-weight:400; padding:10px 50px 10px;background-color: #f4f4f4; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0">
-            <b>{{ $personal_info->first_name }}<b> {{ $personal_info->middle_name }} {{ $personal_info->last_name }}
+            <b>{{ $personal_info->first_name }}<b>  {{ $personal_info->middle_name }} {{ $personal_info->last_name }} {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
                 </b>
-        </p>
+        </h1>
     </div>
     <div class="clear-both" style="margin-top: -20px">
         <div class="preview-left col-lg-6">
             <div class="preview-list border-bottom d-block ps-0 contact-list-after">
-                <h3>Contact</h3>
                 <span class="list">
                     @if(isset($personal_info->email))
                         <span class="span_text">
