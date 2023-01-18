@@ -470,8 +470,7 @@
                                                                                 {{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}
                                                                                 {{ $data['position'] }},
                                                                                 {{ $data['interest'] }},
-                                                                                {{ $data['details'] }}
-
+                                                                                {{ $data['details'] }}  
                                                                         @endforeach
                                                                         </li>
                                                                     </ul>
@@ -482,7 +481,7 @@
                                                             <li>
                                                                 <div class="list_group">
                                                                     <ul class="list_items">
-                                                                        @foreach($leadership_data as $data)
+                                                                    @foreach($leadership_data as $data)
                                                                         <li class="list-type">
                                                                             @if(!empty($data['grade']))
                                                                                     {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
