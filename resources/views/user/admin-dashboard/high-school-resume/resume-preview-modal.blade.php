@@ -210,7 +210,7 @@
                                                                 {{ $data['location'] }},
                                                         @endif
                                                         @if (isset($data['honor_award']) && !empty($data['honor_award']))                                                                            
-                                                                {{ $data['honor_award'] }},
+                                                                {{ $data['honor_award'] }}
                                                         @endif
                                                     </li>
                                                 @endforeach
@@ -285,14 +285,13 @@
                                                 </li>
                                             @endif
                                             <li>
-                                                {{-- <span class="d-block mb-2">School Name / City / State /
-                                                    District :
-                                                </span> --}}
                                                 {{ $education->high_school_name }} /
                                                 {{ $education->high_school_city }} /
                                                 {{ $education->high_school_state }} /
                                                 {{ $education->high_school_district }}
+                                                @if (isset($education->graduation_designation) && $education->graduation_designation != null)
                                                 ({{$education->graduation_designation}})
+                                                @endif
                                                 @if(!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
                                                     <li>
                                                         {{ $education->cumulative_gpa_unweighted }} UWtd .GPA,
@@ -314,18 +313,7 @@
                                                         </li>
                                                     @endforeach
                                                 @endif
-                                            </li>
-                                            {{-- <li>
-                                                <span>Current Grade:
-                                                </span>{{ implode(',', ($current_grade)) }}
-                                            </li> --}}
-                                            {{-- <li>
-                                                <span> Month / Year :
-                                                </span>
-                                                {{ $education->month }} / {{ $education->year }}
-                                            </li> --}}
-                                            
-                                           
+                                            </li>  
                                             @if (!empty($education->ib_courses))
                                                 <li>
                                                     <span>IB Courses:</span>
@@ -543,4 +531,4 @@
         </div>
     </div>
 </div>
-</div>
+</div>  

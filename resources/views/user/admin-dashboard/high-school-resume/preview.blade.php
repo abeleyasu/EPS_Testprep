@@ -270,7 +270,7 @@
                                                                             {{ $data['location'] }},
                                                                     @endif
                                                                     @if (isset($data['honor_award']) && !empty($data['honor_award']))                                                                            
-                                                                            {{ $data['honor_award'] }},
+                                                                            {{ $data['honor_award'] }}
                                                                     @endif
                                                                 </li>
                                                             @endforeach
@@ -352,7 +352,9 @@
                                                             {{ $education->high_school_city }} /
                                                             {{ $education->high_school_state }} /
                                                             {{ $education->high_school_district }}
-                                                            ({{$education->graduation_designation}})
+                                                            @if (isset($education->graduation_designation) && $education->graduation_designation != null)
+                                                                ({{$education->graduation_designation}})
+                                                            @endif
                                                             @if(!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
                                                                 <li>
                                                                     {{ $education->cumulative_gpa_unweighted }} UWtd .GPA,

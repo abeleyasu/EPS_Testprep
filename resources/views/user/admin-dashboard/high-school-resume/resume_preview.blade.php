@@ -124,7 +124,7 @@
             background-color: #fff;
             z-index: 999;
             right: -11px;
-            top: 185px;
+            top: 245    px;
             position: absolute;
             content: "";
             border: 2px solid #a8a8a8;
@@ -271,92 +271,80 @@
 
 <body>
     <div style="margin-bottom: 0">
-        <h1
+        <div
             style="font-weight:400; padding:10px 50px 10px;background-color: #f4f4f4; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0">
-            <b>{{ $personal_info->first_name }}<b>  {{ $personal_info->middle_name }} {{ $personal_info->last_name }} {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
+            <b>{{ $personal_info->first_name }}<b> {{ $personal_info->middle_name }} {{ $personal_info->last_name }} {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
                 </b>
-        </h1>
-    </div>
-    <div class="clear-both" style="margin-top: -20px">
-        <div class="preview-left col-lg-6">
-            <div class="preview-list border-bottom d-block ps-0 contact-list-after">
-                <span class="list">
+            <span style="display: block; font-size: 12px; margin-top: 5px; font-weight: 400">
+                @if(isset($personal_info->street_address_one) || isset($personal_info->street_address_two) || isset($personal_info->zip_code))
+                    <li style="display: flex">
+                        <span class="">
+                            <img
+                                src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/location.svg'))) }} " style="width: 8px; margin-top: 2px">
+                        </span>
+                        <span>
+                            {{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : '' }}
+                            @if(isset($personal_info->street_address_one)),  @endif
+                            {{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : '' }}
+                            @if(isset($personal_info->street_address_two)), @endif
+                            {{ isset($personal_info->zip_code) ? $personal_info->zip_code : '' }}
+                        </span>
+                    </li>
+                @endif  
+            </span>
+            <p style="display: inline-block !important; font-size: 12px; margin-top: 5px; font-weight: 400">
+                <span style="display: inline-block">
                     @if(isset($personal_info->email))
                         <span class="span_text">
-                            <span class="span_list">
-                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/email.svg'))) }}">
+                            <span>
+                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/email.svg'))) }}" style="width: 8px; margin-top: 2px">
                             </span>
                             {{ $personal_info->email }}
                         </span>
                     @endif
+                </span>
+                <span style="display: inline-block">
                     @if(isset($personal_info->cell_phone))
                         <span class="span_text">
-                            <span class="span_list span_call">
+                            <span class="">
                                 <img
-                                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/phone-solid.svg'))) }}">
+                                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/phone-solid.svg'))) }}" style="width: 8px; margin-top: 2px">
                             </span>
                             {{ $personal_info->cell_phone }}
                         </span>
                     @endif
-                    @if(isset($personal_info->street_address_one) || isset($personal_info->street_address_two) || isset($personal_info->zip_code))
-                        <span class=" d-inline-block span_text">
-                            <span class="span_list span_location2">
-                                <img
-                                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/location.svg'))) }} ">
-                            </span>
-                            <span style="width: 200px;margin-top: 10px;" class="d-inline-block">
-                                <span class="d-block span_bold">Address1 / Address2 / Zip Code :</span>
-                                {{ $personal_info->street_address_one }}
-                                @if(isset($personal_info->street_address_one)) <br /> @endif
-                                {{ $personal_info->street_address_two }}
-                                @if(isset($personal_info->street_address_two)) <br /> @endif
-                                {{ $personal_info->zip_code }}
-                            </span>
-                        </span>
-                    @endif
-                    @if(isset($personal_info->city) || isset($personal_info->state))
-                        <span class="d-inline-block">
-                            <span class="span_list span_location">
-                                <img
-                                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/location.svg'))) }} ">
-                            </span>
-                            <span class="d-inline-block span_text" style="width: 180px;margin-top: 0;">
-                                <span class="d-block span_bold">City / State: </span>
-                                <span class="span_text">
-                                    {{ $personal_info->city . ' / ' . $personal_info->state }} </span>
-                            </span>
-                        </span>
-                    @endif
-                    @if ($social_links != null)
-                        <span class="d-inline-block">
-                            <span class="span_list span_link">
-                                <img
-                                    src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/link.svg'))) }} ">
-                            </span>
-                            <span class="d-inline-block span_text" style="width: 180px;margin-top: 0px">
-
-                                <span class="d-block span_bold">Social Links :</span>
-                                @foreach ($social_links as $link)
-                                    <span class="list-type">
-                                        {{ $link }}
-                                    </span>
-                                @endforeach
-                            </span>
-                        </span>
-                    @endif
                 </span>
-              
-            </div>
+                <span style="display: inline-block">
+                    @if ($social_links != null)
+                    <span class="d-inline-block">
+                        <span class="span_list">
+                            <img
+                                src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/link.svg'))) }} " style="width: 8px; margin-top: 2px">
+                        </span>
+                        <span class="d-inline-block span_text" style="width: 180px;margin-top: 0px">
+                            @foreach ($social_links as $link)
+                                    {{ $link }}
+                            @endforeach
+                        </span>
+                    </span>
+                @endif
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="clear-both" style="margin-top: 0">  
+        <div class="preview-left col-lg-6">
+            
             @if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
                 <div class="border-bottom d-block " >
                     @if (!empty($featured_skills_data))
                         <div class="pb-3 border-bottom-0 preview-list ps-0 features-list-after ">
                             @if ($featuredAttribute)
-                                <h3>Features</h3>
+                                <h3>FEATURED</h3>
                             @endif
                             <div class="preview-list_skill ">
                                 @if ($featuredAttribute->featured_skills_data[0]['skill'] != null)
-                                    <span class="span_h2">Featured Skills</span>
+                                    <span class="span_h2">Skills:</span>
                                     @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
                                         <span class="list-type">
                                             {{ $featured_skills['skill'] }}
@@ -370,7 +358,7 @@
                         <div class="preview-list pb-3  ps-0 border-bottom-0">
                             <div class="preview-list_skill">
                                 @if ($featuredAttribute->featured_awards_data[0]['award'] != null)
-                                    <span class="span_h2">Featured awards</span>
+                                    <span class="span_h2">Awards:</span>
                                     @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
                                         <span class="list-type">
                                             {{ $featured_awards['award'] }}
@@ -383,17 +371,17 @@
                     @if (!empty($featured_languages_data))
                         <span class="preview-list">
                             <span class="preview-list_skill">
-                                <span class="span_h2">Featured languages</span>
+                                <span class="span_h2">Languages:</span>
                                 @foreach ($featuredAttribute->featured_languages_data as $featured_languages)
                                     <span class="list-type">
-                                        {{ $featured_languages['language'] }}
+                                        Multilingual({{ $featured_languages['language'] }})
                                     </span>
 
                                 @endforeach
                             </span>
                         </span>
                     @endif
-                    @if (!empty($dual_citizenship_data))
+                    {{-- @if (!empty($dual_citizenship_data))
                         <span class="preview-list"
                             style="margin-top: 10px;display: inline-block;padding-left: 0;margin-bottom: 10px;">
                             <span class="preview-list_skill ">
@@ -405,7 +393,7 @@
                                 @endforeach
                             </span>
                         </span>
-                    @endif
+                    @endif --}}
                 </div>
             @endif
 
@@ -414,61 +402,58 @@
                     @if (!empty($employment_data)) 
                         <span class="preview-list">
                             <h3>Employment & Certifications</h3>
-                            <span class="span_h2"> Name Of The Company:</span>
-                            <span style="margin-bottom: 5px;display: block">
-                                @foreach ($employment_data as $data)
-                                @if(!is_null($data['name_of_company']))
-                                    <span class="list-type">
-                                            {{ $data['name_of_company'] }}
-                                        </span>
-                                    @endif
-                                @endforeach
-                            </span>
-                            <span class="span_h2"> Job Title</span>
-                            <span style="margin-bottom: 5px;display: block">
-                                @foreach ($employment_data as $data)
-                                    @if(!is_null($data['job_title']))
-                                        <span class="list-type">
-                                            {{ $data['job_title'] }}
-                                        </span>
-                                    @endif
-                                @endforeach
-                            </span>
-                            <span class="span_h2">Grade(s)</span>
-                            <span style="display: block;margin-bottom: 5px">
-                                @foreach ($employment_data as $data)
+                            @foreach ($employment_data as $data)
+                                <span style="display: block;margin-bottom: 5px">
+                            <span class="list-type">
                                     @if(isset($data['grade']) && !empty($data['grade']))
-                                        <span class="list-type">
                                             {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                        </span>
                                     @endif
+                                    @if(!is_null($data['job_title']))
+                                            {{ $data['job_title'] }}
+                                    @endif
+                                    @if(!is_null($data['name_of_company']))
+                                            {{ $data['name_of_company'] }}
+                                    @endif
+                            </span>      
+                                </span>
+                            @endforeach
+                            {{-- <span style="margin-bottom: 5px;display: block">
+                                @foreach ($employment_data as $data)
+                                    
                                 @endforeach
-                            </span>
+                            </span> --}}
+                            {{-- <span style="margin-bottom: 5px;display: block">
+                                @foreach ($employment_data as $data)
+                                    
+                                @endforeach
+                            </span> --}}
                         </span>
                     @endif
                     @if (!empty($significant_data)) 
                         <span class="preview-list">
                             <h3>RESPONSIBILITIES OR INTERESTS</h3>
-                            <span class="span_h2"> Responsibility Or Interest:</span>
+                            @foreach ($significant_data as $data)
                             <span style="margin-bottom: 5px; display: block">
-                                @foreach ($significant_data as $data)
-                                    @if(isset($data['interest']) && !empty($data['interest']))
-                                        <span class="list-type">
-                                            {{ $data['interest'] }}
-                                        </span>
+                            <span class="list-type">
+                                    @if(isset($data['grade']) && !empty($data['grade']))
+                                        {{-- <span class="list-type"> --}}
+                                            {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+                                        {{-- </span> --}}
                                     @endif
-                                @endforeach
+                                    @if(isset($data['interest']) && !empty($data['interest']))
+                                        {{-- <span class="list-type"> --}}
+                                            {{ $data['interest'] }}
+                                        {{-- </span> --}}
+                                    @endif
                             </span>
-                            <span class="span_h2">Grade(s)</span>
+                                </span>
+                                @endforeach
+                            {{-- <span class="span_h2">Grade(s)</span>
                             <span style="margin-bottom: 10px;display: block">
                                 @foreach ($significant_data as $data)
-                                    @if(isset($data['grade']) && !empty($data['grade']))
-                                        <span class="list-type">
-                                            {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                        </span>
-                                    @endif
+                                    
                                 @endforeach
-                            </span>
+                            </span> --}}
                         </span>
                     @endif
                 </div>
@@ -476,41 +461,34 @@
 
             @if (!empty($honor))
                 <div class="preview-list honor-list-after">
-                    <h3>HONORS</h3>
+                    <h3>HONORS / ACHIEVEMENTS / AWARDS</h3>
+                    @foreach ($honor->honors_data as $honor_data)
                     <span style="margin-bottom: 5px;display: block">
-                        <span class="span_h2">Position</span>
-                        @foreach ($honor->honors_data as $honor_data)
-                            <span class="list-type">
-                                {{ $honor_data['position'] }}
-                            </span>
-                        @endforeach
-                    </span>
-                    <span style="margin-bottom: 5px;display: block">
-                        <span class="span_h2">Achivement</span>
-                        @foreach ($honor->honors_data as $honor_data)
-                            <span class="list-type">
-                                {{ $honor_data['honor_achievement_award'] }}
-                            </span>
-                        @endforeach
-                    </span>
-                    <span style="margin-bottom: 5px;display: block">
-                        <span class="span_h2">Grade(s)</span>
-                        @foreach ($honor->honors_data as $honor_data)
                             <span class="list-type">
                                 @if(isset($honor_data['grade']) && !empty($honor_data['grade']))
                                     {{ \App\Helpers\Helper::getGradeByIdArray($honor_data['grade']) }}
                                 @endif
-                            </span>
+                                {{ $honor_data['position'] }}
+                                {{ $honor_data['honor_achievement_award'] }}
+                                {{ $honor_data['location'] }}
+                            </span>    
+                        </span>
+                        @endforeach
+                    {{-- <span style="margin-bottom: 5px;display: block">
+                        @foreach ($honor->honors_data as $honor_data)
+                            
                         @endforeach
                     </span>
                     <span style="margin-bottom: 5px;display: block">
-                        <span class="span_h2">Location</span>
                         @foreach ($honor->honors_data as $honor_data)
-                            <span class="list-type">
-                                {{ $honor_data['location'] }}
-                            </span>
+                            
                         @endforeach
                     </span>
+                    <span style="margin-bottom: 5px;display: block">
+                        @foreach ($honor->honors_data as $honor_data)
+                            
+                        @endforeach
+                    </span> --}}
                 </div>
             @endif
         </div>
@@ -668,38 +646,30 @@
                 <div class="preview-list d-block activity-list-after">
                     <h3>Activities</h3>
                     @if (!empty($demonstrated_data))
-                            <span class="d-block mb-3 span_h2">
-                                Demostrated Interests Major
-                            </span>
-                            <span class="span_h2" >Position:</span>
                                 @foreach ($demonstrated_data as $data)
-                                    <span class="list-type">
+                                    {{-- <span class="list-type"> --}}
                                         {{ $data['position'] }}
-                                    </span>
+                                    {{-- </span> --}}
                                 @endforeach
-                            <span class="span_h2">Interest:</span>
                                 @foreach ($demonstrated_data as $data)
-                                    <span class="list-type">
+                                    {{-- <span class="list-type"> --}}
                                         {{ $data['interest'] }}
-                                    </span>
+                                    {{-- </span> --}}
                                 @endforeach
-                            <span class="span_h2">Grade(s):</span>
                                 @foreach ($demonstrated_data as $data)
-                                    <span class="list-type">
+                                    {{-- <span class="list-type"> --}}
                                         {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                    </span>
+                                    {{-- </span> --}}
                                 @endforeach
-                            <span class="span_h2">Details:</span>
                                 @foreach ($demonstrated_data as $data)
-                                    <span class="list-type">
+                                    {{-- <span class="list-type"> --}}
                                         {{ $data['details'] }}
-                                    </span>
+                                    {{-- </span> --}}
                                 @endforeach
                     @endif
                             
                     @if(!empty($leadership_data))   
                         <span style="margin-bottom: 5px;display: block">
-                            <span class="span_h2">Leadership</span>
                             @php
                                 $leadership_array = [];
                             @endphp
@@ -720,34 +690,29 @@
                                 @endphp
                             @endforeach
                             @if(!empty($leadership_array['status']))
-                                <span class="list-type">
-                                    <span class="span_h2">Status:</span>
+                                {{-- <span class="list-type"> --}}
                                     {{ implode(",", $leadership_array['status']) }}
-                                </span>
+                                {{-- </span> --}}
                             @endif
                             @if(!empty($leadership_array['position']))
-                                <span class="list-type">
-                                    <span class="span_h2">Position:</span>
+                                {{-- <span class="list-type"> --}}
                                     {{ implode(",", $leadership_array['position']) }}
-                                </span>
+                                {{-- </span> --}}
                             @endif
                             @if(!empty($leadership_array['organization']))
-                                <span class="list-type">
-                                    <span class="span_h2">Organization:</span>
+                                {{-- <span class="list-type"> --}}
                                     {{ implode(",", $leadership_array['organization']) }}
-                                </span>
+                                {{-- </span> --}}
                             @endif
                             @if(!empty($leadership_array['grade']))
-                                <span class="list-type">
-                                    <span class="span_h2">Grade(s):</span>
+                                {{-- <span class="list-type"> --}}
                                     {{ \App\Helpers\Helper::getGradeAllByIdArray($leadership_array['grade']) }}
-                                </span>
+                                {{-- </span> --}}
                             @endif
                         </span>
                     @endif
                     @if(!empty($activities_data))    
                         <span style="margin-bottom: 5px;display: block">
-                            <span class="span_h2">Activities & Clubs</span>
                             @php
                                 $activities_array = [];
                             @endphp
@@ -769,25 +734,21 @@
                             @endforeach
                             @if(!empty($data['position']))
                                 <span class="list-type">
-                                    <span class="span_h2">Position:</span>
                                     {{ implode(",", $activities_array['position']) }}
                                 </span>
                             @endif
                             @if(!empty($data['activity']))
                                 <span class="list-type">
-                                    <span class="span_h2">Activity:</span>
                                     {{ implode(",", $activities_array['activity']) }}
                                 </span>
                             @endif
                             @if(!empty($data['honor_award']))
                                 <span class="list-type">
-                                    <span class="span_h2">Honor/Award:</span>
                                     {{ implode(",", $activities_array['honor_award']) }}
                                 </span>
                             @endif
                             @if(!empty($data['grade']))
                                 <span class="list-type">
-                                    <span class="span_h2">Grade(s):</span>
                                     {{ \App\Helpers\Helper::getGradeAllByIdArray($activities_array['grade']) }}
                                 </span>
                             @endif
