@@ -125,6 +125,10 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::resource('questions', QuestionsController::class);
     Route::resource('practicetests', PracticeTestsController::class);
     Route::post('addPracticeQuestion', [PracticeQuestionController::class, 'addPracticeQuestion'])->name('addPracticeQuestion');
+
+    Route::post('addPracticeCategoryType', [PracticeQuestionController::class, 'addPracticeCategoryType'])->name('addPracticeCategoryType');
+    Route::post('addPracticeQuestionType', [PracticeQuestionController::class, 'addPracticeQuestionType'])->name('addPracticeQuestionType');
+
     Route::post('getPracticePassage', [PracticeQuestionController::class, 'getPracticePassage'])->name('getPracticePassage');
     Route::post('addPracticeTestSection', [PracticeQuestionController::class, 'addPracticeTestSection'])->name('addPracticeTestSection');
     Route::post('updatePracticeQuestion', [PracticeQuestionController::class, 'updatePracticeQuestion'])->name('updatePracticeQuestion');
@@ -243,6 +247,8 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::group(['prefix' => 'test-review', 'as' => 'test-review.'], function () { 
         Route::get('/', [TestReviewController::class, 'index'])->name('review');
         Route::get('/question-concept-review', [TestReviewController::class, 'questionConceptReview'])->name('question-concept-review');
+        Route::get('/category-question-type', [TestReviewController::class, 'categoryQuestionType'])->name('category-question-type');
+        Route::get('/answer-type', [TestReviewController::class, 'answerType'])->name('answer-type');
     });
 
     Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');

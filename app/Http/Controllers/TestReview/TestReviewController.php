@@ -16,4 +16,14 @@ class TestReviewController extends Controller
     {
         return view('user.test-review.question_concepts_review');
     }
+
+    public function categoryQuestionType()
+    {
+        return view('user.test-review.category_question_type');
+    }
+
+    public function answerType()
+    {
+        return view('user.test-review.answer_type');
+    }
 }
