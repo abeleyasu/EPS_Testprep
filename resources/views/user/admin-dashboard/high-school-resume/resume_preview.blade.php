@@ -357,6 +357,9 @@
                         <span class="d-inline-block span_text" style="width: 180px;position: relative;top:5px;">
                             @foreach ($social_links as $link)
                                     {{ $link }}
+                                    @if (count($social_links) > 1)
+                                        @break
+                                    @endif
                             @endforeach
                         </span>
                     </span>

@@ -130,7 +130,7 @@
                                 @if($social_links != null)
                                     <span> <i class="fa-solid fa-link"></i> </span>
                                             @foreach ($social_links as $link)
-                                                /{{ $link }}
+                                                {{ $link }}
                                                 @if (count($social_links) > 1)
                                                     @break
                                                 @endif
