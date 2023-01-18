@@ -265,6 +265,7 @@ ul.answerOptionLsit li label input{
 
 .input-group {
   display: flex;
+  justify-content: space-between;
 }
 
 .form-control {
@@ -272,8 +273,10 @@ ul.answerOptionLsit li label input{
   margin-right: 5px;
 }
 
-.plus-button {
+.plus-button, .minus-button {
   margin-left: 5px;
+  height: 100% !important;
+  margin-top: 3px;
 }
 </style>
 @endsection
