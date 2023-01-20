@@ -263,10 +263,7 @@ ul.answerOptionLsit li label input{
   margin-bottom: 10px;
 }
 
-.input-group {
-  display: flex;
-  justify-content: space-between;
-}
+
 
 .form-control {
   flex: 1;
@@ -274,9 +271,21 @@ ul.answerOptionLsit li label input{
 }
 
 .plus-button, .minus-button {
-  margin-left: 5px;
-  height: 100% !important;
-  margin-top: 3px;
+    margin-left: 17px;
+    background-color: #1f2937;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    height: 35px !important;
+    line-height: 17px;
+    font-size: 15px;
+    padding: 8px;
+    width: 35px;
+    position: relative;
+    top: 6px;
+}
+.minus-button:hover{
+    background-color: #1f2937 !important;
 }
 </style>
 @endsection
@@ -492,18 +501,18 @@ ul.answerOptionLsit li label input{
                     </div> -->
 
                     <div class="input-container">
-                        <div class="input-group">
+                        <div class="d-flex input-field">
                             
-                            <div class="mb-2 mb-4">
+                            <div class=" mb-4 me-2">
                                 <input type="text" value="" data-search_id="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt get_category_type" >
                                 <ul id="category_type_results"></ul>
                             </div>
 
-                            <div class="mb-2 mb-4 add_question_type_select"> 
+                            <div class="mb-4 add_question_type_select"> 
                                 <input type="text" value="" name="search-input" data-search_id="" id="search-input" placeholder="Question Type" class="form-control form-control-lg form-control-alt get_question_type" >
-                                <ul id="search-results"></ul>
+                                {{-- <ul id="search-results"></ul> --}}
                             </div>
-                            <button class="btn btn-primary plus-button">+</button>
+                            <button class=" plus-button"><i class="fa-solid fa-plus" ></i></button>
                         </div>
                     </div>
 
@@ -770,21 +779,21 @@ ul.answerOptionLsit li label input{
 
         $(document).ready(function(){
             $(".plus-button").on("click", function() {
-                if ($(this).closest('.input-group').is(":first-child")) {
-                    var newInputGroup = $(this).closest(".input-group").clone();
+                if ($(this).closest('.input-field').is(":first-child")) {
+                    var newInputGroup = $(this).closest(".input-field").clone();
                     console.log(newInputGroup);
                     newInputGroup.find('#category_type').val('');
                     newInputGroup.find('#search-input').val('');
 
                     newInputGroup.find('.plus-button').remove();
-                    var newMinusButton = $("<button>").addClass("btn btn-danger minus-button").text("-");
+                    var newMinusButton = $("<button>").addClass("btn minus-button fa fa-minus");
                     newMinusButton.insertAfter(newInputGroup.find(".add_question_type_select"));
                     newInputGroup.appendTo(".input-container");
                 }
             });
             
             $(document).on("click", ".minus-button", function() {
-                $(this).closest(".input-group").remove();
+                $(this).closest(".input-field").remove();
             });
         });
         
@@ -801,27 +810,27 @@ ul.answerOptionLsit li label input{
                 return test.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
             });
             
-            if(searchValue.length > 0) {
-                if(filteredCategories.length>0){
-                    check.next("#search-results").empty();
-                    filteredCategories.forEach(function(category) {
-                        check.next("#search-results").append("<li class='search-result' data-search_id='"+category.id+"'>" + category.question_type_title + "</li>");
-                    });
-                }else{
-                    check.next("#search-results").empty();
-                    check.next("#search-results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
-                }
+            // if(searchValue.length > 0) {
+            //     if(filteredCategories.length>0){
+            //         check.next("#search-results").empty();
+            //         filteredCategories.forEach(function(category) {
+            //             check.next("#search-results").append("<li class='search-result' data-search_id='"+category.id+"'>" + category.question_type_title + "</li>");
+            //         });
+            //     }else{
+            //         check.next("#search-results").empty();
+            //         check.next("#search-results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+            //     }
                 
-                $(".search-result").on("click", function() {
-                    var selectedValue = $(this).text();
-                    var selectedValueId = $(this).data('search_id');
-                    check.val(selectedValue);
-                    check.data('search_id',selectedValueId);
-                    check.next("#search-results").empty();
-                });
-            } else {
-                check.next("#search-results").empty();
-            }
+            //     $(".search-result").on("click", function() {
+            //         var selectedValue = $(this).text();
+            //         var selectedValueId = $(this).data('search_id');
+            //         check.val(selectedValue);
+            //         check.data('search_id',selectedValueId);
+            //         check.next("#search-results").empty();
+            //     });
+            // } else {
+            //     check.next("#search-results").empty();
+            // }
         });
 
         $(document).on("keyup", "#category_type", function() {
@@ -847,20 +856,20 @@ ul.answerOptionLsit li label input{
                         console.log('3');
                         console.log(check);
                         
-                        check.next("#category_type_results").append("<li class='search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
+                        // check.next("#category_type_results").append("<li class='search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
                     });
                 }else{
                     check.next("#category_type_results").empty();
-                    check.next("#category_type_results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+                    // check.next("#category_type_results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
                 }
 
-                $(".search-result").on("click", function() {
-                    var selectedValue = $(this).text();
-                    var selectedValueId = $(this).data('search_id');
-                    check.val(selectedValue);
-                    check.data('search_id',selectedValueId);
-                    check.next("#category_type_results").empty();
-                });
+                // $(".search-result").on("click", function() {
+                //     var selectedValue = $(this).text();
+                //     var selectedValueId = $(this).data('search_id');
+                //     check.val(selectedValue);
+                //     check.data('search_id',selectedValueId);
+                //     check.next("#category_type_results").empty();
+                // });
             }else{
                 check.next("#category_type_results").empty();
             }
@@ -985,7 +994,7 @@ ul.answerOptionLsit li label input{
 					url: '{{route("addPracticeTestSection")}}',
 					method: 'post',
 					success: (res) => {
-                        $('.sectionContainerList').append('<div class="sectionTypesFull" id="sectionDisplay_'+currentModelId+'" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>'+format+'</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>'+capitalizeFirstLetter(sectionSelectedTxt)+'</strong><input type="hidden" name="selectedSecTxt" value="'+testSectionType+'" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_'+res+'"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="'+res+'">Order</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="'+currentModelId+'" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_'+res+'"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog()"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                        $('.sectionContainerList').append('<div class="sectionTypesFull" id="sectionDisplay_'+currentModelId+'" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>'+format+'</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>'+capitalizeFirstLetter(sectionSelectedTxt)+'</strong><input type="hidden" name="selectedSecTxt" value="'+testSectionType+'" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_'+res+'"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="'+res+'">Order</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="'+currentModelId+'" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_'+res+'"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog()"><i class="fa-solid fa-check"></i></button></div></div></div>');
 
 						$('.addQuestion').val('');
 						$('.validError').text('');

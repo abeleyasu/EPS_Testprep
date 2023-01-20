@@ -37,8 +37,14 @@
   cursor: pointer;
 }
 
+.scroll_target{
+    height: 110px;
+     overflow: auto;
+}
+
 
 </style>
+
 <!-- Main Container -->
 <main id="main-container">
     <div class="bg-body-light">
@@ -62,7 +68,7 @@
                 <div class="col-xl-4">
                     <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
                     <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
-                    <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
+                    <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
                     <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-clock me-1"></i> 35:12</button>
                 </div>
             </div>
@@ -86,11 +92,13 @@
                             <strong id="passage_type">PASSAGE TYPE: NATURAL SCIENCE</strong><br /><span id="passage_title">This is adapted from author Blah.</span>
                         </h5>
                         <div class="mb-4">
-                            <textarea class="form-control" id="passage_description" name="example-textarea-input" rows="4" placeholder="Textarea content..">The first prehistoric avian bird of its kind was discovered in Antarctica in December of the year 2032. Its unique features, which include an obvious membranous extension to its fin and a fold in its flight-bends, put its scientific discovery into the same realms as that of Darwin's fin-flap animal. This incredible bird is a truly remarkable feat. It was discovered in deep waters in the Beaufort Gyre, an area of the southern ocean that is one of the most important underwater ecosystems for biological discovery, in a collection of fossils that span the entire 400 million year history of the animal.
+                            <textarea  class="form-control scroll_target"  name="example-textarea-input" id="passage_description"  placeholder="Textarea content..">The first prehistoric avian bird of its kind was discovered in Antarctica in December of the year 2032. Its unique features, which include an obvious membranous extension to its fin and a fold in its flight-bends, put its scientific discovery into the same realms as that of Darwin's fin-flap animal. This incredible bird is a truly remarkable feat. It was discovered in deep waters in the Beaufort Gyre, an area of the southern ocean that is one of the most important underwater ecosystems for biological discovery, in a collection of fossils that span the entire 400 million year history of the animal.
                       Notably, this remarkable feat is the result of a scientific exploration by veteran experts in Antarctic science who are passionate about the advancement of paleoceanography. 
                       Astronaut Dr. Stephen Wright joins Bryan Johnson to detail the remarkable life and legacy of Dr. Frank White, a scientist who spent 32 days in space, leaving behind much scientific knowledge. It is estimated that at least 500 additional species of plant and animal have now been discovered. This volume documents that entire collection of scientific specimens from Dr. White, who is considered the father of modern scientific exploration.</textarea>
                         </div>
+                        <div class="output">
 
+                        </div>
                     </div>
                 </div>
                 <!-- END Lessons -->
@@ -113,7 +121,7 @@
                 <div class="col-xl-4">
                     <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
                     <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
-                    <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
+                    <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
                     <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-clock me-1"></i> 35:12</button>
                 </div>
                 <div class="col-xl-4">
@@ -157,7 +165,6 @@
 </script>
 <script>
          jQuery(document).ready(function(){
-
             var selected_answer = [];
             var selected_gusess_details = [];
             var selected_flag_details = [];
@@ -175,16 +182,18 @@
                 selected_skip_details[get_question_id] = 'no';
             });
 
+            
+
             jQuery(".prev").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
+                var set_scroll_position=0;
 
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
                     selected_skip_details[get_question_id] = 'no';
-                }
-                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
                         console.log(this.value);
@@ -193,9 +202,7 @@
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
-                }
-                else
-                {
+                } else {
                     selected_answer[get_question_id] = '-';
                     selected_skip_details[get_question_id] = 'yes';
                 }
@@ -213,6 +220,30 @@
                 var check_click_type = 'prev';
                 
                 get_first_question(get_offset);
+
+                var scroll_id = jQuery('.get_question_id').val();
+                scroll_id = scroll_id -1;
+
+                $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                  }
+                });
+
+                jQuery.ajax({
+                    url: "{{ url('/user/get_scroll_position/post') }}",
+                    method: 'post',
+                    data: {
+                        get_question_id:scroll_id,
+                    },
+                    success: function(result){
+                        var element = document.querySelector('#passage_description');
+                        set_scroll_position = result.scroll_position[0].scroll_position;
+                        element.scrollTop = set_scroll_position;
+                      
+                        
+                }});
+
             });
             
             jQuery(".skip").click(function(){
@@ -220,10 +251,9 @@
                 var get_question_id = jQuery('.get_question_id').val();
 
                 if ( $('input:radio[name=example-radios-default]').length ) {
-                        $('input:radio[name=example-radios-default]').prop('checked', false);
-                        selected_skip_details[get_question_id] = 'no';
-                }
-                else{
+                    $('input:radio[name=example-radios-default]').prop('checked', false);
+                    selected_skip_details[get_question_id] = 'no';
+                } else {
                     $('input[type=checkbox]').prop('checked', false);
                     selected_skip_details[get_question_id] = 'no';
                 }
@@ -234,8 +264,7 @@
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
                     selected_skip_details[get_question_id] = 'no';
-                }
-                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
                         console.log(this.value);
@@ -244,9 +273,7 @@
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
-                }
-                else
-                {
+                } else {
                     selected_answer[get_question_id] = '-';
                     selected_skip_details[get_question_id] = 'yes';
                 }
@@ -262,17 +289,19 @@
                 }
                 get_first_question(get_offset);
             });
-
+            
+            var count = 1;
             jQuery(".next").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
 
                 if($("input[name='example-radios-default']").is(':checked')) { 
+                    count ++;
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
                     selected_skip_details[get_question_id] = 'no';
-                }
-                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    count ++;
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
                         console.log(this.value);
@@ -282,14 +311,14 @@
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
                 }
-                else
-                {
-                    selected_answer[get_question_id] = '-';
-                    selected_skip_details[get_question_id] = 'yes';
-                    $("#set_question_data").find('.mb-4').append('<span class="custom_error" style="color:red;" >Please pick any option!</span>');
-                    setTimeout(function() { $(".custom_error").remove(); }, 5000);
-                    return false;
-                }
+                // else
+                // {
+                //     selected_answer[get_question_id] = '-';
+                //     selected_skip_details[get_question_id] = 'yes';
+                //     $("#set_question_data").find('.mb-4').append('<span class="custom_error" style="color:red;" >Please pick any option!</span>');
+                //     setTimeout(function() { $(".custom_error").remove(); }, 5000);
+                //     return false;
+                // }
 
                 if(!$(".guess").is(':checked'))
                 {
@@ -301,6 +330,27 @@
                     selected_flag_details[get_question_id] = 'no';
                 }
                 get_first_question(get_offset);
+
+                var scroll_position = $('#passage_description').scrollTop();
+    
+                $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                  }
+                });
+
+                jQuery.ajax({
+                    url: "{{ url('/user/set_scroll_position/post') }}",
+                    method: 'post',
+                    data: {
+                        get_question_id:get_question_id,
+                        scroll_position:scroll_position
+                    },
+                    success: function(result){
+                        
+                }});
+
+                
             });
 
             jQuery(".guess").click(function(){
@@ -336,6 +386,16 @@
                     $('.main_guess_section').css("color", "#ea580c");
                     $('.main_guess_section').css("background-color", "white");
                 }
+
+                if(!$(".flag").is(':checked'))
+                {
+                    selected_flag_details[get_question_id] = 'no';
+                }
+
+                if(!$(".skip").is(':checked'))
+                {
+                    selected_skip_details[get_question_id] = 'no';
+                }
             });
                     
             jQuery(".flag").click(function(){
@@ -344,12 +404,59 @@
                     $('.main_flag_section').css("color", "white");
                     $('.main_flag_section').css("background-color", "#dc2626");
                     selected_flag_details[get_question_id] = 'yes';
-                }
-                else{
+                } else{
                     $('.main_flag_section').css("color", "#dc2626");
                     $('.main_flag_section').css("background-color", "white");
                     selected_flag_details[get_question_id] = 'no';
                 }
+
+                if(!$(".guess").is(':checked'))
+                {
+                    selected_gusess_details[get_question_id] = 'no';
+                }
+
+                if(!$(".skip").is(':checked'))
+                {
+                    selected_skip_details[get_question_id] = 'no';
+                }
+            });
+
+            jQuery(".review").click(function(){
+                selected_flag_details = selected_flag_details.filter(function( element, key ) {
+                    return element !== "undefined";
+                });
+                selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
+                    return element !== "undefined";
+                });
+                selected_skip_details = selected_skip_details.filter(function( element, key ) {
+                    return element !== "undefined";
+                });
+                // console.table("selected_flag_details", selected_flag_details);
+                // console.table("selected_gusess_details", selected_gusess_details);
+                // console.table("selected_skip_details", selected_skip_details);
+                let my_arr = []
+                let totalFlag = 0;
+                let totalSkip = 0;
+                let totalGuess = 0;
+
+                for (let index = 0; index < selected_flag_details.length; index++) {
+                    my_arr[index] = { 
+                        "flag" : selected_flag_details[index],
+                        "guess" : selected_gusess_details[index],
+                        "skip" : selected_skip_details[index]
+                    }
+                }
+                // my_arr.forEach(element => {
+                //     if(element.flag == 'yes')
+                //         totalFlag++
+
+                //     if(element.skip == 'yes')
+                //         totalSkip++
+
+                //     if(element.guess == 'yes')
+                //         totalGuess++
+                // });
+
             });
             
             jQuery(".submit_section_btn").click(function(){
@@ -421,6 +528,9 @@
                         get_question_type:get_question_type
                     },
                     success: function(result){
+                        if(count < result.total_question){
+                            window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
+                        }
                         console.log(result.success);
                         console.log(result.get_test_name);
                         console.log(result.section_id);
@@ -467,7 +577,7 @@
                         var get_question_no = parseInt(result.get_offset) + 1;
 
                         var set_questions_options = '<div class="mb-4">';
-                        set_questions_options += '<input type="hidden" value="'+result.questions[0].question_id+'" class="get_question_id" ><label class="form-label">Question '+get_question_no+' '+get_question_title+'</label>';
+                        set_questions_options += '<input type="hidden" value="'+result.questions[0].question_id+'" class="get_question_id" ><label class="form-label" >Question '+get_question_no+' '+get_question_title+'</label>';
 
                         var get_options = result.questions[0].question_answer_options.replace(/(<([^>]+)>)/gi, "");
                         
@@ -607,8 +717,7 @@
                             jQuery('#get_skip_question_btn').prop('disabled', false);
 
                             jQuery('.next').prop('disabled', false);
-                            jQuery('.submit_section_btn').prop('disabled', true);
-                            
+                            jQuery('.submit_section_btn').prop('disabled', false);
                             jQuery('.skip').prop('disabled', false);
                         }
                         

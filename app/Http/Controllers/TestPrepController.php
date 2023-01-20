@@ -12,6 +12,7 @@ use App\Models\PracticeQuestion;
 use App\Models\UserAnswers;
 use App\Models\Passage;
 use App\Models\User;
+use App\Models\UserScrollPosition;
 
 class TestPrepController extends Controller
 {
@@ -339,8 +340,32 @@ class TestPrepController extends Controller
                 }
             }
         }
+        $set_completed_section_id = array();
+        $get_users_answers_section_id = DB::table('user_answers')
+                                    ->select('user_answers.section_id')
+                                    ->where('user_answers.user_id', $current_user_id)
+                                    ->where('user_answers.test_id', $get_practice_id)
+                                    ->get();
+            if(!$get_users_answers_section_id->isEmpty())
+            {
+                foreach($get_users_answers_section_id as $key => $single_values)
+                {
+                    array_push($set_completed_section_id,$single_values->section_id);
+                }
+            }else{
+                $set_completed_section_id = array();
+            }                          
 
-       return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name]);
+        $get_total_question = DB::table('practice_questions')
+                ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
+                ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+                ->join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+                ->select('practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*' ,'practice_tests.*' ,'practice_test_sections.*' )
+                ->where('practice_tests.id', $request->get_section_id)
+                ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
+                ->count();
+
+       return response()->json(['success'=>'0','section_id' => $get_section_id  , 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question'=>$get_total_question]);
     }
 
     public function get_questions(Request $request)
@@ -451,7 +476,7 @@ class TestPrepController extends Controller
 
     public function singleSection(Request $request, $id)
     {   
-         $set_offset = 0;
+        $set_offset = 0;
         return view('user.practice-test' , ['section_id' => $id,'set_offset' => $set_offset,'question_type' => 'single']);
     }
 
@@ -556,6 +581,33 @@ class TestPrepController extends Controller
             }
         }
         return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed]);
+    }
+
+    public function set_scrollPosition(Request $request){
+        $current_user_id = Auth::id();
+        $get_question_id = $request->get_question_id;
+        $scroll_position =number_format($request->scroll_position,2,'.');
+
+        if(DB::table('user_scroll_positions')->where('user_id',$current_user_id)->where('question_id',$get_question_id)->exists()){
+            DB::table('user_scroll_positions')->where('user_id',$current_user_id)->where('question_id',$get_question_id)->update(['scroll_position'=>$scroll_position]);
+        }else{
+        $UserScrollPosition = new UserScrollPosition;
+        $UserScrollPosition->user_id = $current_user_id;
+        $UserScrollPosition->question_id = $get_question_id;
+        $UserScrollPosition->scroll_position = $scroll_position;
+        $UserScrollPosition->save();
+        }
+    }
+
+    public function get_scrollPosition(Request $request){
+        $current_user_id = Auth::id();
+        $get_question_id = $request->get_question_id;
+
+        $scroll_position = DB::table('user_scroll_positions')->where('user_id',$current_user_id)->where('question_id',$get_question_id)->get();
+        return response()->json(['success'=>'0','scroll_position' => $scroll_position]);
+        
+
+
     }
 
 }
