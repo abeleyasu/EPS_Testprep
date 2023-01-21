@@ -92,9 +92,10 @@
                             <strong id="passage_type">PASSAGE TYPE: NATURAL SCIENCE</strong><br /><span id="passage_title">This is adapted from author Blah.</span>
                         </h5>
                         <div class="mb-4">
-                            <textarea  class="form-control scroll_target"  name="example-textarea-input" id="passage_description"  placeholder="Textarea content..">The first prehistoric avian bird of its kind was discovered in Antarctica in December of the year 2032. Its unique features, which include an obvious membranous extension to its fin and a fold in its flight-bends, put its scientific discovery into the same realms as that of Darwin's fin-flap animal. This incredible bird is a truly remarkable feat. It was discovered in deep waters in the Beaufort Gyre, an area of the southern ocean that is one of the most important underwater ecosystems for biological discovery, in a collection of fossils that span the entire 400 million year history of the animal.
+                            <div id="passage_description" class="form-control scroll_target"></div>
+                            {{-- <textarea  class="form-control scroll_target"  name="example-textarea-input" id="passage_description_content"  placeholder="Textarea content..">The first prehistoric avian bird of its kind was discovered in Antarctica in December of the year 2032. Its unique features, which include an obvious membranous extension to its fin and a fold in its flight-bends, put its scientific discovery into the same realms as that of Darwin's fin-flap animal. This incredible bird is a truly remarkable feat. It was discovered in deep waters in the Beaufort Gyre, an area of the southern ocean that is one of the most important underwater ecosystems for biological discovery, in a collection of fossils that span the entire 400 million year history of the animal.
                       Notably, this remarkable feat is the result of a scientific exploration by veteran experts in Antarctic science who are passionate about the advancement of paleoceanography. 
-                      Astronaut Dr. Stephen Wright joins Bryan Johnson to detail the remarkable life and legacy of Dr. Frank White, a scientist who spent 32 days in space, leaving behind much scientific knowledge. It is estimated that at least 500 additional species of plant and animal have now been discovered. This volume documents that entire collection of scientific specimens from Dr. White, who is considered the father of modern scientific exploration.</textarea>
+                      Astronaut Dr. Stephen Wright joins Bryan Johnson to detail the remarkable life and legacy of Dr. Frank White, a scientist who spent 32 days in space, leaving behind much scientific knowledge. It is estimated that at least 500 additional species of plant and animal have now been discovered. This volume documents that entire collection of scientific specimens from Dr. White, who is considered the father of modern scientific exploration.</textarea> --}}
                         </div>
                         <div class="output">
 
@@ -567,8 +568,7 @@
                         var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
                         var passage_title =  result.questions[0].passage_title;
                         var passage_description =  result.questions[0].passage_description;
-                        
-                        passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
+                        // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
                         var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
 
                         var get_question_title = result.questions[0].question_title;
@@ -688,7 +688,13 @@
                         jQuery('#set_question_data').html(set_questions_options);
                         jQuery('#passage_type').text(passage_type);
                         jQuery('#passage_title').text(passage_title);
-                        jQuery('#passage_description').text(passage_description);
+                        // jQuery('#passage_description').text(passage_description);                   
+                        var $editor = $("#passage_description");
+                            
+                        $editor.html(passage_description)
+                                .attr('contenteditable', true)
+                                .height($editor.height());
+
                         jQuery('#get_offset').val(result.get_offset);
 
                         if(result.set_prev_offset < 0)

@@ -231,12 +231,12 @@ ul.answerOptionLsit li label input{
 						</div>
 						<div class="col-md-12">
 							<label class="form-label">Test Type:</label>
-							<input type="text" value="{{$practicetests->format}}" readonly style="opacity: 0.4;" class="required">
-							<!--<select id="format" name="format" class="form-control">
+							{{-- <input type="text" value="{{$practicetests->format}}" readonly style="opacity: 0.4;" class="required"> --}}
+							<select id="format" name="format" class="form-control">
 								@foreach($testformats as $key=>$testformat)
-								<option value="{{$key}}" {{$practicetests->format == $key ? 'selected': '';}}>{{$testformat}}</option>
+								    <option value="{{$key}}" {{$practicetests->format == $key ? 'selected': '';}}>{{$testformat}}</option>
 								@endforeach
-							</select>-->
+							</select>
 						</div>
 					</div>
                 </div>

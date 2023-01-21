@@ -37,7 +37,7 @@
         </div>
         </div>
         <!-- Hero -->
-        @if(!$testSectionName == 0)
+        @if(isset($testSectionName) && !$testSectionName == 0)
 
         <div class="bg-body-light">
           <div class="content content-boxed">
@@ -66,7 +66,7 @@
             </div>
           </div>
         </div>
-        @elseif($testSections == 0)
+        @elseif(isset($testSections) && $testSections == 0)
         <div class="bg-body-light">
           <div class="content content-boxed">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
@@ -108,7 +108,7 @@
           -->
 
           
-          @if(!$testSections == 0)
+          @if(isset($testSections) && !$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
           
@@ -182,7 +182,7 @@
             @endforeach
 
           </ul>
-          @elseif($testSections == 0)
+          @elseif(isset($testSections) && $testSections == 0)
           <div class="timeline-event-time block-options-item fs-sm fw-semibold">
                No Sections Added yet!
           </div>

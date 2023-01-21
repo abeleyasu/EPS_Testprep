@@ -270,3 +270,12 @@
 .sidebar-mini.sidebar-o #sidebar:hover {
     width: 290px !important;
 }
+
+@media(max-width: 992px) {
+	#page-container.page-header-fixed.sidebar-o #page-header{
+		padding-left: 0px;
+	}
+	#page-container.sidebar-o{
+		padding-left: 0px;
+	}
+}
