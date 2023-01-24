@@ -155,7 +155,7 @@ class PracticeQuestionController extends Controller
 		$practiceSection->format = $request->format;
 		$practiceSection->section_title = $request->testSectionTitle;
 		$practiceSection->practice_test_type = $request->testSectionType;
-		$practiceSection->testid = 0;
+		$practiceSection->testid = $request->get_test_id;
 		$practiceSection->section_order = $request->order;
 		$practiceSection->is_section_completed = '';
 		$practiceSection->save();

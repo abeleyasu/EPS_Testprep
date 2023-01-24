@@ -52,21 +52,57 @@ class PracticeTestsController extends Controller
      */
     public function store(Request $request)
     {
-		$practice = new PracticeTest();
-		$practice->title = $request->title;
-		$practice->format = $request->format;
-		$practice->description = $request->description;
-        $practice->is_test_completed = '';
+
         
-        $practice->save();
+        if(!empty($request->get_question_id))
+        {
+            $practices = PracticeTest::where('id', $request->get_question_id)->get();
+            
+            foreach($practices as $practice) {
+                $practice->description = $request->description;
+                $practice->save();
+            }
+            
+        }
+		// $practice = new PracticeTest();
+		// $practice->title = $request->title;
+		// $practice->format = $request->format;
+		// $practice->description = $request->description;
+        // $practice->is_test_completed = '';
+        
+        // $practice->save();
 		
-		$sections = PracticeTestSection::where('testid', 0)->get();
-		foreach($sections as $section) {
-			$section->testid = $practice->id;
-			$section->save();
-		}
+		// $sections = PracticeTestSection::where('testid', 0)->get();
+		// foreach($sections as $section) {
+		// 	$section->testid = $practice->id;
+		// 	$section->save();
+		// }
 		
         return redirect()->route('practicetests.index')->with('message','Test created successfully');
+    }
+
+    public function addPracticeTest(Request $request)
+    {
+        if(empty($request->get_test_id))
+        {
+            $practice = new PracticeTest();
+            $practice->title = $request->title;
+            $practice->format = $request->format;
+            $practice->is_test_completed = '';
+            $practice->save();
+        }
+        else if(!empty($request->get_test_id))
+        {
+            $practices = PracticeTest::where('id', $request->get_test_id)->get();
+            
+            foreach($practices as $practice) {
+                $practice->title = $request->title;
+                $practice->format = $request->format;
+                $practice->save();
+            }
+        }
+        
+        return $practice->id;
     }
 
     /**
