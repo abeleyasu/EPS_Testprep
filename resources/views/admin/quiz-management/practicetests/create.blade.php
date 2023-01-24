@@ -862,14 +862,14 @@ ul.answerOptionLsit li label input{
                         console.log('3');
                         console.log(check);
                         
-                         check.next("#category_type_results").append("<li class='search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
+                         check.next("#category_type_results").append("<li class='cat-search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
                     });
                 }else{
                     check.next("#category_type_results").empty();
-                    check.next("#category_type_results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+                    check.next("#category_type_results").append("<li class='cat-search-result' data-search_id=''>" + searchValue + "</li>");
                 }
 
-                $(".search-result").on("click", function() {
+                $(".cat-search-result").on("click", function() {
                     var selectedValue = $(this).text();
                     var selectedValueId = $(this).data('search_id');
                     check.val(selectedValue);
