@@ -516,7 +516,7 @@ ul.answerOptionLsit li label input{
 
                             <div class="mb-4 add_question_type_select"> 
                                 <input type="text" value="" name="search-input" data-search_id="" id="search-input" placeholder="Question Type" class="form-control form-control-lg form-control-alt get_question_type" >
-                                {{-- <ul id="search-results"></ul> --}}
+                                <ul id="search-results"></ul>
                             </div>
                             <button class=" plus-button"><i class="fa-solid fa-plus" ></i></button>
                         </div>
@@ -816,27 +816,27 @@ ul.answerOptionLsit li label input{
                 return test.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
             });
             
-            // if(searchValue.length > 0) {
-            //     if(filteredCategories.length>0){
-            //         check.next("#search-results").empty();
-            //         filteredCategories.forEach(function(category) {
-            //             check.next("#search-results").append("<li class='search-result' data-search_id='"+category.id+"'>" + category.question_type_title + "</li>");
-            //         });
-            //     }else{
-            //         check.next("#search-results").empty();
-            //         check.next("#search-results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
-            //     }
+            if(searchValue.length > 0) {
+                if(filteredCategories.length>0){
+                    check.next("#search-results").empty();
+                    filteredCategories.forEach(function(category) {
+                        check.next("#search-results").append("<li class='search-result' data-search_id='"+category.id+"'>" + category.question_type_title + "</li>");
+                    });
+                }else{
+                    check.next("#search-results").empty();
+                    check.next("#search-results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+                }
                 
-            //     $(".search-result").on("click", function() {
-            //         var selectedValue = $(this).text();
-            //         var selectedValueId = $(this).data('search_id');
-            //         check.val(selectedValue);
-            //         check.data('search_id',selectedValueId);
-            //         check.next("#search-results").empty();
-            //     });
-            // } else {
-            //     check.next("#search-results").empty();
-            // }
+                $(".search-result").on("click", function() {
+                    var selectedValue = $(this).text();
+                    var selectedValueId = $(this).data('search_id');
+                    check.val(selectedValue);
+                    check.data('search_id',selectedValueId);
+                    check.next("#search-results").empty();
+                });
+            } else {
+                check.next("#search-results").empty();
+            }
         });
 
         $(document).on("keyup", "#category_type", function() {
@@ -862,20 +862,20 @@ ul.answerOptionLsit li label input{
                         console.log('3');
                         console.log(check);
                         
-                        // check.next("#category_type_results").append("<li class='search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
+                         check.next("#category_type_results").append("<li class='search-result' data-search_id='"+practice_category_type.id+"'>" + practice_category_type.category_type_title + "</li>");
                     });
                 }else{
                     check.next("#category_type_results").empty();
-                    // check.next("#category_type_results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
+                    check.next("#category_type_results").append("<li class='search-result' data-search_id=''>" + searchValue + "</li>");
                 }
 
-                // $(".search-result").on("click", function() {
-                //     var selectedValue = $(this).text();
-                //     var selectedValueId = $(this).data('search_id');
-                //     check.val(selectedValue);
-                //     check.data('search_id',selectedValueId);
-                //     check.next("#category_type_results").empty();
-                // });
+                $(".search-result").on("click", function() {
+                    var selectedValue = $(this).text();
+                    var selectedValueId = $(this).data('search_id');
+                    check.val(selectedValue);
+                    check.data('search_id',selectedValueId);
+                    check.next("#category_type_results").empty();
+                });
             }else{
                 check.next("#category_type_results").empty();
             }
