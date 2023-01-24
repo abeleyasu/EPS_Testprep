@@ -312,6 +312,12 @@ ul.answerOptionLsit li label input{
                 <div class="all-steps" id="all-steps" style="display: none;"> <span class="step"></span> <span class="step"></span> <span class="step"></span> <span class="step"></span> </div>
                 <div class="tab">
                     <div class="row mb-4">
+
+                        <input type="hidden" value="" name="get_question_id" id="get_question_id">
+
+                        <div class="mb-2">
+                            <label class="form-label testvalidError" style="font-size: 13px; color: red;"></label>
+                        </div>
 						<div class="col-md-12 mb-2">
 							<label class="form-label">Title:</label>
 							<input type="text" class="form-control test_title required" placeholder="Enter Practice Test Title" name="title" value=""/>
@@ -978,7 +984,7 @@ ul.answerOptionLsit li label input{
                 }else{
                     $('#sectionModal .validError').text('');
                 }
-                
+                var get_test_id = jQuery('#get_question_id').val();
                 $('#sectionModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
 				var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
@@ -988,6 +994,7 @@ ul.answerOptionLsit li label input{
 						'format': format,
                         'testSectionTitle':testSectionTitle,
 						'testSectionType': testSectionType,
+                        'get_test_id':get_test_id,
                         'order': 1,
 						'_token': $('input[name="_token"]').val()
 					},
@@ -1328,22 +1335,53 @@ function showTab(n) {
 
 function nextPrev(n) {
     var x = document.getElementsByClassName("tab");
+    
+    var test_title_val = jQuery(".test_title").val();
+    var test_format_type_val = jQuery('#format').val();
+    var get_test_id = jQuery('#get_question_id').val();
+
+    console.log(test_title_val);
+    console.log(test_format_type_val);
+
+    if(test_title_val != '')
+    {
+        $('.testvalidError').text('');
+        $.ajax({
+            data:{
+                'format': test_format_type_val,
+                'title': test_title_val,
+                'get_test_id':get_test_id,
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{route("addPracticeTest")}}',
+            method: 'post',
+            success: (res) => {
+                jQuery("#get_question_id").val(res);
+                console.log(res);
+            }
+        });
+    }
+    else if(test_title_val == '')
+    {
+        $('.testvalidError').text('Below fields are required!');
+        return false;
+    }
+    
     if (n == 1 && !validateForm()) return false;
     x[currentTab].style.display = "none";
     currentTab = currentTab + n;
     if (currentTab >= x.length) {
+
+        
         document.getElementById("regForm").submit();
-        // return false;
-        //alert("sdf");
-		
+
+        console.log('g');
+        return false;
+        
         document.getElementById("nextprevious").style.display = "none";
         document.getElementById("all-steps").style.display = "none";
         document.getElementById("register").style.display = "none";
         document.getElementById("text-message").style.display = "block";
-
-
-
-
     }
     showTab(currentTab);
 }
