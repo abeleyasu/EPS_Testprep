@@ -589,7 +589,7 @@
                                 </div>
                                 <div class="block-content">
                                     <div class="block-content p-0">       
-                                        @if(isset($set_get_question_category) && !empty($set_get_question_category))
+                                        @if(isset($store_all_data) && !empty($store_all_data))
                                         <div class="tab-content" id="myTabContent">
                                             <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                                                 <div class="accordion accordionExample">
@@ -600,11 +600,12 @@
                                                     $new_count = 1;
                                                     ?>
                                                     
-                                                    @foreach($set_get_question_category as $get_question_type => $single_question_data)
+                                                    @foreach($store_all_data as $get_question_type => $single_question_data)
                                                     <?php
                                                         $test = $count++;
                                                         $store_total_wrong_answer = 0;
                                                         
+                                                       
                                                         foreach($single_question_data as $question_type_val => $single_question_details_item)
                                                         {
                                                             $store_correct_answer = 0;
@@ -614,7 +615,11 @@
                                                             {
                                                                 foreach($user_selected_answers as $single_answer_user_selected)
                                                                 {
-                                                                    if($get_single_ques_data->test_question_id == $single_answer_user_selected['get_question_details'][0]->question_id)
+
+                                                                    // echo "<pre>";
+                                                                    // print_r($get_single_ques_data);
+                                                                    // echo "</pre>";
+                                                                    if($get_single_ques_data == $single_answer_user_selected['get_question_details'][0]->question_id)
                                                                     {
                                                                         if($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer)
                                                                         {
@@ -629,6 +634,8 @@
                                                                 }
                                                             } 
                                                         }
+
+                                                        //die();
                                                      ?>
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseOne_<?php echo $test; ?>"
@@ -703,8 +710,8 @@
                                                                                 <div class="fw-semibold fs-sm">
                                                                                     <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Question Type">QT</button>
                                                                                     <button type="button" data-bs-toggle="modal" 
-                                                                                    data-question_desc="<?php echo $single_question_details_item[0]->question_type_description ?>"
-                                                                                    data-question_title="<?php echo $single_question_details_item[0]->question_type_title ?>"
+                                                                                    data-question_desc="<?php //echo $single_question_details_item[0]->question_type_description ?>"
+                                                                                    data-question_title="<?php //echo $single_question_details_item[0]->question_type_title ?>"
                                                                                     data-bs-target="#modal-block-large-cg1ct1_<?php echo $new_test; ?>" class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{$question_type_val}}</button>
                                                             
                                                                                     <!-- MODAL -->
