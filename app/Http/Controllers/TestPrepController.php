@@ -84,6 +84,42 @@ class TestPrepController extends Controller
             
             if($_GET['type'] == 'all')
             {
+
+                $store_all_data = array();
+                $get_test_questions = DB::table('practice_questions')
+                ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
+                ->join('practice_tests','practice_tests.id','=','practice_test_sections.testid')
+                ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type')
+                ->where('practice_tests.id',$test_id)
+                ->get();
+
+                $get_all_cat_type = DB::table('practice_category_types')->get();
+               
+                if(!$get_test_questions->isEmpty())
+                {
+                    foreach($get_test_questions as $get_single_test_questions)
+                    {
+                        $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
+
+                        $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+                        
+                        $mergedArray = array_combine($array_cat_type, $array_ques_type);
+                        
+                        foreach($mergedArray as $cate_type =>  $ques_type)
+                        {
+                            $get_cat_name_by_id = DB::table('practice_category_types')
+                            ->where('practice_category_types.id',$cate_type)
+                            ->get();
+
+                            $get_ques_type_name_by_id = DB::table('question_types')
+                            ->where('question_types.id',$ques_type)
+                            ->get();
+                            
+                            $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = $get_single_test_questions->test_question_id;
+                        }
+                    }
+                }
+
                 $get_question_category = DB::table('question_types')
                 ->join('practice_questions','practice_questions.question_type_id','=','question_types.id')
                 ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
