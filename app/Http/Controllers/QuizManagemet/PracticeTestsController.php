@@ -21,7 +21,7 @@ class PracticeTestsController extends Controller
 	public function __construct(){
 		View::share('testformats', $this->testformat);
 		View::share('questionformats', $this->questionformat);
-        View::share('passages', Passage::get());
+        View::share('passages', Passage::get()); 
     }
 	
 	public function index()

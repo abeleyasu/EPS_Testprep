@@ -169,7 +169,6 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
     Route::view('student-view-dashboard', 'user/student-view-dashboard');
     Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
 
-    //Route::view('practice-test-sections', 'user/practice-test-sections');
     
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 

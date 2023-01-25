@@ -1518,11 +1518,8 @@ function openQuestionDialog(sectionId) {
             url: '{{route("getSectionQuestions")}}',
             method: 'post',
             success: (res) => {
-               console.log(res);
                $("#listWithHandleQuestion").empty();
                $.each(res, function(index, value) {
-                    console.log(index);
-                    console.log(value);
                     $('#listWithHandleQuestion').append('<div class="list-group-item" data-id="'+value.question_id+'">\n' +
                     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
