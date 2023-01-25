@@ -509,15 +509,26 @@ ul.answerOptionLsit li label input{
                     <div class="input-container">
                         <div class="d-flex input-field">
                             
-                            <div class=" mb-4 me-2">
+                            {{-- <div class=" mb-4 me-2">
                                 <input type="text" value="" data-search_id="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt get_category_type" >
                                 <ul id="category_type_results"></ul>
-                            </div>
+                            </div> --}}
+                            <select name="category_type" id="category_type" data-search_id=""  class="mb-4 me-2 form-control get_category_type">
+                                <option value="">Select Category</option>
+                                @foreach($getAllQuestionType as $key=>$allQuestionType)
+                                    <option value="{{$allQuestionType->id}}">{{$allQuestionType->question_type_title}}</option>
+                                @endforeach
+                            </select>
 
-                            <div class="mb-4 add_question_type_select"> 
+                            {{-- <div class="mb-4 add_question_type_select"> 
                                 <input type="text" value="" name="search-input" data-search_id="" id="search-input" placeholder="Question Type" class="form-control form-control-lg form-control-alt get_question_type" >
-                                <ul id="search-results"></ul>
-                            </div>
+                            </div> --}}
+                            <select name="get_question_type" id="search-input" data-search_id="" class="mb-4 add_question_type_select form-control get_question_type">
+                                <option value="">Select Question</option>
+                                @foreach($getAllPracticeCategoryType as $key=>$AllPracticeCategoryType)
+                                    <option value="{{$AllPracticeCategoryType->id}}">{{$AllPracticeCategoryType->category_type_title}}</option>
+                                @endforeach
+                            </select>
                             <button class=" plus-button"><i class="fa-solid fa-plus" ></i></button>
                         </div>
                     </div>
@@ -1028,72 +1039,77 @@ ul.answerOptionLsit li label input{
 
                 var question_category_type_value = $('#category_type').val();
 
-                var get_category_type_values = $('.get_category_type').map(function(){
-                    var store_id = 0;
-                    var check_id = $(this).data('search_id');
-                    var check_value = $(this).val();
+                // var get_category_type_values = $('.get_category_type').map(function(){
+                //     var store_id = 0;
+                //     var check_id = $(this).data('search_id');
+                //     var check_value = $(this).val();
 
-                    if(check_id == '' && check_value != '' )
-                    {
-                        $.ajax({
-                            data:{
-                                'searchId': $(this).data('search_id'),
-                                'searchValue': $(this).val(),
-                                '_token': $('input[name="_token"]').val()
-                            },
-                            url: '{{route("addPracticeCategoryType")}}',
-                            method: 'post',
-                            async: false,
-                            success: (res) => {
-                                store_id = parseInt(res);
-                            } 
-                        });	
-                    }
-                    else if(check_id == '' && check_value == '')
-                    {
-                        store_id = 0;
-                    }
-                    else
-                    {
-                        store_id = check_id;
-                    }
-                    return store_id;
-                }).get();
+                //     if(check_id == '' && check_value != '' )
+                //     {
+                //         $.ajax({
+                //             data:{
+                //                 'searchId': $(this).data('search_id'),
+                //                 'searchValue': $(this).val(),
+                //                 '_token': $('input[name="_token"]').val()
+                //             },
+                //             url: '{{route("addPracticeCategoryType")}}',
+                //             method: 'post',
+                //             async: false,
+                //             success: (res) => {
+                //                 store_id = parseInt(res);
+                //             } 
+                //         });	
+                //     }
+                //     else if(check_id == '' && check_value == '')
+                //     {
+                //         store_id = 0;
+                //     }
+                //     else
+                //     {
+                //         store_id = check_id;
+                //     }
+                //     return store_id;
+                // }).get();
 
-                var get_question_type_values = $('.get_question_type').map(function(){
-                    var store_id = 0;
-                    var check_id = $(this).data('search_id');
-                    var check_value = $(this).val();
-                    if(check_id == '' && check_value != '')
-                    {
-                        $.ajax({
-                            data:{
-                                'searchId': $(this).data('search_id'),
-                                'searchValue': $(this).val(),
-                                '_token': $('input[name="_token"]').val()
-                            },
-                            url: '{{route("addPracticeQuestionType")}}',
-                            method: 'post',
-                            async: false,
-                            success: (res) => {
-                                store_id = parseInt(res);
-                            } 
-                        });	
-                    }
-                    else if(check_id == '' && check_value == '')
-                    {
-                        store_id = 0;
-                    }
-                    else
-                    {
-                        store_id = check_id;
-                    }
-                    return store_id;
+                // var get_question_type_values = $('.get_question_type').map(function(){
+                //     var store_id = 0;
+                //     var check_id = $(this).data('search_id');
+                //     var check_value = $(this).val();
+                //     if(check_id == '' && check_value != '')
+                //     {
+                //         $.ajax({
+                //             data:{
+                //                 'searchId': $(this).data('search_id'),
+                //                 'searchValue': $(this).val(),
+                //                 '_token': $('input[name="_token"]').val()
+                //             },
+                //             url: '{{route("addPracticeQuestionType")}}',
+                //             method: 'post',
+                //             async: false,
+                //             success: (res) => {
+                //                 store_id = parseInt(res);
+                //             } 
+                //         });	
+                //     }
+                //     else if(check_id == '' && check_value == '')
+                //     {
+                //         store_id = 0;
+                //     }
+                //     else
+                //     {
+                //         store_id = check_id;
+                //     }
+                //     return store_id;
                 
+                // }).get();
+                
+
+                var get_category_type_values = $('.get_category_type').map(function(){                    
+                    return $(this).val()!="" ? $(this).val():null;
                 }).get();
-                
-                // console.log(get_category_type_values);
-                // console.log(get_question_type_values);
+                var get_question_type_values = $('.get_category_type').map(function(){                    
+                    return $(this).val()!="" ? $(this).val():null;
+                }).get();
                 // return false;
                 var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
                 var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();

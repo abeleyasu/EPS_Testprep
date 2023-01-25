@@ -11,6 +11,7 @@ use App\Models\PracticeQuestion;
 use App\Models\PracticeTestSection;
 use App\Models\QuestionType;
 use App\Models\Passage;
+use App\Models\PracticeCategoryType;
 use Illuminate\Support\Facades\View;
 
 class PracticeTestsController extends Controller
@@ -21,7 +22,10 @@ class PracticeTestsController extends Controller
 	public function __construct(){
 		View::share('testformats', $this->testformat);
 		View::share('questionformats', $this->questionformat);
+
         View::share('passages', Passage::get()); 
+
+       
     }
 	
 	public function index()
@@ -131,6 +135,8 @@ class PracticeTestsController extends Controller
         // dd($id);
         // dd($testQuestions);
         $testsections = PracticeTestSection::orderBy('section_order')->where('testid', $id)->get();
+        $testQuestions[0]->question_type_id;
+        $testQuestions[0]->question_type_id=json_decode($testQuestions[0]->question_type_id);
 
         //dd($testsections);
         $getQuestionTypes = DB::table('question_types')->get();

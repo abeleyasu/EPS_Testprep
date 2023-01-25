@@ -11,7 +11,7 @@ class PracticeCategoryType extends Model
     use HasFactory, SoftDeletes;
 	
 	protected $fillable = [
-        'category_type_title'
+        'category_type_title','category_type_description'
     ];
 
 }

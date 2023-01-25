@@ -2,6 +2,9 @@
 
 @section('title', 'Admin Dashboard : Edit Practice Tests')
 @section('page-style')
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+
 
 <style>
 
@@ -20,7 +23,14 @@ input.invalid {
 .tab {
     display: none
 }
-
+.select2-container_main-position{
+            display: block;
+        }
+.select2-container_main-position .error{
+            position: absolute;
+            top: 50px;
+            left: 0;
+}
 button {
     background-color: #4CAF50;
     color: #ffffff;
@@ -474,22 +484,42 @@ ul.answerOptionLsit li label input{
                         </div>
                     </div>
                     
-                    <?php if (!$testQuestions->isEmpty()) { ?>
+                    <?php if (isset($testQuestions[0]->question_type_id) && count($testQuestions[0]->question_type_id)>0) { ?>
                     <div class="mb-2 mb-4"> 
-                        <label for="new_question_type_select">Question type:</label>
-                        <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
+                        <label for="new_question_type_selected">Question type:</label>
+                        {{-- <select multiple class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
                             <option value="">Select Question Type</option>
 
-                            @foreach($getQuestionTypes as $singleQuestionTypes)
-                            <option value="{{$singleQuestionTypes->id}}" {{$testQuestions[0]->question_type_id == $singleQuestionTypes->id ? 'selected': '';}}>{{$singleQuestionTypes->question_type_title}}</option>
+                            @foreach($getQuestionTypes as $key => $singleQuestionTypes)
+                            <option value="{{$key+1}}" @if(in_array($singleQuestionTypes->id, $testQuestions[0]->question_type_id))selected @endif>
+                                {{$singleQuestionTypes->question_type_title}}
+                            </option>
                             @endforeach
-                        </select>
+
+                        </select> --}}
+                        <select class="js-select2 select"
+                        name="new_question_type_selected[]"
+                        multiple="multiple">
+
+                        @foreach($getQuestionTypes as $key => $singleQuestionTypes)
+                        <option value="{{$key+1}}" @if(in_array($singleQuestionTypes->id, $testQuestions[0]->question_type_id))selected @endif>
+                            {{$singleQuestionTypes->question_type_title}}
+                        </option>
+                        @endforeach
+
+                    </select>
+                       
                     </div>
                     <?php } ?>
-
                     <div class="mb-2 mb-4">
 						<label for="category_type" class="form-label">Category type:</label>
-                        <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
+                        <select name="category_type" id="category_type"  class="form-control form-control-lg form-control-alt">
+                            <option value="">Select Question</option>
+                            @foreach($getAllPracticeCategoryType as $key=>$AllPracticeCategoryType)
+                                <option value="{{$AllPracticeCategoryType->id}}">{{$AllPracticeCategoryType->category_type_title}}</option>
+                            @endforeach
+                        </select>
+                        {{-- <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" > --}}
 					</div>
                     
 
@@ -839,11 +869,15 @@ ul.answerOptionLsit li label input{
 @endsection
 
 @section('admin-script')
-
-    <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
+<script>One.helpersOnLoad(['jq-select2']);</script>
+<script src="{{asset('assets/js/select2/select2.min.js') }}"></script>
+<script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
-<script>
+<script type="text/javascript">
+    $(document).ready(() => {
+        $('.js-select2').select2();
+    })
     var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
         });
