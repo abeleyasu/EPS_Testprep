@@ -150,6 +150,18 @@ class PracticeQuestionController extends Controller
 		return response()->json($question);
 
 	}
+
+	public function getSectionQuestions(Request $request)
+	{
+		$sectionQuestions = $testSectionQuestions = DB::table('practice_questions')
+		->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+		->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags' )
+		->where('practice_test_sections.id', $request->sectionId)
+		->orderBy('question_order', 'asc')
+		->get(); 
+		return response()->json($sectionQuestions);
+	}
+
 	public function addPracticeTestSection(Request $request) {
 		$practiceSection = new PracticeTestSection();
 		$practiceSection->format = $request->format;

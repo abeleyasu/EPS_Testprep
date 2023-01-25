@@ -1001,7 +1001,7 @@ ul.answerOptionLsit li label input{
 					url: '{{route("addPracticeTestSection")}}',
 					method: 'post',
 					success: (res) => {
-                        $('.sectionContainerList').append('<div class="sectionTypesFull" id="sectionDisplay_'+currentModelId+'" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>'+format+'</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>'+capitalizeFirstLetter(sectionSelectedTxt)+'</strong><input type="hidden" name="selectedSecTxt" value="'+testSectionType+'" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_'+res+'"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="'+res+'">Order</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="'+currentModelId+'" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_'+res+'"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog()"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                        $('.sectionContainerList').append('<div class="sectionTypesFull" id="sectionDisplay_'+currentModelId+'" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>'+format+'</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>'+capitalizeFirstLetter(sectionSelectedTxt)+'</strong><input type="hidden" name="selectedSecTxt" value="'+testSectionType+'" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_'+res+'"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="'+res+'">Order</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="'+currentModelId+'" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_'+res+'"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog('+res+')"><i class="fa-solid fa-check"></i></button></div></div></div>');
 
 						$('.addQuestion').val('');
 						$('.validError').text('');
@@ -1508,8 +1508,31 @@ function openOrderDialog() {
 
             myModal.show();
         }
-function openQuestionDialog() {
-
+function openQuestionDialog(sectionId) {
+            console.log(sectionId);
+            $.ajax({
+            data:{
+                'sectionId': sectionId,
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{route("getSectionQuestions")}}',
+            method: 'post',
+            success: (res) => {
+               console.log(res);
+               $("#listWithHandleQuestion").empty();
+               $.each(res, function(index, value) {
+                    console.log(index);
+                    console.log(value);
+                    $('#listWithHandleQuestion').append('<div class="list-group-item" data-id="'+value.question_id+'">\n' +
+                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                    '</span>\n' +
+                    '<button class="btn btn-primary" value="'+value.question_id+'">'+value.question_title+'</button>\n' +
+                    '</div>');
+                });
+               
+            }
+        });
             questionModal.show();
         }
 function saveOrder() {

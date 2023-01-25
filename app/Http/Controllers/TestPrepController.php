@@ -102,20 +102,22 @@ class TestPrepController extends Controller
                         $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
 
                         $array_cat_type = json_decode($get_single_test_questions->category_type, true);
-                        
-                        $mergedArray = array_combine($array_cat_type, $array_ques_type);
-                        
-                        foreach($mergedArray as $cate_type =>  $ques_type)
+                        if(isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type) )
                         {
-                            $get_cat_name_by_id = DB::table('practice_category_types')
-                            ->where('practice_category_types.id',$cate_type)
-                            ->get();
+                            $mergedArray = array_combine($array_cat_type, $array_ques_type);
+                        
+                            foreach($mergedArray as $cate_type =>  $ques_type)
+                            {
+                                $get_cat_name_by_id = DB::table('practice_category_types')
+                                ->where('practice_category_types.id',$cate_type)
+                                ->get();
 
-                            $get_ques_type_name_by_id = DB::table('question_types')
-                            ->where('question_types.id',$ques_type)
-                            ->get();
-                            
-                            $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = $get_single_test_questions->test_question_id;
+                                $get_ques_type_name_by_id = DB::table('question_types')
+                                ->where('question_types.id',$ques_type)
+                                ->get();
+                                
+                                $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = $get_single_test_questions->test_question_id;
+                            }
                         }
                     }
                 }
@@ -156,19 +158,25 @@ class TestPrepController extends Controller
 
                         $array_cat_type = json_decode($get_single_test_questions->category_type, true);
                         
-                        $mergedArray = array_combine($array_cat_type, $array_ques_type);
-                        
-                        foreach($mergedArray as $cate_type =>  $ques_type)
+                        if(isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type) )
                         {
-                            $get_cat_name_by_id = DB::table('practice_category_types')
-                            ->where('practice_category_types.id',$cate_type)
-                            ->get();
+                            $mergedArray = array_combine($array_cat_type, $array_ques_type);
+                        
+                        
+                            foreach($mergedArray as $cate_type =>  $ques_type)
+                            {
+                                $get_cat_name_by_id = DB::table('practice_category_types')
+                                ->where('practice_category_types.id',$cate_type)
+                                ->get();
 
-                            $get_ques_type_name_by_id = DB::table('question_types')
-                            ->where('question_types.id',$ques_type)
-                            ->get();
-                            
-                            $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = $get_single_test_questions->test_question_id;
+                                $get_ques_type_name_by_id = DB::table('question_types')
+                                ->where('question_types.id',$ques_type)
+                                ->get();
+                                
+                                $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title );
+
+                                // $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = $get_single_test_questions->test_question_id;
+                            }
                         }
                     }
                 }
