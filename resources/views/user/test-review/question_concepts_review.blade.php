@@ -616,10 +616,7 @@
                                                                 foreach($user_selected_answers as $single_answer_user_selected)
                                                                 {
 
-                                                                    // echo "<pre>";
-                                                                    // print_r($get_single_ques_data);
-                                                                    // echo "</pre>";
-                                                                    if($get_single_ques_data == $single_answer_user_selected['get_question_details'][0]->question_id)
+                                                                    if($get_single_ques_data[0] == $single_answer_user_selected['get_question_details'][0]->question_id)
                                                                     {
                                                                         if($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer)
                                                                         {
@@ -710,8 +707,8 @@
                                                                                 <div class="fw-semibold fs-sm">
                                                                                     <button type="button" class="btn btn-warning fs-xs fw-semibold me-1 mb-3 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Question Type">QT</button>
                                                                                     <button type="button" data-bs-toggle="modal" 
-                                                                                    data-question_desc="<?php //echo $single_question_details_item[0]->question_type_description ?>"
-                                                                                    data-question_title="<?php //echo $single_question_details_item[0]->question_type_title ?>"
+                                                                                    data-question_desc="<?php echo $single_question_details_item[0]['question_desc'] ?>"
+                                                                                    data-question_title="<?php echo $single_question_details_item[0]['question_type_title'] ?>"
                                                                                     data-bs-target="#modal-block-large-cg1ct1_<?php echo $new_test; ?>" class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{$question_type_val}}</button>
                                                             
                                                                                     <!-- MODAL -->
