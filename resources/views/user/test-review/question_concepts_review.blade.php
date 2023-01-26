@@ -829,11 +829,11 @@
                                                         <button type="button" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Answer Type</button>
                                                     </td>
                                                     <td class="fw-semibold fs-sm">                
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[!@#,]/", "", strtolower($new));
+                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
  ?>" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">{{$get_question_type}}</button>
                                     
-                                                        <div class="modal" id="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[!@#,]/", "", strtolower($new));
- ?>" tabindex="-1" aria-labelledby="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[!@#,]/", "", strtolower($new));
+                                                        <div class="modal" id="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
+ ?>" tabindex="-1" aria-labelledby="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
  ?>" style="display: none;" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
