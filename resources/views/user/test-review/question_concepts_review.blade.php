@@ -194,8 +194,7 @@
                                                         var new_txt = removeTags(value);
                                                         $("div").find('[data-option='+index+']').html( $( "<p>"+value+"</p>" ) );
                                                     });
-                                                    $(this ).addClass('gand');
-                                                    console.log(this);
+                                                    
                                                     if($(this ).data('option-value') == 'a')
                                                     {
                                                         $(this).addClass('active');
@@ -791,22 +790,53 @@
                                             </thead>
                                             
                                             <tbody class="fs-sm">
-                            
+                                                
+                                            <?php $modelcount = 0; ?>
                                                 <!-- Answer Type 1 -->
+                                                @if(isset($store_question_type_data) && !empty($store_question_type_data))
+                                                @foreach($store_question_type_data as $get_question_type => $single_question_data)
+                                                
+                                                    <?php
+                                                        $test = $count++;
+                                                        $store_total_wrong_answer = 0;
+                                                        
+                                                        foreach($single_question_data as $single_question_details_item)
+                                                        {
+                                                            $store_correct_answer = 0;
+                                                            $store_wrong_answer = 0;
+                                                            
+                                                            foreach($user_selected_answers as $single_answer_user_selected)
+                                                            {
+                                                                if($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id)
+                                                                {
+                                                                    if($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer)
+                                                                    {
+                                                                        $store_correct_answer++;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        $store_wrong_answer++;
+                                                                        $store_total_wrong_answer += $store_wrong_answer;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                     ?>
+
                                                 <tr>
                                                     <td class="text-center"></td>
                                                     <td>
                                                         <button type="button" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Answer Type</button>
                                                     </td>
                                                     <td class="fw-semibold fs-sm">                
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ag1" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Doesn't Meet Keyword Goal</button>
+                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ag<?php echo strtolower(str_replace(' ', '', $get_question_type)); ?>" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">{{$get_question_type}}</button>
                                     
-                                                        <div class="modal" id="modal-block-large-ag1" tabindex="-1" aria-labelledby="modal-block-large-ag1" style="display: none;" aria-hidden="true">
+                                                        <div class="modal" id="modal-block-large-ag<?php echo strtolower(str_replace(' ', '', $get_question_type)); ?>" tabindex="-1" aria-labelledby="modal-block-large-ag<?php echo strtolower(str_replace(' ', '', $get_question_type)); ?>" style="display: none;" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="block block-rounded">
                                                                         <div class="block-header block-header-default">
-                                                                            <h3 class="block-title">Answer Type: Doesn't Meet Keyword Goal</h3>
+                                                                            <h3 class="block-title">Answer Type: {{$get_question_type}}</h3>
                                                                         </div>
                                                                     <div class="block-content">
                                                                         <div id="faq2" class="mb-5" role="tablist" aria-multiselectable="true">
@@ -816,8 +846,7 @@
                                                                                 </div>
                                                                                 <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
                                                                                     <div class="block-content">
-                                                                                        <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
-                                                                                        <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
+                                                                                    <?php echo $single_question_data[0]['question_desc']; ?>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -834,104 +863,15 @@
                             
                                                     <td class="fw-semibold fs-sm">
                                                         <div class="py-1">
-                                                            <p>1</p>
+                                                            <p><?php echo $store_total_wrong_answer; ?></p>
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                @endforeach
+                                                @endif
                                                 <!-- END Answer Type 1 -->
                             
-                                                <!-- Answer Type 2 -->
-                                                <tr>
-                                                    <td class="text-center"></td>
-                                                    <td>
-                                                        <button type="button" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Answer Type</button>
-                                                    </td>
-                                                    <td class="fw-semibold fs-sm">                    
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ag2" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Vocabulary Definition Doesn't Match Context</button>
-                                
-                                                        <div class="modal" id="modal-block-large-ag2" tabindex="-1" aria-labelledby="modal-block-large-ag2" style="display: none;" aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="block block-rounded">
-                                                                        <div class="block-header block-header-default">
-                                                                            <h3 class="block-title">Answer Type: Vocabulary Definition Doesn't Match Context</h3>
-                                                                        </div>
-                                                                        <div class="block-content">
-                                                                            <div id="faq2" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                    <div class="block-header block-header-default" role="tab" id="faq2_h1">
-                                                                                        <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq2" href="#faq2_q1" aria-expanded="true" aria-controls="faq2_q1">Description</a>
-                                                                                    </div>
-                                                                                    <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
-                                                                                        <div class="block-content">
-                                                                                            <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
-                                                                                            <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="block-content block-content-full text-end bg-body">
-                                                                                <button type="button" class="btn btn-sm block-header-default text-white text-white" data-bs-dismiss="modal">Close</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold fs-sm">
-                                                        <div class="py-1">
-                                                            <p>2</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <!-- Answer Type 2 -->
-                            
-                                                <!-- Answer Type 3 -->
-                                                <tr>
-                                                    <td class="text-center"></td>
-                                                    <td>
-                                                        <button type="button" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Answer Type</button>
-                                                    </td>
-                                                    <td class="fw-semibold fs-sm">                    
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-at3" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">Incorrectly Used Literal Vocabulary Definition</button>
-                                    
-                                                        <div class="modal" id="modal-block-large-at3" tabindex="-1" aria-labelledby="modal-block-large-at3" style="display: none;" aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="block block-rounded">
-                                                                        <div class="block-header block-header-default">
-                                                                            <h3 class="block-title">Answer Type: Incorrectly Used Literal Vocabulary Definition</h3>
-                                                                        </div>
-                                                                        <div class="block-content">
-                                                                            <div id="at3" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                    <div class="block-header block-header-default" role="tab" id="at3_description">
-                                                                                        <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#at3" href="#at3_description-answer-type" aria-expanded="true" aria-controls="at3_description">Description</a>
-                                                                                    </div>
-                                                                                    <div id="at3_description-answer-type" class="collapse show" role="tabpanel" aria-labelledby="at3_description" data-bs-parent="#at3">
-                                                                                        <div class="block-content">
-                                                                                            <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
-                                                                                            <p>Dolor posuere proin blandit accumsan senectus netus nullam curae, ornare laoreet adipiscing luctus mauris adipiscing pretium eget fermentum, tristique lobortis est ut metus lobortis tortor tincidunt himenaeos habitant quis dictumst proin odio sagittis purus mi, nec taciti vestibulum quis in sit varius lorem sit metus mi.</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="block-content block-content-full text-end bg-body">
-                                                                                <button type="button" class="btn btn-sm block-header-default text-white text-white" data-bs-dismiss="modal">Close</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold fs-sm">
-                                                        <div class="py-1">
-                                                            <p>0</p>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                
                             
                                               <!-- END ANSWER Type 3 MODAL -->
                                             </tbody>
