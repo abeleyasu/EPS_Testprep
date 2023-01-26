@@ -93,7 +93,7 @@
                         @if (isset($resume_id) && $resume_id != null)
                             <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                         @endif
-                        <div  id="printableArea" class="printableArea">
+                        <div class="printableArea">
                             <div class="text-border">
                                 <h1>
                                     <span>
@@ -225,8 +225,8 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            @if (!empty($employment_data)) 
                                             <div class="preview-list list_group ps-0 pb-3 position-relative features-list-after">
+                                                @if (!empty($employment_data)) 
                                                     <h3>Employment & Certifications</h3>
                                                             <div class="list_group">
                                                                 <ul class="list_items">
@@ -251,10 +251,10 @@
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
-                                                        </div>
                                                 @endif
-                                            @if (!empty($significant_data)) 
+                                            </div>
                                             <div class="preview-list position-relative list_group ps-0 honor-list-after {{ !empty($significant_data) || !empty($employment_data) ? '' : 'd-none' }}">
+                                                @if (!empty($significant_data)) 
                                                     <h3>Responsibilities or interests</h3>
                                                     <div class="list_group">
                                                         <ul class="list_items">
@@ -276,8 +276,8 @@
                                                             @endforeach
                                                         </ul>
                                                     </div>        
-                                                </div>
                                                 @endif
+                                            </div>
                                             @if (!empty($honor))
                                                 <div class="preview-list ps-0">
                                                     <h3>HONORS / ACHIEVEMENTS / AWARDS </h3>
@@ -366,12 +366,8 @@
                                                             @if (!empty($testing_data))
                                                                 @foreach ($testing_data as $data)
                                                                     <li class="list-type">
-                                                                        <span>Name of test & Result score:</span>
                                                                         {{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} 
-                                                                        & {{ isset($data['results_score']) ? $data['results_score'] : ''}}
-                                                                        
-                                                                    </li>
-                                                                    <li class="list-type">
+                                                                        :{{ isset($data['results_score']) ? $data['results_score'] : ''}}
                                                                         @if(!empty($education->class_rank) || !empty($education->total_no_of_student))
                                                                                 <span>Class Rank:</span>
                                                                                 {{ $education->class_rank }} /

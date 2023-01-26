@@ -137,7 +137,7 @@
             background-color: #fff !important;
             z-index: 999;
             right: -11px;
-            top: 145px;
+            top: 172px;
             position: absolute;
             content: "";
             border: 2px solid #a8a8a8;
@@ -175,23 +175,7 @@
             content: "";
             border: 2px solid #a8a8a8;
         } 
-    .responsible-list-after{
-    position: relative;
 
-    }
-    .responsible-list-after:after {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: #fff;
-            z-index: 999;
-            right: -380px;
-            margin-top: -10px;
-            /* top: 420px; */
-            position: absolute;
-            content: "";
-            border: 2px solid #a8a8a8;
-        }
         .employ-list-after{
             position: relative;
         }
@@ -202,8 +186,7 @@
             background-color: #fff;
             z-index: 999;
             right: -10px;
-            margin-top: -10px;
-            /* top: 110px; */
+            top: 110px;
             position: absolute;
             content: "";
             border: 2px solid #a8a8a8;
@@ -450,10 +433,10 @@
                 </div>
             @endif
 
-            @if (!empty($employment_data) || !empty($significant_data))
-            @if (!empty($employment_data)) 
-            <div class="border-bottom d-block">
-                        <div class="preview-list employ-list-after">
+            @if (!empty($employment_data) | !empty($significant_data))
+                <div class="border-bottom d-block">
+                    @if (!empty($employment_data)) 
+                        <div class="preview-list border-bottom employ-list-after">
                             <h3>Employment & Certifications</h3>
                             @foreach ($employment_data as $data)
                                 <span style="display: block;margin-bottom: 5px">
@@ -487,12 +470,9 @@
                                 @endforeach
                             </span> --}}
                         </div>
-            </div>
                     @endif
                     @if (!empty($significant_data)) 
-                    <div class="border-bottom d-block">
-
-                        <span class="preview-list responsible-list-after">
+                        <span class="preview-list">
                             <h3>RESPONSIBILITIES OR INTERESTS</h3>
                             @foreach ($significant_data as $data)
                             <span style="margin-bottom: 5px; display: block">
@@ -519,12 +499,12 @@
                                 @endforeach
                             </span> --}}
                         </span>
-                    </div>
                     @endif
+                </div>
             @endif
 
             @if (!empty($honor))
-                <div class="preview-list">
+                <div class="preview-list honor-list-after">
                     <h3>HONORS / ACHIEVEMENTS / AWARDS</h3>
                     @foreach ($honor->honors_data as $honor_data)
                     <span style="margin-bottom: 5px;display: block">
