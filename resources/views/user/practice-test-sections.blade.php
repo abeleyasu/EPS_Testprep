@@ -56,11 +56,16 @@
                 <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
                   <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
                 </a>
+                @elseif($checkTestQuestion == 0)
+                <a  href="#" style="" class="btn btn-alt-primary fs-8">
+                  <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                </a>
                 @else
                 <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
                   <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                 </a>
                 @endif
+                
                 </div>
               </div>
             </div>

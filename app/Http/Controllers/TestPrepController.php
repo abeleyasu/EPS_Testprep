@@ -553,7 +553,11 @@ class TestPrepController extends Controller
          $check_test_completed = 'yes';
        }
 
-       
+       $checkTestQuestion = DB::table('practice_questions')
+       ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
+       ->where('practice_test_sections.testid', $id)
+       ->count();
+
        $testSections = DB::table('practice_tests')
         ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
         ->select('practice_test_sections.*', 'practice_tests.title' , 'practice_tests.is_test_completed' , 'practice_tests.format' ,  'practice_tests.description' , 'practice_tests.tags' /*, 'practice_questions.*'*/ )
@@ -620,7 +624,7 @@ class TestPrepController extends Controller
                 }
             }
         }
-        return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed]);
+        return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed , 'checkTestQuestion' => $checkTestQuestion]);
     }
 
     public function set_scrollPosition(Request $request){
