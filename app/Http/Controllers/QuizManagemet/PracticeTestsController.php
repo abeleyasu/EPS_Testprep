@@ -24,6 +24,8 @@ class PracticeTestsController extends Controller
 		View::share('questionformats', $this->questionformat);
 
         View::share('passages', Passage::get()); 
+        View::share('getAllQuestionType', QuestionType::get());
+        View::share('getAllPracticeCategoryType', PracticeCategoryType::get());
 
        
     }

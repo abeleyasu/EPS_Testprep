@@ -515,9 +515,12 @@ ul.answerOptionLsit li label input{
                             </div> --}}
                             <select name="category_type" id="category_type" data-search_id=""  class="mb-4 me-2 form-control get_category_type">
                                 <option value="">Select Category</option>
-                                @foreach($getAllQuestionType as $key=>$allQuestionType)
-                                    <option value="{{$allQuestionType->id}}">{{$allQuestionType->question_type_title}}</option>
-                                @endforeach
+                                @if(isset($getAllQuestionType) && !empty($getAllQuestionType))
+                                    @foreach($getAllQuestionType as $key=>$allQuestionType)
+                                        {{$allQuestionType->id}}
+                                            <option value="{{$allQuestionType->id}}">{{$allQuestionType->question_type_title}}</option>
+                                    @endforeach
+                                @endif
                             </select>
 
                             {{-- <div class="mb-4 add_question_type_select"> 
@@ -525,9 +528,11 @@ ul.answerOptionLsit li label input{
                             </div> --}}
                             <select name="get_question_type" id="search-input" data-search_id="" class="mb-4 add_question_type_select form-control get_question_type">
                                 <option value="">Select Question</option>
-                                @foreach($getAllPracticeCategoryType as $key=>$AllPracticeCategoryType)
-                                    <option value="{{$AllPracticeCategoryType->id}}">{{$AllPracticeCategoryType->category_type_title}}</option>
-                                @endforeach
+                                @if(isset($getAllPracticeCategoryType) && !empty($getAllPracticeCategoryType))
+                                    @foreach($getAllPracticeCategoryType as $key=>$AllPracticeCategoryType)
+                                        <option value="{{$AllPracticeCategoryType->id}}">{{$AllPracticeCategoryType->category_type_title}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             <button class=" plus-button"><i class="fa-solid fa-plus" ></i></button>
                         </div>

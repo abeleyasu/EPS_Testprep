@@ -515,9 +515,11 @@ ul.answerOptionLsit li label input{
 						<label for="category_type" class="form-label">Category type:</label>
                         <select name="category_type" id="category_type"  class="form-control form-control-lg form-control-alt">
                             <option value="">Select Question</option>
-                            @foreach($getAllPracticeCategoryType as $key=>$AllPracticeCategoryType)
-                                <option value="{{$AllPracticeCategoryType->id}}">{{$AllPracticeCategoryType->category_type_title}}</option>
-                            @endforeach
+                            @if(isset($getAllPracticeCategoryType) && !empty($getAllPracticeCategoryType))
+                                @foreach($getAllPracticeCategoryType as $key=>$AllPracticeCategoryType)
+                                    <option value="{{$AllPracticeCategoryType->id}}">{{$AllPracticeCategoryType->category_type_title}}</option>
+                                @endforeach
+                            @endif
                         </select>
                         {{-- <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" > --}}
 					</div>
