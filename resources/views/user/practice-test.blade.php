@@ -155,6 +155,7 @@
 @endsection
 
 @section('page-style')
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 <style>
     .content {
         width: 90%;
@@ -164,6 +165,7 @@
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous">
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script>
          jQuery(document).ready(function(){
             var selected_answer = [];
@@ -182,9 +184,6 @@
                 $('.skip').css("background-color", "white");
                 selected_skip_details[get_question_id] = 'no';
             });
-
-            
-
             jQuery(".prev").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
@@ -432,6 +431,7 @@
                 selected_skip_details = selected_skip_details.filter(function( element, key ) {
                     return element !== "undefined";
                 });
+                var current_question_id = $('.next').val();
                 // console.table("selected_flag_details", selected_flag_details);
                 // console.table("selected_gusess_details", selected_gusess_details);
                 // console.table("selected_skip_details", selected_skip_details);
@@ -447,18 +447,82 @@
                         "skip" : selected_skip_details[index]
                     }
                 }
-                // my_arr.forEach(element => {
-                //     if(element.flag == 'yes')
-                //         totalFlag++
+                my_arr.forEach(element => {
+                    if(element.flag == 'yes')
+                        totalFlag++
 
-                //     if(element.skip == 'yes')
-                //         totalSkip++
+                    if(element.skip == 'yes')
+                        totalSkip++
 
-                //     if(element.guess == 'yes')
-                //         totalGuess++
-                // });
-
+                    if(element.guess == 'yes')
+                        totalGuess++
+                });
+                if(current_question_id==1 && !totalFlag && !totalGuess && !totalSkip)
+                {
+                    var alert_data={                        
+                        title: "You didn’t answer all questions do you want to review section now ?",
+                        // text: "You didn’t answer all questions do you want to review section now ?",
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: false,
+                        closeOnCancel: true,
+                        index:true,
+                    }
+                    var reviewCount={
+                        flag:totalFlag,
+                        skip:totalSkip,
+                        guess:totalGuess
+                    }
+                }
+                else
+                {
+                    var alert_data={
+                        title: "Review Details",
+                        text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Cancel",
+                        cancelButtonText: "Cancel",
+                        closeOnConfirm: true,
+                        closeOnCancel: false,
+                        index:false,
+                    };                
+                }
+                sweet_alert(alert_data,reviewCount);
             });
+            function sweet_alert(data,review){
+                swal({
+                        title: data.title,
+                        text: data.text,
+                        type: data.type,
+                        showCancelButton: data.showCancelButton,
+                        confirmButtonColor:data.confirmButtonColor,
+                        confirmButtonText: data.confirmButtonText,
+                        cancelButtonText:data.cancelButtonText,
+                        closeOnConfirm: data.closeOnConfirm,
+                        closeOnCancel: data.closeOnCancel
+                    },(resp) => {
+                        if(data.index && resp){
+                            swal({
+                                title: "Review Details",
+                                text: "Flag :- "+review.flag+","+"Skip :- "+review.skip+","+"Guess :- "+review.guess,
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Cancel",
+                                cancelButtonText: "Cancel",
+                                closeOnConfirm: true,
+                                closeOnCancel: false,
+                                index:false,
+                            })
+                        }
+                    });
+                    
+            }
             
             jQuery(".submit_section_btn").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
@@ -542,10 +606,9 @@
                 }});
                 console.log(get_test_id);
             });
-            
             function get_first_question(get_offset)
             {
-                console.log(selected_answer);
+                // console.log(selected_answer);
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -569,11 +632,11 @@
                         var passage_title =  result.questions[0].passage_title;
                         var passage_description =  result.questions[0].passage_description;
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
+                        // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
                         var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
 
                         var get_question_title = result.questions[0].question_title;
                         get_question_title = result.questions[0].question_title.replace(/(<([^>]+)>)/gi, "");
-
                         var get_question_no = parseInt(result.get_offset) + 1;
 
                         var set_questions_options = '<div class="mb-4">';
@@ -694,6 +757,8 @@
                         $editor.html(passage_description)
                                 .attr('contenteditable', true)
                                 .height($editor.height());
+
+
 
                         jQuery('#get_offset').val(result.get_offset);
 
