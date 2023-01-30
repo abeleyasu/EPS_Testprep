@@ -2,7 +2,7 @@
 
 @section('title', 'Admin Dashboard : Edit Practice Tests')
 @section('page-style')
-
+<link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
 <style>
 
 input {
@@ -198,6 +198,68 @@ ul.answerOptionLsit li label input{
     padding: 0px;
     margin: 0px;
 }
+.select2-container--default .select2-selection--single{
+    display: block;
+    width: 100%;
+    padding: 18px 4px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #334155;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dfe3ea;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    color: #334155;
+    position: relative;
+    top: -14px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 20px;
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #6b757c;
+}
+
+.form-label{
+    display: block
+}
+#addNewTypes .select2-container--default{
+    width: 300px !important;
+}
+.passage-container .select2-container--default{
+    width: 360px !important;
+}
+.add-position{
+    position: relative;
+    top: 4px;
+}
+.add-minus-icon{
+    position: relative;
+    top: -7px
+}
+#sectionModal .select2-container--default{
+    width: 100% !important;
+}
+.plus-button {
+    margin-left: 17px;
+    background-color: #1f2937;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    height: 35px !important;
+    line-height: 22px;
+    font-size: 15px;
+    padding: 8px;
+    width: 35px;
+    position: relative;
+    top: 6px;
+}
 </style>
 @endsection
 @section('admin-content')
@@ -231,8 +293,7 @@ ul.answerOptionLsit li label input{
 						</div>
 						<div class="col-md-12">
 							<label class="form-label">Test Type:</label>
-							{{-- <input type="text" value="{{$practicetests->format}}" readonly style="opacity: 0.4;" class="required"> --}}
-							<select id="format" name="format" class="form-control">
+							<select id="format" name="format" class="form-control js-select2 select">
 								@foreach($testformats as $key=>$testformat)
 								    <option value="{{$key}}" {{$practicetests->format == $key ? 'selected': '';}}>{{$testformat}}</option>
 								@endforeach
@@ -248,10 +309,10 @@ ul.answerOptionLsit li label input{
 							<div class="invalid-feedback">{{$message}}</div>
 						@enderror
 					</div>
-                    <!-- <div class="mb-2 mb-4">
+                    {{-- <div class="mb-2 mb-4">
 						<label for="category_type" class="form-label">Category type:</label>
                         <input type="text" value="{{$practicetests->category_type}}" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
-					</div> -->
+					</div> --}}
 
 					<div class="sectionContainerList">	
                     <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">				
@@ -340,6 +401,7 @@ ul.answerOptionLsit li label input{
 							<i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question
 						</button>
 					</div>-->
+                    @if(isset($testQuestions) && !empty($testQuestions))
 					<div class="col-md-6">
 						<ul class="list-group">
                         @foreach($testQuestions as $key => $question)
@@ -347,6 +409,7 @@ ul.answerOptionLsit li label input{
 						@endforeach
 						</ul>
 					</div>
+                        @endif
                 </div>
                 <div style="overflow:auto;" id="nextprevious">
                     <div style="float:right;"> <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button> </div>
@@ -465,50 +528,48 @@ ul.answerOptionLsit li label input{
 
                     <div class="mb-2">
                         <label class="form-label" for="tags">Question Tags</label>
-                        <input type="text" maxlength="30"
-                            id="tag"
-                            placeholder="add tag" class="form-control" onkeypress="addTag(event)"/>
-
-                        <div class="row items-push mt-2 tag-div">                                  
-                            
+                        <input name="tags" placeholder="add tags" class="form-control"/>
+                    </div>
+                    <div class="input-container" id="addNewTypes">
+                        <div class="d-flex input-field align-items-center removeNewTypes">
+                            <div class="col-md-5 mb-2 me-2">
+                                <label for="category_type" class="form-label">Category Type</label>
+                                <select class="js-select2 select" id="category_type_0" name="category_type">
+                                    <option value="">Select Category Type</option>
+                                    @foreach ($getCategoryTypes as $categoryType)
+                                        <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-2 col-md-5 add_question_type_select">
+                                <label for="search-input" class="form-label">Question Type</label>
+                                <select class="js-select2 select" id="search-input_0" name="search-input">
+                                    <option value="">Select Question Type</option>
+                                    @foreach ($getQuestionTypes as $questionType)
+                                        <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 add-position">
+                                <button class="plus-button" data-id="1" onclick="addNewTypes(this,null)"><i class="fa-solid fa-plus"></i></button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <?php if (!$testQuestions->isEmpty()) { ?>
-                    <div class="mb-2 mb-4"> 
-                        <label for="new_question_type_select">Question type:</label>
-                        <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
-                            <option value="">Select Question Type</option>
 
-                            @foreach($getQuestionTypes as $singleQuestionTypes)
-                            <option value="{{$singleQuestionTypes->id}}" {{$testQuestions[0]->question_type_id == $singleQuestionTypes->id ? 'selected': '';}}>{{$singleQuestionTypes->question_type_title}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <?php } ?>
-
-                    <div class="mb-2 mb-4">
-						<label for="category_type" class="form-label">Category type:</label>
-                        <input type="text" value="" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
-					</div>
-                    
-
-					<div class="mb-2">
-                        <label class="form-label" style="font-size: 13px;">Passages:</label>
-						<select name="passagesType" class="form-control passagesType">
-                            <option value="">Select Passages</option>
-                            
-                        </select>
-                    </div>
-                    
-                    <div class="mb-2">
-                        <label class="form-label" style="font-size: 13px;">Passage Number:</label>
-                        <select class="passNumber">
-                            <option value="">Select Passages Number</option>
-                            @for($i=1;$i<25;$i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        </select>
+					<div class="row passage-container">
+                        <div class="mb-2 col-md-6">
+                            <label for="passage_number" class="form-label">Passage No</label>
+                            <select class="js-select2 select passNumber" id="passage_number" name="passage_number">
+                                <option value="">Select Passage No</option>
+                                @for ($i = 1; $i < 25; $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label class="form-label">Passages:</label>
+                            <select name="passagesType" class="form-control passagesType js-select2 select"></select>
+                        </div>
                     </div>
                     <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
                     <div class="mb-2" id="selectedLayoutQuestion">
@@ -568,7 +629,7 @@ ul.answerOptionLsit li label input{
                         <div class="choiceMultInFourFill">
                             <input type="hidden" name="questionType" id="questionType" value="choiceMultInFourFill">
                             
-                            <label class="form-label" style="font-size: 13px;">
+                            <label class="form-label">
                                 <select class="switchMulti editMultipleChoice" onChange="editMultiChoice(this.value);">
                                     <option value="1">Multi-Choice</option>
                                     <option value="3">Multiple Choice</option>
@@ -843,7 +904,98 @@ ul.answerOptionLsit li label input{
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/tagify.min.js') }}"></script>
+    <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
 <script>
+
+        function addNewTypes(data, type) {
+            let key = null;
+            if(type != 'null' && type == 'repet') {
+                key = parseInt(data);
+            } else {
+                key = $(data).attr('data-id');
+                key = parseInt(key);
+            }
+
+            let html = ``;
+                html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
+                html += `<div class="mb-2 col-md-5 me-2">`;                
+                html += `<select class="js-select2 select" id="category_type_${key}" name="category_type">`;                
+                html += `<option value="">Select Category Type</option>`;                
+                html += `@foreach ($getCategoryTypes as $categoryType)`;                
+                html += `<option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>`;                
+                html += `@endforeach`;                
+                html += `</select>`;                
+                html += `</div>`;                
+                html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
+                html += `<select class="js-select2 select" id="search-input_${key}" name="search-input">`;                
+                html += `<option value="">Select Question Type</option>`;                
+                html += `@foreach ($getQuestionTypes as $questionType)`;                
+                html += `<option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>`;                
+                html += `@endforeach`;                
+                html += `</select>`;                
+                html += `</div>`; 
+                html += `<div class="col-md-2 add-minus-icon">`;                
+                html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;                
+                html += `</div>`;
+                html += `</div>`;         
+
+            $('#addNewTypes').append(html);
+
+            $(`#search-input_${key}`).select2({
+                dropdownParent: $('#questionMultiModal'),
+                placeholder : "Select Question type"
+            });
+
+            $(`#category_type_${key}`).select2({
+                dropdownParent: $('#questionMultiModal'),
+                placeholder : "Select Category type",
+            });
+
+            if(type !== 'repet') {
+                $(data).attr('data-id', key + 1);
+            }
+        }
+
+        function removeNewTypes(data) {
+            $(data).parents('.removeNewTypes').remove();
+        }
+
+    $(document).ready(function() {
+
+        $('input[name=tags]').tagify();
+
+        $(`#format`).select2({
+            // minimumResultsForSearch: -1,
+            placeholder : "Select test type"
+        });
+
+        $(`#search-input_0`).select2({
+            dropdownParent: $('#questionMultiModal'),
+            placeholder : "Select Question type"
+        });
+
+        $(`#category_type_0`).select2({
+            dropdownParent: $('#questionMultiModal'),
+            placeholder : "Select Category type",
+        });
+
+        $(`#passage_number`).select2({
+            dropdownParent: $('#questionMultiModal'),
+            placeholder : "Select Passage No",
+        });
+
+        $(`.passagesType`).select2({
+            dropdownParent: $('#questionMultiModal'),
+            placeholder : "Select Passages",
+        });
+
+        $(`#testSectionType`).select2({
+            dropdownParent: $('#sectionModal'),
+            placeholder : "Select Section Type",
+        });
+    });
+
     var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
         });
@@ -1167,21 +1319,22 @@ ul.answerOptionLsit li label input{
             var answerType ='N/A';
             var fillVals =[];
             var multiChoice = '';
-            var tags='';
-            var QuesTags = $('.tag-div input[name="tags[]"]').map(function(){return $(this).val();}).get();
-                 
-            if(typeof QuesTags !== 'undefined' && QuesTags.length !== 0){
-                tags = QuesTags.join(); 
-            }
+            var tags = $('input[name="tags"]').val();
                             
             var testSectionType = $('#testSectionTypeRead').val();
-            //var new_question_type_select = $('#new_question_type_select').val();
-            var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
+            var get_category_type_values = $('select[name=category_type]').map(function(i,v) {
+                var category_type_arr = [];
+                let category_type_val = $(v).val();
+                category_type_arr.push(category_type_val);
+                return category_type_arr;
+            }).get();
 
-            var new_question_category_type_value = $(this).parent().parent().find('#category_type').val();
-
-            console.log(new_question_category_type_value);
-            
+            var get_question_type_values = $('select[name=search-input]').map(function(i,v) {
+                var question_type_arr = [];
+                let question_type_val = $(v).val();
+                question_type_arr.push(question_type_val);
+                return question_type_arr;
+            }).get();
 
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
             var activeAnswerType = '.'+$('#editSelectedAnswerType').val();
@@ -1259,8 +1412,8 @@ ul.answerOptionLsit li label input{
 						'multiChoice':multiChoice,
                         'section_id':section_id,
                         'tags':tags,
-                        'new_question_type_select':new_question_type_select,
-                        'new_question_category_type_value':new_question_category_type_value,
+                        'get_question_type_values':get_question_type_values,
+                        'get_category_type_values':get_category_type_values,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("updatePracticeQuestion")}}',
@@ -1498,25 +1651,23 @@ function fixStepIndicator(n) {
 }
 function practQuestioDel(id){
     var result = confirm('Are you sure to remove ?');
-            if(!result) {
-                return false;
-            }
+    if(!result) {
+        return false;
+    }
 
-            $.ajax({
-                 data:{
-                    'id': id,
-                    '_token': $('input[name="_token"]').val()
-                },
-                url: '{{route("deletePracticeQuestionById")}}',
-                method: 'post',
-                success: (res) => {
-                    $('.singleQuest_'+id).remove();
-                }
-            });
-
+    $.ajax({
+            data:{
+            'id': id,
+            '_token': $('input[name="_token"]').val()
+        },
+        url: '{{route("deletePracticeQuestionById")}}',
+        method: 'post',
+        success: (res) => {
+            $('.singleQuest_'+id).remove();
+        }
+    });
 }
 function practQuestioEdit(id){
-
     $.ajax({
         data:{
             'question_id':id,
@@ -1535,19 +1686,28 @@ function practQuestioEdit(id){
                 $('#category_type').val(result.category_type);
                 CKEDITOR.instances['js-ckeditor-addQue'].setData(result.title);
                 var tagsString = result.tags;
-                var tags = '';
-                var tagtxt = '';
-                if(tagsString != ''){
-                    var tags = tagsString.split(',');
-                }
-                
-                for(var i=0; i<tags.length; i++){
-                    tagtxt +='<div class="col"><a href="javascript:;" class="tagDelete" onClick="deleteTag(this)">X</a> <div class="form-check form-block">   <input class="form-check-input" type="checkbox" value="'+tags[i]+'" name="tags[]" checked="checked"> <label class="form-check-label label-check" for="example-checkbox-block1">    <span class="d-block fs-sm text-muted">'+tags[i]+'</span>  </label> </div></div>';
-                }
                   
-                $('.tag-div').html(tagtxt);
+                $('input[name=tags]').val(tagsString);
                 $(".passNumber").val(result.passage_number).change();
-                
+
+                let categorytypeArr = JSON.parse(result.category_type);
+                let questiontypeArr = JSON.parse(result.question_type_id);
+
+                for (let index = 1; index < categorytypeArr.length; index++) { 
+                    addNewTypes(index,'repet');
+                }
+                $('.plus-button').attr('data-id', categorytypeArr.length);
+
+                $(categorytypeArr).each((i,v) => {
+                    $(`#category_type_${i}`).val(v);
+                    $(`#category_type_${i}`).trigger('change');
+                });
+
+                $(questiontypeArr).each((i,v) => {
+                    $(`#search-input_${i}`).val(v);
+                    $(`#search-input_${i}`).trigger('change');
+                });
+
                 $.ajax({
                     data:{
                         'format': result.format,
@@ -1995,16 +2155,6 @@ function getEditAnswerContent(answerOpt, fill){
 }
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
-function addTag(evt){
-        let tag = $("#tag").val();
-        if (evt.keyCode == 13){
-            evt.preventDefault();
-
-            $('.tag-div').append('<div class="col"><div class="form-check form-block"><input class="form-check-input" type="checkbox" value="'+tag+'" id="example-checkbox-block1" name="tags[]" checked="checked"><label class="form-check-label label-check" for="example-checkbox-block1"><span class="d-block fs-sm text-muted">'+tag+'</span></label></div></div>');
-            $("#tag").val('');
-            
-        }
 }
 function addTagFunc(evt){
         let tag = $("#addTag").val();

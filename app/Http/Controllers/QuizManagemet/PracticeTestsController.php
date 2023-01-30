@@ -11,6 +11,7 @@ use App\Models\PracticeQuestion;
 use App\Models\PracticeTestSection;
 use App\Models\QuestionType;
 use App\Models\Passage;
+use App\Models\PracticeCategoryType;
 use Illuminate\Support\Facades\View;
 
 class PracticeTestsController extends Controller
@@ -39,8 +40,8 @@ class PracticeTestsController extends Controller
     public function create()
     {
 		$tests = PracticeTest::get();
-        $getQuestionTypes = DB::table('question_types')->get();
-        $getCategoryTypes = DB::table('practice_category_types')->get();
+        $getQuestionTypes = QuestionType::get();
+        $getCategoryTypes = PracticeCategoryType::get();
         return view('admin.quiz-management.practicetests.create' ,  ['tests' => $tests , 'getCategoryTypes' => $getCategoryTypes ,'getQuestionTypes' => $getQuestionTypes]);
     }
 
@@ -126,15 +127,18 @@ class PracticeTestsController extends Controller
     {
 		$practicetests = PracticeTest::find($id);
 		$tests = PracticeTest::get();
-		//$testQuestions = PracticeQuestion::where('section_id', $id)->get();
-		$testQuestions = PracticeTestSection::find($id)->getPracticeQuestions;
-        // dd($id);
-        // dd($testQuestions);
+        $p_test_section = PracticeTestSection::find($id);
+        if(!empty($p_test_section)) {
+            $testQuestions = $p_test_section->getPracticeQuestions;
+        } else {
+            $testQuestions = null;
+        }
         $testsections = PracticeTestSection::orderBy('section_order')->where('testid', $id)->get();
 
-        //dd($testsections);
-        $getQuestionTypes = DB::table('question_types')->get();
-        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections','getQuestionTypes'));
+        $getQuestionTypes = QuestionType::get();
+        $getCategoryTypes = PracticeCategoryType::get();
+
+        return view('admin.quiz-management.practicetests.edit', compact('practicetests', 'tests', 'testQuestions', 'testsections','getQuestionTypes', 'getCategoryTypes'));
     }
 
     /**
@@ -155,7 +159,7 @@ class PracticeTestsController extends Controller
 		/*$practice->format = $request->format;*/
 		$practice->description = $request->description;
         $practice->tags = $tags;
-        $practice->category_type = $request->category_type;
+        // $practice->category_type = $request->category_type;
 		$practice->save();
         return redirect()->route('practicetests.index')->with('message','Question updated successfully');
     }

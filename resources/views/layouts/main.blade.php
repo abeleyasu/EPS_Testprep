@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" id="css-main" href="{{asset('assets/css/oneui.min.css')}}">
     <link rel="stylesheet" id="css-main-custom" href="{{asset('assets/css/custom.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 
 
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
@@ -81,6 +82,7 @@
 	<script src="{{asset('assets/js/custom.js')}}"></script>
     <!-- Page JS Code -->
 	<script>window.MathJax = { MathML: { extensions: ["mml3.js", "content-mathml.js"]}};</script>
+  <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=MML_HTMLorMML"></script>
     @yield('page-script')
 	<script>

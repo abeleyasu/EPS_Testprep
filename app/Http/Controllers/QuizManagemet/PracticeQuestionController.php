@@ -10,6 +10,7 @@ use App\Models\PracticeTestSection;
 use App\Models\PracticeCategoryType;
 use App\Models\QuestionType;
 use App\Models\Passage;
+use Illuminate\Support\Arr;
 
 class PracticeQuestionController extends Controller
 {
@@ -50,10 +51,11 @@ class PracticeQuestionController extends Controller
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
 		$question->question_order = $setQuestionOrder;
-		if(is_array($request->tags)){
-            $question->tags = implode(",", $request->tags);
+		if(isset($request->tags)){
+			$tags = Arr::flatten(json_decode($request->tags, true));
+			$question->tags = implode(",", $tags);
         } else{
-            $question->tags = $request->tags;
+			$question->tags = $request->tags;
         }
 		$question->question_type_id = json_encode($request->get_question_type_values);
 		$question->category_type = json_encode($request->get_category_type_values);
@@ -124,13 +126,14 @@ class PracticeQuestionController extends Controller
 		$question->fill = $request->fill;
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
-		if(is_array($request->tags)){
-            $question->tags = implode(",", $request->tags);
+		if(isset($request->tags)){
+			$tags = Arr::flatten(json_decode($request->tags, true));
+			$question->tags = implode(",", $tags);
         } else{
-            $question->tags = $request->tags;
+			$question->tags = $request->tags;
         }
-		$question->question_type_id = $request->new_question_type_select;
-		$question->category_type = $request->new_question_category_type_value;
+		$question->question_type_id = json_encode($request->get_question_type_values);
+		$question->category_type = json_encode($request->get_category_type_values);
 		$question->save(); 
 		return $question->id;
 	}
@@ -195,7 +198,6 @@ class PracticeQuestionController extends Controller
 			return $practiceQuesType->id;
 		}
 	}
-	
 
 	public function sectionOrder(Request $request){
 		$partSection = PracticeTestSection::find($request->section_id);
