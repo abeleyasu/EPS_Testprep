@@ -538,18 +538,16 @@
                     last_part = parts[parts.length-1];
                     console.log(last_part);
                      get_test_id = last_part;
-                }else
-                {
+                } else {
                     const urlParams = new URLSearchParams(window.location.search);
-                     get_test_id = urlParams.get('test_id');
+                    get_test_id = urlParams.get('test_id');
                 }
                 
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
                     selected_skip_details[get_question_id] = 'no';
-                }
-                else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
                         console.log(this.value);
@@ -557,22 +555,20 @@
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
-                }
-                else
-                {
+                    // selected_skip_details[get_question_id] = 'no';
+                } else {
                     selected_answer[get_question_id] = '-';
-                    selected_skip_details[get_question_id] = 'yes';
+                    // selected_skip_details[get_question_id] = 'yes';
                 }
 
                 if(!$(".guess").is(':checked'))
                 {
-                    selected_gusess_details[get_question_id] = 'no';
+                    // selected_gusess_details[get_question_id] = 'no';
                 }
 
                 if(!$(".flag").is(':checked'))
                 {
-                    selected_flag_details[get_question_id] = 'no';
+                    // selected_flag_details[get_question_id] = 'no';
                 }
               
                 $.ajaxSetup({
@@ -596,15 +592,13 @@
                         if(count < result.total_question){
                             window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
                         }
-                        console.log(result.success);
-                        console.log(result.get_test_name);
-                        console.log(result.section_id);
-                        console.log(get_test_id);
                         var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
                         window.location.href = url;
                         
                 }});
-                console.log(get_test_id);
+                console.log("selected_flag_details", selected_flag_details);
+                console.log("selected_skip_details", selected_skip_details);
+                console.log("selected_gusess_details", selected_gusess_details);
             });
             function get_first_question(get_offset)
             {

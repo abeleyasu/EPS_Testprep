@@ -249,7 +249,6 @@ class TestPrepController extends Controller
         $get_section_id = $request->get_section_id;
         $get_question_type = $request->get_question_type;
         $get_practice_id = $request->get_practice_id;
-        
 
         if($get_question_type == 'single')
         {
