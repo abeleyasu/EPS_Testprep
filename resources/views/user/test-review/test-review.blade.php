@@ -41,7 +41,7 @@
                     <a class="block block-rounded bg-primary-dark" href="{{ route('test-review.question-concept-review') }}">
                         <div class="block-content block-content-full d-flex justify-content-between">
                             <div class="me-3">
-                                <p class="fw-semibold text-white mb-0">Question & Concept Review MOBILE</p>
+                                <p class="fw-semibold text-white mb-0">Question & Concept Review</p>
                                 <p class="fs-sm text-white-75 mb-0">
                                 Practice Test 1576C
                                 </p>

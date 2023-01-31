@@ -522,7 +522,8 @@ class TestPrepController extends Controller
     public function allSection(Request $request, $id)
     {
         $set_offset = 0;
-        $total_questions = PracticeQuestion::where('practice_test_sections_id',$id)->pluck('id')->toArray();
+        $practice_test_section = PracticeTestSection::where('testid',$id)->first();
+        $total_questions = PracticeQuestion::where('practice_test_sections_id',$practice_test_section->id)->pluck('id')->toArray();
         return view('user.practice-test' , ['section_id' => $id,'set_offset' => $set_offset, 'question_type' => 'all', 'total_questions' => $total_questions]);
     }
 

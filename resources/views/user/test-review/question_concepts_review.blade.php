@@ -48,7 +48,7 @@
                         <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding" id="btabs-animated-fade-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-animated-fade-home" role="tab" aria-controls="btabs-animated-fade-home" aria-selected="false" tabindex="-1">
                             <div class="block-content text-start p-0 block-content-full  d-flex justify-content-between">
                                 <div class="me-3">
-                                    <p class="fw-semibold text-white mb-0">Question & Concept Review MOBILE</p>
+                                    <p class="fw-semibold text-white mb-0">Question & Concept Review</p>
                                     <p class="fs-sm text-white-75 mb-0">
                                     Practice Test 1576C
                                     </p>
