@@ -53,17 +53,19 @@
                 
                 </h2>
                 @if($check_test_completed == 'yes')
-                <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
-                  <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
-                </a>
+                  @if (isset($testSections[0]) && !empty($testSections[0]))
+                  <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
+                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
+                  </a>
+                  @endif
                 @elseif($checkTestQuestion == 0)
-                <a  href="#" style="" class="btn btn-alt-primary fs-8">
-                  <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
-                </a>
+                  <a  href="#" style="" class="btn btn-alt-primary fs-8">
+                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                  </a>
                 @else
-                <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
-                  <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
-                </a>
+                  <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
+                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                  </a>
                 @endif
                 
                 </div>
@@ -188,7 +190,7 @@
 
           </ul>
           @elseif(isset($testSections) && $testSections == 0)
-          <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+          <div class="timeline-event-time block-options-item fs-sm fw-semibold text-danger">
                No Sections Added yet!
           </div>
           @endif

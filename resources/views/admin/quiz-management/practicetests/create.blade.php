@@ -1362,8 +1362,6 @@
                     url: '{{ route('addPracticeQuestion') }}',
                     method: 'post',
                     success: (res) => {
-                        console.log("currentModelQueId", currentModelQueId);
-                        console.log("res", res);
                         $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append(
                             '<ul class="sectionList"><li>' + question + '</li><li>' + answerType +
                             '</li><li>' + passagesTypeTxt + '</li><li>' + passNumber + '</li><li>' +
@@ -1440,7 +1438,6 @@
                 url: '{{ route('sectionOrder') }}',
                 method: 'post',
                 success: (res) => {
-                    console.log(res);
                 }
             });
         });
@@ -1544,9 +1541,6 @@
             var test_format_type_val = jQuery('#format').val();
             var get_test_id = jQuery('#get_question_id').val();
 
-            console.log(test_title_val);
-            console.log(test_format_type_val);
-
             if (test_title_val != '') {
                 $('.testvalidError').text('');
                 $.ajax({
@@ -1560,7 +1554,6 @@
                     method: 'post',
                     success: (res) => {
                         jQuery("#get_question_id").val(res);
-                        console.log(res);
                     }
                 });
             } else if (test_title_val == '') {
@@ -1575,8 +1568,6 @@
 
 
                 document.getElementById("regForm").submit();
-
-                console.log('g');
                 return false;
 
                 document.getElementById("nextprevious").style.display = "none";
@@ -1711,7 +1702,6 @@
         }
 
         function openQuestionDialog(sectionId) {
-            console.log(sectionId);
             $.ajax({
                 data: {
                     'sectionId': sectionId,
@@ -1770,7 +1760,7 @@
                     url: '{{ route('sectionOrder') }}',
                     method: 'post',
                     success: (res) => {
-                        console.log(res);
+
                     }
                 });
             }
@@ -1788,10 +1778,7 @@
                     item: evt.item.children[1].value,
                     currentMileId: 1
                 };*/
-                console.log('$$$$$$');
                 var indices = test.toArray();
-                console.log(indices);
-                console.log('$$$$$$');
                 $.each(indices, function(index, value) {
                     var new_question_id = value;
                     var new_question_id_order = index + 1;
@@ -1807,7 +1794,6 @@
                         url: '{{ route('questionOrder') }}',
                         method: 'post',
                         success: (res) => {
-                            console.log(res);
                         }
                     });
                 });
@@ -1828,13 +1814,11 @@
                 //     url: '{{ route('questionOrder') }}',
                 //     method: 'post',
                 //     success: (res) => {
-                //        console.log(res);
                 //     }
                 // });
             }
         }, );
 
         var indices = test.toArray();
-        console.log(indices);
     </script>
 @endsection

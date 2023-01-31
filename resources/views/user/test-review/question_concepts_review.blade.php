@@ -242,44 +242,44 @@
                                                 <?php
                                                     $count = 1;
                                                 ?>
-                                                {{-- accordian tab 1 --}}
                                                 @if(isset($user_selected_answers) && !empty($user_selected_answers))
-                                                    @foreach($user_selected_answers as $key => $single_user_selected_answers)
-                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                            <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
-                                                                aria-expanded="false" aria-controls="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>">
-                                                        
-                                                                <table>
-                                                                    <tr >
-                                                                        <td class="text-center">
-                                                                            <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">{{$count++}}</button>
-                                                                            <?php $correct =  str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
-                                                                            @if($single_user_selected_answers['user_selected_answer'] == $correct)
-                                                                            <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>
-                                                                            @else
-                                                                            <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>       
-                                                                            @endif
+                                                @foreach($user_selected_answers as $key => $single_user_selected_answers)
+                                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                            @if (isset($single_user_selected_answers['get_question_details'][0]->question_id) && !empty($single_user_selected_answers['get_question_details'][0]->question_id))
+                                                                <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                    aria-expanded="false" aria-controls="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>">
+                                                                    <table>
+                                                                        <tr >
+                                                                            <td class="text-center">
+                                                                                <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">{{$count++}}</button>
+                                                                                <?php $correct =  str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
+                                                                                @if($single_user_selected_answers['user_selected_answer'] == $correct)
+                                                                                <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>
+                                                                                @else
+                                                                                <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>       
+                                                                                @endif
 
-                                                                            <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['get_question_details'][0]->question_answer}}</button>
+                                                                                <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['get_question_details'][0]->question_answer}}</button>
 
-                                                                            @if($single_user_selected_answers['user_selected_flag'] == 'yes' )
-                                                                            <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
-                                                                            @endif
-                                                                            
-                                                                            @if($single_user_selected_answers['user_selected_guess'] == 'yes' )
-                                                                            <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
-                                                                            @endif
+                                                                                @if($single_user_selected_answers['user_selected_flag'] == 'yes' )
+                                                                                <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
+                                                                                @endif
+                                                                                
+                                                                                @if($single_user_selected_answers['user_selected_guess'] == 'yes' )
+                                                                                <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
+                                                                                @endif
 
-                                                                            @if($single_user_selected_answers['user_selected_answer'] == '-' )
-                                                                            <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </div>
+                                                                                @if($single_user_selected_answers['user_selected_answer'] == '-' )
+                                                                                <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                                                @endif
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            @endif    
                                                             <div id="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                                 <div class="odd">    
                                                                     <div class="fw-semibold fs-sm p-4 ">
@@ -570,7 +570,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>    
                                                     @endforeach
                                                 @endif
                                             </div>
@@ -600,39 +600,40 @@
                                                     ?>
                                                     
                                                     @foreach($store_all_data as $get_question_type => $single_question_data)
-                                                    <?php
-                                                        $test = $count++;
-                                                        $store_total_wrong_answer = 0;
-                                                        
-                                                       
-                                                        foreach($single_question_data as $question_type_val => $single_question_details_item)
-                                                        {
-                                                            $store_correct_answer = 0;
-                                                            $store_wrong_answer = 0;
+                                                    @if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id))
+                                                        <?php
+                                                            $test = $count++;
+                                                            $store_total_wrong_answer = 0;
                                                             
-                                                            foreach($single_question_details_item as $get_single_ques_data)
+                                                        
+                                                            foreach($single_question_data as $question_type_val => $single_question_details_item)
                                                             {
-                                                                foreach($user_selected_answers as $single_answer_user_selected)
+                                                                $store_correct_answer = 0;
+                                                                $store_wrong_answer = 0;
+                                                                
+                                                                foreach($single_question_details_item as $get_single_ques_data)
                                                                 {
-
-                                                                    if($get_single_ques_data[0] == $single_answer_user_selected['get_question_details'][0]->question_id)
+                                                                    foreach($user_selected_answers as $single_answer_user_selected)
                                                                     {
-                                                                        if($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer)
+
+                                                                        if($get_single_ques_data[0] == $single_answer_user_selected['get_question_details'][0]->question_id)
                                                                         {
-                                                                            $store_correct_answer++;
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            $store_wrong_answer++;
-                                                                            $store_total_wrong_answer += $store_wrong_answer;
+                                                                            if($single_answer_user_selected['user_selected_answer'] == $single_answer_user_selected['get_question_details'][0]->question_answer)
+                                                                            {
+                                                                                $store_correct_answer++;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                $store_wrong_answer++;
+                                                                                $store_total_wrong_answer += $store_wrong_answer;
+                                                                            }
                                                                         }
                                                                     }
-                                                                }
-                                                            } 
-                                                        }
+                                                                } 
+                                                            }
 
-                                                        //die();
-                                                     ?>
+                                                        ?>
+                                                    @endif
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseOne_<?php echo $test; ?>"
                                                             aria-expanded="false" aria-controls="collapseOne_<?php echo $test; ?>">
@@ -795,7 +796,7 @@
                                                 <!-- Answer Type 1 -->
                                                 @if(isset($store_question_type_data) && !empty($store_question_type_data))
                                                 @foreach($store_question_type_data as $get_question_type => $single_question_data)
-                                                
+                                                @if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id))
                                                     <?php
                                                         $test = $count++;
                                                         $store_total_wrong_answer = 0;
@@ -822,6 +823,7 @@
                                                             }
                                                         }
                                                      ?>
+                                                @endif     
 
                                                 <tr>
                                                     <td class="text-center"></td>
