@@ -155,17 +155,14 @@
 @endsection
 
 @section('page-style')
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/sweetalert.min.css') }}">
 <style>
     .content {
         width: 90%;
     }
 </style>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="{{asset('assets/js/lib/jquery.min.js')}}"></script>
+<script src="{{ asset('js/sweetalert.min.js') }}"></script>
 <script>
          jQuery(document).ready(function(){
             var selected_answer = [];
@@ -196,7 +193,6 @@
                 } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
-                        console.log(this.value);
                         store_multi += this.value+','; 
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
@@ -304,21 +300,12 @@
                     count ++;
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
-                        console.log(this.value);
                         store_multi += this.value+','; 
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
                 }
-                // else
-                // {
-                //     selected_answer[get_question_id] = '-';
-                //     selected_skip_details[get_question_id] = 'yes';
-                //     $("#set_question_data").find('.mb-4').append('<span class="custom_error" style="color:red;" >Please pick any option!</span>');
-                //     setTimeout(function() { $(".custom_error").remove(); }, 5000);
-                //     return false;
-                // }
 
                 if(!$(".guess").is(':checked'))
                 {
@@ -432,9 +419,7 @@
                     return element !== "undefined";
                 });
                 var current_question_id = $('.next').val();
-                // console.table("selected_flag_details", selected_flag_details);
-                // console.table("selected_gusess_details", selected_gusess_details);
-                // console.table("selected_skip_details", selected_skip_details);
+
                 let my_arr = []
                 let totalFlag = 0;
                 let totalSkip = 0;
@@ -447,6 +432,7 @@
                         "skip" : selected_skip_details[index]
                     }
                 }
+
                 my_arr.forEach(element => {
                     if(element.flag == 'yes')
                         totalFlag++
@@ -457,6 +443,7 @@
                     if(element.guess == 'yes')
                         totalGuess++
                 });
+
                 if(current_question_id==1 && !totalFlag && !totalGuess && !totalSkip)
                 {
                     var alert_data={                        
@@ -530,14 +517,14 @@
                 var get_question_type = jQuery('#get_question_type').val();
                 var get_practice_id = jQuery(this).attr('data-practice_test_id');
                 var get_test_id = '';
+                let question_ids = @json($total_questions);
+
                 if (window.location.href.indexOf("all") > -1)
                 {
-                    console.log('if');
                     var url = window.location.href,
                     parts = url.split("/"),
                     last_part = parts[parts.length-1];
-                    console.log(last_part);
-                     get_test_id = last_part;
+                    get_test_id = last_part;
                 } else {
                     const urlParams = new URLSearchParams(window.location.search);
                     get_test_id = urlParams.get('test_id');
@@ -546,30 +533,36 @@
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
-                    selected_skip_details[get_question_id] = 'no';
                 } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
-                        console.log(this.value);
                         store_multi += this.value+','; 
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
-                    // selected_skip_details[get_question_id] = 'no';
                 } else {
                     selected_answer[get_question_id] = '-';
-                    // selected_skip_details[get_question_id] = 'yes';
                 }
 
-                if(!$(".guess").is(':checked'))
-                {
-                    // selected_gusess_details[get_question_id] = 'no';
-                }
+                selected_flag_details = selected_flag_details.filter(function( element, key ) {
+                    return element !== "undefined";
+                });
+                selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
+                    return element !== "undefined";
+                });
 
-                if(!$(".flag").is(':checked'))
-                {
-                    // selected_flag_details[get_question_id] = 'no';
-                }
+                Array.prototype.associate = function (keys) {
+                    var result = {};
+
+                    this.forEach(function (el, i) {
+                        result[keys[i]] = el;
+                    });
+
+                    return result;
+                };
+
+                let flag_details = selected_flag_details.associate(question_ids);
+                let gusess_details = selected_gusess_details.associate(question_ids);
               
                 $.ajaxSetup({
                   headers: {
@@ -582,8 +575,8 @@
                     method: 'post',
                     data: {
                         selected_answer:selected_answer,
-                        selected_gusess_details:selected_gusess_details,
-                        selected_flag_details:selected_flag_details,
+                        selected_gusess_details:gusess_details,
+                        selected_flag_details:flag_details,
                         get_section_id:get_section_id,
                         get_practice_id:get_practice_id,
                         get_question_type:get_question_type
@@ -593,16 +586,12 @@
                             window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
                         }
                         var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
-                        window.location.href = url;
-                        
-                }});
-                console.log("selected_flag_details", selected_flag_details);
-                console.log("selected_skip_details", selected_skip_details);
-                console.log("selected_gusess_details", selected_gusess_details);
+                        window.location.href = url;  
+                    }
+                });
             });
             function get_first_question(get_offset)
             {
-                // console.log(selected_answer);
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -634,7 +623,7 @@
                         var get_question_no = parseInt(result.get_offset) + 1;
 
                         var set_questions_options = '<div class="mb-4">';
-                        set_questions_options += '<input type="hidden" value="'+result.questions[0].question_id+'" class="get_question_id" ><label class="form-label" >Question '+get_question_no+' '+get_question_title+'</label>';
+                        set_questions_options += `<input type="hidden" value="${result.questions[0].question_id}" class="get_question_id"><label class="form-label">Question ${get_question_no} ${get_question_title}</label>`;
 
                         var get_options = result.questions[0].question_answer_options.replace(/(<([^>]+)>)/gi, "");
                         
@@ -731,8 +720,6 @@
                             $('.main_guess_section').css("background-color", "#ea580c");
                         }
 
-                        console.log('-----');
-                        console.log(check_if_skip_selected);
                         if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
                         {
                             $('.skip').css("color", "#0891b2");

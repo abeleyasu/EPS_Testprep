@@ -10,9 +10,7 @@ class PracticeTestSection extends Model
 {
     use HasFactory, SoftDeletes;
 	
-	protected $fillable = [
-        'format', 'practice_test_type','testid',
-    ];
+	protected $guarded = [];
 	
 	public function getPracticeQuestions()
     {

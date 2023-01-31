@@ -274,7 +274,6 @@ class TestPrepController extends Controller
         $filtered_guess = array_filter($request->selected_gusess_details);
         $filtered_flag = array_filter($request->selected_flag_details);
         
-
         if($get_question_type == 'single')
         {
             if(isset($filtered_answers) && !empty($filtered_answers))
@@ -516,7 +515,8 @@ class TestPrepController extends Controller
     public function singleSection(Request $request, $id)
     {   
         $set_offset = 0;
-        return view('user.practice-test' , ['section_id' => $id,'set_offset' => $set_offset,'question_type' => 'single']);
+        $total_questions = PracticeQuestion::where('practice_test_sections_id',$id)->pluck('id')->toArray();
+        return view('user.practice-test' , ['section_id' => $id,'set_offset' => $set_offset,'question_type' => 'single', 'total_questions' => $total_questions]);
     }
 
     public function allSection(Request $request, $id)
