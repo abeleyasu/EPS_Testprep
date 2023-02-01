@@ -591,7 +591,6 @@
                                                     $count = 1;
                                                     $new_count = 1;
                                                     ?>
-                                                    
                                                     @foreach($store_all_data as $get_question_type => $single_question_data)
                                                         <?php
                                                             $test = $count++;
@@ -629,14 +628,14 @@
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapseOne_<?php echo $test; ?>"
                                                             aria-expanded="false" aria-controls="collapseOne_<?php echo $test; ?>">
-                                                            <table>
-                                                                <tr >
-                                                                    <td class="text-center">
+                                                            <table class="w-75">
+                                                                <tr>
+                                                                    <td class="text-center" style="width: 5%">
                                                                         <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                     </td>
-                                                                    <td class="pl-4">
+                                                                    <td class="pl-4 text-start ">
                                                                         <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Category Type">CT</button>
-                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1_remove" class="btn btn-dark fs-xs fw-semibold me-1">{{$get_question_type}}</button>
+                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1" class="btn btn-dark fs-xs fw-semibold me-1">{{$get_question_type}}</button>
             
                                                                         <!-- MODAL -->
                                                                         <div class="modal" id="modal-block-large-ct1" tabindex="-1" aria-labelledby="modal-block-large-ct1" style="display: none;" aria-hidden="true">
@@ -672,22 +671,34 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                         <!-- END MODAL -->
-                                                                        @if($store_total_wrong_answer > 0)
-                                                                        <div class="text-white text-start mt-2 incorrect">
-                                                                            <?php echo $store_total_wrong_answer; ?> Incorrect
+                                                                        <!-- END MODAL -->
+                                                                        <div class="progress mt-2" style="background:#c4c5c7;height: 10px">
+                                                                            <div class="progress-bar bg-info" 
+                                                                            style="width: 25%"
+                                                                            role="progressbar"
+                                                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                                         </div>
-                                                                        @endif
+                                                                        <div class="text-danger text-center fw-bolder mt-1 incorrect">
+                                                                            1/2 Incorrect
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                             </table>
+                                                            <div class="d-flex flex-wrap justify-content-end w-50 ms-auto">
+                                                                @foreach ($question_tags as $ct_name => $tags)
+                                                                    @if($ct_name == $get_question_type)
+                                                                        @foreach ($tags as $tag)
+                                                                            <button type="button" class="btn btn-success category-badge fs-xs fw-semibold ms-2 mb-1 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $tag }}">{{ $tag }}</button>
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
                                                         </div>
                                                         <div id="collapseOne_<?php echo $test; ?>" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="odd">    
                                                                 <div class="fw-semibold fs-sm">
                                                                    <div>
                                                                         <div>
-
                                                                             @foreach($single_question_data as $question_type_val => $single_question_details_item)
                                                                             <?php 
                                                                             
@@ -893,6 +904,18 @@
     }
     .border-top-tr{
         border-top: 1px solid #ebeef2;
+    }
+    .category-badge.btn-success:hover{
+        background-color: #65a30d !important;
+        border-color: #65a30d !important;
+    }
+    .category-badge.btn-success:focus{
+        background-color: #65a30d !important;
+        border-color: #65a30d !important;
+        box-shadow: none !important;
+    }
+    .category-badge{
+        cursor: default !important;
     }
 </style>
 @endsection

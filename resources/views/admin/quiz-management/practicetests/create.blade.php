@@ -1140,6 +1140,8 @@
         function clearModel() {
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
+            $('#category_type_0').val(null).trigger("change");
+            $('#search-input_0').val(null).trigger("change");
             $(`.removeNewTypes`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
         }

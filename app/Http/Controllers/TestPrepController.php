@@ -85,6 +85,7 @@ class TestPrepController extends Controller
             if($_GET['type'] == 'all')
             {
                 $store_all_data = array();
+                $question_tags = [];
                 $store_question_type_data = array();
                 $get_test_questions = DB::table('practice_questions')
                 ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
@@ -102,21 +103,28 @@ class TestPrepController extends Controller
                         $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
 
                         $array_cat_type = json_decode($get_single_test_questions->category_type, true);
-                        if(isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type) )
+                        if(isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type))
                         {
-                            $mergedArray = array_combine($array_cat_type, $array_ques_type);
+                            $mergedArray = [];
+
+                            for ($i=0; $i < count($array_ques_type); $i++) { 
+                                $mergedArray[$i] = [
+                                    'category_type' => $array_cat_type[$i],
+                                    'question_type' => $array_ques_type[$i]
+                                ];
+                            }
                         
-                            foreach($mergedArray as $cate_type =>  $ques_type)
+                            foreach($mergedArray as $type)
                             {
                                 $get_cat_name_by_id = DB::table('practice_category_types')
-                                ->where('practice_category_types.id',$cate_type)
+                                ->where('id',$type['category_type'])
                                 ->get();
 
                                 $get_ques_type_name_by_id = DB::table('question_types')
-                                ->where('question_types.id',$ques_type)
+                                ->where('id',$type['question_type'])
                                 ->get();
                                 
-                               
+                                $question_tags[$get_cat_name_by_id[0]->category_type_title] = isset($get_single_test_questions->tags) ? explode(",", $get_single_test_questions->tags) : [];
                                 $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title );
                             }
                         }
@@ -126,21 +134,21 @@ class TestPrepController extends Controller
                             foreach($array_ques_type as $single_ques_type)
                             {
                                 $get_ques_type_name_by_id = DB::table('question_types')
-                                ->where('question_types.id',$single_ques_type)
+                                ->where('id',$single_ques_type)
                                 ->get();
                                 $store_question_type_data[$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title );
                             }
                         }
                     }
                 }
-            }
-            else if($_GET['type'] == 'single'){
+            } else if($_GET['type'] == 'single') {
                 
                 $store_all_data = array();
+                $question_tags = [];
                 $store_question_type_data = array();
                 $get_test_questions = DB::table('practice_questions')
                 ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
-                ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type')
+                ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type', 'practice_questions.tags as tags', 'practice_questions.answer as answer')
                 ->where('practice_test_sections.id',$id)
                 ->get();
 
@@ -156,17 +164,26 @@ class TestPrepController extends Controller
                         
                         if(isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type) )
                         {
-                            $mergedArray = array_combine($array_cat_type, $array_ques_type);
-                            foreach($mergedArray as $cate_type =>  $ques_type)
+                            $mergedArray = [];
+
+                            for ($i=0; $i < count($array_ques_type); $i++) { 
+                                $mergedArray[$i] = [
+                                    'category_type' => $array_cat_type[$i],
+                                    'question_type' => $array_ques_type[$i]
+                                ];
+                            }
+
+                            foreach($mergedArray as $type)
                             {
                                 $get_cat_name_by_id = DB::table('practice_category_types')
-                                ->where('practice_category_types.id',$cate_type)
-                                ->get();
-
-                                $get_ques_type_name_by_id = DB::table('question_types')
-                                ->where('question_types.id',$ques_type)
+                                ->where('id',$type['category_type'])
                                 ->get();
                                 
+                                $get_ques_type_name_by_id = DB::table('question_types')
+                                ->where('id',$type['question_type'])
+                                ->get();
+                                
+                                $question_tags[$get_cat_name_by_id[0]->category_type_title] = isset($get_single_test_questions->tags) ? explode(",", $get_single_test_questions->tags) : [];
                                 $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title );
                             }
                         }
@@ -176,7 +193,7 @@ class TestPrepController extends Controller
                             foreach($array_ques_type as $single_ques_type)
                             {
                                 $get_ques_type_name_by_id = DB::table('question_types')
-                                ->where('question_types.id',$single_ques_type)
+                                ->where('id',$single_ques_type)
                                 ->get();
                                 $store_question_type_data[$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title );
                             }
@@ -218,9 +235,7 @@ class TestPrepController extends Controller
                         }
                     }
                 }
-            }
-            else if($_GET['type'] == 'single')
-            {
+            } else if($_GET['type'] == 'single') {
                 $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $id)->get();
                 $store_user_answers_details = array();
                 if(isset($user_selected_answers) && !empty($user_selected_answers))
@@ -240,7 +255,8 @@ class TestPrepController extends Controller
                 }
             }
         }
-        return view('user.test-review.question_concepts_review' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data]);
+
+        return view('user.test-review.question_concepts_review' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags]);
     }
 
     public function set_answers(Request $request)
