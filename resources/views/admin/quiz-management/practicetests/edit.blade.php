@@ -3,6 +3,7 @@
 @section('title', 'Admin Dashboard : Edit Practice Tests')
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
 <style>
 
 input {
@@ -531,7 +532,7 @@ ul.answerOptionLsit li label input{
                         <input name="tags" placeholder="add tags" class="form-control"/>
                     </div>
                     <div class="input-container" id="addNewTypes">
-                        <div class="d-flex input-field align-items-center removeNewTypes">
+                        <div class="d-flex input-field align-items-center">
                             <div class="col-md-5 mb-2 me-2">
                                 <label for="category_type" class="form-label">Category Type</label>
                                 <select class="js-select2 select" id="category_type_0" name="category_type">
@@ -551,7 +552,7 @@ ul.answerOptionLsit li label input{
                                 </select>
                             </div>
                             <div class="col-md-2 add-position">
-                                <button class="plus-button" data-id="1" onclick="addNewTypes(this,null)"><i class="fa-solid fa-plus"></i></button>
+                                <button class="plus-button" data-id="1" onclick="addNewTypes(this,'null')"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -906,6 +907,7 @@ ul.answerOptionLsit li label input{
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
+    <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script>
 
         function addNewTypes(data, type) {
@@ -915,7 +917,21 @@ ul.answerOptionLsit li label input{
             } else {
                 key = $(data).attr('data-id');
                 key = parseInt(key);
+
+                let category_type = $(`#category_type_${key - 1}`).val();
+                let question_type = $(`#search-input_${key - 1}`).val();
+    
+                if(category_type == '') {
+                    toastr.error('Please select a category type!');
+                    return false;
+                }
+    
+                if(question_type == '') {
+                    toastr.error('Please select a question type!');
+                    return false;
+                }
             }
+
 
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
@@ -959,6 +975,8 @@ ul.answerOptionLsit li label input{
 
         function removeNewTypes(data) {
             $(data).parents('.removeNewTypes').remove();
+            let count = $('.plus-button').attr('data-id');
+            $('.plus-button').attr('data-id', count - 1);
         }
 
     $(document).ready(function() {
@@ -1242,7 +1260,6 @@ ul.answerOptionLsit li label input{
                 url: '{{route("sectionOrder")}}',
                 method: 'post',
                 success: (res) => {
-                   console.log(res);
                 }
             });
         });
@@ -1257,7 +1274,6 @@ ul.answerOptionLsit li label input{
                 url: '{{route("getPracticeQuestionById")}}',
                 method: 'post',
                 success: (res) => {
-					console.log(res['description']);
 					var id = $('.question_id').val(res['id']);
 					var formate = res['format'];
 					var testid = res['testid'];
@@ -1667,7 +1683,16 @@ function practQuestioDel(id){
         }
     });
 }
+
+function clearModel() {
+    $('input[name=tags]').val('');
+    $('#passage_number').val(null).trigger("change");
+    $(`.removeNewTypes`).remove();
+    $('input[name=passagesType]').val(null).trigger("change");
+}
+
 function practQuestioEdit(id){
+    clearModel();
     $.ajax({
         data:{
             'question_id':id,
@@ -1678,6 +1703,8 @@ function practQuestioEdit(id){
         success: (res) => {
             if(res.length>0){
                 var result = res[0];
+                let categorytypeArr = JSON.parse(result.category_type);
+                let questiontypeArr = JSON.parse(result.question_type_id);
                 $('#currentModelQueId').val(result.id);
                 $('#quesFormat').val(result.format);
                 $('.sectionAddId').val(result.practice_test_sections_id);
@@ -1689,14 +1716,11 @@ function practQuestioEdit(id){
                   
                 $('input[name=tags]').val(tagsString);
                 $(".passNumber").val(result.passage_number).change();
-
-                let categorytypeArr = JSON.parse(result.category_type);
-                let questiontypeArr = JSON.parse(result.question_type_id);
-
                 for (let index = 1; index < categorytypeArr.length; index++) { 
                     addNewTypes(index,'repet');
                 }
-                $('.plus-button').attr('data-id', categorytypeArr.length);
+
+                $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
 
                 $(categorytypeArr).each((i,v) => {
                     $(`#category_type_${i}`).val(v);
@@ -1737,7 +1761,6 @@ function practQuestioEdit(id){
 
 function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content){
             
-        console.log(answerOpt);
         if(answerOpt == 'choiceOneInFour'){
             $('#editSelectedAnswerType').val('choiceOneInFour');
             $('.choiceOneInFour').show();
@@ -1792,9 +1815,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content)
 
         } 
         if(answerOpt =='choiceOneInFourPass'){
-            console.log('yesy');
             $('#editSelectedAnswerType').val('choiceOneInFourPass');
-            console.log($('#editSelectedAnswerType').val());
             $('.choiceOneInFour').hide();
             $('.choiceOneInFive').hide();
             $('.choiceOneInFourPass').show();
@@ -2179,8 +2200,6 @@ function saveOrder() {
     myModal.hide();
 }
 function openOrderQuesDialog (secId) {
-    console.log(secId);
-    console.log('.sectionsaprat_'+secId);
 
     $('.quesBasedSecList').hide();
     $('.sectionsaprat_'+secId).show();
@@ -2194,7 +2213,6 @@ Sortable.create(listWithHandle, {
     handle: '.glyphicon-move',
     animation: 150,
     onEnd: function(evt) {
-        console.log(evt);
         /*let data = {
             new_index: evt.newIndex+1,
             old_index: evt.oldIndex+1,
@@ -2214,7 +2232,6 @@ Sortable.create(listWithHandle, {
             url: '{{route("sectionOrder")}}',
             method: 'post',
             success: (res) => {
-               console.log(res);
             }
         });
     }
@@ -2245,11 +2262,27 @@ Sortable.create(listWithHandleQuestion, {
             url: '{{route("questionOrder")}}',
             method: 'post',
             success: (res) => {
-               console.log(res);
             }
         });
     }
 },); 
+
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 </script>
     
 @endsection

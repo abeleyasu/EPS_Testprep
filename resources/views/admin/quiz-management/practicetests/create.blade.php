@@ -4,6 +4,7 @@
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
     <style>
         /* your CSS goes here*/
         body {
@@ -516,7 +517,7 @@
                             <input name="tags" placeholder="add tags" class="form-control"/>
                         </div>
                         <div class="input-container" id="addNewTypes">
-                            <div class="d-flex input-field align-items-center removeNewTypes">
+                            <div class="d-flex input-field align-items-center">
                                 <div class="col-md-5 mb-2 me-2">
                                     <label for="category_type" class="form-label">Category Type</label>
                                     <select class="js-select2 select" id="category_type_0" name="category_type">
@@ -791,12 +792,26 @@
     <script src="{{ asset('assets/js/plugins/Sortable.js') }}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
+    <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
 
     <script>
 
         function addNewTypes(data) {
             let key = $(data).attr('data-id');
                 key = parseInt(key);
+
+            let category_type = $(`#category_type_${key - 1}`).val();
+            let question_type = $(`#search-input_${key - 1}`).val();
+
+            if(category_type == '') {
+                toastr.error('Please select a category type!');
+                return false;
+            }
+
+            if(question_type == '') {
+                toastr.error('Please select a question type!');
+                return false;
+            }
 
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
@@ -838,6 +853,8 @@
 
         function removeNewTypes(data) {
             $(data).parents('.removeNewTypes').remove();
+            let count = $('.plus-button').attr('data-id');
+            $('.plus-button').attr('data-id', count - 1);
         }
 
         $(document).ready(function() {
@@ -1123,13 +1140,11 @@
         function clearModel() {
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
-            $('#category_type_0').val(null).trigger("change");
-            $('#search-input_0').val(null).trigger("change");
+            $(`.removeNewTypes`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
         }
 
         $(document).on('click', '.add_question_modal_multi', function() {
-            
             clearModel();
             var dataId = $(this).attr("data-id");
             var AnuserOpts = $('#sectionDisplay_' + dataId + ' .firstRecord ul li span .selectedSecTxt').val();
@@ -1820,5 +1835,23 @@
         }, );
 
         var indices = test.toArray();
+
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
     </script>
 @endsection
