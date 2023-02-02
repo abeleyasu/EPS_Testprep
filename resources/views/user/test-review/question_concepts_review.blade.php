@@ -672,15 +672,20 @@
                                                                             </div>
                                                                         </div>
                                                                         <!-- END MODAL -->
-                                                                        <div class="progress mt-2" style="background:#c4c5c7;height: 10px">
-                                                                            <div class="progress-bar bg-info" 
-                                                                            style="width: 25%"
-                                                                            role="progressbar"
-                                                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                                        </div>
-                                                                        <div class="text-danger text-center fw-bolder mt-1 incorrect">
-                                                                            1/2 Incorrect
-                                                                        </div>
+                                                                        @if(isset($percentage_arr_all) && !empty($percentage_arr_all))
+                                                                            @foreach($percentage_arr_all as $cat_type => $percentage_arr)
+                                                                                @if($cat_type == $get_question_type)
+                                                                                    <div class="progress mt-2" style="background:#c4c5c7;height: 10px" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $percentage_arr['percentage'] }}">
+                                                                                        <div class="progress-bar bg-info" style="width: {{ $percentage_arr['percentage'] }}"
+                                                                                            role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="text-danger text-center fw-bolder mt-1 incorrect">
+                                                                                        {{ $percentage_arr['percentage_label'] }}
+                                                                                    </div>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -748,11 +753,6 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <!-- END MODAL -->
-                                                                                    @if($store_wrong_answer > 0)
-                                                                                    <div class="text-danger">
-                                                                                        <?php echo $store_wrong_answer; ?> Incorrect
-                                                                                    </div>
-                                                                                    @endif
                                                                                 </div>
                                                                             </div>
                                                                             @endforeach
@@ -764,8 +764,6 @@
                                                     </div>
                                                     @endforeach
                                                     {{-- END accordian tab 1 --}}
-            
-                                                    
                                                 </div>
                                             </div>
                                         </div>

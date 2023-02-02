@@ -13,6 +13,7 @@ use App\Models\UserAnswers;
 use App\Models\Passage;
 use App\Models\User;
 use App\Models\UserScrollPosition;
+use Illuminate\Support\Arr;
 
 class TestPrepController extends Controller
 {
@@ -63,6 +64,18 @@ class TestPrepController extends Controller
         return $c_code;
     }
 
+    public function array_flatten($array) {
+        $return = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)){
+                $return = $return + $this->array_flatten($value);
+            } else {
+                $return[$key] = $value;
+            }
+        }
+        return $return;
+    }
+
     public function singleReview(Request $request , $test , $id)
     {   
        
@@ -85,24 +98,42 @@ class TestPrepController extends Controller
             if($_GET['type'] == 'all')
             {
                 $store_all_data = array();
-                $question_tags = [];
+                $question_tags_all = [];
                 $store_question_type_data = array();
+                $check_question_answers = [];
                 $get_test_questions = DB::table('practice_questions')
                 ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
                 ->join('practice_tests','practice_tests.id','=','practice_test_sections.testid')
-                ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type')
+                ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type', 'practice_questions.tags as tags', 'practice_questions.answer as answer')
                 ->where('practice_tests.id',$test_id)
                 ->get();
 
                 $get_all_cat_type = DB::table('practice_category_types')->get();
+
+                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->get();
+                $answer_arr = [];
+                foreach($user_answers_data as $user_answer) {
+                    $answers = json_decode($user_answer->answer, true);
+                    $answer_arr[] = $answers;
+                }
+                $answer_arr = $this->array_flatten($answer_arr);
+                foreach($get_test_questions as $question) {
+                    if($answer_arr[$question->test_question_id] == $question->answer){
+                        $check_question_answers[$question->test_question_id] = true;
+                    } else {
+                        $check_question_answers[$question->test_question_id] = false;
+                    }
+                }
                
                 if(!$get_test_questions->isEmpty())
                 {
+                    $percentage_arr_all = [];
                     foreach($get_test_questions as $get_single_test_questions)
                     {
                         $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
 
                         $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+                        $percentage_arr = [];
                         if(isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type))
                         {
                             $mergedArray = [];
@@ -113,7 +144,15 @@ class TestPrepController extends Controller
                                     'question_type' => $array_ques_type[$i]
                                 ];
                             }
-                        
+
+                            foreach($check_question_answers as $q_id => $check_question_answer) {
+                                if($get_single_test_questions->test_question_id == $q_id){
+                                    $percentage_arr = [
+                                        $q_id => $check_question_answer
+                                    ];
+                                }
+                            }
+                            
                             foreach($mergedArray as $type)
                             {
                                 $get_cat_name_by_id = DB::table('practice_category_types')
@@ -123,9 +162,10 @@ class TestPrepController extends Controller
                                 $get_ques_type_name_by_id = DB::table('question_types')
                                 ->where('id',$type['question_type'])
                                 ->get();
-                                
-                                $question_tags[$get_cat_name_by_id[0]->category_type_title] = isset($get_single_test_questions->tags) ? explode(",", $get_single_test_questions->tags) : [];
-                                $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title );
+
+                                $percentage_arr_all[$get_cat_name_by_id[0]->category_type_title][] = $percentage_arr;
+                                $question_tags_all[$get_cat_name_by_id[0]->category_type_title][] = isset($get_single_test_questions->tags) ? explode(",", $get_single_test_questions->tags) : [];
+                                $store_all_data[$get_cat_name_by_id[0]->category_type_title][$get_ques_type_name_by_id[0]->question_type_title][] = array($get_single_test_questions->test_question_id,"question_desc" => $get_ques_type_name_by_id[0]->question_type_description,"question_type_title" => $get_ques_type_name_by_id[0]->question_type_title);
                             }
                         }
 
@@ -255,8 +295,37 @@ class TestPrepController extends Controller
                 }
             }
         }
+        if($_GET['type'] == 'all') {
+            $question_tags = [];
+            foreach($question_tags_all as $key => $question_tag) {
+                $question_tags[$key] = array_unique(Arr::flatten($question_tag));
+            }
 
-        return view('user.test-review.question_concepts_review' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags]);
+            foreach($percentage_arr_all as $key => $percentage) {
+                $correct_ans = 0;
+                $wrong_ans = 0;
+                $total_question = $this->array_flatten(array_map("unserialize", array_unique(array_map("serialize", $percentage))));
+                $count = count($total_question);
+                foreach ($total_question as $value) {    
+                    if($value == true) {
+                        $correct_ans++;
+                    }
+    
+                    if($value == false) {
+                        $wrong_ans++;
+                    }
+                }
+                $percentage_arr_all[$key] = [
+                    "correct_ans" => $correct_ans,
+                    "wrong_ans" => $wrong_ans,
+                    "percentage" => 100 * $correct_ans / $count .'%',
+                    "percentage_label" => ( $correct_ans > $wrong_ans ? $correct_ans : $wrong_ans) ."/". $count .( $correct_ans > $wrong_ans ? ' Correct' : ' InCorrect'),
+                ];
+            }
+        } else {
+            $percentage_arr_all = [];
+        }
+        return view('user.test-review.question_concepts_review' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all]);
     }
 
     public function set_answers(Request $request)
