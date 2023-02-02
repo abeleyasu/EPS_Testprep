@@ -377,186 +377,191 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
-                                                                                    <tr class="odd">
-                                                                                        <td>
-                                                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
-                                                                                                <i class="fa fa-lg fa-circle-xmark me-1"></i>
-                                                                                                Probability
-                                                                                            </button>
-                                                                    
-                                                                                            <div class="modal" id="modal-block-large-q1ct1" tabindex="-1" aria-labelledby="modal-block-large-q1ct1" style="display: none;" aria-hidden="true">
-                                                                                                <div class="modal-dialog modal-lg" role="document">
-                                                                                                    <div class="modal-content">
-                                                                                                        
-                                                                                                        <div class="block block-rounded">
-                                                                                                            <div class="block-header block-header-default">
-                                                                                                                <h3 class="block-title">Category: Probability</h3>
-                                                                                                            </div>
-                                                                                                            <div class="block-content">
-                                                                                                                <div id="q1ct1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                        <div class="block-header block-header-default" role="tab" id="category-probability-description">
-                                                                                                                            <a class="text-white collapsed" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#category-probability-des" aria-expanded="false" aria-controls="category-probability-des">Description</a>
+                                                                                    @php
+                                                                                        $category_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->category_type, true);
+                                                                                        $question_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->question_type_id, true);
+                                                                                    @endphp
+                                                                                    @for ($i = 0; $i < count($category_type_arr); $i++)
+                                                                                        <tr class="odd">
+                                                                                            <td>
+                                                                                                {{ Helper::getCategoryNameByID($category_type_arr[$i]) }}
+                                                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
+                                                                                                    <i class="fa fa-lg fa-circle-xmark me-1"></i>
+                                                                                                    Probability
+                                                                                                </button>
+                                                                        
+                                                                                                <div class="modal" id="modal-block-large-q1ct1" tabindex="-1" aria-labelledby="modal-block-large-q1ct1" style="display: none;" aria-hidden="true">
+                                                                                                    <div class="modal-dialog modal-lg" role="document">
+                                                                                                        <div class="modal-content">
+                                                                                                            
+                                                                                                            <div class="block block-rounded">
+                                                                                                                <div class="block-header block-header-default">
+                                                                                                                    <h3 class="block-title">Category: Probability</h3>
+                                                                                                                </div>
+                                                                                                                <div class="block-content">
+                                                                                                                    <div id="q1ct1" class="mb-5" role="tablist" aria-multiselectable="true">
+                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                                                            <div class="block-header block-header-default" role="tab" id="category-probability-description">
+                                                                                                                                <a class="text-white collapsed" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#category-probability-des" aria-expanded="false" aria-controls="category-probability-des">Description</a>
+                                                                                                                            </div>
+                                                                                                                            <div id="category-probability-des" class="collapse" role="tabpanel" aria-labelledby="category-probability-description" data-bs-parent="#faq_q1" style="">
+                                                                                                                                <div class="block-content">
+                                                                                                                                    <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
                                                                                                                         </div>
-                                                                                                                        <div id="category-probability-des" class="collapse" role="tabpanel" aria-labelledby="category-probability-description" data-bs-parent="#faq_q1" style="">
-                                                                                                                            <div class="block-content">
-                                                                                                                                <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
+                                                                                                                    </div>
+                                                                                                                    <div class="block-content block-content-full text-end bg-body">
+                                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white" data-bs-dismiss="modal">Close</button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div> --}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                {{ Helper::getQuestionNameByID($question_type_arr[$i]) }}
+                                                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
+                                                                                                    <i class="fa fa-lg fa-circle-xmark me-1"></i>
+                                                                                                    Simple Probability
+                                                                                                </button>
+                                                                        
+                                                                                                <div class="modal" id="modal-block-large-q1qt1" tabindex="-1" aria-labelledby="modal-block-large-q1qt1" style="display: none;" aria-hidden="true">
+                                                                                                    <div class="modal-dialog modal-lg" role="document">
+                                                                                                        <div class="modal-content">
+                                                                                                            <div class="block block-rounded">
+                                                                                                                <div class="block-header block-header-default">
+                                                                                                                    <h3 class="block-title">Question Type: Punctuation Between Multiple Adjectives</h3>
+                                                                                                                </div>
+                                                                                                                <div class="block-content">
+                                                                                                                    <div id="faq_q1" class="mb-5" role="tablist" aria-multiselectable="true">
+                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_description_aria-label">
+                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_description" aria-expanded="true" aria-controls="faq_q1_qt1_description">Description</a>
+                                                                                                                            </div>
+                                                                                                                            <div id="faq_q1_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q1_qt1_description_aria-label" data-bs-parent="#faq_q1">
+                                                                                                                                <div class="block-content">
+                                                                                                                                    <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_lesson_aria-label">
+                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_lesson" aria-expanded="true" aria-controls="faq_q1_qt1_lesson">Lesson</a>
+                                                                                                                            </div>
+                                                                                                                            <div id="faq_q1_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_lesson_aria-label" data-bs-parent="#faq_q1">
+                                                                                                                                <div class="block-content">
+                                                                                                                                    <p>The simple probability of an event is the number of favorable outcomes divided by the number of potential outcomes.
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    Probability = # of favorable outcomes / total # of potential outcomes
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    Another way to think about probability = Part / Whole OR Part / Total 
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    <b>Example 1</b>
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    What’s the probability of a flipped coin landing on heads?
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    There are a total of 2 potential outcomes: heads or tails.
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    There is only 1 favorable outcome: heads.
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    probability = # of favorable outcomes / total # of potential outcomes = <b>1/2</b>
+                                                                                                                                    
+                                                                                                                                    <br/>
+                                                                                                                                    <br/>
+                                                                                                                                    So the probability of flipping a coin and landing on heads is <b>1/2</b>.
+                                                                                                                                    <br/></p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">                                                                                
+                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_strategies_aria-label">
+                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_strategies" aria-expanded="true" aria-controls="faq_q1_qt1_strategies">Strategies</a>
+                                                                                                                            </div>
+                                                                                                                            <div id="faq_q1_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_strategies_aria-label" data-bs-parent="#faq_q1">
+                                                                                                                                <div class="block-content">
+                                                                                                                                    <p>
+                                                                                                                                        <b>Strategy 1: Identify each part of the probability formula </b>
+                                                                                                                                    </p>
+                                                                                                                                    <p>Identify the total # of possibilties first and write it as your denominator. Then identify how many favorable outcomes align with the situation and write it as your numerator.</p>
+                                                                            
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idmethods_aria-label">
+                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idmethods" aria-expanded="true" aria-controls="faq_q1_qt1_idmethods">Identification Methods</a>
+                                                                                                                            </div>
+                                                                                                                            <div id="faq_q1_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idmethods_aria-label" data-bs-parent="#faq_q1">
+                                                                                                                                <div class="block-content">
+                                                                                                                                    <p><b>Identification Method 1</b></p>
+                                                                                                                                    <p>The question is a word problem, using the words/phrases "probability" or "what fraction" or "what are the chances" and the answer choices are usually single fractions.</p>
+                                                                                                                                    <p><b>Example 1</b></p>
+                                                                                                                                    <p>Question: A bag has 20 total marbles - 3 blue, 8 red, and 9 green. Which of the following is the probability of picking a blue marble?</p>
+                                                                                                                                    A. 3/20<br />
+                                                                                                                                    B. 3/8<br />
+                                                                                                                                    C. 8/8<br />
+                                                                                                                                    D. 8/20<br />
+                                                                                                                                    E. 9/20</p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idactivity_aria-label">
+                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idactivity" aria-expanded="true" aria-controls="faq_q1_qt1_idactivity">Identification Activity</a>
+                                                                                                                            </div>
+                                                                                                                            <div id="faq_q1_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idactivity_aria-label" data-bs-parent="#faq_q1">
+                                                                                                                                <div class="block-content">
+                                                                                                                                    <p><b>Identification Activity 1</b></p>
+                                                                                                                                    <p>Which of the following questions test Punctuation Between Multiple Adjectives?</p>
+                                                                                                    
+                                                                                                                                    <p>Question 1</p>
+                                                                                                                                    <p>Question 2</p>
+                                                                                                    
+                                                                                                                                    <p>1. Part of his success is attributed to his ability to <u>plead</u> to a wide range of audiences.</p>
+                                                                                                    
+                                                                                                                                    <p>A. NO CHANGE</p>
+                                                                                                                                    <p>B. appeal</p>                                                                                        <p>C. attract </p>
+                                                                                                                                    <p>D. remark</p>
+                                                                                                    
+                                                                                                                                    <p>A. NO CHANGE</p>
+                                                                                                                                    <p>B. appeal</p>
+                                                                                                                                    <p>C. attract </p>
+                                                                                                                                    <p>D. remark</p>
+                                                                                                    
+                                                                                                                                    <p>2. The Dahlia flower is famous <u>to</u> its unique pattern of petals.</p>
+                                                                                            
+                                                                                                                                    <p>A. NO CHANGE</p>
+                                                                                                                                    <p>B. by</p>
+                                                                                                                                    <p>C. for</p>
+                                                                                                                                    <p>D. with</p>
+                                                                                                
+                                                                                                                                    <p>Key: </p>
+                                                                                                                                    <p>#1: No, this example tests Vocabulary in Context.</p>
+                                                                                                                                    <p>#2: No, even though this question tests different word choices, it does NOT test Keyword Goal. It tests Idioms and Prepositions.</p>
+                                                                                                                                </div>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                                 <div class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white" data-bs-dismiss="modal">Close</button>
+                                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                
-                                                                                        </td>
-                                                                                        
-                                                                                        <td style="">
-                                                                    
-                                                                                            <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
-                                                                                                <i class="fa fa-lg fa-circle-xmark me-1"></i>
-                                                                                                Simple Probability
-                                                                                            </button>
-                                                                    
-                                                                                            <div class="modal" id="modal-block-large-q1qt1" tabindex="-1" aria-labelledby="modal-block-large-q1qt1" style="display: none;" aria-hidden="true">
-                                                                                                <div class="modal-dialog modal-lg" role="document">
-                                                                                                    <div class="modal-content">
-                                                                                                        <div class="block block-rounded">
-                                                                                                            <div class="block-header block-header-default">
-                                                                                                                <h3 class="block-title">Question Type: Punctuation Between Multiple Adjectives</h3>
-                                                                                                            </div>
-                                                                                                            <div class="block-content">
-                                                                                                                <div id="faq_q1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                        <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_description_aria-label">
-                                                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_description" aria-expanded="true" aria-controls="faq_q1_qt1_description">Description</a>
-                                                                                                                        </div>
-                                                                                                                        <div id="faq_q1_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q1_qt1_description_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                            <div class="block-content">
-                                                                                                                                <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                        <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_lesson_aria-label">
-                                                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_lesson" aria-expanded="true" aria-controls="faq_q1_qt1_lesson">Lesson</a>
-                                                                                                                        </div>
-                                                                                                                        <div id="faq_q1_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_lesson_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                            <div class="block-content">
-                                                                                                                                <p>The simple probability of an event is the number of favorable outcomes divided by the number of potential outcomes.
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                Probability = # of favorable outcomes / total # of potential outcomes
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                Another way to think about probability = Part / Whole OR Part / Total 
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                <b>Example 1</b>
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                What’s the probability of a flipped coin landing on heads?
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                There are a total of 2 potential outcomes: heads or tails.
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                There is only 1 favorable outcome: heads.
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                probability = # of favorable outcomes / total # of potential outcomes = <b>1/2</b>
-                                                                                                                                
-                                                                                                                                <br/>
-                                                                                                                                <br/>
-                                                                                                                                So the probability of flipping a coin and landing on heads is <b>1/2</b>.
-                                                                                                                                <br/></p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">                                                                                
-                                                                                                                        <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_strategies_aria-label">
-                                                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_strategies" aria-expanded="true" aria-controls="faq_q1_qt1_strategies">Strategies</a>
-                                                                                                                        </div>
-                                                                                                                        <div id="faq_q1_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_strategies_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                            <div class="block-content">
-                                                                                                                                <p>
-                                                                                                                                    <b>Strategy 1: Identify each part of the probability formula </b>
-                                                                                                                                </p>
-                                                                                                                                <p>Identify the total # of possibilties first and write it as your denominator. Then identify how many favorable outcomes align with the situation and write it as your numerator.</p>
-                                                                        
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                        <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idmethods_aria-label">
-                                                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idmethods" aria-expanded="true" aria-controls="faq_q1_qt1_idmethods">Identification Methods</a>
-                                                                                                                        </div>
-                                                                                                                        <div id="faq_q1_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idmethods_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                            <div class="block-content">
-                                                                                                                                <p><b>Identification Method 1</b></p>
-                                                                                                                                <p>The question is a word problem, using the words/phrases "probability" or "what fraction" or "what are the chances" and the answer choices are usually single fractions.</p>
-                                                                                                                                <p><b>Example 1</b></p>
-                                                                                                                                <p>Question: A bag has 20 total marbles - 3 blue, 8 red, and 9 green. Which of the following is the probability of picking a blue marble?</p>
-                                                                                                                                A. 3/20<br />
-                                                                                                                                B. 3/8<br />
-                                                                                                                                C. 8/8<br />
-                                                                                                                                D. 8/20<br />
-                                                                                                                                E. 9/20</p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                        <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idactivity_aria-label">
-                                                                                                                            <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idactivity" aria-expanded="true" aria-controls="faq_q1_qt1_idactivity">Identification Activity</a>
-                                                                                                                        </div>
-                                                                                                                        <div id="faq_q1_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idactivity_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                            <div class="block-content">
-                                                                                                                                <p><b>Identification Activity 1</b></p>
-                                                                                                                                <p>Which of the following questions test Punctuation Between Multiple Adjectives?</p>
-                                                                                                
-                                                                                                                                <p>Question 1</p>
-                                                                                                                                <p>Question 2</p>
-                                                                                                
-                                                                                                                                <p>1. Part of his success is attributed to his ability to <u>plead</u> to a wide range of audiences.</p>
-                                                                                                
-                                                                                                                                <p>A. NO CHANGE</p>
-                                                                                                                                <p>B. appeal</p>                                                                                        <p>C. attract </p>
-                                                                                                                                <p>D. remark</p>
-                                                                                                
-                                                                                                                                <p>A. NO CHANGE</p>
-                                                                                                                                <p>B. appeal</p>
-                                                                                                                                <p>C. attract </p>
-                                                                                                                                <p>D. remark</p>
-                                                                                                
-                                                                                                                                <p>2. The Dahlia flower is famous <u>to</u> its unique pattern of petals.</p>
-                                                                                        
-                                                                                                                                <p>A. NO CHANGE</p>
-                                                                                                                                <p>B. by</p>
-                                                                                                                                <p>C. for</p>
-                                                                                                                                <p>D. with</p>
-                                                                                            
-                                                                                                                                <p>Key: </p>
-                                                                                                                                <p>#1: No, this example tests Vocabulary in Context.</p>
-                                                                                                                                <p>#2: No, even though this question tests different word choices, it does NOT test Keyword Goal. It tests Idioms and Prepositions.</p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="block-content block-content-full text-end bg-body">
-                                                                                                                <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    </tr>
+                                                                                                </div> --}}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @endfor
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>

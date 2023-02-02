@@ -293,7 +293,7 @@ class TestPrepController extends Controller
                             {
                                 $get_question_details = DB::table('practice_questions')
                                 ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+                                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id')
                                 ->where('practice_questions.id', $question_id)
                                 ->get();
                                 $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'user_selected_guess' => $json_decoded_guess->$question_id,'user_selected_flag' => $json_decoded_flag->$question_id,'get_question_details' => $get_question_details); 
@@ -313,7 +313,7 @@ class TestPrepController extends Controller
                     {
                         $get_question_details = DB::table('practice_questions')
                         ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                        ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*')
+                        ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id')
                         ->where('practice_questions.id', $question_id)
                         ->get();
                         $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'user_selected_guess' => isset($json_decoded_guess) && !empty($json_decoded_guess) ? $json_decoded_guess->$question_id : null,'user_selected_flag' => isset($json_decoded_flag) && !empty($json_decoded_flag) ? $json_decoded_flag->$question_id : null,'get_question_details' => $get_question_details); 
@@ -345,7 +345,7 @@ class TestPrepController extends Controller
                 "correct_ans" => $correct_ans,
                 "wrong_ans" => $wrong_ans,
                 "percentage" => 100 * $correct_ans / $count .'%',
-                "percentage_label" => ( $correct_ans > $wrong_ans ? $correct_ans : $wrong_ans) ."/". $count .( $correct_ans > $wrong_ans ? ' Correct' : ' InCorrect'),
+                "percentage_label" => ( $correct_ans > $wrong_ans ? $correct_ans : $wrong_ans) ."/". $count .( $correct_ans > $wrong_ans ? ' Correct' : ' Incorrect'),
             ];
         }
         return view('user.test-review.question_concepts_review' ,  ['section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all]);

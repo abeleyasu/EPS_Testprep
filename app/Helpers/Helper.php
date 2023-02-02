@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\CollegeInformation;
 use App\Models\Grade;
 use App\Models\HonorCourseNameList;
+use Illuminate\Support\Facades\DB;
 
 class Helper
 {
@@ -59,5 +60,17 @@ class Helper
         $honor_course_array = HonorCourseNameList::whereIn('id', $id_array)->pluck('name')->toArray();
 
         return !empty($honor_course_array) ? implode(',', $honor_course_array) : "-";
+    }
+
+    public static function getCategoryNameByID($id)
+    {
+        $category_info = DB::table('practice_category_types')->where('id',$id)->first();
+        return isset($category_info->category_type_title) ? $category_info->category_type_title : '-';
+    }
+
+    public static function getQuestionNameByID($id)
+    {
+        $question_types = DB::table('question_types')->where('id',$id)->first();
+        return isset($question_types->question_type_title) ? $question_types->question_type_title : '-';
     }
 }
