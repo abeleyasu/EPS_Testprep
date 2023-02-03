@@ -358,7 +358,7 @@ class TestPrepController extends Controller
         $get_question_type = $request->get_question_type;
         $get_practice_id = $request->get_practice_id;
 
-        if($get_question_type == 'single')
+        if(isset($get_question_type ) && !empty($get_question_type) && $get_question_type == 'single')
         {
             $get_question_title = DB::table('practice_tests')
             ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
@@ -366,7 +366,7 @@ class TestPrepController extends Controller
             ->select('practice_tests.*')
             ->where('practice_questions.practice_test_sections_id', $get_section_id)->get(); 
         }
-        else if($get_question_type == 'all')
+        else if(isset($get_question_type ) && !empty($get_question_type) && $get_question_type == 'all')
         {
             $get_question_title = DB::table('practice_tests')
             ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
@@ -374,15 +374,14 @@ class TestPrepController extends Controller
             ->select('practice_tests.*','practice_test_sections.id as test_section_id','practice_questions.id as test_question_id')
             ->where('practice_tests.id', $get_section_id)->get(); 
         }
-        
 
         $get_test_name = $get_question_title[0]->title;
-        
+
         $filtered_answers = array_filter($request->selected_answer);
         $filtered_guess = isset($request->selected_gusess_details) ? array_filter($request->selected_gusess_details) : [];
         $filtered_flag = isset($request->selected_flag_details) ? array_filter($request->selected_flag_details) : [];
         
-        if($get_question_type == 'single')
+        if(isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'single')
         {
             if(isset($filtered_answers) && !empty($filtered_answers))
             {
@@ -407,7 +406,7 @@ class TestPrepController extends Controller
                 $userAnswers->save();
             }
         }
-        else if($get_question_type == 'all')
+        else if(isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'all')
         {
             $store_querstion_answer_details = array();
             if(isset($get_question_title) && !empty($get_question_title))
@@ -651,6 +650,12 @@ class TestPrepController extends Controller
        ->where('practice_test_sections.testid', $id)
        ->count();
 
+       $get_test_description = DB::table('practice_tests')
+       ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
+       ->select('practice_tests.description')
+       ->where('practice_tests.id', $id)
+       ->get();
+
        $get_users_answers_section_id = DB::table('user_answers')
        ->select('user_answers.section_id')
        ->where('user_answers.user_id', $current_user_id)
@@ -733,7 +738,7 @@ class TestPrepController extends Controller
                 }
             }
         }
-        return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed , 'checkTestQuestion' => $checkTestQuestion]);
+        return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed , 'checkTestQuestion' => $checkTestQuestion, 'get_test_description' => $get_test_description]);
     }
 
     public function set_scrollPosition(Request $request){

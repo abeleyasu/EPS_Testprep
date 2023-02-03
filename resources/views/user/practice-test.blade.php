@@ -340,38 +340,62 @@
                 
             });
 
+            // jQuery(".guess").click(function(){
+            //     var get_question_id = jQuery('.get_question_id').val();
+            //     if( $(this).is(':checked') ){
+
+            //         $('.skip').css("color", "#0891b2");
+            //         $('.skip').css("background-color", "white");
+            //         selected_skip_details[get_question_id] = 'no';
+
+            //         $('.main_guess_section').css("color", "white");
+            //         $('.main_guess_section').css("background-color", "#ea580c");
+            //         var randOption = Math.floor(Math.random() * 4);
+
+            //         if ( $('input:radio[name=example-radios-default]').length ) {
+            //             $('input:radio[name=example-radios-default]')[randOption].checked = true;
+            //         }
+            //         else{
+            //             $('input[type=checkbox]')[randOption].checked = true;
+            //         }
+                    
+            //         var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+            //         selected_gusess_details[get_question_id] = 'yes';
+            //     }else{
+
+            //         if ( $('input:radio[name=example-radios-default]').length ) {
+            //             $('input:radio[name=example-radios-default]').prop('checked', false);
+            //         }
+            //         else{
+            //             $('input[type=checkbox]').prop('checked', false);
+            //         }
+            //         selected_gusess_details[get_question_id] = 'no';
+            //         $('.main_guess_section').css("color", "#ea580c");
+            //         $('.main_guess_section').css("background-color", "white");
+            //     }
+
+            //     if(!$(".flag").is(':checked'))
+            //     {
+            //         selected_flag_details[get_question_id] = 'no';
+            //     }
+
+            //     if(!$(".skip").is(':checked'))
+            //     {
+            //         selected_skip_details[get_question_id] = 'no';
+            //     }
+            // });
+
+            //guess function
             jQuery(".guess").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
                 if( $(this).is(':checked') ){
-
-                    $('.skip').css("color", "#0891b2");
-                    $('.skip').css("background-color", "white");
-                    selected_skip_details[get_question_id] = 'no';
-
                     $('.main_guess_section').css("color", "white");
                     $('.main_guess_section').css("background-color", "#ea580c");
-                    var randOption = Math.floor(Math.random() * 4);
-
-                    if ( $('input:radio[name=example-radios-default]').length ) {
-                        $('input:radio[name=example-radios-default]')[randOption].checked = true;
-                    }
-                    else{
-                        $('input[type=checkbox]')[randOption].checked = true;
-                    }
-                    
-                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_gusess_details[get_question_id] = 'yes';
-                }else{
-
-                    if ( $('input:radio[name=example-radios-default]').length ) {
-                        $('input:radio[name=example-radios-default]').prop('checked', false);
-                    }
-                    else{
-                        $('input[type=checkbox]').prop('checked', false);
-                    }
-                    selected_gusess_details[get_question_id] = 'no';
+                } else{
                     $('.main_guess_section').css("color", "#ea580c");
                     $('.main_guess_section').css("background-color", "white");
+                    selected_gusess_details[get_question_id] = 'no';
                 }
 
                 if(!$(".flag").is(':checked'))

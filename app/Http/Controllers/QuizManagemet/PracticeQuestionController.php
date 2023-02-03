@@ -15,7 +15,6 @@ use Illuminate\Support\Arr;
 class PracticeQuestionController extends Controller
 {
     public function addPracticeQuestion(Request $request) {
-
 		$setQuestionOrder = null;
 		$getTestSectionData = DB::table('practice_questions')
 		->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
@@ -57,12 +56,33 @@ class PracticeQuestionController extends Controller
         } else{
 			$question->tags = $request->tags;
         }
-		$question->question_type_id = json_encode($request->get_question_type_values);
-		$question->category_type = json_encode($request->get_category_type_values);
-        $question->save();
+
+		if(is_int($request->get_category_type_values[0])){
+			$question->category_type = json_encode($request->get_category_type_values);
+		} 
+		else{
+			$practicecategorytype = new PracticeCategoryType();
+			$practicecategorytype->category_type_title = $request->get_category_type_values[0];
+			$practicecategorytype->save();
+			$practice_category_id = PracticeCategoryType::where('category_type_title',$request->get_category_type_values[0])->get('id');
+			$question->category_type = $practice_category_id[0]['id'];
+		}
+
+		if(is_int($request->get_question_type_values[0])){
+			$question->question_type_id = json_encode($request->get_question_type_values);
+		}
+		else{
+			$practicequestiontype = new QuestionType();
+			$practicequestiontype->question_type_title = $request->get_question_type_values[0];
+			$practicequestiontype->save();
+			$practice_question_id = QuestionType::where('question_type_title',$request->get_question_type_values[0])->get('id');
+			$question->question_type_id = $practice_question_id[0]['id'];
+		}
+		$question->save();
 
 		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order]);
 	}
+    
 
 	public function indexQuestionType()
 	{

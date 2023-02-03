@@ -518,24 +518,53 @@
                         </div>
                         <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
+                                {{-- start  --}}
                                 <div class="col-md-5 mb-2 me-2">
                                     <label for="category_type" class="form-label">Category Type</label>
-                                    <select class="js-select2 select" id="category_type_0" name="category_type">
+                                    <select class="js-select2 select categoryType" id="category_type_0" name="category_type">
                                         <option value="">Select Category Type</option>
                                         @foreach ($getCategoryTypes as $categoryType)
                                             <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                {{-- <div class="col-lg-6">
+                                    <div class="select2-container_main">
+                                        <label class="form-label" for="category_type">Category Type</label>
+                                        <select class="js-select2 select"
+                                            id="category_type"
+                                            name="category_type"
+                                            multiple="multiple">
+                                            @foreach ($getCategoryTypes as $categoryType)
+                                            <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div> --}}
                                 <div class="mb-2 col-md-5 add_question_type_select">
                                     <label for="search-input" class="form-label">Question Type</label>
-                                    <select class="js-select2 select" id="search-input_0" name="search-input">
+                                    <select class="js-select2 select questionType" id="search-input_0" name="search-input">
                                         <option value="">Select Question Type</option>
                                         @foreach ($getQuestionTypes as $questionType)
                                             <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
+                                {{-- <div class="col-lg-6">
+                                    <div class="select2-container_main">
+                                        <label class="form-label" for="search-input">Question Type</label>
+                                        <select class="js-select2 select"
+                                            id="search-input_0"
+                                            name="search-input"
+                                            multiple="multiple">
+                                            @foreach ($getQuestionTypes as $questionType)
+                                            <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div> --}}
+                                {{-- end  --}}
+
                                 <div class="col-md-2 add-position">
                                     <button class="plus-button" data-id="1" onclick="addNewTypes(this)"><i class="fa-solid fa-plus"></i></button>
                                 </div>

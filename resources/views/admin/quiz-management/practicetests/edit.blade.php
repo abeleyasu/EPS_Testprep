@@ -226,7 +226,6 @@ ul.answerOptionLsit li label input{
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
     color: #6b757c;
 }
-
 .form-label{
     display: block
 }
