@@ -91,10 +91,10 @@
                                     <h3 class="block-title">Score Summary - ACT 1576C</h3>
                                 </div>
                                 <div class="block-content">
-                                    <div class="form-check form-switch">
+                                    {{-- <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" value="" id="mega-settings-status" name="mega-settings-status">
                                         <label class="form-check-label fs-sm" for="mega-settings-status">Show All Sections</label>
-                                    </div>
+                                    </div> --}}
                                     <table class="js-table-sections table table-hover table-vcenter">
                                         <thead>
                                             <tr>

@@ -959,11 +959,13 @@ ul.answerOptionLsit li label input{
 
             $(`#search-input_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
+                tags : true,
                 placeholder : "Select Question type"
             });
 
             $(`#category_type_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
+                tags : true,
                 placeholder : "Select Category type",
             });
 
@@ -989,11 +991,13 @@ ul.answerOptionLsit li label input{
 
         $(`#search-input_0`).select2({
             dropdownParent: $('#questionMultiModal'),
+            tags : true,
             placeholder : "Select Question type"
         });
 
         $(`#category_type_0`).select2({
             dropdownParent: $('#questionMultiModal'),
+            tags: true,
             placeholder : "Select Category type",
         });
 
