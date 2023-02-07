@@ -350,7 +350,7 @@ class TestPrepController extends Controller
             ];
         }
 
-        return view('user.test-review.question_concepts_review' ,  ['testSections' => $testSections,'test_details' => $test_details, 'section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all]);
+        return view('user.test-review.question_concepts_review' ,  ['test_details' => $test_details, 'section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all]);
     }
 
     public function set_answers(Request $request)
