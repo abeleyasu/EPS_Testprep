@@ -31,12 +31,15 @@
                     <div class="content content-full">
                         <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-alt">
+                                <li class="breadcrumb-item" aria-current="page">
+                                    <a class="link-fx" href="{{ url('user/practice-test-sections/'.$test_details->id) }}">College Prep System {{ isset($test_details->format) ? $test_details->format : '' }} {{ isset($test_details->title) ? $test_details->title : '' }} {{ isset($test_details->id) ? '#'. $test_details->id : '' }}</a>
+                                </li>
                                 <li class="breadcrumb-item">
                                     <a class="link-fx" href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }} {{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)). ' Review Summary' : '' }}</a>
                                 </li>
-                                <li class="breadcrumb-item" aria-current="page">
+                                {{-- <li class="breadcrumb-item" aria-current="page">
                                     ACT Math Review (Form 1576C / Z04)
-                                </li>
+                                </li> --}}
                             </ol>
                         </nav>
                     </div>
@@ -236,10 +239,17 @@
                                         });
 
                                         function showIncorrectAnswer(data) {
-                                            let is_checked = $(data).is(':checked');
+                                            let is_checked = $(data).is(':checked');    
+                                            let incorrect_answer = $('.incorrect-answers').parents('.hide-correct-answers').length;
                                             if(is_checked) {
-                                                $('.correct-answers').parents('.hide-correct-answers').hide();
+                                                if(incorrect_answer == 0){
+                                                    $('.correct-answers').parents('.hide-correct-answers').hide();
+                                                    $('#incorrect-message').text("Incorrect Question Not Found!");
+                                                } else {
+                                                    $('.correct-answers').parents('.hide-correct-answers').hide();
+                                                }
                                             } else {
+                                                $('#incorrect-message').text('');
                                                 $('.correct-answers').parents('.hide-correct-answers').show();
                                             }
                                         }
@@ -248,6 +258,7 @@
                                     <div class="tab-content" id="myTabContent">
                                         <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                                             <div class="accordion accordionExample">
+                                                <span id="incorrect-message" class="text-danger" style="text-align: center; font-weight:bolder;"></span>
                                                 <?php
                                                     $count = 1;
                                                 ?>
@@ -263,7 +274,7 @@
                                                                                 <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                             </td>
                                                                             <td>
-                                                                                <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">{{$count++}}</button>
+                                                                                <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 error-button" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">{{$count++}}</button>
                                                                                 <?php $correct =  str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
                                                                                 @if($single_user_selected_answers['user_selected_answer'] == $correct)
                                                                                     <button type="button" class="correct-answers btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>
@@ -936,6 +947,13 @@
     .category-badge{
         cursor: default !important;
     }
+    #incorrect-message{
+        position: relative;
+        top: -20px;
+        left: 31px;
+        font-size: 14px;
+    }
+   
 </style>
 @endsection
 
