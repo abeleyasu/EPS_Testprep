@@ -11,21 +11,28 @@
                 <div class="content content-full">
                     <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
                         <div class="flex-grow-1">
-                            <h1 class="h3 fw-bold mb-2">
+                            <h1 class="h3 fw-bold mb-2 w-75">
                                 Test Review
                                 <br />
-                                ACT Math
+                                {{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }}
                             </h1>
-                            <h2 class="fs-base lh-base fw-medium mb-0">
-                                Official ACT Form 1576C (Z04) - April 2021
-                            </h2>
+                            <div class="d-flex align-items-center">
+                                <div class="w-75">
+                                    <h2 class="fs-base lh-base fw-medium mb-0">
+                                        {!! isset($test_details->description) ? $test_details->description : '' !!} 
+                                    </h2>
+                                </div>
+                                <p class="w-25 text-center">
+                                    {{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)) : '' }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="content content-full">
                         <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-alt">
                                 <li class="breadcrumb-item">
-                                    <a class="link-fx" href="javascript:void(0)">Official ACT Form 1576C / Z04 - April 2021 Review Summary</a>
+                                    <a class="link-fx" href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }} {{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)). ' Review Summary' : '' }}</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">
                                     ACT Math Review (Form 1576C / Z04)
@@ -125,7 +132,7 @@
                                 <div class="block-content">
                                     <h3>ACT Math - Official Form 1576C</h3>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" value="" id="mega-settings-status" name="mega-settings-status">
+                                        <input class="form-check-input" type="checkbox" value="" onchange="showIncorrectAnswer(this)" name="mega-settings-status">
                                         <label class="form-check-label fs-sm" for="mega-settings-status">Show Incorrect Questions Only</label>
                                     </div>
                                     {{-- header --}}
@@ -227,6 +234,15 @@
                                                 jQuery('.set_question_type_desc').html(get_question_desc);
                                             });
                                         });
+
+                                        function showIncorrectAnswer(data) {
+                                            let is_checked = $(data).is(':checked');
+                                            if(is_checked) {
+                                                $('.correct-answers').parents('.hide-correct-answers').hide();
+                                            } else {
+                                                $('.correct-answers').parents('.hide-correct-answers').show();
+                                            }
+                                        }
                                     </script>
 
                                     <div class="tab-content" id="myTabContent">
@@ -237,12 +253,12 @@
                                                 ?>
                                                 @if(isset($user_selected_answers) && !empty($user_selected_answers))
                                                 @foreach($user_selected_answers as $key => $single_user_selected_answers)
-                                                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                <div class="hide-correct-answers block block-rounded block-bordered overflow-hidden mb-1">
                                                             @if (isset($single_user_selected_answers['get_question_details'][0]->question_id) && !empty($single_user_selected_answers['get_question_details'][0]->question_id))
                                                                 <div class="block-header block-header-tab justify-content-start" type="button" data-toggle="collapse" data-target="#collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
                                                                     aria-expanded="false" aria-controls="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>">
                                                                     <table>
-                                                                        <tr >
+                                                                        <tr>
                                                                             <td class="text-center">
                                                                                 <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                             </td>
@@ -250,23 +266,23 @@
                                                                                 <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">{{$count++}}</button>
                                                                                 <?php $correct =  str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
                                                                                 @if($single_user_selected_answers['user_selected_answer'] == $correct)
-                                                                                <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>
+                                                                                    <button type="button" class="correct-answers btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>
                                                                                 @else
-                                                                                <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>       
+                                                                                    <button type="button" class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> {{$single_user_selected_answers['user_selected_answer']}}</button>       
                                                                                 @endif
 
                                                                                 <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> {{$single_user_selected_answers['get_question_details'][0]->question_answer}}</button>
 
                                                                                 @if($single_user_selected_answers['user_selected_flag'] == 'yes' )
-                                                                                <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
+                                                                                    <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
                                                                                 @endif
                                                                                 
                                                                                 @if($single_user_selected_answers['user_selected_guess'] == 'yes' )
-                                                                                <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
+                                                                                    <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
                                                                                 @endif
 
                                                                                 @if($single_user_selected_answers['user_selected_answer'] == '-' )
-                                                                                <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                                                    <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
                                                                                 @endif
                                                                             </td>
                                                                         </tr>

@@ -513,7 +513,7 @@
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label" for="tags">Questions Tags</label>
+                            <label class="form-label" for="tags">Question Tags</label>
                             <input name="tags" placeholder="add tags" class="form-control"/>
                         </div>
                         <div class="input-container" id="addNewTypes">
@@ -521,50 +521,20 @@
                                 {{-- start  --}}
                                 <div class="col-md-5 mb-2 me-2">
                                     <label for="category_type" class="form-label">Category Type</label>
-                                    <select class="js-select2 select categoryType" id="category_type_0" name="category_type">
-                                        <option value="">Select Category Type</option>
+                                    <select class="js-select2 select categoryType" id="category_type_0" name="category_type" onchange="insertCategoryType(this)" multiple>
                                         @foreach ($getCategoryTypes as $categoryType)
                                             <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- <div class="col-lg-6">
-                                    <div class="select2-container_main">
-                                        <label class="form-label" for="category_type">Category Type</label>
-                                        <select class="js-select2 select"
-                                            id="category_type"
-                                            name="category_type"
-                                            multiple="multiple">
-                                            @foreach ($getCategoryTypes as $categoryType)
-                                            <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
                                 <div class="mb-2 col-md-5 add_question_type_select">
                                     <label for="search-input" class="form-label">Question Type</label>
-                                    <select class="js-select2 select questionType" id="search-input_0" name="search-input">
-                                        <option value="">Select Question Type</option>
+                                    <select class="js-select2 select questionType" id="search-input_0" name="search-input" onchange="insertQuestionType(this)" multiple>
                                         @foreach ($getQuestionTypes as $questionType)
                                             <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- <div class="col-lg-6">
-                                    <div class="select2-container_main">
-                                        <label class="form-label" for="search-input">Question Type</label>
-                                        <select class="js-select2 select"
-                                            id="search-input_0"
-                                            name="search-input"
-                                            multiple="multiple">
-                                            @foreach ($getQuestionTypes as $questionType)
-                                            <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div> --}}
-                                {{-- end  --}}
-
                                 <div class="col-md-2 add-position">
                                     <button class="plus-button" data-id="1" onclick="addNewTypes(this)"><i class="fa-solid fa-plus"></i></button>
                                 </div>
@@ -822,15 +792,60 @@
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
-
     <script>
+        function insertCategoryType(data) {
+            let category_type = $(data).val();
+                category_type = category_type.join(" ");
+            if(category_type != '' && !containsOnlyNumbers(category_type)) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addPracticeCategoryType") }}',
+                    data:{
+                        searchValue: category_type,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".categoryType").append('<option value=' + res.id + '>' + res.category_type_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
 
-        function addNewTypes(data) {
+        function containsOnlyNumbers(str) {
+            return /^\d+$/.test(str);
+        }
+
+        function insertQuestionType(data){
+            let question_type = $(data).val();
+                question_type = question_type.join(" ");
+            if(question_type != '' && !containsOnlyNumbers(question_type)) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addPracticeQuestionType") }}',
+                    data:{
+                        searchValue: question_type,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".questionType").append('<option value=' + res.id + '>' + res.question_type_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
+
+        async function addNewTypes(data) {
             let key = $(data).attr('data-id');
                 key = parseInt(key);
 
             let category_type = $(`#category_type_${key - 1}`).val();
+         
+
             let question_type = $(`#search-input_${key - 1}`).val();
+          
 
             if(category_type == '') {
                 toastr.error('Please select a category type!');
@@ -845,19 +860,13 @@
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
                 html += `<div class="mb-2 col-md-5 me-2">`;                
-                html += `<select class="js-select2 select" id="category_type_${key}" name="category_type">`;                
-                html += `<option value="">Select Category Type</option>`;                
-                html += `@foreach ($getCategoryTypes as $categoryType)`;                
-                html += `<option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>`;                
-                html += `@endforeach`;                
+                html += `<select class="js-select2 select categoryType" id="category_type_${key}" name="category_type" onchange="insertCategoryType(this)" multiple>`;                            
+                html += await dropdown_lists(`/admin/getPracticeCategoryType`);            
                 html += `</select>`;                
                 html += `</div>`;                
                 html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
-                html += `<select class="js-select2 select" id="search-input_${key}" name="search-input">`;                
-                html += `<option value="">Select Question Type</option>`;                
-                html += `@foreach ($getQuestionTypes as $questionType)`;                
-                html += `<option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>`;                
-                html += `@endforeach`;                
+                html += `<select class="js-select2 select questionType" id="search-input_${key}" name="search-input" onchange="insertQuestionType(this)" multiple>`;                          
+                html += await dropdown_lists(`/admin/getPracticeQuestionType`);                
                 html += `</select>`;                
                 html += `</div>`; 
                 html += `<div class="col-md-2 add-minus-icon">`;                
@@ -870,16 +879,50 @@
             $(`#search-input_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
-                placeholder : "Select Question type"
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
             });
 
             $(`#category_type_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
+                maximumSelectionLength: 1
             });
                 
             $(data).attr('data-id', key + 1);
+
+        }
+
+        function dropdown_lists(url)
+        {
+            let site_url = $('#site_url').val();
+            let option = ``;
+            return $.ajax({
+                url: `${site_url}${url}`,
+                type: "GET",
+                async: true,
+                dataType: "JSON",
+            }).then((resp) => {
+                if (resp.success) {
+                    $(resp.dropdown_list).each((index,value) => {
+                        if(resp.type == 'category_type') {
+                            option += `<option value="${value.id}">`;
+                            option += `${value.category_type_title}`;
+                            option += `</option>`;
+                        } 
+
+                        if(resp.type == 'question_type') {
+                            option += `<option value="${value.id}">`;
+                            option += `${value.question_type_title}`;
+                            option += `</option>`;
+                        }
+                    });
+                    return option;
+                } else {
+                    return option;
+                }
+            });
         }
 
         function removeNewTypes(data) {
@@ -888,8 +931,8 @@
             $('.plus-button').attr('data-id', count - 1);
         }
 
-        $(document).ready(function() {
-
+        $(document).ready(function() { 
+         
             $('input[name=tags]').tagify();
 
             $(`#format`).select2({
@@ -900,13 +943,15 @@
             $(`#search-input_0`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags: true,
-                placeholder : "Select Question type"
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
             });
 
             $(`#category_type_0`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
+                maximumSelectionLength: 1
             });
 
             $(`#passage_number`).select2({
@@ -1037,107 +1082,6 @@
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        /*CKEDITOR.replace( 'js-ckeditor-passquestion',{
-        	extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        	allowedContent
-        });*/
-        /*CKEDITOR.replace( 'js-ckeditor-que-desc',{
-        	extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        	allowedContent
-        });*/
-
-        // $(document).ready(function() {
-        //     $(".plus-button").on("click", function() {
-        //         if ($(this).closest('.input-field').is(":first-child")) {
-        //             var newInputGroup = $(this).closest(".input-field").clone();
-        //             newInputGroup.find('#category_type').val('');
-        //             newInputGroup.find('#search-input').val('');
-
-        //             newInputGroup.find('.plus-button').remove();
-        //             var newMinusButton = $("<button>").addClass("btn minus-button fa fa-minus");
-        //             newMinusButton.insertAfter(newInputGroup.find(".add_question_type_select"));
-        //             newInputGroup.appendTo(".input-container");
-        //         }
-        //     });
-
-        //     $(document).on("click", ".minus-button", function() {
-        //         $(this).closest(".input-field").remove();
-        //     });
-        // });
-
-
-        // var categories = <?php echo json_encode($getQuestionTypes); ?>;
-        // var practice_category_types = <?php echo json_encode($getCategoryTypes); ?>;
-
-        // $(document).on("keyup", "#search-input", function() {
-        //     var searchValue = $(this).val();
-        //     const check = $(this);
-
-        //     var filteredCategories = categories.filter(function(category) {
-        //         var test = category.question_type_title;
-        //         return test.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
-        //     });
-
-        //     if (searchValue.length > 0) {
-        //         if (filteredCategories.length > 0) {
-        //             check.next("#search-results").empty();
-        //             filteredCategories.forEach(function(category) {
-        //                 check.next("#search-results").append("<li class='search-result' data-search_id='" +
-        //                     category.id + "'>" + category.question_type_title + "</li>");
-        //             });
-        //         } else {
-        //             check.next("#search-results").empty();
-        //             check.next("#search-results").append("<li class='search-result' data-search_id=''>" +
-        //                 searchValue + "</li>");
-        //         }
-
-        //         $(".search-result").on("click", function() {
-        //             var selectedValue = $(this).text();
-        //             var selectedValueId = $(this).data('search_id');
-        //             check.val(selectedValue);
-        //             check.data('search_id', selectedValueId);
-        //             check.next("#search-results").empty();
-        //         });
-        //     } else {
-        //         check.next("#search-results").empty();
-        //     }
-        // });
-
-        // $(document).on("keyup", "#category_type", function() {
-        //     var searchValue = $(this).val();
-        //     const check = $(this);
-
-        //     var filteredCategories = practice_category_types.filter(function(practice_category_type) {
-        //         var test = practice_category_type.category_type_title;
-        //         return test.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
-        //     });
-
-        //     if (searchValue.length > 0) {
-        //         if (filteredCategories.length > 0) {
-        //             check.next("#category_type_results").empty();
-
-        //             filteredCategories.forEach(function(practice_category_type) {
-        //                 check.next("#category_type_results").append(
-        //                     "<li class='cat-search-result' data-search_id='" + practice_category_type
-        //                     .id + "'>" + practice_category_type.category_type_title + "</li>");
-        //             });
-        //         } else {
-        //             check.next("#category_type_results").empty();
-        //             check.next("#category_type_results").append("<li class='cat-search-result' data-search_id=''>" +
-        //                 searchValue + "</li>");
-        //         }
-
-        //         $(".cat-search-result").on("click", function() {
-        //             var selectedValue = $(this).text();
-        //             var selectedValueId = $(this).data('search_id');
-        //             check.val(selectedValue);
-        //             check.data('search_id', selectedValueId);
-        //             check.next("#category_type_results").empty();
-        //         });
-        //     } else {
-        //         check.next("#category_type_results").empty();
-        //     }
-        // });
 
         $('.add_question_modal_btn').click(function() {
             var title = $('.test_title').val();
@@ -1450,28 +1394,6 @@
             return false;
 
         });
-        /*$('#testSectionType').on('change',function(){
-            var sectionType = $(this).val();
-            var questionAnsComb = {English:'choiceOneInFourPass',Math:'choiceOneInFive',Reading:'choiceOneInFourPass',Writing:'choiceOneInFourPass',Science:'choiceOneInFour',Math_no_calculator:'choiceMultInFourFill',Math_with_calculator:'choiceMultInFourFill'};
-            $.each(questionAnsComb, function(ind,val){
-                
-                if(ind == sectionType){
-                    var htmlType = val;
-                    var seletedLayout = '';
-                    if(htmlType == 'choiceOneInFour'){
-                        seletedLayout = '<div class="choiceOneInFour"><input type="hidden" name="questionType" class="questionType" value="choiceOneInFour"><label class="form-label" style="font-size: 13px;">A:</label><input type="radio" value="a" name="choiceOneInFour"><label class="form-label" style="font-size: 13px;">B:</label><input type="radio"  value="b" name="choiceOneInFour"><label class="form-label" style="font-size: 13px;">C:</label><input type="radio" value="c" name="choiceOneInFour"><label class="form-label" style="font-size: 13px;">D:</label><input type="radio" value="d" name="choiceOneInFour"></div>';
-                    } else if(htmlType =='choiceOneInFive'){
-                        seletedLayout = '<div class="choiceOneInFive"><input type="hidden" name="questionType" class="questionType" value="choiceOneInFive"><label class="form-label" style="font-size: 13px;">A:</label><input type="radio" value="a" name="choiceOneInFive"><label class="form-label" style="font-size: 13px;">B:</label><input type="radio" value="b" name="choiceOneInFive"><label class="form-label" style="font-size: 13px;">C:</label><input type="radio" value="c" name="choiceOneInFive"><label class="form-label" style="font-size: 13px;">D:</label><input type="radio" value="d" name="choiceOneInFive"><label class="form-label" style="font-size: 13px;">E:</label><input type="radio" value="e" name="choiceOneInFive"></div>';
-                    } else if(htmlType =='choiceOneInFourPass'){
-                        seletedLayout = '<div class="choiceOneInFourPass"><input type="hidden" name="questionType" class="questionType" value="choiceOneInFourPass"><label class="form-label" style="font-size: 13px;">A:</label><input type="radio" value="a" name="choiceOneInFourPass"><label class="form-label" style="font-size: 13px;">B:</label><input value="b" type="radio" name="choiceOneInFourPass"><label class="form-label" style="font-size: 13px;">C:</label><input type="radio" value="c" name="choiceOneInFourPass"><label class="form-label" style="font-size: 13px;">D:</label><input type="radio" value="d" name="choiceOneInFourPass"></div>';
-                    } else if(htmlType =='choiceMultInFourFill'){
-                        seletedLayout = '<div class="choiceMultInFourFill"><input type="hidden" name="questionType" class="questionType" value="choiceMultInFourFill"><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="multiChoice(1);" class="switchMulti">Multi Choice</a></label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="multiChoice(2);" class="switchMulti">Fill Choice</a></label><div class="multi_field"><label class="form-label" style="font-size: 13px;">A:</label><input type="checkbox" value="a" name="choiceMultInFourFill[]"><label class="form-label" style="font-size: 13px;">B:</label><input type="checkbox" value="b" name="choiceMultInFourFill[]"><label class="form-label" style="font-size: 13px;">C:</label><input type="checkbox" value="c" name="choiceMultInFourFill[]"><label class="form-label" style="font-size: 13px;">D:</label><input type="checkbox" value="d" name="choiceMultInFourFill[]"></div><div class="fill_field" style="display:none"><label class="form-label" style="font-size: 13px;">Fill:</label><input type="text" name="choiceMultInFourFill_fill"></div></div>';
-                    }  
-                    $('#selectedLayout').html('');                 
-                    $('#selectedLayout').html(seletedLayout);                                     
-                }
-            });
-        });*/
 
         jQuery(document).on('change', '.sectionOrder', function() {
             var section_id = $('.sectionAddId').val();

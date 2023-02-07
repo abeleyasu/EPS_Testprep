@@ -20,6 +20,9 @@ class PracticeQuestionController extends Controller
 		->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
         ->where('practice_test_sections.id', $request->section_id)
 		->get();
+
+		$cat_array = [];
+		$qt_array = [];
 		
 		if(!$getTestSectionData->isEmpty())
 		{
@@ -35,7 +38,6 @@ class PracticeQuestionController extends Controller
 		{
 			$setQuestionOrder = 1;
 		}
-		
 		$question = new PracticeQuestion();
 		$question->format = $request->format;
 		$question->title = $request->question;
@@ -56,28 +58,19 @@ class PracticeQuestionController extends Controller
         } else{
 			$question->tags = $request->tags;
         }
-
-		if(is_int($request->get_category_type_values[0])){
-			$question->category_type = json_encode($request->get_category_type_values);
-		} 
-		else{
-			$practicecategorytype = new PracticeCategoryType();
-			$practicecategorytype->category_type_title = $request->get_category_type_values[0];
-			$practicecategorytype->save();
-			$practice_category_id = PracticeCategoryType::where('category_type_title',$request->get_category_type_values[0])->get('id');
-			$question->category_type = $practice_category_id[0]['id'];
+		$cat_array = $request->get_category_type_values;
+		foreach ($cat_array as $key => $value) {
+			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
+			$cat_array[$key] = $practice_category_id->id;
 		}
-
-		if(is_int($request->get_question_type_values[0])){
-			$question->question_type_id = json_encode($request->get_question_type_values);
+		
+		$qt_array = $request->get_question_type_values;
+		foreach ($qt_array as $key => $value) {
+			$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
+			$qt_array[$key] = $practice_question_id->id;
 		}
-		else{
-			$practicequestiontype = new QuestionType();
-			$practicequestiontype->question_type_title = $request->get_question_type_values[0];
-			$practicequestiontype->save();
-			$practice_question_id = QuestionType::where('question_type_title',$request->get_question_type_values[0])->get('id');
-			$question->question_type_id = $practice_question_id[0]['id'];
-		}
+		$question->category_type = json_encode($cat_array);
+		$question->question_type_id = json_encode($qt_array);
 		$question->save();
 
 		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order]);
@@ -152,8 +145,31 @@ class PracticeQuestionController extends Controller
         } else{
 			$question->tags = $request->tags;
         }
-		$question->question_type_id = json_encode($request->get_question_type_values);
-		$question->category_type = json_encode($request->get_category_type_values);
+		// $question->question_type_id = json_encode($request->get_question_type_values);
+		// $question->category_type = json_encode($request->get_category_type_values);
+
+		if(is_int($request->get_category_type_values[0])){
+			$question->category_type = json_encode($request->get_category_type_values);
+		} 
+		else{
+			$practicecategorytype = new PracticeCategoryType();
+			$practicecategorytype->category_type_title = $request->get_category_type_values[0];
+			$practicecategorytype->save();
+			$practice_category_id = PracticeCategoryType::where('category_type_title',$request->get_category_type_values[0])->get('id');
+			$question->category_type = $practice_category_id[0]['id'];
+		}
+
+		if(is_int($request->get_question_type_values[0])){
+			$question->question_type_id = json_encode($request->get_question_type_values);
+		}
+		else{
+			$practicequestiontype = new QuestionType();
+			$practicequestiontype->question_type_title = $request->get_question_type_values[0];
+			$practicequestiontype->save();
+			$practice_question_id = QuestionType::where('question_type_title',$request->get_question_type_values[0])->get('id');
+			$question->question_type_id = $practice_question_id[0]['id'];
+		}
+
 		$question->save(); 
 		return $question->id;
 	}
@@ -199,23 +215,27 @@ class PracticeQuestionController extends Controller
 
 	public function addPracticeCategoryType(Request $request)
 	{
-		if(empty($request->searchId))
+		if(!empty($request->searchValue))
 		{
-			$practiceCatType = new PracticeCategoryType();
-			$practiceCatType->category_type_title = $request->searchValue;
-			$practiceCatType->save();
-			return $practiceCatType->id;
+			$practiceCatType = PracticeCategoryType::create([
+				'category_type_title' => $request->searchValue
+			]);
+			$id = $practiceCatType->id;
+			$title = $practiceCatType->category_type_title;
+			return response()->json(["success" => true, 'id' => $id, 'category_type_title' => $title]); 
 		}
 	}
 
 	public function addPracticeQuestionType(Request $request)
 	{
-		if(empty($request->searchId))
+		if(!empty($request->searchValue))
 		{
-			$practiceQuesType = new QuestionType();
-			$practiceQuesType->question_type_title = $request->searchValue;
-			$practiceQuesType->save();
-			return $practiceQuesType->id;
+			$practiceQuesType = QuestionType::create([
+				'question_type_title' => $request->searchValue
+			]);
+			$id = $practiceQuesType->id;
+			$title = $practiceQuesType->question_type_title;
+			return response()->json(["success" => true, 'id' => $id, 'question_type_title' => $title]); 
 		}
 	}
 
@@ -225,10 +245,21 @@ class PracticeQuestionController extends Controller
 		$partSection->save(); 
 		return $partSection->id;  
 	}
+
 	public function questionOrder(Request $request){
 		$question = PracticeQuestion::find($request->question_id);
 		$question->question_order = $request->question_order;
 		$question->save(); 
 		return $question->id;  
+	}
+
+	public function getPracticeCategoryType(){
+		$category_type = PracticeCategoryType::get();
+		return response()->json(['success' => true, 'dropdown_list' => $category_type, 'type' => 'category_type']);
+	}
+
+	public function getPracticeQuestionType(){
+		$question_type = QuestionType::get();
+		return response()->json(['success' => true, 'dropdown_list' => $question_type, 'type' => 'question_type']);
 	}
 }

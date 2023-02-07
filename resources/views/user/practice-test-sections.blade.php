@@ -24,14 +24,14 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-alt">
                     <li class="breadcrumb-item">
-                        <a class="link-fx text-dark" href="be_pages_elearning_courses.html">Practice Tests</a>
+                        <a class="link-fx text-dark" href="{{ url('user/test-prep-dashboard') }}">Practice Tests</a>
                     </li>
                     <li class="breadcrumb-item" aria-current="page">
-                        <a class="link-fx" href="">College Prep System SAT Practice Test #1</a>
+                        <a class="link-fx" href="">College Prep System {{ isset($testSection[0]->format) ? $testSection[0]->format : '' }} {{ isset($testSection[0]->title) ? $testSection[0]->title : '' }} {{ isset($testSection[0]->id) ? '#'. $testSection[0]->id : '' }}</a>
                     </li>
-                    <li class="breadcrumb-item" aria-current="page">
+                    {{-- <li class="breadcrumb-item" aria-current="page">
                         <a class="link-fx" href="">Sections</a>
-                    </li>
+                    </li> --}}
                 </ol>
             </nav>
         </div>
@@ -47,11 +47,16 @@
                 <span class='text-primary'>{{$testSectionName}}</span> sections
                 </h1>
                 <div class="d-flex justify-content-between align-items-center">
-                  <h2 class="fs-base lh-base fw-medium text-muted mb-0">
+                  <div class="w-75">
+                    <h2 class="fs-base lh-base fw-medium text-muted mb-0">
                 
-                  This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
-                
-                </h2>
+                      This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
+                    
+                    </h2>
+                    <h6 class="fs-6 mb-0 test-description text-muted mt-2">
+                      {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
+                    </h6>
+                  </div>
                 @if($check_test_completed == 'yes')
                   @if (isset($testSections[0]) && !empty($testSections[0]))
                   <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
@@ -248,6 +253,10 @@
 
   .js-table-sections-header .show tbody {
     display: table-row-group;
+  }
+  .test-description p{
+    margin-bottom: 0;
+    font-size: 14px
   }
 </style>
 @endsection

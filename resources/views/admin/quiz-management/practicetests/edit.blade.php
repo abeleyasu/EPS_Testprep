@@ -534,8 +534,7 @@ ul.answerOptionLsit li label input{
                         <div class="d-flex input-field align-items-center">
                             <div class="col-md-5 mb-2 me-2">
                                 <label for="category_type" class="form-label">Category Type</label>
-                                <select class="js-select2 select" id="category_type_0" name="category_type">
-                                    <option value="">Select Category Type</option>
+                                <select class="js-select2 select categoryType" id="category_type_0" name="category_type" onchange="insertCategoryType(this)" multiple>
                                     @foreach ($getCategoryTypes as $categoryType)
                                         <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
                                     @endforeach
@@ -543,8 +542,7 @@ ul.answerOptionLsit li label input{
                             </div>
                             <div class="mb-2 col-md-5 add_question_type_select">
                                 <label for="search-input" class="form-label">Question Type</label>
-                                <select class="js-select2 select" id="search-input_0" name="search-input">
-                                    <option value="">Select Question Type</option>
+                                <select class="js-select2 select questionType" id="search-input_0" name="search-input" onchange="insertQuestionType(this)" multiple>
                                     @foreach ($getQuestionTypes as $questionType)
                                         <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
                                     @endforeach
@@ -902,14 +900,87 @@ ul.answerOptionLsit li label input{
 @section('admin-script')
 
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
-
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
-<script>
+    <script>
+        function insertCategoryType(data) {
+            let category_type = $(data).val();
+                category_type = category_type.join(" ");
+            if(category_type != '' && !containsOnlyNumbers(category_type)) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addPracticeCategoryType") }}',
+                    data:{
+                        searchValue: category_type,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".categoryType").append('<option value=' + res.id + '>' + res.category_type_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
 
-        function addNewTypes(data, type) {
+        function containsOnlyNumbers(str) {
+            return /^\d+$/.test(str);
+        }
+
+        function insertQuestionType(data){
+            let question_type = $(data).val();
+                question_type = question_type.join(" ");
+            if(question_type != '' && !containsOnlyNumbers(question_type)) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addPracticeQuestionType") }}',
+                    data:{
+                        searchValue: question_type,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".questionType").append('<option value=' + res.id + '>' + res.question_type_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
+
+        function dropdown_lists(url)
+        {
+            let site_url = $('#site_url').val();
+            let option = ``;
+            return $.ajax({
+                url: `${site_url}${url}`,
+                type: "GET",
+                async: true,
+                dataType: "JSON",
+            }).then((resp) => {
+                if (resp.success) {
+                    $(resp.dropdown_list).each((index,value) => {
+                        if(resp.type == 'category_type') {
+                            option += `<option value="${value.id}">`;
+                            option += `${value.category_type_title}`;
+                            option += `</option>`;
+                        } 
+
+                        if(resp.type == 'question_type') {
+                            option += `<option value="${value.id}">`;
+                            option += `${value.question_type_title}`;
+                            option += `</option>`;
+                        }
+                    });
+                    return option;
+                } else {
+                    return option;
+                }
+            });
+        }
+
+        async function addNewTypes(data, type) {
             let key = null;
             if(type != 'null' && type == 'repet') {
                 key = parseInt(data);
@@ -918,6 +989,7 @@ ul.answerOptionLsit li label input{
                 key = parseInt(key);
 
                 let category_type = $(`#category_type_${key - 1}`).val();
+
                 let question_type = $(`#search-input_${key - 1}`).val();
     
                 if(category_type == '') {
@@ -931,23 +1003,16 @@ ul.answerOptionLsit li label input{
                 }
             }
 
-
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
                 html += `<div class="mb-2 col-md-5 me-2">`;                
-                html += `<select class="js-select2 select" id="category_type_${key}" name="category_type">`;                
-                html += `<option value="">Select Category Type</option>`;                
-                html += `@foreach ($getCategoryTypes as $categoryType)`;                
-                html += `<option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>`;                
-                html += `@endforeach`;                
+                html += `<select class="js-select2 select categoryType" id="category_type_${key}" name="category_type" onchange="insertCategoryType(this)" multiple>`;                              
+                html += await dropdown_lists(`/admin/getPracticeCategoryType`);                         
                 html += `</select>`;                
                 html += `</div>`;                
                 html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
-                html += `<select class="js-select2 select" id="search-input_${key}" name="search-input">`;                
-                html += `<option value="">Select Question Type</option>`;                
-                html += `@foreach ($getQuestionTypes as $questionType)`;                
-                html += `<option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>`;                
-                html += `@endforeach`;                
+                html += `<select class="js-select2 select questionType" id="search-input_${key}" name="search-input" onchange="insertQuestionType(this)" multiple>`;                             
+                html += await dropdown_lists(`/admin/getPracticeQuestionType`);            
                 html += `</select>`;                
                 html += `</div>`; 
                 html += `<div class="col-md-2 add-minus-icon">`;                
@@ -960,13 +1025,15 @@ ul.answerOptionLsit li label input{
             $(`#search-input_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
-                placeholder : "Select Question type"
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
             });
 
             $(`#category_type_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
+                maximumSelectionLength: 1
             });
 
             if(type !== 'repet') {
@@ -1725,15 +1792,17 @@ function practQuestioEdit(id){
 
                 $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
 
-                $(categorytypeArr).each((i,v) => {
-                    $(`#category_type_${i}`).val(v);
-                    $(`#category_type_${i}`).trigger('change');
-                });
-
-                $(questiontypeArr).each((i,v) => {
-                    $(`#search-input_${i}`).val(v);
-                    $(`#search-input_${i}`).trigger('change');
-                });
+                setTimeout(function(){ 
+                    $(categorytypeArr).each((i,v) => {
+                        $(`#category_type_${i}`).val(v);
+                        $(`#category_type_${i}`).trigger('change');
+                    });
+    
+                    $(questiontypeArr).each((i,v) => {
+                        $(`#search-input_${i}`).val(v);
+                        $(`#search-input_${i}`).trigger('change');
+                    });
+                }, 1000);
 
                 $.ajax({
                     data:{

@@ -130,6 +130,9 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
 
     Route::post('addPracticeCategoryType', [PracticeQuestionController::class, 'addPracticeCategoryType'])->name('addPracticeCategoryType');
     Route::post('addPracticeQuestionType', [PracticeQuestionController::class, 'addPracticeQuestionType'])->name('addPracticeQuestionType');
+    Route::get('getPracticeCategoryType', [PracticeQuestionController::class, 'getPracticeCategoryType'])->name('getPracticeCategoryType');
+    Route::get('getPracticeQuestionType', [PracticeQuestionController::class, 'getPracticeQuestionType'])->name('getPracticeQuestionType');
+
 
     Route::post('getSectionQuestions', [PracticeQuestionController::class, 'getSectionQuestions'])->name('getSectionQuestions');
 

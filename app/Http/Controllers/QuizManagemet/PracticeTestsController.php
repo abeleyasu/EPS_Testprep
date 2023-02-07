@@ -125,7 +125,7 @@ class PracticeTestsController extends Controller
      */
     public function edit($id)
     {
-		$practicetests = PracticeTest::find($id);
+        $practicetests = PracticeTest::find($id);
 		$tests = PracticeTest::get();
         $p_test_section = PracticeTestSection::find($id);
         if(!empty($p_test_section)) {
@@ -133,7 +133,7 @@ class PracticeTestsController extends Controller
         } else {
             $testQuestions = null;
         }
-        $testsections = PracticeTestSection::orderBy('section_order')->where('testid', $id)->get();
+        $testsections = PracticeTestSection::where('testid', $id)->orderBy('section_order')->get();
 
         $getQuestionTypes = QuestionType::get();
         $getCategoryTypes = PracticeCategoryType::get();
