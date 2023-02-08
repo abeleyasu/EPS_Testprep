@@ -145,30 +145,21 @@ class PracticeQuestionController extends Controller
         } else{
 			$question->tags = $request->tags;
         }
-		// $question->question_type_id = json_encode($request->get_question_type_values);
-		// $question->category_type = json_encode($request->get_category_type_values);
 
-		if(is_int($request->get_category_type_values[0])){
-			$question->category_type = json_encode($request->get_category_type_values);
-		} 
-		else{
-			$practicecategorytype = new PracticeCategoryType();
-			$practicecategorytype->category_type_title = $request->get_category_type_values[0];
-			$practicecategorytype->save();
-			$practice_category_id = PracticeCategoryType::where('category_type_title',$request->get_category_type_values[0])->get('id');
-			$question->category_type = $practice_category_id[0]['id'];
+		$cat_array = $request->get_category_type_values;
+		foreach ($cat_array as $key => $value) {
+			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
+			$cat_array[$key] = $practice_category_id->id;
 		}
-
-		if(is_int($request->get_question_type_values[0])){
-			$question->question_type_id = json_encode($request->get_question_type_values);
+		
+		$qt_array = $request->get_question_type_values;
+		foreach ($qt_array as $key => $value) {
+			$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
+			$qt_array[$key] = $practice_question_id->id;
 		}
-		else{
-			$practicequestiontype = new QuestionType();
-			$practicequestiontype->question_type_title = $request->get_question_type_values[0];
-			$practicequestiontype->save();
-			$practice_question_id = QuestionType::where('question_type_title',$request->get_question_type_values[0])->get('id');
-			$question->question_type_id = $practice_question_id[0]['id'];
-		}
+		
+		$question->category_type = json_encode($cat_array);
+		$question->question_type_id = json_encode($qt_array);
 
 		$question->save(); 
 		return $question->id;

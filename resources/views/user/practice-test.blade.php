@@ -537,6 +537,20 @@
             
             jQuery(".submit_section_btn").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
+                if($(".flag").is(':checked'))
+                {
+                    selected_flag_details[get_question_id] = 'yes';
+                } else{
+                    selected_flag_details[get_question_id] = 'no';
+                }
+
+                if($(".guess").is(':checked'))
+                {
+                    selected_gusess_details[get_question_id] = 'yes';
+                } else{
+                    selected_gusess_details[get_question_id] = 'no';
+                }
+                
                 var get_section_id = jQuery('#section_id').val();
                 var get_question_type = jQuery('#get_question_type').val();
                 var get_practice_id = jQuery(this).attr('data-practice_test_id');

@@ -260,6 +260,21 @@ ul.answerOptionLsit li label input{
     position: relative;
     top: 6px;
 }
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    border: none !important;
+    background-color: #e5e5e5 !important;
+    color: #000 !important;
+    font-weight: 400 !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+    color: #000 !important;
+    border-right: none !important;
+    padding: 0 7px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+    padding-left: 4px;
+    padding-right: 9px;
+}
 </style>
 @endsection
 @section('admin-content')
@@ -1059,13 +1074,15 @@ ul.answerOptionLsit li label input{
         $(`#search-input_0`).select2({
             dropdownParent: $('#questionMultiModal'),
             tags : true,
-            placeholder : "Select Question type"
+            placeholder : "Select Question type",
+            maximumSelectionLength: 1
         });
 
         $(`#category_type_0`).select2({
             dropdownParent: $('#questionMultiModal'),
             tags: true,
             placeholder : "Select Category type",
+            maximumSelectionLength: 1
         });
 
         $(`#passage_number`).select2({

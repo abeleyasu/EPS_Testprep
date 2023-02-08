@@ -16,27 +16,29 @@
                                 <br />
                                 {{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }}
                             </h1>
-                            <div class="d-flex align-items-center">
-                                <div class="w-75">
-                                    <h2 class="fs-base lh-base fw-medium mb-0">
+                            <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
+                                <div class="" style="max-width: 75%">
+                                    <h2 class="fs-base lh-base fw-medium mb-0 description-test-review">
                                         {!! isset($test_details->description) ? $test_details->description : '' !!} 
                                     </h2>
                                 </div>
-                                <p class="w-25 text-center">
-                                    {{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)) : '' }}
-                                </p>
+                                <div>
+                                    <p class="ms-5 d-flex align-items-center mb-0 w-100">{{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)) : '' }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="content content-full">
                         <nav class="flex-shrink-0 mt-3 mt-sm-0 ms-sm-3" aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-alt">
-                                <li class="breadcrumb-item" aria-current="page">
-                                    <a class="link-fx" href="{{ url('user/practice-test-sections/'.$test_details->id) }}">College Prep System {{ isset($test_details->format) ? $test_details->format : '' }} {{ isset($test_details->title) ? $test_details->title : '' }} {{ isset($test_details->id) ? '#'. $test_details->id : '' }}</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a class="link-fx" href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }} {{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)). ' Review Summary' : '' }}</a>
-                                </li>
+                                @if(isset($test_details) && !empty($test_details))
+                                    <li class="breadcrumb-item" aria-current="page">
+                                        <a class="link-fx" href="{{ url('user/practice-test-sections/'.$test_details->id) }}">College Prep System {{ isset($test_details->format) ? $test_details->format : '' }} {{ isset($test_details->title) ? $test_details->title : '' }} {{ isset($test_details->id) ? '#'. $test_details->id : '' }}</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a class="link-fx" href="javascript:void(0)">{{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }} {{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)). ' Review Summary' : '' }}</a>
+                                    </li>
+                                @endif    
                                 {{-- <li class="breadcrumb-item" aria-current="page">
                                     ACT Math Review (Form 1576C / Z04)
                                 </li> --}}
@@ -244,7 +246,7 @@
                                             if(is_checked) {
                                                 if(incorrect_answer == 0){
                                                     $('.correct-answers').parents('.hide-correct-answers').hide();
-                                                    $('#incorrect-message').text("Incorrect Question Not Found!");
+                                                    $('#incorrect-message').text("Incorrect Question Not Found !");
                                                 } else {
                                                     $('.correct-answers').parents('.hide-correct-answers').hide();
                                                 }
@@ -952,6 +954,17 @@
         top: -20px;
         left: 31px;
         font-size: 14px;
+    }
+    .description-test-review p:nth-child(2){
+        display: none;
+    }
+    .description-test-review p{
+        margin-bottom: 0;
+        overflow-wrap: break-word;
+        max-width: 100%
+    }
+    .description-test-review{
+        max-width: 950px;
     }
    
 </style>

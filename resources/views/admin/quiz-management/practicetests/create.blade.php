@@ -356,6 +356,24 @@
         #sectionModal .select2-container--default{
             width: 100% !important;
         }
+        .select2-container--default .select2-selection--multiple{
+            border: 1px solid #dfe3ea;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice{
+            border: none !important;
+            background-color: #e5e5e5 !important;
+            color: #000 !important;
+            font-weight: 400 !important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+            color: #000 !important;
+            border-right: none !important;
+            padding: 0 7px;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+            padding-left: 4px;
+            padding-right: 9px;
+        }
     </style>
 @endsection
 
@@ -519,7 +537,7 @@
                         <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
                                 {{-- start  --}}
-                                <div class="col-md-5 mb-2 me-2">
+                                <div class="col-md-5 mb-2 me-2 category-custom">
                                     <label for="category_type" class="form-label">Category Type</label>
                                     <select class="js-select2 select categoryType" id="category_type_0" name="category_type" onchange="insertCategoryType(this)" multiple>
                                         @foreach ($getCategoryTypes as $categoryType)
@@ -842,11 +860,8 @@
                 key = parseInt(key);
 
             let category_type = $(`#category_type_${key - 1}`).val();
-         
-
             let question_type = $(`#search-input_${key - 1}`).val();
           
-
             if(category_type == '') {
                 toastr.error('Please select a category type!');
                 return false;
