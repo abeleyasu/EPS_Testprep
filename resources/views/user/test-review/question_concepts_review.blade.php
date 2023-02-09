@@ -235,8 +235,12 @@
                                             jQuery(".cat_type_desc_btn").click(function(){
                                                 var get_question_desc = jQuery(this).data('question_desc');
                                                 var get_question_title = jQuery(this).data('question_title');
+                                                var get_question_lesson = jQuery(this).data('question_lesson');
+                                                var get_question_strategies = jQuery(this).data('question_strategies');
                                                 jQuery('.set_question_type_title').html(get_question_title);
                                                 jQuery('.set_question_type_desc').html(get_question_desc);
+                                                jQuery('.set_question_type_lesson').html(get_question_lesson);
+                                                jQuery('.set_question_type_strategies').html(get_question_strategies);
                                             });
                                         });
 
@@ -628,9 +632,7 @@
                                                     @foreach($store_all_data as $get_question_type => $single_question_data)
                                                         <?php
                                                             $test = $count++;
-                                                            $store_total_wrong_answer = 0;
-                                                            
-                                                        
+                                                            $store_total_wrong_answer = 0;   
                                                             foreach($single_question_data as $question_type_val => $single_question_details_item)
                                                             {
                                                                 $store_correct_answer = 0;
@@ -751,6 +753,8 @@
                                                                                     <button type="button" data-bs-toggle="modal" 
                                                                                     data-question_desc="<?php echo $single_question_details_item[0]['question_desc'] ?>"
                                                                                     data-question_title="<?php echo $single_question_details_item[0]['question_type_title'] ?>"
+                                                                                    data-question_lesson="<?php echo $single_question_details_item[0]['question_type_lesson'] ?>"
+                                                                                    data-question_strategies="<?php echo $single_question_details_item[0]['question_type_strategies'] ?>"
                                                                                     data-bs-target="#modal-block-large-cg1ct1_<?php echo $new_test; ?>" class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{$question_type_val}}</button>
                                                             
                                                                                     <!-- MODAL -->
@@ -777,6 +781,34 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
+                                                                                                        {{-- start  --}}
+                                                                                                        <div class="row items-push">
+                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                <div class="block-header block-header-default">
+                                                                                                                    <h3 class="block-title">Lesson</h3>
+                                                                                                                    <div class="block-options">
+                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="block-content">
+                                                                                                                    <p class="set_question_type_lesson">words</p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="row items-push">
+                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                <div class="block-header block-header-default">
+                                                                                                                    <h3 class="block-title">Strategies</h3>
+                                                                                                                    <div class="block-options">
+                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="block-content">
+                                                                                                                    <p class="set_question_type_strategies">words</p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        {{-- end  --}}
                                                                                                     </div>
                                                                     
                                                                                                     <div class="block-content block-content-full text-end bg-body">
@@ -826,7 +858,6 @@
                                             </thead>
                                             
                                             <tbody class="fs-sm">
-                                                
                                             <?php $modelcount = 0; ?>
                                                 <!-- Answer Type 1 -->
                                                 @if(isset($store_question_type_data) && !empty($store_question_type_data))
@@ -868,11 +899,11 @@
                                                     </td>
                                                     <td class="fw-semibold fs-sm">                
                                                         <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
- ?>" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">{{$get_question_type}}</button>
+                                                         ?>" class="btn block-header-default text-white fs-xs fw-semibold me-1 mb-3">{{$get_question_type}}</button>
                                     
                                                         <div class="modal" id="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
- ?>" tabindex="-1" aria-labelledby="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
- ?>" style="display: none;" aria-hidden="true">
+                                                          ?>" tabindex="-1" aria-labelledby="modal-block-large-ag<?php $new =  strtolower(str_replace(' ', '', $get_question_type)); echo preg_replace("/[^a-zA-Z0-9?]+/", "", strtolower($new));
+                                                           ?>" style="display: none;" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="block block-rounded">
@@ -888,6 +919,26 @@
                                                                                 <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
                                                                                     <div class="block-content">
                                                                                     <?php echo $single_question_data[0]['question_desc']; ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                <div class="block-header block-header-default" role="tab" id="faq2_h1">
+                                                                                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq2" href="#faq2_q1" aria-expanded="true" aria-controls="faq2_q1">Lesson</a>
+                                                                                </div>
+                                                                                <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
+                                                                                    <div class="block-content">
+                                                                                    <?php echo $single_question_data[0]['question_type_lesson']; ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                <div class="block-header block-header-default" role="tab" id="faq2_h1">
+                                                                                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq2" href="#faq2_q1" aria-expanded="true" aria-controls="faq2_q1">Strategies</a>
+                                                                                </div>
+                                                                                <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
+                                                                                    <div class="block-content">
+                                                                                    <?php echo $single_question_data[0]['question_type_strategies']; ?>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

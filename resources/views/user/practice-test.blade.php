@@ -51,8 +51,11 @@
         <div class="content content-boxed py-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb breadcrumb-alt">
-                    <li class="breadcrumb-item">
-                        <a class="link-fx text-dark" href="be_pages_elearning_courses.html">Practice Tests</a>
+                    {{-- <li class="breadcrumb-item">
+                        <a class="link-fx text-dark" href="{{ url('user/practice-test-sections/'.$section_id) }}">Practice Tests</a>
+                    </li> --}}
+                    <li class="breadcrumb-item" aria-current="page">
+                        <a class="link-fx" href="{{ url('user/practice-test-sections/'.$section_id) }}">College Prep System {{ isset($testSection[0]->format) ? $testSection[0]->format : '' }} {{ isset($testSection[0]->title) ? $testSection[0]->title : '' }} {{ isset($testSection[0]->id) ? '#'. $testSection[0]->id : '' }}</a>
                     </li>
                     <li class="breadcrumb-item" aria-current="page">
                         <a class="link-fx" href="">College Prep System SAT Practice Test #1</a>
@@ -62,7 +65,7 @@
         </div>
     </div>
 
-    <div class="bg-body-extra-light">
+    {{-- <div class="bg-body-extra-light">
         <div class="content content-boxed py-3">
             <div class="row">
                 <div class="col-xl-4">
@@ -73,7 +76,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <input type="hidden" id="section_id" value="{{$section_id}}">
     <input type="hidden" id="get_offset" value="{{$set_offset}}">
     <input type="hidden" id="get_question_type" value="{{$question_type}}">
@@ -336,8 +339,6 @@
                     success: function(result){
                         
                 }});
-
-                
             });
 
             // jQuery(".guess").click(function(){
@@ -537,6 +538,11 @@
             
             jQuery(".submit_section_btn").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
+
+                if(jQuery('.next').prop('disabled') == false){
+                    window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
+                }
+
                 if($(".flag").is(':checked'))
                 {
                     selected_flag_details[get_question_id] = 'yes';
@@ -582,12 +588,35 @@
                     selected_answer[get_question_id] = '-';
                 }
 
+
+                let flag_detail = [];
                 selected_flag_details = selected_flag_details.filter(function( element, key ) {
                     return element !== "undefined";
                 });
+                //start
+                for (let index = 0; index < question_ids.length; index++) {
+                    if(selected_flag_details.hasOwnProperty(index)) {
+                        flag_detail[question_ids[index]] = selected_flag_details[index];
+                    } else {
+                        flag_detail[question_ids[index]] = 'no';
+                    }
+                }
+                //end
+                let guess_detail = [];
                 selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
                     return element !== "undefined";
                 });
+                //start
+                for (let index = 0; index < question_ids.length; index++) {
+                    if(selected_gusess_details.hasOwnProperty(index)) {
+                        guess_detail[question_ids[index]] = selected_gusess_details[index];
+                    } else {
+                        guess_detail[question_ids[index]] = 'no';
+                    }
+                }
+                //end
+
+                let answer_details = [];
 
                 Array.prototype.associate = function (keys) {
                     var result = {};
@@ -599,9 +628,21 @@
                     return result;
                 };
 
-                let flag_details = selected_flag_details.associate(question_ids);
-                let gusess_details = selected_gusess_details.associate(question_ids);
-              
+                selected_answer = selected_answer.filter(function( element, key ) {
+                    return element !== "undefined";
+                });
+
+                for (let index = 0; index < question_ids.length; index++) {
+                    if(selected_answer.hasOwnProperty(index)) {
+                        answer_details[question_ids[index]] = selected_answer[index];
+                    } else {
+                        answer_details[question_ids[index]] = '-';
+                    }
+                }
+
+                // let flag_details = selected_flag_details.associate(question_ids);
+                // let gusess_details = selected_gusess_details.associate(question_ids);
+
                 $.ajaxSetup({
                   headers: {
                       'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -612,9 +653,9 @@
                     url: "{{ url('/user/set_user_question_answer/post') }}",
                     method: 'post',
                     data: {
-                        selected_answer:selected_answer,
-                        selected_gusess_details:gusess_details,
-                        selected_flag_details:flag_details,
+                        selected_answer:answer_details,
+                        selected_gusess_details:guess_detail,
+                        selected_flag_details:flag_detail,
                         get_section_id:get_section_id,
                         get_practice_id:get_practice_id,
                         get_question_type:get_question_type
@@ -731,7 +772,6 @@
                                 }
                                 
                            }
-                            
                         });
 
                         set_questions_options += '</div>';

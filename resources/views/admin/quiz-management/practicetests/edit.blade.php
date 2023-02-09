@@ -416,7 +416,7 @@ ul.answerOptionLsit li label input{
 							<i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question
 						</button>
 					</div>-->
-                    @if(isset($testQuestions) && !empty($testQuestions))
+                    {{-- @if(isset($testQuestions) && !empty($testQuestions))
 					<div class="col-md-6">
 						<ul class="list-group">
                         @foreach($testQuestions as $key => $question)
@@ -424,7 +424,7 @@ ul.answerOptionLsit li label input{
 						@endforeach
 						</ul>
 					</div>
-                        @endif
+                    @endif --}}
                 </div>
                 <div style="overflow:auto;" id="nextprevious">
                     <div style="float:right;"> <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button> </div>

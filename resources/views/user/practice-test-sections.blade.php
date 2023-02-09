@@ -53,9 +53,9 @@
                       This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
                     
                     </h2>
-                    <h6 class="fs-6 mb-0 test-description text-muted mt-2">
+                    {{-- <h6 class="fs-6 mb-0 test-description text-muted mt-2">
                       {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
-                    </h6>
+                    </h6> --}}
                   </div>
                 @if($check_test_completed == 'yes')
                   @if (isset($testSections[0]) && !empty($testSections[0]))
@@ -119,7 +119,12 @@
                                                               would like to have multiple events to the left or to the right section)
           -->
 
-          
+        {{-- start  --}}
+          <h6 class="fs-6 mb-4 p-3 test-description text-muted mt-2">
+              {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
+          </h6>
+        {{-- end  --}}
+
           @if(isset($testSections) && !$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
@@ -257,6 +262,10 @@
   .test-description p{
     margin-bottom: 0;
     font-size: 14px
+  }
+  .test-description{
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgb(214 219 226 / 50%), 0 1px 2px rgb(214 219 226 / 50%);
   }
 </style>
 @endsection
