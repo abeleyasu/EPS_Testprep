@@ -237,10 +237,14 @@
                                                 var get_question_title = jQuery(this).data('question_title');
                                                 var get_question_lesson = jQuery(this).data('question_lesson');
                                                 var get_question_strategies = jQuery(this).data('question_strategies');
+                                                var get_question_identification_methods = jQuery(this).data('question_identification_methods');
+                                                var get_question_identification_activity = jQuery(this).data('question_identification_activity');
                                                 jQuery('.set_question_type_title').html(get_question_title);
                                                 jQuery('.set_question_type_desc').html(get_question_desc);
                                                 jQuery('.set_question_type_lesson').html(get_question_lesson);
                                                 jQuery('.set_question_type_strategies').html(get_question_strategies);
+                                                jQuery('.set_question_type_identification_methods').html(get_question_identification_methods);
+                                                jQuery('.set_question_type_identification_activity').html(get_question_identification_activity);
                                             });
                                         });
 
@@ -755,6 +759,8 @@
                                                                                     data-question_title="<?php echo $single_question_details_item[0]['question_type_title'] ?>"
                                                                                     data-question_lesson="<?php echo $single_question_details_item[0]['question_type_lesson'] ?>"
                                                                                     data-question_strategies="<?php echo $single_question_details_item[0]['question_type_strategies'] ?>"
+                                                                                    data-question_identification_methods="<?php echo $single_question_details_item[0]['question_type_identification_methods'] ?>"
+                                                                                    data-question_identification_activity="<?php echo $single_question_details_item[0]['question_type_identification_activity'] ?>"
                                                                                     data-bs-target="#modal-block-large-cg1ct1_<?php echo $new_test; ?>" class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{$question_type_val}}</button>
                                                             
                                                                                     <!-- MODAL -->
@@ -805,6 +811,32 @@
                                                                                                                 </div>
                                                                                                                 <div class="block-content">
                                                                                                                     <p class="set_question_type_strategies">words</p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="row items-push">
+                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                <div class="block-header block-header-default">
+                                                                                                                    <h3 class="block-title">Identification Methods</h3>
+                                                                                                                    <div class="block-options">
+                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="block-content">
+                                                                                                                    <p class="set_question_type_identification_methods">words</p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="row items-push">
+                                                                                                            <div id="my-block" class="block block-rounded block-bordered p-0">
+                                                                                                                <div class="block-header block-header-default">
+                                                                                                                    <h3 class="block-title">Identification Activity</h3>
+                                                                                                                    <div class="block-options">
+                                                                                                                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="block-content">
+                                                                                                                    <p class="set_question_type_identification_activity">words</p>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
@@ -939,6 +971,26 @@
                                                                                 <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
                                                                                     <div class="block-content">
                                                                                     <?php echo $single_question_data[0]['question_type_strategies']; ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                <div class="block-header block-header-default" role="tab" id="faq2_h1">
+                                                                                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq2" href="#faq2_q1" aria-expanded="true" aria-controls="faq2_q1">Identification Methods</a>
+                                                                                </div>
+                                                                                <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
+                                                                                    <div class="block-content">
+                                                                                    <?php echo $single_question_data[0]['question_type_identification_methods']; ?>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                                                                <div class="block-header block-header-default" role="tab" id="faq2_h1">
+                                                                                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq2" href="#faq2_q1" aria-expanded="true" aria-controls="faq2_q1">Identification Activity</a>
+                                                                                </div>
+                                                                                <div id="faq2_q1" class="collapse show" role="tabpanel" aria-labelledby="faq2_h1" data-bs-parent="#faq2">
+                                                                                    <div class="block-content">
+                                                                                    <?php echo $single_question_data[0]['question_type_identification_activity']; ?>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
