@@ -262,7 +262,7 @@
   .test-description p{
     margin-bottom: 0;
     overflow-wrap: break-word;
-    max-width: 100%;
+    max-width: 1080px;
     overflow: auto;
     max-height: 500px;
     display: grid;
