@@ -361,17 +361,19 @@ class TestPrepController extends Controller
         $count_right_answer = 0;
         $count_total_question = 0;
         foreach($store_sections_details as $store_sections_detail){
-            if($store_sections_detail['user_selected_answer'] == $store_sections_detail['get_question_details'][0]->question_answer){
-                $count_right_answer ++;
-                $count_total_question ++;
-            } else {
-                $count_total_question ++;
+            if(isset($store_sections_detail['user_selected_answer']) && !empty($store_sections_detail['user_selected_answer']) && isset($store_sections_detail['get_question_details'][0]->question_answer) && !empty($store_sections_detail['get_question_details'][0]->question_answer)){
+                if($store_sections_detail['user_selected_answer'] == $store_sections_detail['get_question_details'][0]->question_answer){
+                    $count_right_answer ++;
+                    $count_total_question ++;
+                } else {
+                    $count_total_question ++;
+                }
             }
         }
 
-        $taken_date = UserAnswers::where('user_id',Auth::id())->where('section_id',$test_details->id)->get();
+        $test_section = PracticeTestSection::where('testid', $test_details->id)->where('id',$id)->get('practice_test_type');
 
-        return view('user.test-review.question_concepts_review' ,  ['test_details' => $test_details, 'section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all]);
+        return view('user.test-review.question_concepts_review' ,  ['test_details' => $test_details, 'section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all , 'right_answers' => $count_right_answer , 'total_questions' => $count_total_question , 'test_section' => $test_section]);
     }
 
     public function set_answers(Request $request)

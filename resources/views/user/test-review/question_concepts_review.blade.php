@@ -18,7 +18,7 @@
                             </h1>
                             <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
                                 <div class="" style="max-width: 75%">
-                                    <h2 class="fs-base lh-base fw-medium mb-0 description-test-review">
+                                    <h2 class="fs-base lh-base fw-medium mb-0 description-test-review text-muted">
                                         {!! isset($test_details->description) ? $test_details->description : '' !!} 
                                     </h2>
                                 </div>
@@ -114,13 +114,12 @@
                                                 <th style="width: 15%;"># Correct</th>
                                                 <th style="width: 14%;">Scaled Score (1-36)</th> 
                                                 <th style="width: 35%;">Date Taken</th> 
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Math</td>
-                                                <td>45/60</td>
+                                                <td>{{$test_section[0]['practice_test_type']}}</td>
+                                                <td>{{$right_answers}}/{{$total_questions}}</td>
                                                 <td>28</td>
                                                 <td>1/2/2023</td>
                                             </tr>
@@ -1064,9 +1063,11 @@
     .description-test-review p{
         margin-bottom: 0;
         overflow-wrap: break-word;
-        max-width: 1080px;
+        max-width: 100%;
         overflow: auto;
         max-height: 500px;
+        display: grid;
+
     }
     .description-test-review{
         max-width: 950px;

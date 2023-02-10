@@ -261,10 +261,11 @@
   }
   .test-description p{
     margin-bottom: 0;
-    font-size: 14px;
-    max-width: 1080px;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    overflow: auto;
     max-height: 500px;
-    overflow:auto;
+    display: grid;
   }
   /* .test-description{
     background-color: #fff;
