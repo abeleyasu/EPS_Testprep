@@ -119,11 +119,11 @@
                                                               would like to have multiple events to the left or to the right section)
           -->
 
-        {{-- start  --}}
-          <h6 class="fs-6 mb-4 p-3 test-description text-muted mt-2">
+        {{-- start Description  --}}
+          <h6 class="fs-6 mb-3 p-2 test-description text-muted mt-2">
               {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
           </h6>
-        {{-- end  --}}
+        {{-- end Description --}}
 
           @if(isset($testSections) && !$testSections == 0)
           <ul class="timeline timeline-alt" style='padding: 0'>
@@ -261,11 +261,14 @@
   }
   .test-description p{
     margin-bottom: 0;
-    font-size: 14px
+    font-size: 14px;
+    max-width: 1080px;
+    max-height: 500px;
+    overflow:auto;
   }
-  .test-description{
+  /* .test-description{
     background-color: #fff;
     box-shadow: 0 1px 2px rgb(214 219 226 / 50%), 0 1px 2px rgb(214 219 226 / 50%);
-  }
+  } */
 </style>
 @endsection

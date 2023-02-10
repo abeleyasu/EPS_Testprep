@@ -1064,7 +1064,9 @@
     .description-test-review p{
         margin-bottom: 0;
         overflow-wrap: break-word;
-        max-width: 100%
+        max-width: 1080px;
+        overflow: auto;
+        max-height: 500px;
     }
     .description-test-review{
         max-width: 950px;
