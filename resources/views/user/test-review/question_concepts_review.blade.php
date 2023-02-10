@@ -1057,10 +1057,19 @@
         left: 31px;
         font-size: 14px;
     }
-    .description-test-review p:nth-child(2){
+    /* .description-test-review p:nth-child(2){
         display: none;
-    }
+    } */
     .description-test-review p{
+        margin-bottom: 0;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        overflow: auto;
+        max-height: 500px;
+        display: grid;
+
+    }
+    .description-test-review p img{
         margin-bottom: 0;
         overflow-wrap: break-word;
         max-width: 100%;

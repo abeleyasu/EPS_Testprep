@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// The toolbar groups arrangement, optimized for two toolbar rows.
 	
-
+	config.enterMode = CKEDITOR.ENTER_BR ;
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'ckeditor_wiris';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'justify';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'font';
