@@ -1069,15 +1069,6 @@
         display: grid;
 
     }
-    .description-test-review p img{
-        margin-bottom: 0;
-        overflow-wrap: break-word;
-        max-width: 100%;
-        overflow: auto;
-        max-height: 500px;
-        display: grid;
-
-    }
     .description-test-review{
         max-width: 950px;
     }
