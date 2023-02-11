@@ -260,13 +260,17 @@
     display: table-row-group;
   }
   .test-description p{
-    margin-bottom: 0;
+    /* margin-bottom: 0;
     overflow-wrap: break-word;
     max-width: 1080px;
     overflow: auto;
     max-height: 500px;
-    display: grid;
+    display: grid; */
+    width: 100%;
+        height: auto;
+        overflow: hidden;
   }
+ 
   /* .test-description{
     background-color: #fff;
     box-shadow: 0 1px 2px rgb(214 219 226 / 50%), 0 1px 2px rgb(214 219 226 / 50%);
