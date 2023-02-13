@@ -118,7 +118,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{$test_section[0]['practice_test_type']}}</td>
+                                                <td>Section</td>
                                                 <td>{{$right_answers}}/{{$total_questions}}</td>
                                                 <td>28</td>
                                                 <td>1/2/2023</td>
@@ -244,6 +244,12 @@
                                                 jQuery('.set_question_type_strategies').html(get_question_strategies);
                                                 jQuery('.set_question_type_identification_methods').html(get_question_identification_methods);
                                                 jQuery('.set_question_type_identification_activity').html(get_question_identification_activity);
+                                            });
+                                            jQuery(".category_description").click(function(){
+                                                var get_category_title = jQuery(this).data('category_title');
+                                                var get_category_description = jQuery(this).data('category_description');
+                                                jQuery('.set_category_title').html(get_category_title);
+                                                jQuery('.set_category_description').html(get_category_description);
                                             });
                                         });
 
@@ -672,9 +678,11 @@
                                                                     <td class="text-center" style="width: 5%">
                                                                         <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                     </td>
+                                                                    @foreach($single_question_data as $question_type_val => $single_question_details_item)
                                                                     <td class="pl-4 text-start ">
                                                                         <button type="button" class="btn btn-danger fs-xs fw-semibold me-1 js-bs-tooltip-enabled" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="" data-bs-original-title="Category Type">CT</button>
-                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1" class="btn btn-dark fs-xs fw-semibold me-1">{{$get_question_type}}</button>
+                                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-ct1" data-category_description="<?php echo $single_question_details_item[0]['category_description']?>"
+                                                                            data-category_title="<?php echo $single_question_details_item[0]['category_title'] ?>" class="btn btn-dark fs-xs fw-semibold me-1 category_description">{{$get_question_type}}</button>
             
                                                                         <!-- MODAL -->
                                                                         <div class="modal" id="modal-block-large-ct1" tabindex="-1" aria-labelledby="modal-block-large-ct1" style="display: none;" aria-hidden="true">
@@ -682,7 +690,7 @@
                                                                                 <div class="modal-content">
                                                                                     <div class="block block-rounded">
                                                                                         <div class="block-header block-header-default">
-                                                                                            <h3 class="block-title">Arithmetic </h3>
+                                                                                            <h3 class="block-title set_category_title"></h3>
                                                                                         </div>
                                                                                         <div class="block-content">
                                                                                             <p class="fs-sm mb-0">
@@ -696,7 +704,7 @@
                                                                                                             <button type="button" class="btn-block-option" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="block-content">
+                                                                                                    <div class="block-content set_category_description">
                                                                                                         <p>other words</p>
                                                                                                     </div>
                                                                                                 </div>
@@ -710,18 +718,23 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                        @endforeach
                                                                         <!-- END MODAL -->
                                                                         @if(isset($percentage_arr_all) && !empty($percentage_arr_all))
                                                                             @foreach($percentage_arr_all as $cat_type => $percentage_arr)
                                                                                 @if($cat_type == $get_question_type)
-                                                                                    <div class="progress mt-2" style="background:#c4c5c7;height: 10px" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $percentage_arr['percentage'] }}">
-                                                                                        <div class="progress-bar bg-info" style="width: {{ $percentage_arr['percentage'] }}"
-                                                                                            role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                                    @if(isset($percentage_arr['percentage']) && !empty($percentage_arr['percentage']))
+                                                                                        <div class="progress mt-2" style="background:#c4c5c7;height: 10px" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $percentage_arr['percentage'] }}">
+                                                                                            <div class="progress-bar bg-info" style="width: {{ $percentage_arr['percentage'] }}"
+                                                                                                role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                    <div class="text-danger text-center fw-bolder mt-1 incorrect">
-                                                                                        {{ $percentage_arr['percentage_label'] }}
-                                                                                    </div>
+                                                                                    @endif
+                                                                                    @if(isset($percentage_arr['percentage_label']) && !empty($percentage_arr['percentage_label']))
+                                                                                        <div class="text-danger text-center fw-bolder mt-1 incorrect">
+                                                                                            {{ $percentage_arr['percentage_label'] }}
+                                                                                        </div>
+                                                                                    @endif    
                                                                                 @endif
                                                                             @endforeach
                                                                         @endif
@@ -1062,17 +1075,19 @@
     } */
     .description-test-review p{
         margin-bottom: 0;
-        overflow-wrap: break-word;
-        max-width: 100%;
+        /* overflow-wrap: break-word;
+        max-width: 1080px;
         overflow: auto;
         max-height: 500px;
-        display: grid;
+        display: grid; */
+        width: 100%;
+        height: auto;
+        overflow: hidden;
 
     }
     .description-test-review{
         max-width: 950px;
     }
-   
 </style>
 @endsection
 

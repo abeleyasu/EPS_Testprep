@@ -49,8 +49,8 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="w-75">
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                
-                      This test has {{$get_total_sections}} sections and {{$get_total_questions}} questions
+
+                      This test has {{$get_total_sections}} sections and {{$total_all_section_question}} questions
                     
                     </h2>
                     {{-- <h6 class="fs-6 mb-0 test-description text-muted mt-2">
@@ -260,13 +260,17 @@
     display: table-row-group;
   }
   .test-description p{
-    margin-bottom: 0;
+    /* margin-bottom: 0;
     overflow-wrap: break-word;
     max-width: 1080px;
     overflow: auto;
     max-height: 500px;
-    display: grid;
+    display: grid; */
+    width: 100%;
+        height: auto;
+        overflow: hidden;
   }
+ 
   /* .test-description{
     background-color: #fff;
     box-shadow: 0 1px 2px rgb(214 219 226 / 50%), 0 1px 2px rgb(214 219 226 / 50%);

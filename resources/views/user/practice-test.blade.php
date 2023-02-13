@@ -55,7 +55,8 @@
                         <a class="link-fx text-dark" href="{{ url('user/practice-test-sections/'.$section_id) }}">Practice Tests</a>
                     </li> --}}
                     <li class="breadcrumb-item" aria-current="page">
-                        <a class="link-fx" href="{{ url('user/practice-test-sections/'.$section_id) }}">College Prep System {{ isset($testSection[0]->format) ? $testSection[0]->format : '' }} {{ isset($testSection[0]->title) ? $testSection[0]->title : '' }} {{ isset($testSection[0]->id) ? '#'. $testSection[0]->id : '' }}</a>
+                        <a class="link-fx" href="{{ url('user/practice-test-sections/'.$testSection[0]->testid) }}">College Prep System</a>
+                        {{-- {{ isset($testSection[0]->section_title) ? $testSection[0]->section_title : '' }} {{ isset($testSection[0]->title) ? $testSection[0]->title : '' }} {{ isset($testSection[0]->id) ? '#'. $testSection[0]->id : '' }} --}}
                     </li>
                     <li class="breadcrumb-item" aria-current="page">
                         <a class="link-fx" href="">College Prep System SAT Practice Test #1</a>
@@ -535,14 +536,35 @@
                     });
                     
             }
+         
             
             jQuery(".submit_section_btn").click(function(){
-                var get_question_id = jQuery('.get_question_id').val();
 
                 if(jQuery('.next').prop('disabled') == false){
-                    window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
+                    swal({
+                            title: "Warning",
+                            text: "Are you sure you want to submit this test? Make sure you have answered every question using the Review button.",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            closeOnConfirm: true,
+                            closeOnCancel: true,
+                        },function (isConfirm){
+                            if (isConfirm) {   
+                                confirm();
+                            } 
+                        });  
+                } else {
+                    confirm();
                 }
 
+            });
+
+            function confirm(){
+
+                var get_question_id = jQuery('.get_question_id').val();
                 if($(".flag").is(':checked'))
                 {
                     selected_flag_details[get_question_id] = 'yes';
@@ -657,7 +679,7 @@
                         selected_gusess_details:guess_detail,
                         selected_flag_details:flag_detail,
                         get_section_id:get_section_id,
-                        get_practice_id:get_practice_id,
+                        get_practice_id:get_test_id,
                         get_question_type:get_question_type
                     },
                     success: function(result){
@@ -668,7 +690,8 @@
                         window.location.href = url;  
                     }
                 });
-            });
+            }
+
             function get_first_question(get_offset)
             {
                 $.ajaxSetup({
