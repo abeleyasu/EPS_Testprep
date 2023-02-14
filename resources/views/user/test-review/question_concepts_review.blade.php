@@ -1132,7 +1132,7 @@
     .description-test-review{
         max-width: 950px;
     }
-    .description-test h1 img{
+    .description-test h1 img, .description-test h2 img, .description-test h3 img, .description-test h4 img, .description-test h5 img, .description-test h6 p img, .description-test p img{
         display: block;
         margin-bottom: 4px;
     }

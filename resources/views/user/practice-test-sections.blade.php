@@ -270,8 +270,8 @@
         height: auto;
         overflow: hidden;
   }
-  .content-boxed h1 img{
-    display: block;
+  .content-boxed h1 img, .content-boxed h2 img, .content-boxed h3 img, .content-boxed h4 img, .content-boxed h5 img, .content-box p img{
+    display: block !important;
     margin-bottom: 4px;
   }
   .content-boxed h1 span{
@@ -283,6 +283,10 @@
   }
   .content-boxed h1{
     overflow: hidden;
+  }
+  .test-description p img {
+    display: block;
+    margin-bottom: 4px;
   }
 </style>
 @endsection
