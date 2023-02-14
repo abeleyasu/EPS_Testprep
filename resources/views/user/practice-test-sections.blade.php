@@ -259,34 +259,9 @@
   .js-table-sections-header .show tbody {
     display: table-row-group;
   }
-  .test-description p{
-    /* margin-bottom: 0;
-    overflow-wrap: break-word;
-    max-width: 1080px;
-    overflow: auto;
-    max-height: 500px;
-    display: grid; */
-    width: 100%;
-        height: auto;
-        overflow: hidden;
-  }
-  .content-boxed h1 img, .content-boxed h2 img, .content-boxed h3 img, .content-boxed h4 img, .content-boxed h5 img, .content-box p img{
-    display: block !important;
-    margin-bottom: 4px;
-  }
-  .content-boxed h1 span{
-    display: block;
-    margin-bottom: 4px;
-  }
   .content-boxed{
-    overflow-wrap: anywhere;
-  }
-  .content-boxed h1{
-    overflow: hidden;
-  }
-  .test-description p img {
-    display: block;
-    margin-bottom: 4px;
-  }
+    overflow: hidden !important;
+   }
+  
 </style>
 @endsection

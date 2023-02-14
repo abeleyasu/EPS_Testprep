@@ -1117,33 +1117,10 @@
     /* .description-test-review p:nth-child(2){
         display: none;
     } */
-    .description-test-review p{
-        margin-bottom: 0;
-        /* overflow-wrap: break-word;
-        max-width: 1080px;
-        overflow: auto;
-        max-height: 500px;
-        display: grid; */
-        width: 100%;
-        height: auto;
-        overflow: hidden;
-
-    }
-    .description-test-review{
-        max-width: 950px;
-    }
-    .description-test h1 img, .description-test h2 img, .description-test h3 img, .description-test h4 img, .description-test h5 img, .description-test h6 p img, .description-test p img{
-        display: block;
-        margin-bottom: 4px;
-    }
-    .description-test h1 span{
-        display: block;
-        margin-bottom: 4px;
-    }
-    .description-test h1{
-        overflow: hidden;
-        width: 1200px;
-    }
+   .content-full{
+    max-width:1195px !important;
+    overflow: hidden !important;
+   }
 </style>
 @endsection
 
