@@ -17,14 +17,14 @@
                                 {{ isset($test_details->format) ? $test_details->format .' Practice Test' : '' }}
                             </h1>
                             <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
-                                <div class="" style="max-width: 75%">
+                                <div class="description-test" style="max-width: 100%; display: block; overflow-wrap: anywhere">
                                     <h2 class="fs-base lh-base fw-medium mb-0 description-test-review text-muted">
                                         {!! isset($test_details->description) ? $test_details->description : '' !!} 
                                     </h2>
                                 </div>
-                                <div>
+                                {{-- <div>
                                     <p class="ms-5 d-flex align-items-center mb-0 w-100">{{ isset($test_details->created_at) ? ' - '. date('F Y', strtotime($test_details->created_at)) : '' }}</p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -118,11 +118,55 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Section</td>
+                                                <td>
+                                                    @if(isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
+                                                        @foreach ($user_selected_answers[0]['all_sections'] as $test_section)
+                                                            <li class="mt-3">{{$test_section->practice_test_type}}</li>
+                                                        @endforeach
+                                                    @endif
+                                                    @if(isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
+                                                        @foreach ($user_selected_answers[0]['sections'] as $test_section)
+                                                            <li>{{$test_section->practice_test_type}}</li>
+                                                        @endforeach  
+                                                    @endif
+                                                </td>
                                                 <td>{{$right_answers}}/{{$total_questions}}</td>
                                                 <td>28</td>
-                                                <td>1/2/2023</td>
-                                            </tr>
+                                                <td>
+                                                @if(isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))
+                                                    @foreach ($user_selected_answers[0]['date_taken'] as $test_date)
+                                                        <li>{{date('d-m-Y',strtotime($test_date->created_at))}}</li>
+                                                    @endforeach
+                                                @endif 
+                                                @if(isset($user_selected_answers[0]['taken_date']) && !empty($user_selected_answers[0]['taken_date']))
+                                                    @foreach ($user_selected_answers[0]['taken_date'] as $test_date)
+                                                        <li>{{date('d-m-Y',strtotime($test_date->created_at))}}</li>
+                                                    @endforeach
+                                                @endif 
+                                                </td>
+                                                {{-- <td>{{date('d-m-y',strtotime($user_selected_answers[0]['date_taken'][0]->created_at))}}</td>
+                                            </tr> --}}
+                                            {{-- @if ($user_selected_answers[0]['type'] == 'all')
+                                                @foreach ($user_selected_answers as $user_selected_answer)
+                                                    <tr>
+                                                        <td>{{$user_selected_answer['all_sections'][0]['practice_test_type']}}</td>
+                                                        <td>{{$right_answers}}/{{$total_questions}}</td>
+                                                        <td>28</td>
+                                                        <td>{{date('d-m-y',strtotime($user_selected_answer['date_taken'][0]->created_at))}}</td>
+                                                    </tr>  
+                                                @endforeach        
+                                            @endif
+                                            @if ($user_selected_answers[0]['type'] == 'single')
+                                                @foreach ($user_selected_answers as $user_selected_answer)
+                                                    <tr>
+                                                        <td>{{$user_selected_answer['sections'][0]['practice_test_type']}}</td>
+                                                        <td>{{$right_answers}}/{{$total_questions}}</td>
+                                                        <td>28</td>
+                                                        <td>{{date('d-m-y',strtotime($user_selected_answer['date_taken'][0]->created_at))}}</td>
+                                                    </tr>
+                                                    @break
+                                                @endforeach    
+                                            @endif --}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -1087,6 +1131,18 @@
     }
     .description-test-review{
         max-width: 950px;
+    }
+    .description-test h1 img{
+        display: block;
+        margin-bottom: 4px;
+    }
+    .description-test h1 span{
+        display: block;
+        margin-bottom: 4px;
+    }
+    .description-test h1{
+        overflow: hidden;
+        width: 1200px;
     }
 </style>
 @endsection

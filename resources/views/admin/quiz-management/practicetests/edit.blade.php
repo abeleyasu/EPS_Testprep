@@ -1063,6 +1063,9 @@ ul.answerOptionLsit li label input{
         }
 
     $(document).ready(function() {
+        $( '#questionMultiModal' ).modal( {
+                focus: false
+            } );
 
         $('input[name=tags]').tagify();
 

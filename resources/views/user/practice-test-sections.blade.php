@@ -270,10 +270,19 @@
         height: auto;
         overflow: hidden;
   }
- 
-  /* .test-description{
-    background-color: #fff;
-    box-shadow: 0 1px 2px rgb(214 219 226 / 50%), 0 1px 2px rgb(214 219 226 / 50%);
-  } */
+  .content-boxed h1 img{
+    display: block;
+    margin-bottom: 4px;
+  }
+  .content-boxed h1 span{
+    display: block;
+    margin-bottom: 4px;
+  }
+  .content-boxed{
+    overflow-wrap: anywhere;
+  }
+  .content-boxed h1{
+    overflow: hidden;
+  }
 </style>
 @endsection

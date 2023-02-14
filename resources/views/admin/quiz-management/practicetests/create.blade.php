@@ -947,6 +947,9 @@
         }
 
         $(document).ready(function() { 
+            $( '#questionMultiModal' ).modal( {
+                focus: false
+            } );
          
             $('input[name=tags]').tagify();
 
