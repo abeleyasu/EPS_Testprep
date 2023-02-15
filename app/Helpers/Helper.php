@@ -65,12 +65,14 @@ class Helper
     public static function getCategoryNameByID($id)
     {
         $category_info = DB::table('practice_category_types')->where('id',$id)->first();
-        return isset($category_info->category_type_title) ? $category_info->category_type_title : '-';
+        // return [isset($category_info->category_type_title) ? $category_info->category_type_title : '-' , isset($category_info->category_type_description) ? $category_info->category_type_description : '-'] ;
+        return $category_info;
     }
 
     public static function getQuestionNameByID($id)
     {
         $question_types = DB::table('question_types')->where('id',$id)->first();
-        return isset($question_types->question_type_title) ? $question_types->question_type_title : '-';
+        // return isset($question_types->question_type_title) ? $question_types->question_type_title : '-';
+        return $question_types;
     }
 }
