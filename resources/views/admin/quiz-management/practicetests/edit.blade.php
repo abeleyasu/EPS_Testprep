@@ -913,7 +913,6 @@ ul.answerOptionLsit li label input{
 @endsection
 
 @section('admin-script')
-
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
@@ -1394,26 +1393,6 @@ ul.answerOptionLsit li label input{
                 }
             });
 		});
-		/*$('.update_question').click(function() {
-			var id = $('.question_id').val();
-			var format = $('#format').val();
-			var practicetestid = $('#practicetestid').val();
-			var description = CKEDITOR.instances['js-ckeditor-que-desc'].getData();
-			$.ajax({
-                data:{
-					'id': id,
-					'format': format,
-					'practicetestid': practicetestid,
-					'description': description,
-					'_token': $('input[name="_token"]').val()
-				},
-                url: '{{route("updatePracticeQuestion")}}',
-                method: 'post',
-                success: (res) => {
-					alert('Question Updated');
-                }
-            });
-		});*/
 
 		$('.update_question_section').click(function() {
 
@@ -2128,7 +2107,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content)
             });
         
         } 
-    function getPassages(format){
+function getPassages(format){
     $.ajax({
         data:{
             'format': format,
@@ -2144,7 +2123,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content)
             });
             $('.addPassagesType').html(opt);
         }
-    });
+     });
 }  
 function multiChoice(arg){
     if(arg == 1){

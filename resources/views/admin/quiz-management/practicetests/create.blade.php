@@ -1336,8 +1336,7 @@
                     }
 
                 } else {
-                    answerType = $('#questionMultiModal ' + activeAnswerType + ' input[name="' + questionType +
-                        '"]').val();
+                    answerType = $('#questionMultiModal ' + activeAnswerType + ' input[name="' + questionType +'"]:checked').val();
                 }
 
                 /*answerContent = $('#questionMultiModal '+activeAnswerType+' input[name="answerContentOption[]"]').map(function(){return $(this).val();}).get();*/
