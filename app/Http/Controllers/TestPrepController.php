@@ -106,6 +106,7 @@ class TestPrepController extends Controller
                 ->join('practice_tests','practice_tests.id','=','practice_test_sections.testid')
                 ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type', 'practice_questions.tags as tags', 'practice_questions.answer as answer')
                 ->where('practice_tests.id',$test_id)
+                ->orderBy('practice_questions.question_order', 'ASC')
                 ->get();
 
                 $get_all_cat_type = DB::table('practice_category_types')->get();
@@ -200,6 +201,7 @@ class TestPrepController extends Controller
                 ->join('practice_test_sections','practice_test_sections.id','=','practice_questions.practice_test_sections_id')
                 ->select('practice_questions.id as test_question_id','practice_questions.question_type_id','practice_questions.category_type', 'practice_questions.tags as tags', 'practice_questions.answer as answer')
                 ->where('practice_test_sections.id',$id)
+                ->orderBy('practice_questions.question_order', 'ASC')
                 ->get();
 
                 $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->get();
@@ -304,16 +306,22 @@ class TestPrepController extends Controller
                         $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $get_single_section->id)->get();
                         if(isset($user_selected_answers[0]) && !empty($user_selected_answers[0]))
                         {
+                            $decoded_answers = [];
                             $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                            $question_order = PracticeQuestion::where('practice_test_sections_id',$get_single_section->id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
+                            foreach($question_order as $order) {
+                                $decoded_answers[$order] = $json_decoded_answers->{$order};
+                            }
                             $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
                             $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
                             
-                            foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
+                            foreach($decoded_answers as $question_id => $json_decoded_single_answers)
                             {
                                 $get_question_details = DB::table('practice_questions')
                                 ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
                                 ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id')
                                 ->where('practice_questions.id', $question_id)
+                                ->orderBy('practice_questions.question_order', 'ASC')
                                 ->get();
                                 $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'user_selected_guess' => $json_decoded_guess->$question_id,'user_selected_flag' => $json_decoded_flag->$question_id,'get_question_details' => $get_question_details , 'all_sections' => $get_all_section , 'date_taken' => $user_selected_answers , 'type' =>$_GET['type']); 
                             }
@@ -326,15 +334,21 @@ class TestPrepController extends Controller
                 $store_user_answers_details = array();
                 if(isset($user_selected_answers[0]) && !empty($user_selected_answers[0]))
                 {
+                    $decoded_answers = [];
                     $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
+                    $question_order = PracticeQuestion::where('practice_test_sections_id',$id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
+                    foreach($question_order as $order) {
+                        $decoded_answers[$order] = $json_decoded_answers->{$order};
+                    }
                     $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
                     $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
-                    foreach($json_decoded_answers as $question_id => $json_decoded_single_answers)
+                    foreach($decoded_answers as $question_id => $json_decoded_single_answers)
                     {
                         $get_question_details = DB::table('practice_questions')
                         ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
                         ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id')
                         ->where('practice_questions.id', $question_id)
+                        ->orderBy('practice_questions.question_order', 'ASC')
                         ->get();
                         $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers,'user_selected_guess' => (isset($json_decoded_guess) && !empty($json_decoded_guess)) ? $json_decoded_guess->$question_id : null,'user_selected_flag' => (isset($json_decoded_flag) && !empty($json_decoded_flag)) ? $json_decoded_flag->$question_id : null,'get_question_details' => $get_question_details , 'sections' => $test_section , 'date_taken' => $user_selected_answers , 'type' => $_GET['type']); 
                     }
@@ -383,7 +397,6 @@ class TestPrepController extends Controller
                 }
             }
         }
-
 
         return view('user.test-review.question_concepts_review' ,  ['test_details' => $test_details, 'section_id' => $id , 'user_selected_answers' => $store_sections_details ,'get_test_name' => $get_test_name ,'store_all_data'=>$store_all_data,'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all , 'right_answers' => $count_right_answer , 'total_questions' => $count_total_question]);
     }
