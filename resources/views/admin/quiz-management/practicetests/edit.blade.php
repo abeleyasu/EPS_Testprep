@@ -232,6 +232,9 @@ ul.answerOptionLsit li label input{
 #addNewTypes .select2-container--default{
     width: 300px !important;
 }
+#add_New_Types .select2-container--default{
+    width: 300px !important;
+}
 .passage-container .select2-container--default{
     width: 360px !important;
 }
@@ -275,6 +278,20 @@ ul.answerOptionLsit li label input{
     padding-left: 4px;
     padding-right: 9px;
 }
+.select2-container .select2-selection--multiple{
+    min-height: 38px !important;
+}
+.select2-container .select2-search--inline .select2-search__field {
+    margin-top: 7px !important;
+    height: 20px !important;
+    padding: 0 4px;
+}
+.select2-container--default .select2-selection--multiple{
+    border-color: #dfe3ea !important;
+}
+.add_question_type_select .select2-container,.category-custom .select2-container,.removeNewTypes .select2-container{
+    width: 300px !important;
+}
 </style>
 @endsection
 @section('admin-content')
@@ -302,11 +319,13 @@ ul.answerOptionLsit li label input{
                 <div class="all-steps" id="all-steps" style="display: none;"> <span class="step"></span> <span class="step"></span> <span class="step"></span> <span class="step"></span> </div>
                 <div class="tab">
                     <div class="row mb-4">
+                        <input type="hidden" value="{{ $practicetests->id}}" name="get_question_id"
+                                                        id="get_question_id">
 						<div class="col-md-12 mb-2">
 							<label class="form-label">Name:</label>
 							<input type="text" class="form-control test_title required" placeholder="Enter practice test name" name="title" value="{{$practicetests->title}}"/>
 						</div>
-						<div class="col-md-12">
+						<div class="col-md-12 ptype">
 							<label class="form-label">Test Type:</label>
 							<select id="format" name="format" class="form-control js-select2 select">
 								@foreach($testformats as $key=>$testformat)
@@ -395,7 +414,7 @@ ul.answerOptionLsit li label input{
 							@endforeach
 						</div>
 					</div>
-					<div class="mb-2 mb-4  partTestOrder" style="display:none;">
+					<div class="mb-2 mb-4  partTestOrder">
 
                         <button type="button"  data-id="{{ $testsection->id }}" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button>
                         <div class="part_order">
@@ -406,11 +425,46 @@ ul.answerOptionLsit li label input{
 					</div>
 					@endforeach                        
                     </div>
-                    <div class="col-md-12 col-xl-12 mb-4" style="display:none;">
+                    <div class="col-md-12 col-xl-12 mb-4">
                         <button type="button" data-id="0" class="btn w-25 btn-alt-success add_section_modal_btn">
                             <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Practice Test Section
                         </button>
                     </div>  
+                    <div class="modal fade" id="sectionModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Practice Test Section</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="mb-2">
+                                            <label class="form-label validError" style="font-size: 13px; color: red;"></label>
+                                        </div>
+                
+                                        <div class="mb-2">
+                                            <label class="form-label" style="font-size: 13px;">Practice Test Section Title:</label>
+                                            <input id="testSectiontitle" value="" name="testSectiontitle"
+                                                placeholder="Enter Practice Section Title" class="form-control">
+                                        </div>
+                
+                                        <div class="mb-2 col-12">
+                                            <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
+                                            <select id="testSectionType" name="testSectionType" class="form-control js-select2 select">
+                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="hidden" name="whichModel" value="section" class="whichModel">
+                                    <input type="hidden" name="currentModelId" value="0" id="currentModelId">
+                                    <button type="button" class="btn btn-primary save_section">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 					<!--<div class="col-md-12 col-xl-12 mb-4">
 						<button type="button" class="btn w-25 btn-alt-success add_question_modal_btn">
 							<i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question
@@ -517,6 +571,7 @@ ul.answerOptionLsit li label input{
 </div>
 <!-- Modal -->
 
+{{-- start update question modal  --}}
 <div class="modal fade" id="questionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -684,7 +739,7 @@ ul.answerOptionLsit li label input{
 </div>
 <!-- Modal -->
 
-<!-- start multiple question -->
+<!-- start add  multiple question -->
 
 <div class="modal fade" id="addQuestionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -709,7 +764,7 @@ ul.answerOptionLsit li label input{
                         
                     </div>
 
-                    <div class="mb-2">
+                    {{-- <div class="mb-2">
                         <label class="form-label" for="addTag">Question Tags</label>
                         <input type="text" maxlength="30"
                             id="addTag"
@@ -718,9 +773,13 @@ ul.answerOptionLsit li label input{
                         <div class="row items-push mt-2 add-tag-div">                                  
                            
                         </div>
+                    </div> --}}
+                    <div class="mb-2">
+                        <label class="form-label" for="tags">Question Tags</label>
+                        <input name="tags" id="questionTags" placeholder="add tags" class="form-control"/>
                     </div>
 
-                    <div class="mb-2 mb-4"> 
+                    {{-- <div class="mb-2 mb-4"> 
                         <label for="new_question_type_select">Question type:</label>
                         <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
                             <option value="">Select Question Type</option>
@@ -728,15 +787,52 @@ ul.answerOptionLsit li label input{
                             <option value="{{$singleQuestionTypes->id}}">{{$singleQuestionTypes->question_type_title}}</option>
                             @endforeach
                         </select>
+                    </div> --}}
+                    <div class="input-container" id="add_New_Types">
+                        <div class="d-flex input-field align-items-center">
+                            <div class="col-md-5 mb-2 me-2 category-custom">
+                                <label for="category_type" class="form-label">Category Type</label>
+                                <select class="js-select2 select categoryType" id="add_category_type_0" name="add_category_type" onchange="insertCategoryType(this)" multiple>
+                                    @foreach ($getCategoryTypes as $categoryType)
+                                        <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-2 col-md-5 add_question_type_select">
+                                <label for="search-input" class="form-label">Question Type</label>
+                                <select class="js-select2 select questionType" id="add_search-input_0" name="add_search-input" onchange="insertQuestionType(this)" multiple>
+                                    @foreach ($getQuestionTypes as $questionType)
+                                        <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 add-position">
+                                <button class="plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="mb-2">
+                    <div class="row passage-container">
+                        <div class="mb-2 col-md-6">
+                            <label for="passage_number" class="form-label">Passage No</label>
+                            <select class="js-select2 select addPassNumber" id="add_passage_number" name="passage_number">
+                                <option value="">Select Passage No</option>
+                                @for($i = 1; $i < 25; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="mb-2 col-md-6">
+                            <label class="form-label">Passages</label>
+                            <select name="addPassagesType" class="form-control addPassagesType js-select2 select"></select>
+                        </div>
+                    </div>
+                    {{-- <div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Passages:</label>
                         <select name="addPassagesType" class="form-control addPassagesType">
                             <option value="">Select Passages</option>
                             
                         </select>
-                    </div>
+                    </div> --}}
                     <input type="hidden" name="addPassages" class="addPassages">
                     <!--<div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Passages Description:</label>
@@ -749,7 +845,7 @@ ul.answerOptionLsit li label input{
                         </select>
                     </div>-->
                     
-                    <div class="mb-2">
+                    {{-- <div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Passage Number:</label>
                         <select class="addPassNumber">
                             <option value="">Select Passages Number</option>
@@ -757,7 +853,7 @@ ul.answerOptionLsit li label input{
                             <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         </select>
-                    </div>
+                    </div> --}}
                     <input type="hidden" name="selectedAnswerType" id="selectedAnswerType">
                     <div class="mb-2" id="addSelectedLayoutQuestion">
                        <div class="addchoiceOneInFour"><input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFour">
@@ -849,6 +945,8 @@ ul.answerOptionLsit li label input{
         </div>        
     </div>
 </div>
+{{-- end modal  --}}
+
 <div class="modal fade" id="dragModal"
 
      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -908,7 +1006,7 @@ ul.answerOptionLsit li label input{
             </div>
         </div>
     </div>
-</div>
+</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 
 @endsection
 
@@ -1056,16 +1154,81 @@ ul.answerOptionLsit li label input{
             }
         }
 
+        //new function for add category and question types
+        async function addNewType(data) {
+            let key = $(data).attr('data-id');
+                key = parseInt(key);
+                
+
+            let category_type = $(`#add_category_type_${key - 1}`).val();
+            let question_type = $(`#add_search-input_${key - 1}`).val();
+          
+            if(category_type == '') {
+                toastr.error('Please select a category type!');
+                return false;
+            }
+
+            if(question_type == '') {
+                toastr.error('Please select a question type!');
+                return false;
+            }
+
+            let html = ``;
+                html += `<div class="d-flex input-field align-items-center removeNewType">`;
+                html += `<div class="mb-2 col-md-5 me-2">`;                
+                html += `<select class="js-select2 select categoryType" id="add_category_type_${key}" name="category_type" onchange="insertCategoryType(this)" multiple>`;                              
+                html += await dropdown_lists(`/admin/getPracticeCategoryType`);                         
+                html += `</select>`;                
+                html += `</div>`;                
+                html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
+                html += `<select class="js-select2 select questionType" id="add_search-input_${key}" name="search-input" onchange="insertQuestionType(this)" multiple>`;                             
+                html += await dropdown_lists(`/admin/getPracticeQuestionType`);            
+                html += `</select>`;                
+                html += `</div>`; 
+                html += `<div class="col-md-2 add-minus-icon">`;                
+                html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
+                html += `</div>`;
+                html += `</div>`;         
+
+            $('#add_New_Types').append(html);
+
+            $(`#add_search-input_${key}`).select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                tags : true,
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
+            });
+
+            $(`#add_category_type_${key}`).select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                tags : true,
+                placeholder : "Select Category type",
+                maximumSelectionLength: 1
+            });
+            console.log("key",key);
+            $(data).attr('data-id', key + 1);
+        }
+
         function removeNewTypes(data) {
             $(data).parents('.removeNewTypes').remove();
             let count = $('.plus-button').attr('data-id');
             $('.plus-button').attr('data-id', count - 1);
         }
 
+        function removeNewType(data) {
+            $(data).parents('.removeNewType').remove();
+            let count = $('.plus-button').attr('data-id');
+            $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
+        }
+
     $(document).ready(function() {
         $( '#questionMultiModal' ).modal( {
                 focus: false
-            } );
+        } );
+
+        $( '#addQuestionMultiModal' ).modal( {
+            focus: false
+        } );
 
         $('input[name=tags]').tagify();
 
@@ -1101,6 +1264,31 @@ ul.answerOptionLsit li label input{
         $(`#testSectionType`).select2({
             dropdownParent: $('#sectionModal'),
             placeholder : "Select Section Type",
+        });
+
+        //new
+        $(`#add_category_type_0`).select2({
+            dropdownParent: $('#addQuestionMultiModal'),
+            tags: true,
+            placeholder : "Select Category type",
+            maximumSelectionLength: 1
+        });
+
+        $(`#add_search-input_0`).select2({
+            dropdownParent: $('#addQuestionMultiModal'),
+            tags: true,
+            placeholder : "Select Category type",
+            maximumSelectionLength: 1
+        });
+
+        $(`#add_passage_number`).select2({
+            dropdownParent: $('#addQuestionMultiModal'),
+            placeholder : "Select Passage No",
+        });
+
+        $(`.addPassagesType`).select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                placeholder : "Select Passages",
         });
     });
 
@@ -1547,6 +1735,7 @@ ul.answerOptionLsit li label input{
         });
 
         $(document).on('click','.add_question_modal_multi',function(){
+            clearModel();
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();
             var AnuserOpts = $('#sectionDisplay_'+dataId+' .firstRecord ul li span .selectedSecTxt').val();
@@ -1563,123 +1752,202 @@ ul.answerOptionLsit li label input{
             $('#addQuestionMultiModal').modal('show');
         });
 
-         $('.save_section').click(function() {
+        $('.save_section').click(function() {
 
+            var whichModel = $(this).parent().find('.whichModel').val();
+            $('.sectionTypesFull').show();
             var format = $('#format').val();
             var currentModelQueId = $('#addCurrentModelQueId').val();
+
+            var testSectionTitle = $('#testSectiontitle').val();
+            var testSectionType = $('#testSectionType').val();
+            var tags = $('input[name="tags"]').val();
             
             var fill = 'N/A';
             var fillType = 'N/A';
             var answerType ='N/A';
             var fillVals= [];
             var multiChoice = '';
-                
-            var testSectionType = $('#addTestSectionTypeRead').val();
-            var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
-            
-            var question = CKEDITOR.instances['js-ckeditor-add-addQue'].getData();
-            var activeAnswerType = '.add'+ $('#selectedAnswerType').val();
-            var questionType = $('#addQuestionMultiModal '+activeAnswerType+' #addQuestionType').val();
-            var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
-            var passNumber = $('#addQuestionMultiModal .addPassNumber').val();
-            var passagesType = $('.addPassagesType').val();
-            var passagesTypeTxt = $(".addPassagesType option:selected").text();
 
-            var tags='';
-            var QuesTags = $('.add-tag-div input[name="addTags[]"]').map(function(){return $(this).val();}).get();
-                 
-            if(typeof QuesTags !== 'undefined' && QuesTags.length !== 0){
-                tags = QuesTags.join(); 
-            }
+            if (whichModel == 'section') {
 
-            if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType ==''){
-                $('#addQuestionMultiModal .validError').text('Below fields are required!');
-                return false;
-            }else{
-                $('#addQuestionMultiModal .validError').text('');
-            }
-            
-            if(questionType =='choiceOneInFourPass'){                
-                answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFourPass"]:checked').val();
-            } else if(questionType =='choiceMultInFourFill'){
-                fillVals = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
-                
-
-                if(typeof fillVals !== 'undefined' && fillVals.length === 0){
-                    fill = fillVals.join();    
+                if (format == '' || testSectionType == '' || testSectionTitle == '') {
+                    $('#sectionModal .validError').text('Below fields are required!');
+                    return false;
+                } else {
+                    $('#sectionModal .validError').text('');
                 }
-                
-                if($('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val() !=''){
-                    fillType = $('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val();  
-                }
+                var get_test_id = jQuery('#get_question_id').val();
+                $('#sectionModal').modal('hide');
+                $('#questionMultiModal').modal('hide');
+                var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
+                var currentModelId = $('#currentModelId').val();
 
-                var singleChoM = $('#questionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
+                $.ajax({
+                    data: {
+                        'format': format,
+                        'testSectionTitle': testSectionTitle,
+                        'testSectionType': testSectionType,
+                        'get_test_id': get_test_id,
+                        'order': 1,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    url: '{{ route('addPracticeTestSection') }}',
+                    method: 'post',
+                    success: (res) => {
+                        $('.sectionContainerList').append(
+                            '<div class="sectionTypesFull" id="sectionDisplay_' + currentModelId +
+                            '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
+                            format +
+                            '</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>' +
+                            capitalizeFirstLetter(sectionSelectedTxt) +
+                            '</strong><input type="hidden" name="selectedSecTxt" value="' +
+                            testSectionType +
+                            '" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_' +
+                            res +
+                            '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            res +
+                            '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
+                            currentModelId +
+                            '" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
+                            res +
+                            '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
+                            res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
 
-                if(typeof singleChoM !== 'undefined' && singleChoM != null){
-                    
-                    answerType = $('#questionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
-
-                } else{ 
-                    multiChoice = 'multiChoice';
-                    var answerMap ='';
-                    var checkIDs = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill[]"]:checked').map(function(){       
-                      answerMap += $(this).val()+', ';  
-                      return $(this).val();
-                    });
-                    if(answerMap !=''){
-                        answerType = answerMap.substring(0, answerMap.length - 2);
-                    }                       
-
-                }                    
-                
-            } else {
-                answerType = $('#addQuestionMultiModal  '+activeAnswerType+' input[name="'+questionType+'"]').val();
-            }
-            
-            var answerContentJson =getAnswerContent(questionType, fill);
-
-            $('#addQuestionMultiModal').modal('hide');
-            $('#addQuestionMultiModal').modal('hide');
-
-            
-            var section_id = $('.addSectionAddId').val();  
-            $.ajax({
-                data:{
-                    'format': format,
-                    'testSectionType': testSectionType,
-                    'question': question,
-                    'question_type': questionType,
-                    'passages': pass,
-                    'passage_number': passNumber,
-                    'passages_id': passagesType,
-                    'answer': answerType,
-                    'answer_content': answerContentJson,
-                    'fill': fill,
-                    'fillType': fillType,
-                    'multiChoice': multiChoice,
-                    'section_id':section_id,
-                    'tags':tags,
-                    'new_question_type_select':new_question_type_select,
-                    '_token': $('input[name="_token"]').val()
-                },
-                url: '{{route("addPracticeQuestion")}}',
-                method: 'post',
-                success: (res) => {
-                    $('.addQuestion').val('');
+                        $('.addQuestion').val('');
                         $('.validError').text('');
+                        $('.sectionAddId').val(res);
 
-                $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList singleQuest_'+res+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Edit Section" onclick="practQuestioEdit('+res+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                        $('#listWithHandle').append('<div class="list-group-item">\n' +
+                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                            '</span>\n' +
+                            '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
+                            format + ' ' + testSectionType + '</button>\n' +
+                            '</div>');
 
-                   
-                $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res+'" data-id="'+res+'" style="display:none;">\n' +
-                '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                '</span>\n' +
-                '<button class="btn btn-primary" value="'+res+'">'+question+'</button>\n' +
-                '</div>');  
-                } 
-            }); 
-            
+                    }
+                });
+
+
+            } else {
+                
+                var testSectionType = $('#addTestSectionTypeRead').val();
+                var new_question_type_select = $(this).parent().parent().find('#new_question_type_select').val();
+                
+                var question = CKEDITOR.instances['js-ckeditor-add-addQue'].getData();
+                var activeAnswerType = '.add'+ $('#selectedAnswerType').val();
+                var questionType = $('#addQuestionMultiModal '+activeAnswerType+' #addQuestionType').val();
+                var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+                var passNumber = $('#addQuestionMultiModal .addPassNumber').val();
+                var passagesType = $('.addPassagesType').val();
+                var passagesTypeTxt = $(".addPassagesType option:selected").text();
+                var tags = $('#questionTags').val();
+
+                var get_category_type_values = $('select[name=add_category_type]').map(function(i,v) {
+                    var category_type_arr = [];
+                    let category_type_val = $(v).val();
+                    category_type_arr.push(category_type_val);
+                    return category_type_arr;
+                }).get();
+
+                var get_question_type_values = $('select[name=add_search-input]').map(function(i,v) {
+                    var question_type_arr = [];
+                    let question_type_val = $(v).val();
+                    question_type_arr.push(question_type_val);
+                    return question_type_arr;
+                }).get();
+
+                if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType ==''){
+                    $('#addQuestionMultiModal .validError').text('Below fields are required!');
+                    return false;
+                }else{
+                    $('#addQuestionMultiModal .validError').text('');
+                }
+                
+                if(questionType =='choiceOneInFourPass'){                
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFourPass"]:checked').val();
+                } else if(questionType =='choiceMultInFourFill'){
+                    fillVals = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
+                    
+
+                    if(typeof fillVals !== 'undefined' && fillVals.length === 0){
+                        fill = fillVals.join();    
+                    }
+                    
+                    if($('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val() !=''){
+                        fillType = $('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val();  
+                    }
+
+                    var singleChoM = $('#questionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
+
+                    if(typeof singleChoM !== 'undefined' && singleChoM != null){
+                        
+                        answerType = $('#questionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
+
+                    } else{ 
+                        multiChoice = 'multiChoice';
+                        var answerMap ='';
+                        var checkIDs = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill[]"]:checked').map(function(){       
+                        answerMap += $(this).val()+', ';  
+                        return $(this).val();
+                        });
+                        if(answerMap !=''){
+                            answerType = answerMap.substring(0, answerMap.length - 2);
+                        }                       
+
+                    }                    
+                    
+                } else {
+                    answerType = $('#addQuestionMultiModal  '+activeAnswerType+' input[name="'+questionType+'"]').val();
+                }
+                
+                var answerContentJson =getAnswerContent(questionType, fill);
+
+                $('#addQuestionMultiModal').modal('hide');
+                $('#addQuestionMultiModal').modal('hide');
+
+                
+                var section_id = $('.addSectionAddId').val();  
+                $.ajax({
+                    data:{
+                        'format': format,
+                        'testSectionType': testSectionType,
+                        'question': question,
+                        'question_type': questionType,
+                        'passages': pass,
+                        'passage_number': passNumber,
+                        'passages_id': passagesType,
+                        'answer': answerType,
+                        'answer_content': answerContentJson,
+                        'fill': fill,
+                        'fillType': fillType,
+                        'multiChoice': multiChoice,
+                        'section_id':section_id,
+                        'tags':tags,
+                        'get_category_type_values':get_category_type_values,
+                        'new_question_type_select':new_question_type_select,
+                        'get_question_type_values': get_question_type_values,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    url: '{{route("addPracticeQuestion")}}',
+                    method: 'post',
+                    success: (res) => {
+                        $('.addQuestion').val('');
+                            $('.validError').text('');
+
+                    $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList singleQuest_'+res+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Edit Section" onclick="practQuestioEdit('+res+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+
+                    
+                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res+'" data-id="'+res+'" style="display:none;">\n' +
+                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                    '</span>\n' +
+                    '<button class="btn btn-primary" value="'+res+'">'+question+'</button>\n' +
+                    '</div>');  
+                    } 
+                }); 
+        }
             setEmptyValue(questionType);
             return false;
         
@@ -1777,9 +2045,12 @@ function practQuestioDel(id){
 function clearModel() {
     $('input[name=tags]').val('');
     $('#passage_number').val(null).trigger("change");
-    $(`.removeNewTypes`).remove();
+    $('#add_category_type_0').val(null).trigger("change");
+    $('#add_search-input_0').val(null).trigger("change");
+    $(`.removeNewTypes, removeNewType`).remove();
     $('input[name=passagesType]').val(null).trigger("change");
 }
+
 
 function practQuestioEdit(id){
     clearModel();
@@ -2269,16 +2540,6 @@ function getEditAnswerContent(answerOpt, fill){
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-function addTagFunc(evt){
-        let tag = $("#addTag").val();
-        if (evt.keyCode == 13){
-            evt.preventDefault();
-
-            $('.add-tag-div').append('<div class="col"><div class="form-check form-block"><input class="form-check-input" type="checkbox" value="'+tag+'" id="example-checkbox-block1" name="addTags[]" checked="checked"><label class="form-check-label label-check" for="example-checkbox-block1"><span class="d-block fs-sm text-muted">'+tag+'</span></label></div></div>');
-            $("#addTag").val('');
-            
-        }
-}
 function deleteTag(evt){
     $(evt).parent().remove();
         
@@ -2329,6 +2590,28 @@ Sortable.create(listWithHandle, {
     }
 },);  
 
+$('.add_section_modal_btn').click(function() {
+    var optionObj = [];
+    var modelCount = $('.sectionTypesFull').length;
+    $('#currentModelId').val(modelCount);
+    $('#add_question_modal_multi').attr('data-id', modelCount);
+    optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
+    optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+    optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+    var format = $('.ptype #format').val();
+
+    $('#testSectionType').html('');
+    var opt = '<option value="">Select Section Type</option>';
+    for (var i = 0; i < optionObj[format].length; i++) {
+        var typeVal = optionObj[format][i].replace(/\s/g, '_');
+        typeVallev = typeVal.replace(')', '');
+        typeVallev2 = typeVallev.replace('(', '');
+        opt += '<option value="' + typeVallev2 + '">' + optionObj[format][i] + '</option>';
+    }
+    $('#testSectionType').append(opt);
+    $('#sectionModal').modal('show');
+});
+
 
 // List with handle
 Sortable.create(listWithHandleQuestion, {
@@ -2375,6 +2658,8 @@ Sortable.create(listWithHandleQuestion, {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    
 </script>
     
 @endsection
