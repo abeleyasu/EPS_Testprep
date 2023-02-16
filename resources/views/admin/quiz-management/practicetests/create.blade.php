@@ -527,7 +527,6 @@
                             <label class="form-label" style="font-size: 13px;">Question:</label>
                             <textarea id="js-ckeditor-addQue" name="js-ckeditor-addQue"
                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
-
                         </div>
 
                         <div class="mb-2">
@@ -584,20 +583,40 @@
                                         <textarea id="choiceOneInFourAnswer_1" name="choiceOneInFourAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer A</label>
+                                        <textarea id="choiceOneInFour_explanation_answer_a" name="choiceOneInFour_explanation_answer_a"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                 type="radio" value="b" name="choiceOneInFour"></label>
                                         <textarea id="choiceOneInFourAnswer_2" name="choiceOneInFourAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
+                                    </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer B</label>
+                                        <textarea id="choiceOneInFour_explanation_answer_b" name="choiceOneInFour_explanation_answer_b"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>C:</span><input
                                                 type="radio" value="c" name="choiceOneInFour"></label>
                                         <textarea id="choiceOneInFourAnswer_3" name="choiceOneInFourAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer C</label>
+                                        <textarea id="choiceOneInFour_explanation_answer_c" name="choiceOneInFour_explanation_answer_c"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
                                                 type="radio" value="d" name="choiceOneInFour">
                                             <textarea id="choiceOneInFourAnswer_4" name="choiceOneInFourAnswer_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
+                                    </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer D</label>
+                                        <textarea id="choiceOneInFour_explanation_answer_d" name="choiceOneInFour_explanation_answer_d"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                 </ul>
                             </div>
@@ -610,25 +629,50 @@
                                         <textarea id="choiceOneInFiveAnswer_1" name="choiceOneInFiveAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer A</label>
+                                        <textarea id="choiceOneInFive_explanation_answer_a" name="choiceOneInFive_explanation_answer_a"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>B:</span><input
                                                 type="radio" value="b" name="choiceOneInFive"></label>
                                         <textarea id="choiceOneInFiveAnswer_2" name="choiceOneInFiveAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                    </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer B</label>
+                                        <textarea id="choiceOneInFive_explanation_answer_b" name="choiceOneInFive_explanation_answer_b"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
                                                 type="radio" value="c" name="choiceOneInFive"></label>
                                         <textarea id="choiceOneInFiveAnswer_3" name="choiceOneInFiveAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer C</label>
+                                        <textarea id="choiceOneInFive_explanation_answer_c" name="choiceOneInFive_explanation_answer_c"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
                                                 type="radio" value="d" name="choiceOneInFive"></label>
                                         <textarea id="choiceOneInFiveAnswer_4" name="choiceOneInFiveAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer D</label>
+                                        <textarea id="choiceOneInFive_explanation_answer_d" name="choiceOneInFive_explanation_answer_d"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>E: </span><input
                                                 type="radio" value="e" name="choiceOneInFive"></label>
                                         <textarea id="choiceOneInFiveAnswer_5" name="choiceOneInFiveAnswer_5"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                    </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer E</label>
+                                        <textarea id="choiceOneInFive_explanation_answer_e" name="choiceOneInFive_explanation_answer_e"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                 </ul>
                             </div>
@@ -641,20 +685,40 @@
                                         <textarea id="choiceOneInFourPassAnswer_1" name="choiceOneInFourPassAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer A</label>
+                                        <textarea id="choiceOneInFourPass_explanation_answer_a" name="choiceOneInFourPass_explanation_answer_a"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                 type="radio" value="b" name="choiceOneInFourPass"></label>
                                         <textarea id="choiceOneInFourPassAnswer_2" name="choiceOneInFourPassAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                    </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer B</label>
+                                        <textarea id="choiceOneInFourPass_explanation_answer_b" name="choiceOneInFourPass_explanation_answer_b"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
                                                 type="radio" value="c" name="choiceOneInFourPass"></label>
                                         <textarea id="choiceOneInFourPassAnswer_3" name="choiceOneInFourPassAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer C</label>
+                                        <textarea id="choiceOneInFourPass_explanation_answer_c" name="choiceOneInFourPass_explanation_answer_c"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                    </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
                                                 type="radio" value="d" name="choiceOneInFourPass"></label>
                                         <textarea id="choiceOneInFourPassAnswer_4" name="choiceOneInFourPassAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                    </li>
+                                    <li>
+                                        <label class="form-label">Explanation Answer D</label>
+                                        <textarea id="choiceOneInFourPass_explanation_answer_d" name="choiceOneInFourPass_explanation_answer_d"
+                                            class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                 </ul>
                             </div>
@@ -680,20 +744,40 @@
                                             <textarea id="choiceMultInFourFillAnswer_1" name="choiceMultInFourFillAnswer_1"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer A</label>
+                                            <textarea id="choiceMultInFourFill_explanation_answer_a" name="choiceMultInFourFill_explanation_answer_a"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                        </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                     type="checkbox" value="b" name="choiceMultInFourFill[]"></label>
                                             <textarea id="choiceMultInFourFillAnswer_2" name="choiceMultInFourFillAnswer_2"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                        </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer B</label>
+                                            <textarea id="choiceMultInFourFill_explanation_answer_b" name="choiceMultInFourFill_explanation_answer_b"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
                                                     type="checkbox" value="c" name="choiceMultInFourFill[]"></label>
                                             <textarea id="choiceMultInFourFillAnswer_3" name="choiceMultInFourFillAnswer_3"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer C</label>
+                                            <textarea id="choiceMultInFourFill_explanation_answer_c" name="choiceMultInFourFill_explanation_answer_c"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                        </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
                                                     type="checkbox" value="d" name="choiceMultInFourFill[]"></label>
                                             <textarea id="choiceMultInFourFillAnswer_4" name="choiceMultInFourFillAnswer_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                        </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer D</label>
+                                            <textarea id="choiceMultInFourFill_explanation_answer_d" name="choiceMultInFourFill_explanation_answer_d"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                     </ul>
                                 </div>
@@ -705,11 +789,21 @@
                                             <textarea id="choiceMultiChoiceInFourFill_1" name="choiceMultiChoiceInFourFill_1"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer A</label>
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_a" name="choiceMultiChoiceInFourFill_explanation_answer_a"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                        </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                     type="radio" value="b"
                                                     name="choiceMultiChoiceInFourFill"></label>
                                             <textarea id="choiceMultiChoiceInFourFill_2" name="choiceMultiChoiceInFourFill_2"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                        </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer B</label>
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_b" name="choiceMultiChoiceInFourFill_explanation_answer_b"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
                                                     type="radio" value="c"
@@ -717,11 +811,21 @@
                                             <textarea id="choiceMultiChoiceInFourFill_3" name="choiceMultiChoiceInFourFill_3"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer C</label>
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_c" name="choiceMultiChoiceInFourFill_explanation_answer_c"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                        </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
                                                     type="radio" value="d"
                                                     name="choiceMultiChoiceInFourFill"></label>
                                             <textarea id="choiceMultiChoiceInFourFill_4" name="choiceMultiChoiceInFourFill_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
+                                        </li>
+                                        <li>
+                                            <label class="form-label">Explanation Answer D</label>
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_d" name="choiceMultiChoiceInFourFill_explanation_answer_d"
+                                                class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                     </ul>
                                 </div>
@@ -1028,6 +1132,23 @@
             allowedContent
         });
 
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_a', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_b', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_c', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_d', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
         CKEDITOR.replace('choiceOneInFiveAnswer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
@@ -1049,6 +1170,30 @@
             allowedContent
         });
 
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_a', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_b', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_c', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_d', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_e', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
 
         CKEDITOR.replace('choiceOneInFourPassAnswer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
@@ -1063,6 +1208,26 @@
             allowedContent
         });
         CKEDITOR.replace('choiceOneInFourPassAnswer_4', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_a', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_b', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_c', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_d', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1084,6 +1249,26 @@
             allowedContent
         });
 
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_a', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_b', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_c', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_d', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
         CKEDITOR.replace('choiceMultiChoiceInFourFill_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
@@ -1097,6 +1282,26 @@
             allowedContent
         });
         CKEDITOR.replace('choiceMultiChoiceInFourFill_4', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_a', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_b', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_c', {
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_d', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1172,7 +1377,7 @@
                     'description': description,
                     '_token': $('input[name="_token"]').val()
                 },
-                url: '{{ route('addPracticeQuestion') }}',
+                url: '{{ route("addPracticeQuestion") }}',
                 method: 'post',
                 success: (res) => {
                     alert('Question Added');
@@ -1219,7 +1424,7 @@
                         'order': 1,
                         '_token': $('input[name="_token"]').val()
                     },
-                    url: '{{ route('addPracticeTestSection') }}',
+                    url: '{{ route("addPracticeTestSection") }}',
                     method: 'post',
                     success: (res) => {
                         $('.sectionContainerList').append(
@@ -1370,7 +1575,7 @@
                         'get_question_type_values': get_question_type_values,
                         '_token': $('input[name="_token"]').val()
                     },
-                    url: '{{ route('addPracticeQuestion') }}',
+                    url: '{{ route("addPracticeQuestion") }}',
                     method: 'post',
                     success: (res) => {
                         $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append(
