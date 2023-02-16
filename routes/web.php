@@ -149,6 +149,13 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::post('/updatequestiontype', [PracticeQuestionController::class, 'updateQuestionType'])->name('updateQuestionType');
     Route::post('/deletequestiontype', [PracticeQuestionController::class, 'deleteQuestionType'])->name('deleteQuestionType');
     Route::get('/question-type', [PracticeQuestionController::class, 'indexQuestionType'])->name('indexQuestionType');
+
+    Route::get('/category-type/add', [PracticeQuestionController::class, 'addCategoryType'])->name('add_category_type');
+    Route::get('/category-type/edit/{id}', [PracticeQuestionController::class, 'editCategoryTypes'])->name('edit_category_type');
+    Route::post('/store-category-type', [PracticeQuestionController::class, 'storeCategoryType'])->name('storeCategoryType');
+    Route::post('/update-category-type', [PracticeQuestionController::class, 'updateCategoryType'])->name('updateCategoryType');
+    Route::post('/delete-category-type', [PracticeQuestionController::class, 'deleteCategoryType'])->name('deleteCategoryType');
+    Route::get('/category-type',[PracticeQuestionController::class,'indexCategoryType'])->name('indexCategoryType');
     
    
 });

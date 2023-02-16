@@ -18,6 +18,10 @@ return new class extends Migration
                 $table->id();
                 $table->string('category_type_title');
                 $table->text('category_type_description')->nullable();
+                $table->longText('category_type_lesson')->nullable();
+                $table->longText('category_type_strategies')->nullable();
+                $table->longText('category_type_identification_methods')->nullable();
+                $table->longText('category_type_identification_activity')->nullable();
                 $table->timestamps();
             });
          }
