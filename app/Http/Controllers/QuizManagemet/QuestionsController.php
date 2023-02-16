@@ -4,6 +4,8 @@ namespace App\Http\Controllers\QuizManagemet;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CRUD;
+use App\Models\Passage;
+use App\Models\PracticeQuestion;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -24,7 +26,7 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        $questions = Question::get();
+        $questions = PracticeQuestion::get();
         return view('admin.quiz-management.questions.index', compact('questions'));
     }
 
@@ -35,7 +37,8 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        return view('admin.quiz-management.questions.create');
+        $passages = Passage::get();
+        return view('admin.quiz-management.questions.create', compact('passages'));
     }
 
     /**
@@ -46,7 +49,7 @@ class QuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->createFromRequest(app('App\Models\Question'), $request);
+        $this->createFromRequest(app('App\Models\PracticeQuestion'), $request);
         return redirect()->route('questions.index')->with('message','Question created successfully');
     }
 
@@ -56,9 +59,15 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getPassagesByFormat($format)
     {
-        //
+        $passages = Passage::where('type', $format)->get();
+
+        if(!empty($passages)) {
+            return response()->json(['success' => true, 'passages' => $passages]);
+        } else {
+            return response()->json(['error' => true, 'message' => "Passages not found"]);
+        }
     }
 
     /**
@@ -67,9 +76,10 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(Question $question)
+    public function edit(PracticeQuestion $question)
     {
-        return view('admin.quiz-management.questions.edit', compact('question'));
+        $passages = Passage::get();
+        return view('admin.quiz-management.questions.edit', compact('question', 'passages'));
     }
 
     /**
@@ -79,7 +89,7 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, PracticeQuestion $question)
     {
         $this->updateFromRequest($question, $request);
         return redirect()->route('questions.index')->with('message','Question updated successfully');
@@ -91,7 +101,7 @@ class QuestionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Question $question)
+    public function destroy(PracticeQuestion $question)
     {
         $question->delete();
         return redirect()->route('questions.index')->with('message','Question deleted successfully');

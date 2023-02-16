@@ -34,6 +34,7 @@
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full hidden">
                     <thead>
                         <tr>
+                            <th>Id</th>
                             <th>Title</th>
                             <th>Type/Format</th>
                             <th>Passage</th>
@@ -43,9 +44,10 @@
                     <tbody>
                         @foreach($questions as $question)
                         <tr>
-                            <td class="fw-semibold fs-sm">{{$question->title}}</td>
-							<td>{{$formats[$question->format]}}</td>
-							<td></td>
+                            <td>{{ $question->id }}</td>
+                            <td class="fw-semibold fs-sm">{!! $question->title !!}</td>
+							<td>{{ $question->type }}</td>
+							<td>{{ Helper::getPassageById($question->passages_id) }}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('questions.edit', ['question' => $question->id])}}"

@@ -123,6 +123,7 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     // Route::put('categories/{category}/', [CategoryController::class])->name('categories');
     // questions
     Route::resource('questions', QuestionsController::class);
+    Route::get('get-passages-by-format/{format}', [QuestionsController::class, 'getPassagesByFormat']);
     Route::resource('practicetests', PracticeTestsController::class);
     Route::post('addPracticeQuestion', [PracticeQuestionController::class, 'addPracticeQuestion'])->name('addPracticeQuestion');
 
@@ -149,8 +150,6 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::post('/updatequestiontype', [PracticeQuestionController::class, 'updateQuestionType'])->name('updateQuestionType');
     Route::post('/deletequestiontype', [PracticeQuestionController::class, 'deleteQuestionType'])->name('deleteQuestionType');
     Route::get('/question-type', [PracticeQuestionController::class, 'indexQuestionType'])->name('indexQuestionType');
-    
-   
 });
 
 //User Routes

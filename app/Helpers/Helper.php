@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\CollegeInformation;
 use App\Models\Grade;
 use App\Models\HonorCourseNameList;
+use App\Models\Passage;
 use Illuminate\Support\Facades\DB;
 
 class Helper
@@ -74,5 +75,16 @@ class Helper
         $question_types = DB::table('question_types')->where('id',$id)->first();
         // return isset($question_types->question_type_title) ? $question_types->question_type_title : '-';
         return $question_types;
+    }
+
+    public static function getPassageById($id)
+    {
+        $passage = Passage::find($id);
+
+        if(!empty($passage)) {
+            return $passage->title;
+        } else {
+            return '';
+        }
     }
 }

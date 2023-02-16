@@ -33,11 +33,27 @@
                                 @enderror
                             </div>
                             <div class="mb-2">
+                                <label class="form-label" for="type">Type</label>
+                                <select id="type" name="type" class="form-control">
+                                    <option value="">Select type</option>
+                                    <option value="choiceOneInFourPass">choiceOneInFourPass</option>
+                                    <option value="choiceOneInFive">choiceOneInFive</option>
+                                    <option value="choiceMultInFourFill">choiceMultInFourFill</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
                                 <label class="form-label" for="format">Format</label>
-                                <select id="format" name="format" class="form-control">
-                                    @foreach($formats as $key=>$format)
-                                    <option value="{{$key}}">{{$format}}</option>
-                                    @endforeach
+                                <select id="format" name="format" class="form-control" onchange="appendPassages(this)">
+                                    <option value="">Select Format</option>
+                                    <option value="SAT">SAT</option>
+                                    <option value="ACT">ACT</option>
+                                    <option value="PSAT">PSAT</option>
+                                </select>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="passages_id">Passage</label>
+                                <select id="passages_id" name="passages_id" class="form-control">
+                                    <option value="">Select passage</option>
                                 </select>
                             </div>
                             <div class="col-md-6 col-xl-5 mb-4">
@@ -235,6 +251,31 @@
                 });
             }
         },);
+
+        function appendPassages(data) {
+            let format = $(data).val();
+            let site_url = $('#site_url').val();
+            $.ajax({
+                url: `${site_url}/admin/get-passages-by-format/${format}`,
+                method: 'get',
+                success: (res) => {
+                    if(res.success) {
+                        let html = ``;
+                        html += `<option value="">Select passage</option>`;
+                        $.each(res.passages, (i, v) => {
+                            html += `<option value="${v.id}">${v.title}</option>`;
+                        });
+
+                        $('#passages_id').html(html);
+                    } else {
+                        console.error("Error: ",resp.message);
+                    }
+                },
+                error: function(err) {
+                    console.log("Error: ", err);
+                }
+            });
+        }
 
     </script>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\QuizManagemet;
 
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class PracticeQuestionController extends Controller
 		$question->passages = $request->passages;
 		$question->practice_test_sections_id = $request->section_id;
 		$question->passages_id = $request->passages_id;
+		$question->passages = Helper::getPassageById($request->passages_id);
 		$question->passage_number = $request->passage_number;
 		$question->answer = $request->answer;
 		$question->answer_content = $request->answer_content;
