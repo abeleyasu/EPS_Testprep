@@ -163,6 +163,14 @@
                         </li>
                     </ul>
                     <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['indexCategoryType','add_category_type','edit_category_type']) ? 'active' : ''}}"
+                               href="{{route('indexCategoryType')}}">
+                                <span class="nav-main-link-name">Category Types</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
                         <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','categories.index','categories.create','categories.edit'])) ? 'open' : ''}}">
                             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                                 <span class="nav-main-link-name">General Settings</span>

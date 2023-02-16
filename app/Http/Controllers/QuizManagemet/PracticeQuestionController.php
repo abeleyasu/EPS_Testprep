@@ -255,4 +255,58 @@ class PracticeQuestionController extends Controller
 		$question_type = QuestionType::get();
 		return response()->json(['success' => true, 'dropdown_list' => $question_type, 'type' => 'question_type']);
 	}
+
+	//new start
+	public function indexCategoryType()
+	{
+		$categoryTypes = DB::table('practice_category_types')->get();
+		return view('admin.quiz-management.categorytypes.index', compact('categoryTypes'));
+	}
+
+	public function storeCategoryType(Request $request) {
+
+		$category = new PracticeCategoryType();
+		$category->category_type_title = $request->category_type_title;
+		$category->category_type_description = $request->category_type_description;
+		$category->category_type_lesson = $request->category_type_lesson;
+		$category->category_type_strategies = $request->category_type_strategies;
+		$category->category_type_identification_methods = $request->category_type_identification_methods;
+		$category->category_type_identification_activity = $request->category_type_identification_activity;
+		$category->save();
+		return $category->id;
+	}
+
+	public function addCategoryType()
+	{
+		return view('admin.quiz-management.categorytypes.create');
+	}
+
+	public function editCategoryTypes(Request $request)
+	{
+		$getcategoryDetails = DB::table('practice_category_types')->where('practice_category_types.id', $request->id)->get();
+		
+		return view('admin.quiz-management.categorytypes.edit',['getcategoryDetails'=>$getcategoryDetails]);
+	}
+
+	public function updateCategoryType(Request $request){
+
+		$updatecategory = DB::table('practice_category_types')
+		->where('practice_category_types.id', $request->category_type_id)
+		->update(['category_type_title' => $request->category_type_title,
+		'category_type_description' => $request->category_type_description,
+		'category_type_lesson' => $request->category_type_lesson,
+		'category_type_strategies' => $request->category_type_strategies,
+	    'category_type_identification_methods' => $request->category_type_identification_methods,
+	    'category_type_identification_activity' => $request->category_type_identification_activity
+		]);
+		return $updatecategory;
+	}
+
+	public function deleteCategoryType(Request $request)
+	{
+		DB::delete('delete from practice_category_types where id = ?',[$request->category_type_id]);
+		$categoryTypes = DB::table('practice_category_types')->get();
+		return view('admin.quiz-management.categorytypes.index', compact('categoryTypes'));
+	}
+	
 }
