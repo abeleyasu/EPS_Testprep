@@ -319,7 +319,7 @@ class TestPrepController extends Controller
                             {
                                 $get_question_details = DB::table('practice_questions')
                                 ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id')
+                                ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id' , 'practice_questions.answer_exp as answer_exp')
                                 ->where('practice_questions.id', $question_id)
                                 ->orderBy('practice_questions.question_order', 'ASC')
                                 ->get();
@@ -346,7 +346,7 @@ class TestPrepController extends Controller
                     {
                         $get_question_details = DB::table('practice_questions')
                         ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                        ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id')
+                        ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.*', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id', 'practice_questions.answer_exp as answer_exp')
                         ->where('practice_questions.id', $question_id)
                         ->orderBy('practice_questions.question_order', 'ASC')
                         ->get();

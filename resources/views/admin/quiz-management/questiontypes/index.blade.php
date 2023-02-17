@@ -49,14 +49,14 @@
                     <tbody>
                         @foreach($questionTypes as $singlequestionType)
                         <tr>
-                            <td class="fw-semibold fs-sm">{{$singlequestionType->question_type_title}}</td>
+                            <td class="fw-semibold fs-sm">{!! $singlequestionType->question_type_title !!}</td>
                             <td class="fs-sm">
                                 {!! $singlequestionType->question_type_description !!}
                             </td>
-                            <td class="fw-semibold fs-sm">{{$singlequestionType->question_type_lesson}}</td>
-                            <td class="fw-semibold fs-sm">{{$singlequestionType->question_type_strategies}}</td>
-                            <td class="fw-semibold fs-sm">{{$singlequestionType->question_type_identification_methods}}</td>
-                            <td class="fw-semibold fs-sm">{{$singlequestionType->question_type_identification_activity}}</td>
+                            <td class="fw-semibold fs-sm">{!! $singlequestionType->question_type_lesson !!}</td>
+                            <td class="fw-semibold fs-sm">{!! $singlequestionType->question_type_strategies !!}</td>
+                            <td class="fw-semibold fs-sm">{!! $singlequestionType->question_type_identification_methods !!}</td>
+                            <td class="fw-semibold fs-sm">{!! $singlequestionType->question_type_identification_activity !!}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{ route('edit_question_type',['id'=>$singlequestionType->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Question Type">

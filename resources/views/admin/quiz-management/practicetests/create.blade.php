@@ -585,7 +585,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer A</label>
-                                        <textarea id="choiceOneInFour_explanation_answer_a" name="choiceOneInFour_explanation_answer_a"
+                                        <textarea id="choiceOneInFour_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
@@ -595,7 +595,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer B</label>
-                                        <textarea id="choiceOneInFour_explanation_answer_b" name="choiceOneInFour_explanation_answer_b"
+                                        <textarea id="choiceOneInFour_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>C:</span><input
@@ -605,7 +605,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer C</label>
-                                        <textarea id="choiceOneInFour_explanation_answer_c" name="choiceOneInFour_explanation_answer_c"
+                                        <textarea id="choiceOneInFour_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
@@ -615,7 +615,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer D</label>
-                                        <textarea id="choiceOneInFour_explanation_answer_d" name="choiceOneInFour_explanation_answer_d"
+                                        <textarea id="choiceOneInFour_explanation_answer_4" name="choiceOneInFour_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                 </ul>
@@ -631,7 +631,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer A</label>
-                                        <textarea id="choiceOneInFive_explanation_answer_a" name="choiceOneInFive_explanation_answer_a"
+                                        <textarea id="choiceOneInFive_explanation_answer_1" name="choiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>B:</span><input
@@ -641,7 +641,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer B</label>
-                                        <textarea id="choiceOneInFive_explanation_answer_b" name="choiceOneInFive_explanation_answer_b"
+                                        <textarea id="choiceOneInFive_explanation_answer_2" name="choiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
@@ -651,7 +651,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer C</label>
-                                        <textarea id="choiceOneInFive_explanation_answer_c" name="choiceOneInFive_explanation_answer_c"
+                                        <textarea id="choiceOneInFive_explanation_answer_3" name="choiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
@@ -661,7 +661,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer D</label>
-                                        <textarea id="choiceOneInFive_explanation_answer_d" name="choiceOneInFive_explanation_answer_d"
+                                        <textarea id="choiceOneInFive_explanation_answer_4" name="choiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>E: </span><input
@@ -671,7 +671,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer E</label>
-                                        <textarea id="choiceOneInFive_explanation_answer_e" name="choiceOneInFive_explanation_answer_e"
+                                        <textarea id="choiceOneInFive_explanation_answer_5" name="choiceOneInFive_explanation_answer_5"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                 </ul>
@@ -687,7 +687,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer A</label>
-                                        <textarea id="choiceOneInFourPass_explanation_answer_a" name="choiceOneInFourPass_explanation_answer_a"
+                                        <textarea id="choiceOneInFourPass_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
@@ -697,7 +697,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer B</label>
-                                        <textarea id="choiceOneInFourPass_explanation_answer_b" name="choiceOneInFourPass_explanation_answer_b"
+                                        <textarea id="choiceOneInFourPass_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
@@ -707,7 +707,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer C</label>
-                                        <textarea id="choiceOneInFourPass_explanation_answer_c" name="choiceOneInFourPass_explanation_answer_c"
+                                        <textarea id="choiceOneInFourPass_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
@@ -717,7 +717,7 @@
                                     </li>
                                     <li>
                                         <label class="form-label">Explanation Answer D</label>
-                                        <textarea id="choiceOneInFourPass_explanation_answer_d" name="choiceOneInFourPass_explanation_answer_d"
+                                        <textarea id="choiceOneInFourPass_explanation_answer_4" name="choiceOneInFourPass_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                 </ul>
@@ -746,7 +746,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer A</label>
-                                            <textarea id="choiceMultInFourFill_explanation_answer_a" name="choiceMultInFourFill_explanation_answer_a"
+                                            <textarea id="choiceMultInFourFill_explanation_answer_1" name="choiceMultInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
@@ -756,7 +756,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer B</label>
-                                            <textarea id="choiceMultInFourFill_explanation_answer_b" name="choiceMultInFourFill_explanation_answer_b"
+                                            <textarea id="choiceMultInFourFill_explanation_answer_2" name="choiceMultInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
@@ -766,7 +766,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer C</label>
-                                            <textarea id="choiceMultInFourFill_explanation_answer_c" name="choiceMultInFourFill_explanation_answer_c"
+                                            <textarea id="choiceMultInFourFill_explanation_answer_3" name="choiceMultInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
@@ -776,7 +776,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer D</label>
-                                            <textarea id="choiceMultInFourFill_explanation_answer_d" name="choiceMultInFourFill_explanation_answer_d"
+                                            <textarea id="choiceMultInFourFill_explanation_answer_4" name="choiceMultInFourFill_explanation_answer_4"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                     </ul>
@@ -791,7 +791,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer A</label>
-                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_a" name="choiceMultiChoiceInFourFill_explanation_answer_a"
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_1" name="choiceMultiChoiceInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
@@ -802,7 +802,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer B</label>
-                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_b" name="choiceMultiChoiceInFourFill_explanation_answer_b"
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_2" name="choiceMultiChoiceInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
@@ -813,7 +813,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer C</label>
-                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_c" name="choiceMultiChoiceInFourFill_explanation_answer_c"
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_3" name="choiceMultiChoiceInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
@@ -824,7 +824,7 @@
                                         </li>
                                         <li>
                                             <label class="form-label">Explanation Answer D</label>
-                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_d" name="choiceMultiChoiceInFourFill_explanation_answer_d"
+                                            <textarea id="choiceMultiChoiceInFourFill_explanation_answer_4" name="choiceMultiChoiceInFourFill_explanation_answer_4"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                     </ul>
@@ -1132,19 +1132,19 @@
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFour_explanation_answer_a', {
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace('choiceOneInFour_explanation_answer_b', {
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_2', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace('choiceOneInFour_explanation_answer_c', {
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_3', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace('choiceOneInFour_explanation_answer_d', {
+        CKEDITOR.replace('choiceOneInFour_explanation_answer_4', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1170,27 +1170,27 @@
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFive_explanation_answer_a', {
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFive_explanation_answer_b', {
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_2', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFive_explanation_answer_c', {
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_3', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFive_explanation_answer_d', {
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_4', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFive_explanation_answer_e', {
+        CKEDITOR.replace('choiceOneInFive_explanation_answer_5', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1212,22 +1212,22 @@
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_a', {
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_b', {
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_2', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_c', {
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_3', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_d', {
+        CKEDITOR.replace('choiceOneInFourPass_explanation_answer_4', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1249,22 +1249,22 @@
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_a', {
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_b', {
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_2', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_c', {
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_3', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_d', {
+        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_4', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1286,22 +1286,22 @@
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_a', {
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_1', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_b', {
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_2', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_c', {
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_3', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_d', {
+        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_4', {
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1384,6 +1384,7 @@
                 }
             });
         });
+        
         $('.save_section').click(function() {
 
             var whichModel = $(this).parent().find('.whichModel').val();
@@ -1547,7 +1548,7 @@
                 /*answerContent = $('#questionMultiModal '+activeAnswerType+' input[name="answerContentOption[]"]').map(function(){return $(this).val();}).get();*/
 
                 var answerContentJson = getAnswerContent(questionType, fill);
-
+                var answerExpJson = getAnswerExpContent(questionType, fill);
 
                 $('#questionMultiModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
@@ -1565,6 +1566,7 @@
                         'passages_id': passagesType,
                         'answer': answerType,
                         'answer_content': answerContentJson,
+                        'answer_exp' : answerExpJson,
                         'fill': fill,
                         'fillType': fillType,
                         'multiChoice': multiChoice,
@@ -1820,10 +1822,16 @@
             $('input[name="' + qType + '"]').attr('checked', false);
             $('input[type="radio"]').prop('checked', false);
             $('input[type="checkbox"]').prop('checked', false);
+            
             CKEDITOR.instances['choiceOneInFourAnswer_1'].setData('');
             CKEDITOR.instances['choiceOneInFourAnswer_2'].setData('');
             CKEDITOR.instances['choiceOneInFourAnswer_3'].setData('');
             CKEDITOR.instances['choiceOneInFourAnswer_4'].setData('');
+
+            CKEDITOR.instances['choiceOneInFour_explanation_answer_1'].setData('');
+            CKEDITOR.instances['choiceOneInFour_explanation_answer_2'].setData('');
+            CKEDITOR.instances['choiceOneInFour_explanation_answer_3'].setData('');
+            CKEDITOR.instances['choiceOneInFour_explanation_answer_4'].setData('');
 
             CKEDITOR.instances['choiceOneInFiveAnswer_1'].setData('');
             CKEDITOR.instances['choiceOneInFiveAnswer_2'].setData('');
@@ -1831,20 +1839,48 @@
             CKEDITOR.instances['choiceOneInFiveAnswer_4'].setData('');
             CKEDITOR.instances['choiceOneInFiveAnswer_5'].setData('');
 
+            CKEDITOR.instances['choiceOneInFive_explanation_answer_1'].setData('');
+            CKEDITOR.instances['choiceOneInFive_explanation_answer_2'].setData('');
+            CKEDITOR.instances['choiceOneInFive_explanation_answer_3'].setData('');
+            CKEDITOR.instances['choiceOneInFive_explanation_answer_4'].setData('');
+            CKEDITOR.instances['choiceOneInFive_explanation_answer_5'].setData('');
+
+
             CKEDITOR.instances['choiceOneInFourPassAnswer_1'].setData('');
             CKEDITOR.instances['choiceOneInFourPassAnswer_2'].setData('');
             CKEDITOR.instances['choiceOneInFourPassAnswer_3'].setData('');
             CKEDITOR.instances['choiceOneInFourPassAnswer_4'].setData('');
+
+            
+            CKEDITOR.instances['choiceOneInFourPass_explanation_answer_1'].setData('');
+            CKEDITOR.instances['choiceOneInFourPass_explanation_answer_2'].setData('');
+            CKEDITOR.instances['choiceOneInFourPass_explanation_answer_3'].setData('');
+            CKEDITOR.instances['choiceOneInFourPass_explanation_answer_4'].setData('');
+
 
             CKEDITOR.instances['choiceMultInFourFillAnswer_1'].setData('');
             CKEDITOR.instances['choiceMultInFourFillAnswer_2'].setData('');
             CKEDITOR.instances['choiceMultInFourFillAnswer_3'].setData('');
             CKEDITOR.instances['choiceMultInFourFillAnswer_4'].setData('');
 
+            
+            CKEDITOR.instances['choiceMultInFourFill_explanation_answer_1'].setData('');
+            CKEDITOR.instances['choiceMultInFourFill_explanation_answer_2'].setData('');
+            CKEDITOR.instances['choiceMultInFourFill_explanation_answer_3'].setData('');
+            CKEDITOR.instances['choiceMultInFourFill_explanation_answer_4'].setData('');
+
+
             CKEDITOR.instances['choiceMultiChoiceInFourFill_1'].setData('');
             CKEDITOR.instances['choiceMultiChoiceInFourFill_2'].setData('');
             CKEDITOR.instances['choiceMultiChoiceInFourFill_3'].setData('');
             CKEDITOR.instances['choiceMultiChoiceInFourFill_4'].setData('');
+
+            
+            CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_1'].setData('');
+            CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_2'].setData('');
+            CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_3'].setData('');
+            CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_4'].setData('');
+
         }
 
         function capitalizeFirstLetter(string) {
@@ -1886,6 +1922,38 @@
             }
             if (answerContenArr.length > 0) {
                 return JSON.stringify(answerContenArr);
+            }
+            return '';
+        }
+
+        //new start
+        function getAnswerExpContent(answerOpt, fill) {
+            var answerExpArr = [];
+            if (answerOpt == 'choiceOneInFive') {
+                for (var i = 1; i < 6; i++) {
+                    var dynamicId = answerOpt + '_explanation_answer_' + i;
+                    answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
+                }
+
+            } else {
+                if (fill == '' || fill == 'N/A') {
+                    var choiceSel = $('.getFilterChoice').val();
+                    if (choiceSel == 3) {
+                        for (var i = 1; i < 5; i++) {
+                            var dynamicId = 'choiceMultiChoiceInFourFill_' + '_explanation_answer_' + i;
+                            answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
+                        }
+                    } else {
+                        for (var i = 1; i < 5; i++) {
+                            var dynamicId = answerOpt + '_explanation_answer_' + i;
+                            answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
+                        }
+                    }
+                }
+
+            }
+            if (answerExpArr.length > 0) {
+                return JSON.stringify(answerExpArr);
             }
             return '';
         }

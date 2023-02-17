@@ -39,6 +39,8 @@ class PracticeQuestionController extends Controller
 		{
 			$setQuestionOrder = 1;
 		}
+		$answer_arr = ['a'=>'f','b'=>'g','c'=>'h','d'=>'j','e'=>'k'];
+		
 		$question = new PracticeQuestion();
 		$question->format = $request->format;
 		$question->title = $request->question;
@@ -48,8 +50,15 @@ class PracticeQuestionController extends Controller
 		$question->passages_id = $request->passages_id;
 		$question->passages = Helper::getPassageById($request->passages_id);
 		$question->passage_number = $request->passage_number;
-		$question->answer = $request->answer;
+		// $question->answer = $request->answer;
+		if($request->format == "ACT" && $setQuestionOrder % 2 == 0){
+			$question->answer = $answer_arr[$request->answer];
+		} else {
+			$question->answer = $request->answer;
+		}
+
 		$question->answer_content = $request->answer_content;
+		$question->answer_exp = $request->answer_exp;
 		$question->fill = $request->fill;
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
@@ -128,6 +137,10 @@ class PracticeQuestionController extends Controller
 		return view('admin.quiz-management.questiontypes.index', compact('questionTypes'));
 	}
 	public function updatePracticeQuestion(Request $request) {
+		$get_order = DB::table('practice_questions')->where('id',$request->id)->get();
+
+		$answer_arr = ['a'=>'f','b'=>'g','c'=>'h','d'=>'j','e'=>'k'];
+
 		$question = PracticeQuestion::find($request->id);
 		$question->format = $request->format;
 		$question->title = $request->question;
@@ -136,8 +149,14 @@ class PracticeQuestionController extends Controller
 		$question->practice_test_sections_id = $request->section_id;
 		$question->passages_id = $request->passages_id;
 		$question->passage_number = $request->passage_number;
-		$question->answer = $request->answer; 
+		// $question->answer = $request->answer; 
+		if($request->format == "ACT" && $get_order[0]->question_order % 2 == 0){
+			$question->answer = $answer_arr[$request->answer];
+		} else {
+			$question->answer = $request->answer;
+		}
 		$question->answer_content = $request->answer_content;
+		$question->answer_exp = $request->answer_exp;
 		$question->fill = $request->fill;
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;

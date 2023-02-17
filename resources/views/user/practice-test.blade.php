@@ -731,23 +731,68 @@
                         
                         jQuery.each(JSON.parse(get_options), function (key,val) {
                            var get_option_number = 'A';
-                           if(key == 0)
-                           {
-                            get_option_number = 'a';
-                           }
-                           else if(key == 1)
-                           {
-                            get_option_number = 'b';
-                           }
-                           else if(key == 2)
-                           {
-                            get_option_number = 'c';
-                           }
-                           else if(key == 3)
-                           {
-                            get_option_number = 'd';
-                           }
+                           if(result.questions[0].question_order % 2 != 0 && result.questions[0].passage_type == "ACT"){
+                                if(key == 0)
+                                {
+                                    get_option_number = 'a';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'b';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'c';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'd';
+                                }
+                                else if(key == 4)
+                                {
+                                    get_option_number = 'e';
+                                }
+                        } else if(result.questions[0].question_order % 2 == 0 && result.questions[0].passage_type == "ACT") {
+                            if(key == 0)
+                                {
+                                    get_option_number = 'f';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'g';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'h';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'j';
+                                }
+                                else if(key == 4)
+                                {
+                                    get_option_number = 'k';
+                                }
 
+                        } else {                                                                                                                                                                                                                
+                            if(key == 0)
+                                {
+                                    get_option_number = 'a';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'b';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'c';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'd';
+                                }
+                        }
+                           
                            if(selected_answer[result.questions[0].question_id] !== '' && selected_answer[result.questions[0].question_id] !== undefined )
                            {
                                 if(jQuery.type(result.questions[0].is_multiple_choice) == 'null')

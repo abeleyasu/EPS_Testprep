@@ -250,6 +250,7 @@
                                                 var get_correct_answer = jQuery(this).data('correct-answer');
                                                 var get_user_answer = jQuery(this).data('user-answer');
                                                 var get_answers_exp = jQuery(this).data('answers-exp');
+                                                var get_answers_explanation = jQuery(this).data('answers-explanation');
 
                                                 jQuery(".set_serial_no").text(serial_no);
                                                 jQuery(".set_question_title").text(get_question_title);
@@ -266,11 +267,16 @@
 
                                                 jQuery(".text-info").parent().find('.nav-tabs-alt .nav-item').find('.text-gray').each(
                                                     function(index) {
-                                                        $.each(get_answers_exp, function(index, value) {
-                                                            var new_txt = removeTags(value);
-                                                            $("div").find('[data-option=' + index + ']').html($("<p>" + value +
-                                                                "</p>"));
-                                                        });
+                                                        for (let i = 0; i < get_answers_exp.length; i++) {
+                                                            var new_txt = removeTags(get_answers_exp[i]);
+                                                            if(get_answers_explanation && get_answers_explanation.length) {
+                                                                $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[i] +
+                                                                    "</p><div class='d-flex'>Explanation: &nbsp;"+get_answers_explanation[i]+"</div>"));
+                                                            } else {
+                                                                $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[i] +
+                                                                    "</p>"));
+                                                            }
+                                                        }
 
                                                         if ($(this).data('option-value') == 'a') {
                                                             $(this).addClass('active');
@@ -470,6 +476,7 @@
                                                                                 data-correct-answer="{{ $single_user_selected_answers['get_question_details'][0]->question_answer }}"
                                                                                 data-user-answer="{{ $single_user_selected_answers['user_selected_answer'] }}"
                                                                                 data-answers-exp="{{ $single_user_selected_answers['get_question_details'][0]->question_answer_options }}"
+                                                                                data-answers-explanation="{{ isset($single_user_selected_answers['get_question_details'][0]->answer_exp) ?  $single_user_selected_answers['get_question_details'][0]->answer_exp : ''}}"
                                                                                 data-serial-no="{{ $key + 1 }}"
                                                                                 class="btn btn-info fs-xs fw-semibold me-1 mb-3 bg-info text-white text-info"><i
                                                                                     class="fa fa-lg fa-pencil me-1"></i>REVIEW</button>
@@ -528,7 +535,8 @@
                                                                                                             </p>
                                                                                                         </div>
                                                                                                     </div>
-
+                                                                                            @if($single_user_selected_answers['get_question_details'][0]->type == "ACT" && $single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive')
+                                                                                                @if($single_user_selected_answers['get_question_details'][0]->question_order % 2 != 0)
                                                                                                     <div
                                                                                                         class="block block-rounded">
                                                                                                         <ul class="nav nav-tabs nav-tabs-alt"
@@ -587,6 +595,19 @@
                                                                                                                     aria-selected="false">Answer
                                                                                                                     D</button>
                                                                                                             </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='e'
+                                                                                                                    aria-selected="false">Answer
+                                                                                                                    E</button>
+                                                                                                            </li>
                                                                                                         </ul>
 
                                                                                                         <div
@@ -644,6 +665,460 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
+                                                                                                @else
+                                                                                                    <div
+                                                                                                        class="block block-rounded">
+                                                                                                        <ul class="nav nav-tabs nav-tabs-alt"
+                                                                                                            role="tablist">
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link active bg-danger 
+                                                                                                                text-gray
+                                                                                                                text-white"
+                                                                                                                    id="btabs-alt-static-home-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-home"
+                                                                                                                    data-option-value='f'
+                                                                                                                    aria-selected="true">Answer
+                                                                                                                    F</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='g'
+                                                                                                                    aria-selected="false">Answer
+                                                                                                                    G</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='h'
+                                                                                                                    aria-selected="false">Answer
+                                                                                                                    H</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='j'
+                                                                                                                    aria-selected="false">Answer
+                                                                                                                    J</button>
+                                                                                                            </li>
+                                                                                                            <li
+                                                                                                                class="nav-item">
+                                                                                                                <button
+                                                                                                                    class="nav-link bg-city-dark text-gray"
+                                                                                                                    id="btabs-alt-static-profile-tab"
+                                                                                                                    data-bs-toggle="tab"
+                                                                                                                    data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                    role="tab"
+                                                                                                                    aria-controls="btabs-alt-static-profile"
+                                                                                                                    data-option-value='k'
+                                                                                                                    aria-selected="false">Answer
+                                                                                                                    K</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+
+                                                                                                        <div
+                                                                                                            class="block-content tab-content">
+                                                                                                            <div class="tab-pane active"
+                                                                                                                id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="0"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                                <p>NO
+                                                                                                                    CHANGE:
+                                                                                                                    1/9</p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="1"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>1/15</p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="2"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>6/15</p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="3"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>7/15</p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                            <div class="tab-pane"
+                                                                                                                id="btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tabpanel"
+                                                                                                                aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                                <p>8/15</p>
+                                                                                                                <p><b>Explanation:
+                                                                                                                    </b>Reasons...
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @endif
+                                                                                            @elseif($single_user_selected_answers['get_question_details'][0]->type == "ACT" && $single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass')
+                                                                                                @if($single_user_selected_answers['get_question_details'][0]->question_order % 2 != 0)
+                                                                                                    <div
+                                                                                                    class="block block-rounded">
+                                                                                                    <ul class="nav nav-tabs nav-tabs-alt"
+                                                                                                        role="tablist">
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link active bg-danger 
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                id="btabs-alt-static-home-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-home"
+                                                                                                                data-option-value='a'
+                                                                                                                aria-selected="true">Answer
+                                                                                                                A</button>
+                                                                                                        </li>
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link bg-city-dark text-gray"
+                                                                                                                id="btabs-alt-static-profile-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-profile"
+                                                                                                                data-option-value='b'
+                                                                                                                aria-selected="false">Answer
+                                                                                                                B</button>
+                                                                                                        </li>
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link bg-city-dark text-gray"
+                                                                                                                id="btabs-alt-static-profile-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-profile"
+                                                                                                                data-option-value='c'
+                                                                                                                aria-selected="false">Answer
+                                                                                                                C</button>
+                                                                                                        </li>
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link bg-city-dark text-gray"
+                                                                                                                id="btabs-alt-static-profile-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-profile"
+                                                                                                                data-option-value='d'
+                                                                                                                aria-selected="false">Answer
+                                                                                                                D</button>
+                                                                                                        </li>
+                                                                                                    </ul>
+
+                                                                                                    <div
+                                                                                                        class="block-content tab-content">
+                                                                                                        <div class="tab-pane active"
+                                                                                                            id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="0"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                            <p>NO
+                                                                                                                CHANGE:
+                                                                                                                1/9</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                        <div class="tab-pane"
+                                                                                                            id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="1"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                            <p>1/15</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                        <div class="tab-pane"
+                                                                                                            id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="2"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                            <p>6/15</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                        <div class="tab-pane"
+                                                                                                            id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="3"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                            <p>7/15</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    </div>
+                                                                                                @else
+                                                                                                    <div
+                                                                                                    class="block block-rounded">
+                                                                                                    <ul class="nav nav-tabs nav-tabs-alt"
+                                                                                                        role="tablist">
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link active bg-danger 
+                                                                                                            text-gray
+                                                                                                            text-white"
+                                                                                                                id="btabs-alt-static-home-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-home"
+                                                                                                                data-option-value='f'
+                                                                                                                aria-selected="true">Answer
+                                                                                                                F</button>
+                                                                                                        </li>
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link bg-city-dark text-gray"
+                                                                                                                id="btabs-alt-static-profile-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-profile"
+                                                                                                                data-option-value='g'
+                                                                                                                aria-selected="false">Answer
+                                                                                                                G</button>
+                                                                                                        </li>
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link bg-city-dark text-gray"
+                                                                                                                id="btabs-alt-static-profile-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-profile"
+                                                                                                                data-option-value='h'
+                                                                                                                aria-selected="false">Answer
+                                                                                                                H</button>
+                                                                                                        </li>
+                                                                                                        <li
+                                                                                                            class="nav-item">
+                                                                                                            <button
+                                                                                                                class="nav-link bg-city-dark text-gray"
+                                                                                                                id="btabs-alt-static-profile-tab"
+                                                                                                                data-bs-toggle="tab"
+                                                                                                                data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                role="tab"
+                                                                                                                aria-controls="btabs-alt-static-profile"
+                                                                                                                data-option-value='j'
+                                                                                                                aria-selected="false">Answer
+                                                                                                                J</button>
+                                                                                                        </li>
+                                                                                                    </ul>
+
+                                                                                                    <div
+                                                                                                        class="block-content tab-content">
+                                                                                                        <div class="tab-pane active"
+                                                                                                            id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="0"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                            <p>NO
+                                                                                                                CHANGE:
+                                                                                                                1/9</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                        <div class="tab-pane"
+                                                                                                            id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="1"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                            <p>1/15</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                        <div class="tab-pane"
+                                                                                                            id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="2"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                            <p>6/15</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                        <div class="tab-pane"
+                                                                                                            id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            data-option="3"
+                                                                                                            role="tabpanel"
+                                                                                                            aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                            <p>7/15</p>
+                                                                                                            <p><b>Explanation:
+                                                                                                                </b>Reasons...
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    </div>
+                                                                                                @endif    
+                                                                                            @else 
+                                                                                                <div
+                                                                                                class="block block-rounded">
+                                                                                                <ul class="nav nav-tabs nav-tabs-alt"
+                                                                                                    role="tablist">
+                                                                                                    <li
+                                                                                                        class="nav-item">
+                                                                                                        <button
+                                                                                                            class="nav-link active bg-danger 
+                                                                                                        text-gray
+                                                                                                        text-white"
+                                                                                                            id="btabs-alt-static-home-tab"
+                                                                                                            data-bs-toggle="tab"
+                                                                                                            data-bs-target="#btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            role="tab"
+                                                                                                            aria-controls="btabs-alt-static-home"
+                                                                                                            data-option-value='a'
+                                                                                                            aria-selected="true">Answer
+                                                                                                            A</button>
+                                                                                                    </li>
+                                                                                                    <li
+                                                                                                        class="nav-item">
+                                                                                                        <button
+                                                                                                            class="nav-link bg-city-dark text-gray"
+                                                                                                            id="btabs-alt-static-profile-tab"
+                                                                                                            data-bs-toggle="tab"
+                                                                                                            data-bs-target="#btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            role="tab"
+                                                                                                            aria-controls="btabs-alt-static-profile"
+                                                                                                            data-option-value='b'
+                                                                                                            aria-selected="false">Answer
+                                                                                                            B</button>
+                                                                                                    </li>
+                                                                                                    <li
+                                                                                                        class="nav-item">
+                                                                                                        <button
+                                                                                                            class="nav-link bg-city-dark text-gray"
+                                                                                                            id="btabs-alt-static-profile-tab"
+                                                                                                            data-bs-toggle="tab"
+                                                                                                            data-bs-target="#btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            role="tab"
+                                                                                                            aria-controls="btabs-alt-static-profile"
+                                                                                                            data-option-value='c'
+                                                                                                            aria-selected="false">Answer
+                                                                                                            C</button>
+                                                                                                    </li>
+                                                                                                    <li
+                                                                                                        class="nav-item">
+                                                                                                        <button
+                                                                                                            class="nav-link bg-city-dark text-gray"
+                                                                                                            id="btabs-alt-static-profile-tab"
+                                                                                                            data-bs-toggle="tab"
+                                                                                                            data-bs-target="#btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                            role="tab"
+                                                                                                            aria-controls="btabs-alt-static-profile"
+                                                                                                            data-option-value='d'
+                                                                                                            aria-selected="false">Answer
+                                                                                                            D</button>
+                                                                                                    </li>
+                                                                                                </ul>
+
+                                                                                                <div
+                                                                                                    class="block-content tab-content">
+                                                                                                    <div class="tab-pane active"
+                                                                                                        id="btabs-alt-static-q1a_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                        data-option="0"
+                                                                                                        role="tabpanel"
+                                                                                                        aria-labelledby="btabs-alt-static-home-tab">
+                                                                                                        <p>NO
+                                                                                                            CHANGE:
+                                                                                                            1/9</p>
+                                                                                                        <p><b>Explanation:
+                                                                                                            </b>Reasons...
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                    <div class="tab-pane"
+                                                                                                        id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                        data-option="1"
+                                                                                                        role="tabpanel"
+                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                        <p>1/15</p>
+                                                                                                        <p><b>Explanation:
+                                                                                                            </b>Reasons...
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                    <div class="tab-pane"
+                                                                                                        id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                        data-option="2"
+                                                                                                        role="tabpanel"
+                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                        <p>6/15</p>
+                                                                                                        <p><b>Explanation:
+                                                                                                            </b>Reasons...
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                    <div class="tab-pane"
+                                                                                                        id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                        data-option="3"
+                                                                                                        role="tabpanel"
+                                                                                                        aria-labelledby="btabs-alt-static-profile-tab">
+                                                                                                        <p>7/15</p>
+                                                                                                        <p><b>Explanation:
+                                                                                                            </b>Reasons...
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                </div>
+                                                                                            @endif
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div
