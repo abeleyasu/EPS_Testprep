@@ -656,6 +656,7 @@
                                                                                                             </div>
                                                                                                             <div class="tab-pane"
                                                                                                                 id="btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="4"
                                                                                                                 role="tabpanel"
                                                                                                                 aria-labelledby="btabs-alt-static-profile-tab">
                                                                                                                 <p>8/15</p>
@@ -785,6 +786,7 @@
                                                                                                             </div>
                                                                                                             <div class="tab-pane"
                                                                                                                 id="btabs-alt-static-q1e_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
+                                                                                                                data-option="4"
                                                                                                                 role="tabpanel"
                                                                                                                 aria-labelledby="btabs-alt-static-profile-tab">
                                                                                                                 <p>8/15</p>

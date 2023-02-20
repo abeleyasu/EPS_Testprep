@@ -1772,6 +1772,7 @@
                 document.getElementById("text-message").style.display = "block";
             }
             showTab(currentTab);
+            clearModel();
         }
 
         function validateForm() {
@@ -1940,7 +1941,7 @@
                     var choiceSel = $('.getFilterChoice').val();
                     if (choiceSel == 3) {
                         for (var i = 1; i < 5; i++) {
-                            var dynamicId = 'choiceMultiChoiceInFourFill_' + '_explanation_answer_' + i;
+                            var dynamicId = 'choiceMultiChoiceInFourFill' + '_explanation_answer_' + i;
                             answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
                         }
                     } else {

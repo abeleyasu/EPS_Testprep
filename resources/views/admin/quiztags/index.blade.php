@@ -60,7 +60,7 @@
                                             class="btn btn-sm btn-alt-secondary delete-quiztag"
                                             data-id="{{$quiztag->id}}"
                                             data-bs-toggle="tooltip"
-                                            title="Delete quiztag"
+                                            title="Delete Quiztag"
                                             onclick="deleteItem({{ $quiztag->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>

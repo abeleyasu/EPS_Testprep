@@ -386,7 +386,7 @@ ul.answerOptionLsit li label input{
                             <ul class="sectionList singleQuest_{{ $practQuestion->id }}">
 								<li>{!! $practQuestion->title !!}</li>
 								<li>{{ $practQuestion->answer }}</li>
-								<li>{{ $practQuestion->getpassage->title }}</li>
+								<li>{{ isset($practQuestion->getpassage->title) ? $practQuestion->getpassage->title : ''}}</li>
 								<li>{{ $practQuestion->passage_number  }}</li>
 								<li>{{ $practQuestion->fill  }}</li>
                                 <li class="orderValUpdate_{{ $practQuestion->id }}">{{ $practQuestion->question_order  }}</li>
@@ -395,7 +395,7 @@ ul.answerOptionLsit li label input{
                                             class="btn btn-sm btn-alt-secondary edit-section"
                                             data-id="{{$practQuestion->id}}"
                                             data-bs-toggle="tooltip"
-                                            title="Edit Section"
+                                            title="Edit Question"
                                             onclick="practQuestioEdit({{ $practQuestion->id }})"
                                     >
                                        <i class="fa fa-fw fa-pencil-alt"></i>
@@ -404,7 +404,7 @@ ul.answerOptionLsit li label input{
                                             class="btn btn-sm btn-alt-secondary delete-section"
                                             data-id="{{$practQuestion->id}}"
                                             data-bs-toggle="tooltip"
-                                            title="Delete Section"
+                                            title="Delete Question"
                                             onclick="practQuestioDel({{ $practQuestion->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
@@ -635,7 +635,7 @@ ul.answerOptionLsit li label input{
                             </select>
                         </div>
                         <div class="mb-2 col-md-6">
-                            <label class="form-label">Passages:</label>
+                            <label class="form-label">Passages</label>
                             <select name="passagesType" class="form-control passagesType js-select2 select"></select>
                         </div>
                     </div>
@@ -1058,7 +1058,7 @@ ul.answerOptionLsit li label input{
                     <div class="addchoiceMultInFourFill">
                         <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceMultInFourFill">
                         <label class="form-label" style="font-size: 13px;">
-                            <select class="switchMulti addMultiChoice" onChange="addMultiChoice(this.value);">
+                            <select class="switchMulti getFilterChoice addMultiChoice" onChange="addMultiChoice(this.value);">
                                     <option value="1">Multi-Choice</option>
                                     <option value="3">Multiple Choice</option>
                                     <option value="2">Fill Choice</option>
@@ -2080,7 +2080,7 @@ ul.answerOptionLsit li label input{
 					url: '{{route("updatePracticeQuestion")}}',
 					method: 'post',
 					success: (res) => {
-                        var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Edit Section" onclick="practQuestioEdit('+res+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res+')" > <i class="fa fa-fw fa-times"></i>  </button>';
+                        var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res+')" > <i class="fa fa-fw fa-times"></i>  </button>';
 
                         $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res+'">0</li><li>'+btn+'</li>');
 						$('.addQuestion').val('');
@@ -2302,17 +2302,17 @@ ul.answerOptionLsit li label input{
                     url: '{{route("addPracticeQuestion")}}',
                     method: 'post',
                     success: (res) => {
-                        $('.addQuestion').val('');
+                            $('.addQuestion').val('');
                             $('.validError').text('');
 
-                    $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList singleQuest_'+res+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Edit Section" onclick="practQuestioEdit('+res+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
-                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res+'" data-id="'+res+'" style="display:none;">\n' +
+                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
                     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                     '</span>\n' +
-                    '<button class="btn btn-primary" value="'+res+'">'+question+'</button>\n' +
+                    '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
                     '</div>');  
                     } 
                 }); 
@@ -2418,6 +2418,8 @@ function clearModel() {
     $('#add_search-input_0').val(null).trigger("change");
     $(`.removeNewTypes, removeNewType`).remove();
     $('input[name=passagesType]').val(null).trigger("change");
+    $('#js-ckeditor-add-addQue').val(null).trigger("change");
+    $('#add_passage_number').val(null).trigger("change");
 }
 
 
@@ -2520,7 +2522,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
-                    const answer_id = `editchoiceOneInFour_explanation_answer_1${count}`;
+                    const answer_id = `editchoiceOneInFour_explanation_answer_${count}`;
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
                 }
             }
@@ -2712,7 +2714,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
 		$('#questionMultiModal .passNumber').prop('selectedIndex',0);
 		$('input[name="'+qType+'"]').attr('checked', false);
         $('input[type="radio"]').prop('checked', false);
-    $('input[type="checkbox"]').prop('checked', false);
+        $('input[type="checkbox"]').prop('checked', false);
     CKEDITOR.instances['choiceOneInFourAnswer_1'].setData('');
     CKEDITOR.instances['choiceOneInFourAnswer_2'].setData('');
     CKEDITOR.instances['choiceOneInFourAnswer_3'].setData('');
@@ -2953,7 +2955,7 @@ function getAnswerContent(answerOpt, fill){
                     var choiceSel = $('.addMultiChoice').val();
                     if(choiceSel == 3){
                         for(var i=1; i<5;i++){
-                            var dynamicId ='addChoiceMultiChoiceInFourFill_'+i;
+                            var dynamicId ='addChoiceMultiChoiceInFourFill_' + i;
                             answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
                         }
                     }else{
@@ -2984,7 +2986,7 @@ function getAnswerExpContent(answerOpt, fill) {
                     var choiceSel = $('.getFilterChoice').val();
                     if (choiceSel == 3) {
                         for (var i = 1; i < 5; i++) {
-                            var dynamicId = 'choiceMultiChoiceInFourFill_' + '_explanation_answer_' + i;
+                            var dynamicId = 'choiceMultiChoiceInFourFill_explanation_answer_' + i;
                             answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
                         }
                     } else {

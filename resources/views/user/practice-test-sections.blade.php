@@ -49,7 +49,6 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="w-75">
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-
                       This test has {{$get_total_sections}} sections and {{$total_all_section_question}} questions
                     
                     </h2>
@@ -59,9 +58,12 @@
                   </div>
                 @if($check_test_completed == 'yes')
                   @if (isset($testSections[0]) && !empty($testSections[0]))
-                  <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="" class="btn btn-alt-primary fs-8">
-                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
-                  </a>
+                    <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="margin-right: 10px;white-space: nowrap" class="btn btn-alt-primary fs-8">
+                      <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
+                    </a>
+                    <a  href="{{route('reset_test', ['test' => $testSections[0]->title , 'id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8">
+                      <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
+                    </a>
                   @endif
                 @elseif($checkTestQuestion == 0)
                   <a  href="#" style="" class="btn btn-alt-primary fs-8">
@@ -219,6 +221,11 @@
         <!-- END Page Content -->
       </main>
 <!-- END Main Container -->
+<script>
+  function resetTest(data){
+    alert(data);
+  }
+</script>
 @endsection
 
 @section('page-style')

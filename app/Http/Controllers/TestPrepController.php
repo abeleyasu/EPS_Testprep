@@ -826,4 +826,9 @@ class TestPrepController extends Controller
         
     }
 
+    public function resetTest(Request $request , $test , $id){
+        $records = DB::table('user_answers')->where(['user_id'=>Auth::id(),'test_id'=>$request['test_id']])->delete();
+        return redirect(url('user/practice-test-sections/'.$request['test_id']));
+    }
+
 }

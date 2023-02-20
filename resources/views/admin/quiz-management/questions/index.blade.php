@@ -53,14 +53,14 @@
                                     <a href="{{route('questions.edit', ['question' => $question->id])}}"
                                        class="btn btn-sm btn-alt-secondary"
                                        data-bs-toggle="tooltip"
-                                       title="Edit Section">
+                                       title="Edit Question">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
                                     <button type="button"
                                             class="btn btn-sm btn-alt-secondary delete-section"
                                             data-id="{{$question->id}}"
                                             data-bs-toggle="tooltip"
-                                            title="Delete Section"
+                                            title="Delete Question"
                                             onclick="deleteItem_fun({{ $question->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
