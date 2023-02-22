@@ -895,13 +895,13 @@
 
                         <div class="mb-2">
                             <label class="form-label" for="tags">Question Tags</label>
-                            <input name="tags" placeholder="add tags" class="form-control"/>
+                            <input name="tags" id="questionTag" placeholder="add tags" class="form-control"/>
                         </div>
                         <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
                                 <div class="col-md-5 mb-2 me-2">
                                     <label for="category_type" class="form-label">Category Type</label>
-                                    <select class="js-select2 select categoryType" id="edit_category_type_0" name="category_type" onchange="insertCategoryType(this)" multiple>
+                                    <select class="js-select2 select categoryType" id="edit_category_type_0" name="edit_category_type" onchange="insertCategoryType(this)" multiple>
                                         @foreach ($getCategoryTypes as $categoryType)
                                             <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
                                         @endforeach
@@ -909,7 +909,7 @@
                                 </div>
                                 <div class="mb-2 col-md-5 add_question_type_select">
                                     <label for="search-input" class="form-label">Question Type</label>
-                                    <select class="js-select2 select questionType" id="edit_search-input_0" name="search-input" onchange="insertQuestionType(this)" multiple>
+                                    <select class="js-select2 select questionType" id="edit_search-input_0" name="edit_search-input" onchange="insertQuestionType(this)" multiple>
                                         @foreach ($getQuestionTypes as $questionType)
                                             <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
                                         @endforeach
@@ -1118,7 +1118,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="currentModelQueId" value="0" id="currentModelQueId">
+                    <input type="hidden" name="editCurrentModelQueId" value="0" id="editCurrentModelQueId">
                     <input type="hidden" name="sectionAddId" value="0" class="sectionAddId">
                     <button type="button" class="btn btn-primary update_question_section">Update changes</button>
                 </div>
@@ -2147,23 +2147,35 @@
                     url: '{{ route("addPracticeQuestion") }}',
                     method: 'post',
                     success: (res) => {
-                        $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append(
-                            '<ul class="sectionList"><li>' + question + '</li><li>' + answerType +
-                            '</li><li>' + passagesTypeTxt + '</li><li>' + passNumber + '</li><li>' +
-                            fill + '</li><li class="orderRearnge_' + res.question_id + '">' + res
-                            .question_order + '</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button></li></ul>');
+                        // $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append(
+                        //     '<ul class="sectionList"><li>' + question + '</li><li>' + answerType +
+                        //     '</li><li>' + passagesTypeTxt + '</li><li>' + passNumber + '</li><li>' +
+                        //     fill + '</li><li class="orderRearnge_' + res.question_id + '">' + res
+                        //     .question_order + '</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button></li></ul>');
 
+                        // $('.addQuestion').val('');
+                        // $('.validError').text('');
+                        // $('.questionAddId').val(res.question_id);
+                        // $('#listWithHandleQuestion').append('<div class="list-group-item" data-id="' +
+                        //     res.question_id + '">\n' +
+                        //     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                        //     '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                        //     '</span>\n' +
+                        //     '<button class="btn btn-primary" value="' + res.question_id + '">' +
+                        //     question + '</button>\n' +
+                        //     '</div>');
                         $('.addQuestion').val('');
                         $('.validError').text('');
-                        $('.questionAddId').val(res.question_id);
-                        $('#listWithHandleQuestion').append('<div class="list-group-item" data-id="' +
-                            res.question_id + '">\n' +
-                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                            '</span>\n' +
-                            '<button class="btn btn-primary" value="' + res.question_id + '">' +
-                            question + '</button>\n' +
-                            '</div>');
+
+                    $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+
+                    
+                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
+                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                    '</span>\n' +
+                    '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
+                    '</div>'); 
                     }
                 });
             }
@@ -2238,7 +2250,7 @@
                         var result = res[0];
                         let categorytypeArr = JSON.parse(result.category_type);
                         let questiontypeArr = JSON.parse(result.question_type_id);
-                        $('#currentModelQueId').val(result.id);
+                        $('#editCurrentModelQueId').val(result.id);
                         $('#quesFormat').val(result.format);
                         $('.sectionAddId').val(result.practice_test_sections_id);
                         $('#edittestSectionTypeRead').val(result.type);
@@ -2513,24 +2525,25 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
     $('.update_question_section').click(function() {
 
         $('.sectionTypesFull').show();
-        var currentModelQueId = $('#currentModelQueId').val();
+        var currentModelQueId = $('#editCurrentModelQueId').val();
         var format = $('#quesFormat').val();
         var fill = 'N/A';
         var fillType = 'N/A';
         var answerType ='N/A';
         var fillVals =[];
         var multiChoice = '';
-        var tags = $('input[name="tags"]').val();
+        // var tags = $('input[name="tags"]').val();
+        var tags = $("#questionTag").val();
                         
         var testSectionType = $('#edittestSectionTypeRead').val();
-        var get_category_type_values = $('select[name=category_type]').map(function(i,v) {
+        var get_category_type_values = $('select[name=edit_category_type]').map(function(i,v) {
             var category_type_arr = [];
             let category_type_val = $(v).val();
             category_type_arr.push(category_type_val);
             return category_type_arr;
         }).get();
 
-        var get_question_type_values = $('select[name=search-input]').map(function(i,v) {
+        var get_question_type_values = $('select[name=edit_search-input]').map(function(i,v) {
             var question_type_arr = [];
             let question_type_val = $(v).val();
             question_type_arr.push(question_type_val);
@@ -2542,8 +2555,8 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var questionType = $('#editQuestionMultiModal ' + activeAnswerType + ' #editQuestionType').val();
         var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
         var passNumber = $('#editQuestionMultiModal .passNumber').val();
-        var passagesType = $('.passagesType').val();
-        var passagesTypeTxt = $(".passagesType option:selected").text();
+        var passagesType = $('.editPassagesType').val();
+        var passagesTypeTxt = $(".editPassagesType option:selected").text();
 
         if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType == '' || passNumber == '' ){
             
