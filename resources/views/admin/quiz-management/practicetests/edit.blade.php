@@ -15,7 +15,7 @@ input {
 }
 
 input.invalid {
-    background-color: #ffdddd
+    background-color: #ffdddd;
 }
 
 .tab {
@@ -635,8 +635,8 @@ ul.answerOptionLsit li label input{
                             </select>
                         </div>
                         <div class="mb-2 col-md-6">
-                            <label class="form-label">Passages</label>
-                            <select name="passagesType" class="form-control passagesType js-select2 select"></select>
+                            <label class="form-label" for="passagesType">Passages</label>
+                            <select name="passagesType" id="passagesType" class="passagesType js-select2 select"></select>
                         </div>
                     </div>
                     <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
@@ -1998,8 +1998,8 @@ ul.answerOptionLsit li label input{
             var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
             var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
             var passNumber = $('#questionMultiModal .passNumber').val();
-			var passagesType = $('.passagesType').val();
-            var passagesTypeTxt = $(".passagesType option:selected").text();
+			var passagesType = $('#passagesType').val();
+            var passagesTypeTxt = $("#passagesType option:selected").text();
 
             if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
                 $('#questionMultiModal .validError').text('Below fields are required!');
@@ -2417,7 +2417,8 @@ function clearModel() {
     $('#add_category_type_0').val(null).trigger("change");
     $('#add_search-input_0').val(null).trigger("change");
     $(`.removeNewTypes, removeNewType`).remove();
-    $('input[name=passagesType]').val(null).trigger("change");
+    $('#passagesType').val(null).trigger("change");
+    $('#passagesType').html('');
     $('#js-ckeditor-add-addQue').val(null).trigger("change");
     $('#add_passage_number').val(null).trigger("change");
 }
@@ -2448,7 +2449,10 @@ function practQuestioEdit(id){
                   
                 $('input[name=tags]').val(tagsString);
                 $(".passNumber").val(result.passage_number).change();
-                for (let index = 1; index < categorytypeArr.length; index++) { 
+                $('#passagesType').val(result.passages_id).change();
+                console.log("result.passage_number", result.passage_number);
+                console.log("result.passages_id", result.passages_id);
+                for (let index = 1; index < categorytypeArr.length; index++) {
                     addNewTypes(index,'repet');
                 }
 
@@ -2476,13 +2480,10 @@ function practQuestioEdit(id){
                     success: (passRes) => {
                         var opt = '';
                         $.each(passRes, function( key, val){
-                            if(val.id == passRes.passages_id){
-                                opt +='<option value="'+val.id+'" selected="selected">'+val.title+'</option>';
-                            }else{
-                                opt +='<option value="'+val.id+'">'+val.title+'</option>';
-                            }                        
+                            opt +='<option value="'+val.id+'">'+val.title+'</option>';                      
                         });
-                        $('.passagesType').html(opt);
+                        $('#passagesType').html(opt);
+                        $("select[name=passagesType]").val(result.passages_id).trigger('change');
                     }
                 });
                 getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp );

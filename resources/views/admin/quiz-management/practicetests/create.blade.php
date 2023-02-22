@@ -1911,6 +1911,7 @@
             $('#edit_search-input_0').val(null).trigger("change");
             $(`.removeNewTypes`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
+            $('select[name=editPassagesType]').val(null).trigger("change");
         }
 
         $(document).on('click', '.add_question_modal_multi', function() {
@@ -2237,7 +2238,7 @@
             });
         }
         function practQuestioEdit(id){
-            // clearModel();
+            clearModel();
             $.ajax({
                 data:{
                     'question_id':id,
@@ -2297,6 +2298,7 @@
                                     }                        
                                 });
                                 $('.editPassagesType').html(opt);
+                                $("select[name=editPassagesType]").val(result.passages_id).trigger('change');
                             }
                         });
                         getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp );
