@@ -209,12 +209,12 @@
                                     {{-- header --}}
                                     <table class="js-table-sections table table-hover table-vcenter">
                                         <thead>
-                                            <tr>
-                                                <th style="width: 48px;"></th>
-                                                <th style="width: 5%;">Q#</th>
-                                                <th style="width: 8%;" class="text-center">Your Answer</th>
-                                                <th style="width: 11%;" class="text-center">Correct Answer</th>
-                                                <th style="width: 10%;">Flags</th>
+                                            <tr class="d-flex align-items-center justify-content-between" style="width: 338px">
+                                                <th></th>
+                                                <th>Q#</th>
+                                                <th class="text-center">Your Answer</th>
+                                                <th class="text-center">Correct Answer</th>
+                                                <th>Flags</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -277,6 +277,23 @@
                                                                     "</p>"));
                                                             }
                                                         }
+
+                                                        // if(array_correct[0] == 'a' || array_correct[0] == 'f'){
+                                                        //     $("div").find('[data-option = 0]').html($("<p>" + get_answers_exp[0] +
+                                                        //         "</p><div class='d-flex'>Explanation: &nbsp;"+get_answers_explanation[0]+"</div>"));
+                                                        // } else if(array_correct[0] == 'b' || array_correct[0] == 'g'){
+                                                        //     $("div").find('[data-option = 1]').html($("<p>" + get_answers_exp[1] +
+                                                        //         "</p><div class='d-flex'>Explanation: &nbsp;"+get_answers_explanation[1]+"</div>"));
+                                                        // } else if(array_correct[0] == 'c' || array_correct[0] == 'h'){
+                                                        //     $("div").find('[data-option = 2]').html($("<p>" + get_answers_exp[2] +
+                                                        //         "</p><div class='d-flex'>Explanation: &nbsp;"+get_answers_explanation[2]+"</div>"));
+                                                        // } else if(array_correct[0] == 'd' || array_correct[0] == 'j'){
+                                                        //     $("div").find('[data-option = 3]').html($("<p>" + get_answers_exp[3] +
+                                                        //         "</p><div class='d-flex'>Explanation: &nbsp;"+get_answers_explanation[3]+"</div>"));
+                                                        // } else {
+                                                        //     $("div").find('[data-option = 4]').html($("<p>" + get_answers_exp[4] +
+                                                        //         "</p><div class='d-flex'>Explanation: &nbsp;"+get_answers_explanation[4]+"</div>"));
+                                                        // }
 
                                                         if ($(this).data('option-value') == 'a') {
                                                             $(this).addClass('active');
@@ -383,8 +400,8 @@
                                                                                     class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                             </td>
                                                                             <td class="d-flex align-items-center">
-                                                                                <div
-                                                                                    style="width: 80px;text-align: start;">
+                                                                                <div style="margin-right: 26px;"
+                                                                                    >
                                                                                     <button type="button"
                                                                                         class="btn btn-danger fs-xs fw-semibold me-1 error-button"
                                                                                         data-bs-toggle="tooltip"
@@ -394,8 +411,8 @@
                                                                                 </div>
                                                                                 <?php $correct = str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
                                                                                 @if ($single_user_selected_answers['user_selected_answer'] == $correct)
-                                                                                    <div
-                                                                                        style="width: 102px;text-align:start">
+                                                                                    <div style="margin-right: 43px;"
+                                                                                        >
                                                                                         <button type="button"
                                                                                             class="correct-answers btn btn-success fs-xs fw-semibold me-1"
                                                                                             data-bs-toggle="tooltip"
@@ -407,8 +424,8 @@
                                                                                             {{ $single_user_selected_answers['user_selected_answer'] }}</button>
                                                                                     </div>
                                                                                 @else
-                                                                                    <div
-                                                                                        style="width: 102px;text-align: start">
+                                                                                    <div style="margin-right: 43px;"
+                                                                                        >
                                                                                         <button type="button"
                                                                                             class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1"
                                                                                             data-bs-toggle="tooltip"
@@ -421,8 +438,7 @@
                                                                                     </div>
                                                                                 @endif
 
-                                                                                <div
-                                                                                    style="width: 110px;text-align: start;">
+                                                                                <div style="margin-right: 43px;">
                                                                                     <button type="button"
                                                                                         class="btn btn-success fs-xs fw-semibold me-1"
                                                                                         data-bs-toggle="tooltip"
@@ -433,32 +449,33 @@
                                                                                             style="color:white"></i>
                                                                                         {{ $single_user_selected_answers['get_question_details'][0]->question_answer }}</button>
                                                                                 </div>
+                                                                                <div >
+                                                                                    @if ($single_user_selected_answers['user_selected_flag'] == 'yes')
+                                                                                        <i class="fa fa-fw fa-flag me-1"
+                                                                                            style="color:rgb(255, 255, 255)"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="Flagged Question"></i>
+                                                                                    @endif
 
-                                                                                @if ($single_user_selected_answers['user_selected_flag'] == 'yes')
-                                                                                    <i class="fa fa-fw fa-flag me-1"
-                                                                                        style="color:rgb(255, 255, 255)"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-trigger="click"
-                                                                                        data-bs-placement="top"
-                                                                                        title="Flagged Question"></i>
-                                                                                @endif
+                                                                                    @if ($single_user_selected_answers['user_selected_guess'] == 'yes')
+                                                                                        <i class="fa fa-fw fa-circle-question me-1"
+                                                                                            style="color:rgb(255, 255, 255)"
+                                                                                            data-bs-toggle="tooltip"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="Guessed On Question"></i>
+                                                                                    @endif
 
-                                                                                @if ($single_user_selected_answers['user_selected_guess'] == 'yes')
-                                                                                    <i class="fa fa-fw fa-circle-question me-1"
-                                                                                        style="color:rgb(255, 255, 255)"
-                                                                                        data-bs-toggle="tooltip"
-                                                                                        data-bs-trigger="click"
-                                                                                        data-bs-placement="top"
-                                                                                        title="Guessed On Question"></i>
-                                                                                @endif
-
-                                                                                @if ($single_user_selected_answers['user_selected_answer'] == '-')
-                                                                                    <i style="color:rgb(255, 255, 255)"
-                                                                                        class="fa fa-fw fa-forward me-1"
-                                                                                        data-bs-trigger="click"
-                                                                                        data-bs-placement="top"
-                                                                                        title="Skipped Question"></i>
-                                                                                @endif
+                                                                                    @if ($single_user_selected_answers['user_selected_answer'] == '-')
+                                                                                        <i style="color:rgb(255, 255, 255)"
+                                                                                            class="fa fa-fw fa-forward me-1"
+                                                                                            data-bs-trigger="click"
+                                                                                            data-bs-placement="top"
+                                                                                            title="Skipped Question"></i>
+                                                                                    @endif
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1081,42 +1098,42 @@
                                                                                                         data-option="0"
                                                                                                         role="tabpanel"
                                                                                                         aria-labelledby="btabs-alt-static-home-tab">
-                                                                                                        <p>NO
+                                                                                                        {{-- <p>NO
                                                                                                             CHANGE:
                                                                                                             1/9</p>
                                                                                                         <p><b>Explanation:
                                                                                                             </b>Reasons...
-                                                                                                        </p>
+                                                                                                        </p> --}}
                                                                                                     </div>
                                                                                                     <div class="tab-pane"
                                                                                                         id="btabs-alt-static-q1b_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
                                                                                                         data-option="1"
                                                                                                         role="tabpanel"
                                                                                                         aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                        <p>1/15</p>
+                                                                                                        {{-- <p>1/15</p>
                                                                                                         <p><b>Explanation:
                                                                                                             </b>Reasons...
-                                                                                                        </p>
+                                                                                                        </p> --}}
                                                                                                     </div>
                                                                                                     <div class="tab-pane"
                                                                                                         id="btabs-alt-static-q1c_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
                                                                                                         data-option="2"
                                                                                                         role="tabpanel"
                                                                                                         aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                        <p>6/15</p>
+                                                                                                        {{-- <p>6/15</p>
                                                                                                         <p><b>Explanation:
                                                                                                             </b>Reasons...
-                                                                                                        </p>
+                                                                                                        </p> --}}
                                                                                                     </div>
                                                                                                     <div class="tab-pane"
                                                                                                         id="btabs-alt-static-q1d_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
                                                                                                         data-option="3"
                                                                                                         role="tabpanel"
                                                                                                         aria-labelledby="btabs-alt-static-profile-tab">
-                                                                                                        <p>7/15</p>
+                                                                                                        {{-- <p>7/15</p>
                                                                                                         <p><b>Explanation:
                                                                                                             </b>Reasons...
-                                                                                                        </p>
+                                                                                                        </p> --}}
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 </div>
@@ -2611,6 +2628,9 @@
             max-width: 1195px !important;
             overflow: hidden !important;
         }
+        .table thead th{
+        padding: 10px 19px 10px 12px !important;
+    }
     </style>
 @endsection
 

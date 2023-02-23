@@ -88,12 +88,12 @@
                     {{-- header --}}
                     <table class="js-table-sections table table-hover table-vcenter">
                         <thead>
-                            <tr>
-                                <th style="width: 48px;"></th>
-                                <th style="width: 5%;">Q#</th>
-                                <th style="width: 8%;" class="text-center">Your Answer</th> 
-                                <th style="width: 11%;" class="text-center">Correct Answer</th> 
-                                <th style="width: 10%;">Flags</th> 
+                            <tr class="d-flex align-items-center justify-content-between" style="width: 338px">
+                                <th ></th>
+                                <th>Q#</th>
+                                <th class="text-center">Your Answer</th> 
+                                <th class="text-center">Correct Answer</th> 
+                                <th>Flags</th> 
                                 <th></th>
                             </tr>
                         </thead>
@@ -117,18 +117,20 @@
                                                     <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                 </td>
                                                 <td class="d-flex align-items-center">
-                                                    <div style="width: 78px;text-align: start;">
-                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">1</button>
+                                                    <div style="margin-right: 23px;">
+                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">1</button>
                                                     </div>
-                                                    <div style="width: 105px;text-align:start">
-                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
+                                                    <div style="margin-right: 39px;">
+                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
                                                     </div>
-                                                    <div style="width: 110px;text-align: start;">
-                                                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> E</button>
+                                                    <div style="margin-right: 39px;">
+                                                        <button type="button" class="btn btn-success fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> E</button>
                                                     </div>
-                                                    <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
-                                                    <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
-                                                    <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                    <div>
+                                                        <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
+                                                        <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
+                                                        <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -440,18 +442,20 @@
                                                     <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                 </td>
                                                 <td class="d-flex align-items-center">
-                                                    <div style="width: 78px;text-align: start;">
-                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">2</button>
+                                                    <div style="margin-right: 23px;">
+                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold  " data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">2</button>
                                                     </div>
-                                                    <div style="width: 105px;text-align:start">
-                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> H</button>
+                                                    <div style="margin-right: 39px;">
+                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> H</button>
                                                     </div>
-                                                    <div style="width: 110px;text-align: start;">
-                                                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> J</button>
+                                                    <div style="margin-right: 39px;">
+                                                        <button type="button" class="btn btn-success fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> J</button>
                                                     </div>
-                                                    <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
-                                                    <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
-                                                    <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                    <div>
+                                                        <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
+                                                        <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
+                                                        <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -898,19 +902,21 @@
                                                 <td class="text-center">
                                                     <i class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                 </td>
-                                                <td class="d-flex align-items-center">
-                                                    <div style="width: 78px;text-align: start;">
-                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">3</button>
+                                                <td class="d-flex align-items-center" >
+                                                    <div style="margin-right: 23px;">
+                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type">3</button>
                                                     </div>
-                                                    <div style="width: 105px;text-align:start">
-                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
+                                                    <div style="margin-right: 39px;"> 
+                                                        <button type="button" class="btn btn-danger fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-xmark me-1" style="color:white"></i> A</button>
                                                     </div>
-                                                    <div style="width: 110px;text-align: start;">
-                                                        <button type="button" class="btn btn-success fs-xs fw-semibold me-1" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> B</button>
+                                                    <div style="margin-right: 39px;">
+                                                        <button type="button" class="btn btn-success fs-xs fw-semibold" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Category Type"><i class="fa fa-lg fa-circle-check me-1" style="color:white"></i> B</button>
                                                     </div>
-                                                    <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
-                                                    <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
-                                                    <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                    <div>
+                                                        <i class="fa fa-fw fa-flag me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Flagged Question"></i>
+                                                        <i class="fa fa-fw fa-circle-question me-1" style="color:rgb(255, 255, 255)" data-bs-toggle="tooltip" data-bs-trigger="click" data-bs-placement="top" title="Guessed On Question"></i>
+                                                        <i style="color:rgb(255, 255, 255)" class="fa fa-fw fa-forward me-1" data-bs-trigger="click" data-bs-placement="top" title="Skipped Question"></i>
+                                                </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -1238,6 +1244,11 @@
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('css/test-review.css') }}">
+<style>
+    .table thead th{
+        padding: 10px 20px 10px 10px !important;
+    }
+</style>
 @endsection
 
 @section('page-script')
