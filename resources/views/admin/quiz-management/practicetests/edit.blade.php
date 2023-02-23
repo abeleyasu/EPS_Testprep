@@ -1231,14 +1231,12 @@ ul.answerOptionLsit li label input{
             if($('#questionMultiModal input[type="radio"]').is(":checked")) {
                 $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                 $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
-                $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
             }
         });
 
         $(document).on('change','#questionMultiModal input[type="checkbox"]',() =>{
             if($('#questionMultiModal input[type="checkbox"]').is(":checked")) {
                 $('#questionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
-                $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
                 $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             }
         });
@@ -2133,6 +2131,10 @@ ul.answerOptionLsit li label input{
 
         $(document).on('click','.add_question_modal_multi',function(){
             clearModel();
+            $('#addQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+            $('#addQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+            $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+            $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();
             var AnuserOpts = $('#sectionDisplay_'+dataId+' .firstRecord ul li span .selectedSecTxt').val();

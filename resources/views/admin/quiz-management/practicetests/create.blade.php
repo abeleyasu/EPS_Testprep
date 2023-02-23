@@ -1946,6 +1946,10 @@
 
         $(document).on('click', '.add_question_modal_multi', function() {
             clearModel();
+            $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+            $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+            $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+            $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             var dataId = $(this).attr("data-id");
             var AnuserOpts = $('#sectionDisplay_' + dataId + ' .firstRecord ul li span .selectedSecTxt').val();
 
