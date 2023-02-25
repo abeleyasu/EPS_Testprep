@@ -642,95 +642,270 @@ ul.answerOptionLsit li label input{
                     <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
                     <div class="mb-2" id="selectedLayoutQuestion">
                        
-                        <div class="choiceOneInFour"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFour">
+                        <div class="choiceOneInFour_Odd"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFour_Odd">
                             <ul class="answerOptionLsit">
-                                <li class="choiceOneInFourAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label><textarea id="editChoiceOneInFourAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                                <li class="choiceOneInFour_OddAnswer_0">
+                                    <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_OddAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer A</label>
-                                    <textarea id="editchoiceOneInFour_explanation_answer_1" name="editchoiceOneInFour_explanation_answer_1"
+                                    <textarea id="editchoiceOneInFour_Odd_explanation_answer_1" name="editchoiceOneInFour_explanation_answer_1"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                                <li class="choiceOneInFourAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFour"></label><textarea id="editChoiceOneInFourAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                                <li class="choiceOneInFour_OddAnswer_1">
+                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_OddAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer B</label>
-                                    <textarea id="editchoiceOneInFour_explanation_answer_2" name="editchoiceOneInFour_explanation_answer_2"
+                                    <textarea id="editchoiceOneInFour_Odd_explanation_answer_2" name="editchoiceOneInFour_explanation_answer_2"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                                <li class="choiceOneInFourAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFour"></label><textarea id="editChoiceOneInFourAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                                <li class="choiceOneInFour_OddAnswer_2">
+                                    <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_OddAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer C</label>
-                                    <textarea id="editchoiceOneInFour_explanation_answer_3" name="editchoiceOneInFour_explanation_answer_3"
+                                    <textarea id="editchoiceOneInFour_Odd_explanation_answer_3" name="editchoiceOneInFour_explanation_answer_3"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                                <li class="choiceOneInFourAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFour"></label><textarea id="editChoiceOneInFourAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                                <li class="choiceOneInFour_OddAnswer_3">
+                                    <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_OddAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer D</label>
-                                    <textarea id="editchoiceOneInFour_explanation_answer_4" name="editchoiceOneInFour_explanation_answer_4"
-                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
-                                </li>
-                            </ul>
-                        </div>
-                    
-                        <div class="choiceOneInFive"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFive">
-                            <ul class="answerOptionLsit">
-                                <li class="choiceOneInFiveAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label><textarea id="editChoiceOneInFiveAnswer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
-                                <li style="display: none">
-                                    <label class="form-label">Explanation Answer A</label>
-                                    <textarea id="editchoiceOneInFive_explanation_answer_1" name="editchoiceOneInFive_explanation_answer_1"
-                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
-                                </li>
-                                <li class="choiceOneInFiveAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFive"></label><textarea id="editChoiceOneInFiveAnswer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
-                                <li style="display: none">
-                                    <label class="form-label">Explanation Answer B</label>
-                                    <textarea id="editchoiceOneInFive_explanation_answer_2" name="editchoiceOneInFive_explanation_answer_2"
-                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
-                                </li>
-                                <li class="choiceOneInFiveAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFive"></label><textarea id="editChoiceOneInFiveAnswer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
-                                <li style="display: none">
-                                    <label class="form-label">Explanation Answer C</label>
-                                    <textarea id="editchoiceOneInFive_explanation_answer_3" name="editchoiceOneInFive_explanation_answer_3"
-                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
-                                </li>
-                                <li class="choiceOneInFiveAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFive"><textarea id="editChoiceOneInFiveAnswer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
-                                <li style="display: none">
-                                    <label class="form-label">Explanation Answer D</label>
-                                    <textarea id="editchoiceOneInFive_explanation_answer_4" name="editchoiceOneInFive_explanation_answer_4"
-                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
-                                </li>
-                                <li class="choiceOneInFiveAnswer_4"><label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="choiceOneInFive"></label><textarea id="editChoiceOneInFiveAnswer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
-                                <li style="display: none">
-                                    <label class="form-label">Explanation Answer E</label>
-                                    <textarea id="editchoiceOneInFive_explanation_answer_5" name="editchoiceOneInFive_explanation_answer_5"
+                                    <textarea id="editchoiceOneInFour_Odd_explanation_answer_4" name="editchoiceOneInFour_explanation_answer_4"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="choiceOneInFourPass">
-                            <input type="hidden" name="addQuestionType" id="questionType" value="choiceOneInFourPass">
+                        {{-- new  --}}
+                        <div class="choiceOneInFour_Even"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFour_Even">
                             <ul class="answerOptionLsit">
-                                <li class="choiceOneInFourPassAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label><textarea id="editChoiceOneInFourPassAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                <li class="choiceOneInFour_EvenAnswer_0">
+                                    <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_EvenAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer F</label>
+                                    <textarea id="editchoiceOneInFour_Even_explanation_answer_1" name="editchoiceOneInFour_explanation_answer_1"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFour_EvenAnswer_1">
+                                    <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_EvenAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer G</label>
+                                    <textarea id="editchoiceOneInFour_Even_explanation_answer_2" name="editchoiceOneInFour_explanation_answer_2"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFour_EvenAnswer_2">
+                                    <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_EvenAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer H</label>
+                                    <textarea id="editchoiceOneInFour_Even_explanation_answer_3" name="editchoiceOneInFour_explanation_answer_3"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFour_EvenAnswer_3">
+                                    <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFour"></label>
+                                    <textarea id="editChoiceOneInFour_EvenAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer J</label>
+                                    <textarea id="editchoiceOneInFour_Even_explanation_answer_4" name="editchoiceOneInFour_explanation_answer_4"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                            </ul>
+                        </div>
+                    
+                        <div class="choiceOneInFive_Odd"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFive_Odd">
+                            <ul class="answerOptionLsit">
+                                <li class="choiceOneInFive_OddAnswer_0">
+                                    <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_OddAnswer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer A</label>
-                                    <textarea id="editchoiceOneInFourPass_explanation_answer_1" name="editchoiceOneInFourPass_explanation_answer_1"
+                                    <textarea id="editchoiceOneInFive_Odd_explanation_answer_1" name="editchoiceOneInFive_explanation_answer_1"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                                <li class="choiceOneInFourPassAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFourPass"></label><textarea id="editChoiceOneInFourPassAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                <li class="choiceOneInFive_OddAnswer_1">
+                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_OddAnswer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer B</label>
-                                    <textarea id="editchoiceOneInFourPass_explanation_answer_2" name="editchoiceOneInFourPass_explanation_answer_2"
+                                    <textarea id="editchoiceOneInFive_Odd_explanation_answer_2" name="editchoiceOneInFive_explanation_answer_2"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                                <li class="choiceOneInFourPassAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="choiceOneInFourPass"></label><textarea id="editChoiceOneInFourPassAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                <li class="choiceOneInFive_OddAnswer_2">
+                                    <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_OddAnswer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
-                                    <label class="form-label">Explanation Answer c</label>
-                                    <textarea id="editchoiceOneInFourPass_explanation_answer_3" name="editchoiceOneInFourPass_explanation_answer_3"
+                                    <label class="form-label">Explanation Answer C</label>
+                                    <textarea id="editchoiceOneInFive_Odd_explanation_answer_3" name="editchoiceOneInFive_explanation_answer_3"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                                <li class="choiceOneInFourPassAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFourPass"></label><textarea id="editChoiceOneInFourPassAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                <li class="choiceOneInFive_OddAnswer_3">
+                                    <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_OddAnswer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
                                 <li style="display: none">
                                     <label class="form-label">Explanation Answer D</label>
-                                    <textarea id="editchoiceOneInFourPass_explanation_answer_4" name="editchoiceOneInFourPass_explanation_answer_4"
+                                    <textarea id="editchoiceOneInFive_Odd_explanation_answer_4" name="editchoiceOneInFive_explanation_answer_4"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFive_OddAnswer_4">
+                                    <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_OddAnswer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer E</label>
+                                    <textarea id="editchoiceOneInFive_Odd_explanation_answer_5" name="editchoiceOneInFive_explanation_answer_5"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {{-- new  --}}
+                        <div class="choiceOneInFive_Even"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFive_Even">
+                            <ul class="answerOptionLsit">
+                                <li class="choiceOneInFive_EvenAnswer_0">
+                                    <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_EvenAnswer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer F</label>
+                                    <textarea id="editchoiceOneInFive_Even_explanation_answer_1" name="editchoiceOneInFive_explanation_answer_1"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFive_EvenAnswer_1">
+                                    <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_EvenAnswer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer G</label>
+                                    <textarea id="editchoiceOneInFive_Even_explanation_answer_2" name="editchoiceOneInFive_explanation_answer_2"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFive_EvenAnswer_2">
+                                    <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_EvenAnswer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer H</label>
+                                    <textarea id="editchoiceOneInFive_Even_explanation_answer_3" name="editchoiceOneInFive_explanation_answer_3"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFive_EvenAnswer_3">
+                                    <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_EvenAnswer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer J</label>
+                                    <textarea id="editchoiceOneInFive_Even_explanation_answer_4" name="editchoiceOneInFive_explanation_answer_4"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFive_EvenAnswer_4">
+                                    <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio"  value="k" name="choiceOneInFive"></label>
+                                    <textarea id="editChoiceOneInFive_EvenAnswer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer K</label>
+                                    <textarea id="editchoiceOneInFive_Even_explanation_answer_5" name="editchoiceOneInFive_explanation_answer_5"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="choiceOneInFourPass_Odd">
+                            <input type="hidden" name="addQuestionType" id="questionType" value="choiceOneInFourPass_Odd">
+                            <ul class="answerOptionLsit">
+                                <li class="choiceOneInFourPass_OddAnswer_0">
+                                    <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_OddAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer A</label>
+                                    <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_1" name="editchoiceOneInFourPass_explanation_answer_1"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFourPass_OddAnswer_1">
+                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_OddAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer B</label>
+                                    <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_2" name="editchoiceOneInFourPass_explanation_answer_2"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFourPass_OddAnswer_2">
+                                    <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_OddAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer c</label>
+                                    <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_3" name="editchoiceOneInFourPass_explanation_answer_3"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFourPass_OddAnswer_3">
+                                    <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_OddAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer D</label>
+                                    <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_4" name="editchoiceOneInFourPass_explanation_answer_4"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {{-- new  --}}
+                        <div class="choiceOneInFourPass_Even">
+                            <input type="hidden" name="addQuestionType" id="questionType" value="choiceOneInFourPass_Even">
+                            <ul class="answerOptionLsit">
+                                <li class="choiceOneInFourPass_EvenAnswer_0">
+                                    <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_EvenAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer F</label>
+                                    <textarea id="editchoiceOneInFourPass_Even_explanation_answer_1" name="editchoiceOneInFourPass_explanation_answer_1"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFourPass_EvenAnswer_1">
+                                    <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_EvenAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer G</label>
+                                    <textarea id="editchoiceOneInFourPass_Even_explanation_answer_2" name="editchoiceOneInFourPass_explanation_answer_2"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFourPass_EvenAnswer_2">
+                                    <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio"  value="h" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_EvenAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer H</label>
+                                    <textarea id="editchoiceOneInFourPass_Even_explanation_answer_3" name="editchoiceOneInFourPass_explanation_answer_3"
+                                        class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                                </li>
+                                <li class="choiceOneInFourPass_EvenAnswer_3">
+                                    <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFourPass"></label>
+                                    <textarea id="editChoiceOneInFourPass_EvenAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                                </li>
+                                <li style="display: none">
+                                    <label class="form-label">Explanation Answer J</label>
+                                    <textarea id="editchoiceOneInFourPass_Even_explanation_answer_4" name="editchoiceOneInFourPass_explanation_answer_4"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                             </ul>
@@ -945,111 +1120,281 @@ ul.answerOptionLsit li label input{
                     </div> --}}
                     <input type="hidden" name="selectedAnswerType" id="selectedAnswerType">
                     <div class="mb-2" id="addSelectedLayoutQuestion">
-                       <div class="addchoiceOneInFour"><input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFour">
+                    <div class="addchoiceOneInFour_Odd">
+                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFour_Odd">
                         <ul class="answerOptionLsit">
                             <li>
                                 <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFour"></label>
-                                <textarea id="choiceOneInFourAnswer_1" name="choiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                <textarea id="choiceOneInFour_OddAnswer_1" name="choiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                             </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer A</label>
-                                <textarea id="choiceOneInFour_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
+                                <textarea id="choiceOneInFour_Odd_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                             <li>
                                 <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceOneInFour"></label>
-                                <textarea id="choiceOneInFourAnswer_2" name="choiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                <textarea id="choiceOneInFour_OddAnswer_2" name="choiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                             </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer B</label>
-                                <textarea id="choiceOneInFour_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
+                                <textarea id="choiceOneInFour_Odd_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                             <li>
                                 <label class="form-label" style="font-size: 13px;"><span>C:</span>
                                     <input type="radio"  value="c" name="addChoiceOneInFour">
                                 </label>
-                                <textarea id="choiceOneInFourAnswer_3" name="choiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                <textarea id="choiceOneInFour_OddAnswer_3" name="choiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                             </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer C</label>
-                                <textarea id="choiceOneInFour_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
+                                <textarea id="choiceOneInFour_Odd_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                             <li>
                                 <label class="form-label" style="font-size: 13px;"><span>D: </span>
                                     <input type="radio"  value="d" name="addChoiceOneInFour">
                                 </label>    
-                                <textarea id="choiceOneInFourAnswer_4" name="choiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                                <textarea id="choiceOneInFour_OddAnswer_4" name="choiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                             </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer D</label>
-                                <textarea id="choiceOneInFour_explanation_answer_4" name="choiceOneInFour_explanation_answer_4"
+                                <textarea id="choiceOneInFour_Odd_explanation_answer_4" name="choiceOneInFour_explanation_answer_4"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="addchoiceOneInFive"><input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFour">
+                    {{-- new  --}}
+                    <div class="addchoiceOneInFour_Even">
+                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFour_Even">
                         <ul class="answerOptionLsit">
-                            <li><label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFive"></label><textarea id="choiceOneInFiveAnswer_1" name="choiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="addChoiceOneInFour"></label>
+                                <textarea id="choiceOneInFour_EvenAnswer_1" name="choiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer F</label>
+                                <textarea id="choiceOneInFour_Even_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="addChoiceOneInFour"></label>
+                                <textarea id="choiceOneInFour_EvenAnswer_2" name="choiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer G</label>
+                                <textarea id="choiceOneInFour_Even_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>H:</span>
+                                    <input type="radio"  value="h" name="addChoiceOneInFour">
+                                </label>
+                                <textarea id="choiceOneInFour_EvenAnswer_3" name="choiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer H</label>
+                                <textarea id="choiceOneInFour_Even_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>J: </span>
+                                    <input type="radio"  value="j" name="addChoiceOneInFour">
+                                </label>    
+                                <textarea id="choiceOneInFour_EvenAnswer_4" name="choiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer J</label>
+                                <textarea id="choiceOneInFour_Even_explanation_answer_4" name="choiceOneInFour_explanation_answer_4"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="addchoiceOneInFive_Odd">
+                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFive_Odd">
+                        <ul class="answerOptionLsit">
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_OddAnswer_1" name="choiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer A</label>
-                                <textarea id="choiceOneInFive_explanation_answer_1" name="choiceOneInFive_explanation_answer_1"
+                                <textarea id="choiceOneInFive_Odd_explanation_answer_1" name="choiceOneInFive_explanation_answer_1"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceOneInFive"></label><textarea id="choiceOneInFiveAnswer_2" name="choiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_OddAnswer_2" name="choiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer B</label>
-                                <textarea id="choiceOneInFive_explanation_answer_2" name="choiceOneInFive_explanation_answer_2"
+                                <textarea id="choiceOneInFive_Odd_explanation_answer_2" name="choiceOneInFive_explanation_answer_2"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="addChoiceOneInFive"></label><textarea id="choiceOneInFiveAnswer_3" name="choiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_OddAnswer_3" name="choiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer C</label>
-                                <textarea id="choiceOneInFive_explanation_answer_3" name="choiceOneInFive_explanation_answer_3"
+                                <textarea id="choiceOneInFive_Odd_explanation_answer_3" name="choiceOneInFive_explanation_answer_3"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="addChoiceOneInFive"><textarea id="choiceOneInFiveAnswer_4" name="choiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_OddAnswer_4" name="choiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer D</label>
-                                <textarea id="choiceOneInFive_explanation_answer_4" name="choiceOneInFive_explanation_answer_4"
+                                <textarea id="choiceOneInFive_Odd_explanation_answer_4" name="choiceOneInFive_explanation_answer_4"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="addChoiceOneInFive"></label>    <textarea id="choiceOneInFiveAnswer_5" name="choiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_OddAnswer_5" name="choiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer E</label>
-                                <textarea id="choiceOneInFive_explanation_answer_5" name="choiceOneInFive_explanation_answer_5"
+                                <textarea id="choiceOneInFive_Odd_explanation_answer_5" name="choiceOneInFive_explanation_answer_5"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="addchoiceOneInFourPass">
-                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFourPass">
+                    {{-- new  --}}
+                    <div class="addchoiceOneInFive_Even">
+                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFive_Even">
                         <ul class="answerOptionLsit">
-                            <li><label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFourPass"></label><textarea id="choiceOneInFourPassAnswer_1" name="choiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_EvenAnswer_1" name="choiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer F</label>
+                                <textarea id="choiceOneInFive_Even_explanation_answer_1" name="choiceOneInFive_explanation_answer_1"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_EvenAnswer_2" name="choiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer G</label>
+                                <textarea id="choiceOneInFive_Even_explanation_answer_2" name="choiceOneInFive_explanation_answer_2"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_EvenAnswer_3" name="choiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer H</label>
+                                <textarea id="choiceOneInFive_Even_explanation_answer_3" name="choiceOneInFive_explanation_answer_3"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_EvenAnswer_4" name="choiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer J</label>
+                                <textarea id="choiceOneInFive_Even_explanation_answer_4" name="choiceOneInFive_explanation_answer_4"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio"  value="k" name="addChoiceOneInFive"></label>
+                                <textarea id="choiceOneInFive_EvenAnswer_5" name="choiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer K</label>
+                                <textarea id="choiceOneInFive_Even_explanation_answer_5" name="choiceOneInFive_explanation_answer_5"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="addchoiceOneInFourPass_Odd">
+                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFourPass_Odd">
+                        <ul class="answerOptionLsit">
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_OddAnswer_1" name="choiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer A</label>
-                                <textarea id="choiceOneInFourPass_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
+                                <textarea id="choiceOneInFourPass_Odd_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceOneInFourPass"></label><textarea id="choiceOneInFourPassAnswer_2" name="choiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_OddAnswer_2" name="choiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer B</label>
-                                <textarea id="choiceOneInFourPass_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
+                                <textarea id="choiceOneInFourPass_Odd_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="addChoiceOneInFourPass"></label><textarea id="choiceOneInFourPassAnswer_3" name="choiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_OddAnswer_3" name="choiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer C</label>
-                                <textarea id="choiceOneInFourPass_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
+                                <textarea id="choiceOneInFourPass_Odd_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
-                            <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="addChoiceOneInFourPass"></label><textarea id="choiceOneInFourPassAnswer_4" name="choiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_OddAnswer_4" name="choiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
                             <li style="display: none">
                                 <label class="form-label">Explanation Answer D</label>
-                                <textarea id="choiceOneInFourPass_explanation_answer_4" name="choiceOneInFourPass_explanation_answer_4"
+                                <textarea id="choiceOneInFourPass_Odd_explanation_answer_4" name="choiceOneInFourPass_explanation_answer_4"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="addchoiceOneInFourPass_Even">
+                        <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceOneInFourPass_Even">
+                        <ul class="answerOptionLsit">
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_EvenAnswer_1" name="choiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer F</label>
+                                <textarea id="choiceOneInFourPass_Even_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_EvenAnswer_2" name="choiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer G</label>
+                                <textarea id="choiceOneInFourPass_Even_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio"  value="h" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_EvenAnswer_3" name="choiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer H</label>
+                                <textarea id="choiceOneInFourPass_Even_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
+                                    class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
+                            </li>
+                            <li>
+                                <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="addChoiceOneInFourPass"></label>
+                                <textarea id="choiceOneInFourPass_EvenAnswer_4" name="choiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
+                            </li>
+                            <li style="display: none">
+                                <label class="form-label">Explanation Answer J</label>
+                                <textarea id="choiceOneInFourPass_Even_explanation_answer_4" name="choiceOneInFourPass_explanation_answer_4"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                         </ul>
@@ -1213,6 +1558,7 @@ ul.answerOptionLsit li label input{
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
+        var count = $('.sectionList').length;
         $(document).on('change','#addQuestionMultiModal input[type="radio"]',() =>{
             if($('#addQuestionMultiModal input[type="radio"]').is(":checked")) {
                 $('#addQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
@@ -1546,113 +1892,225 @@ ul.answerOptionLsit li label input{
 			$('#questionModal').modal('show');
 		});
 		
-        CKEDITOR.replace( 'choiceOneInFourAnswer_1',{
+        CKEDITOR.replace( 'choiceOneInFour_OddAnswer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFourAnswer_2',{
+        CKEDITOR.replace( 'choiceOneInFour_OddAnswer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFourAnswer_3',{
+        CKEDITOR.replace( 'choiceOneInFour_OddAnswer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFourAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-
-        CKEDITOR.replace( 'choiceOneInFour_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });CKEDITOR.replace( 'choiceOneInFour_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });CKEDITOR.replace( 'choiceOneInFour_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });CKEDITOR.replace( 'choiceOneInFour_explanation_answer_4',{
+        CKEDITOR.replace( 'choiceOneInFour_OddAnswer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        
-        CKEDITOR.replace( 'choiceOneInFiveAnswer_1',{
+        // new 
+        CKEDITOR.replace( 'choiceOneInFour_EvenAnswer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFiveAnswer_2',{
+        CKEDITOR.replace( 'choiceOneInFour_EvenAnswer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFiveAnswer_3',{
+        CKEDITOR.replace( 'choiceOneInFour_EvenAnswer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFiveAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFiveAnswer_5',{
+        CKEDITOR.replace( 'choiceOneInFour_EvenAnswer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        
-        CKEDITOR.replace( 'choiceOneInFive_explanation_answer_1',{
+        CKEDITOR.replace( 'choiceOneInFour_Odd_explanation_answer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFive_explanation_answer_2',{
+        });CKEDITOR.replace( 'choiceOneInFour_Odd_explanation_answer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFive_explanation_answer_3',{
+        });CKEDITOR.replace( 'choiceOneInFour_Odd_explanation_answer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFive_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFive_explanation_answer_5',{
+        });CKEDITOR.replace( 'choiceOneInFour_Odd_explanation_answer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-
-        CKEDITOR.replace( 'choiceOneInFourPassAnswer_1',{
+        // new 
+        CKEDITOR.replace( 'choiceOneInFour_Even_explanation_answer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFourPassAnswer_2',{
+        });CKEDITOR.replace( 'choiceOneInFour_Even_explanation_answer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFourPassAnswer_3',{
+        });CKEDITOR.replace( 'choiceOneInFour_Even_explanation_answer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
-        });
-        CKEDITOR.replace( 'choiceOneInFourPassAnswer_4',{
+        });CKEDITOR.replace( 'choiceOneInFour_Even_explanation_answer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
         
-        CKEDITOR.replace( 'choiceOneInFourPass_explanation_answer_1',{
+        CKEDITOR.replace( 'choiceOneInFive_OddAnswer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFourPass_explanation_answer_2',{
+        CKEDITOR.replace( 'choiceOneInFive_OddAnswer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFourPass_explanation_answer_3',{
+        CKEDITOR.replace( 'choiceOneInFive_OddAnswer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'choiceOneInFourPass_explanation_answer_4',{
+        CKEDITOR.replace( 'choiceOneInFive_OddAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_OddAnswer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        //new
+        CKEDITOR.replace( 'choiceOneInFive_EvenAnswer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_EvenAnswer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_EvenAnswer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_EvenAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_EvenAnswer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        
+        CKEDITOR.replace( 'choiceOneInFive_Odd_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Odd_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Odd_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Odd_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Odd_explanation_answer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        //new
+        CKEDITOR.replace( 'choiceOneInFive_Even_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Even_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Even_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Even_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFive_Even_explanation_answer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+
+        CKEDITOR.replace( 'choiceOneInFourPass_OddAnswer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_OddAnswer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_OddAnswer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_OddAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        //new
+        CKEDITOR.replace( 'choiceOneInFourPass_EvenAnswer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_EvenAnswer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_EvenAnswer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_EvenAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace( 'choiceOneInFourPass_Odd_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_Odd_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_Odd_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_Odd_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        // new 
+        CKEDITOR.replace( 'choiceOneInFourPass_Even_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_Even_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_Even_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'choiceOneInFourPass_Even_explanation_answer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -1694,115 +2152,231 @@ ul.answerOptionLsit li label input{
         });
 
 
-        //edit section
-        CKEDITOR.replace( 'editChoiceOneInFourAnswer_1',{
+        //edit section started from here
+        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFourAnswer_2',{
+        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFourAnswer_3',{
+        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFourAnswer_4',{
+        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
-        CKEDITOR.replace( 'editchoiceOneInFour_explanation_answer_1',{
+        // new 
+        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editchoiceOneInFour_explanation_answer_2',{
+        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editchoiceOneInFour_explanation_answer_3',{
+        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editchoiceOneInFour_explanation_answer_4',{
+        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        // new 
+        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
         
-        CKEDITOR.replace( 'editChoiceOneInFiveAnswer_1',{
+        CKEDITOR.replace( 'editChoiceOneInFive_OddAnswer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFiveAnswer_2',{
+        CKEDITOR.replace( 'editChoiceOneInFive_OddAnswer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFiveAnswer_3',{
+        CKEDITOR.replace( 'editChoiceOneInFive_OddAnswer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFiveAnswer_4',{
+        CKEDITOR.replace( 'editChoiceOneInFive_OddAnswer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFiveAnswer_5',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-
-        CKEDITOR.replace( 'editchoiceOneInFive_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_explanation_answer_5',{
+        CKEDITOR.replace( 'editChoiceOneInFive_OddAnswer_5',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
+        //new 
+        CKEDITOR.replace( 'editChoiceOneInFive_EvenAnswer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFive_EvenAnswer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFive_EvenAnswer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFive_EvenAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFive_EvenAnswer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
 
-        CKEDITOR.replace( 'editChoiceOneInFourPassAnswer_1',{
+        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFourPassAnswer_2',{
+        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFourPassAnswer_3',{
+        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editChoiceOneInFourPassAnswer_4',{
+        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        // new 
+        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_5',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+
+        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        //new
+        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
 
         
-        CKEDITOR.replace( 'editchoiceOneInFourPass_explanation_answer_1',{
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_1',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_explanation_answer_2',{
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_2',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_explanation_answer_3',{
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_3',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_explanation_answer_4',{
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_4',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+
+        //new
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_1',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_2',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_3',{
+            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+            allowedContent
+        });
+        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_4',{
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
@@ -2036,11 +2610,31 @@ ul.answerOptionLsit li label input{
                 $('#questionMultiModal .validError').text('');
             }
 				
-                if(questionType =='choiceOneInFourPass'){                
+                if(questionType =='choiceOneInFourPass_Odd'){                
 
                     answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
 
-                } else if(questionType =='choiceMultInFourFill'){
+                } else if(questionType =='choiceOneInFourPass_Even'){
+
+                    answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
+
+                } else if(questionType =='choiceOneInFive_Odd'){
+
+                    answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
+
+                } else if(questionType =='choiceOneInFive_Even'){
+
+                    answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
+
+                } else if(questionType =='choiceOneInFour_Odd'){
+
+                    answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFour"]:checked').val();
+
+                } else if(questionType =='choiceOneInFour_Even'){
+
+                    answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFour"]:checked').val();
+
+                }else if(questionType =='choiceMultInFourFill'){
 
                      fillVals = $('#questionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
 
@@ -2131,6 +2725,7 @@ ul.answerOptionLsit li label input{
 
         $(document).on('click','.add_question_modal_multi',function(){
             clearModel();
+            count++;
             $('#addQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
             $('#addQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
@@ -2142,7 +2737,7 @@ ul.answerOptionLsit li label input{
             $('#addTestSectionTypeRead').val(AnuserOpts);
             $('#addCurrentModelQueId').val(dataId);
             $('.addSectionAddId').val(dataId);
-            appendAnswerOption(AnuserOpts);
+            appendAnswerOption(AnuserOpts,format);
             getPassages(format);
             $(".addchoiceMultInFourFill input[type=checkbox]").each(function(){
                 $(this).attr('checked', false);
@@ -2264,8 +2859,30 @@ ul.answerOptionLsit li label input{
                     $('#addQuestionMultiModal .validError').text('');
                 }
                 
-                if(questionType =='choiceOneInFourPass'){                
+                if(questionType =='choiceOneInFourPass_Odd'){ 
+
                     answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFourPass"]:checked').val();
+
+                } else if(questionType =='choiceOneInFourPass_Even'){
+
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFourPass"]:checked').val();
+
+                } else if(questionType =='choiceOneInFive_Odd'){
+
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFive"]:checked').val();
+
+                } else if(questionType =='choiceOneInFive_Even'){
+
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFive"]:checked').val();
+
+                }else if(questionType == 'choiceOneInFour_Odd') {
+
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFour"]:checked').val();
+
+                } else if(questionType == 'choiceOneInFour_Even'){
+
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFour"]:checked').val(); 
+
                 } else if(questionType =='choiceMultInFourFill'){
                     fillVals = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
                     
@@ -2458,6 +3075,10 @@ function clearModel() {
 
 function practQuestioEdit(id){
     clearModel();
+    $('#addQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+    $('#addQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+    $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+    $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
     $.ajax({
         data:{
             'question_id':id,
@@ -2482,8 +3103,6 @@ function practQuestioEdit(id){
                 $('input[name=tags]').val(tagsString);
                 $(".passNumber").val(result.passage_number).change();
                 $('#passagesType').val(result.passages_id).change();
-                console.log("result.passage_number", result.passage_number);
-                console.log("result.passages_id", result.passages_id);
                 for (let index = 1; index < categorytypeArr.length; index++) {
                     addNewTypes(index,'repet');
                 }
@@ -2528,11 +3147,14 @@ function practQuestioEdit(id){
 
 function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp){
         answer_exp = JSON.parse(answer_exp);
-        if(answerOpt == 'choiceOneInFour'){
-            $('#editSelectedAnswerType').val('choiceOneInFour');
-            $('.choiceOneInFour').show();
-            $('.choiceOneInFive').hide();
-            $('.choiceOneInFourPass').hide();
+        if(answerOpt == 'choiceOneInFour_Odd'){
+            $('#editSelectedAnswerType').val('choiceOneInFour_Odd');
+            $('.choiceOneInFour_Odd').show();
+            $('.choiceOneInFour_Even').hide();
+            $('.choiceOneInFive_Odd').hide();
+            $('.choiceOneInFive_Even').hide();
+            $('.choiceOneInFourPass_Odd').hide();
+            $('.choiceOneInFourPass_Even').hide();
             $('.choiceMultInFourFill').hide();
         	var optObj = ['a','b','c','d'];
             var jsonConvert = [];
@@ -2544,30 +3166,72 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        		  $('.choiceOneInFour ul li.choiceOneInFourAnswer_'+arrIndex+' input ').prop("checked", true);
+        		  $('.choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_'+arrIndex+' input ').prop("checked", true);
                   $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFourAnswer_'+i;
+                    var dynIds = 'editChoiceOneInFour_OddAnswer_'+i;
                     CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
-                    const answer_id = `editchoiceOneInFour_explanation_answer_${count}`;
+                    const answer_id = `editchoiceOneInFour_Odd_explanation_answer_${count}`;
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
                 }
             }
             
             
         } 
-        if(answerOpt =='choiceOneInFive'){
-            $('#editSelectedAnswerType').val('choiceOneInFive');
-            $('.choiceOneInFour').hide();
-            $('.choiceOneInFive').show();
-            $('.choiceOneInFourPass').hide();
+        // new 
+        if(answerOpt == 'choiceOneInFour_Even'){
+            $('#editSelectedAnswerType').val('choiceOneInFour_Even');
+            $('.choiceOneInFour_Odd').hide();
+            $('.choiceOneInFour_Even').show();
+            $('.choiceOneInFive_Odd').hide();
+            $('.choiceOneInFive_Even').hide();
+            $('.choiceOneInFourPass_Odd').hide();
+            $('.choiceOneInFourPass_Even').hide();
+            $('.choiceMultInFourFill').hide();
+        	var optObj = ['f','g','h','j'];
+            var jsonConvert = [];
+            if(isJson(answer_content)){
+                jsonConvert = $.parseJSON(answer_content);
+            } 
+        	var selHml='';
+        	for(var i=1; i<= optObj.length; i++){
+                var arrIndex = Number(i)-1;
+                var editInd = Number(i)+1;
+        		if(optObj[arrIndex] == selectedOpt){
+        		  $('.choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_'+arrIndex+' input ').prop("checked", true);
+                  $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                }
+                if(jsonConvert.length>0){
+                    var anwserInd = Number(i)-1;
+                    var dynIds = 'editChoiceOneInFour_EvenAnswer_'+i;
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                }
+        	}
+            if(answer_exp && answer_exp.length != null) {
+                for (let index = 0; index < answer_exp.length; index++) {
+                    let count = index + 1;
+                    const answer_id = `editchoiceOneInFour_Even_explanation_answer_${count}`;
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                }
+            }
+            
+            
+        } 
+        if(answerOpt =='choiceOneInFive_Odd'){
+            $('#editSelectedAnswerType').val('choiceOneInFive_Odd');
+            $('.choiceOneInFour_Odd').hide();
+            $('.choiceOneInFour_Even').hide();
+            $('.choiceOneInFive_Odd').show();
+            $('.choiceOneInFive_Even').hide();
+            $('.choiceOneInFourPass_Odd').hide();
+            $('.choiceOneInFourPass_Even').hide();
             $('.choiceMultInFourFill').hide();
         	var optObj = ['a','b','c','d','e'];
         	var selHml='';
@@ -2579,29 +3243,70 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFive ul li.choiceOneInFiveAnswer_'+arrIndex+' input ').prop("checked", true);
+        			$('.choiceOneInFive_Odd ul li.choiceOneInFive_OddAnswer_'+arrIndex+' input ').prop("checked", true);
                     $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFiveAnswer_'+i;
+                    var dynIds = 'editChoiceOneInFive_OddAnswer_'+i;
                     CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
-                    const answer_id = `editchoiceOneInFive_explanation_answer_${count}`;
+                    const answer_id = `editchoiceOneInFive_Odd_explanation_answer_${count}`;
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                }
+            }
+
+        }
+        //new
+        if(answerOpt =='choiceOneInFive_Even'){
+            $('#editSelectedAnswerType').val('choiceOneInFive_Even');
+            $('.choiceOneInFour_Odd').hide();
+            $('.choiceOneInFour_Even').hide();
+            $('.choiceOneInFive_Odd').hide();
+            $('.choiceOneInFive_Even').show();
+            $('.choiceOneInFourPass_Odd').hide();
+            $('.choiceOneInFourPass_Even').hide();
+            $('.choiceMultInFourFill').hide();
+        	var optObj = ['f','g','h','j','k'];
+        	var selHml='';
+            var jsonConvert = [];
+            if(isJson(answer_content)){
+                jsonConvert = $.parseJSON(answer_content);
+            }
+        	for(var i=1; i<= optObj.length; i++){
+                var arrIndex = Number(i)-1;
+                var editInd = Number(i)+1;
+        		if(optObj[arrIndex] == selectedOpt){
+        			$('.choiceOneInFive_Even ul li.choiceOneInFive_EvenAnswer_'+arrIndex+' input ').prop("checked", true);
+                    $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+        		} 
+                if(jsonConvert.length>0){
+                    var anwserInd = Number(i)-1;
+                    var dynIds = 'editChoiceOneInFive_EvenAnswer_'+i;
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                }
+        	}
+            if(answer_exp && answer_exp.length != null) {
+                for (let index = 0; index < answer_exp.length; index++) {
+                    let count = index + 1;
+                    const answer_id = `editchoiceOneInFive_Even_explanation_answer_${count}`;
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
                 }
             }
 
         } 
-        if(answerOpt =='choiceOneInFourPass'){
-            $('#editSelectedAnswerType').val('choiceOneInFourPass');
-            $('.choiceOneInFour').hide();
-            $('.choiceOneInFive').hide();
-            $('.choiceOneInFourPass').show();
+        if(answerOpt =='choiceOneInFourPass_Odd'){
+            $('#editSelectedAnswerType').val('choiceOneInFourPass_Odd');
+            $('.choiceOneInFour_Odd').hide();
+            $('.choiceOneInFour_Even').hide();
+            $('.choiceOneInFive_Odd').hide();
+            $('.choiceOneInFive_Even').hide();
+            $('.choiceOneInFourPass_Odd').show();
+            $('.choiceOneInFourPass_Even').hide();
             $('.choiceMultInFourFill').hide();
         	var optObj = ['a','b','c','d'];
         	var selHml='';
@@ -2614,19 +3319,59 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFourPass ul li.choiceOneInFourPassAnswer_'+arrIndex+' input').prop("checked", true);
+        			$('.choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_'+arrIndex+' input').prop("checked", true);
                     $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
-                    var dynIds = 'editChoiceOneInFourPassAnswer_'+i;
+                    var dynIds = 'editChoiceOneInFourPass_OddAnswer_'+i;
                     CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
-                    const answer_id = `editchoiceOneInFourPass_explanation_answer_${count}`;
+                    const answer_id = `editchoiceOneInFourPass_Odd_explanation_answer_${count}`;
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                }
+            }
+            
+
+        }
+        // new 
+        if(answerOpt =='choiceOneInFourPass_Even'){
+            $('#editSelectedAnswerType').val('choiceOneInFourPass_Even');
+            $('.choiceOneInFour_Odd').hide();
+            $('.choiceOneInFour_Even').hide();
+            $('.choiceOneInFive_Odd').hide();
+            $('.choiceOneInFive_Even').hide();
+            $('.choiceOneInFourPass_Odd').hide();
+            $('.choiceOneInFourPass_Even').show();
+            $('.choiceMultInFourFill').hide();
+        	var optObj = ['f','g','h','j'];
+        	var selHml='';
+            var jsonConvert = [];
+            if(isJson(answer_content)){
+                jsonConvert = $.parseJSON(answer_content);
+            }            
+            
+        	for(var i=1; i<= optObj.length; i++){
+                var arrIndex = Number(i)-1;
+                var editInd = Number(i)+1;
+        		if(optObj[arrIndex] == selectedOpt){
+        			$('.choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_'+arrIndex+' input').prop("checked", true);
+                    $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+        		}
+                if(jsonConvert.length>0){
+                    var anwserInd = Number(i)-1;
+                    var dynIds = 'editChoiceOneInFourPass_EvenAnswer_'+i;
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                }
+        	}
+            if(answer_exp && answer_exp.length != null) {
+                for (let index = 0; index < answer_exp.length; index++) {
+                    let count = index + 1;
+                    const answer_id = `editchoiceOneInFourPass_Even_explanation_answer_${count}`;
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
                 }
             }
@@ -2636,9 +3381,12 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
         if(answerOpt == 'choiceMultInFourFill'){
 
             $('#editSelectedAnswerType').val('choiceMultInFourFill');
-            $('.choiceOneInFour').hide();
-            $('.choiceOneInFive').hide();
-            $('.choiceOneInFourPass').hide();
+            $('.choiceOneInFour_Odd').hide();
+            $('.choiceOneInFour_Even').hide();
+            $('.choiceOneInFive_Odd').hide();
+            $('.choiceOneInFive_Even').hide();
+            $('.choiceOneInFourPass_Odd').hide();
+            $('.choiceOneInFourPass_Even').hide();
             $('.choiceMultInFourFill').show();
         	var optObj = ['a','b','c','d'];
             var trimStr = selectedOpt.replace(/ /g,'');
@@ -2753,38 +3501,75 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
 		$('input[name="'+qType+'"]').attr('checked', false);
         $('input[type="radio"]').prop('checked', false);
         $('input[type="checkbox"]').prop('checked', false);
-    CKEDITOR.instances['choiceOneInFourAnswer_1'].setData('');
-    CKEDITOR.instances['choiceOneInFourAnswer_2'].setData('');
-    CKEDITOR.instances['choiceOneInFourAnswer_3'].setData('');
-    CKEDITOR.instances['choiceOneInFourAnswer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFour_OddAnswer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFour_OddAnswer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFour_OddAnswer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFour_OddAnswer_4'].setData('');
 
-    CKEDITOR.instances['choiceOneInFour_explanation_answer_1'].setData('');
-    CKEDITOR.instances['choiceOneInFour_explanation_answer_2'].setData('');
-    CKEDITOR.instances['choiceOneInFour_explanation_answer_3'].setData('');
-    CKEDITOR.instances['choiceOneInFour_explanation_answer_4'].setData('');
+    // new 
+    CKEDITOR.instances['choiceOneInFour_EvenAnswer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFour_EvenAnswer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFour_EvenAnswer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFour_EvenAnswer_4'].setData('');
 
-    CKEDITOR.instances['choiceOneInFiveAnswer_1'].setData('');
-    CKEDITOR.instances['choiceOneInFiveAnswer_2'].setData('');
-    CKEDITOR.instances['choiceOneInFiveAnswer_3'].setData('');
-    CKEDITOR.instances['choiceOneInFiveAnswer_4'].setData('');
-    CKEDITOR.instances['choiceOneInFiveAnswer_5'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Odd_explanation_answer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Odd_explanation_answer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Odd_explanation_answer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Odd_explanation_answer_4'].setData('');
 
-    CKEDITOR.instances['choiceOneInFive_explanation_answer_1'].setData('');
-    CKEDITOR.instances['choiceOneInFive_explanation_answer_2'].setData('');
-    CKEDITOR.instances['choiceOneInFive_explanation_answer_3'].setData('');
-    CKEDITOR.instances['choiceOneInFive_explanation_answer_4'].setData('');
-    CKEDITOR.instances['choiceOneInFive_explanation_answer_5'].setData('');
+    // new 
+    CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_4'].setData('');
 
-    CKEDITOR.instances['choiceOneInFourPassAnswer_1'].setData('');
-    CKEDITOR.instances['choiceOneInFourPassAnswer_2'].setData('');
-    CKEDITOR.instances['choiceOneInFourPassAnswer_3'].setData('');
-    CKEDITOR.instances['choiceOneInFourPassAnswer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFive_OddAnswer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFive_OddAnswer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFive_OddAnswer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFive_OddAnswer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFive_OddAnswer_5'].setData('');
 
+    // new 
+    CKEDITOR.instances['choiceOneInFive_EvenAnswer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFive_EvenAnswer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFive_EvenAnswer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFive_EvenAnswer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFive_EvenAnswer_5'].setData('');
+
+    CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_5'].setData('');
+
+    // new 
+    CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_5'].setData('');
+
+    CKEDITOR.instances['choiceOneInFourPass_OddAnswer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_OddAnswer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_OddAnswer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_OddAnswer_4'].setData('');
+
+    //new
+    CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_4'].setData('');
     
-    CKEDITOR.instances['choiceOneInFourPass_explanation_answer_1'].setData('');
-    CKEDITOR.instances['choiceOneInFourPass_explanation_answer_2'].setData('');
-    CKEDITOR.instances['choiceOneInFourPass_explanation_answer_3'].setData('');
-    CKEDITOR.instances['choiceOneInFourPass_explanation_answer_4'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_4'].setData('');
+
+    //new
+    CKEDITOR.instances['choiceOneInFourPass_Even_explanation_answer_1'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Even_explanation_answer_2'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Even_explanation_answer_3'].setData('');
+    CKEDITOR.instances['choiceOneInFourPass_Even_explanation_answer_4'].setData('');
 
     CKEDITOR.instances['choiceMultInFourFillAnswer_1'].setData('');
     CKEDITOR.instances['choiceMultInFourFillAnswer_2'].setData('');
@@ -2800,39 +3585,75 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
 
     /***********For Edit Options****************/
 
-    CKEDITOR.instances['editChoiceOneInFourAnswer_1'].setData('');
-    CKEDITOR.instances['editChoiceOneInFourAnswer_2'].setData('');
-    CKEDITOR.instances['editChoiceOneInFourAnswer_3'].setData('');
-    CKEDITOR.instances['editChoiceOneInFourAnswer_4'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_OddAnswer_1'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_OddAnswer_2'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_OddAnswer_3'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_OddAnswer_4'].setData('');
 
-    CKEDITOR.instances['editchoiceOneInFour_explanation_answer_1'].setData('');
-    CKEDITOR.instances['editchoiceOneInFour_explanation_answer_2'].setData('');
-    CKEDITOR.instances['editchoiceOneInFour_explanation_answer_3'].setData('');
-    CKEDITOR.instances['editchoiceOneInFour_explanation_answer_4'].setData('');
+    // new 
+    CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_1'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_2'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_3'].setData('');
+    CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_4'].setData('');
 
-    CKEDITOR.instances['editChoiceOneInFiveAnswer_1'].setData('');
-    CKEDITOR.instances['editChoiceOneInFiveAnswer_2'].setData('');
-    CKEDITOR.instances['editChoiceOneInFiveAnswer_3'].setData('');
-    CKEDITOR.instances['editChoiceOneInFiveAnswer_4'].setData('');
-    CKEDITOR.instances['editChoiceOneInFiveAnswer_5'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Odd_explanation_answer_1'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Odd_explanation_answer_2'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Odd_explanation_answer_3'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Odd_explanation_answer_4'].setData('');
 
+    // new 
+    CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_1'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_2'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_3'].setData('');
+    CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_4'].setData('');
+
+    CKEDITOR.instances['editChoiceOneInFive_OddAnswer_1'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_OddAnswer_2'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_OddAnswer_3'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_OddAnswer_4'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_OddAnswer_5'].setData('');
+
+    // new 
+    CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_1'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_2'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_3'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_4'].setData('');
+    CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_5'].setData('');
     
-    CKEDITOR.instances['editchoiceOneInFive_explanation_answer_1'].setData('');
-    CKEDITOR.instances['editchoiceOneInFive_explanation_answer_2'].setData('');
-    CKEDITOR.instances['editchoiceOneInFive_explanation_answer_3'].setData('');
-    CKEDITOR.instances['editchoiceOneInFive_explanation_answer_4'].setData('');
-    CKEDITOR.instances['editchoiceOneInFive_explanation_answer_5'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_1'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_2'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_3'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_4'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_5'].setData('');
 
-    CKEDITOR.instances['editChoiceOneInFourPassAnswer_1'].setData('');
-    CKEDITOR.instances['editChoiceOneInFourPassAnswer_2'].setData('');
-    CKEDITOR.instances['editChoiceOneInFourPassAnswer_3'].setData('');
-    CKEDITOR.instances['editChoiceOneInFourPassAnswer_4'].setData('');
+    // new 
+    CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_1'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_2'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_3'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_4'].setData('');
+    CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_5'].setData('');
 
-    CKEDITOR.instances['editchoiceOneInFourPass_explanation_answer_1'].setData('');
-    CKEDITOR.instances['editchoiceOneInFourPass_explanation_answer_2'].setData('');
-    CKEDITOR.instances['editchoiceOneInFourPass_explanation_answer_3'].setData('');
-    CKEDITOR.instances['editchoiceOneInFourPass_explanation_answer_4'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_OddAnswer_1'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_OddAnswer_2'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_OddAnswer_3'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_OddAnswer_4'].setData('');
 
+    // new 
+    CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_1'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_2'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_3'].setData('');
+    CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_4'].setData('');
+
+    CKEDITOR.instances['editchoiceOneInFourPass_Odd_explanation_answer_1'].setData('');
+    CKEDITOR.instances['editchoiceOneInFourPass_Odd_explanation_answer_2'].setData('');
+    CKEDITOR.instances['editchoiceOneInFourPass_Odd_explanation_answer_3'].setData('');
+    CKEDITOR.instances['editchoiceOneInFourPass_Odd_explanation_answer_4'].setData('');
+
+    // new 
+    CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_1'].setData('');
+    CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_2'].setData('');
+    CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_3'].setData('');
+    CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_4'].setData('');
 
     CKEDITOR.instances['editChoiceMultInFourFillAnswer_1'].setData('');
     CKEDITOR.instances['editChoiceMultInFourFillAnswer_2'].setData('');
@@ -2867,36 +3688,109 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
     CKEDITOR.instances['editchoiceMultiChoiceInFourFill_explanation_answer_4'].setData('');
 
 	}  
-    function appendAnswerOption(answerOpt){
+    function appendAnswerOption(answerOpt,format){
             
-            var questionAnsComb = {English:'choiceOneInFourPass',Math:'choiceOneInFive',Reading:'choiceOneInFourPass',Writing:'choiceOneInFourPass',Science:'choiceOneInFour',Math_no_calculator:'choiceMultInFourFill',Math_with_calculator:'choiceMultInFourFill'};
+            var questionAnsComb = 
+            {
+                English:'choiceOneInFourPass',
+                Math:'choiceOneInFive',
+                Reading:'choiceOneInFourPass',
+                Writing:'choiceOneInFourPass',
+                Science:'choiceOneInFour',
+                Math_no_calculator:'choiceMultInFourFill',
+                Math_with_calculator:'choiceMultInFourFill'
+
+            };
             $.each(questionAnsComb, function(ind,val){
                 
                 if(ind == answerOpt){
                     
                     if(val == 'choiceOneInFour'){
-                        $('#selectedAnswerType').val('choiceOneInFour');
-                        $('.addchoiceOneInFour').show();
-                        $('.addchoiceOneInFive').hide();
-                        $('.addchoiceOneInFourPass').hide();
-                        $('.addchoiceMultInFourFill').hide();
+                        if(count % 2 != 0){
+                            $('#selectedAnswerType').val('choiceOneInFour_Odd');
+                            $('.addchoiceOneInFour_Odd').show();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').hide();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        } else {
+                            $('#selectedAnswerType').val('choiceOneInFour_Even');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').show();
+                            $('.addchoiceOneInFive_Odd').hide();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        }
                     } else if(val == 'choiceOneInFive'){
-                        $('#selectedAnswerType').val('choiceOneInFive');
-                        $('.addchoiceOneInFour').hide();
-                        $('.addchoiceOneInFive').show();
-                        $('.addchoiceOneInFourPass').hide();
-                        $('.addchoiceMultInFourFill').hide();
+                        if(count % 2 != 0 && format == 'ACT'){
+                            $('#selectedAnswerType').val('choiceOneInFive_Odd');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').show();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        } else if(count % 2 == 0 && format == 'ACT') {
+                            $('#selectedAnswerType').val('choiceOneInFive_Even');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').hide();
+                            $('.addchoiceOneInFive_Even').show();
+                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        } else {
+                            $('#selectedAnswerType').val('choiceOneInFive_Odd');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').show();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        }
                     } else if(val == 'choiceOneInFourPass'){
-                        $('#selectedAnswerType').val('choiceOneInFourPass');
-                        $('.addchoiceOneInFour').hide();
-                        $('.addchoiceOneInFive').hide();
-                        $('.addchoiceOneInFourPass').show();
-                        $('.addchoiceMultInFourFill').hide();
+                        if(count % 2 != 0 && format == 'ACT'){
+                            $('#selectedAnswerType').val('choiceOneInFourPass_Odd');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').hide();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').show();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        } else if(count % 2 == 0 && format == 'ACT') {
+                            $('#selectedAnswerType').val('choiceOneInFourPass_Even');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').hide();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').hide();
+                            $('.addchoiceOneInFourPass_Even').show();
+                            $('.addchoiceMultInFourFill').hide();
+                        } else {
+                            $('#selectedAnswerType').val('choiceOneInFourPass_Odd');
+                            $('.addchoiceOneInFour_Odd').hide();
+                            $('.addchoiceOneInFour_Even').hide();
+                            $('.addchoiceOneInFive_Odd').hide();
+                            $('.addchoiceOneInFive_Even').hide();
+                            $('.addchoiceOneInFourPass_Odd').show();
+                            $('.addchoiceOneInFourPass_Even').hide();
+                            $('.addchoiceMultInFourFill').hide();
+                        }
                     } else if(val == 'choiceMultInFourFill'){
                         $('#selectedAnswerType').val('choiceMultInFourFill');
-                        $('.addchoiceOneInFour').hide();
-                        $('.addchoiceOneInFive').hide();
-                        $('.addchoiceOneInFourPass').hide();
+                        $('.addchoiceOneInFour_Odd').hide();
+                        $('.addchoiceOneInFour_Even').hide();
+                        $('.addchoiceOneInFive_Odd').hide();
+                        $('.addchoiceOneInFive_Even').hide();
+                        $('.addchoiceOneInFourPass_Odd').hide();
+                        $('.addchoiceOneInFourPass_Even').hide();
                         $('.addchoiceMultInFourFill').show();
                     }                                     
                 }
@@ -2981,11 +3875,17 @@ function isJson(str) {
 }
 function getAnswerContent(answerOpt, fill){
             var answerContenArr = [];
-            if(answerOpt=='choiceOneInFive'){
+            if(answerOpt=='choiceOneInFive_Odd'){
                 for(var i=1; i<6;i++){
                     var dynamicId = answerOpt+'Answer_'+i;
                     answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
                 }               
+
+            } else if(answerOpt=='choiceOneInFive_Even'){
+                for(var i=1; i<6;i++){
+                    var dynamicId = answerOpt+'Answer_'+i;
+                    answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
+                }
 
             }else {
                 if(fill == '' || fill =='N/A'){
@@ -3013,12 +3913,18 @@ function getAnswerContent(answerOpt, fill){
 //start new 
 function getAnswerExpContent(answerOpt, fill) {
             var answerExpArr = [];
-            if (answerOpt == 'choiceOneInFive') {
+            if (answerOpt == 'choiceOneInFive_Odd') {
                 for (var i = 1; i < 6; i++) {
                     var dynamicId = answerOpt + '_explanation_answer_' + i;
                     answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
                 }
 
+            } else if(answerOpt == 'choiceOneInFive_Even'){
+                for (var i = 1; i < 6; i++) {
+                    var dynamicId = answerOpt + '_explanation_answer_' + i;
+                    answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
+                }
+                
             } else {
                 if (fill == '' || fill == 'N/A') {
                     var choiceSel = $('.getFilterChoice').val();
@@ -3044,11 +3950,17 @@ function getAnswerExpContent(answerOpt, fill) {
 
 function getEditAnswerContent(answerOpt, fill){
             var answerContenArr = [];
-            if(answerOpt=='choiceOneInFive'){
+            if(answerOpt=='choiceOneInFive_Odd'){
                 for(var i=1; i<6;i++){
                     var dynamicId = 'edit'+capitalizeFirstLetter(answerOpt)+'Answer_'+i;
                     answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
                 }               
+
+            } else if(answerOpt=='choiceOneInFive_Even'){
+                for(var i=1; i<6;i++){
+                    var dynamicId = 'edit'+capitalizeFirstLetter(answerOpt)+'Answer_'+i;
+                    answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
+                } 
 
             }else {
                 if(fill == '' || fill =='N/A'){
@@ -3076,11 +3988,17 @@ function getEditAnswerContent(answerOpt, fill){
 
 function getEditAnswerExpContent(answerOpt, fill){
             var answerExpArr = [];
-            if(answerOpt=='choiceOneInFive'){
+            if(answerOpt=='choiceOneInFive_Odd'){
                 for(var i=1; i<6;i++){
                     var dynamicId = 'edit'+answerOpt+'_explanation_answer_' + i;
                     answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
                 }               
+
+            } else if(answerOpt=='choiceOneInFive_Even'){
+                for(var i=1; i<6;i++){
+                    var dynamicId = 'edit'+answerOpt+'_explanation_answer_' + i;
+                    answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
+                }
 
             }else {
                 if(fill == '' || fill =='N/A'){
