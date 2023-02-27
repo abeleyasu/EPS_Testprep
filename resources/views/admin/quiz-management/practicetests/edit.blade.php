@@ -2891,7 +2891,7 @@ ul.answerOptionLsit li label input{
                     fillVals = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
                     
 
-                    if(typeof fillVals !== 'undefined' && fillVals.length === 0){
+                    if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
                         fill = fillVals.join();    
                     }
                     
@@ -2899,11 +2899,11 @@ ul.answerOptionLsit li label input{
                         fillType = $('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val();  
                     }
 
-                    var singleChoM = $('#questionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
+                    var singleChoM = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
 
                     if(typeof singleChoM !== 'undefined' && singleChoM != null){
                         
-                        answerType = $('#questionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
+                        answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
 
                     } else{ 
                         multiChoice = 'multiChoice';
