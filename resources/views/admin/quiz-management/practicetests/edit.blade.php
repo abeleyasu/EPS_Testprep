@@ -3811,7 +3811,7 @@ function getPassages(format){
         method: 'post',
         success: (res) => {
             var opt = '';
-            //opt += '<option value="0">No Passage</option>';
+            opt += '<option value="">Select Passages</option>';
             $.each(res, function( key, val){
                 opt +='<option value="'+val.id+'">'+val.title+'</option>';
             });
