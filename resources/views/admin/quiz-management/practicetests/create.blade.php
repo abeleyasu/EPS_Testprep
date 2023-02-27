@@ -4140,7 +4140,7 @@ function getEditAnswerExpContent(answerOpt, fill){
                             'question_id': new_question_id,
                             '_token': $('input[name="_token"]').val()
                         },
-                        url: '{{ route('questionOrder') }}',
+                        url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
                         }

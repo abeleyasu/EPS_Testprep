@@ -4105,33 +4105,86 @@ $('.add_section_modal_btn').click(function() {
 
 
 // List with handle
-Sortable.create(listWithHandleQuestion, {
-    handle: '.glyphicon-move',
-    animation: 150,
-    onEnd: function(evt) {
-        var dataSet = evt.clone.dataset;
+// Sortable.create(listWithHandleQuestion, {
+//     handle: '.glyphicon-move',
+//     animation: 150,
+//     onEnd: function(evt) {
+//         var dataSet = evt.clone.dataset;
         
-        /*let data = {
-            new_index: evt.newIndex+1,
-            old_index: evt.oldIndex+1,
-            item: evt.item.children[1].value,
-            currentMileId: 1
-        };*/
-        var question_id = dataSet.id;  
-        $('.orderValUpdate_'+question_id).text(evt.newIndex+1);      
-        $.ajax({
-            data:{
-                'question_order': evt.newIndex+1,
-                'question_id': question_id,
-                '_token': $('input[name="_token"]').val()
-            },
-            url: '{{route("questionOrder")}}',
-            method: 'post',
-            success: (res) => {
+//         /*let data = {
+//             new_index: evt.newIndex+1,
+//             old_index: evt.oldIndex+1,
+//             item: evt.item.children[1].value,
+//             currentMileId: 1
+//         };*/
+//         var question_id = dataSet.id;  
+//         $('.orderValUpdate_'+question_id).text(evt.newIndex+1);      
+//         $.ajax({
+//             data:{
+//                 'question_order': evt.newIndex+1,
+//                 'question_id': question_id,
+//                 '_token': $('input[name="_token"]').val()
+//             },
+//             url: '{{route("questionOrder")}}',
+//             method: 'post',
+//             success: (res) => {
+//             }
+//         });
+//     }
+// },); 
+
+var test = Sortable.create(listWithHandleQuestion, {
+            handle: '.glyphicon-move',
+            animation: 150,
+            onEnd: function(evt) {
+                var dataSet = evt.clone.dataset;
+
+                /*let data = {
+                    new_index: evt.newIndex+1,
+                    old_index: evt.oldIndex+1,
+                    item: evt.item.children[1].value,
+                    currentMileId: 1
+                };*/
+                var indices = test.toArray();
+                $.each(indices, function(index, value) {
+                    var new_question_id = value;
+                    var new_question_id_order = index + 1;
+                    var orderId = '#orderRearnge_' + new_question_id;
+                    $(orderId).val(new_question_id_order);
+                    $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
+                    $.ajax({
+                        data: {
+                            'question_order': new_question_id_order,
+                            'question_id': new_question_id,
+                            '_token': $('input[name="_token"]').val()
+                        },
+                        url: '{{ route("questionOrder") }}',
+                        method: 'post',
+                        success: (res) => {
+                        }
+                    });
+                });
+
+
+
+                // var question_id = dataSet.id; 
+                // var orderId = '#orderRearnge_'+question_id;
+
+                // $(orderId).val(evt.newIndex+1);
+                // $('.orderRearnge_'+question_id).text(evt.newIndex+1);
+                // $.ajax({
+                //     data:{
+                //         'question_order': evt.newIndex+1,
+                //         'question_id': question_id,
+                //         '_token': $('input[name="_token"]').val()
+                //     },
+                //     url: '{{ route('questionOrder') }}',
+                //     method: 'post',
+                //     success: (res) => {
+                //     }
+                // });
             }
-        });
-    }
-},); 
+        }, );
 
     toastr.options = {
         "closeButton": true,
