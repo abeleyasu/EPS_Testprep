@@ -1563,6 +1563,7 @@ ul.answerOptionLsit li label input{
             if($('#addQuestionMultiModal input[type="radio"]').is(":checked")) {
                 $('#addQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                 $('#addQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#addQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             }
         });
 
@@ -1570,6 +1571,7 @@ ul.answerOptionLsit li label input{
             if($('#addQuestionMultiModal input[type="checkbox"]').is(":checked")) {
                 $('#addQuestionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
                 $('#addQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#addQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             }
         });
 
@@ -1577,6 +1579,7 @@ ul.answerOptionLsit li label input{
             if($('#questionMultiModal input[type="radio"]').is(":checked")) {
                 $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                 $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             }
         });
 
@@ -1584,6 +1587,7 @@ ul.answerOptionLsit li label input{
             if($('#questionMultiModal input[type="checkbox"]').is(":checked")) {
                 $('#questionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
                 $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             }
         });
 

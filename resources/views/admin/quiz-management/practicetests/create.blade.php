@@ -566,7 +566,6 @@
                             <div class="mb-2 col-md-6">
                                 <label for="passage_number" class="form-label">Passage No</label>
                                 <select class="js-select2 select passNumber" id="passage_number" name="passage_number">
-                                    <option value="">Select Passage No</option>
                                     @for ($i = 1; $i < 25; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
@@ -1076,7 +1075,6 @@
                             <div class="mb-2 col-md-6">
                                 <label for="passage_number" class="form-label">Passage No</label>
                                 <select class="js-select2 select passNumber" id="edit_passage_number" name="passage_number">
-                                    <option value="">Select Passage No</option>
                                     @for ($i = 1; $i < 25; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
@@ -1513,6 +1511,7 @@
             if($('#questionMultiModal input[type="radio"]:checked')){;
                 $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                 $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             }
         });
 
@@ -1520,6 +1519,7 @@
             if($('#questionMultiModal input[type="checkbox"]:checked')){;
                 $('#questionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
                 $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             }
         });
 
@@ -1527,6 +1527,7 @@
             if($('#editQuestionMultiModal input[type="radio"]:checked')){;
                 $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                 $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             } 
         });
 
@@ -1534,6 +1535,7 @@
             if($('#editQuestionMultiModal input[type="checkbox"]:checked')){;
                 $('#editQuestionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
                 $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
+                $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
             } 
         });
 
@@ -2958,6 +2960,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         		if(optObj[arrIndex] == selectedOpt){
         		  $('.choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_'+arrIndex+' input ').prop("checked", true);
                   $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                  $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -2997,6 +3000,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         		if(optObj[arrIndex] == selectedOpt){
         		  $('.choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_'+arrIndex+' input ').prop("checked", true);
                   $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                  $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3035,6 +3039,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFive_Odd ul li.choiceOneInFive_Odd_Answer_'+arrIndex+' input ').prop("checked", true);
                     $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3073,6 +3078,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFive_Even ul li.choiceOneInFive_Even_Answer_'+arrIndex+' input ').prop("checked", true);
                     $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3111,6 +3117,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_'+arrIndex+' input').prop("checked", true);
                     $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3151,6 +3158,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_'+arrIndex+' input').prop("checked", true);
                     $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
+                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3198,6 +3206,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                         
                         $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOptAnswer_'+arrIndex+' input').prop("checked", true);
                         $('#editQuestionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
+                        $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
 
                     }
                     if(jsonConvert.length>0){
@@ -3222,7 +3231,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                         
                         $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoiceAnswer_'+arrIndex+' input').prop("checked", true);
                         $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-
+                        $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
                     }
                     if(jsonConvert.length>0){
                         var anwserInd = Number(i)-1;
