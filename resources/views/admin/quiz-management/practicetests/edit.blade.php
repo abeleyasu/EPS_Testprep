@@ -1404,6 +1404,7 @@ ul.answerOptionLsit li label input{
                         <input type="hidden" name="addQuestionType" id="addQuestionType" value="choiceMultInFourFill">
                         <label class="form-label" style="font-size: 13px;">
                             <select class="switchMulti getFilterChoice addMultiChoice" onChange="addMultiChoice(this.value);">
+                                    <option value="">Select Choice</option>
                                     <option value="1">Multi-Choice</option>
                                     <option value="3">Multiple Choice</option>
                                     <option value="2">Fill Choice</option>
@@ -3143,7 +3144,7 @@ function practQuestioEdit(id){
                         $("select[name=passagesType]").val(result.passages_id).trigger('change');
                     }
                 });
-                getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp );
+                getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp, result.multiChoice );
             }
             
         } 
@@ -3151,7 +3152,7 @@ function practQuestioEdit(id){
 	$('#questionMultiModal').modal('show');
 }
 
-function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp){
+function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice){
         answer_exp = JSON.parse(answer_exp);
         if(answerOpt == 'choiceOneInFour_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFour_Odd');
@@ -4163,13 +4164,8 @@ var test = Sortable.create(listWithHandleQuestion, {
                         url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
-                            // $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .question_container_'+res.question['practice_test_sections_id']+'').html('');
                             $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']+'').remove();
-                            // var section_id = res.question['practice_test_sections_id'];
-                            // $('#sectionDisplay_'+section_id+' .firstRecord .question_container_'+section_id+'').html('');
-                            // $.each(res,function(key,val){
                             $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-                            // })
                         }
                     });
                 });

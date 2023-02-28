@@ -884,6 +884,7 @@
 
                                 <label class="form-label" style="font-size: 13px;">
                                     <select class="switchMulti getFilterChoice" onChange="multiChoice(this.value);">
+                                        <option value="">Select Choice</option>
                                         <option value="1">Multi-Choice</option>
                                         <option value="3">Multiple Choice</option>
                                         <option value="2">Fill Choice</option>
@@ -2927,7 +2928,7 @@
                                 $("select[name=editPassagesType]").val(result.passages_id).trigger('change');
                             }
                         });
-                        getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format);
+                        getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format ,result.multiChoice);
                     }
                     
                 } 
@@ -2935,7 +2936,7 @@
             $('#editQuestionMultiModal').modal('show');
         }
 
-function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, format){
+function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, format, multiChoice){
         answer_exp = JSON.parse(answer_exp);
         if(answerOpt == 'choiceOneInFour_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFour_Odd');
