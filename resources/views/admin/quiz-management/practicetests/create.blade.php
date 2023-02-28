@@ -2661,7 +2661,8 @@
 
                 // return false;
                 var questionType = $('#questionMultiModal ' + activeAnswerType + ' #questionType').val();
-                var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+                // var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+                var pass = $('select[name="passagesType"] :selected').text();
                 var passNumber = $('#questionMultiModal .passNumber').val();
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
@@ -2742,9 +2743,6 @@
 
                 var answerContentJson = getAnswerContent(questionType, fill);
                 var answerExpJson = getAnswerExpContent(questionType, fill);
-
-                console.log('answerContent',answerContentJson);
-                console.log('answerExpContent',answerExpJson);
 
                 $('#questionMultiModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
@@ -3324,7 +3322,8 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var question = CKEDITOR.instances['js-ckeditor-edit-addQue'].getData();
         var activeAnswerType = '.' + $('#editSelectedAnswerType').val();
         var questionType = $('#editQuestionMultiModal ' + activeAnswerType + ' #editQuestionType').val();
-        var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+        // var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+        var pass = $('select[name="editPassagesType"] :selected').text();
         var passNumber = $('#editQuestionMultiModal .passNumber').val();
         var passagesType = $('.editPassagesType').val();
         var passagesTypeTxt = $(".editPassagesType option:selected").text();
@@ -4143,6 +4142,8 @@ function getEditAnswerExpContent(answerOpt, fill){
                         url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
+                            $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
+                            $('.sectionTypesFull .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                         }
                     });
                 });

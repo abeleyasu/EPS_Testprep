@@ -262,7 +262,7 @@ class PracticeQuestionController extends Controller
 		$question = PracticeQuestion::find($request->question_id);
 		$question->question_order = $request->question_order;
 		$question->save(); 
-		return $question->id;  
+		return response()->json(['question'=>$question]);  
 	}
 
 	public function getPracticeCategoryType(){

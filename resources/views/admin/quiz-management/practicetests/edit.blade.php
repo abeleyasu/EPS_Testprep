@@ -383,34 +383,34 @@ ul.answerOptionLsit li label input{
 								<li>Action</li>
 							</ul>
 							@foreach($testsection->getPracticeQuestions as $practQuestion)
-                            <ul class="sectionList singleQuest_{{ $practQuestion->id }}">
-								<li>{!! $practQuestion->title !!}</li>
-								<li>{{ $practQuestion->answer }}</li>
-								<li>{{ isset($practQuestion->getpassage->title) ? $practQuestion->getpassage->title : ''}}</li>
-								<li>{{ $practQuestion->passage_number  }}</li>
-								<li>{{ $practQuestion->fill  }}</li>
-                                <li class="orderValUpdate_{{ $practQuestion->id }}">{{ $practQuestion->question_order  }}</li>
-								<li>
-                                    <button type="button"
-                                            class="btn btn-sm btn-alt-secondary edit-section"
-                                            data-id="{{$practQuestion->id}}"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit Question"
-                                            onclick="practQuestioEdit({{ $practQuestion->id }})"
-                                    >
-                                       <i class="fa fa-fw fa-pencil-alt"></i>
-                                    </button>
-                                    <button type="button"
-                                            class="btn btn-sm btn-alt-secondary delete-section"
-                                            data-id="{{$practQuestion->id}}"
-                                            data-bs-toggle="tooltip"
-                                            title="Delete Question"
-                                            onclick="practQuestioDel({{ $practQuestion->id }})"
-                                    >
-                                        <i class="fa fa-fw fa-times"></i>
-                                    </button>
-								</li>
-							</ul>
+                                <ul class="sectionList singleQuest_{{ $practQuestion->id }}">
+                                    <li>{!! $practQuestion->title !!}</li>
+                                    <li>{{ $practQuestion->answer }}</li>
+                                    <li>{{ isset($practQuestion->getpassage->title) ? $practQuestion->getpassage->title : ''}}</li>
+                                    <li>{{ $practQuestion->passage_number  }}</li>
+                                    <li>{{ $practQuestion->fill  }}</li>
+                                    <li class="orderValUpdate_{{ $practQuestion->id }}">{{ $practQuestion->question_order  }}</li>
+                                    <li>
+                                        <button type="button"
+                                                class="btn btn-sm btn-alt-secondary edit-section"
+                                                data-id="{{$practQuestion->id}}"
+                                                data-bs-toggle="tooltip"
+                                                title="Edit Question"
+                                                onclick="practQuestioEdit({{ $practQuestion->id }})"
+                                        >
+                                        <i class="fa fa-fw fa-pencil-alt"></i>
+                                        </button>
+                                        <button type="button"
+                                                class="btn btn-sm btn-alt-secondary delete-section"
+                                                data-id="{{$practQuestion->id}}"
+                                                data-bs-toggle="tooltip"
+                                                title="Delete Question"
+                                                onclick="practQuestioDel({{ $practQuestion->id }})"
+                                        >
+                                            <i class="fa fa-fw fa-times"></i>
+                                        </button>
+                                    </li>
+                                </ul>
 							@endforeach
 						</div>
 					</div>
@@ -2602,7 +2602,8 @@ ul.answerOptionLsit li label input{
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
             var activeAnswerType = '.'+$('#editSelectedAnswerType').val();
             var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
-            var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+            // var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+            var pass = $('select[name="passagesType"] :selected').text();
             var passNumber = $('#questionMultiModal .passNumber').val();
 			var passagesType = $('#passagesType').val();
             var passagesTypeTxt = $("#passagesType option:selected").text();
@@ -2836,7 +2837,8 @@ ul.answerOptionLsit li label input{
                 var question = CKEDITOR.instances['js-ckeditor-add-addQue'].getData();
                 var activeAnswerType = '.add'+ $('#selectedAnswerType').val();
                 var questionType = $('#addQuestionMultiModal '+activeAnswerType+' #addQuestionType').val();
-                var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+                // var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
+                var pass = $('select[name="addPassagesType"] :selected').text();
                 var passNumber = $('#addQuestionMultiModal .addPassNumber').val();
                 var passagesType = $('.addPassagesType').val();
                 var passagesTypeTxt = $(".addPassagesType option:selected").text();
@@ -4161,6 +4163,13 @@ var test = Sortable.create(listWithHandleQuestion, {
                         url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
+                            // $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .question_container_'+res.question['practice_test_sections_id']+'').html('');
+                            $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']+'').remove();
+                            // var section_id = res.question['practice_test_sections_id'];
+                            // $('#sectionDisplay_'+section_id+' .firstRecord .question_container_'+section_id+'').html('');
+                            // $.each(res,function(key,val){
+                            $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                            // })
                         }
                     });
                 });
