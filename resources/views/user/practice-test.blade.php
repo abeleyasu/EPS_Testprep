@@ -731,7 +731,7 @@
                         
                         jQuery.each(JSON.parse(get_options), function (key,val) {
                            var get_option_number = 'A';
-                           if(result.questions[0].question_order % 2 != 0 && result.questions[0].passage_type == "ACT"){
+                           if(result.questions[0].practice_type == "choiceOneInFive_Odd"){
                                 if(key == 0)
                                 {
                                     get_option_number = 'a';
@@ -752,7 +752,7 @@
                                 {
                                     get_option_number = 'e';
                                 }
-                        } else if(result.questions[0].question_order % 2 == 0 && result.questions[0].passage_type == "ACT") {
+                        } else if(result.questions[0].practice_type == "choiceOneInFive_Even") {
                             if(key == 0)
                                 {
                                     get_option_number = 'f';
@@ -774,6 +774,74 @@
                                     get_option_number = 'k';
                                 }
 
+                        } else if(result.questions[0].practice_type == "choiceOneInFourPass_Odd") {
+                            if(key == 0)
+                                {
+                                    get_option_number = 'a';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'b';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'c';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'd';
+                                }
+                        } else if(result.questions[0].practice_type == "choiceOneInFourPass_Even") {
+                            if(key == 0)
+                                {
+                                    get_option_number = 'f';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'g';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'h';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'j';
+                                }
+                        } else if(result.questions[0].practice_type == "choiceOneInFour_Odd") {
+                            if(key == 0)
+                                {
+                                    get_option_number = 'a';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'b';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'c';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'd';
+                                }
+                        } else if(result.questions[0].practice_type == "choiceOneInFour_Even") {
+                            if(key == 0)
+                                {
+                                    get_option_number = 'f';
+                                }
+                                else if(key == 1)
+                                {
+                                    get_option_number = 'g';
+                                }
+                                else if(key == 2)
+                                {
+                                    get_option_number = 'h';
+                                }
+                                else if(key == 3)
+                                {
+                                    get_option_number = 'j';
+                                }
                         } else {                                                                                                                                                                                                                
                             if(key == 0)
                                 {
