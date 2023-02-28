@@ -2507,12 +2507,13 @@
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
             $('#category_type_0').val(null).trigger("change");
-            // $('#edit_category_type_0').val(null).trigger("change");
+            // $('select[name="category_type"]').val(null).trigger("change");
             $('#search-input_0').val(null).trigger("change");
-            // $('#edit_search-input_0').val(null).trigger("change");
+            // $('select[name="search-input"]').val(null).trigger("change");
             $(`.removeNewTypes`).remove();
+            $(`.removeNewType`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
-            // $('select[name=editPassagesType]').val(null).trigger("change");
+            $('select[name=editPassagesType]').val(null).trigger("change");
         }
 
         $(document).on('click', '.add_question_modal_multi', function() {
@@ -2865,7 +2866,7 @@
             });
         }
         function practQuestioEdit(id){
-            clearModel();
+            // clearModel();
             $.ajax({
                 data:{
                     'question_id':id,
@@ -2890,9 +2891,9 @@
                         
                         $('input[name=questionTags]').val(tagsString);
                         $(".passNumber").val(result.passage_number).change();
-                        // for (let index = 1; index < categorytypeArr.length; index++) { 
-                        //     addNewTypes(index,'repet');
-                        // }
+                        for (let index = 1; index < categorytypeArr.length; index++) { 
+                            addNewTypes(index,'repet');
+                        }
 
                         $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
 

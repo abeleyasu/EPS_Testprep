@@ -3072,7 +3072,7 @@ function clearModel() {
     $('#passage_number').val(null).trigger("change");
     $('#add_category_type_0').val(null).trigger("change");
     $('#add_search-input_0').val(null).trigger("change");
-    $(`.removeNewTypes, removeNewType`).remove();
+    $(`.removeNewTypes, .removeNewType`).remove();
     $('#passagesType').val(null).trigger("change");
     $('#passagesType').html('');
     $('#js-ckeditor-add-addQue').val(null).trigger("change");
