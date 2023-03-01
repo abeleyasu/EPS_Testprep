@@ -1067,7 +1067,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2 add-position">
-                                    <button class="plus-button" data-id="1" onclick="addNewTypes(this,'null')"><i class="fa-solid fa-plus"></i></button>
+                                    <button class="plus-button edit-plus-button" data-id="1" onclick="addNewTypes(this,'null')"><i class="fa-solid fa-plus"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -1619,7 +1619,7 @@
                 html += `</select>`;                
                 html += `</div>`; 
                 html += `<div class="col-md-2 add-minus-icon">`;                
-                html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;                
+                html += `<button class="minus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;                
                 html += `</div>`;
                 html += `</div>`;         
 
@@ -1675,7 +1675,7 @@
                 html += `</select>`;                
                 html += `</div>`; 
                 html += `<div class="col-md-2 add-minus-icon">`;                
-                html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
+                html += `<button class="minus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
                 html += `</div>`;
                 html += `</div>`;         
 
@@ -1733,13 +1733,13 @@
         function removeNewType(data) {
             $(data).parents('.removeNewType').remove();
             let count = $('.plus-button').attr('data-id');
-            $('.plus-button').attr('data-id', count - 1);
+            $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
         }
         function removeNewTypes(data) {
             $(data).parents('.removeNewTypes').remove();
-            let count = $('.plus-button').attr('data-id');
+            let count = $('.edit-plus-button').attr('data-id');
             // $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
-            $('.plus-button').attr('data-id', count);
+            $('.edit-plus-button').attr('data-id', count - 1);
         }
 
         $(document).ready(function() { 
@@ -2894,8 +2894,6 @@
                             addNewTypes(index,'repet');
                         }
 
-                        $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
-
                         setTimeout(function(){ 
                             $(categorytypeArr).each((i,v) => {
                                 $(`#edit_category_type_${i}`).val(v);
@@ -2907,6 +2905,8 @@
                                 $(`#edit_search-input_${i}`).trigger('change');
                             });
                         }, 1000);
+
+                        $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
 
                         $.ajax({
                             data:{

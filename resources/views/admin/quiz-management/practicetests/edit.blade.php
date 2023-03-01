@@ -1071,7 +1071,7 @@ ul.answerOptionLsit li label input{
                                 </select>
                             </div>
                             <div class="col-md-2 add-position">
-                                <button class="plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
+                                <button class="plus-button add-plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
                     </div>
@@ -1750,12 +1750,12 @@ ul.answerOptionLsit li label input{
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewType">`;
                 html += `<div class="mb-2 col-md-5 me-2">`;                
-                html += `<select class="js-select2 select categoryType" id="add_category_type_${key}" name="category_type" onchange="insertCategoryType(this)" multiple>`;                              
+                html += `<select class="js-select2 select categoryType" id="add_category_type_${key}" name="add_category_type" onchange="insertCategoryType(this)" multiple>`;                              
                 html += await dropdown_lists(`/admin/getPracticeCategoryType`);                         
                 html += `</select>`;                
                 html += `</div>`;                
                 html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
-                html += `<select class="js-select2 select questionType" id="add_search-input_${key}" name="search-input" onchange="insertQuestionType(this)" multiple>`;                             
+                html += `<select class="js-select2 select questionType" id="add_search-input_${key}" name="add_search-input" onchange="insertQuestionType(this)" multiple>`;                             
                 html += await dropdown_lists(`/admin/getPracticeQuestionType`);            
                 html += `</select>`;                
                 html += `</div>`; 
@@ -1791,8 +1791,8 @@ ul.answerOptionLsit li label input{
 
         function removeNewType(data) {
             $(data).parents('.removeNewType').remove();
-            let count = $('.plus-button').attr('data-id');
-            $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
+            let count = $('.add-plus-button').attr('data-id');
+            $('.add-plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
         }
 
     $(document).ready(function() {
