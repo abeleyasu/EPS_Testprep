@@ -2649,6 +2649,7 @@ ul.answerOptionLsit li label input{
                     }
 	                if($('#questionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
 	                    fillType = $('#questionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val();  
+                        multiChoice = $('.editMultipleChoice option:selected').val();
 	                }
 	                
 
@@ -2657,9 +2658,11 @@ ul.answerOptionLsit li label input{
                     if(typeof singleChoM !== 'undefined' && singleChoM != null){
                         
                         answerType = $('#questionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
+                        multiChoice = $('.editMultipleChoice option:selected').val();
 
                     } else{
-                        multiChoice = 'multiChoice';
+                        // multiChoice = 'multiChoice';
+                        multiChoice = $('.editMultipleChoice option:selected').val();
                         var answerMap ='';
                         var checkIDs = $('#questionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill[]"]:checked').map(function(){       
                           answerMap += $(this).val()+', ';  
@@ -2900,6 +2903,7 @@ ul.answerOptionLsit li label input{
                     
                     if($('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val() !=''){
                         fillType = $('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val();  
+                        multiChoice = $('.addMultiChoice option:selected').val();
                     }
 
                     var singleChoM = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
@@ -2907,9 +2911,11 @@ ul.answerOptionLsit li label input{
                     if(typeof singleChoM !== 'undefined' && singleChoM != null){
                         
                         answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
+                        multiChoice = $('.addMultiChoice option:selected').val();
 
                     } else{ 
-                        multiChoice = 'multiChoice';
+                        // multiChoice = 'multiChoice';
+                        multiChoice = $('.addMultiChoice option:selected').val();
                         var answerMap ='';
                         var checkIDs = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill[]"]:checked').map(function(){       
                         answerMap += $(this).val()+', ';  
@@ -3146,10 +3152,11 @@ function practQuestioEdit(id){
                 });
                 getAnswerOption(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp, result.multiChoice );
             }
+            $('#questionMultiModal').modal('show');
+            $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
             
         } 
     }); 
-	$('#questionMultiModal').modal('show');
 }
 
 function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice){
@@ -3407,7 +3414,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
             
             var fillHtl = '<input type="text" name="choiceMultInFourFill_fill[]" value="">';
 
-            if(multiChoice == 'multiChoice'){
+            if(multiChoice == 1){
                 for(var i=1; i<= optObj.length; i++){
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
@@ -3484,7 +3491,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                 $('.withOutFillOptChoice').hide();
                 $('.withFillOpt').show();        	    
         	} else{
-                if(multiChoice == 'multiChoice'){
+                if(multiChoice == 1){
                     $('.withOutFillOpt').show();
                     $('.withOutFillOptChoice').hide();
                     $('.withFillOpt').hide();

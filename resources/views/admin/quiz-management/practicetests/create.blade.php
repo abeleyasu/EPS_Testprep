@@ -1087,7 +1087,7 @@
                             </div>
                         </div>
                         <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
-                        <div class="mb-2" id="selectedLayoutQuestion">
+                        <div class="mb-2" id="EditSelectedLayoutQuestion">
                         
                             <div class="choiceOneInFour_Odd">
                                 <input type="hidden" name="editQuestionType" id="editQuestionType" value="choiceOneInFour_Odd">
@@ -2506,13 +2506,14 @@
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
             $('#category_type_0').val(null).trigger("change");
-            // $('select[name="category_type"]').val(null).trigger("change");
             $('#search-input_0').val(null).trigger("change");
-            // $('select[name="search-input"]').val(null).trigger("change");
             $(`.removeNewTypes`).remove();
             $(`.removeNewType`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
             $('select[name=editPassagesType]').val(null).trigger("change");
+            $('.getFilterChoice').val(null).trigger("change");
+            $('.choiceMultInFourFill_filltype').val(null).trigger("change");
+            $('input[name="choiceMultInFourFill_fill[]"]').val('');
         }
 
         $(document).on('click', '.add_question_modal_multi', function() {
@@ -2713,6 +2714,7 @@
                             ' .choiceMultInFourFill_filltype').val() != '') {
                         fillType = $('#questionMultiModal #selectedLayoutQuestion ' + activeAnswerType +
                             ' .choiceMultInFourFill_filltype').val();
+                        multiChoice = $('.getFilterChoice option:selected').val();
                     }
 
                     var singleChoM = $('#questionMultiModal ' + activeAnswerType +
@@ -2721,9 +2723,11 @@
                     if (typeof singleChoM !== 'undefined' && singleChoM != null) {
                         answerType = $('#questionMultiModal ' + activeAnswerType +
                             ' input[name="choiceMultiChoiceInFourFill"]:checked').val();
+                        multiChoice = $('.getFilterChoice option:selected').val();  
 
                     } else {
-                        multiChoice = 'multiChoice';
+                        // multiChoice = 'multiChoice';
+                        multiChoice = $('.getFilterChoice option:selected').val();
                         var answerMap = '';
                         var checkIDs = $('#questionMultiModal  ' + activeAnswerType +
                             ' input[name="choiceMultInFourFill[]"]:checked').map(function() {
@@ -2930,10 +2934,10 @@
                         });
                         getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format ,result.multiChoice);
                     }
-                    
+                    $('#editQuestionMultiModal').modal('show');
+                    $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
                 } 
             }); 
-            $('#editQuestionMultiModal').modal('show');
         }
 
 function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, format, multiChoice){
@@ -3197,7 +3201,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
             
             var fillHtl = '<input type="text" name="choiceMultInFourFill_fill[]" value="">';
 
-            if(multiChoice == 'multiChoice'){
+            if(multiChoice == 1){
                 for(var i=1; i<= optObj.length; i++){
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
@@ -3227,7 +3231,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
                     if(selectedOpt == optObj[arrIndex]){
-                        
+
                         $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoiceAnswer_'+arrIndex+' input').prop("checked", true);
                         $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
                         $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
@@ -3275,7 +3279,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 $('.withOutFillOptChoice').hide();
                 $('.withFillOpt').show();        	    
         	} else{
-                if(multiChoice == 'multiChoice'){
+                if(multiChoice == 1){
                     $('.withOutFillOpt').show();
                     $('.withOutFillOptChoice').hide();
                     $('.withFillOpt').hide();
@@ -3363,13 +3367,14 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
 
             } else if(questionType =='choiceMultInFourFill'){
 
-                fillVals = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill_fill[]"]:checked').map(function(){return $(this).val();}).get();
+                fillVals = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
 
                 if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
                     fill = fillVals.join();    
                 }
-                if($('#editQuestionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
-                    fillType = $('#editQuestionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val();  
+                if($('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
+                    fillType = $('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val();
+                    multiChoice = $('.editMultipleChoice option:selected').val();
                 }
                 
 
@@ -3378,9 +3383,11 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 if(typeof singleChoM !== 'undefined' && singleChoM != null){
                     
                     answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
+                    multiChoice = $('.editMultipleChoice option:selected').val();;
 
                 } else{
-                    multiChoice = 'multiChoice';
+                    // multiChoice = 'multiChoice';
+                    multiChoice = $('.editMultipleChoice option:selected').val();
                     var answerMap ='';
                     var checkIDs = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill[]"]:checked').map(function(){       
                     answerMap += $(this).val()+', ';  
@@ -3676,17 +3683,33 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
 
         function multiChoice(arg) {
             if (arg == 1) {
-                $('.multi_field').show();
-                $('.fill_field').hide();
-                $('.multiChoice_field').hide();
+                $('#selectedLayoutQuestion .multi_field').show();
+                $('#selectedLayoutQuestion .fill_field').hide();
+                $('#selectedLayoutQuestion .multiChoice_field').hide();
             } else if (arg == 3) {
-                $('.multi_field').hide();
-                $('.multiChoice_field').show();
-                $('.fill_field').hide();
+                $('#selectedLayoutQuestion .multi_field').hide();
+                $('#selectedLayoutQuestion .multiChoice_field').show();
+                $('#selectedLayoutQuestion .fill_field').hide();
             } else {
-                $('.multi_field').hide();
-                $('.multiChoice_field').hide();
-                $('.fill_field').show();
+                $('#selectedLayoutQuestion .multi_field').hide();
+                $('#selectedLayoutQuestion .multiChoice_field').hide();
+                $('#selectedLayoutQuestion .fill_field').show();
+            }
+        }
+        //new 
+        function editMultiChoice(arg){
+            if(arg == 1){
+                $('#EditSelectedLayoutQuestion .multi_field').show();
+                $('#EditSelectedLayoutQuestion .fill_field').hide();
+                $('#EditSelectedLayoutQuestion .multiChoice_field').hide();
+            } else if(arg == 3){
+                $('#EditSelectedLayoutQuestion .multi_field').hide();
+                $('#EditSelectedLayoutQuestion .multiChoice_field').show();
+                $('#EditSelectedLayoutQuestion .fill_field').hide();
+            }else{
+                $('#EditSelectedLayoutQuestion .multi_field').hide();
+                $('#EditSelectedLayoutQuestion .multiChoice_field').hide();
+                $('#EditSelectedLayoutQuestion .fill_field').show();
             }
         }
 
