@@ -1594,9 +1594,7 @@
                 key = parseInt(key);
 
                 let category_type = $(`#edit_category_type_${key - 1}`).val();
-                console.log(category_type);
                 let question_type = $(`#edit_search-input_${key - 1}`).val();
-                console.log(question_type);
                 if(category_type == '') {
                     toastr.error('Please select a category type!');
                     return false;
@@ -1611,12 +1609,12 @@
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
                 html += `<div class="mb-2 col-md-5 me-2">`;                
-                html += `<select class="js-select2 select categoryType" id="edit_category_type_${key}" name="category_type" onchange="insertCategoryType(this)" multiple>`;                              
+                html += `<select class="js-select2 select categoryType" id="edit_category_type_${key}" name="edit_category_type" onchange="insertCategoryType(this)" multiple>`;                              
                 html += await dropdown_lists(`/admin/getPracticeCategoryType`);            
                 html += `</select>`;                
                 html += `</div>`;                
                 html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
-                html += `<select class="js-select2 select questionType" id="edit_search-input_${key}" name="search-input" onchange="insertQuestionType(this)" multiple>`;                             
+                html += `<select class="js-select2 select questionType" id="edit_search-input_${key}" name="edit_search-input" onchange="insertQuestionType(this)" multiple>`;                             
                 html += await dropdown_lists(`/admin/getPracticeQuestionType`);          
                 html += `</select>`;                
                 html += `</div>`; 
@@ -1740,7 +1738,8 @@
         function removeNewTypes(data) {
             $(data).parents('.removeNewTypes').remove();
             let count = $('.plus-button').attr('data-id');
-            $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
+            // $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
+            $('.plus-button').attr('data-id', count);
         }
 
         $(document).ready(function() { 
@@ -2866,7 +2865,7 @@
             });
         }
         function practQuestioEdit(id){
-            // clearModel();
+            clearModel();
             $.ajax({
                 data:{
                     'question_id':id,
