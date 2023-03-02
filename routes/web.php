@@ -144,6 +144,11 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
     Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
     Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
+    // new 
+    Route::post('editSection', [PracticeQuestionController::class, 'editSection'])->name('edit_section');
+    Route::post('updateSection', [PracticeQuestionController::class, 'updateSection'])->name('update_section');
+    Route::post('deleteSection', [PracticeQuestionController::class, 'deleteSection'])->name('delete_section');
+
     Route::get('/question-type/add', [PracticeQuestionController::class, 'addQuestionType'])->name('add_question_type');
     Route::get('/question-type/edit/{id}', [PracticeQuestionController::class, 'editQuestionTypes'])->name('edit_question_type');
     Route::post('/storequestiontype', [PracticeQuestionController::class, 'storeQuestionType'])->name('storeQuestionType');
@@ -179,7 +184,9 @@ Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], funct
 
     Route::view('student-view-dashboard', 'user/student-view-dashboard');
     Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
-    Route::get('/practice-tests-rest/{test}/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
+    // new 
+    Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
+    Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
     
     Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 

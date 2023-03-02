@@ -101,6 +101,7 @@ button:hover {
 }
 .sectionListtype li{
     display: flex;
+    align-items: center;
     width: 30%;
     margin-right: 15px;
     list-style: none;
@@ -292,6 +293,9 @@ ul.answerOptionLsit li label input{
 .add_question_type_select .select2-container,.category-custom .select2-container,.removeNewTypes .select2-container{
     width: 300px !important;
 }
+.edit-close-btn{
+    width: 60px !important;
+}
 </style>
 @endsection
 @section('admin-content')
@@ -348,22 +352,28 @@ ul.answerOptionLsit li label input{
                         <input type="text" value="{{$practicetests->category_type}}" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
 					</div> --}}
 
-					<div class="sectionContainerList">	
-                    <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">				
+					<div class="sectionContainerList" data-id="">	
+                    <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">			
 					@foreach($testsections as $key=>$testsection)	
                     		
-					<div class="sectionTypesFull" id="sectionDisplay_{{ $testsection->id }}" >
+					<div class="sectionTypesFull section_{{ $testsection->id }}" id="sectionDisplay_{{ $testsection->id }}" >
 					<div class="mb-2 mb-4">
 						<div class="sectionTypesFullMutli"> </div> 
 						<div class="sectionTypesFullMutli firstRecord">
 							<ul class="sectionListtype">
 								<li>Type: &nbsp;<strong>{{ $testsection->format }}</strong></li>
-								<li>Section Type:&nbsp;<span class="answerOption"><strong>{{ $testsection->practice_test_type }}</strong>
-								<input type="hidden" name="selectedSecTxt" value="{{ $testsection->practice_test_type }}" class="selectedSecTxt" >
+								<li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_{{$testsection->id}}"><strong>{{ $testsection->practice_test_type }}</strong>
+								<input type="hidden" name="selectedSecTxt" value="{{ $testsection->practice_test_type }}" class="selectedSecTxt selectedSection_{{$testsection->id}}" >
                                 <input type="hidden" name="selectedQuesType" value="{{ $testsection->practice_test_type }}" class="selectedQuesType" >
                                 </span>
 								</li>
-                                <li>Order: &nbsp;<input type="number" readonly class="form-control" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button></li>
+                                <li><p class="mb-0 d-flex">Order:</p> &nbsp;<input type="number" readonly class="form-control me-1" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button></li>
+                                <li class="edit-close-btn">
+                                    <button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="{{$testsection->id}}" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section">
+                                        <i class="fa fa-fw fa-pencil-alt"></i></button>
+                                    <button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="{{ $testsection->id }}" onclick="deleteSection(this)"  data-bs-toggle="tooltip" title="Delete Section"> 
+                                        <i class="fa fa-fw fa-times"></i></button>    
+                                </li>
                                 <!--<li>Order: &nbsp;
                                     <select name="sectionOrder" class="sectionOrder">
                                         <option value="">Select</option>
@@ -465,6 +475,44 @@ ul.answerOptionLsit li label input{
                             </div>
                         </div>
                     </div>
+
+                    {{-- modal new for edit section  --}}
+                    <div class="modal fade" id="editSectionModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Practice Test Section</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="mb-2">
+                                            <label class="form-label validError" style="font-size: 13px; color: red;"></label>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <label class="form-label" style="font-size: 13px;">Practice Test Section Title:</label>
+                                            <input id="editTestSectionTitle" value="" name="testSectiontitle"
+                                                placeholder="Enter Practice Section Title" class="form-control">
+                                        </div>
+
+                                        <div class="mb-2 col-12">
+                                            <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
+                                            <select id="editTestSectionType" name="testSectionType" class="form-control js-select2 select">
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    {{-- <input type="hidden" name="whichModel" value="section" class="whichModel"> --}}
+                                    <input type="hidden" value="0" id="currentSectionId">
+                                    <button type="button" class="btn btn-primary save_edited_change">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 					<!--<div class="col-md-12 col-xl-12 mb-4">
 						<button type="button" class="btn w-25 btn-alt-success add_question_modal_btn">
 							<i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question
@@ -1559,7 +1607,7 @@ ul.answerOptionLsit li label input{
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
-        var count = $('.sectionList').length;
+        var questionCount = $('.sectionList').length + 1;
         $(document).on('change','#addQuestionMultiModal input[type="radio"]',() =>{
             if($('#addQuestionMultiModal input[type="radio"]').is(":checked")) {
                 $('#addQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
@@ -1837,6 +1885,11 @@ ul.answerOptionLsit li label input{
 
         $(`#testSectionType`).select2({
             dropdownParent: $('#sectionModal'),
+            placeholder : "Select Section Type",
+        });
+
+        $(`#editTestSectionType`).select2({
+            dropdownParent: $('#editSectionModal'),
             placeholder : "Select Section Type",
         });
 
@@ -2734,7 +2787,7 @@ ul.answerOptionLsit li label input{
 
         $(document).on('click','.add_question_modal_multi',function(){
             clearModel();
-            count++;
+            // count++;
             $('#addQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
             $('#addQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
@@ -2799,16 +2852,16 @@ ul.answerOptionLsit li label input{
                     method: 'post',
                     success: (res) => {
                         $('.sectionContainerList').append(
-                            '<div class="sectionTypesFull" id="sectionDisplay_' + currentModelId +
+                            '<div class="sectionTypesFull section_'+res+'" id="sectionDisplay_' + currentModelId +
                             '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
                             format +
-                            '</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>' +
+                            '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_'+res+'"><strong>' +
                             capitalizeFirstLetter(sectionSelectedTxt) +
                             '</strong><input type="hidden" name="selectedSecTxt" value="' +
                             testSectionType +
-                            '" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_' +
+                            '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_' +
                             res +
-                            '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Question"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
                             '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
                             currentModelId +
@@ -2976,6 +3029,7 @@ ul.answerOptionLsit li label input{
                     '</span>\n' +
                     '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
                     '</div>');  
+                    questionCount++;
                     } 
                 }); 
         }
@@ -3720,7 +3774,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                 if(ind == answerOpt){
                     
                     if(val == 'choiceOneInFour'){
-                        if(count % 2 != 0){
+                        if(questionCount % 2 != 0){
                             $('#selectedAnswerType').val('choiceOneInFour_Odd');
                             $('.addchoiceOneInFour_Odd').show();
                             $('.addchoiceOneInFour_Even').hide();
@@ -3740,7 +3794,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                             $('.addchoiceMultInFourFill').hide();
                         }
                     } else if(val == 'choiceOneInFive'){
-                        if(count % 2 != 0 && format == 'ACT'){
+                        if(questionCount % 2 != 0 && format == 'ACT'){
                             $('#selectedAnswerType').val('choiceOneInFive_Odd');
                             $('.addchoiceOneInFour_Odd').hide();
                             $('.addchoiceOneInFour_Even').hide();
@@ -3749,7 +3803,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                             $('.addchoiceOneInFourPass_Odd').hide();
                             $('.addchoiceOneInFourPass_Even').hide();
                             $('.addchoiceMultInFourFill').hide();
-                        } else if(count % 2 == 0 && format == 'ACT') {
+                        } else if(questionCount % 2 == 0 && format == 'ACT') {
                             $('#selectedAnswerType').val('choiceOneInFive_Even');
                             $('.addchoiceOneInFour_Odd').hide();
                             $('.addchoiceOneInFour_Even').hide();
@@ -3769,7 +3823,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                             $('.addchoiceMultInFourFill').hide();
                         }
                     } else if(val == 'choiceOneInFourPass'){
-                        if(count % 2 != 0 && format == 'ACT'){
+                        if(questionCount % 2 != 0 && format == 'ACT'){
                             $('#selectedAnswerType').val('choiceOneInFourPass_Odd');
                             $('.addchoiceOneInFour_Odd').hide();
                             $('.addchoiceOneInFour_Even').hide();
@@ -3778,7 +3832,7 @@ function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content,
                             $('.addchoiceOneInFourPass_Odd').show();
                             $('.addchoiceOneInFourPass_Even').hide();
                             $('.addchoiceMultInFourFill').hide();
-                        } else if(count % 2 == 0 && format == 'ACT') {
+                        } else if(questionCount % 2 == 0 && format == 'ACT') {
                             $('#selectedAnswerType').val('choiceOneInFourPass_Even');
                             $('.addchoiceOneInFour_Odd').hide();
                             $('.addchoiceOneInFour_Even').hide();
@@ -4113,6 +4167,25 @@ $('.add_section_modal_btn').click(function() {
     $('#sectionModal').modal('show');
 });
 
+// new 
+
+$(document).ready(function(){
+    var optionObj = [];
+    var format = $('.ptype #format').val();
+    optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
+    optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+    optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+    $('#editTestSectionType').html('');
+    var opt = '<option value="">Select Section Type</option>';
+    for (var i = 0; i < optionObj[format].length; i++) {
+        var typeVal = optionObj[format][i].replace(/\s/g, '_');
+        typeVallev = typeVal.replace(')', '');
+        typeVallev2 = typeVallev.replace('(', '');
+        opt += '<option value="' + typeVallev2 + '">' + optionObj[format][i] + '</option>';
+    }
+    $('#editTestSectionType').append(opt);
+});
+
 
 // List with handle
 // Sortable.create(listWithHandleQuestion, {
@@ -4213,6 +4286,69 @@ var test = Sortable.create(listWithHandleQuestion, {
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
+    }
+
+    function editSection(data) {
+        let id = $(data).attr('data-id');
+        
+        $.ajax({
+            data: {
+                'sectionId': id ,
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{ route("edit_section") }}',
+            method: 'post',
+            success: (res) => {
+                $('#editTestSectionTitle').val(`${res.sectionDetails.section_title}`);
+                $('#editTestSectionType').val(`${res.sectionDetails.practice_test_type}`).trigger('change');
+                $('#currentSectionId').val(`${res.sectionDetails.id}`);
+            }
+        });
+        $('#editSectionModal').modal('show');
+    }
+
+    $('.save_edited_change').click(function(){
+        let id = $('#currentSectionId').val();
+        let testSectionTitle = $('#editTestSectionTitle').val();
+        let testSectionType = $('#editTestSectionType').val();
+
+        $.ajax({
+            data: {
+                'sectionId': id ,
+                'sectionTitle': testSectionTitle,
+                'sectionType': testSectionType, 
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{ route("update_section") }}',
+            method: 'post',
+            success: (res) => {
+                $(`.editedAnswerOption_${id}`).find('strong').text(res.updatedSection.practice_test_type);
+                $(`.selectedSection_${id}`).val(`${res.updatedSection.practice_test_type}`);
+                
+            }
+        });
+        $('#editSectionModal').modal('hide');
+    });
+
+    function deleteSection(data) {
+        let id = $(data).attr('data-id');
+        var result = confirm("Are you sure to remove section ?");
+        if(!result){
+            return false;
+        }
+        $(`.section_${id}`).remove();
+
+        $.ajax({
+            data: {
+                'sectionId': id ,
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{ route("delete_section") }}',
+            method: 'post',
+            success: (res) => {
+                
+            }
+        });       
     }
 
     

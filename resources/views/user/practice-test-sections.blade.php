@@ -61,7 +61,7 @@
                     <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="margin-right: 10px;white-space: nowrap" class="btn btn-alt-primary fs-8">
                       <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
                     </a>
-                    <a  href="{{route('reset_test', ['test' => $testSections[0]->title , 'id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8">
+                    <a  href="{{route('reset_test', ['id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8">
                       <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
                     </a>
                   @endif
@@ -167,13 +167,24 @@
                         @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
                        
 
-                        <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id .'&type=single' }}"  
-                          style='padding: 5px 20px fs-5'
-                           class="btn btn-alt-success text-success">
-                          <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>
-                          Review Section
-                          {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
-                        </a>
+                        <div>
+                          <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id .'&type=single' }}"  
+                            style='padding: 5px 20px fs-5'
+                             class="btn btn-alt-success text-success">
+                            <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>
+                            Review Section
+                            {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                          </a>
+  
+                          {{-- new  --}}
+                          <a href="{{route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'] , 'id' => $singletestSections['Sections'][0]['id']]) }}"  
+                            style='padding: 5px 20px fs-5'
+                             class="btn btn-alt-success text-success">
+                            <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>
+                            Reset
+                            {{-- Review {{str_replace(['_'],[' '],$singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
+                          </a>
+                        </div>
                         
 
                         @else

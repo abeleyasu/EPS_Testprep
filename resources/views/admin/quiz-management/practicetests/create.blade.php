@@ -206,6 +206,7 @@
 
         .sectionListtype li {
             display: flex;
+            align-items: center;
             width: 30%;
             margin-right: 15px;
             list-style: none;
@@ -379,6 +380,9 @@
             padding-left: 4px;
             padding-right: 9px;
         }
+        .edit-close-btn{
+            width: 60px !important;
+        }
     </style>
 @endsection
 
@@ -505,6 +509,43 @@
                     <input type="hidden" name="whichModel" value="section" class="whichModel">
                     <input type="hidden" name="currentModelId" value="0" id="currentModelId">
                     <button type="button" class="btn btn-primary save_section">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- modal for edit section  --}}
+    <div class="modal fade" id="editSectionModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Practice Test Section</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="mb-2">
+                            <label class="form-label validError" style="font-size: 13px; color: red;"></label>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">Practice Test Section Title:</label>
+                            <input id="editTestSectionTitle" value="" name="testSectiontitle"
+                                placeholder="Enter Practice Section Title" class="form-control">
+                        </div>
+
+                        <div class="mb-2 col-12">
+                            <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
+                            <select id="editTestSectionType" name="testSectionType" class="form-control js-select2 select">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{-- <input type="hidden" name="whichModel" value="section" class="whichModel"> --}}
+                    <input type="hidden" value="0" id="currentSectionId">
+                    <button type="button" class="btn btn-primary save_edited_change">Save changes</button>
                 </div>
             </div>
         </div>
@@ -1507,7 +1548,7 @@
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
-        var count = 0;
+        var questionCount = 1;
         $(document).on('change', '#questionMultiModal input[type="radio"]', () => {
             if($('#questionMultiModal input[type="radio"]:checked')){;
                 $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
@@ -1780,6 +1821,11 @@
 
             $(`#testSectionType`).select2({
                 dropdownParent: $('#sectionModal'),
+                placeholder : "Select Section Type",
+            });
+
+            $(`#editTestSectionType`).select2({
+                dropdownParent: $('#editSectionModal'),
                 placeholder : "Select Section Type",
             });
             //new for edit
@@ -2491,6 +2537,7 @@
             var format = $('.ptype #format').val();
 
             $('#testSectionType').html('');
+            $('#editTestSectionType').html('');
             var opt = '<option value="">Select Section Type</option>';
             for (var i = 0; i < optionObj[format].length; i++) {
                 var typeVal = optionObj[format][i].replace(/\s/g, '_');
@@ -2499,6 +2546,7 @@
                 opt += '<option value="' + typeVallev2 + '">' + optionObj[format][i] + '</option>';
             }
             $('#testSectionType').append(opt);
+            $('#editTestSectionType').append(opt);
             $('#sectionModal').modal('show');
         });
 
@@ -2518,7 +2566,7 @@
 
         $(document).on('click', '.add_question_modal_multi', function() {
             clearModel();
-            count++;
+            // count++;
             $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
             $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
@@ -2604,16 +2652,16 @@
                     method: 'post',
                     success: (res) => {
                         $('.sectionContainerList').append(
-                            '<div class="sectionTypesFull" id="sectionDisplay_' + currentModelId +
+                            '<div class="sectionTypesFull section_'+res+'" id="sectionDisplay_' + currentModelId +
                             '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
                             format +
-                            '</strong></li><li>Section Type:&nbsp;<span class="answerOption"><strong>' +
+                            '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_'+res+'"><strong>' +
                             capitalizeFirstLetter(sectionSelectedTxt) +
                             '</strong><input type="hidden" name="selectedSecTxt" value="' +
                             testSectionType +
-                            '" class="selectedSecTxt" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_' +
+                            '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_' +
                             res +
-                            '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="'+res+'" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
                             '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="' +
                             currentModelId +
@@ -2808,6 +2856,7 @@
                     '</span>\n' +
                     '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
                     '</div>'); 
+                    questionCount++;
                     }
                 });
             }
@@ -3472,7 +3521,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 if (ind == answerOpt) {
 
                     if (val == 'choiceOneInFour') {
-                        if(count % 2 != 0){
+                        if(questionCount % 2 != 0){
                             $('#selectedAnswerType').val('choiceOneInFour_Odd');
                             $('.choiceOneInFour_Odd').show();
                             $('.choiceOneInFour_Even').hide();
@@ -3493,7 +3542,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                         }
                         
                     } else if (val == 'choiceOneInFive') {
-                        if(count % 2 != 0 && format == 'ACT'){
+                        if(questionCount % 2 != 0 && format == 'ACT'){
                             $('#selectedAnswerType').val('choiceOneInFive_Odd');
                             $('.choiceOneInFour_Odd').hide();
                             $('.choiceOneInFour_Even').hide();
@@ -3502,7 +3551,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                             $('.choiceOneInFourPass_Odd').hide();
                             $('.choiceOneInFourPass_Even').hide();
                             $('.choiceMultInFourFill').hide();
-                        } else if(count % 2 == 0 && format == 'ACT') {
+                        } else if(questionCount % 2 == 0 && format == 'ACT') {
                             $('#selectedAnswerType').val('choiceOneInFive_Even');
                             $('.choiceOneInFour_Odd').hide();
                             $('.choiceOneInFour_Even').hide();
@@ -3522,7 +3571,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                             $('.choiceMultInFourFill').hide();
                         }
                     } else if (val == 'choiceOneInFourPass') {
-                        if(count % 2 != 0 && format == 'ACT'){
+                        if(questionCount % 2 != 0 && format == 'ACT'){
                             $('#selectedAnswerType').val('choiceOneInFourPass_Odd');
                             $('.choiceOneInFour_Odd').hide();
                             $('.choiceOneInFour_Even').hide();
@@ -3531,7 +3580,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                             $('.choiceOneInFourPass_Odd').show();
                             $('.choiceOneInFourPass_Even').hide();
                             $('.choiceMultInFourFill').hide();
-                        } else if(count % 2 == 0 && format == 'ACT') {
+                        } else if(questionCount % 2 == 0 && format == 'ACT') {
                             $('#selectedAnswerType').val('choiceOneInFourPass_Even');
                             $('.choiceOneInFour_Odd').hide();
                             $('.choiceOneInFour_Even').hide();
@@ -4212,5 +4261,69 @@ function getEditAnswerExpContent(answerOpt, fill){
             "hideMethod": "fadeOut"
         }
 
+        function editSection(data) {
+            let id = $(data).attr('data-id');
+            
+            $.ajax({
+                data: {
+                    'sectionId': id ,
+                    '_token': $('input[name="_token"]').val()
+                },
+                url: '{{ route("edit_section") }}',
+                method: 'post',
+                success: (res) => {
+                    $('#editTestSectionTitle').val(`${res.sectionDetails.section_title}`);
+                    $('#editTestSectionType').val(`${res.sectionDetails.practice_test_type}`).trigger('change');
+                    $('#currentSectionId').val(`${res.sectionDetails.id}`);
+                }
+            });
+            $('#editSectionModal').modal('show');
+        }
+
+        $('.save_edited_change').click(function(){
+            let id = $('#currentSectionId').val();
+            let testSectionTitle = $('#editTestSectionTitle').val();
+            let testSectionType = $('#editTestSectionType').val();
+
+            $.ajax({
+                data: {
+                    'sectionId': id ,
+                    'sectionTitle': testSectionTitle,
+                    'sectionType': testSectionType, 
+                    '_token': $('input[name="_token"]').val()
+                },
+                url: '{{ route("update_section") }}',
+                method: 'post',
+                success: (res) => {
+                    $(`.editedAnswerOption_${id}`).find('strong').text(res.updatedSection.practice_test_type);
+                    // $('#questionMultiModal #testSectionTypeRead').val(`${res.updatedSection.practice_test_type}`);
+                    $(`.selectedSection_${id}`).val(`${res.updatedSection.practice_test_type}`);
+                    
+                }
+            });
+            $('#editSectionModal').modal('hide');
+        });
+
+        function deleteSection(data) {
+            let id = $(data).attr('data-id');
+            var result = confirm("Are you sure to remove section ?");
+            if(!result){
+                return false;
+            }
+            $(`.section_${id}`).remove();
+
+            $.ajax({
+                data: {
+                    'sectionId': id ,
+                    '_token': $('input[name="_token"]').val()
+                },
+                url: '{{ route("delete_section") }}',
+                method: 'post',
+                success: (res) => {
+                    
+                }
+            });
+            
+        }
     </script>
 @endsection

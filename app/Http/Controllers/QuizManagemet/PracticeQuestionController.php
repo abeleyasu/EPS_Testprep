@@ -327,5 +327,28 @@ class PracticeQuestionController extends Controller
 		$categoryTypes = DB::table('practice_category_types')->get();
 		return view('admin.quiz-management.categorytypes.index', compact('categoryTypes'));
 	}
+
+	public function editSection(Request $request){
+		$sectionDetails = PracticeTestSection::where('id', $request->sectionId)->first();
+		return response()->json(['sectionDetails' => $sectionDetails]);
+	}
+
+	public function updateSection(Request $request){
+		PracticeTestSection::where('id',$request->sectionId)->update([
+			"section_title" => $request->sectionTitle,
+			"practice_test_type" => $request->sectionType
+		]);
+
+		$updatedSection = PracticeTestSection::where('id',$request->sectionId)->first();
+
+		return response()->json(['updatedSection' => $updatedSection]);
+
+	}
+
+	public function deleteSection(Request $request){
+		PracticeTestSection::where('id',$request->sectionId)->delete();																																															
+		return redirect(url('admin/practicetests/create'));
+	}
+
 	
 }
