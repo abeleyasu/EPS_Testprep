@@ -628,7 +628,7 @@
                                         <textarea id="choiceOneInFour_OddAnswer_1" name="choiceOneInFourAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer A</label>
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -638,7 +638,7 @@
                                         <textarea id="choiceOneInFour_OddAnswer_2" name="choiceOneInFourAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer B</label>
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -648,7 +648,7 @@
                                         <textarea id="choiceOneInFour_OddAnswer_3" name="choiceOneInFourAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer C</label>
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -658,7 +658,7 @@
                                         <textarea id="choiceOneInFour_OddAnswer_4" name="choiceOneInFourAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer D</label>
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_4" name="choiceOneInFour_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -675,7 +675,7 @@
                                         <textarea id="choiceOneInFour_EvenAnswer_1" name="choiceOneInFourAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer F</label>
                                         <textarea id="choiceOneInFour_Even_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -685,7 +685,7 @@
                                         <textarea id="choiceOneInFour_EvenAnswer_2" name="choiceOneInFourAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer G</label>
                                         <textarea id="choiceOneInFour_Even_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -695,7 +695,7 @@
                                         <textarea id="choiceOneInFour_EvenAnswer_3" name="choiceOneInFourAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer H</label>
                                         <textarea id="choiceOneInFour_Even_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -705,7 +705,7 @@
                                             <textarea id="choiceOneInFour_EvenAnswer_4" name="choiceOneInFourAnswer_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer J</label>
                                         <textarea id="choiceOneInFour_Even_explanation_answer_4" name="choiceOneInFour_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -721,7 +721,7 @@
                                         <textarea id="choiceOneInFive_Odd_Answer_1" name="choiceOneInFiveAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer A</label>
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd1" name="choiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -731,7 +731,7 @@
                                         <textarea id="choiceOneInFive_Odd_Answer_2" name="choiceOneInFiveAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer B</label>
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd2" name="choiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -741,7 +741,7 @@
                                         <textarea id="choiceOneInFive_Odd_Answer_3" name="choiceOneInFiveAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer C</label>
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd3" name="choiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -751,7 +751,7 @@
                                         <textarea id="choiceOneInFive_Odd_Answer_4" name="choiceOneInFiveAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer D</label>
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd4" name="choiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -761,7 +761,7 @@
                                         <textarea id="choiceOneInFive_Odd_Answer_5" name="choiceOneInFiveAnswer_5"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer E</label>
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd5" name="choiceOneInFive_explanation_answer_5"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -778,7 +778,7 @@
                                         <textarea id="choiceOneInFive_Even_Answer_1" name="choiceOneInFiveAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer F</label>
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even1" name="choiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -788,7 +788,7 @@
                                         <textarea id="choiceOneInFive_Even_Answer_2" name="choiceOneInFiveAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer G</label>
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even2" name="choiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -798,7 +798,7 @@
                                         <textarea id="choiceOneInFive_Even_Answer_3" name="choiceOneInFiveAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer H</label>
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even3" name="choiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -808,7 +808,7 @@
                                         <textarea id="choiceOneInFive_Even_Answer_4" name="choiceOneInFiveAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer J</label>
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even4" name="choiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -818,7 +818,7 @@
                                         <textarea id="choiceOneInFive_Even_Answer_5" name="choiceOneInFiveAnswer_5"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer K</label>
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even5" name="choiceOneInFive_explanation_answer_5"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -834,7 +834,7 @@
                                         <textarea id="choiceOneInFourPass_OddAnswer_1" name="choiceOneInFourPassAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer A</label>
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -844,7 +844,7 @@
                                         <textarea id="choiceOneInFourPass_OddAnswer_2" name="choiceOneInFourPassAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer B</label>
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -854,7 +854,7 @@
                                         <textarea id="choiceOneInFourPass_OddAnswer_3" name="choiceOneInFourPassAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer C</label>
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -864,7 +864,7 @@
                                         <textarea id="choiceOneInFourPass_OddAnswer_4" name="choiceOneInFourPassAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer D</label>
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_4" name="choiceOneInFourPass_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -881,7 +881,7 @@
                                         <textarea id="choiceOneInFourPass_EvenAnswer_1" name="choiceOneInFourPassAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer F</label>
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -891,7 +891,7 @@
                                         <textarea id="choiceOneInFourPass_EvenAnswer_2" name="choiceOneInFourPassAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer G</label>
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -901,7 +901,7 @@
                                         <textarea id="choiceOneInFourPass_EvenAnswer_3" name="choiceOneInFourPassAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer H</label>
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -911,7 +911,7 @@
                                         <textarea id="choiceOneInFourPass_EvenAnswer_4" name="choiceOneInFourPassAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer J</label>
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_4" name="choiceOneInFourPass_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -941,7 +941,7 @@
                                             <textarea id="choiceMultInFourFillAnswer_1" name="choiceMultInFourFillAnswer_1"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer A</label>
                                             <textarea id="choiceMultInFourFill_explanation_answer_1" name="choiceMultInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -951,7 +951,7 @@
                                             <textarea id="choiceMultInFourFillAnswer_2" name="choiceMultInFourFillAnswer_2"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer B</label>
                                             <textarea id="choiceMultInFourFill_explanation_answer_2" name="choiceMultInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -961,7 +961,7 @@
                                             <textarea id="choiceMultInFourFillAnswer_3" name="choiceMultInFourFillAnswer_3"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer C</label>
                                             <textarea id="choiceMultInFourFill_explanation_answer_3" name="choiceMultInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -971,7 +971,7 @@
                                             <textarea id="choiceMultInFourFillAnswer_4" name="choiceMultInFourFillAnswer_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer D</label>
                                             <textarea id="choiceMultInFourFill_explanation_answer_4" name="choiceMultInFourFill_explanation_answer_4"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -986,7 +986,7 @@
                                             <textarea id="choiceMultiChoiceInFourFill_1" name="choiceMultiChoiceInFourFill_1"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer A</label>
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_1" name="choiceMultiChoiceInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -997,7 +997,7 @@
                                             <textarea id="choiceMultiChoiceInFourFill_2" name="choiceMultiChoiceInFourFill_2"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer B</label>
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_2" name="choiceMultiChoiceInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1008,7 +1008,7 @@
                                             <textarea id="choiceMultiChoiceInFourFill_3" name="choiceMultiChoiceInFourFill_3"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer C</label>
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_3" name="choiceMultiChoiceInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1019,7 +1019,7 @@
                                             <textarea id="choiceMultiChoiceInFourFill_4" name="choiceMultiChoiceInFourFill_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer D</label>
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_4" name="choiceMultiChoiceInFourFill_explanation_answer_4"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1137,7 +1137,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_OddAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer A</label>
                                         <textarea id="editchoiceOneInFour_Odd_explanation_answer_1" name="editchoiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1146,7 +1146,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_OddAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer B</label>
                                         <textarea id="editchoiceOneInFour_Odd_explanation_answer_2" name="editchoiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1155,7 +1155,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_OddAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer C</label>
                                         <textarea id="editchoiceOneInFour_Odd_explanation_answer_3" name="editchoiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1164,7 +1164,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_OddAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer D</label>
                                         <textarea id="editchoiceOneInFour_Odd_explanation_answer_4" name="editchoiceOneInFour_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1180,7 +1180,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_EvenAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer F</label>
                                         <textarea id="editchoiceOneInFour_Even_explanation_answer_1" name="editchoiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1189,7 +1189,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_EvenAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer G</label>
                                         <textarea id="editchoiceOneInFour_Even_explanation_answer_2" name="editchoiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1198,7 +1198,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_EvenAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer H</label>
                                         <textarea id="editchoiceOneInFour_Even_explanation_answer_3" name="editchoiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1207,7 +1207,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_EvenAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer J</label>
                                         <textarea id="editchoiceOneInFour_Even_explanation_answer_4" name="editchoiceOneInFour_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1222,7 +1222,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Odd_Answer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer A</label>
                                         <textarea id="editchoiceOneInFive_Odd_explanation_answer_odd1" name="editchoiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1231,7 +1231,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Odd_Answer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer B</label>
                                         <textarea id="editchoiceOneInFive_Odd_explanation_answer_odd2" name="editchoiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1240,7 +1240,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Odd_Answer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer C</label>
                                         <textarea id="editchoiceOneInFive_Odd_explanation_answer_odd3" name="editchoiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1249,7 +1249,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Odd_Answer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer D</label>
                                         <textarea id="editchoiceOneInFive_Odd_explanation_answer_odd4" name="editchoiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1258,7 +1258,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Odd_Answer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer E</label>
                                         <textarea id="editchoiceOneInFive_Odd_explanation_answer_odd5" name="editchoiceOneInFive_explanation_answer_5"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1274,7 +1274,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Even_Answer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer F</label>
                                         <textarea id="editchoiceOneInFive_Even_explanation_answer_even1" name="editchoiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1283,7 +1283,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Even_Answer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer G</label>
                                         <textarea id="editchoiceOneInFive_Even_explanation_answer_even2" name="editchoiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1292,7 +1292,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Even_Answer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer H</label>
                                         <textarea id="editchoiceOneInFive_Even_explanation_answer_even3" name="editchoiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1301,7 +1301,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Even_Answer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer J</label>
                                         <textarea id="editchoiceOneInFive_Even_explanation_answer_even4" name="editchoiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1310,7 +1310,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio"  value="k" name="choiceOneInFive"></label>
                                         <textarea id="editChoiceOneInFive_Even_Answer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer K</label>
                                         <textarea id="editchoiceOneInFive_Even_explanation_answer_even5" name="editchoiceOneInFive_explanation_answer_5"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1325,7 +1325,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer A</label>
                                         <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_1" name="editchoiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1334,7 +1334,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer B</label>
                                         <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_2" name="editchoiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1343,7 +1343,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer c</label>
                                         <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_3" name="editchoiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1352,7 +1352,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer D</label>
                                         <textarea id="editchoiceOneInFourPass_Odd_explanation_answer_4" name="editchoiceOneInFourPass_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1368,7 +1368,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer F</label>
                                         <textarea id="editchoiceOneInFourPass_Even_explanation_answer_1" name="editchoiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1377,7 +1377,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer G</label>
                                         <textarea id="editchoiceOneInFourPass_Even_explanation_answer_2" name="editchoiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1386,7 +1386,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio"  value="h" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer H</label>
                                         <textarea id="editchoiceOneInFourPass_Even_explanation_answer_3" name="editchoiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1395,7 +1395,7 @@
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFourPass"></label>
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
-                                    <li style="display: none">
+                                    <li>
                                         <label class="form-label">Explanation Answer J</label>
                                         <textarea id="editchoiceOneInFourPass_Even_explanation_answer_4" name="editchoiceOneInFourPass_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1421,25 +1421,25 @@
                                 <div class="multi_field withOutFillOpt">
                                     <ul class="answerOptionLsit">
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_1" name="editChoiceMultInFourFillAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer A</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_1" name="editchoiceMultInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox"  value="b" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_2" name="editChoiceMultInFourFillAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer B</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_2" name="editchoiceMultInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox"  value="c" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_3" name="editChoiceMultInFourFillAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer C</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_3" name="editchoiceMultInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D:</span><input type="checkbox"  value="d" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_4" name="editChoiceMultInFourFillAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer D</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_4" name="editchoiceMultInFourFill_explanation_answer_4"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1450,25 +1450,25 @@
                                 <div class="multiChoice_field withOutFillOptChoice" style="display:none">
                                     <ul class="answerOptionLsit">
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_1" name="editChoiceMultiChoiceInFourFill_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer A</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_1" name="editchoiceMultiChoiceInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_2" name="editChoiceMultiChoiceInFourFill_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer B</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_2" name="editchoiceMultiChoiceInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_3" name="editChoiceMultiChoiceInFourFill_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer C</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_3" name="editchoiceMultiChoiceInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio"  value="d" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_4" name="editChoiceMultiChoiceInFourFill_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
-                                        <li style="display: none">
+                                        <li>
                                             <label class="form-label">Explanation Answer D</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_4" name="editchoiceMultiChoiceInFourFill_explanation_answer_4"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -1549,37 +1549,6 @@
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
         var questionCount = 1;
-        $(document).on('change', '#questionMultiModal input[type="radio"]', () => {
-            if($('#questionMultiModal input[type="radio"]:checked')){;
-                $('#questionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
-                $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
-            }
-        });
-
-        $(document).on('change', '#questionMultiModal input[type="checkbox"]', () => {
-            if($('#questionMultiModal input[type="checkbox"]:checked')){;
-                $('#questionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
-                $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
-                $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
-            }
-        });
-
-        $(document).on('change', '#editQuestionMultiModal input[type="radio"]', () => {
-            if($('#editQuestionMultiModal input[type="radio"]:checked')){;
-                $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
-                $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
-            } 
-        });
-
-        $(document).on('change', '#editQuestionMultiModal input[type="checkbox"]', () => {
-            if($('#editQuestionMultiModal input[type="checkbox"]:checked')){;
-                $('#editQuestionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
-                $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
-                $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
-            } 
-        });
 
         function insertCategoryType(data) {
             let category_type = $(data).val();
@@ -2567,10 +2536,6 @@
         $(document).on('click', '.add_question_modal_multi', function() {
             clearModel();
             // count++;
-            $('#questionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
-            $('#questionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
-            $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().css('display', "none");
-            $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().css('display', "none");
             var dataId = $(this).attr("data-id");
             var AnuserOpts = $('#sectionDisplay_' + dataId + ' .firstRecord ul li span .selectedSecTxt').val();
 
@@ -3011,8 +2976,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         		  $('.choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_'+arrIndex+' input ').prop("checked", true);
-                  $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                  $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3051,8 +3014,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         		  $('.choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_'+arrIndex+' input ').prop("checked", true);
-                  $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                  $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3090,8 +3051,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFive_Odd ul li.choiceOneInFive_Odd_Answer_'+arrIndex+' input ').prop("checked", true);
-                    $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3129,8 +3088,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFive_Even ul li.choiceOneInFive_Even_Answer_'+arrIndex+' input ').prop("checked", true);
-                    $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3168,8 +3125,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_'+arrIndex+' input').prop("checked", true);
-                    $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3209,8 +3164,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_'+arrIndex+' input').prop("checked", true);
-                    $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                    $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3257,8 +3210,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     if(multiChecked.includes(optObj[arrIndex])){
                         
                         $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOptAnswer_'+arrIndex+' input').prop("checked", true);
-                        $('#editQuestionMultiModal input[type="checkbox"]:checked').parents('li').next().css('display', "block");
-                        $('#editQuestionMultiModal input[type="checkbox"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
 
                     }
                     if(jsonConvert.length>0){
@@ -3282,8 +3233,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     if(selectedOpt == optObj[arrIndex]){
 
                         $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoiceAnswer_'+arrIndex+' input').prop("checked", true);
-                        $('#editQuestionMultiModal input[type="radio"]:checked').parents('li').next().css('display', "block");
-                        $('#editQuestionMultiModal input[type="radio"]:not(:checked)').parents('li').next().find('iframe').contents().find('body').text('');
                     }
                     if(jsonConvert.length>0){
                         var anwserInd = Number(i)-1;
