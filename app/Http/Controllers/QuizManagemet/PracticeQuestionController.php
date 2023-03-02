@@ -84,7 +84,7 @@ class PracticeQuestionController extends Controller
 		$question->question_type_id = json_encode($qt_array);
 		$question->save();
 
-		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order]);
+		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order,'section_id' => $question->practice_test_sections_id]);
 	}
     
 
