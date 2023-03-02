@@ -356,7 +356,7 @@ ul.answerOptionLsit li label input{
                     <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">			
 					@foreach($testsections as $key=>$testsection)	
                     		
-					<div class="sectionTypesFull section_{{ $testsection->id }}" id="sectionDisplay_{{ $testsection->id }}" >
+					<div class="sectionTypesFull section_{{ $testsection->id }}" data-id="{{ $testsection->id }}" id="sectionDisplay_{{ $testsection->id }}" >
 					<div class="mb-2 mb-4">
 						<div class="sectionTypesFullMutli"> </div> 
 						<div class="sectionTypesFullMutli firstRecord">
@@ -2817,7 +2817,7 @@ ul.answerOptionLsit li label input{
                     method: 'post',
                     success: (res) => {
                         $('.sectionContainerList').append(
-                            '<div class="sectionTypesFull section_'+res+'" id="sectionDisplay_' + currentModelId +
+                            '<div class="sectionTypesFull section_'+res+'" data-id="'+res+'" id="sectionDisplay_' + currentModelId +
                             '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
                             format +
                             '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_'+res+'"><strong>' +
@@ -2956,7 +2956,7 @@ ul.answerOptionLsit li label input{
                 $('#addQuestionMultiModal').modal('hide');
 
                 
-                var section_id = $('.addSectionAddId').val();  
+                var section_id = $('.sectionAddId').val();  
                 $.ajax({
                     data:{
                         'format': format,
@@ -2982,10 +2982,10 @@ ul.answerOptionLsit li label input{
                     url: '{{route("addPracticeQuestion")}}',
                     method: 'post',
                     success: (res) => {
-                            $('.addQuestion').val('');
-                            $('.validError').text('');
+                    $('.addQuestion').val('');
+                    $('.validError').text('');
 
-                    $('#sectionDisplay_'+currentModelQueId+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('.section_'+res.section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
