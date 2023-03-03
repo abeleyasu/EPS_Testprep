@@ -4168,29 +4168,10 @@ function getEditAnswerExpContent(answerOpt, fill){
                         method: 'post',
                         success: (res) => {
                             $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
-                            $('.sectionTypesFull .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                            $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                         }
                     });
                 });
-
-
-
-                // var question_id = dataSet.id; 
-                // var orderId = '#orderRearnge_'+question_id;
-
-                // $(orderId).val(evt.newIndex+1);
-                // $('.orderRearnge_'+question_id).text(evt.newIndex+1);
-                // $.ajax({
-                //     data:{
-                //         'question_order': evt.newIndex+1,
-                //         'question_id': question_id,
-                //         '_token': $('input[name="_token"]').val()
-                //     },
-                //     url: '{{ route('questionOrder') }}',
-                //     method: 'post',
-                //     success: (res) => {
-                //     }
-                // });
             }
         }, );
 

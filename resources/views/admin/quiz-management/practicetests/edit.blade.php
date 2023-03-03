@@ -1581,8 +1581,8 @@ ul.answerOptionLsit li label input{
                 <div id="listWithHandleQuestion" class="list-group">
                     @foreach($testsections as $key=>$testsection)
                         @foreach($testsection->getPracticeQuestions as $practQuestion)
-                            <div class="list-group-item sectionsaprat_{{ $testsection->id }} quesBasedSecList questionaprat_{{ $practQuestion->id }}" data-id="{{ $practQuestion->id }}" style="display:none;">
-                                <span class="glyphicon glyphicon-move" aria-hidden="true">
+                            <div class="list-group-item sectionsaprat_{{ $testsection->id }} quesBasedSecList questionaprat_{{ $practQuestion->id }}" data-section_id="{{ $testsection->id }}" data-order="{{ $practQuestion->question_order }}" data-id="{{ $practQuestion->id }}" style="display:none;">
+                                <span class="glyphicon question-glyphicon-move" aria-hidden="true">
                                 <i class="fa-solid fa-grip-vertical"></i>
                                 </span>
                                 <button class="btn btn-primary" value="{{ $practQuestion->id }}">{!! $practQuestion->title !!}</button>
@@ -2740,7 +2740,7 @@ ul.answerOptionLsit li label input{
 							$('.validError').text('');
                         $('.questionaprat_'+currentModelQueId).remove();    
                         $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
-                        '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                        '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
                         '<i class="fa-solid fa-grip-vertical"></i>\n' +
                         '</span>\n' +
                         '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
@@ -2757,7 +2757,7 @@ ul.answerOptionLsit li label input{
         $(document).on('click','.add_question_modal_multi',function(){
             clearModel();
             // count++;
-            let section_id = $('.add_question_modal_multi').parents('.sectionTypesFull').attr('data-id');
+            let section_id = $(this).parents('.sectionTypesFull').attr('data-id');
             $('.addSectionAddId').val(section_id);
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();
@@ -2958,7 +2958,7 @@ ul.answerOptionLsit li label input{
                 $('#addQuestionMultiModal').modal('hide');
 
                 
-                var section_id = $('.sectionAddId').val();  
+                var section_id = $('.addSectionAddId').val();  
                 $.ajax({
                     data:{
                         'format': format,
@@ -2991,7 +2991,7 @@ ul.answerOptionLsit li label input{
 
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
-                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                    '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                     '</span>\n' +
                     '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
@@ -4142,89 +4142,35 @@ $(document).ready(function(){
 });
 
 
-// List with handle
-// Sortable.create(listWithHandleQuestion, {
-//     handle: '.glyphicon-move',
-//     animation: 150,
-//     onEnd: function(evt) {
-//         var dataSet = evt.clone.dataset;
-        
-//         /*let data = {
-//             new_index: evt.newIndex+1,
-//             old_index: evt.oldIndex+1,
-//             item: evt.item.children[1].value,
-//             currentMileId: 1
-//         };*/
-//         var question_id = dataSet.id;  
-//         $('.orderValUpdate_'+question_id).text(evt.newIndex+1);      
-//         $.ajax({
-//             data:{
-//                 'question_order': evt.newIndex+1,
-//                 'question_id': question_id,
-//                 '_token': $('input[name="_token"]').val()
-//             },
-//             url: '{{route("questionOrder")}}',
-//             method: 'post',
-//             success: (res) => {
-//             }
-//         });
-//     }
-// },); 
+Sortable.create(listWithHandleQuestion, {
+        handle: '.question-glyphicon-move',
+        animation: 150,
+        onEnd: function(evt) {
+            var dataSet = evt.clone.dataset;
+            var section_id = dataSet.section_id;
 
-var test = Sortable.create(listWithHandleQuestion, {
-            handle: '.glyphicon-move',
-            animation: 150,
-            onEnd: function(evt) {
-                var dataSet = evt.clone.dataset;
-
-                /*let data = {
-                    new_index: evt.newIndex+1,
-                    old_index: evt.oldIndex+1,
-                    item: evt.item.children[1].value,
-                    currentMileId: 1
-                };*/
-                var indices = test.toArray();
-                $.each(indices, function(index, value) {
-                    var new_question_id = value;
-                    var new_question_id_order = index + 1;
-                    var orderId = '#orderRearnge_' + new_question_id;
-                    $(orderId).val(new_question_id_order);
-                    $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-                    $.ajax({
-                        data: {
-                            'question_order': new_question_id_order,
-                            'question_id': new_question_id,
-                            '_token': $('input[name="_token"]').val()
-                        },
-                        url: '{{ route("questionOrder") }}',
-                        method: 'post',
-                        success: (res) => {
-                            $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']+'').remove();
-                            $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-                        }
-                    });
+            $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).each((index,v) => {
+                var new_question_id =  $(v).attr('data-id');
+                var new_question_id_order = index + 1;
+                var orderId = '#orderRearnge_' + new_question_id;
+                $(orderId).val(new_question_id_order);
+                $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
+                $.ajax({
+                    data: {
+                        'question_order': new_question_id_order,
+                        'question_id': new_question_id,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    url: '{{ route("questionOrder") }}',
+                    method: 'post',
+                    success: (res) => {
+                        $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']).remove();
+                        $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    }
                 });
-
-
-
-                // var question_id = dataSet.id; 
-                // var orderId = '#orderRearnge_'+question_id;
-
-                // $(orderId).val(evt.newIndex+1);
-                // $('.orderRearnge_'+question_id).text(evt.newIndex+1);
-                // $.ajax({
-                //     data:{
-                //         'question_order': evt.newIndex+1,
-                //         'question_id': question_id,
-                //         '_token': $('input[name="_token"]').val()
-                //     },
-                //     url: '{{ route('questionOrder') }}',
-                //     method: 'post',
-                //     success: (res) => {
-                //     }
-                // });
-            }
-        }, );
+            })
+        }
+    }, );
 
     toastr.options = {
         "closeButton": true,
