@@ -353,7 +353,7 @@ ul.answerOptionLsit li label input{
 					</div> --}}
 
 					<div class="sectionContainerList" data-id="">	
-                    <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">			
+                    <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">   
 					@foreach($testsections as $key=>$testsection)	
                     		
 					<div class="sectionTypesFull section_{{ $testsection->id }}" data-id="{{ $testsection->id }}" id="sectionDisplay_{{ $testsection->id }}" >
@@ -2757,13 +2757,15 @@ ul.answerOptionLsit li label input{
         $(document).on('click','.add_question_modal_multi',function(){
             clearModel();
             // count++;
+            let section_id = $('.add_question_modal_multi').parents('.sectionTypesFull').attr('data-id');
+            $('.addSectionAddId').val(section_id);
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();
             var AnuserOpts = $('#sectionDisplay_'+dataId+' .firstRecord ul li span .selectedSecTxt').val();
             
             $('#addTestSectionTypeRead').val(AnuserOpts);
             $('#addCurrentModelQueId').val(dataId);
-            $('.addSectionAddId').val(dataId);
+            // $('.addSectionAddId').val(dataId);
             appendAnswerOption(AnuserOpts,format);
             getPassages(format);
             $(".addchoiceMultInFourFill input[type=checkbox]").each(function(){
@@ -2985,7 +2987,7 @@ ul.answerOptionLsit li label input{
                     $('.addQuestion').val('');
                     $('.validError').text('');
 
-                    $('.section_'+res.section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
