@@ -25,21 +25,20 @@ class PracticeQuestionController extends Controller
 		$cat_array = [];
 		$qt_array = [];
 		
-		if(!$getTestSectionData->isEmpty())
-		{
-			foreach($getTestSectionData as $singleTestSectionData)
-			{
-				if ($setQuestionOrder === null || $singleTestSectionData->question_order > $setQuestionOrder) {
-					$setQuestionOrder = $singleTestSectionData->question_order;
-				}
-			}
-			$setQuestionOrder = $setQuestionOrder + 1;
-		}
-		else
-		{
-			$setQuestionOrder = 1;
-		}
-		// $answer_arr = ['a'=>'f','b'=>'g','c'=>'h','d'=>'j','e'=>'k'];
+		// if(!$getTestSectionData->isEmpty())
+		// {
+		// 	foreach($getTestSectionData as $singleTestSectionData)
+		// 	{
+		// 		if ($setQuestionOrder === null || $singleTestSectionData->question_order > $setQuestionOrder) {
+		// 			$setQuestionOrder = $singleTestSectionData->question_order;
+		// 		}
+		// 	}
+		// 	$setQuestionOrder = $setQuestionOrder + 1;
+		// }
+		// else
+		// {
+		// 	$setQuestionOrder = 1;
+		// }
 		
 		$question = new PracticeQuestion();
 		$question->format = $request->format;
@@ -51,18 +50,12 @@ class PracticeQuestionController extends Controller
 		$question->passages = Helper::getPassageById($request->passages_id);
 		$question->passage_number = $request->passage_number;
 		$question->answer = $request->answer;
-		// if($request->format == "ACT" && $setQuestionOrder % 2 == 0){
-		// 	$question->answer = $answer_arr[$request->answer];
-		// } else {
-		// 	$question->answer = $request->answer;
-		// }
-
 		$question->answer_content = $request->answer_content;
 		$question->answer_exp = $request->answer_exp;
 		$question->fill = $request->fill;
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
-		$question->question_order = $setQuestionOrder;
+		$question->question_order = $request->question_order;
 		if(isset($request->tags)){
 			$tags = Arr::flatten(json_decode($request->tags, true));
 			$question->tags = implode(",", $tags);
@@ -187,8 +180,18 @@ class PracticeQuestionController extends Controller
 	}
 	
 	public function deletePracticeQuestionById(Request $request) {
-		PracticeQuestion::where('id', $request->id)->delete();
-		return "1";
+		$question_delete = PracticeQuestion::where('id', $request->id)->first();
+		$section_id = $question_delete->practice_test_sections_id;
+		$question_delete->delete();
+		$questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get(['question_order','id']);
+		for($i = 0; $i < $questions->count(); $i++){
+			if($questions[$i]->question_order > $question_delete->question_order){
+				$new_order = $questions[$i]->question_order - 1;
+				PracticeQuestion::where('id', $questions[$i]->id)->update(['question_order' => $new_order]);
+			}
+		}
+		$question_ids = PracticeQuestion::where('practice_test_sections_id', $section_id)->pluck('question_order','id')->toArray();
+		return response()->json(['question_ids' => $question_ids]);
 	}
 	public function getPracticePassage(Request $request) {
 		$passages = Passage::where('type', $request->format)->get();

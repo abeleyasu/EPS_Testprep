@@ -1608,6 +1608,8 @@ ul.answerOptionLsit li label input{
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
         var questionCount = $('.sectionList').length + 1;
+        var questionOrder = 0;
+        var sectionOrder = $(`.sectionContainerList .sectionTypesFull`).length;
 
         function insertCategoryType(data) {
             let category_type = $(data).val();
@@ -2758,6 +2760,13 @@ ul.answerOptionLsit li label input{
             clearModel();
             // count++;
             let section_id = $(this).parents('.sectionTypesFull').attr('data-id');
+
+            if($(`.section_${section_id} .firstRecord .sectionList`).length >= 0){
+                questionOrder = $(`.section_${section_id} .firstRecord .sectionList`).length;
+            } else {
+                questionOrder = 0;
+            }
+
             $('.addSectionAddId').val(section_id);
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();
@@ -2805,6 +2814,8 @@ ul.answerOptionLsit li label input{
                 $('#questionMultiModal').modal('hide');
                 var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
                 var currentModelId = $('#currentModelId').val();
+                sectionOrder++;
+                questionOrder = 0;
 
                 $.ajax({
                     data: {
@@ -2812,7 +2823,7 @@ ul.answerOptionLsit li label input{
                         'testSectionTitle': testSectionTitle,
                         'testSectionType': testSectionType,
                         'get_test_id': get_test_id,
-                        'order': 1,
+                        'order': sectionOrder,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: '{{ route('addPracticeTestSection') }}',
@@ -2826,7 +2837,7 @@ ul.answerOptionLsit li label input{
                             capitalizeFirstLetter(sectionSelectedTxt) +
                             '</strong><input type="hidden" name="selectedSecTxt" value="' +
                             testSectionType +
-                            '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="0" id="order_' +
+                            '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
                             res +
                             '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Question"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
@@ -2957,13 +2968,14 @@ ul.answerOptionLsit li label input{
                 $('#addQuestionMultiModal').modal('hide');
                 $('#addQuestionMultiModal').modal('hide');
 
-                
+                questionOrder++;
                 var section_id = $('.addSectionAddId').val();  
                 $.ajax({
                     data:{
                         'format': format,
                         'testSectionType': testSectionType,
                         'question': question,
+                        'question_order': questionOrder,
                         'question_type': questionType,
                         'passages': pass,
                         'passage_number': passNumber,
@@ -2987,7 +2999,7 @@ ul.answerOptionLsit li label input{
                     $('.addQuestion').val('');
                     $('.validError').text('');
 
-                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">0</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
@@ -3080,7 +3092,8 @@ function practQuestioDel(id){
     if(!result) {
         return false;
     }
-
+    questionCount--;
+    questionOrder--;
     $.ajax({
             data:{
             'id': id,
@@ -3089,6 +3102,9 @@ function practQuestioDel(id){
         url: '{{route("deletePracticeQuestionById")}}',
         method: 'post',
         success: (res) => {
+            $.each(res.question_ids,function(key,val){
+                $(`.orderValUpdate_${key}`).text(val);
+            });
             $('.singleQuest_'+id).remove();
         }
     });
@@ -4237,6 +4253,7 @@ Sortable.create(listWithHandleQuestion, {
         if(!result){
             return false;
         }
+        sectionOrder--;
         $(`.section_${id}`).remove();
 
         $.ajax({
