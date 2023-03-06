@@ -445,7 +445,7 @@
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
-                                                <div class="sectionContainerList">
+                                                <div class="sectionContainerList" id="mainSectionContainer">
                                                 </div>
                                                 <div class="col-md-12 col-xl-12 mb-4">
                                                     <button type="button" data-id="0"
@@ -2517,8 +2517,7 @@
                 typeVallev2 = typeVallev.replace('(', '');
                 opt += '<option value="' + typeVallev2 + '">' + optionObj[format][i] + '</option>';
             }
-            $('#testSectionType').append(opt);
-            $('#editTestSectionType').append(opt);
+            $('#testSectionType').html(opt);
             $('#sectionModal').modal('show');
         });
 
@@ -2640,7 +2639,7 @@
                             testSectionType +
                             '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
                             res +
-                            '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="'+res+'" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="'+res+'" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
                             '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="' +
                             currentModelId +
@@ -4130,34 +4129,28 @@ function getEditAnswerExpContent(answerOpt, fill){
             questionModal.hide();
         }
         // List with handle
-        Sortable.create(listWithHandle, {
-            handle: '.glyphicon-move',
+        Sortable.create(mainSectionContainer, {
+            handle: '.sectionTypesFull',
             animation: 150,
             onEnd: function(evt) {
-                /*let data = {
-                    new_index: evt.newIndex+1,
-                    old_index: evt.oldIndex+1,
-                    item: evt.item.children[1].value,
-                    currentMileId: 1
-                };*/
-                var section_id = $('.sectionAddId').val();
-                var orderId = '#order_' + section_id;
-                $(orderId).val(evt.newIndex + 1);
-
-                $.ajax({
-                    data: {
-                        'section_order': evt.newIndex + 1,
-                        'section_id': section_id,
-                        '_token': $('input[name="_token"]').val()
-                    },
-                    url: '{{ route('sectionOrder') }}',
-                    method: 'post',
-                    success: (res) => {
-
-                    }
+                $('.sectionContainerList .sectionTypesFull').each((index,v) => {
+                    let section_id = $(v).attr('data-id');
+                    let section_order = index + 1;
+                    $(`#order_${section_id}`).val(section_order);
+                    $.ajax({
+                        data:{
+                            'section_order': section_order,
+                            'section_id': section_id,
+                            '_token': $('input[name="_token"]').val()
+                        },
+                        url: '{{route("sectionOrder")}}',
+                        method: 'post',
+                        success: (res) => {
+                        }
+                    });
                 });
             }
-        }, );
+        },);
         // List with handle
         var test = Sortable.create(listWithHandleQuestion, {
             handle: '.glyphicon-move',
@@ -4188,7 +4181,7 @@ function getEditAnswerExpContent(answerOpt, fill){
                         method: 'post',
                         success: (res) => {
                             $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
-                            $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                            $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li class="answerValUpdate_'+res.question['id']+'">'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                         }
                     });
                 });
@@ -4225,8 +4218,19 @@ function getEditAnswerExpContent(answerOpt, fill){
                 url: '{{ route("edit_section") }}',
                 method: 'post',
                 success: (res) => {
+                    let optionObj = [];
+                        optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
+                        optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+                        optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+                    let opt = '<option value="">Select Section Type</option>';
+                    for (let i = 0; i < optionObj[res.sectionDetails.format].length; i++) {
+                        let typeVal = optionObj[res.sectionDetails.format][i].replace(/\s/g, '_');
+                            typeVallev = typeVal.replace(')', '');
+                            typeVallev2 = typeVallev.replace('(', '');
+                        opt += `<option value="${typeVallev2}" ${ typeVallev2 == res.sectionDetails.practice_test_type ? 'selected' : '' }>${optionObj[res.sectionDetails.format][i]}</option>`;
+                    }
+                    $('#editTestSectionType').html(opt);
                     $('#editTestSectionTitle').val(`${res.sectionDetails.section_title}`);
-                    $('#editTestSectionType').val(`${res.sectionDetails.practice_test_type}`).trigger('change');
                     $('#currentSectionId').val(`${res.sectionDetails.id}`);
                 }
             });

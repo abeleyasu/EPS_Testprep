@@ -352,7 +352,7 @@ ul.answerOptionLsit li label input{
                         <input type="text" value="{{$practicetests->category_type}}" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
 					</div> --}}
 
-					<div class="sectionContainerList" data-id="">	
+					<div class="sectionContainerList" id="mainSectionContainer" data-id="">	
                     <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">   
 					@foreach($testsections as $key=>$testsection)	
                     		
@@ -367,7 +367,7 @@ ul.answerOptionLsit li label input{
                                 <input type="hidden" name="selectedQuesType" value="{{ $testsection->practice_test_type }}" class="selectedQuesType" >
                                 </span>
 								</li>
-                                <li><p class="mb-0 d-flex">Order:</p> &nbsp;<input type="number" readonly class="form-control me-1" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button></li>
+                                <li><p class="mb-0 d-flex">Order:</p> &nbsp;<input type="number" readonly class="form-control me-1" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button></li>
                                 <li class="edit-close-btn">
                                     <button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="{{$testsection->id}}" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section">
                                         <i class="fa fa-fw fa-pencil-alt"></i></button>
@@ -2744,7 +2744,7 @@ ul.answerOptionLsit li label input{
 						$('.addQuestion').val('');
 							$('.validError').text('');
                         $('.questionaprat_'+currentModelQueId).remove();    
-                        $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
+                        $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-section_id="'+section_id+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
                         '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
                         '<i class="fa-solid fa-grip-vertical"></i>\n' +
                         '</span>\n' +
@@ -2842,7 +2842,7 @@ ul.answerOptionLsit li label input{
                             testSectionType +
                             '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
                             res +
-                            '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Question"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Question"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
                             '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
                             currentModelId +
@@ -3005,7 +3005,7 @@ ul.answerOptionLsit li label input{
                     $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
-                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
+                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-section_id="'+section_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
                     '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                     '</span>\n' +
@@ -3097,6 +3097,7 @@ function practQuestioDel(id){
     }
     questionCount--;
     questionOrder--;
+    $(`#listWithHandleQuestion .questionaprat_${id}`).remove();
     $.ajax({
             data:{
             'id': id,
@@ -4094,33 +4095,28 @@ function questionModal() {
     //$('#sectionAddId').val(0);
     myQuestionModal.hide();
 }
-Sortable.create(listWithHandle, {
-    handle: '.glyphicon-move',
+Sortable.create(mainSectionContainer, {
+    handle: '.sectionTypesFull',
     animation: 150,
     onEnd: function(evt) {
-        /*let data = {
-            new_index: evt.newIndex+1,
-            old_index: evt.oldIndex+1,
-            item: evt.item.children[1].value,
-            currentMileId: 1
-        };*/
-        var section_id = $('#sectionAddId').val();
-        var orderId = '#order_'+section_id;
-        $(orderId).val(evt.newIndex+1);
-        
-        $.ajax({
-            data:{
-                'section_order': evt.newIndex+1,
-                'section_id': section_id,
-                '_token': $('input[name="_token"]').val()
-            },
-            url: '{{route("sectionOrder")}}',
-            method: 'post',
-            success: (res) => {
-            }
+        $('.sectionContainerList .sectionTypesFull').each((index,v) => {
+            let section_id = $(v).attr('data-id');
+            let section_order = index + 1;
+            $(`#order_${section_id}`).val(section_order);
+            $.ajax({
+                data:{
+                    'section_order': section_order,
+                    'section_id': section_id,
+                    '_token': $('input[name="_token"]').val()
+                },
+                url: '{{route("sectionOrder")}}',
+                method: 'post',
+                success: (res) => {
+                }
+            });
         });
     }
-},);  
+},); 
 
 $('.add_section_modal_btn').click(function() {
     var optionObj = [];
@@ -4222,8 +4218,19 @@ Sortable.create(listWithHandleQuestion, {
             url: '{{ route("edit_section") }}',
             method: 'post',
             success: (res) => {
+                let optionObj = [];
+                    optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
+                    optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+                    optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+                let opt = '<option value="">Select Section Type</option>';
+                for (let i = 0; i < optionObj[res.sectionDetails.format].length; i++) {
+                    let typeVal = optionObj[res.sectionDetails.format][i].replace(/\s/g, '_');
+                        typeVallev = typeVal.replace(')', '');
+                        typeVallev2 = typeVallev.replace('(', '');
+                    opt += `<option value="${typeVallev2}" ${ typeVallev2 == res.sectionDetails.practice_test_type ? 'selected' : '' }>${optionObj[res.sectionDetails.format][i]}</option>`;
+                }
+                $('#editTestSectionType').html(opt);
                 $('#editTestSectionTitle').val(`${res.sectionDetails.section_title}`);
-                $('#editTestSectionType').val(`${res.sectionDetails.practice_test_type}`).trigger('change');
                 $('#currentSectionId').val(`${res.sectionDetails.id}`);
             }
         });

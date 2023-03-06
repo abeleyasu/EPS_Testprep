@@ -11,6 +11,7 @@ use App\Models\PracticeTestSection;
 use App\Models\PracticeCategoryType;
 use App\Models\QuestionType;
 use App\Models\Passage;
+use App\Models\UserAnswers;
 use Illuminate\Support\Arr;
 
 class PracticeQuestionController extends Controller
@@ -184,6 +185,12 @@ class PracticeQuestionController extends Controller
 		$question_ids = [];
 		$question_delete = PracticeQuestion::where('id', $question_id)->first();
 		$section_id = $question_delete->practice_test_sections_id;
+		//new
+		$userAnswer = UserAnswers::where('section_id',$section_id)->first();
+		if(isset($userAnswer) && !empty($userAnswer)){
+			$decoded_answer = json_decode($userAnswer->answer, true);
+		}
+
 		$questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get();
 		$question_arr = [
 			"a" => "f",
@@ -201,7 +208,7 @@ class PracticeQuestionController extends Controller
 			"choiceOneInFour_Odd" => "choiceOneInFour_Even",
 			"choiceOneInFour_Even" => "choiceOneInFour_Odd",
 			"choiceOneInFourPass_Odd" => "choiceOneInFourPass_Even",
-			"choiceOneInFourPass_Even" => "choiceOneInFour_Odd",
+			"choiceOneInFourPass_Even" => "choiceOneInFourPass_Odd",
 			"choiceOneInFive_Odd" => "choiceOneInFive_Even",
 			"choiceOneInFive_Even" => "choiceOneInFive_Odd",
 		];
@@ -212,6 +219,15 @@ class PracticeQuestionController extends Controller
 				if($questions[$i]->format == "ACT") {
 					$answer = $question_arr[$questions[$i]->answer];
 					$questionType = $question_type_arr[$questions[$i]->type];
+					// new 
+					if(isset($decoded_answer) && !empty($decoded_answer)){
+						$decoded_answer[$questions[$i]['id']] = $answer;
+						$decoded_answer = json_encode($decoded_answer);
+						UserAnswers::where('section_id',$section_id)->update([
+							"answer" => $decoded_answer
+						]);
+					}
+
 				} else {
 					$answer = $questions[$i]->answer;
 					$questionType = $questions[$i]->type;
@@ -311,6 +327,96 @@ class PracticeQuestionController extends Controller
 	public function questionOrder(Request $request){
 		$question = PracticeQuestion::find($request->question_id);
 		$question->question_order = $request->question_order;
+		
+		$section_id = $question->practice_test_sections_id;
+		$userAnswer = UserAnswers::where('section_id',$section_id)->first();
+		if(isset($userAnswer) && !empty($userAnswer)){
+			$decoded_answer = json_decode($userAnswer->answer, true);
+		}
+		$question_arr_odd = [
+			"f" => "a",
+			"g" => "b",
+			"h" => "c",
+			"j" => "d",
+			"k" => "e",
+			"a" => "a",
+			"b" => "b",
+			"c" => "c",
+			"d" => "d",
+			"e" => "e"
+		];
+		$question_arr_even = [
+			"a" => "f",
+			"b" => "g",
+			"c" => "h",
+			"d" => "j",
+			"e" => "k",
+			"f" => "f",
+			"g" => "g",
+			"h" => "h",
+			"j" => "j",
+			"k" => "k"
+		];
+		$user_answer_arr = [
+			"a" => "f",
+			"b" => "g",
+			"c" => "h",
+			"d" => "j",
+			"e" => "k",
+			"f" => "a",
+			"g" => "b",
+			"h" => "c",
+			"j" => "d",
+			"k" => "e"
+		];
+		$question_type_arr_odd = [
+			"choiceOneInFour_Odd" => "choiceOneInFour_Even",
+			"choiceOneInFourPass_Odd" => "choiceOneInFourPass_Even",
+			"choiceOneInFive_Odd" => "choiceOneInFive_Even",
+			"choiceOneInFour_Even" => "choiceOneInFour_Even",
+			"choiceOneInFourPass_Even" => "choiceOneInFourPass_Even",
+			"choiceOneInFive_Even" => "choiceOneInFive_Even"
+		];
+		$question_type_arr_even = [
+			"choiceOneInFour_Even" => "choiceOneInFour_Odd",
+			"choiceOneInFourPass_Even" => "choiceOneInFourPass_Odd",
+			"choiceOneInFive_Even" => "choiceOneInFive_Odd",
+			"choiceOneInFour_Odd" => "choiceOneInFour_Odd",
+			"choiceOneInFourPass_Odd" => "choiceOneInFourPass_Odd",
+			"choiceOneInFive_Odd" => "choiceOneInFive_Odd"
+		];
+		if($question->format == 'ACT' && $request->question_order % 2 == 0){
+			$answer = $question_arr_even[$question->answer];
+			$question_type = $question_type_arr_odd[$question->type];
+			if(isset($decoded_answer) && !empty($decoded_answer)){
+				$decoded_answer[$request->question_id] = $answer;
+				$decoded_answer = json_encode($decoded_answer);
+				UserAnswers::where('section_id',$section_id)->update([
+					"answer" => $decoded_answer
+				]);
+			}
+			$question->answer = $answer;
+			$question->type = $question_type;
+
+		} else if($question->format == 'ACT' && $request->question_order % 2 != 0){
+			$answer = $question_arr_odd[$question->answer];
+			$question_type = $question_type_arr_even[$question->type];
+			if(isset($decoded_answer) && !empty($decoded_answer)){
+				$decoded_answer[$request->question_id] = $answer;
+				$decoded_answer = json_encode($decoded_answer);
+				UserAnswers::where('section_id',$section_id)->update([
+					"answer" => $decoded_answer
+				]);
+			}
+			$question->answer = $answer;
+			$question->type = $question_type;
+		}
+		
+		// $single_answer = $decoded_answer[$request->question_id];
+		// $updated_answer = $user_answer_arr[$single_answer];
+		
+		
+		
 		$question->save(); 
 		return response()->json(['question'=>$question]);  
 	}

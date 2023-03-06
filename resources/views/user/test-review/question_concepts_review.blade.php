@@ -400,7 +400,7 @@
                                                                                             data-bs-toggle="tooltip"
                                                                                             data-bs-trigger="click"
                                                                                             data-bs-placement="top"
-                                                                                            title="Category Type"><i
+                                                                                            title="Right Answer"><i
                                                                                                 class="fa fa-lg fa-circle-check me-1"
                                                                                                 style="color:white"></i>
                                                                                             {{ $single_user_selected_answers['user_selected_answer'] }}</button>
@@ -413,7 +413,7 @@
                                                                                             data-bs-toggle="tooltip"
                                                                                             data-bs-trigger="click"
                                                                                             data-bs-placement="top"
-                                                                                            title="Category Type"><i
+                                                                                            title="Wrong Answer"><i
                                                                                                 class="fa fa-lg fa-circle-xmark me-1"
                                                                                                 style="color:white"></i>
                                                                                             {{ $single_user_selected_answers['user_selected_answer'] }}</button>
