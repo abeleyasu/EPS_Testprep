@@ -395,7 +395,7 @@ ul.answerOptionLsit li label input{
 							@foreach($testsection->getPracticeQuestions as $practQuestion)
                                 <ul class="sectionList singleQuest_{{ $practQuestion->id }}">
                                     <li>{!! $practQuestion->title !!}</li>
-                                    <li>{{ $practQuestion->answer }}</li>
+                                    <li class="answerValUpdate_{{ $practQuestion->id }}">{{ $practQuestion->answer }}</li>
                                     <li>{{ isset($practQuestion->getpassage->title) ? $practQuestion->getpassage->title : ''}}</li>
                                     <li>{{ $practQuestion->passage_number  }}</li>
                                     <li>{{ $practQuestion->fill  }}</li>
@@ -1042,6 +1042,7 @@ ul.answerOptionLsit li label input{
                 </div>
             </div>
             <div class="modal-footer">
+                <input type="hidden" name="editQuestionOrder" value="0" id="editQuestionOrder">
                 <input type="hidden" name="currentModelQueId" value="0" id="currentModelQueId">
                 <input type="hidden" name="sectionAddId" value="0" class="sectionAddId">
                 <button type="button" class="btn btn-primary update_question_section">Update changes</button>
@@ -2709,13 +2710,15 @@ ul.answerOptionLsit li label input{
                 $('#questionMultiModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
                 
-				var section_id = $('.sectionAddId').val();  
+				var section_id = $('.sectionAddId').val(); 
+                var questionOrderUpdated = $('#editQuestionOrder').val(); 
 				$.ajax({
 					data:{
 						'id': currentModelQueId,
 						'format': format,
 						'testSectionType': testSectionType,
 						'question': question,
+                        'question_order': questionOrderUpdated,
 						'question_type': questionType,
 						'passages': pass,
 						'passage_number': passNumber,
@@ -2735,9 +2738,9 @@ ul.answerOptionLsit li label input{
 					url: '{{route("updatePracticeQuestion")}}',
 					method: 'post',
 					success: (res) => {
-                        var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res+')" > <i class="fa fa-fw fa-times"></i>  </button>';
+                        var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
 
-                        $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res+'">0</li><li>'+btn+'</li>');
+                        $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpadte_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
 						$('.addQuestion').val('');
 							$('.validError').text('');
                         $('.questionaprat_'+currentModelQueId).remove();    
@@ -2999,7 +3002,7 @@ ul.answerOptionLsit li label input{
                     $('.addQuestion').val('');
                     $('.validError').text('');
 
-                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li>'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
@@ -3103,7 +3106,9 @@ function practQuestioDel(id){
         method: 'post',
         success: (res) => {
             $.each(res.question_ids,function(key,val){
-                $(`.orderValUpdate_${key}`).text(val);
+                $(`.orderValUpdate_${key}`).text(val.question_order);
+                $(`.answerValUpdate_${key}`).text(val.answer);
+                $('.editSelectedAnswerType').val(val.type);
             });
             $('.singleQuest_'+id).remove();
         }
@@ -3137,6 +3142,7 @@ function practQuestioEdit(id){
                 var result = res[0];
                 let categorytypeArr = JSON.parse(result.category_type);
                 let questiontypeArr = JSON.parse(result.question_type_id);
+                $('#editQuestionOrder').val(result.question_order);
                 $('#currentModelQueId').val(result.id);
                 $('#quesFormat').val(result.format);
                 $('.sectionAddId').val(result.practice_test_sections_id);

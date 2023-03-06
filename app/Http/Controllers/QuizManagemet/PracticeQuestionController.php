@@ -130,13 +130,14 @@ class PracticeQuestionController extends Controller
 		return view('admin.quiz-management.questiontypes.index', compact('questionTypes'));
 	}
 	public function updatePracticeQuestion(Request $request) {
-		$get_order = DB::table('practice_questions')->where('id',$request->id)->get();
+		// $get_order = DB::table('practice_questions')->where('id',$request->id)->get();
 
 		// $answer_arr = ['a'=>'f','b'=>'g','c'=>'h','d'=>'j','e'=>'k'];
 
 		$question = PracticeQuestion::find($request->id);
 		$question->format = $request->format;
 		$question->title = $request->question;
+		$question->question_order = $request->question_order;
 		$question->type = $request->question_type;
 		$question->passages = $request->passages;
 		$question->practice_test_sections_id = $request->section_id;
@@ -176,21 +177,67 @@ class PracticeQuestionController extends Controller
 		$question->question_type_id = json_encode($qt_array);
 
 		$question->save(); 
-		return $question->id;
+		return response()->json(['question_id' => $question->id, 'question_order' => $question->question_order]);
+	}
+
+	public function orderQuestion($question_id){
+		$question_ids = [];
+		$question_delete = PracticeQuestion::where('id', $question_id)->first();
+		$section_id = $question_delete->practice_test_sections_id;
+		$questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get();
+		$question_arr = [
+			"a" => "f",
+			"b" => "g",
+			"c" => "h",
+			"d" => "j",
+			"e" => "k",
+			"f" => "a",
+			"g" => "b",
+			"h" => "c",
+			"j" => "d",
+			"k" => "e"
+		];
+		$question_type_arr = [
+			"choiceOneInFour_Odd" => "choiceOneInFour_Even",
+			"choiceOneInFour_Even" => "choiceOneInFour_Odd",
+			"choiceOneInFourPass_Odd" => "choiceOneInFourPass_Even",
+			"choiceOneInFourPass_Even" => "choiceOneInFour_Odd",
+			"choiceOneInFive_Odd" => "choiceOneInFive_Even",
+			"choiceOneInFive_Even" => "choiceOneInFive_Odd",
+		];
+
+		for($i = 0; $i < count($questions); $i++){
+			if($questions[$i]->question_order > $question_delete->question_order){
+				$new_order = $questions[$i]->question_order - 1;
+				if($questions[$i]->format == "ACT") {
+					$answer = $question_arr[$questions[$i]->answer];
+					$questionType = $question_type_arr[$questions[$i]->type];
+				} else {
+					$answer = $questions[$i]->answer;
+					$questionType = $questions[$i]->type;
+				}
+				PracticeQuestion::where('id', $questions[$i]->id)->update([
+					'question_order' => $new_order,
+					'answer' => $answer,
+					'type' => $questionType
+				]);
+			}
+		}
+		$question_ids = PracticeQuestion::where('practice_test_sections_id', $section_id)->get();
+		$question_ids_arr = $question_ids->reduce(function ($question_ids_arr, $question) {
+			$question_ids_arr[$question->id]['id'] = $question->id;
+			$question_ids_arr[$question->id]['question_order'] = $question->question_order;
+			$question_ids_arr[$question->id]['answer'] = $question->answer;
+			$question_ids_arr[$question->id]['type'] = $question->type;
+			return $question_ids_arr;
+		 }, []);
+		return $question_ids_arr;
 	}
 	
 	public function deletePracticeQuestionById(Request $request) {
 		$question_delete = PracticeQuestion::where('id', $request->id)->first();
-		$section_id = $question_delete->practice_test_sections_id;
-		$question_delete->delete();
-		$questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get(['question_order','id']);
-		for($i = 0; $i < $questions->count(); $i++){
-			if($questions[$i]->question_order > $question_delete->question_order){
-				$new_order = $questions[$i]->question_order - 1;
-				PracticeQuestion::where('id', $questions[$i]->id)->update(['question_order' => $new_order]);
-			}
-		}
-		$question_ids = PracticeQuestion::where('practice_test_sections_id', $section_id)->pluck('question_order','id')->toArray();
+		$question_ids = $this->orderQuestion($question_delete->id);
+		PracticeQuestion::where('id', $request->id)->delete();
 		return response()->json(['question_ids' => $question_ids]);
 	}
 	public function getPracticePassage(Request $request) {
