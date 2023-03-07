@@ -3721,14 +3721,18 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
             if(arg == 1){
                 $('#EditSelectedLayoutQuestion .multi_field').show();
                 $('#EditSelectedLayoutQuestion .fill_field').hide();
+                $('input[name="choiceMultInFourFill_fill[]"]').remove();
                 $('#EditSelectedLayoutQuestion .multiChoice_field').hide();
             } else if(arg == 3){
                 $('#EditSelectedLayoutQuestion .multi_field').hide();
                 $('#EditSelectedLayoutQuestion .multiChoice_field').show();
                 $('#EditSelectedLayoutQuestion .fill_field').hide();
+                $('input[name="choiceMultInFourFill_fill[]"]').remove();
             }else{
                 $('#EditSelectedLayoutQuestion .multi_field').hide();
+                $('input[name="choiceMultInFourFill[]"').prop("checked",false);
                 $('#EditSelectedLayoutQuestion .multiChoice_field').hide();
+                $('input[name="editChoiceMultiChoiceInFourFill"').prop("checked",false);
                 $('#EditSelectedLayoutQuestion .fill_field').show();
             }
         }
@@ -3938,6 +3942,10 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
 
         function removeMoreFillOption() {
             $('.extraFillOption').html('');
+        }
+
+        function editMoreFillOption(){
+            $('.editExtraFillOption').append('<input type="text" name="choiceMultInFourFill_fill[]">');
         }
 
         function getAnswerContent(answerOpt, fill) {

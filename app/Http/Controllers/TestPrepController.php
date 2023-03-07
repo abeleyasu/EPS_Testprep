@@ -718,9 +718,14 @@ class TestPrepController extends Controller
        ->where('user_answers.test_id', $id)
        ->count();
     
-       if($get_all_section_id === $get_users_answers_section_id)
-       {
+       if($get_all_section_id === $get_users_answers_section_id){
+
          $check_test_completed = 'yes';
+
+       } else if($get_users_answers_section_id >= 1) {
+
+        $check_test_completed = 'Yes';
+
        }
 
        $checkTestQuestion = DB::table('practice_questions')

@@ -56,23 +56,26 @@
                       {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
                     </h6> --}}
                   </div>
-                  <a  href="{{route('reset_test', ['id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8 ">
-                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
-                  </a>
                 @if($check_test_completed == 'yes')
                   @if (isset($testSections[0]) && !empty($testSections[0]))
                     <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="margin-right: 10px;white-space: nowrap" class="btn btn-alt-primary fs-8 ms-2">
                       <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Review All Sections
                     </a>
+                    <a  href="{{route('reset_test', ['id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8 ">
+                      <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
+                    </a>
                   @endif
-                @elseif($checkTestQuestion == 0)
-                  <a  href="#" style="" class="btn btn-alt-primary fs-8">
-                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
-                  </a>
-                @else
+                @elseif($check_test_completed == 'Yes')
                   <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="white-space: nowrap" class="btn btn-alt-primary fs-8  ms-2" >
                     <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                   </a>
+                  <a  href="{{route('reset_test', ['id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
+                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
+                  </a>
+                @else
+                  <a  href="#" style="" class="btn btn-alt-primary fs-8">
+                    <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
+                  </a> 
                 @endif
                 
                 </div>

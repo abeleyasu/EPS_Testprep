@@ -3890,14 +3890,18 @@ function editMultiChoice(arg){
     if(arg == 1){
         $('#selectedLayoutQuestion .multi_field').show();
         $('#selectedLayoutQuestion .fill_field').hide();
+        $('input[name="choiceMultInFourFill_fill[]"]').remove();
         $('#selectedLayoutQuestion .multiChoice_field').hide();
     } else if(arg == 3){
         $('#selectedLayoutQuestion .multi_field').hide();
         $('#selectedLayoutQuestion .multiChoice_field').show();
         $('#selectedLayoutQuestion .fill_field').hide();
+        $('input[name="choiceMultInFourFill_fill[]"]').remove();
     }else{
         $('#selectedLayoutQuestion .multi_field').hide();
+        $('input[name="choiceMultInFourFill[]"]').prop("checked",false);
         $('#selectedLayoutQuestion .multiChoice_field').hide();
+        $('input[name="editChoiceMultiChoiceInFourFill"]').prop("checked",false);
         $('#selectedLayoutQuestion .fill_field').show();
     }
 }   
