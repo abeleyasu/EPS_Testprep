@@ -88,7 +88,7 @@
                 <!-- Lessons -->
                 <div class="block block-rounded">
                     <div class="block-content fs-sm">
-
+                        <input type="hidden" id="onload_question_id" value="{{ $total_questions[0] }}">
                         <h5 class="h5 mb-4">
                             PASSAGE I
                         </h5>
@@ -124,8 +124,8 @@
         <div class="content content-boxed py-3">
             <div class="row">
                 <div class="col-xl-4">
-                    <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
-                    <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
+                    <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev" data-count="0"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
+                    <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next" data-count="0">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
                     <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-clock me-1"></i> 35:12</button>
                 </div>
@@ -138,7 +138,7 @@
                         <span><i class="fa fa-fw fa-flag me-1" style="color:red"></i>Flag</span>
                     </label>
 
-                    <button type="button" id="get_skip_question_btn" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 skip"><i class="fa fa-fw fa-forward me-1"></i>Skip</button>
+                    <button type="button" id="get_skip_question_btn" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 skip" data-count="0"><i class="fa fa-fw fa-forward me-1"></i>Skip</button>
 
                     <label class="btn btn-sm btn-outline-warning fs-xs fw-semibold me-1 mb-3 checkbox-button main_guess_section">
                         <input type="checkbox" class="guess" />
@@ -174,6 +174,8 @@
             var selected_flag_details = [];
             var selected_skip_details = [];
             var get_offset = jQuery('#get_offset').val();
+            var question_id_arr = @json($total_questions);
+            $('#onload_question_id').val(question_id_arr[0]);
             
             var getSelectedAnswer ;
             var check_click_type = 'onload';
@@ -188,7 +190,15 @@
             jQuery(".prev").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
+                let data_count = jQuery(this).attr('data-count');
+                    data_count = parseInt(data_count);
+                jQuery(this).attr('data-count', data_count - 1);
+                jQuery('.skip').attr('data-count', data_count - 1);
+                jQuery('.next').attr('data-count', data_count - 1);
                 var set_scroll_position=0;
+
+                let arr_index = jQuery('.prev').attr('data-count');
+                $('#onload_question_id').val(question_id_arr[arr_index]);
 
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
@@ -249,6 +259,14 @@
             jQuery(".skip").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
+                let data_count = jQuery(this).attr('data-count');
+                    data_count = parseInt(data_count);
+                jQuery(this).attr('data-count', data_count + 1);
+                jQuery('.prev').attr('data-count', data_count + 1);
+                jQuery('.next').attr('data-count', data_count + 1);
+
+                let arr_index = jQuery('.skip').attr('data-count');
+                $('#onload_question_id').val(question_id_arr[arr_index]);
 
                 if ( $('input:radio[name=example-radios-default]').length ) {
                     $('input:radio[name=example-radios-default]').prop('checked', false);
@@ -293,7 +311,15 @@
             var count = 1;
             jQuery(".next").click(function(){
                 var get_offset = jQuery(this).val();
+                let data_count = jQuery(this).attr('data-count');
+                    data_count = parseInt(data_count);
+                jQuery(this).attr('data-count', data_count + 1);
+                jQuery('.skip').attr('data-count', data_count + 1);
+                jQuery('.prev').attr('data-count', data_count + 1);
                 var get_question_id = jQuery('.get_question_id').val();
+
+                let arr_index = jQuery('.next').attr('data-count');
+                $('#onload_question_id').val(question_id_arr[arr_index]);
 
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     count ++;
@@ -704,21 +730,30 @@
                     method: 'post',
                     data: {
                         section_id: jQuery('#section_id').val(),
+                        question_id: $('#onload_question_id').val(),
                         question_type: jQuery('#get_question_type').val(),
                         get_offset: get_offset,
                     },
                     success: function(result){
+                        
                         $('.submit_section_btn').attr('data-practice_test_id', result.practice_test_id);
                         var check_if_flag_selected = selected_flag_details[result.questions[0].question_id];
                         var check_if_guess_selected = selected_gusess_details[result.questions[0].question_id];
                         var check_if_skip_selected = selected_skip_details[result.questions[0].question_id];
                         
-                        var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
-                        var passage_title =  result.questions[0].passage_title;
-                        var passage_description =  result.questions[0].passage_description;
+                        if(result.questions[0].passage_type && result.questions[0].passage_title && result.questions[0].passage_description) {
+                            var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
+                            var passage_title =  result.questions[0].passage_title;
+                            var passage_description =  result.questions[0].passage_description;
+                            var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
+                        } else {
+                            var passage_type = '';
+                            var passage_title =  '';
+                            var passage_description = '';
+                            var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
+                        }
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
-                        var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
 
                         var get_question_title = result.questions[0].question_title;
                         get_question_title = result.questions[0].question_title.replace(/(<([^>]+)>)/gi, "");

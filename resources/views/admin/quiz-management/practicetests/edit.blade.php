@@ -2634,7 +2634,7 @@ ul.answerOptionLsit li label input{
 			var passagesType = $('#passagesType').val();
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
-            if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
+            if(format =='' || testSectionType =='' || question =='' || questionType ==''){
                 $('#questionMultiModal .validError').text('Below fields are required!');
                 return false;
             }else{
@@ -2896,7 +2896,7 @@ ul.answerOptionLsit li label input{
                     return question_type_arr;
                 }).get();
 
-                if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType ==''){
+                if(format =='' || testSectionType =='' || question =='' || questionType ==''){
                     $('#addQuestionMultiModal .validError').text('Below fields are required!');
                     return false;
                 }else{
@@ -3049,26 +3049,71 @@ function showTab(n) {
     fixStepIndicator(n)
 }
 
+// function nextPrev(n) {
+//     var x = document.getElementsByClassName("tab");
+//     if (n == 1 && !validateForm()) return false;
+//     x[currentTab].style.display = "none";
+//     currentTab = currentTab + n;
+//     if (currentTab >= x.length) {
+//         document.getElementById("regForm").submit();
+//         // return false;
+//         //alert("sdf");
+		
+//         document.getElementById("nextprevious").style.display = "none";
+//         document.getElementById("all-steps").style.display = "none";
+//         document.getElementById("register").style.display = "none";
+//         document.getElementById("text-message").style.display = "block";
+
+
+
+
+//     }
+//     showTab(currentTab);
+// }
+
 function nextPrev(n) {
     var x = document.getElementsByClassName("tab");
+
+    var test_title_val = jQuery(".test_title").val();
+    var test_format_type_val = jQuery('#format').val();
+    var get_test_id = jQuery('#get_question_id').val();
+
+    if (test_title_val != '') {
+        $('.testvalidError').text('');
+        $.ajax({
+            data: {
+                'format': test_format_type_val,
+                'title': test_title_val,
+                'get_test_id': get_test_id,
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{ route('addPracticeTest') }}',
+            method: 'post',
+            success: (res) => {
+                jQuery("#get_question_id").val(res);
+            }
+        });
+    } else if (test_title_val == '') {
+        $('.testvalidError').text('Below fields are required!');
+        return false;
+    }
+
     if (n == 1 && !validateForm()) return false;
     x[currentTab].style.display = "none";
     currentTab = currentTab + n;
     if (currentTab >= x.length) {
+
+
         document.getElementById("regForm").submit();
-        // return false;
-        //alert("sdf");
-		
+        return false;
+
         document.getElementById("nextprevious").style.display = "none";
         document.getElementById("all-steps").style.display = "none";
         document.getElementById("register").style.display = "none";
         document.getElementById("text-message").style.display = "block";
-
-
-
-
     }
     showTab(currentTab);
+    clearModel();
 }
 
 function validateForm() {

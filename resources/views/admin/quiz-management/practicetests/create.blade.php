@@ -2695,8 +2695,7 @@
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
 
-                if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType ==
-                    '') {
+                if (format == '' || testSectionType == '' || question == '' || questionType == '' ){
                     $('#questionMultiModal .validError').text('Below fields are required!');
                     return false;
                 } else {
@@ -3352,7 +3351,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var passagesType = $('.editPassagesType').val();
         var passagesTypeTxt = $(".editPassagesType option:selected").text();
 
-        if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType == '' || passNumber == '' ){
+        if(format =='' || testSectionType =='' || question =='' || questionType ==''){
             
             $('#editQuestionMultiModal .validError').text('Below fields are required!');
             return false;

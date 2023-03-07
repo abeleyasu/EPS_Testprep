@@ -245,7 +245,7 @@
 
                                                 var get_question_title = removeTags(jQuery(this).data('question-title'));
                                                 jQuery(".text-info").addClass(get_question_title);
-                                                var get_passage_title = removeTags(jQuery(this).data('passage-title'));
+                                                // var get_passage_title = removeTags(jQuery(this).data('passage-title'));
                                                 var serial_no = jQuery(this).data('serial-no');
                                                 var get_correct_answer = jQuery(this).data('correct-answer');
                                                 var get_user_answer = jQuery(this).data('user-answer');
@@ -253,8 +253,8 @@
                                                 var get_answers_explanation = jQuery(this).data('answers-explanation');
 
                                                 jQuery(".set_serial_no").text(serial_no);
-                                                jQuery(".set_question_title").text(get_question_title);
-                                                jQuery(".set_passage_title").text(get_passage_title);
+                                                // jQuery(".set_question_title").text(get_question_title);
+                                                // jQuery(".set_passage_title").text(get_passage_title);
 
                                                 var array_correct = get_correct_answer.split(',');
                                                 array_correct = $.map(array_correct, function(value) {
@@ -471,7 +471,6 @@
                                                                             <button type="button" data-bs-toggle="modal"
                                                                                 data-bs-target="#modal-block-large-q1r_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>"
                                                                                 data-question-title="{{ $single_user_selected_answers['get_question_details'][0]->question_title }}"
-                                                                                data-passage-title="{{ $single_user_selected_answers['get_question_details'][0]->title }}"
                                                                                 data-correct-answer="{{ $single_user_selected_answers['get_question_details'][0]->question_answer }}"
                                                                                 data-user-answer="{{ $single_user_selected_answers['user_selected_answer'] }}"
                                                                                 data-answers-exp="{{ $single_user_selected_answers['get_question_details'][0]->question_answer_options }}"
@@ -530,7 +529,7 @@
                                                                                                             class="block-content">
                                                                                                             <p
                                                                                                                 class="set_question_title">
-                                                                                                                {{ strip_tags($single_user_selected_answers['get_question_details'][0]->question_title) }}
+                                                                                                                {!! $single_user_selected_answers['get_question_details'][0]->question_title !!}
                                                                                                             </p>
                                                                                                         </div>
                                                                                                     </div>

@@ -73,7 +73,7 @@
                     <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Reset Test
                   </a>
                 @else
-                  <a  href="#" style="" class="btn btn-alt-primary fs-8">
+                  <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="" class="btn btn-alt-primary fs-8">
                     <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                   </a> 
                 @endif
