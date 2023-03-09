@@ -735,7 +735,7 @@
                         get_offset: get_offset,
                     },
                     success: function(result){
-                        
+                        console.log("result",result);
                         $('.submit_section_btn').attr('data-practice_test_id', result.practice_test_id);
                         var check_if_flag_selected = selected_flag_details[result.questions[0].question_id];
                         var check_if_guess_selected = selected_gusess_details[result.questions[0].question_id];
