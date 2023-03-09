@@ -389,7 +389,7 @@
                                                                                         data-bs-toggle="tooltip"
                                                                                         data-bs-trigger="click"
                                                                                         data-bs-placement="top"
-                                                                                        title="Category Type">{{ $count++ }}</button>
+                                                                                        title="Question No.">{{ $count++ }}</button>
                                                                                 </div>
                                                                                 <?php $correct = str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
                                                                                 @if ($single_user_selected_answers['user_selected_answer'] == $correct)
@@ -400,7 +400,7 @@
                                                                                             data-bs-toggle="tooltip"
                                                                                             data-bs-trigger="click"
                                                                                             data-bs-placement="top"
-                                                                                            title="Right Answer"><i
+                                                                                            title="User Answer"><i
                                                                                                 class="fa fa-lg fa-circle-check me-1"
                                                                                                 style="color:white"></i>
                                                                                             {{ $single_user_selected_answers['user_selected_answer'] }}</button>
@@ -413,7 +413,7 @@
                                                                                             data-bs-toggle="tooltip"
                                                                                             data-bs-trigger="click"
                                                                                             data-bs-placement="top"
-                                                                                            title="Wrong Answer"><i
+                                                                                            title="User Answer"><i
                                                                                                 class="fa fa-lg fa-circle-xmark me-1"
                                                                                                 style="color:white"></i>
                                                                                             {{ $single_user_selected_answers['user_selected_answer'] }}</button>
