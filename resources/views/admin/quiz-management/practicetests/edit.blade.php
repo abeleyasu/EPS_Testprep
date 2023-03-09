@@ -296,6 +296,9 @@ ul.answerOptionLsit li label input{
 .edit-close-btn{
     width: 60px !important;
 }
+.select-type .select2-container--default{
+    width: 100% !important;
+}
 </style>
 @endsection
 @section('admin-content')
@@ -496,7 +499,7 @@ ul.answerOptionLsit li label input{
                                                 placeholder="Enter Practice Section Title" class="form-control">
                                         </div>
 
-                                        <div class="mb-2 col-12">
+                                        <div class="mb-2 col-12 select-type">
                                             <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
                                             <select id="editTestSectionType" name="testSectionType" class="form-control js-select2 select">
 

@@ -383,6 +383,9 @@
         .edit-close-btn{
             width: 60px !important;
         }
+        .select-type .select2-container--default{
+            width: 100% !important;
+        }
     </style>
 @endsection
 
@@ -534,7 +537,7 @@
                                 placeholder="Enter Practice Section Title" class="form-control">
                         </div>
 
-                        <div class="mb-2 col-12">
+                        <div class="mb-2 col-12 select-type">
                             <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
                             <select id="editTestSectionType" name="testSectionType" class="form-control js-select2 select">
 
@@ -1757,6 +1760,10 @@
 
         $(document).ready(function() { 
             $( '#questionMultiModal' ).modal( {
+                focus: false
+            } );
+
+            $( '#editQuestionMultiModal' ).modal( {
                 focus: false
             } );
          
@@ -3460,7 +3467,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
 
                     $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
                     $('.addQuestion').val('');
-                        $('.validError').text('');
+                    $('.validError').text('');
                     $('.questionaprat_'+currentModelQueId).remove();    
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
                     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
