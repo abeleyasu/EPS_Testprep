@@ -754,6 +754,7 @@ class TestPrepController extends Controller
         ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
         ->select('practice_test_sections.*', 'practice_tests.title' , 'practice_tests.is_test_completed' , 'practice_tests.format' ,  'practice_tests.description' , 'practice_tests.tags' /*, 'practice_questions.*'*/ )
         ->where('practice_test_sections.testid', $id)
+        ->orderBy('section_order', 'ASC')
         ->get();
 
         $get_total_sections = DB::table('practice_tests')
