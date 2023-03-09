@@ -2499,6 +2499,7 @@
         });
 
         $('.add_section_modal_btn').click(function() {
+            $('#testSectiontitle').val('');
             var optionObj = [];
             var modelCount = $('.sectionTypesFull').length;
             $('#currentModelId').val(modelCount);

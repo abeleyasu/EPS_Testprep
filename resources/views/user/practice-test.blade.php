@@ -762,7 +762,11 @@
                         var set_questions_options = '<div class="mb-4">';
                         set_questions_options += `<input type="hidden" value="${result.questions[0].question_id}" class="get_question_id"><label class="form-label">Question ${get_question_no} ${get_question_title}</label>`;
 
-                        var get_options = result.questions[0].question_answer_options.replace(/(<([^>]+)>)/gi, "");
+                        if(result.questions[0].question_answer_options){
+                            var get_options = result.questions[0].question_answer_options.replace(/(<([^>]+)>)/gi, "");
+                        } else {
+                            get_options = '0';
+                        }  
                         
                         jQuery.each(JSON.parse(get_options), function (key,val) {
                            var get_option_number = 'A';
