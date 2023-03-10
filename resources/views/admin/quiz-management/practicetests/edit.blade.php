@@ -113,6 +113,16 @@ button:hover {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     margin-bottom: 18px;
 }
+.input-check{
+    position: relative;
+    top: 13px;
+    margin-left: 30px;
+}
+.input-check[type="checkbox"]{
+    width: 30px;
+    height: 30px;   
+    accent-color: #1f2937
+}
 .switchMulti{
 	color: #000;
     background: #ccc;
@@ -237,7 +247,7 @@ ul.answerOptionLsit li label input{
     width: 300px !important;
 }
 .passage-container .select2-container--default{
-    width: 360px !important;
+    width: 300px !important;
 }
 .add-position{
     position: relative;
@@ -675,8 +685,8 @@ ul.answerOptionLsit li label input{
                         </div>
                     </div>
 
-					<div class="row passage-container">
-                        <div class="mb-2 col-md-6">
+					<div class="row passage-container align-items-center">
+                        <div class="mb-2 col-md-5">
                             <label for="passage_number" class="form-label">Passage No</label>
                             <select class="js-select2 select passNumber" id="passage_number" name="passage_number">
                                 <option value="">Select Passage No</option>
@@ -685,9 +695,13 @@ ul.answerOptionLsit li label input{
                                 @endfor
                             </select>
                         </div>
-                        <div class="mb-2 col-md-6">
+                        <div class="mb-2 col-md-5">
                             <label class="form-label" for="passagesType">Passages</label>
                             <select name="passagesType" id="passagesType" class="passagesType js-select2 select"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="checkbox" id="passageRequired_2" name="passageRequired_2" class="input-check">
+                            {{-- <label class="form-label mb-0 ms-2 " for="passageRequired_2">Is Passage Required</label> --}}
                         </div>
                     </div>
                     <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
@@ -1127,8 +1141,9 @@ ul.answerOptionLsit li label input{
                             </div>
                         </div>
                     </div>
-                    <div class="row passage-container">
-                        <div class="mb-2 col-md-6">
+                    
+                    <div class="row passage-container align-items-center">
+                        <div class="mb-2 col-md-5">
                             <label for="passage_number" class="form-label">Passage No</label>
                             <select class="js-select2 select addPassNumber" id="add_passage_number" name="passage_number">
                                 <option value="">Select Passage No</option>
@@ -1137,9 +1152,13 @@ ul.answerOptionLsit li label input{
                                 @endfor
                             </select>
                         </div>
-                        <div class="mb-2 col-md-6">
+                        <div class="mb-2 col-md-5">
                             <label class="form-label">Passages</label>
                             <select name="addPassagesType" class="form-control addPassagesType js-select2 select"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="checkbox" id="passageRequired_1" name="passageRequired_1" class="input-check">
+                            {{-- <label class="form-label mb-0 ms-2 " for="passageRequired_1">Is Passage Required</label> --}}
                         </div>
                     </div>
                     {{-- <div class="mb-2">
@@ -1614,6 +1633,26 @@ ul.answerOptionLsit li label input{
         var questionCount = $('.sectionList').length + 1;
         var questionOrder = 0;
         var sectionOrder = $(`.sectionContainerList .sectionTypesFull`).length;
+
+        $("#passageRequired_1").click(function() {
+            if ($(this).is(":checked")) {
+                $("#add_passage_number").prop("disabled", false);
+                $("select[name='addPassagesType']").prop("disabled", false);
+            } else {
+                $("#add_passage_number").prop("disabled", true);  
+                $("select[name='addPassagesType']").prop("disabled", true);
+            }
+        });
+
+        $("#passageRequired_2").click(function() {
+            if ($(this).is(":checked")) {
+                $("#passage_number").prop("disabled", false);
+                $("select[name='passagesType']").prop("disabled", false);
+            } else {
+                $("#passage_number").prop("disabled", true);  
+                $("select[name='passagesType']").prop("disabled", true);
+            }
+        });
 
         function insertCategoryType(data) {
             let category_type = $(data).val();
@@ -2637,11 +2676,31 @@ ul.answerOptionLsit li label input{
 			var passagesType = $('#passagesType').val();
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
-            if(format =='' || testSectionType =='' || question =='' || questionType ==''){
-                $('#questionMultiModal .validError').text('Below fields are required!');
-                return false;
-            }else{
-                $('#questionMultiModal .validError').text('');
+            if($('#passageRequired_2').is(':checked')){
+                if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
+                    $('#questionMultiModal .validError').text('Below fields are required!');
+                    return false;
+                }else{
+                    $('#questionMultiModal .validError').text('');
+                }
+            } else {
+                if(format =='' || testSectionType =='' || question =='' || questionType ==''){
+                    $('#questionMultiModal .validError').text('Below fields are required!');
+                    return false;
+                }else{
+                    $('#questionMultiModal .validError').text('');
+                }
+            }
+            if($('#passageRequired_2').is(':checked')){
+                var pass = $('select[name="passagesType"] :selected').text();
+                var passNumber = $('#questionMultiModal .passNumber').val();
+			    var passagesType = $('#passagesType').val();
+                var passagesTypeTxt = $("#passagesType option:selected").text();
+            } else {
+                var pass = '';
+                var passNumber = '';
+			    var passagesType = '';
+                var passagesTypeTxt = '';
             }
 				
                 if(questionType =='choiceOneInFourPass_Odd'){                
@@ -2765,6 +2824,9 @@ ul.answerOptionLsit li label input{
         $(document).on('click','.add_question_modal_multi',function(){
             clearModel();
             // count++;
+            $('#passageRequired_1').prop('checked',true);
+            $('#add_passage_number').prop('disabled',false);
+            $('select[name="addPassagesType"]').prop('disabled',false);
             let section_id = $(this).parents('.sectionTypesFull').attr('data-id');
 
             if($(`.section_${section_id} .firstRecord .sectionList`).length >= 0){
@@ -2899,11 +2961,32 @@ ul.answerOptionLsit li label input{
                     return question_type_arr;
                 }).get();
 
-                if(format =='' || testSectionType =='' || question =='' || questionType ==''){
-                    $('#addQuestionMultiModal .validError').text('Below fields are required!');
-                    return false;
-                }else{
-                    $('#addQuestionMultiModal .validError').text('');
+                if($('#passageRequired_1').is(':checked')){
+                    if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType ==''){
+                        $('#addQuestionMultiModal .validError').text('Below fields are required!');
+                        return false;
+                    }else{
+                        $('#addQuestionMultiModal .validError').text('');
+                    }
+                } else {
+                    if(format =='' || testSectionType =='' || question =='' || questionType ==''){
+                        $('#addQuestionMultiModal .validError').text('Below fields are required!');
+                        return false;
+                    }else{
+                        $('#addQuestionMultiModal .validError').text('');
+                    }
+                }   
+                
+                if($('#passageRequired_1').is(':checked')){
+                    var pass = $('select[name="addPassagesType"] :selected').text();
+                    var passNumber = $('#addQuestionMultiModal .addPassNumber').val();
+                    var passagesType = $('.addPassagesType').val();
+                    var passagesTypeTxt = $(".addPassagesType option:selected").text();
+                } else {
+                    var pass = '';
+                    var passNumber = '';
+                    var passagesType = '';
+                    var passagesTypeTxt = '';
                 }
                 
                 if(questionType =='choiceOneInFourPass_Odd'){ 
@@ -3206,6 +3289,17 @@ function practQuestioEdit(id){
                 $('#passagesType').val(result.passages_id).change();
                 for (let index = 1; index < categorytypeArr.length; index++) {
                     addNewTypes(index,'repet');
+                }
+
+                //new
+                if(result.passages_id != null){
+                    $('#passageRequired_2').prop('checked', true);
+                    $('#passage_number').prop('disabled',false);
+                    $('select[name="passagesType"]').prop('disabled',false);
+                } else {
+                    $('#passageRequired_2').prop('checked', false);
+                    $('#passage_number').prop('disabled',true);
+                    $('select[name="passagesType"]').prop('disabled',true);
                 }
 
                 $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);

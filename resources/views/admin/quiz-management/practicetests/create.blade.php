@@ -349,7 +349,7 @@
             width: 300px !important;
         }
         .passage-container .select2-container--default{
-            width: 360px !important;
+            width: 300px !important;
         }
         .add-position{
             position: relative;
@@ -386,6 +386,16 @@
         .select-type .select2-container--default{
             width: 100% !important;
         }
+        .input-check{
+    position: relative;
+    top: 13px;
+    margin-left: 30px;
+}
+.input-check[type="checkbox"]{
+    width: 30px;
+    height: 30px;   
+    accent-color: #1f2937
+}
     </style>
 @endsection
 
@@ -606,8 +616,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row passage-container">
-                            <div class="mb-2 col-md-6">
+                        <div class="row passage-container align-items-center">
+                            <div class="mb-2 col-md-5">
                                 <label for="passage_number" class="form-label">Passage No</label>
                                 <select class="js-select2 select passNumber" id="passage_number" name="passage_number">
                                     @for ($i = 1; $i < 25; $i++)
@@ -615,9 +625,13 @@
                                     @endfor
                                 </select>
                             </div>
-                            <div class="mb-2 col-md-6">
+                            <div class="mb-2 col-md-5">
                                 <label class="form-label">Passages:</label>
                                 <select name="passagesType" class="form-control passagesType js-select2 select"></select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="checkbox" id="passageRequired_1" name="passageRequired_1" class="input-check"/>
+                                {{-- <label class="form-label mb-0 ms-2 " for="passageRequired_1">Is Passage Required</label> --}}
                             </div>
                         </div>
                         <input type="hidden" name="passages" class="passages">
@@ -1116,8 +1130,8 @@
                             </div>
                         </div>
 
-                        <div class="row passage-container">
-                            <div class="mb-2 col-md-6">
+                        <div class="row passage-container align-items-center">
+                            <div class="mb-2 col-md-5">
                                 <label for="passage_number" class="form-label">Passage No</label>
                                 <select class="js-select2 select passNumber" id="edit_passage_number" name="passage_number">
                                     @for ($i = 1; $i < 25; $i++)
@@ -1125,9 +1139,13 @@
                                     @endfor
                                 </select>
                             </div>
-                            <div class="mb-2 col-md-6">
+                            <div class="mb-2 col-md-5">
                                 <label class="form-label">Passages</label>
                                 <select name="editPassagesType" class="form-control editPassagesType js-select2 select"></select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="checkbox" id="passageRequired_2" name="passageRequired_2" class="input-check">
+                                {{-- <label class="form-label mb-0 ms-2" for="passageRequired_2">Is Passage Required</label> --}}
                             </div>
                         </div>
                         <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
@@ -1555,6 +1573,26 @@
         var questionCount = 1;
         var questionOrder = 0;
         var sectionOrder = 0;
+
+        $("#passageRequired_1").click(function() {
+            if ($(this).is(":checked")) {
+                $("#passage_number").prop("disabled", false);
+                $("select[name='passagesType']").prop("disabled", false);
+            } else {
+                $("#passage_number").prop("disabled", true);  
+                $("select[name='passagesType']").prop("disabled", true);
+            }
+        });
+
+        $("#passageRequired_2").click(function() {
+            if ($(this).is(":checked")) {
+                $("#edit_passage_number").prop("disabled", false);
+                $("select[name='editPassagesType']").prop("disabled", false);
+            } else {
+                $("#edit_passage_number").prop("disabled", true);
+                $("select[name='editPassagesType']").prop("disabled", true); 
+            }
+        });
 
         function insertCategoryType(data) {
             let category_type = $(data).val();
@@ -2545,7 +2583,9 @@
 
         $(document).on('click', '.add_question_modal_multi', function() {
             clearModel();
-            
+            $('#passageRequired_1').prop('checked',true);
+            $('#passage_number').prop('disabled',false);
+            $('select[name="passagesType"]').prop('disabled',false);
             let section_id = $(this).parents('.sectionTypesFull').attr('data-id');
             if($(`.section_${section_id} .firstRecord .sectionList`).length >= 0) {
                 questionOrder = $(`.section_${section_id} .firstRecord .sectionList`).length;
@@ -2703,11 +2743,32 @@
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
 
-                if (format == '' || testSectionType == '' || question == '' || questionType == '' ){
-                    $('#questionMultiModal .validError').text('Below fields are required!');
-                    return false;
+                if($('#passageRequired_1').is(':checked')){
+                    if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType == ''){
+                        $('#questionMultiModal .validError').text('Below fields are required!');
+                        return false;
+                    } else {
+                        $('#questionMultiModal .validError').text('');
+                    }
                 } else {
-                    $('#questionMultiModal .validError').text('');
+                    if (format == '' || testSectionType == '' || question == '' || questionType == ''){
+                        $('#questionMultiModal .validError').text('Below fields are required!');
+                        return false;
+                    } else {
+                        $('#questionMultiModal .validError').text('');
+                    }
+                } 
+                
+                if($('#passageRequired_1').is(':checked')){
+                    var pass = $('select[name="passagesType"] :selected').text();
+                    var passNumber = $('#questionMultiModal .passNumber').val();
+                    var passagesType = $('.passagesType').val();
+                    var passagesTypeTxt = $(".passagesType option:selected").text();
+                } else {
+                    var pass = '';
+                    var passNumber = '';
+                    var passagesType = '';
+                    var passagesTypeTxt = '';
                 }
 
                 if (questionType == 'choiceOneInFourPass_Odd') {
@@ -2938,6 +2999,17 @@
                         $(".passNumber").val(result.passage_number).change();
                         for (let index = 1; index < categorytypeArr.length; index++) { 
                             addNewTypes(index,'repet');
+                        }
+
+                        //new
+                        if(result.passages_id != null){
+                            $('input[name="passageRequired_2"]').prop('checked', true);
+                            $('#edit_passage_number').prop("disabled", false);
+                            $('select[name="editPassagesType"]').prop("disabled", false);
+                        } else {
+                            $('input[name="passageRequired_2"]').prop('checked', false);
+                            $('#edit_passage_number').prop("disabled", true);
+                            $('select[name="editPassagesType"]').prop("disabled", true);
                         }
 
                         setTimeout(function(){ 
@@ -3359,12 +3431,33 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var passagesType = $('.editPassagesType').val();
         var passagesTypeTxt = $(".editPassagesType option:selected").text();
 
-        if(format =='' || testSectionType =='' || question =='' || questionType ==''){
-            
-            $('#editQuestionMultiModal .validError').text('Below fields are required!');
-            return false;
-        }else{
-            $('#editQuestionMultiModal .validError').text('');
+        if($('#passageRequired_2').is(':checked')){
+            if(format =='' || testSectionType =='' || question =='' || questionType =='' || pass =='' || passNumber ==''){
+                $('#editQuestionMultiModal .validError').text('Below fields are required!');
+                return false;
+            } else { 
+                $('#editQuestionMultiModal .validError').text('');
+            }
+        } else {
+            if(format =='' || testSectionType =='' || question =='' || questionType ==''){
+                
+                $('#editQuestionMultiModal .validError').text('Below fields are required!');
+                return false;
+            }else{
+                $('#editQuestionMultiModal .validError').text('');
+            }
+        }
+
+        if($('#passageRequired_2').is(':checked')){
+            var pass = $('select[name="editPassagesType"] :selected').text();
+            var passNumber = $('#editQuestionMultiModal .passNumber').val();
+            var passagesType = $('.editPassagesType').val();
+            var passagesTypeTxt = $(".editPassagesType option:selected").text();
+        } else {
+            var pass = '';
+            var passNumber = '';
+            var passagesType = '';
+            var passagesTypeTxt = '';
         }
             
             if(questionType =='choiceOneInFourPass_Odd'){                
