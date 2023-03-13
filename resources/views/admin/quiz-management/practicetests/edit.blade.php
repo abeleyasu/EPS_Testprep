@@ -2835,6 +2835,8 @@ ul.answerOptionLsit li label input{
                 questionOrder = 0;
             }
 
+            questionCount = $(`.section_${section_id} .sectionList`).length + 1;
+            console.log("questionCount",questionCount);
             $('.addSectionAddId').val(section_id);
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();

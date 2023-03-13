@@ -2593,6 +2593,8 @@
                 questionOrder = 0;
             }
             $('.sectionAddId').val(section_id);
+            questionCount = $(`.section_${section_id} .sectionList`).length + 1;
+            console.log(questionCount);
             // count++;
             var dataId = $(this).attr("data-id");
             var AnuserOpts = $('#sectionDisplay_' + dataId + ' .firstRecord ul li span .selectedSecTxt').val();
