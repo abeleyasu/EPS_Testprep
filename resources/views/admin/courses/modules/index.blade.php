@@ -61,10 +61,10 @@
 							<td>@if($module->milestone && $module->milestone->name) {{$module->milestone->name}} @endif</td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{route('modules.edit', ['module' => $module->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Milestone">
+                                    <a href="{{route('modules.edit', ['module' => $module->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Module">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
-									<a href="{{ route('modules.preview',['module' => $module->id]) }}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Milestone">
+									<a href="{{ route('modules.preview',['module' => $module->id]) }}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Module">
                                         <i class="fa fa-fw fa-eye"></i>
                                     </a>
                                     <button type="button"

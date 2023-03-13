@@ -59,7 +59,8 @@
                                 <div class="mb-2">
                                 <div class="holder">
                                 @if($module->coverimage)
-                                <img id="imgPreview" src="/Image/{{$module->coverimage}}" alt="pic" width="200" />   
+                                {{-- <img id="imgPreview" src="/Image/{{$module->coverimage}}" alt="pic" width="200" /> --}}
+                                <img id="imgPreview" src="{{asset('public/Image/'.$module->coverimage)}}" alt="pic" width="200" />   
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif

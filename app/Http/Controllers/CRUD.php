@@ -23,7 +23,7 @@ trait CRUD
             
             $file= $request->files->get('course_cover_image');
             $filename= date('YmdHi').$file->getClientOriginalName();
-            $file->move(('public/Image'), $filename);
+            $file->move((public_path().'/public/Image'), $filename);
             $fillable_key_value['coverimage'] = $filename;
         }else{
 			$fillable_key_value['coverimage'] = '';
@@ -44,7 +44,7 @@ trait CRUD
             
             $file= $request->files->get('course_cover_image');
             $filename= date('YmdHi').$file->getClientOriginalName();
-            $file->move(('public/Image'), $filename);
+            $file->move((public_path().'/public/Image'), $filename);
             $fillable_key_value['coverimage'] = $filename;
         }
 

@@ -755,14 +755,15 @@
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
 
                         var get_question_title = result.questions[0].question_title;
-                        get_question_title = result.questions[0].question_title.replace(/(<([^>]+)>)/gi, "");
+                        // get_question_title = result.questions[0].question_title.replace(/(<([^>]+)>)/gi, "");
+                        get_question_title = result.questions[0].question_title.replace(/(<([<p></p>]+)>)/gi, "");
                         var get_question_no = parseInt(result.get_offset) + 1;
 
                         var set_questions_options = '<div class="mb-4">';
                         set_questions_options += `<input type="hidden" value="${result.questions[0].question_id}" class="get_question_id"><label class="form-label">Question ${get_question_no} ${get_question_title}</label>`;
 
                         if(result.questions[0].question_answer_options){
-                            var get_options = result.questions[0].question_answer_options.replace(/(<([^>]+)>)/gi, "");
+                            var get_options = result.questions[0].question_answer_options.replace(/(<([<p></p>]+)>)/gi, "");
                         } else {
                             get_options = '0';
                         }  
