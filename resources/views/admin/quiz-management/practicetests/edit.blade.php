@@ -4372,14 +4372,13 @@ Sortable.create(listWithHandleQuestion, {
         var dataSet = evt.clone.dataset;
         var section_id = dataSet.section_id;
 
-        $('#sectionDisplay_'+section_id+' .firstRecord .sectionList').remove();
-        $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map((index, v) => {
+        $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async(index, v) => {
             var new_question_id =  $(v).attr('data-id');
             var new_question_id_order = index + 1;
             var orderId = '#orderRearnge_' + new_question_id;
             $(orderId).val(new_question_id_order);
             $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-            $.ajax({
+            await $.ajax({
                 data: {
                     'question_order': new_question_id_order,
                     'question_id': new_question_id,
@@ -4387,8 +4386,8 @@ Sortable.create(listWithHandleQuestion, {
                 },
                 url: '{{ route("questionOrder") }}',
                 method: 'post',
-                success: function(res){
-                    // $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
+                success: await function(res){
+                    $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
                     $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                 }
             });
