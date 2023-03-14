@@ -2908,7 +2908,7 @@
                     $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
 
                     
-                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
+                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" data-section_id="'+section_id+'" style="display:none;">\n' +
                     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                     '</span>\n' +
@@ -3573,7 +3573,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     $('.addQuestion').val('');
                     $('.validError').text('');
                     $('.questionaprat_'+currentModelQueId).remove();    
-                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
+                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" data-section_id="'+section_id+'" style="display:none;">\n' +
                     '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                     '</span>\n' +
@@ -4276,7 +4276,7 @@ function getEditAnswerExpContent(answerOpt, fill){
             animation: 150,
             onEnd: function(evt) {
                 var dataSet = evt.clone.dataset;
-
+                var section_id = dataSet.section_id;
                 /*let data = {
                     new_index: evt.newIndex+1,
                     old_index: evt.oldIndex+1,
@@ -4284,13 +4284,13 @@ function getEditAnswerExpContent(answerOpt, fill){
                     currentMileId: 1
                 };*/
                 var indices = test.toArray();
-                $.each(indices, function(index, value) {
+                var promises =  $(indices).map(function(index, value) {
                     var new_question_id = value;
                     var new_question_id_order = index + 1;
                     var orderId = '#orderRearnge_' + new_question_id;
                     $(orderId).val(new_question_id_order);
                     $('.orderRearnge_' + new_question_id).text(new_question_id_order);
-                    $.ajax({
+                    return $.ajax({
                         data: {
                             'question_order': new_question_id_order,
                             'question_id': new_question_id,
@@ -4299,9 +4299,15 @@ function getEditAnswerExpContent(answerOpt, fill){
                         url: '{{ route("questionOrder") }}',
                         method: 'post',
                         success: (res) => {
-                            $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
-                            $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li class="answerValUpdate_'+res.question['id']+'">'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                            // $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
+                            // $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li class="answerValUpdate_'+res.question['id']+'">'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                         }
+                    });
+                });
+                Promise.all(promises).then(function(results) {
+                    $.each(results, function(index,val){
+                        $('.section_'+val.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+val.question['id']+'').remove();
+                        $('.section_'+val.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+val.question['id']+'"><li>'+val.question['title']+'</li><li>'+val.question['answer']+'</li><li>'+val.question['passages']+'</li><li>'+val.question['passage_number']+'</li><li>'+val.question['fill']+'</li><li class="orderValUpdate_'+val.question['id']+'">'+val.question['question_order']+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+val.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+val.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+val.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+val.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                     });
                 });
             }
