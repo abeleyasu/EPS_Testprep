@@ -309,6 +309,16 @@ ul.answerOptionLsit li label input{
 .select-type .select2-container--default{
     width: 100% !important;
 }
+
+#mainSectionContainer .sortable-chosen{
+    background-color: #fff !important;
+    opacity: 50 !important;
+    border: 1px solid #1f2937 !important;
+    z-index: 999999999 !important;
+}
+#mainSectionContainer .sectionTypesFull{
+    border: 2px solid transparent;
+}
 </style>
 @endsection
 @section('admin-content')
