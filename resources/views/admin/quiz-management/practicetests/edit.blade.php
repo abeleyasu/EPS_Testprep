@@ -4368,29 +4368,31 @@ $(document).ready(function(){
 Sortable.create(listWithHandleQuestion, {
     handle: '.question-glyphicon-move',
     animation: 150,
-    onEnd: async function(evt) {
+    onEnd: function(evt) {
         var dataSet = evt.clone.dataset;
         var section_id = dataSet.section_id;
 
-        await Promise.all($(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async (index, v) => {
+        $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async (index, v) => {
             var new_question_id =  $(v).attr('data-id');
             var new_question_id_order = index + 1;
             var orderId = '#orderRearnge_' + new_question_id;
             $(orderId).val(new_question_id_order);
             $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-            var res = await $.ajax({
+            $.ajax({
                 data: {
                     'question_order': new_question_id_order,
                     'question_id': new_question_id,
                     '_token': $('input[name="_token"]').val(),
-                    async: false,
+                    async: false
                 },
                 url: '{{ route("questionOrder") }}',
                 method: 'post',
+                success: await function(res){
+                    $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']).remove();
+                    $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                }
             });
-            $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']).remove();
-            $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-        }));
+        });
     }
 });
 
