@@ -4365,35 +4365,41 @@ $(document).ready(function(){
 //         })
 //     }
 // });
-// Sortable.create(listWithHandleQuestion, {
-//     handle: '.question-glyphicon-move',
-//     animation: 150,
-//     onEnd: function(evt) {
-//         var dataSet = evt.clone.dataset;
-//         var section_id = dataSet.section_id;
+Sortable.create(listWithHandleQuestion, {
+    handle: '.question-glyphicon-move',
+    animation: 150,
+    onEnd: function(evt) {
+        var dataSet = evt.clone.dataset;
+        var section_id = dataSet.section_id;
 
-//         $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async(index, v) => {
-//             var new_question_id =  $(v).attr('data-id');
-//             var new_question_id_order = index + 1;
-//             var orderId = '#orderRearnge_' + new_question_id;
-//             $(orderId).val(new_question_id_order);
-//             $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-//             await $.ajax({
-//                 data: {
-//                     'question_order': new_question_id_order,
-//                     'question_id': new_question_id,
-//                     '_token': $('input[name="_token"]').val(),
-//                 },
-//                 url: '{{ route("questionOrder") }}',
-//                 method: 'post',
-//                 success: await function(res){
-//                     $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
-//                     $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-//                 }
-//             });
-//         });
-//     }
-// });
+        var promises = $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map((index, v) => {
+            var new_question_id =  $(v).attr('data-id');
+            var new_question_id_order = index + 1;
+            var orderId = '#orderRearnge_' + new_question_id;
+            $(orderId).val(new_question_id_order);
+            $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
+            return $.ajax({
+                data: {
+                    'question_order': new_question_id_order,
+                    'question_id': new_question_id,
+                    '_token': $('input[name="_token"]').val(),
+                },
+                url: '{{ route("questionOrder") }}',
+                method: 'post',
+                success: function(res){
+                //     $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
+                //     $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                }
+            });
+        });
+        Promise.all(promises).then(function(results) {
+            $.each(results, function(index,val){
+                $('#sectionDisplay_'+val.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+val.question['id']).remove();
+                $('#sectionDisplay_'+val.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+val.question['id']+'"><li>'+val.question['title']+'</li><li>'+val.question['answer']+'</li><li>'+val.question['passages']+'</li><li>'+val.question['passage_number']+'</li><li>'+val.question['fill']+'</li><li class="orderValUpdate_'+val.question['id']+'">'+val.question['question_order']+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+val.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+val.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+val.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+val.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+            });
+        });
+    }
+});
 // Sortable.create(listWithHandleQuestion, {
 //     handle: '.question-glyphicon-move',
 //     animation: 150,
@@ -4428,44 +4434,44 @@ $(document).ready(function(){
 //         }
 //     }
 // });
-Sortable.create(listWithHandleQuestion, {
-    handle: '.question-glyphicon-move',
-    animation: 150,
-    onEnd: function(evt) {
-        var dataSet = evt.clone.dataset;
-        var section_id = dataSet.section_id;
+// Sortable.create(listWithHandleQuestion, {
+//     handle: '.question-glyphicon-move',
+//     animation: 150,
+//     onEnd: function(evt) {
+//         var dataSet = evt.clone.dataset;
+//         var section_id = dataSet.section_id;
 
-        $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async(index, v) => {
-            var new_question_id =  $(v).attr('data-id');
-            var new_question_id_order = index + 1;
-            var orderId = '#orderRearnge_' + new_question_id;
-            $(orderId).val(new_question_id_order);
-            $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
+//         $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async(index, v) => {
+//             var new_question_id =  $(v).attr('data-id');
+//             var new_question_id_order = index + 1;
+//             var orderId = '#orderRearnge_' + new_question_id;
+//             $(orderId).val(new_question_id_order);
+//             $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
 
-            const promise = new Promise((resolve, reject) => {
-                $.ajax({
-                    data: {
-                        'question_order': new_question_id_order,
-                        'question_id': new_question_id,
-                        '_token': $('input[name="_token"]').val(),
-                    },
-                    url: '{{ route("questionOrder") }}',
-                    method: 'post',
-                    success: function(res){
-                        resolve(res);
-                    },
-                    error: function(error) {
-                        reject(error);
-                    }
-                });
-            });
+//             const promise = new Promise((resolve, reject) => {
+//                 $.ajax({
+//                     data: {
+//                         'question_order': new_question_id_order,
+//                         'question_id': new_question_id,
+//                         '_token': $('input[name="_token"]').val(),
+//                     },
+//                     url: '{{ route("questionOrder") }}',
+//                     method: 'post',
+//                     success: function(res){
+//                         resolve(res);
+//                     },
+//                     error: function(error) {
+//                         reject(error);
+//                     }
+//                 });
+//             });
 
-            const res = await promise;
-            $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
-            $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-        });
-    }
-});
+//             const res = await promise;
+//             $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
+//             $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+//         });
+//     }
+// });
 
 
     toastr.options = {
