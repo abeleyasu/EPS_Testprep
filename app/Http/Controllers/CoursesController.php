@@ -125,6 +125,8 @@ class CoursesController extends Controller
             $filename= date('YmdHi').$file->getClientOriginalName();
             $file->move(('public/Image'), $filename);
            
+        } else {
+            $filename = $request->course_cover_image_old;
         }
 		$content = '';
 		if($request->get('content')){

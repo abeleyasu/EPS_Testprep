@@ -62,10 +62,10 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <!--<a href="{{route('courses.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
+                                    <a href="{{route('courses.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
                                         <i class="fa fa-fw fa-eye"></i> 
-                                    </a>-->
-									<a href="{{route('courseslist.edit', ['courseslist' => $course->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
+                                    </a>
+									<a href="/admin/course-management/courses/{{$course->id}}/edit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
                                     <button type="button"
@@ -77,7 +77,7 @@
                                     >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
-                                    <form id="delete-form-{{$course->id}}" action="{{ route('courseslist.destroy',$course->id) }}" method="POST" style="display: none;">
+                                    <form id="delete-form-{{$course->id}}" action="{{ route('courses.destroy',$course->id) }}" method="POST" style="display: none;">
                                         @method('DELETE')
                                         {{ csrf_field() }}
                                     </form>
@@ -109,7 +109,7 @@
 											@method('DELETE')
 											{{ csrf_field() }}
 										</form>
-										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" onclick="deleteItem_fun({{ $course->id }})"><i class="fa fa-fw fa-times"></i></button>
+										<button type="button" class="btn btn-sm btn-alt-secondary delete-course" data-bs-toggle="tooltip" title="Delete Course" onclick="deleteItem_fun({{ $course->id }})"><i class="fa fa-fw fa-times"></i></button>
                                         <!--<button type="button"
                                                 class="btn btn-sm btn-alt-secondary delete-course"
                                                 data-id="{{$course->id}}"
@@ -149,6 +149,29 @@
 @section('admin-script')
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
+    function deleteItem(id){
+        var form =  $('#delete-form-'+id);
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: "But you will still be able to retrieve this.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, archive it!",
+            cancelButtonText: "No, cancel please!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+        function(isConfirm){
+            if (isConfirm) {
+                form.submit();
+            } else {
+                swal("Cancelled", "", "error");
+            }
+        });
+    }
+    
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");
 		var form =  $('#delete-item-form-'+id);

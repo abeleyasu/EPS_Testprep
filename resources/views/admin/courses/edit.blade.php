@@ -65,17 +65,18 @@
                             <div class="mb-2">
                             <div class="holder">
                                 @if($course->coverimage)
-                                <img id="imgPreview" src="/Image/{{$course->coverimage}}" alt="pic" width="200" />   
+                                <img id="imgPreview" src="{{asset('public/Image/'.$course->coverimage) }}" alt="pic" width="200" />
+                                <input type = "hidden" name="course_cover_image_old" class="form-label" id="course_cover_image_old" value="{{ $course->coverimage }}" />   
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif
                             </div>
-                                    <label for="content" class="form-label">Upload Cover Image</label>
-                                    <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
-                                    @error('content')
-                                    <div class="invalid-feedback">{{$message}}</div>
-                                    @enderror
-                                </div>
+                                <label for="content" class="form-label">Upload Cover Image</label>
+                                <input type = "file" name="course_cover_image" class="form-label" id="course_cover_image" />
+                                @error('content')
+                                <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
 							<div class="row">
 							    <h4>Course MileStones</h4>
                                 <div class="card mb-2">

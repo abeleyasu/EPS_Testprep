@@ -209,7 +209,7 @@ class MilestoneController extends Controller
         $courses = Courses::all();
 		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
         
-		
+  
         return view('admin.courses.milestones.edit',
             compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','courses','usersRoles'));
     }
@@ -233,6 +233,8 @@ class MilestoneController extends Controller
             $filename= date('YmdHi').$file->getClientOriginalName();
             $file->move(('public/Image'), $filename);
            
+        } else {
+            $filename = $request->course_cover_image_old;
         }
 //        $this->reorderOnUpdate($milestone->order, $request->order, $id);
         $milestone->update([

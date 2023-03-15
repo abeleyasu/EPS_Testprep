@@ -59,11 +59,11 @@
 
                             <div class="mb-2">
                                 <div class="holder">
-
-                                    @if($milestone->coverimage)
-                                <img id="imgPreview" src="/Image/{{$milestone->coverimage}}" alt="pic" width="200" />   
+                                @if($milestone->coverimage)
+                                    <img id="imgPreview" src="{{asset('public/Image/'.$milestone->coverimage)}}" alt="pic" width="200" /> 
+                                    <input type = "hidden" name="course_cover_image_old" class="form-label" id="course_cover_image_old" value="{{ $milestone->coverimage }}"/>  
                                 @else
-                                <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
+                                    <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif
                                 </div>
                                     <label for="content" class="form-label">Upload Cover Image</label>
@@ -92,8 +92,7 @@
 
                                                 @foreach($module->sections as $section)
                                                     <div class="my-3">
-                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span><a href="/admin/course-management/sections/{{$section->id}}/edit" target="__blank"> {!! $
-                                                            ->title !!}</a>
+                                                        <span class="mx-4"><i class="fa-solid fa-list"></i> </span><a href="/admin/course-management/sections/{{$section->id}}/edit" target="__blank"> {!! $section->title !!}</a>
                                                         <span class="float-end">
                                                             <button type="button" class="btn btn-success btn-sm mx-3" onclick="showSectionDetail({{$section->id}})">
                                                                 <i class="fa-solid fa-arrow-down"></i>

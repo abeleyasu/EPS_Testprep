@@ -144,7 +144,50 @@
 @section('admin-script')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    {{-- @if(session('success'))
     <script>
+        swal({
+            title: "Success",
+            text: "{{ session('success') }}",
+            type: "success",
+            icon: "success",
+            buttons: {
+                confirm: {
+                    text: "OK",
+                    value: true,
+                    visible: true,
+                    className: "btn btn-primary",
+                    closeModal: true
+                }
+            }
+        });
+    </script>
+    @endif --}}
+
+    <script>
+    function deleteItem(id){
+        var form =  $('#delete-form-'+id);
+		event.preventDefault();
+		swal({
+			title: "Are you sure?",
+			text: "But you will still be able to retrieve this.",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, archive it!",
+			cancelButtonText: "No, cancel please!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm){
+			if (isConfirm) {
+				form.submit();
+			} else {
+				swal("Cancelled", "", "error");
+			}
+		});
+    }  
+
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");
 		var form =  $('#delete-item-form-'+id);

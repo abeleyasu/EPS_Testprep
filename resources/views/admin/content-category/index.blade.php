@@ -56,7 +56,7 @@
                                             class="btn btn-sm btn-alt-secondary delete-content-category"
                                             data-id="{{$content->id}}"
                                             data-bs-toggle="tooltip"
-                                            title="Delete Content"
+                                            title="Delete Content Category"
                                             onclick="deleteItem_fun({{ $content->id }})"
                                     >
                                         <i class="fa fa-fw fa-times"></i>
@@ -86,7 +86,26 @@
 @section('admin-script')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script>
+    {{-- @if(session('message'))
+        <script>
+            swal({
+                title: "Success",
+                text: "{{ session('message') }}",
+                type: "success",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-primary",
+                        closeModal: true
+                    }
+                }
+            });
+        </script>
+    @endif --}}
+    <script> 
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");
 		var form =  $('#delete-item-form-'+id);
