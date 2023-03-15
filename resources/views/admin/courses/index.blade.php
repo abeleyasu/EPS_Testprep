@@ -62,9 +62,9 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{route('courses.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
+                                    {{-- <a href="{{route('courses.preview', ['course' => $course->id])}}" target="_blank" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Preview Course">
                                         <i class="fa fa-fw fa-eye"></i> 
-                                    </a>
+                                    </a> --}}
 									<a href="/admin/course-management/courses/{{$course->id}}/edit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Course">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
