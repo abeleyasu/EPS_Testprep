@@ -60,7 +60,8 @@
                                 <div class="holder">
                                 @if($module->coverimage)
                                 {{-- <img id="imgPreview" src="/Image/{{$module->coverimage}}" alt="pic" width="200" /> --}}
-                                <img id="imgPreview" src="{{asset('public/Image/'.$module->coverimage)}}" alt="pic" width="200" />   
+                                <img id="imgPreview" src="{{asset('public/Image/'.$module->coverimage)}}" alt="pic" width="200" />  
+                                <input type = "hidden" name="course_cover_image_old" class="form-label" id="course_cover_image_old" value="{{ $module->coverimage }}"/>
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif

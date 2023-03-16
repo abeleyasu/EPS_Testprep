@@ -46,6 +46,8 @@ trait CRUD
             $filename= date('YmdHi').$file->getClientOriginalName();
             $file->move((public_path().'/public/Image'), $filename);
             $fillable_key_value['coverimage'] = $filename;
+        } else {
+            $filename = $request->course_cover_image_old;
         }
 
         $model->update($fillable_key_value);

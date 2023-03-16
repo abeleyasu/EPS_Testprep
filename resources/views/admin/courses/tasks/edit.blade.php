@@ -40,7 +40,8 @@
                             <div class="mb-2">
                                 <div class="holder">
                                 @if($task->coverimage)
-                                <img id="imgPreview" src="{{ asset('public/Image/'.$task->coverimage) }}" alt="pic" width="200" />   
+                                <img id="imgPreview" src="{{ asset('public/Image/'.$task->coverimage) }}" alt="pic" width="200" />  
+                                <input type = "hidden" name="course_cover_image_old" class="form-label" id="course_cover_image_old" value="{{ $task->coverimage }}" /> 
                                 @else
                                 <img id="imgPreview" src="#" alt="pic" width="200" style="display:none;" />
                                 @endif
