@@ -54,7 +54,7 @@
 								
 								@if ($stringLen > 150)
 									@php $convetStr = substr($task->description, 0, 150); @endphp
-									{{$convetStr}}...
+									{!! $convetStr !!}...
 								@else
 									{!! $task->description !!}
 								@endif

@@ -52,7 +52,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-main-item {{(Route::is(['milestones.index','milestones.create','milestones.edit',
+                <li class="nav-main-item {{(Route::is(['courses.index','courses.create','courses.edit','milestones.index','milestones.create','milestones.edit',
                     'sections.index','sections.create','sections.edit','tasks.index','tasks.create','tasks.edit',
                     'modules.index','modules.create','modules.edit','tags.index','tags.create','tags.edit',
                     'content-categories.index','content-categories.create','content-categories.edit'])) ? 'open' : ''}}">
