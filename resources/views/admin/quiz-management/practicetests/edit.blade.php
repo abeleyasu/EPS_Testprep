@@ -2812,7 +2812,7 @@ ul.answerOptionLsit li label input{
 					success: (res) => {
                         var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
 
-                        $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpadte_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
+                        $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
 						$('.addQuestion').val('');
 							$('.validError').text('');
                         $('.questionaprat_'+currentModelQueId).remove();    
@@ -4408,7 +4408,7 @@ Sortable.create(listWithHandleQuestion, {
                 let html = '';
                     html += `<ul class="sectionList singleQuest_${val.question['id']}">`; 
                     html += `<li>${val.question['title']}</li>`;
-                    html += `<li>${val.question['answer']}</li>`;
+                    html += `<li class="answerValUpdate_${val.question['id']}">${val.question['answer']}</li>`;
                     html += `<li>${val.question['passages']}</li>`;
                     html += `<li>${val.question['passage_number']}</li>`;
                     html += `<li>${val.question['fill']}</li>`;
