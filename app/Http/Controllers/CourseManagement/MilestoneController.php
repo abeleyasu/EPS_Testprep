@@ -124,7 +124,7 @@ class MilestoneController extends Controller
             
             $file= $request->file('course_cover_image');
             $filename= date('YmdHi').$file->getClientOriginalName();
-            $file->move(('public/Image'), $filename);
+            $file->move((public_path().'/public/Image'), $filename);
            
         }
         $milestone = Milestone::create([
@@ -231,7 +231,7 @@ class MilestoneController extends Controller
             
             $file= $request->file('course_cover_image');
             $filename= date('YmdHi').$file->getClientOriginalName();
-            $file->move(('public/Image'), $filename);
+            $file->move((public_path(). '/public/Image'), $filename);
            
         } else {
             $filename = $request->course_cover_image_old;
