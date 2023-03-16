@@ -4307,7 +4307,25 @@ function getEditAnswerExpContent(answerOpt, fill){
                 Promise.all(promises).then(function(results) {
                     $.each(results, function(index,val){
                         $('.section_'+val.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+val.question['id']+'').remove();
-                        $('.section_'+val.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+val.question['id']+'"><li>'+val.question['title']+'</li><li>'+val.question['answer']+'</li><li>'+val.question['passages']+'</li><li>'+val.question['passage_number']+'</li><li>'+val.question['fill']+'</li><li class="orderValUpdate_'+val.question['id']+'">'+val.question['question_order']+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+val.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+val.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+val.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+val.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                        let html = '';
+                            html += `<ul class="sectionList singleQuest_${val.question['id']}">`;
+                            html += `<li>${val.question['title']}</li>`;
+                            html += `<li class="answerValUpdate_${val.question['id']}">${val.question['answer']}</li>`;
+                            html += `<li>${val.question['passages']}</li>`;
+                            html += `<li>${val.question['passage_number']}</li>`;
+                            html += `<li>${val.question['fill']}</li>`;
+                            html += `<li class="orderValUpdate_${val.question['id']}">${val.question['question_order']}</li>`;
+                            html += `<li>`;
+                            html += `<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="${val.question['id']}"
+                                    data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;
+                            html += `<i class="fa fa-fw fa-pencil-alt"></i>`;
+                            html += `</button>`;
+                            html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Section" onclick="practQuestioDel(${val.question['id']})">`;
+                            html += `<i class="fa fa-fw fa-times"></i>`;
+                            html += `</button>`;
+                            html += `</li>`;
+                            html += `</ul>`;
+                        $(`.section_${val.question['practice_test_sections_id']} .firstRecord`).append(html);
                     });
                 });
             }
