@@ -41,6 +41,9 @@
     height: 110px;
      overflow: auto;
 }
+.content-height{
+    min-height: 330px;
+}
 
 
 </style>
@@ -82,12 +85,12 @@
     <input type="hidden" id="get_offset" value="{{$set_offset}}">
     <input type="hidden" id="get_question_type" value="{{$question_type}}">
     <!-- Page Content -->
-    <div class="content content-boxed">
+    <div class="content content-boxed content-height">
         <div class="row">
-            <div class="col-xl-6">
+            <div class="col-xl-6 passageContainer">
                 <!-- Lessons -->
                 <div class="block block-rounded">
-                    <div class="block-content fs-sm">
+                    <div class="block-content fs-sm ">
                         <input type="hidden" id="onload_question_id" value="{{ $total_questions[0] }}">
                         <h5 class="h5 mb-4">
                             PASSAGE I
@@ -741,15 +744,17 @@
                         var check_if_skip_selected = selected_skip_details[result.questions[0].question_id];
                         
                         if(result.questions[0].passage_type && result.questions[0].passage_title && result.questions[0].passage_description) {
+                            $('.passageContainer').css('display','block');
                             var passage_type = 'PASSAGE TYPE: '+ result.questions[0].passage_type;
                             var passage_title =  result.questions[0].passage_title;
                             var passage_description =  result.questions[0].passage_description;
                             var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
                         } else {
-                            var passage_type = '';
-                            var passage_title =  '';
-                            var passage_description = '';
-                            var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
+                            // var passage_type = '';
+                            // var passage_title =  '';
+                            // var passage_description = '';
+                            // var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
+                            $('.passageContainer').css('display','none');
                         }
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");

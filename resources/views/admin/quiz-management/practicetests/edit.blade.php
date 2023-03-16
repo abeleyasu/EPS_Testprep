@@ -1629,7 +1629,29 @@ ul.answerOptionLsit li label input{
             </div>
         </div>
     </div>
-</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+</div>  
+
+{{-- modal for new addad section questions  --}}
+<div class="modal fade" id="addDragModalQuestion" tabindex="-1" aria-labelledby="staticBackdropLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Question list Order</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div id="addListWithHandleQuestion" class="list-group">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="saveQuestion()">Save changes</button>
+        </div>
+    </div>
+</div>
+</div>
 
 @endsection
 
@@ -1949,7 +1971,9 @@ ul.answerOptionLsit li label input{
     var myQuestionModal = new bootstrap.Modal(document.getElementById('dragModalQuestion'), {
             keyboard: false
         });
-
+    var addQuestionModal = new bootstrap.Modal(document.getElementById('addDragModalQuestion'), {
+            keyboard: false
+        });
 		let ckeditorFull = document.querySelector('#js-ckeditor-desc:not(.js-ckeditor-enabled)');
 		var allowedContent = true;
 		CKEDITOR.replace( 'js-ckeditor-desc',{
@@ -3109,7 +3133,14 @@ ul.answerOptionLsit li label input{
                     '<i class="fa-solid fa-grip-vertical"></i>\n' +
                     '</span>\n' +
                     '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
-                    '</div>');  
+                    '</div>');
+                     
+                    $('#addListWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-section_id="'+section_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
+                    '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
+                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                    '</span>\n' +
+                    '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
+                    '</div>');   
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
                     questionCount++;
                     } 
@@ -4229,7 +4260,38 @@ function getEditAnswerExpContent(answerOpt, fill){
         }
         return '';
 }
+//new
+function openQuestionDialog(sectionId) {
+    console.log(sectionId);
+    $.ajax({
+        data: {
+            'sectionId': sectionId,
+            '_token': $('input[name="_token"]').val()
+        },
+        url: '{{ route('getSectionQuestions') }}',
+        method: 'post',
+        success: (res) => {
+            $("#addListWithHandleQuestion").empty();
+            $.each(res, function(index, value) {
+                $('#addListWithHandleQuestion').append('<div class="list-group-item" data-id="' +
+                    value.question_id + '">\n' +
+                    '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
+                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                    '</span>\n' +
+                    '<button class="btn btn-primary" value="' + value.question_id + '">' +
+                    value.question_title + '</button>\n' +
+                    '</div>');
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
+            });
 
+        }
+    });
+    addQuestionModal.show();
+}
+function saveQuestion() {
+
+    questionModal.hide();
+}
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -4503,6 +4565,67 @@ Sortable.create(listWithHandleQuestion, {
 //     }
 // });
 
+//new function for new add question reorder
+var test = Sortable.create(addListWithHandleQuestion, {
+            handle: '.question-glyphicon-move',
+            animation: 150,
+            onEnd: function(evt) {
+                var dataSet = evt.clone.dataset;
+                var section_id = dataSet.section_id;
+                /*let data = {
+                    new_index: evt.newIndex+1,
+                    old_index: evt.oldIndex+1,
+                    item: evt.item.children[1].value,
+                    currentMileId: 1
+                };*/
+                var indices = test.toArray();
+                var promises =  $(indices).map(function(index, value) {
+                    var new_question_id = value;
+                    var new_question_id_order = index + 1;
+                    var orderId = '#orderRearnge_' + new_question_id;
+                    $(orderId).val(new_question_id_order);
+                    $('.orderRearnge_' + new_question_id).text(new_question_id_order);
+                    return $.ajax({
+                        data: {
+                            'question_order': new_question_id_order,
+                            'question_id': new_question_id,
+                            '_token': $('input[name="_token"]').val()
+                        },
+                        url: '{{ route("questionOrder") }}',
+                        method: 'post',
+                        success: (res) => {
+                            // $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
+                            // $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li class="answerValUpdate_'+res.question['id']+'">'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                        }
+                    });
+                });
+                Promise.all(promises).then(function(results) {
+                    $.each(results, function(index,val){
+                        $('.section_'+val.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+val.question['id']+'').remove();
+                        let html = '';
+                            html += `<ul class="sectionList singleQuest_${val.question['id']}">`;
+                            html += `<li>${val.question['title']}</li>`;
+                            html += `<li class="answerValUpdate_${val.question['id']}">${val.question['answer']}</li>`;
+                            html += `<li>${val.question['passages']}</li>`;
+                            html += `<li>${val.question['passage_number']}</li>`;
+                            html += `<li>${val.question['fill']}</li>`;
+                            html += `<li class="orderValUpdate_${val.question['id']}">${val.question['question_order']}</li>`;
+                            html += `<li>`;
+                            html += `<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="${val.question['id']}"
+                                    data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;
+                            html += `<i class="fa fa-fw fa-pencil-alt"></i>`;
+                            html += `</button>`;
+                            html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Section" onclick="practQuestioDel(${val.question['id']})">`;
+                            html += `<i class="fa fa-fw fa-times"></i>`;
+                            html += `</button>`;
+                            html += `</li>`;
+                            html += `</ul>`;
+                        $(`.section_${val.question['practice_test_sections_id']} .firstRecord`).append(html);
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
+                    });
+                });
+            }
+        }, );
 
     toastr.options = {
         "closeButton": true,

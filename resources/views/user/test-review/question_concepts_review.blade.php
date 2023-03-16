@@ -64,7 +64,7 @@
 
                 <div class="">
                     <ul class="nav nav-tabs col-12" role="tablist">
-                        <li class="nav-item me-0 col-md-4 col-xl-4 pe-3" role="presentation">
+                        <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2 pe-md-3" role="presentation">
                             <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
                                 id="btabs-animated-fade-home-tab" data-bs-toggle="tab"
                                 data-bs-target="#btabs-animated-fade-home" role="tab"
@@ -80,7 +80,7 @@
                                 </div>
                             </button>
                         </li>
-                        <li class="nav-item me-0 col-md-4 col-xl-4 px-2" role="presentation">
+                        <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2" role="presentation">
                             <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
                                 id="btabs-animated-fade-profile-tab" data-bs-toggle="tab"
                                 data-bs-target="#btabs-animated-fade-profile" role="tab"
@@ -96,7 +96,7 @@
                                 </div>
                             </button>
                         </li>
-                        <li class="nav-item me-0 col-md-4 col-xl-4 ps-3" role="presentation">
+                        <li class="nav-item me-0 col-12 col-md-4 col-xl-4 px-2 ps-md-3" role="presentation">
                             <button class="block block-rounded bg-primary-dark nav-link w-100 tab-padding"
                                 id="btabs-animated-fade-answer-tab" data-bs-toggle="tab"
                                 data-bs-target="#btabs-animated-fade-answer" role="tab"
@@ -128,17 +128,17 @@
                                         <input class="form-check-input" type="checkbox" value="" id="mega-settings-status" name="mega-settings-status">
                                         <label class="form-check-label fs-sm" for="mega-settings-status">Show All Sections</label>
                                     </div> --}}
-                                    <table class="js-table-sections table table-hover table-vcenter">
+                                    <table class="js-table-sections table table-hover table-vcenter table-contant">
                                         <thead>
-                                            <tr>
-                                                <th style="width: 35%;">Section</th>
-                                                <th style="width: 15%;"># Correct</th>
-                                                <th style="width: 14%;">Scaled Score (1-36)</th>
-                                                <th style="width: 35%;">Date Taken</th>
+                                            <tr class="d-flex align-items-center justify-content-between">
+                                                <th >Section</th>
+                                                <th ># Correct</th>
+                                                <th >Scaled Score (1-36)</th>
+                                                <th >Date Taken</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr class="d-flex align-items-center justify-content-between">
                                                 <td>
                                                     @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
                                                         @foreach ($user_selected_answers[0]['all_sections'] as $test_section)
@@ -215,7 +215,6 @@
                                                 <th class="text-center">Your Answer</th>
                                                 <th class="text-center">Correct Answer</th>
                                                 <th>Flags</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -2821,6 +2820,13 @@
         }
         .table thead th{
         padding: 10px 19px 10px 12px !important;
+    }
+    @media(max-width:575px){
+        table{
+            display: block;
+            /* width: 260px; */
+            overflow: scroll;
+        }
     }
     </style>
 @endsection
