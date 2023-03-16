@@ -2813,6 +2813,7 @@ ul.answerOptionLsit li label input{
                         var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
 
                         $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
 						$('.addQuestion').val('');
 							$('.validError').text('');
                         $('.questionaprat_'+currentModelQueId).remove();    
@@ -2822,7 +2823,7 @@ ul.answerOptionLsit li label input{
                         '</span>\n' +
                         '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
                         '</div>');    
-
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
 					} 
 				});	
             
@@ -3101,7 +3102,7 @@ ul.answerOptionLsit li label input{
                     $('.validError').text('');
 
                     $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-section_id="'+section_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
                     '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
@@ -3109,6 +3110,7 @@ ul.answerOptionLsit li label input{
                     '</span>\n' +
                     '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
                     '</div>');  
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
                     questionCount++;
                     } 
                 }); 
@@ -4423,6 +4425,7 @@ Sortable.create(listWithHandleQuestion, {
                     html += `</li>`;
                     html += `</ul>`;
                 $(`#sectionDisplay_${val.question['practice_test_sections_id']} .firstRecord`).append(html);
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
             });
         });
     }
