@@ -1,4 +1,4 @@
-.@extends('layouts.preview')
+@extends('layouts.preview')
 
 @section('title', 'Student - Public High School Dashboard : Courses')
 
