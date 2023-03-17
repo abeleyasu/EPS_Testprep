@@ -55,7 +55,7 @@ class CoursesController extends Controller
         if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');
-            $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
+            $filename= date('YmdHis').'.'.$file->getClientOriginalExtension();
             $file->move((public_path(). '/public/Image'), $filename);
            
         }
@@ -122,7 +122,7 @@ class CoursesController extends Controller
         if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');
-            $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
+            $filename= date('YmdHis').'.'.$file->getClientOriginalExtension();
             $file->move((public_path().'/public/Image'), $filename);
            
         } else {

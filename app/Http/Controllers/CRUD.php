@@ -22,7 +22,7 @@ trait CRUD
         if($request->files->get('course_cover_image')){
             
             $file= $request->files->get('course_cover_image');
-            $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
+            $filename= date('YmdHis').'.'.$file->getClientOriginalExtension();
             $file->move((public_path().'/public/Image'), $filename);
             $fillable_key_value['coverimage'] = $filename;
         }else{
@@ -43,7 +43,7 @@ trait CRUD
         if($request->files->get('course_cover_image')){
             
             $file= $request->files->get('course_cover_image');
-            $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
+            $filename= date('YmdHis').'.'.$file->getClientOriginalExtension();
             $file->move((public_path().'/public/Image'), $filename);
             $fillable_key_value['coverimage'] = $filename;
         } else {
