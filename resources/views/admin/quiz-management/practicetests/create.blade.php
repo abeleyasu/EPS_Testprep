@@ -2905,7 +2905,7 @@
                         $('.addQuestion').val('');
                         $('.validError').text('');
 
-                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Question"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" data-section_id="'+section_id+'" style="display:none;">\n' +
@@ -3568,7 +3568,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 url: '{{route("updatePracticeQuestion")}}',
                 method: 'post',
                 success: (res) => {
-                    var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
+                    var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Question"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
 
                     $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
@@ -4324,7 +4324,7 @@ function getEditAnswerExpContent(answerOpt, fill){
                                     data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;
                             html += `<i class="fa fa-fw fa-pencil-alt"></i>`;
                             html += `</button>`;
-                            html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Section" onclick="practQuestioDel(${val.question['id']})">`;
+                            html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Question" onclick="practQuestioDel(${val.question['id']})">`;
                             html += `<i class="fa fa-fw fa-times"></i>`;
                             html += `</button>`;
                             html += `</li>`;
