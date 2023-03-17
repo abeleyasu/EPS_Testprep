@@ -4290,7 +4290,7 @@ function openQuestionDialog(sectionId) {
 }
 function saveQuestion() {
 
-    questionModal.hide();
+    addQuestionModal.hide();
 }
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
