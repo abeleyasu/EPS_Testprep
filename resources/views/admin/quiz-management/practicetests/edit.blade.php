@@ -2593,26 +2593,6 @@ aria-hidden="true">
             extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
             allowedContent
         });
-        /**for edit*/
-
-		/*$('.delete_question').click(function() {
-			var result = confirm('Are you sure to remove ?');
-			if(!result) {
-				return false;
-			}
-			var id = $(this).data('id');
-			$.ajax({
-                 data:{
-					'id': id,
-					'_token': $('input[name="_token"]').val()
-				},
-                url: '{{route("deletePracticeQuestionById")}}',
-                method: 'post',
-                success: (res) => {
-					$('.question_'+id).remove();
-                }
-            });
-		});*/
 
         jQuery(document).on('change', '.sectionOrder', function(){
             var section_id = $('.add_question_modal_multi').attr("data-id"); 
@@ -2836,10 +2816,22 @@ aria-hidden="true">
 					success: (res) => {
                         var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Section"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
 
-                        $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
+                        let pHtml = ``;
+                            pHtml += `<li>${question}</li>`;
+                            pHtml += `<li class="answerValUpdate_${res.question_id}">${answerType}</li>`;
+                            pHtml += `<li>${passagesTypeTxt}</li>`;
+                            pHtml += `<li>${passNumber}</li>`;
+                            pHtml += `<li>${fill}</li>`;
+                            pHtml += `<li class="orderValUpdate_${res.question_id}">${res.question_order}</li>`;
+                            pHtml += `<li>${btn}</li>`;
+
+                        $('.singleQuest_'+currentModelQueId).html(pHtml);
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
+
+
 						$('.addQuestion').val('');
-							$('.validError').text('');
+						$('.validError').text('');
+
                         let html = '';
                             html += `<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n`;
                             html += `<i class="fa-solid fa-grip-vertical"></i>\n`;
@@ -3187,28 +3179,6 @@ function showTab(n) {
     }
     fixStepIndicator(n)
 }
-
-// function nextPrev(n) {
-//     var x = document.getElementsByClassName("tab");
-//     if (n == 1 && !validateForm()) return false;
-//     x[currentTab].style.display = "none";
-//     currentTab = currentTab + n;
-//     if (currentTab >= x.length) {
-//         document.getElementById("regForm").submit();
-//         // return false;
-//         //alert("sdf");
-		
-//         document.getElementById("nextprevious").style.display = "none";
-//         document.getElementById("all-steps").style.display = "none";
-//         document.getElementById("register").style.display = "none";
-//         document.getElementById("text-message").style.display = "block";
-
-
-
-
-//     }
-//     showTab(currentTab);
-// }
 
 function nextPrev(n) {
     var x = document.getElementsByClassName("tab");
@@ -4389,64 +4359,6 @@ $(document).ready(function(){
     $('#editTestSectionType').append(opt);
 });
 
-
-// Sortable.create(listWithHandleQuestion, {
-//         handle: '.question-glyphicon-move',
-//         animation: 150,
-//         onEnd: function(evt) {
-//             var dataSet = evt.clone.dataset;
-//             var section_id = dataSet.section_id;
-
-//             $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).each((index,v) => {
-//                 var new_question_id =  $(v).attr('data-id');
-//                 var new_question_id_order = index + 1;
-//                 var orderId = '#orderRearnge_' + new_question_id;
-//                 $(orderId).val(new_question_id_order);
-//                 $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-//                 $.ajax({
-//                     data: {
-//                         'question_order': new_question_id_order,
-//                         'question_id': new_question_id,
-//                         '_token': $('input[name="_token"]').val(),
-//                     },
-//                     url: '{{ route("questionOrder") }}',
-//                     method: 'post',
-//                     success: (res) => {
-//                         $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']).remove();
-//                         $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-//                     }
-//                 });
-//             })
-//         }
-// }, );
-// Sortable.create(listWithHandleQuestion, {
-//     handle: '.question-glyphicon-move',
-//     animation: 150,
-//     onEnd: function(evt) {
-//         var dataSet = evt.clone.dataset;
-//         var section_id = dataSet.section_id;
-
-//         $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async (index, v) => {
-//             var new_question_id =  $(v).attr('data-id');
-//             var new_question_id_order = index + 1;
-//             var orderId = '#orderRearnge_' + new_question_id;
-//             $(orderId).val(new_question_id_order);
-//             $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-//             var res = await $.ajax({
-//                 data: {
-//                     'question_order': new_question_id_order,
-//                     'question_id': new_question_id,
-//                     '_token': $('input[name="_token"]').val(),
-//                     async: false,
-//                 },
-//                 url: '{{ route("questionOrder") }}',
-//                 method: 'post',
-//             });
-//             $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+res.question['id']).remove();
-//             $('#sectionDisplay_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-//         })
-//     }
-// });
 Sortable.create(listWithHandleQuestion, {
     handle: '.question-glyphicon-move',
     animation: 150,
@@ -4500,78 +4412,6 @@ Sortable.create(listWithHandleQuestion, {
         });
     }
 });
-// Sortable.create(listWithHandleQuestion, {
-//     handle: '.question-glyphicon-move',
-//     animation: 150,
-//     onEnd: function(evt) {
-//         var dataSet = evt.clone.dataset;
-//         var section_id = dataSet.section_id;
-
-//         var sections = $(`#listWithHandleQuestion .sectionsaprat_${section_id}`);
-
-//         for (var i = 0; i < sections.length; i++) {
-//             (async function() {
-//                 var v = sections[i];
-//                 var new_question_id = $(v).attr('data-id');
-//                 var new_question_id_order = i + 1;
-//                 var orderId = '#orderRearnge_' + new_question_id;
-//                 $(orderId).val(new_question_id_order);
-//                 $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-
-//                 var res = await $.ajax({
-//                     data: {
-//                         'question_order': new_question_id_order,
-//                         'question_id': new_question_id,
-//                         '_token': $('input[name="_token"]').val(),
-//                     },
-//                     url: '{{ route("questionOrder") }}',
-//                     method: 'post',
-//                 });
-
-//                 $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
-//                 $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-//             })();
-//         }
-//     }
-// });
-// Sortable.create(listWithHandleQuestion, {
-//     handle: '.question-glyphicon-move',
-//     animation: 150,
-//     onEnd: function(evt) {
-//         var dataSet = evt.clone.dataset;
-//         var section_id = dataSet.section_id;
-
-//         $(`#listWithHandleQuestion .sectionsaprat_${section_id}`).map(async(index, v) => {
-//             var new_question_id =  $(v).attr('data-id');
-//             var new_question_id_order = index + 1;
-//             var orderId = '#orderRearnge_' + new_question_id;
-//             $(orderId).val(new_question_id_order);
-//             $('.orderValUpdate_' + new_question_id).text(new_question_id_order);
-
-//             const promise = new Promise((resolve, reject) => {
-//                 $.ajax({
-//                     data: {
-//                         'question_order': new_question_id_order,
-//                         'question_id': new_question_id,
-//                         '_token': $('input[name="_token"]').val(),
-//                     },
-//                     url: '{{ route("questionOrder") }}',
-//                     method: 'post',
-//                     success: function(res){
-//                         resolve(res);
-//                     },
-//                     error: function(error) {
-//                         reject(error);
-//                     }
-//                 });
-//             });
-
-//             const res = await promise;
-//             $('#sectionDisplay_'+section_id+' .firstRecord .singleQuest_'+new_question_id).remove();
-//             $('#sectionDisplay_'+section_id+' .firstRecord').append('<ul class="sectionList singleQuest_'+new_question_id+'"><li>'+res.question['title']+'</li><li>'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+new_question_id+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+new_question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+new_question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+new_question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
-//         });
-//     }
-// });
 
 //new function for new add question reorder
 var test = Sortable.create(addListWithHandleQuestion, {
