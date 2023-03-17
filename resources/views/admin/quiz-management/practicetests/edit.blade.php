@@ -2943,7 +2943,7 @@ aria-hidden="true">
                             testSectionType +
                             '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li><p class="mb-0 d-flex">Order:</p>&nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
                             res +
-                            '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Question"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
                             '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
                             currentModelId +
@@ -3124,7 +3124,7 @@ aria-hidden="true">
                     $('.addQuestion').val('');
                     $('.validError').text('');
 
-                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+questionOrder+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Question"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
 
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-section_id="'+section_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
@@ -4401,7 +4401,7 @@ Sortable.create(listWithHandleQuestion, {
                     html += `<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;    
                     html += `<i class="fa fa-fw fa-pencil-alt"></i>`;
                     html += `</button>`;
-                    html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel(${val.question['id']})">`;
+                    html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Question"   onclick="practQuestioDel(${val.question['id']})">`;
                     html += `<i class="fa fa-fw fa-times"></i>`;
                     html += `</button>`;
                     html += `</li>`;
@@ -4443,7 +4443,6 @@ var test = Sortable.create(addListWithHandleQuestion, {
                         method: 'post',
                         success: (res) => {
                             // $('.sectionTypesFull .firstRecord .singleQuest_'+res.question['id']+'').remove();
-                            // $('.section_'+res.question['practice_test_sections_id']+' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question['id']+'"><li>'+res.question['title']+'</li><li class="answerValUpdate_'+res.question['id']+'">'+res.question['answer']+'</li><li>'+res.question['passages']+'</li><li>'+res.question['passage_number']+'</li><li>'+res.question['fill']+'</li><li class="orderValUpdate_'+res.question['id']+'">'+new_question_id_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question['id']+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question['id']+'" data-bs-toggle="tooltip" title="Delete Section"   onclick="practQuestioDel('+res.question['id']+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                         }
                     });
                 });
@@ -4463,7 +4462,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                                     data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;
                             html += `<i class="fa fa-fw fa-pencil-alt"></i>`;
                             html += `</button>`;
-                            html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Section" onclick="practQuestioDel(${val.question['id']})">`;
+                            html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Question" onclick="practQuestioDel(${val.question['id']})">`;
                             html += `<i class="fa fa-fw fa-times"></i>`;
                             html += `</button>`;
                             html += `</li>`;
@@ -4552,7 +4551,6 @@ var test = Sortable.create(addListWithHandleQuestion, {
             return false;
         }
         sectionOrder--;
-        $(`.section_${id}`).remove();
 
         $.ajax({
             data: {
@@ -4562,7 +4560,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
             url: '{{ route("delete_section") }}',
             method: 'post',
             success: (res) => {
-                
+                $(`.section_${id}`).remove();
             }
         });       
     }
