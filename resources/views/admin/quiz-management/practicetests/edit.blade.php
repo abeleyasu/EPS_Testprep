@@ -2840,13 +2840,20 @@ aria-hidden="true">
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
 						$('.addQuestion').val('');
 							$('.validError').text('');
-                        $('.questionaprat_'+currentModelQueId).remove();    
-                        $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-section_id="'+section_id+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
-                        '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
-                        '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                        '</span>\n' +
-                        '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
-                        '</div>');    
+                        let html = '';
+                            html += `<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n`;
+                            html += `<i class="fa-solid fa-grip-vertical"></i>\n`;
+                            html += `</span>\n`;    
+                            html += `<button class="btn btn-primary" value="${currentModelQueId}">${question}</button>\n`;
+                            
+                        $(`#listWithHandleQuestion .questionaprat_${res.question_id}`).html(html); 
+                        // $('.questionaprat_'+currentModelQueId).remove();   
+                        // $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-section_id="'+section_id+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
+                        // '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
+                        // '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                        // '</span>\n' +
+                        // '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
+                        // '</div>');    
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
 					} 
 				});	
