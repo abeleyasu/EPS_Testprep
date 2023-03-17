@@ -123,7 +123,7 @@ class MilestoneController extends Controller
         if($request->file('course_cover_image')){
             
             $file= $request->file('course_cover_image');
-            $filename= date('YmdHi').$file->getClientOriginalName();
+            $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
             $file->move((public_path().'/public/Image'), $filename);
            
         }
@@ -230,7 +230,7 @@ class MilestoneController extends Controller
         if($request->file('course_cover_image')){
             
             $file= $request->file('course_cover_image');
-            $filename= date('YmdHi').$file->getClientOriginalName();
+            $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
             $file->move((public_path(). '/public/Image'), $filename);
            
         } else {
