@@ -120,7 +120,7 @@ class MilestoneController extends Controller
         else {
             $this->reorderOnCreate($order);
         }
-        if($request->file('course_cover_image')){
+        if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');
             $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
@@ -227,7 +227,7 @@ class MilestoneController extends Controller
         $milestone = Milestone::findorfail($id);
 		$filename= '';
         $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
-        if($request->file('course_cover_image')){
+        if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');
             $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();

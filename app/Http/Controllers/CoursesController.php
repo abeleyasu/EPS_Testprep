@@ -52,7 +52,7 @@ class CoursesController extends Controller
 
        
         $filename = '';
-        if($request->file('course_cover_image')){
+        if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');
             $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
@@ -119,7 +119,7 @@ class CoursesController extends Controller
         }
 		$course = Courses::findorfail($id);
         $filename = '';
-        if($request->file('course_cover_image')){
+        if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');
             $filename= date('YmdHi').'.'.$file->getClientOriginalExtension();
