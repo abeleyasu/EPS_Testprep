@@ -27,7 +27,7 @@ class CoursesController extends Controller
                 $totalmilestone[$courseid] = count($coursemilestones);
             }
         }
-		
+  
         return view('admin.courses.index', compact('courses','totalmilestone'));
     }
     public function store(Request $request)
@@ -43,7 +43,7 @@ class CoursesController extends Controller
 		
 		
         $published = $request->published;
-        $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
+        $duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int)($request->minute ? $request->minute : 0);
         if($published == 'true'){
             $published = 1;
         }else{
@@ -132,7 +132,7 @@ class CoursesController extends Controller
 		if($request->get('content')){
 			$content = $request->get('content');
 		}
-		$duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
+		$duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int)($request->minute ? $request->minute : 0);
         $course->update([
             'title' => $request->name,
             'description' => $request->description,

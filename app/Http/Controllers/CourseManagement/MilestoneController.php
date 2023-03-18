@@ -111,7 +111,7 @@ class MilestoneController extends Controller
      */
     public function store(MilestoneRequest $request)
     {
-        $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
+        $duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int) ($request->minute ? $request->minute : 0);
 		$filename= '';
         $order = $request->order;
         if(!$order || $order == 0) {
@@ -226,7 +226,7 @@ class MilestoneController extends Controller
 
         $milestone = Milestone::findorfail($id);
 		$filename= '';
-        $duration = (int)($request->hour?$request->hour * 60: 0)+ (int)$request->minute ?? 0;
+        $duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int)($request->minute ? $request->minute : 0);
         if($request->hasFile('course_cover_image')){
             
             $file= $request->file('course_cover_image');

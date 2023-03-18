@@ -3278,7 +3278,7 @@ function clearModel() {
     $(`.removeNewTypes, .removeNewType`).remove();
     $('#passagesType').val(null).trigger("change");
     $('#passagesType').html('');
-    $('#js-ckeditor-add-addQue').val(null).trigger("change");
+    CKEDITOR.instances['js-ckeditor-add-addQue'].setData('');
     $('#add_passage_number').val(null).trigger("change");
 }
 
@@ -4337,6 +4337,7 @@ $('.add_section_modal_btn').click(function() {
         opt += '<option value="' + typeVallev2 + '">' + optionObj[format][i] + '</option>';
     }
     $('#testSectionType').append(opt);
+    $('#testSectiontitle').val('');
     $('#sectionModal').modal('show');
 });
 

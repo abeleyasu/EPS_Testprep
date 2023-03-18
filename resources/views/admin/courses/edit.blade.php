@@ -142,11 +142,11 @@
                                     <label for="duration" class="form-label">Duration</label>
                                     <div class="row">
                                         <div class="col-3">
-                                            <input type="number" min="0" name="hour" class=" form-control" id="hour">
+                                            <input type="number" min="0" name="hour" class=" form-control" id="hour" value="{{floor($course->duration/60)}}">
                                         </div>
                                         <label class="col-2 form-label">hours</label>
                                         <div class="col-3">
-                                            <input type="number" min="0" name="minute" class="form-control" id="minute" onkeydown="calculateTime(this)">
+                                            <input type="number" min="0" name="minute" class="form-control" id="minute" onkeydown="calculateTime(this)" value="{{$course->duration%60}}">
                                         </div>
                                         <label class="col-2 form-label">minutes</label>
                                     </div>
