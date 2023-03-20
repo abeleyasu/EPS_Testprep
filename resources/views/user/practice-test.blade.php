@@ -641,26 +641,26 @@
 
 
                 let flag_detail = [];
-                selected_flag_details = selected_flag_details.filter(function( element, key ) {
-                    return element !== "undefined";
-                });
+                // selected_flag_details = selected_flag_details.filter(function( element, key ) {
+                //     return element !== "undefined";
+                // });
                 //start
                 for (let index = 0; index < question_ids.length; index++) {
-                    if(selected_flag_details.hasOwnProperty(index)) {
-                        flag_detail[question_ids[index]] = selected_flag_details[index];
+                    if(selected_flag_details.hasOwnProperty(question_ids[index])) {
+                        flag_detail[question_ids[index]] = selected_flag_details[question_ids[index]];
                     } else {
                         flag_detail[question_ids[index]] = 'no';
                     }
                 }
                 //end
                 let guess_detail = [];
-                selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
-                    return element !== "undefined";
-                });
+                // selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
+                //     return element !== "undefined";
+                // });
                 //start
                 for (let index = 0; index < question_ids.length; index++) {
-                    if(selected_gusess_details.hasOwnProperty(index)) {
-                        guess_detail[question_ids[index]] = selected_gusess_details[index];
+                    if(selected_gusess_details.hasOwnProperty(question_ids[index])) {
+                        guess_detail[question_ids[index]] = selected_gusess_details[question_ids[index]];
                     } else {
                         guess_detail[question_ids[index]] = 'no';
                     }
