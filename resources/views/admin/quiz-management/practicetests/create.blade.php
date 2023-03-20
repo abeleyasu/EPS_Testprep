@@ -4315,8 +4315,8 @@ function getEditAnswerExpContent(answerOpt, fill){
                             html += `<ul class="sectionList singleQuest_${val.question['id']}">`;
                             html += `<li>${val.question['title']}</li>`;
                             html += `<li class="answerValUpdate_${val.question['id']}">${val.question['answer']}</li>`;
-                            html += `<li>${val.question['passages']}</li>`;
-                            html += `<li>${val.question['passage_number']}</li>`;
+                            html += `<li>${val.question['passages'] ? val.question['passages'] : ''}</li>`;
+                            html += `<li>${val.question['passage_number'] ? val.question['passage_number'] : ''}</li>`;
                             html += `<li>${val.question['fill']}</li>`;
                             html += `<li class="orderValUpdate_${val.question['id']}">${val.question['question_order']}</li>`;
                             html += `<li>`;
