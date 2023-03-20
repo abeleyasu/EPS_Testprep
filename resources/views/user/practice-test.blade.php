@@ -666,9 +666,6 @@
                     }
                 }
                 //end
-
-                let answer_details = [];
-
                 Array.prototype.associate = function (keys) {
                     var result = {};
 
@@ -679,13 +676,10 @@
                     return result;
                 };
 
-                selected_answer = selected_answer.filter(function( element, key ) {
-                    return element !== "undefined";
-                });
-
+                let answer_details = [];
                 for (let index = 0; index < question_ids.length; index++) {
-                    if(selected_answer.hasOwnProperty(index)) {
-                        answer_details[question_ids[index]] = selected_answer[index];
+                    if(selected_answer.hasOwnProperty(question_ids[index])) {
+                        answer_details[question_ids[index]] = selected_answer[question_ids[index]];
                     } else {
                         answer_details[question_ids[index]] = '-';
                     }
