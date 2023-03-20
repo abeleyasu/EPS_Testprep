@@ -335,6 +335,11 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
+        $(document).ready(()=>{
+            $('#modal-block-large').modal({
+                focus: false
+            });
+        });
          var currsectId = '<?php echo $section->id; ?>';
 		 $(document).ready(()=>{
 		  $('#course_cover_image').change(function(){

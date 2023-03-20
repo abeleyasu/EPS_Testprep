@@ -2,17 +2,12 @@
 
 @section('title', 'Student - Public High School Dashboard : Courses')
 
-@section('page-style')
-
-
-@endsection
-
 @section('user-content')
 <style>
-    .block-content img{
+    /* .block-content img{
         max-width:100% !important;
         height:auto !important;
-    }
+    } */
 </style>
 
 
@@ -62,22 +57,10 @@
     <!-- Page Content -->
     <div class="content content-boxed">
         <div class="row coursedesc">
-            <div class="block-content videoResp" style="margin-bottom:20px;">
-                @php
-                echo $description = $course->description;
-                @endphp
-            
-            
-            </div>
+            {!! $course->description !!}
 		</div>
 		<div class="row">
-            <div class="block-content videoResp" style="margin-bottom:20px;">
-                @php
-                echo $content = $course->content;
-                @endphp
-            
-            
-            </div>
+            {!! $course->content !!}
 		</div>
 		<div class="row">
             <div class="col-xl-8">

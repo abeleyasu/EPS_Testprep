@@ -66,22 +66,12 @@
         <!-- END Navigation -->
     <!-- Page Content -->
     <div class="content content-boxed">
-        <div class="row">
-            <div class="block-content videoResp" style="margin-bottom:20px;">
-                @php
-                echo $description = $milestone->description;
-                @endphp
-            
-            
-            </div>
-
-            <div class="block-content videoResp" style="margin-bottom:20px;">
-                @php
-                echo $content = $milestone->content;
-                @endphp
-            
-            
-            </div>
+        <div class="row coursedesc">
+            {!! $milestone->description !!}
+		</div>
+		<div class="row">
+            {!! $milestone->content !!}
+		</div>
             
             <div class="col-xl-8">
                 <!-- Lessons -->

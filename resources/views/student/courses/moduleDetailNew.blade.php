@@ -198,22 +198,12 @@
 	
 	------->
 	<div class="content content-boxed">
-        <div class="row">
-            <div class="block-content videoResp" style="margin-bottom:20px;">
-                @php
-                echo $description = $module->description;
-                @endphp
-            
-            
-            </div>
-
-            <div class="block-content videoResp" style="margin-bottom:20px;">
-                @php
-                echo $content = strip_tags($module->content);
-                @endphp
-            
-            
-            </div>
+        <div class="row coursedesc">
+            {!! $module->description !!}
+		</div>
+		<div class="row">
+            {!! $module->content !!}
+		</div>
             <div class="col-xl-8">
                 <!-- Lessons -->
 				<!--- BreadCrump   Start--->			
