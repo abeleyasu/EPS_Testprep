@@ -695,7 +695,7 @@ class TestPrepController extends Controller
     public function singleSection(Request $request, $id)
     {   
         $set_offset = 0;
-        $total_questions = PracticeQuestion::where('practice_test_sections_id',$id)->pluck('id')->toArray();
+        $total_questions = PracticeQuestion::where('practice_test_sections_id',$id)->orderBy('question_order','ASC')->pluck('id')->toArray();
         $testSection = DB::table('practice_test_sections')
         ->where('practice_test_sections.id', $id)
         ->get();
@@ -706,7 +706,7 @@ class TestPrepController extends Controller
     {
         $set_offset = 0;
         $practice_test_section = PracticeTestSection::where('testid',$id)->pluck('id')->toArray();
-        $total_questions = PracticeQuestion::whereIn('practice_test_sections_id',$practice_test_section)->pluck('id')->toArray();
+        $total_questions = PracticeQuestion::whereIn('practice_test_sections_id',$practice_test_section)->orderBy('question_order','ASC')->pluck('id')->toArray();
         $testSection = DB::table('practice_test_sections')
         ->where('practice_test_sections.testid', $id)
         ->get();
