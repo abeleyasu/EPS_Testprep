@@ -464,30 +464,34 @@
             });
 
             jQuery(".review").click(function(){
-                selected_flag_details = selected_flag_details.filter(function( element, key ) {
-                    return element !== "undefined";
-                });
-                selected_gusess_details = selected_gusess_details.filter(function( element, key ) {
-                    return element !== "undefined";
-                });
-                selected_skip_details = selected_skip_details.filter(function( element, key ) {
-                    return element !== "undefined";
-                });
+            //     selected_flag_details = selected_flag_details.filter(function( element ) {
+            //         return element.value !== "undefined";
+            //         // return selected_flag_details[key] != 'null';
+            //     });
+            //    selected_gusess_details = selected_gusess_details.filter(function( element ) {
+            //         return element.value !== "undefined";
+            //         // return selected_gusess_details[key] != 'null';
+            //     });
+            //     selected_skip_details = selected_skip_details.filter(function( element ) {
+            //         return element.value !== "undefined";
+            //         // return selected_skip_details[key] != 'null';
+            //     });
                 var current_question_id = $('.next').val();
+                var question_ids = @json($total_questions);
 
                 let my_arr = []
                 let totalFlag = 0;
                 let totalSkip = 0;
                 let totalGuess = 0;
 
-                for (let index = 0; index < selected_flag_details.length; index++) {
-                    my_arr[index] = { 
-                        "flag" : selected_flag_details[index],
-                        "guess" : selected_gusess_details[index],
-                        "skip" : selected_skip_details[index]
+                for (let index = 0; index < question_ids.length; index++) {
+                    my_arr[question_ids[index]] = { 
+                        "flag" : selected_flag_details[question_ids[index]],
+                        "guess" : selected_gusess_details[question_ids[index]],
+                        "skip" : selected_skip_details[question_ids[index]]
                     }
                 }
-
+                
                 my_arr.forEach(element => {
                     if(element.flag == 'yes')
                         totalFlag++
