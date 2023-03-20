@@ -151,7 +151,9 @@
                                                         @endforeach
                                                     @endif
                                                 </td>
-                                                <td>{{ $right_answers }}/{{ $total_questions }}</td>
+                                                @if(isset($right_answers) && !empty($right_answers))
+                                                    <td>{{ $right_answers }}/{{ $total_questions }}</td>
+                                                @endif
                                                 <td>28</td>
                                                 <td>
                                                     @if (isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))

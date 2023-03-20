@@ -310,8 +310,10 @@ class TestPrepController extends Controller
                             $decoded_answers = [];
                             $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
                             $question_order = PracticeQuestion::where('practice_test_sections_id',$get_single_section->id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
-                            foreach($question_order as $order) {
-                                $decoded_answers[$order] = $json_decoded_answers->{$order};
+                            if(isset($question_order) && !empty($question_order)){
+                                foreach($question_order as $order) {
+                                    $decoded_answers[$order] = $json_decoded_answers->{$order};
+                                }
                             }
                             $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
                             $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
@@ -338,9 +340,11 @@ class TestPrepController extends Controller
                     $decoded_answers = [];
                     $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
                     $question_order = PracticeQuestion::where('practice_test_sections_id',$id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
-                    foreach($question_order as $order) {
-                        $decoded_answers[$order] = $json_decoded_answers->{$order};
-                    }
+                    if(isset($question_order) && !empty($question_order)){
+                        foreach($question_order as $order) {
+                            $decoded_answers[$order] = $json_decoded_answers->{$order};
+                        }
+                    }    
                     $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
                     $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
                     foreach($decoded_answers as $question_id => $json_decoded_single_answers)
@@ -594,7 +598,7 @@ class TestPrepController extends Controller
                     ->where('practice_questions.id', $request->question_id)
                     ->where('practice_tests.id', $practice_test_id)
                     ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
-                    ->orderBy('question_order', 'asc')
+                    ->orderBy('question_order', 'ASC')
                     ->limit(1)->get();
 
                 } else {
@@ -614,7 +618,7 @@ class TestPrepController extends Controller
                     ->where('practice_questions.id', $request->question_id)
                     ->where('practice_tests.id', $practice_test_id)
                     ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
-                    ->orderBy('question_order', 'asc')
+                    ->orderBy('question_order', 'ASC')
                     ->limit(1)->get();
                 }
 
@@ -653,7 +657,7 @@ class TestPrepController extends Controller
                     ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order', 'practice_questions.tags')
                     // ->where('practice_questions.practice_test_sections_id', $request->section_id)
                     ->where('practice_questions.id', $request->question_id)
-                    ->orderBy('question_order', 'asc')
+                    ->orderBy('question_order', 'ASC')
                     ->limit(1)->get();
                 } else {
                     $get_total_question  = DB::table('practice_questions')
@@ -665,7 +669,7 @@ class TestPrepController extends Controller
                     ->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags','passages.title as passage_title', 'passages.description as passage_description', 'passages.type as passage_type')
                     // ->where('practice_questions.practice_test_sections_id', $request->section_id)
                     ->where('practice_questions.id', $request->question_id)
-                    ->orderBy('question_order', 'asc')
+                    ->orderBy('question_order', 'ASC')
                     ->limit(1)->get();
                 }
                 if($testSectionQuestions->isEmpty())
@@ -823,7 +827,7 @@ class TestPrepController extends Controller
             }
         }
 
-        return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSection' => $testSection, 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed , 'checkTestQuestion' => $checkTestQuestion, 'get_test_description' => $get_test_description , 'total_all_section_question' => $total_all_section_question]);
+        return view('user.practice-test-sections' , ['selected_test_id' => $id , 'testSections' => $testSections,'testSectionName' => $testSectionName , 'testSection' => $testSection, 'testSectionsDetails' => $store_sections_details , 'get_total_sections' => $get_total_sections ,'get_total_questions' => $get_total_questions,'check_test_completed' => $check_test_completed , 'checkTestQuestion' => $checkTestQuestion, 'get_test_description' => $get_test_description , 'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0']);
     }
 
     public function set_scrollPosition(Request $request){

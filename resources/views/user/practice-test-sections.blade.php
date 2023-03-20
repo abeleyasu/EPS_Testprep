@@ -49,7 +49,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="w-75">
                     <h2 class="fs-base lh-base fw-medium text-muted mb-0">
-                      This test has {{$get_total_sections}} sections and {{$total_all_section_question}} questions
+                      This test has {{$get_total_sections}} sections and {{isset($total_all_section_question) ? $total_all_section_question : ''}} questions
                     
                     </h2>
                     {{-- <h6 class="fs-6 mb-0 test-description text-muted mt-2">
