@@ -24,6 +24,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'forms';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'filebrowser';
 	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'imageuploader';
+	config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'uploadimage';
 	config.filebrowserUploadMethod = 'form';
 	
 	
@@ -50,8 +51,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Set the most common block elements.
 	
-	config.filebrowserBrowseUrl = '/browse.php',
-    config.filebrowserUploadUrl = '/upload.php'
+	config.filebrowserBrowseUrl = 'https://cpsdev.xyz/public/browse.php',
+    config.filebrowserUploadUrl = 'https://cpsdev.xyz/public/upload.php',
 	config.font_names = 'GoogleWebFonts';
 
 	config.format_tags = 'p;h1;h2;h3;pre';
