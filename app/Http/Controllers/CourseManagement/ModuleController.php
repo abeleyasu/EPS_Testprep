@@ -97,8 +97,8 @@ class ModuleController extends Controller
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
         if($milestone){
             
-            $courseid = $milestone->course_id;
-            $course = Courses::where('id','=',$courseid)->get();
+            $courseId = $milestone->course_id;
+            $course = Courses::where('id','=',$courseId)->get();
             //print_r($course);
         }
 		
@@ -271,8 +271,8 @@ class ModuleController extends Controller
 		$course = [];
 		if($milestone){
             
-                $courseid = $milestone->course_id;
-                $course = Courses::where('id','=',$courseid)->get();
+                $courseId = $milestone->course_id;
+                $course = Courses::where('id','=',$courseId)->get();
                 //print_r($course);
             }
         return view('admin.courses.modules.preview', compact('module',

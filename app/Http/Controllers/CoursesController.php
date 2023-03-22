@@ -20,11 +20,11 @@ class CoursesController extends Controller
         $courses = Courses::orderBy('order')->get();
 		$totalmilestone = [];
         foreach($courses as $course){
-            $courseid = $course->id;
+            $courseId = $course->id;
             
-            if($courseid){
-                $coursemilestones = Milestone::orderBy('order')->where('course_id','=',$courseid)->get();
-                $totalmilestone[$courseid] = count($coursemilestones);
+            if($courseId){
+                $courseMilestones = Milestone::orderBy('order')->where('course_id','=',$courseId)->get();
+                $totalmilestone[$courseId] = count($courseMilestones);
             }
         }
   
@@ -77,8 +77,8 @@ class CoursesController extends Controller
 		$currentId = $course->id;
 		$currentOrder = $course->order;
 		$orderInd=1;
-		foreach($courses as $cours){
-			$cours->update([
+		foreach($courses as $course){
+			$course->update([
 				'order' => $currentOrder
 			]); 			
 			
