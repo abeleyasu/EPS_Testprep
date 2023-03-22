@@ -80,7 +80,6 @@
 						 $totalMilestone=0;
 						@endphp
                     
-                        
 						@foreach($milestones as $milestone)
 						@php 
 						 $totalMilestone=$totalMilestone+1;
@@ -95,7 +94,7 @@
 											@if($milestone->status == 'paid')
 												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
 											@else
-											<a href="javascript:;">{{ $milestone->name }}</a>
+											<a href="/admin/course-management/milestones/{{ $milestone->id }}/preview">{{ $milestone->name }}</a>
 											@endif
 											
 											</h3>

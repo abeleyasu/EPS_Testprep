@@ -153,7 +153,7 @@
 											@if($module->status == 'paid')
 												<a href="javascript:;" class="font-grayed">{{$key+1}}. {{ $module->title }}</a>
 											@else
-											<a href="javascript:;">{{$key+1}}. {{ $module->title }}</a>
+											<a href="/admin/course-management/modules/{{ $module->id }}/preview">{{$key+1}}. {{ $module->title }}</a>
 											@endif
 											</h3>
                                         </div>

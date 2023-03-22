@@ -264,9 +264,7 @@
 													<input type="checkbox">
 													<label for="checkbox{{$task->id}}"></label>
 												</div>
-												<a href="javascript:;">
-												{{ $task->title }}
-												</a>
+												<a href="/admin/course-management/tasks/{{ $task->id }}/preview"> {{ $task->title }} </a>
 												</div>
 											@endif
 												

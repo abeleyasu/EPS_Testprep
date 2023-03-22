@@ -273,7 +273,7 @@
 											@if($section->status == 'paid')
 												<a href="javascript:;" class="font-grayed">{{$key+1}}. {{ $section->title }}</a>
 											@else
-											<a href="javascript:;">{{$key+1}}. {{ $section->title }}</a>
+											<a href="/admin/course-management/sections/{{ $section->id }}/preview">{{$key+1}}. {{ $section->title }}</a>
 											@endif
 											
 											
