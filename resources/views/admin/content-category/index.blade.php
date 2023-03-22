@@ -86,7 +86,7 @@
 @section('admin-script')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    {{-- @if(session('message'))
+    @if(session('message'))
         <script>
             swal({
                 title: "Success",
@@ -104,7 +104,7 @@
                 }
             });
         </script>
-    @endif --}}
+    @endif
     <script> 
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");

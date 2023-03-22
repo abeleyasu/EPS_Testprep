@@ -168,7 +168,7 @@ class TaskController extends Controller
             }
         }
         /*return redirect()->route('tasks.index')->with('success', 'Task updated successfully');*/
-		return redirect('admin/course-management/tasks/'.$model->id.'/edit')->with('success', 'Section updated successfully');
+		return redirect('admin/course-management/tasks/'.$model->id.'/edit')->with('success', 'Task updated successfully');
     }
 
     /**

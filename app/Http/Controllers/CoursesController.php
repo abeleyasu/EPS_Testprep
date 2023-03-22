@@ -93,7 +93,7 @@ class CoursesController extends Controller
                 ]);
             }
         }
-		return redirect('admin/course-management/courses/'.$course->id.'/edit')->with('success', 'Milestone created successfully');
+		return redirect('admin/course-management/courses/'.$course->id.'/edit')->with('success', 'Course created successfully');
     }
     public function edit($id)
     {
@@ -246,6 +246,6 @@ class CoursesController extends Controller
 		
         $course = Courses::findOrFail($id);
         $course->delete();
-        return back()->with('success', 'Category deleted successfully!');
+        return back()->with('success', 'Course deleted successfully!');
 	}
 }

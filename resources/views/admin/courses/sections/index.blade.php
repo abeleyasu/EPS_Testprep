@@ -110,6 +110,27 @@
 @section('admin-script')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    @if(session('success'))
+        <script>
+            swal({
+                title: "Success",
+                text: "{{ session('success') }}",
+                type: "success",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-primary",
+                        closeModal: true
+                    }
+                }
+            });
+        </script>
+    @endif
+
     <script>
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");
