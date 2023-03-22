@@ -202,7 +202,7 @@
                      
                 <!-- END Lessons -->
             </div>
-			@if(isset($milestone))
+			{{-- @if(isset($milestone)) --}}
             <div class="col-xl-4">
                 <div class="block block-rounded">
                         <div class="block-header block-0-default text-center">
@@ -235,7 +235,7 @@
                                 <tr>
                                     <td>
                                         <i class="fa fa-fw fa-tags me-1"></i>
-                                        @foreach($milestone->tags() as $tag)
+                                        @foreach($course->tags() as $tag)
                                             <a class="fw-semibold link-fx text-primary" href="javascript:void(0)">{{ $tag->name }}</a>,
                                         @endforeach
                                     </td>
@@ -245,7 +245,7 @@
                         </div>
                     </div>
                 </div>
-			@endif;
+			{{-- @endif --}}
     <!-- END Page Content -->
     </main>
 @endsection
