@@ -97,7 +97,7 @@ Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], functi
     });
     Route::group(['prefix' => 'course-management'], function () {
         Route::resource('courses', CoursesController::class);
-        Route::post('courses/{course}/courseupdate', [CoursesController::class, 'courseupdate'])->name('courses.courseupdate');
+        Route::post('courses/{course}/courseupdate', [CoursesController::class, 'course_update'])->name('courses.courseupdate');
         Route::resource('courseslist', CourseController::class);
         // Route::post('courseslist', CourseController::class);
         Route::post('courseslist/{course}/courseupdate', [CourseController::class, 'courseupdate'])->name('courseslist.courseupdate');

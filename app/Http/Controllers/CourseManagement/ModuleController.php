@@ -236,13 +236,13 @@ class ModuleController extends Controller
     public function reorder($id, Request $request) {
         $new_order = $request->new_index;
         $old_order = $request->old_index;
-        $module = Module::findorfail($id);
+        $module = Module::findOrFail($id);
 
         $module->order = $new_order;
         $module->save();
         $currModOrder =0;
 		if($request->currentModId>0){
-			$currentModule = Module::findorfail($request->currentModId);
+			$currentModule = Module::findOrFail($request->currentModId);
 			$currModOrder = $currentModule->order;
 		}
         /*$milestone->update(['order'=> $new_order]);*/
@@ -260,7 +260,7 @@ class ModuleController extends Controller
     public function preview($id)
     {
         $tags = Tag::all();
-		$module = Module::findorfail($id);
+		$module = Module::findOrFail($id);
         $module_tags = ModelTag::where([
             ['model_id', $id],
             ['model_type', get_class($module)]

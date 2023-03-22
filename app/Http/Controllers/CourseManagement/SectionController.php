@@ -90,7 +90,7 @@ class SectionController extends Controller
      */
     public function show($id)
     {
-        $section = Section::findorfail($id);
+        $section = Section::findOrFail($id);
 		if($section->status == 'paid'){
 			return redirect(route('home'));
 		}
@@ -113,7 +113,7 @@ class SectionController extends Controller
 
     public function showDetail($id)
     {
-        $section = Section::findorfail($id);
+        $section = Section::findOrFail($id);
 		$milestone = array();
 		$getSections = Section::where('module_id',$section->module_id)->orderBy('order')->get();
 		
@@ -247,13 +247,13 @@ class SectionController extends Controller
 
         $new_order = $request->new_index;
         $old_order = $request->old_index;
-        $model = Section::findorfail($id);
+        $model = Section::findOrFail($id);
         $model->order = $new_order;
         $model->save();
         
 		$currOrder =0;
 		if($request->currSectionId>0){
-			$currentSection = Section::findorfail($request->currSectionId);
+			$currentSection = Section::findOrFail($request->currSectionId);
 			$currOrder = $currentSection->order;
 		}
 		$this->reorderOnUpdate($old_order, $new_order, $id);
@@ -305,7 +305,7 @@ class SectionController extends Controller
     {
 		$milestone = array();
 		$course=[];
-		$section = Section::findorfail($id);
+		$section = Section::findOrFail($id);
 		$getSections = Section::where('module_id',$section->module_id)->orderBy('order')->get();
 		
 		$module = Module::where('id', $section->module_id)->orderBy('order')->first();

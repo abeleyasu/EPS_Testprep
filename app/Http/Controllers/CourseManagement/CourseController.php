@@ -80,7 +80,7 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-		$course = ContentCategory::findorfail($id);
+		$course = ContentCategory::findOrFail($id);
 		return view('admin.courses.edit',
             compact('course'));
 	}
@@ -93,7 +93,7 @@ class CourseController extends Controller
      */
     public function courseupdate(CourseRequest $request, $id)
     {
-		$course = ContentCategory::findorfail($id);
+		$course = ContentCategory::findOrFail($id);
         
         $course->update([
             'title' => $request->name,
@@ -111,7 +111,7 @@ class CourseController extends Controller
     public function destroy($id)
     {
 		
-        $course = ContentCategory::findorfail($id);
+        $course = ContentCategory::findOrFail($id);
         $course->delete();
         return redirect()->route('admin/course-management/courses')->with('success', 'Course delete successfully');
 	}
@@ -131,14 +131,14 @@ class CourseController extends Controller
 	public function reorder($id, Request $request) {
         $new_order = $request->new_index;
         $old_order = $request->old_index;
-        $course = Courses::findorfail($id);
+        $course = Courses::findOrFail($id);
         $course->order = $new_order;
         $course->save();
         /*$milestone->update(['order'=> $new_order]);*/
         $this->reorderOnUpdate($old_order, $new_order, $id);
 		$latestcourseord = 0;
 		if($request->currentOrderId>0){
-			$latestcourse = Courses::findorfail($request->currentOrderId);
+			$latestcourse = Courses::findOrFail($request->currentOrderId);
 			$latestcourseord = $latestcourse->order;
 		}
 		

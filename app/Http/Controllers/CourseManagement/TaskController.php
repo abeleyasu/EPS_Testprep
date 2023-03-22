@@ -118,7 +118,7 @@ class TaskController extends Controller
     }
     public function showDetail($id)
     {
-        $task = Task::findorfail($id);
+        $task = Task::findOrFail($id);
 		
 		
         return view('student.courses.taskDetail',compact('task'));
@@ -200,7 +200,7 @@ class TaskController extends Controller
     }
 
     public function changeStatusJson($id) {
-        $task = Task::findorfail($id);
+        $task = Task::findOrFail($id);
         $user = \request('user_id');
         $task_status = $task->taskStatus->where('user_id', $user)->first();;
         if($task_status) {
@@ -226,7 +226,7 @@ class TaskController extends Controller
      */
     public function preview($id)
     {
-		$task = Task::findorfail($id);
+		$task = Task::findOrFail($id);
         $gettasks = Task::where('section_id',$task->section_id)->orderBy('order')->get();
 		
 		$course = array();
@@ -292,13 +292,13 @@ class TaskController extends Controller
 
         $new_order = $request->new_index;
         $old_order = $request->old_index;
-        $model = Task::findorfail($id);
+        $model = Task::findOrFail($id);
         $model->order = $new_order;
         $model->save();
          
 		$currOrder =0;
 		if($request->currTaskId>0){
-			$currentTask = Task::findorfail($request->currTaskId);
+			$currentTask = Task::findOrFail($request->currTaskId);
 			$currOrder = $currentTask->order;
 		}
 		$this->reorderOnUpdate($old_order, $new_order, $id);

@@ -101,7 +101,7 @@ class CoursesController extends Controller
         $milestones = Milestone::where('course_id',$id)->orderBy('order')->get();
         $tags = Tag::all();
         $sections = Section::all();
-		$course = Courses::findorfail($id);
+		$course = Courses::findOrFail($id);
 		$course_tags = ModelTag::where([
             ['model_id', $course->id],
             ['model_type', get_class($course)]
@@ -109,7 +109,7 @@ class CoursesController extends Controller
 		return view('admin.courses.edit',
             compact('course','tags', 'course_tags', 'sections','usersRoles','milestones'));
 	}
-    public function courseupdate(Request $request, $id)
+    public function course_update(Request $request, $id)
     {
         $published = $request->published;
         if($published == 'true'){
@@ -117,7 +117,7 @@ class CoursesController extends Controller
         }else{
             $published = 0; 
         }
-		$course = Courses::findorfail($id);
+		$course = Courses::findOrFail($id);
         $filename = '';
         if($request->hasFile('course_cover_image')){
             
@@ -244,7 +244,7 @@ class CoursesController extends Controller
     public function destroy($id)
     {
 		
-        $course = Courses::findorfail($id);
+        $course = Courses::findOrFail($id);
         $course->delete();
         return back()->with('success', 'Category deleted successfully!');
 	}

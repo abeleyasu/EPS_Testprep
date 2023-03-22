@@ -199,7 +199,7 @@ class MilestoneController extends Controller
     {
 
         $tags = Tag::all();
-        $milestone = Milestone::findorfail($id);
+        $milestone = Milestone::findOrFail($id);
         $sections = Section::all();
         $milestone_tags = ModelTag::where([
             ['model_id', $milestone->id],
@@ -224,7 +224,7 @@ class MilestoneController extends Controller
     public function update(MilestoneRequest $request, $id)
     {
 
-        $milestone = Milestone::findorfail($id);
+        $milestone = Milestone::findOrFail($id);
 		$filename= '';
         $duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int)($request->minute ? $request->minute : 0);
         if($request->hasFile('course_cover_image')){
@@ -288,7 +288,7 @@ class MilestoneController extends Controller
     public function destroy($id)
     {
 
-        $milestone = Milestone::findorfail($id);
+        $milestone = Milestone::findOrFail($id);
         $milestone->delete();
         return redirect()->route('milestones.index')->with('success', 'Milestone delete successfully');
     }
@@ -327,12 +327,12 @@ class MilestoneController extends Controller
     public function reorder($id, Request $request) {
         $new_order = $request->new_index;
         $old_order = $request->old_index;
-        $milestone = Milestone::findorfail($id);
+        $milestone = Milestone::findOrFail($id);
         $milestone->order = $new_order;
         $milestone->save();
 		$currMileOrder =0;
 		if($request->currentMileId>0){
-			$currentmilestone = Milestone::findorfail($request->currentMileId);
+			$currentmilestone = Milestone::findOrFail($request->currentMileId);
 			$currMileOrder = $currentmilestone->order;
 		}
         /*$milestone->update(['order'=> $new_order]);*/
@@ -352,7 +352,7 @@ class MilestoneController extends Controller
     {
 
         $tags = Tag::all();
-        $milestone = Milestone::findorfail($id);
+        $milestone = Milestone::findOrFail($id);
         $sections = Section::all();
         $milestone_tags = ModelTag::where([
             ['model_id', $milestone->id],
