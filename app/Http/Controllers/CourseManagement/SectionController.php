@@ -159,7 +159,6 @@ class SectionController extends Controller
      */
     public function update(Request $request, Section $section)
     {
-
         $request->request->add(['published' => $request->published ? true : false]);
 //        $this->reorderOnUpdate($section, $request);
         $model = $this->updateFromRequest($section, $request);
@@ -187,6 +186,11 @@ class SectionController extends Controller
                     'tag_id' => $tag
                 ]);
             }
+        } else {
+            ModelTag::where([
+                ['model_id', $model->id],
+                ['model_type', get_class($model)]
+            ])->delete();
         }
 		return redirect('admin/course-management/sections/'.$model->id.'/edit')->with('success', 'Section updated successfully');
         /*return redirect()->route('sections.index')->with('success', 'Section updated successfully');*/

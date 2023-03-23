@@ -166,6 +166,11 @@ class TaskController extends Controller
                     'tag_id' => $tag
                 ]);
             }
+        } else {
+            ModelTag::where([
+                ['model_id', $model->id],
+                ['model_type', get_class($model)]
+            ])->delete();
         }
         /*return redirect()->route('tasks.index')->with('success', 'Task updated successfully');*/
 		return redirect('admin/course-management/tasks/'.$model->id.'/edit')->with('success', 'Task updated successfully');

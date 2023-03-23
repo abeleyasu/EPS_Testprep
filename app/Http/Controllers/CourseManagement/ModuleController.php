@@ -133,7 +133,6 @@ class ModuleController extends Controller
      */
     public function update(ModuleRequest $request, Module $module)
     {
-
 //        if($request->milestone_id == $module->milestone_id) {
 //            $this->reorderOnUpdate($module, $request);
 //        }else {
@@ -173,6 +172,11 @@ class ModuleController extends Controller
                     'tag_id' => $tag
                 ]);
             }
+        } else {
+            ModelTag::where([
+                ['model_id', $module->id],
+                ['model_type', get_class($module)]
+            ])->delete();
         }
 		return redirect()->route('modules.edit',['module'=>$module->id])->with('success', 'Module updated successfully');
         /*return redirect()->route('modules.index')->with('success', 'Module updated successfully');*/

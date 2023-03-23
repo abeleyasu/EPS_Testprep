@@ -84,6 +84,7 @@ class CoursesController extends Controller
 			
 			$orderInd++;
 		}
+        
 		if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -177,7 +178,7 @@ class CoursesController extends Controller
 					]);
 			$orderInd++;
 		}*/
-			
+   
         if($request->tags) {
             ModelTag::where([
                 ['model_id', $course->id],
@@ -190,7 +191,12 @@ class CoursesController extends Controller
                     'tag_id' => $tag
                 ]);
             }
-        }    
+        } else {
+            ModelTag::where([
+                ['model_id', $course->id],
+                ['model_type', get_class($course)]
+            ])->delete();
+        }   
         //return redirect()->route('courses.index')->with('success', 'Milestone updated successfully');
         /*return Redirect::back()->withErrors(['msg' => 'The Message']);*/
 		return redirect('admin/course-management/courses/'.$id.'/edit')->with('success', 'Course updated successfully');

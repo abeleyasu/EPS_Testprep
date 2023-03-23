@@ -242,7 +242,7 @@
                 gridBtn.removeClass("btn-outline-primary");
                 gridBtn.addClass("btn-primary");
             })
-        })
+        });
 
         function removeOpacity(evt) {
             $(evt).removeClass('opacity-100')

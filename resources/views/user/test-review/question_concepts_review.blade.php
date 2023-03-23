@@ -130,7 +130,7 @@
                                     </div> --}}
                                     <table class="js-table-sections table table-hover table-vcenter table-contant">
                                         <thead>
-                                            <tr class="d-flex align-items-center justify-content-between">
+                                            <tr class=" align-items-center justify-content-between">
                                                 <th >Section</th>
                                                 <th ># Correct</th>
                                                 <th >Scaled Score (1-36)</th>
@@ -138,7 +138,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="d-flex align-items-center justify-content-between">
+                                            <tr class=" align-items-center justify-content-between">
                                                 <td>
                                                     @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
                                                         @foreach ($user_selected_answers[0]['all_sections'] as $test_section)
@@ -151,9 +151,10 @@
                                                         @endforeach
                                                     @endif
                                                 </td>
-                                                @if(isset($right_answers) && !empty($right_answers))
+                                                {{-- @if(isset($right_answers) && !empty($right_answers))
                                                     <td>{{ $right_answers }}/{{ $total_questions }}</td>
-                                                @endif
+                                                @endif --}}
+                                                <td>{{ isset($right_answers) ? $right_answers : '' }}/{{ isset($total_questions) ? $total_questions : '' }}</td>
                                                 <td>28</td>
                                                 <td>
                                                     @if (isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))
@@ -211,11 +212,11 @@
                                     {{-- header --}}
                                     <table class="js-table-sections table table-hover table-vcenter">
                                         <thead>
-                                            <tr class="d-flex align-items-center justify-content-between" style="width: 338px">
+                                            <tr class="d-flex align-items-center justify-content-between" style="width: 410px">
                                                 <th></th>
-                                                <th>Q#</th>
-                                                <th class="text-center">Your Answer</th>
-                                                <th class="text-center">Correct Answer</th>
+                                                <th class="ms-2">Q#</th>
+                                                <th class="text-center ms-2">Your Answer</th>
+                                                <th class="text-center ms-2">Correct Answer</th>
                                                 <th>Flags</th>
                                             </tr>
                                         </thead>
@@ -383,7 +384,7 @@
                                                                                     class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                             </td>
                                                                             <td class="d-flex align-items-center">
-                                                                                <div style="margin-right: 26px;"
+                                                                                <div style="width: 70px; display: flex; align-items: start;"
                                                                                     >
                                                                                     <button type="button"
                                                                                         class="btn btn-danger fs-xs fw-semibold me-1 error-button"
@@ -394,7 +395,7 @@
                                                                                 </div>
                                                                                 <?php $correct = str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer); ?>
                                                                                 @if ($single_user_selected_answers['user_selected_answer'] == $correct)
-                                                                                    <div style="margin-right: 43px;"
+                                                                                    <div style="width: 120px; display: flex; align-items: start;"
                                                                                         >
                                                                                         <button type="button"
                                                                                             class="correct-answers btn btn-success fs-xs fw-semibold me-1"
@@ -407,7 +408,7 @@
                                                                                             {{ $single_user_selected_answers['user_selected_answer'] }}</button>
                                                                                     </div>
                                                                                 @else
-                                                                                    <div style="margin-right: 43px;"
+                                                                                    <div style="width: 120px; display: flex; align-items: start;"
                                                                                         >
                                                                                         <button type="button"
                                                                                             class="incorrect-answers btn btn-danger fs-xs fw-semibold me-1"
@@ -421,7 +422,7 @@
                                                                                     </div>
                                                                                 @endif
 
-                                                                                <div style="margin-right: 43px;">
+                                                                                <div style="width: 110px; display: flex; align-items: start;">
                                                                                     <button type="button"
                                                                                         class="btn btn-success fs-xs fw-semibold me-1"
                                                                                         data-bs-toggle="tooltip"
@@ -2821,6 +2822,9 @@
             overflow: hidden !important;
         }
         .table thead th{
+        padding: 10px 19px 10px 12px !important;
+    }
+    .table-contant tbody tr td{
         padding: 10px 19px 10px 12px !important;
     }
     @media(max-width:575px){

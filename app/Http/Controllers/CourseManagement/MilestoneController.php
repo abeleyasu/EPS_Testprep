@@ -223,7 +223,6 @@ class MilestoneController extends Controller
      */
     public function update(MilestoneRequest $request, $id)
     {
-
         $milestone = Milestone::findOrFail($id);
 		$filename= '';
         $duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int)($request->minute ? $request->minute : 0);
@@ -274,6 +273,11 @@ class MilestoneController extends Controller
                     'tag_id' => $tag
                 ]);
             }
+        } else {
+            ModelTag::where([
+                ['model_id', $milestone->id],
+                ['model_type', get_class($milestone)]
+            ])->delete();
         }
 		return redirect('admin/course-management/milestones/'.$id.'/edit')->with('success', 'Milestone updated successfully');
         /*return redirect()->route('milestones.index')->with('success', 'Milestone updated successfully');*/

@@ -48,19 +48,18 @@
 
                             <td>
                                 <div class="btn-group">
-{{--                                    <button type="button"--}}
-{{--                                       class="btn btn-sm btn-alt-secondary"--}}
-{{--                                       data-bs-toggle="tooltip"--}}
-{{--                                       title="Edit Tag">--}}
-{{--                                        <i class="fa fa-fw fa-pencil-alt"></i>--}}
-{{--                                    </button>--}}
+                                   {{-- <button type="button"
+                                       class="btn btn-sm btn-alt-secondary"
+                                       data-bs-toggle="tooltip"
+                                       title="Edit Tag">
+                                        <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </button>  --}}
                                     <button type="button"
                                             class="btn btn-sm btn-alt-secondary delete-tag"
                                             data-id="{{$tag->id}}"
                                             data-bs-toggle="tooltip"
                                             title="Delete Tag"
-                                            onclick="deleteItem_fun({{ $tag->id }})"
-                                    >
+                                            onclick="deleteItem_fun({{ $tag->id }})" >
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
                                     <form id="delete-item-form-{{$tag->id}}" action="{{ route('tags.destroy',$tag->id) }}" method="POST" style="display: none;">
@@ -164,6 +163,27 @@
 @section('admin-script')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+    @if(session('success'))
+        <script>
+            swal({
+                title: "Success",
+                text: "{{ session('success') }}",
+                type: "success",
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn btn-primary",
+                        closeModal: true
+                    }
+                }
+            });
+        </script>
+    @endif
+
     <script>
 	function deleteItem_fun(id) {
 		// var id = $(this).data("id");
