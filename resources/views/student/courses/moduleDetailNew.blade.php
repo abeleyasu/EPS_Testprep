@@ -230,7 +230,7 @@
                                     $allMilestones = \App\Models\CourseManagement\Milestone::where('course_id', $courseId)->where('status', 'unpaid')->orderBy('order', 'asc')->pluck('id')->toArray();
                                     $nextMilestone = $allMilestones[count($allMilestones) - 1] !== $getModules[0]->milestone_id ? array_search($getModules[0]->milestone_id,$allMilestones) + 1 : 0;
                                 @endphp   
-                                @if (!empty($allMilestones))
+                                @if (!empty($nextMilestone))
                                     <a href="{{ route('milestone.detail',['milestone'=>$allMilestones[$nextMilestone]]) }}" class="btn w-25 btn-alt-success">
                                         <i class="fa fa-fw fa-eye me-1 opacity-50"></i> Next Milestone
                                     </a>
