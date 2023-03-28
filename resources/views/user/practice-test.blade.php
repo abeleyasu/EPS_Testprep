@@ -42,9 +42,17 @@
      overflow: auto;
 }
 .content-height{
-    min-height: 330px;
+    min-height: 460px;
 }
-
+.block-content h5{
+    font-size: 14px;
+}
+.scroll_target {
+height: 270px
+}
+.scroll_target p{
+    margin-bottom: 0px !important;
+}
 
 </style>
 
@@ -90,16 +98,17 @@
             <div class="col-xl-6 passageContainer">
                 <!-- Lessons -->
                 <div class="block block-rounded">
-                    <div class="block-content fs-sm ">
+                    <div class="block-content fs-sm">
                         <input type="hidden" id="onload_question_id" value="{{ $total_questions[0] }}">
-                        <h5 class="h5 mb-4">
+                        <h5 class=" mb-2">
                             PASSAGE I
                         </h5>
-                        <h5 class="h5 mb-4" >
+                        <h5 class=" mb-4">
                             <strong id="passage_type">PASSAGE TYPE: NATURAL SCIENCE</strong><br /><span id="passage_title">This is adapted from author Blah.</span>
                         </h5>
                         <div class="mb-4">
-                            <div id="passage_description" class="form-control scroll_target"></div>
+                            {{-- <div id="passage_description" class="form-control scroll_target"></div> --}}
+                            <textarea id="passage_description" class="form-control scroll_target bg-transparent"  readonly></textarea>
                             {{-- <textarea  class="form-control scroll_target"  name="example-textarea-input" id="passage_description_content"  placeholder="Textarea content..">The first prehistoric avian bird of its kind was discovered in Antarctica in December of the year 2032. Its unique features, which include an obvious membranous extension to its fin and a fold in its flight-bends, put its scientific discovery into the same realms as that of Darwin's fin-flap animal. This incredible bird is a truly remarkable feat. It was discovered in deep waters in the Beaufort Gyre, an area of the southern ocean that is one of the most important underwater ecosystems for biological discovery, in a collection of fossils that span the entire 400 million year history of the animal.
                       Notably, this remarkable feat is the result of a scientific exploration by veteran experts in Antarctic science who are passionate about the advancement of paleoceanography. 
                       Astronaut Dr. Stephen Wright joins Bryan Johnson to detail the remarkable life and legacy of Dr. Frank White, a scientist who spent 32 days in space, leaving behind much scientific knowledge. It is estimated that at least 500 additional species of plant and animal have now been discovered. This volume documents that entire collection of scientific specimens from Dr. White, who is considered the father of modern scientific exploration.</textarea> --}}
@@ -718,7 +727,6 @@
                     }
                 });
             }
-
             function get_first_question(get_offset)
             {
                 $.ajaxSetup({
@@ -754,7 +762,10 @@
                             // var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
                             $('.passageContainer').css('display','none');
                         }
-                        // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
+                        if(passage_description)
+                        {
+                            passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
+                        }    
                         // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
 
                         var get_question_title = result.questions[0].question_title;

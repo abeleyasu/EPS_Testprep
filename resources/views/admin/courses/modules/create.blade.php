@@ -96,7 +96,7 @@
                                 <label for="type" class="form-label">Parent Milestone:</label>
                                 <select name="milestone_id" class="form-control" id="milestone_id">
                                     @foreach($milestones as $milestone)
-                                        <option value="{{$milestone->id}}"> {{ $milestone->name }}</option>
+                                        <option value="{{$milestone->id}}" {{ isset($_GET['milestone_id']) && $_GET['milestone_id'] == $milestone->id ? 'selected' : '' }}> {{ $milestone->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('user_type')

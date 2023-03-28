@@ -90,7 +90,7 @@
                                    
                                 </div>
 							</div>
-							<a href="{{ route('milestones.create')}}" class="addchild btn w-100 btn-alt-light text-center"
+							<a href="{{ route('milestones.create') .'?course_id='.$course->id }}" class="addchild btn w-100 btn-alt-light text-center"
                                         >
                                     <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Milestone
                                 </a>
@@ -131,7 +131,7 @@
                                     <label for="type" class="form-label">User Type:</label>
                                     <select name="user_type" class="form-control">
                                         @foreach($usersRoles as $usersRole)
-                                            <option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
+                                            <option value="{{$usersRole->id}}" @if ($course->user_type == $usersRole->id) selected @endif>{{$usersRole->name}}</option>
                                         @endforeach
                                     </select>
                                     @error('user_type')

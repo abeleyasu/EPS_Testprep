@@ -111,7 +111,7 @@
                                     </div>
                                 @endforeach
                             @endif
-                                <a href="{{ route('modules.create') }}" class="addchild btn w-100 btn-alt-light text-center"
+                                <a href="{{ route('modules.create'). '?milestone_id='. $milestone->id }}" class="addchild btn w-100 btn-alt-light text-center"
                                         >
                                     <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Module
                                 </a>

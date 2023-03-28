@@ -142,8 +142,6 @@
                                     <div class="col-4">
                                     <p>{{$completion_percent}}% Task Complete</p>
                                     </div>
-                                    <br />
-                                    <br />
                                     
                                     <div class="col-8">
                                         <div class="progress">

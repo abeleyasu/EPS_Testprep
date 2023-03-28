@@ -83,7 +83,7 @@
                                 <label for="type" class="form-label">Parent Module:</label>
                                 <select name="module_id" class="form-control" id="module_id">
                                     @foreach($modules as $module)
-                                        <option value="{{$module->id}}"> {{ $module->title }}</option>
+                                        <option value="{{$module->id}}" {{ isset($_GET['module_id']) && $_GET['module_id'] == $module->id ? 'selected' : ''}}> {{ $module->title }}</option>
                                     @endforeach
                                 </select>
                                 @error('module_id')
