@@ -45,6 +45,7 @@ use App\Http\Controllers\AwardController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\AthleticPositionController;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +59,8 @@ use App\Http\Controllers\AthleticPositionController;
 */
 
 Route::get('/', function () {
-    return redirect(route('signin'));
+    Session::flush();
+    return redirect()->route('signin');
 })->name('home');
 
 //Auth Routes
