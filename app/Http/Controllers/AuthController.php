@@ -7,8 +7,8 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserRole;
-use Auth;
-use Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
@@ -78,12 +78,16 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            if($user->role ==1)
+            
+            if((int) $user->role == 1) {
                 return redirect()->intended(route('admin-dashboard'));
-            elseif($user->isUser())
+            }    
+            else if((int) $user->role == 3) {
                 return redirect()->intended(route('user-dashboard'));
-            else
-                return redirect()->intended(route('signin'));
+            }
+            else {
+                return redirect()->intended('/login');
+            }
         }
 
         return back()->withErrors([
