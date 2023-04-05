@@ -8,6 +8,11 @@
     <!-- Main Container -->
     <main id="main-container">
     <!-- Page Content -->
+    @php
+        header("Cache-Control: no-cache, no-store, must-revalidate");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+    @endphp
         <div class="hero-static d-flex align-items-center">
             <div class="content">
                 <div class="row justify-content-center push">
