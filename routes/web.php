@@ -62,7 +62,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::group(['middleware' => 'auth'],function() {
+Route::group(['middleware' => ['auth', 'cors']],function() {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
@@ -289,7 +289,7 @@ Route::group(['middleware' => 'auth'],function() {
 });
 
 // Auth Routes
-Route::group(['middleware' => 'guest'],function () {
+Route::group(['middleware' => ['guest','cors']],function () {
     Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
     Route::post('/signin', [AuthController::class, 'userSignIn'])->name('post-signin');
     Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
