@@ -698,6 +698,21 @@ height: 270px
                     }
                 }
 
+                answer_details = answer_details.filter(function(element, key){
+                    return element !== 'undefined';
+                });
+                answer_details = answer_details.associate(question_ids);
+
+                flag_detail = flag_detail.filter(function(element, key){
+                    return element !== 'undefined';
+                });
+                flag_detail = flag_detail.associate(question_ids);
+
+                guess_detail = guess_detail.filter(function(element, key){
+                    return element !== 'undefined';
+                });
+                guess_detail = guess_detail.associate(question_ids);
+                
                 // let flag_details = selected_flag_details.associate(question_ids);
                 // let gusess_details = selected_gusess_details.associate(question_ids);
 
