@@ -59,7 +59,9 @@ class AuthController extends Controller
     }
 
     public function showSignIn(){
-        return view('signin');
+        if(Auth::guest()){
+            return view('signin');
+        }
     }
 
     public function userSignIn(Request $request){
