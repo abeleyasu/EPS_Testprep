@@ -592,33 +592,37 @@
                             <input id="testSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" style="font-size: 13px;">Question:</label>
+                            <label class="form-label" style="font-size: 13px;">Question:<span class="text-danger">*</span></label>
                             <textarea id="js-ckeditor-addQue" name="js-ckeditor-addQue"
                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
+                            <span class="text-danger" id="questionError"></span>    
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label" for="tags">Question Tags</label>
+                            <label class="form-label" for="tags">Question Tags<span class="text-danger">*</span></label>
                             <input name="tags" placeholder="add tags" class="form-control"/>
+                            <span class="text-danger" id="tagError"></span>
                         </div>
                         <div class="input-container" id="addNewType">
                             <div class="d-flex input-field align-items-center">
                                 {{-- start  --}}
                                 <div class="col-md-5 mb-2 me-2 category-custom">
-                                    <label for="category_type" class="form-label">Category Type</label>
+                                    <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
                                     <select class="js-select2 select categoryType w-100" id="category_type_0" name="category_type" onchange="insertCategoryType(this)" multiple>
                                         @foreach ($getCategoryTypes as $categoryType)
                                             <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger" id="categoryTypeError"></span>
                                 </div>
                                 <div class="mb-2 col-md-5 add_question_type_select">
-                                    <label for="search-input" class="form-label">Question Type</label>
+                                    <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
                                     <select class="js-select2 select questionType" id="search-input_0" name="search-input" onchange="insertQuestionType(this)" multiple>
                                         @foreach ($getQuestionTypes as $questionType)
                                             <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger" id="questionTypeError"></span>
                                 </div>
                                 <div class="col-md-2 add-position">
                                     <button class="plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
@@ -627,16 +631,18 @@
                         </div>
                         <div class="row passage-container align-items-center">
                             <div class="mb-2 col-md-5">
-                                <label for="passage_number" class="form-label">Passage No</label>
+                                <label for="passage_number" class="form-label">Passage No<span class="text-danger">*</span></label>
                                 <select class="js-select2 select passNumber" id="passage_number" name="passage_number">
                                     @for ($i = 1; $i < 25; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
+                                <span class="text-danger" id="passNumberError"></span>
                             </div>
                             <div class="mb-2 col-md-5">
-                                <label class="form-label">Passages:</label>
+                                <label class="form-label">Passages:<span class="text-danger">*</span></label>
                                 <select name="passagesType" class="form-control passagesType js-select2 select"></select>
+                                <span class="text-danger" id="passageTypeError"></span>
                             </div>
                             <div class="col-md-2">
                                 <input type="checkbox" id="passageRequired_1" name="passageRequired_1" class="input-check"/>
@@ -1106,32 +1112,35 @@
                             <input id="edittestSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" style="font-size: 13px;">Question:</label>
+                            <label class="form-label" style="font-size: 13px;">Question:<span class="text-danger">*</span></label>
                             <textarea id="js-ckeditor-edit-addQue" name="js-ckeditor-edit-addQue" class="form-control form-control-lg form-control-alt addQuestion" placeholder="update Question" ></textarea>
-                            
+                            <span class="text-danger" id="questionError"></span>
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label" for="tags">Question Tags</label>
+                            <label class="form-label" for="tags">Question Tags<span class="text-danger">*</span></label>
                             <input name="questionTags" id="questionTag" placeholder="add tags" class="form-control"/>
+                            <span class="text-danger" id="tagError"></span>
                         </div>
                         <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
                                 <div class="col-md-5 mb-2 me-2">
-                                    <label for="category_type" class="form-label">Category Type</label>
+                                    <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
                                     <select class="js-select2 select categoryType" id="edit_category_type_0" name="edit_category_type" onchange="insertCategoryType(this)" multiple>
                                         @foreach ($getCategoryTypes as $categoryType)
                                             <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger" id="categoryTypeError"></span>
                                 </div>
                                 <div class="mb-2 col-md-5 add_question_type_select">
-                                    <label for="search-input" class="form-label">Question Type</label>
+                                    <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
                                     <select class="js-select2 select questionType" id="edit_search-input_0" name="edit_search-input" onchange="insertQuestionType(this)" multiple>
                                         @foreach ($getQuestionTypes as $questionType)
                                             <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger" id="questionTypeError"></span>
                                 </div>
                                 <div class="col-md-2 add-position">
                                     <button class="plus-button edit-plus-button" data-id="1" onclick="addNewTypes(this,'null')"><i class="fa-solid fa-plus"></i></button>
@@ -1141,16 +1150,18 @@
 
                         <div class="row passage-container align-items-center">
                             <div class="mb-2 col-md-5">
-                                <label for="passage_number" class="form-label">Passage No</label>
+                                <label for="passage_number" class="form-label">Passage No<span class="text-danger">*</span></label>
                                 <select class="js-select2 select passNumber" id="edit_passage_number" name="passage_number">
                                     @for ($i = 1; $i < 25; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
+                                <span class="text-danger" id="passNumberError"></span>
                             </div>
                             <div class="mb-2 col-md-5">
-                                <label class="form-label">Passages</label>
+                                <label class="form-label">Passages<span class="text-danger">*</span></label>
                                 <select name="editPassagesType" class="form-control editPassagesType js-select2 select"></select>
+                                <span class="text-danger" id="passageTypeError"></span>
                             </div>
                             <div class="col-md-2">
                                 <input type="checkbox" id="passageRequired_2" name="passageRequired_2" class="input-check">
@@ -2735,14 +2746,18 @@
                 var get_category_type_values = $('select[name=category_type]').map(function(i,v) {
                     var category_type_arr = [];
                     let category_type_val = $(v).val();
-                    category_type_arr.push(category_type_val);
+                    if(category_type_val.length > 0){
+                        category_type_arr.push(category_type_val);
+                    }
                     return category_type_arr;
                 }).get();
 
                 var get_question_type_values = $('select[name=search-input]').map(function(i,v) {
                     var question_type_arr = [];
                     let question_type_val = $(v).val();
-                    question_type_arr.push(question_type_val);
+                    if(question_type_val.length > 0){
+                        question_type_arr.push(question_type_val);
+                    }
                     return question_type_arr;
                 }).get();
 
@@ -2754,21 +2769,57 @@
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
 
+                // if($('#passageRequired_1').is(':checked')){
+                //     if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType == ''){
+                //         $('#questionMultiModal .validError').text('Below fields are required!');
+                //         return false;
+                //     } else {
+                //         $('#questionMultiModal .validError').text('');
+                //     }
+                // } else {
+                //     if (format == '' || testSectionType == '' || question == '' || questionType == ''){
+                //         $('#questionMultiModal .validError').text('Below fields are required!');
+                //         return false;
+                //     } else {
+                //         $('#questionMultiModal .validError').text('');
+                //     }
+                // } 
+
                 if($('#passageRequired_1').is(':checked')){
-                    if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType == ''){
-                        $('#questionMultiModal .validError').text('Below fields are required!');
+                    if(question =='' || tags.trim() =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || jQuery.type(passNumber) == "null" || passagesType =='' || format =='' || testSectionType =='' ){
+                        // $('#addQuestionMultiModal .validError').text('Below fields are required!');
+                        $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                        $('#questionMultiModal #tagError').text(tags.trim() =='' ? 'Tag is required!' : '');
+                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                        $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ? 'Passage Number is required!' : '');
+                        $('#questionMultiModal #passageTypeError').text(passagesType =='' ? 'Passage Type is required!' : '');
                         return false;
-                    } else {
-                        $('#questionMultiModal .validError').text('');
+                    }else{
+                        // $('#addQuestionMultiModal .validError').text('');
+                        $('#questionMultiModal #questionError').text('');
+                        $('#questionMultiModal #tagError').text('');
+                        $('#questionMultiModal #categoryTypeError').text('');
+                        $('#questionMultiModal #questionTypeError').text('');
+                        $('#questionMultiModal #passNumberError').text('');
+                        $('#questionMultiModal #passageTypeError').text('');
                     }
                 } else {
-                    if (format == '' || testSectionType == '' || question == '' || questionType == ''){
-                        $('#questionMultiModal .validError').text('Below fields are required!');
+                    if(question =='' || tags.trim() =='' || get_category_type_values[0].length ==0 || get_question_type_values[0].length ==0 || format =='' || testSectionType ==''){
+                        // $('#addQuestionMultiModal .validError').text('Below fields are required!');
+                        $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                        $('#questionMultiModal #tagError').text(tags.trim() =='' ? 'Tag is required!' : '');
+                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
                         return false;
-                    } else {
-                        $('#questionMultiModal .validError').text('');
+                    }else{
+                        // $('#addQuestionMultiModal .validError').text('');
+                        $('#questionMultiModal #questionError').text('');
+                        $('#questionMultiModal #tagError').text('');
+                        $('#questionMultiModal #categoryTypeError').text('');
+                        $('#questionMultiModal #questionTypeError').text('');
                     }
-                } 
+                }
                 
                 if($('#passageRequired_1').is(':checked')){
                     var pass = $('select[name="passagesType"] :selected').text();
@@ -3423,14 +3474,18 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var get_category_type_values = $('select[name=edit_category_type]').map(function(i,v) {
             var category_type_arr = [];
             let category_type_val = $(v).val();
-            category_type_arr.push(category_type_val);
+            if(category_type_val.length > 0){
+                category_type_arr.push(category_type_val);
+            }
             return category_type_arr;
         }).get();
 
         var get_question_type_values = $('select[name=edit_search-input]').map(function(i,v) {
             var question_type_arr = [];
             let question_type_val = $(v).val();
-            question_type_arr.push(question_type_val);
+            if(question_type_val.length > 0){
+                question_type_arr.push(question_type_val);
+            }
             return question_type_arr;
         }).get();
 
@@ -3443,22 +3498,60 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var passagesType = $('.editPassagesType').val();
         var passagesTypeTxt = $(".editPassagesType option:selected").text();
 
-        if($('#passageRequired_2').is(':checked')){
-            if(format =='' || testSectionType =='' || question =='' || questionType =='' || pass =='' || passNumber ==''){
-                $('#editQuestionMultiModal .validError').text('Below fields are required!');
-                return false;
-            } else { 
-                $('#editQuestionMultiModal .validError').text('');
-            }
-        } else {
-            if(format =='' || testSectionType =='' || question =='' || questionType ==''){
+        // if($('#passageRequired_2').is(':checked')){
+        //     if(format =='' || testSectionType =='' || question =='' || questionType =='' || pass =='' || passNumber ==''){
+        //         $('#editQuestionMultiModal .validError').text('Below fields are required!');
+        //         return false;
+        //     } else { 
+        //         $('#editQuestionMultiModal .validError').text('');
+        //     }
+        // } else {
+        //     if(format =='' || testSectionType =='' || question =='' || questionType ==''){
                 
-                $('#editQuestionMultiModal .validError').text('Below fields are required!');
-                return false;
-            }else{
-                $('#editQuestionMultiModal .validError').text('');
+        //         $('#editQuestionMultiModal .validError').text('Below fields are required!');
+        //         return false;
+        //     }else{
+        //         $('#editQuestionMultiModal .validError').text('');
+        //     }
+        // }
+
+        if($('#passageRequired_2').is(':checked')){
+                if(question =='' || tags.trim() =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || passNumber =='' || passagesType == '' || format =='' || testSectionType ==''){
+                // if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
+                    // $('#questionMultiModal .validError').text('Below fields are required!');
+                    $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                    $('#editQuestionMultiModal #tagError').text(tags.trim() == '' ? 'Tag is required!' : '');
+                    $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                    $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                    $('#editQuestionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
+                    $('#editQuestionMultiModal #passageTypeError').text(passagesType =='' ? 'Passage Type is required!' : '');
+                    return false;
+                }else{
+                    // $('#questionMultiModal .validError').text('');
+                    $('#editQuestionMultiModal #questionError').text('');
+                    $('#editQuestionMultiModal #tagError').text('');
+                    $('#editQuestionMultiModal #categoryTypeError').text('');
+                    $('#editQuestionMultiModal #questionTypeError').text('');
+                    $('#editQuestionMultiModal #passNumberError').text('');
+                    $('#editQuestionMultiModal #passageTypeError').text('');
+                }
+            } else {
+                if(question =='' || tags.trim() =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType ==''){
+                // if(format =='' || testSectionType =='' || question =='' || questionType ==''){
+                    // $('#questionMultiModal .validError').text('Below fields are required!');
+                    $('#editQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                    $('#editQuestionMultiModal #tagError').text(tags.trim() =='' ? 'Tag is required!' : '');
+                    $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                    $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                    return false;
+                }else{
+                    // $('#questionMultiModal .validError').text('');
+                    $('#editQuestionMultiModal #questionError').text('');
+                    $('#editQuestionMultiModal #tagError').text('');
+                    $('#editQuestionMultiModal #categoryTypeError').text('');
+                    $('#editQuestionMultiModal #questionTypeError').text('');
+                }
             }
-        }
 
         if($('#passageRequired_2').is(':checked')){
             var pass = $('select[name="editPassagesType"] :selected').text();
