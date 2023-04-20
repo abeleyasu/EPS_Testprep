@@ -2769,57 +2769,21 @@
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
 
-                // if($('#passageRequired_1').is(':checked')){
-                //     if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType == ''){
-                //         $('#questionMultiModal .validError').text('Below fields are required!');
-                //         return false;
-                //     } else {
-                //         $('#questionMultiModal .validError').text('');
-                //     }
-                // } else {
-                //     if (format == '' || testSectionType == '' || question == '' || questionType == ''){
-                //         $('#questionMultiModal .validError').text('Below fields are required!');
-                //         return false;
-                //     } else {
-                //         $('#questionMultiModal .validError').text('');
-                //     }
-                // } 
-
                 if($('#passageRequired_1').is(':checked')){
-                    if(question =='' || tags.trim() =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || jQuery.type(passNumber) == "null" || passagesType =='' || format =='' || testSectionType =='' ){
-                        // $('#addQuestionMultiModal .validError').text('Below fields are required!');
-                        $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
-                        $('#questionMultiModal #tagError').text(tags.trim() =='' ? 'Tag is required!' : '');
-                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
-                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                        $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ? 'Passage Number is required!' : '');
-                        $('#questionMultiModal #passageTypeError').text(passagesType =='' ? 'Passage Type is required!' : '');
+                    if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType == ''){
+                        $('#questionMultiModal .validError').text('Below fields are required!');
                         return false;
-                    }else{
-                        // $('#addQuestionMultiModal .validError').text('');
-                        $('#questionMultiModal #questionError').text('');
-                        $('#questionMultiModal #tagError').text('');
-                        $('#questionMultiModal #categoryTypeError').text('');
-                        $('#questionMultiModal #questionTypeError').text('');
-                        $('#questionMultiModal #passNumberError').text('');
-                        $('#questionMultiModal #passageTypeError').text('');
+                    } else {
+                        $('#questionMultiModal .validError').text('');
                     }
                 } else {
-                    if(question =='' || tags.trim() =='' || get_category_type_values[0].length ==0 || get_question_type_values[0].length ==0 || format =='' || testSectionType ==''){
-                        // $('#addQuestionMultiModal .validError').text('Below fields are required!');
-                        $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
-                        $('#questionMultiModal #tagError').text(tags.trim() =='' ? 'Tag is required!' : '');
-                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
-                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                    if (format == '' || testSectionType == '' || question == '' || questionType == ''){
+                        $('#questionMultiModal .validError').text('Below fields are required!');
                         return false;
-                    }else{
-                        // $('#addQuestionMultiModal .validError').text('');
-                        $('#questionMultiModal #questionError').text('');
-                        $('#questionMultiModal #tagError').text('');
-                        $('#questionMultiModal #categoryTypeError').text('');
-                        $('#questionMultiModal #questionTypeError').text('');
+                    } else {
+                        $('#questionMultiModal .validError').text('');
                     }
-                }
+                } 
                 
                 if($('#passageRequired_1').is(':checked')){
                     var pass = $('select[name="passagesType"] :selected').text();
