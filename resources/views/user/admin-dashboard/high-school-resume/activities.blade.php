@@ -174,6 +174,13 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="demonstrated_data_table_row">
+                                                                <td> 
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="interest" name="demonstrated_data[0][interest]"
+                                                                        value=""
+                                                                        placeholder="Enter Position">
+                                                                </td>
                                                                 <td>
                                                                     {{-- <input type="text"
                                                                         class="form-control"
@@ -181,19 +188,13 @@
                                                                         name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off"> --}}
 
                                                                     <select class="js-select2 form-select" id="demonstrated_position_0" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
-                                                                        <option value="">Select Position</option>
+                                                                        <option value="">Select Activity</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position}}"> {{$position}} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
-                                                                <td> 
-                                                                    <input type="text"
-                                                                        class="form-control"
-                                                                        id="interest" name="demonstrated_data[0][interest]"
-                                                                        value=""
-                                                                        placeholder="Enter Interest">
-                                                                </td>
+                                                               
                                                                 <td>
                                                                     <select class="js-select2 select" id="demonstrated_select_0"
                                                                         name="demonstrated_data[0][grade][]" multiple="multiple">
