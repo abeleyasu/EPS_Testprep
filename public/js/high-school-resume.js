@@ -620,14 +620,15 @@ async function addAthleticsData(data){
     }else{
         let html = ``;
         html += `<tr class="athletics_data_table_row remove_athletics_data">`;
+        
         html += `<td>`;
-        html += `<select class="js-select2 select" id="athletics_positions_${$count}" name="athletics_data[${$count}][position]" data-placeholder="Enter Position">`;
-        html += `<option value="">Select Position</option>`;
+        html += `<input type="text" class="form-control" id="athletics_activity" name="athletics_data[${$count}][position]" placeholder="Enter Position">`;
+        html += `</td>`;
+		html += `<td>`;
+        html += `<select class="js-select2 select" id="athletics_positions_${$count}" name="athletics_data[${$count}][activity]" data-placeholder="Enter Activity">`;
+        html += `<option value="">Select Activity</option>`;
         html += await single_dropdown_lists(`/user/athletic/position/list`);
         html += `</select>`;
-        html += `</td>`;
-        html += `<td>`;
-        html += `<input type="text" class="form-control" id="athletics_activity" name="athletics_data[${$count}][activity]" placeholder="Enter Activity">`;
         html += `</td>`;
         html += `<td>`;
         html += `<select class="js-select2 select" data-placeholder="Select atheletics Grade" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;

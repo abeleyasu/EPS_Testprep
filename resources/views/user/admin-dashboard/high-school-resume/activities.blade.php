@@ -130,22 +130,21 @@
                                                         @if(!empty($activity->demonstrated_data))
                                                             @foreach ($activity->demonstrated_data as $index => $demonstrated_data)
                                                                 <tr class="demonstrated_data_table_row {{ $loop->first ? '' : 'remove_demonstrated_data' }}">
-
-<td> 
-                                                                    <input type="text"
-                                                                            class="form-control"
-                                                                            id="interest" name="demonstrated_data[{{ $index }}][interest]"
-                                                                            value="{{ $demonstrated_data['interest'] }}"
-                                                                            placeholder="Enter Position">
-                                                                    </td>                                                                   <td style="min-width:220px;">
+                                                                    <td style="min-width:220px;">
                                                                         <select class="js-select2 form-select" id="demonstrated_position_{{ $index }}" name="demonstrated_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
-                                                                            <option value="">Select Activity</option>
+                                                                            <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
                                                                                 <option value="{{$position}}" {{ isset($demonstrated_data['position']) && $demonstrated_data['position'] != null ? ($demonstrated_data['position']  == $position ? 'selected' : '') : '' }}> {{$position}} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
-                                                                   
+                                                                    <td> 
+                                                                        <input type="text"
+                                                                            class="form-control"
+                                                                            id="interest" name="demonstrated_data[{{ $index }}][interest]"
+                                                                            value="{{ $demonstrated_data['interest'] }}"
+                                                                            placeholder="Enter Interest">
+                                                                    </td>
                                                                     <td class="select2-container_main">
                                                                         <select class="js-select2 select" id="demonstrated_select_{{ $index }}"
                                                                             name="demonstrated_data[{{ $index }}][grade][]" multiple="multiple">
@@ -174,13 +173,6 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="demonstrated_data_table_row">
-                                                                <td> 
-                                                                    <input type="text"
-                                                                        class="form-control"
-                                                                        id="interest" name="demonstrated_data[0][interest]"
-                                                                        value=""
-                                                                        placeholder="Enter Position">
-                                                                </td>
                                                                 <td>
                                                                     {{-- <input type="text"
                                                                         class="form-control"
@@ -188,13 +180,19 @@
                                                                         name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off"> --}}
 
                                                                     <select class="js-select2 form-select" id="demonstrated_position_0" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
-                                                                        <option value="">Select Activity</option>
+                                                                        <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position}}"> {{$position}} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
-                                                               
+                                                                <td> 
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="interest" name="demonstrated_data[0][interest]"
+                                                                        value=""
+                                                                        placeholder="Enter Interest">
+                                                                </td>
                                                                 <td>
                                                                     <select class="js-select2 select" id="demonstrated_select_0"
                                                                         name="demonstrated_data[0][grade][]" multiple="multiple">
@@ -556,20 +554,22 @@
                                                         @if(!empty($activity->athletics_data))
                                                             @foreach ($activity->athletics_data as $index => $athletics_data)
                                                                 <tr class="athletics_data_table_row {{ $loop->first ? '' : 'remove_athletics_data' }}">
-                                                                    <td style="min-width:220px;">
-                                                                        <select class="js-select2 form-select" id="athletics_position_{{ $index }}" name="athletics_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
-                                                                            <option value="">Select Position</option>
-                                                                            @foreach($athletics_positions as $athletics_position)
-                                                                                <option value="{{ $athletics_position }}" {{ isset($athletics_data['position']) && $athletics_data['position'] != null ? ($athletics_data['position'] == $athletics_position ? 'selected' : '') : '' }} > {{ $athletics_position }} </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    <td>
+																   <td>
                                                                         <input type="text"
                                                                             class="form-control"
-                                                                            id="athletics_activity" name="athletics_data[{{ $index }}][activity]"
-                                                                            value="{{ $athletics_data['activity'] }}"
-                                                                            placeholder="Enter Activity">
+                                                                            id="athletics_activity" name="athletics_data[{{ $index }}][position]"
+                                                                            value="{{ $athletics_data['position'] }}"
+                                                                            placeholder="Enter Position">
                                                                     </td>
+                                                                    <td style="min-width:220px;">
+                                                                        <select class="js-select2 form-select" id="athletics_position_{{ $index }}" name="athletics_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Activity">
+                                                                            <option value="">Select Activity</option>
+                                                                            @foreach($athletics_positions as $athletics_position)
+                                                                                <option value="{{ $athletics_position }}" {{ isset($athletics_data['activity']) && $athletics_data['activity'] != null ? ($athletics_data['activity'] == $athletics_position ? 'selected' : '') : '' }} > {{ $athletics_position }} </option>
+                                                                            @endforeach
+                                                                        </select>
+																		</td>
+                                                                    
                                                                     <td class="select2-container_main">
                                                                         <select class="js-select2 select" id="athletics_select_{{ $index }}"
                                                                             name="athletics_data[{{ $index }}][grade][]" multiple="multiple">
@@ -601,26 +601,27 @@
                                                             @endforeach
                                                         @else
                                                             <tr class="athletics_data_table_row">
+																<td>
+                                                                    <input type="text"
+                                                                        class="form-control"
+                                                                        id="athletics_activity" name="athletics_data[0][position]"
+                                                                        value=""
+                                                                        placeholder="Enter Position">
+                                                                </td>
                                                                 <td style="min-width:220px;">
                                                                     {{-- <input type="text"
                                                                         class="form-control"
-                                                                        id="athletics_positions" name="athletics_data[0][position]"
+                                                                        id="athletics_positions" name="athletics_data[0][activity]"
                                                                         value=""
                                                                         placeholder="Vice President" autocomplete="off"> --}}
-                                                                        <select class="js-select2 form-select" id="athletics_position_0" name="athletics_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
-                                                                            <option value="">Select Position</option>
+                                                                        <select class="js-select2 form-select" id="athletics_position_0" name="athletics_data[0][activity]" style="width: 100%;" data-placeholder="Select Activity">
+                                                                            <option value="">Select Activity</option>
                                                                             @foreach($athletics_positions as $athletics_position)
                                                                                 <option value="{{ $athletics_position }}" > {{ $athletics_position }} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
-                                                                <td>
-                                                                    <input type="text"
-                                                                        class="form-control"
-                                                                        id="athletics_activity" name="athletics_data[0][activity]"
-                                                                        value=""
-                                                                        placeholder="Enter Activity">
-                                                                </td>
+                                                                
                                                                 <td class="select2-container_main">
                                                                     <select class="js-select2 select" id="athletics_select_0"
                                                                         name="athletics_data[0][grade][]" multiple="multiple">
