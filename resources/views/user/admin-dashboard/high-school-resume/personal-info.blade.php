@@ -471,31 +471,28 @@
 			$('#state').on('change', function() {
 			var state_id = this.value;	
 			$("#city").html('');
-			var city = '{{$personal_info->city}}';
-			//alert(city);
+			var personal_info_city = '';
+			<?php
+			// Check if $personal_info is not null
+			if ($personal_info !== null) {
+				echo "personal_info_city = '{$personal_info->city}';";
+			}
+			?>
+			
 			$.ajax({
-				
 				url:"/user/admin-dashboard/high-school-resume/get-cities-by-state/" + $(this).val(),
 				type: "GET",
 				success: (res) => {
 				$.each(res.cities,function(key,value){
-				// if(city == value.city_name)
-				// {
-					  // $("#city").append('<option value="' + value.id + '" selected>' + cityName + '</option>');
-				// }
-				// else
-				// {
-				// $("#city").append('<option value="'+value.id+'">'+value.city_name+'</option>');
-				// }
 				var cityName = value.city_name.trim(); // Trim whitespace from the city name
-				var selectedAttr = cityName === city ? "selected" : "";
+				var selectedAttr = cityName === personal_info_city ? "selected" : "";
 				var optionHtml = '<option value="' + value.id + '" ' + selectedAttr + '>' + cityName + '</option>';
 				$("#city").append(optionHtml);
 				});
 					
 			    }
 			});
-			//alert(state_id); 
+			 
 			});
         });
 
