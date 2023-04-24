@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <!-- start  -->
-                                                    <div class="select2-container_main mt-3">
+                                                    <div class="select2-container_main">
                                                         <label class="form-label" for="graduation_designation">
                                                             Graduation Designation 
                                                         </label>

@@ -351,7 +351,7 @@
                                                             {{ $education->high_school_name }} /
                                                             {{ $education->high_school_city }} /
                                                             {{ $education->high_school_state }} /
-                                                            {{ $education->high_school_district }}
+                                                            <!-- {{ $education->high_school_district }} -->
                                                             @if (isset($education->graduation_designation) && $education->graduation_designation != null)
                                                                 ({{$education->graduation_designation}})
                                                             @endif

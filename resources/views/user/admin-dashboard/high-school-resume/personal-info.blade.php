@@ -199,28 +199,28 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="select2-container_main">
-                                                            <label class="form-label" for="city">
-                                                                City
-                                                                <span class="text-danger">*</span>
-                                                            </label>
-                                                            <select class="js-select2 form-select" name="city" style="width: 100%;" data-placeholder="Enter city">
-                                                                <option></option>
-                                                                @foreach($cities as $city)
-                                                                    <option value="{{$city}}" {{ isset($personal_info->city) && $personal_info->city != null ? ($personal_info->city  == $city ? 'selected' : '') : '' }} > {{$city}} </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="select2-container_main">
                                                             <label class="form-label" for="state">
                                                                 State
                                                                 <span class="text-danger">*</span>
                                                             </label>
-                                                            <select class="js-select2 form-select" name="state" style="width: 100%;" data-placeholder="Choose one..">
+                                                            <select class="js-select2 form-select" name="state" id="state" style="width: 100%;" data-placeholder="Choose one..">
                                                                 <option></option>
-                                                                @foreach($states as $state)
-                                                                    <option value="{{$state}}" {{ isset($personal_info->state) && $personal_info->state != null ? ($personal_info->state  == $state ? 'selected' : '') : '' }} > {{$state}} </option>
+                                                                @foreach($states as $states)
+                                                                    <option value="{{$states->id}}" {{ isset($personal_info->state) && $personal_info->state != null ? ($personal_info->state  == $states->state_name ? 'selected' : '') : '' }} > {{$states->state_name}} </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+													<div class="col-lg-3">
+                                                        <div class="select2-container_main">
+                                                            <label class="form-label" for="city">
+                                                                City
+                                                                <span class="text-danger">*</span>
+                                                            </label>
+                                                            <select class="js-select2 form-select" name="city" id="city" style="width: 100%;" data-placeholder="Enter city">
+                                                                <option></option>
+                                                                @foreach($cities as $citys)
+                                                                    <option value="{{$citys->id}}" {{ isset($personal_info->city) && $personal_info->city != null ? ($personal_info->city  == $citys->city_name  ? 'selected' : '') : '' }} > {{$citys->city_name }} </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -434,7 +434,7 @@
         $(document).ready(function() {
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
-
+            
             $("#personal_info_form").validate({
                 rules: validations_rules,
                 messages: validations_messages,
@@ -468,6 +468,35 @@
                     }
                 });
             });
+			$('#state').on('change', function() {
+			var state_id = this.value;	
+			$("#city").html('');
+			var city = '{{$personal_info->city}}';
+			//alert(city);
+			$.ajax({
+				
+				url:"/user/admin-dashboard/high-school-resume/get-cities-by-state/" + $(this).val(),
+				type: "GET",
+				success: (res) => {
+				$.each(res.cities,function(key,value){
+				// if(city == value.city_name)
+				// {
+					  // $("#city").append('<option value="' + value.id + '" selected>' + cityName + '</option>');
+				// }
+				// else
+				// {
+				// $("#city").append('<option value="'+value.id+'">'+value.city_name+'</option>');
+				// }
+				var cityName = value.city_name.trim(); // Trim whitespace from the city name
+				var selectedAttr = cityName === city ? "selected" : "";
+				var optionHtml = '<option value="' + value.id + '" ' + selectedAttr + '>' + cityName + '</option>';
+				$("#city").append(optionHtml);
+				});
+					
+			    }
+			});
+			//alert(state_id); 
+			});
         });
 
         toastr.options = {

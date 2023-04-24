@@ -203,6 +203,7 @@ Route::group(['middleware' => ['auth', 'cors']],function() {
                     Route::put('/personal-info/{personalInfo}', 'update')->name('personalInfo.update');
                     Route::get('/discard-drafts', 'discard_drafts')->name('discarddrafts');
                     Route::get('edit-fetch/{editid}','editFetch')->name('editFetch');
+					Route::get('get-cities-by-state/{state_id}','getCity')->name('getCity');
                 }); 
                 Route::controller(EducationController::class)->group(function(){
                     Route::get('/education-info', 'index')->name('educationInfo');
