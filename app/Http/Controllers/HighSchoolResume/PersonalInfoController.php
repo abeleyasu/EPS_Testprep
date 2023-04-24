@@ -75,14 +75,6 @@ class PersonalInfoController extends Controller
 
         if (empty($personal_info) && empty($education) && empty($honor) && empty($activity) && empty($employmentCertification) && empty($featuredAttribute)) {
             $details = 1;
-			$cities = Cities::from('cities as ct')
-							->join('states as st', function ($join) use($personal_info){
-										$join->on('ct.state_id', '=', 'st.id')
-											 ->where('st.state_name', '=',$personal_info->state)
-											 ->where('ct.city_name', '=',$personal_info->city);
-							})
-							->select('ct.id', 'ct.city_name')
-							->get();
         }
 
         return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages','states','cities'));
