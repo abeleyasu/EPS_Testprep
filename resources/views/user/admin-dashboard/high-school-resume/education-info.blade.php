@@ -144,27 +144,33 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-4">
+												<div class="col-lg-4">
+                                                    <div class="select2-container_main">
+                                                        <label class="form-label" for="high_school_state">
+                                                            State <span class="text-danger">*</span>
+                                                        </label>
+                                                        <select class="js-select2 form-select" name="high_school_state" id = "high_school_state" style="width: 100%;" data-placeholder="Select high school state">
+                                                            <option></option>
+                                                            @foreach($states as $states)
+                                                                <option value="{{$states->id}}" {{ isset($education->high_school_state) && $education->high_school_state != null ? ($education->high_school_state  == $states->state_name ? 'selected' : '') : '' }} > {{$states->state_name}} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label class="form-label" for="high_school_city">
                                                             City <span class="text-danger">*</span>
                                                         </label>
-                                                        <input type="text" class="form-control" id="high_school_city" value="{{ isset($education->high_school_city) && $education->high_school_city != null ? $education->high_school_city : old('high_school_city') }}" name="high_school_city" placeholder="Enter High School City">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="select2-container_main">
-                                                        <label class="form-label" for="high_school_state">
-                                                            State <span class="text-danger">*</span>
-                                                        </label>
-                                                        <select class="js-select2 form-select" name="high_school_state" style="width: 100%;" data-placeholder="Select high school state">
-                                                            <option></option>
-                                                            @foreach($states as $state)
-                                                                <option value="{{$state}}" {{ isset($education->high_school_state) && $education->high_school_state != null ? ($education->high_school_state  == $state ? 'selected' : '') : '' }} > {{$state}} </option>
-                                                            @endforeach
+														<select class="js-select2 form-select" name="high_school_city" id="high_school_city" style="width: 100%;" data-placeholder="Enter city">
+                                                                <option></option>
+                                                                @foreach($cities as $citys)
+                                                                    <option value="{{$citys->id}}" {{ isset($education->high_school_city) && $education->high_school_city != null ? ($education->high_school_city  == $citys->city_name  ? 'selected' : '') : '' }} > {{$citys->city_name }} </option>
+                                                                @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label class="form-label" for="high_school_district">School District Name <span class="text-danger">*</span>
@@ -870,7 +876,32 @@
                     }
                 });
             });
-
+			$('#high_school_state').on('change', function() {
+			var state_id = this.value;	
+			$("#high_school_city").html('');
+			var personal_info_city = '';
+			<?php
+			// Check if $personal_info is not null
+			if ($education !== null) {
+				echo "personal_info_city = '{$education->high_school_city}';";
+			}
+			?>
+			
+			$.ajax({
+				url:"/user/admin-dashboard/high-school-resume/get-cities-by-state/" + $(this).val(),
+				type: "GET",
+				success: (res) => {
+				$.each(res.cities,function(key,value){
+				var cityName = value.city_name.trim(); // Trim whitespace from the city name
+				var selectedAttr = cityName === personal_info_city ? "selected" : "";
+				var optionHtml = '<option value="' + value.id + '" ' + selectedAttr + '>' + cityName + '</option>';
+				$("#high_school_city").append(optionHtml);
+				});
+					
+			    }
+			});
+			 
+			});
             
         });
 

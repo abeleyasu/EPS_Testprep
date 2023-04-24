@@ -14,6 +14,8 @@ use App\Models\HighSchoolResume\Education;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
 use App\Models\HighSchoolResume\Honor;
+use App\Models\HighSchoolResume\States;
+use App\Models\HighSchoolResume\Cities;
 use App\Models\IntendedCollegeList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -24,7 +26,9 @@ class EducationController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        $states = Config::get('constants.states');
+        //$states = Config::get('constants.states');
+		$states = States::select('id','state_name')->orderBY('state_name', 'asc')->get();
+		$cities = array();
         $ib_courses = Config::get('constants.ib_courses');
         $ap_courses = Config::get('constants.ap_courses');
 
@@ -49,6 +53,17 @@ class EducationController extends Controller
         } else {
             $user_id = Auth::id();
             $education = Education::whereUserId($user_id)->where('is_draft', 0)->first();
+			if (!empty($education))
+			{
+				$cities = Cities::from('cities as ct')
+						->join('states as st', function ($join) use($education){
+									$join->on('ct.state_id', '=', 'st.id')
+										 ->where('st.state_name', '=',$education->high_school_state)
+										 ->where('ct.city_name', '=',$education->high_school_city);
+						})
+						->select('ct.id', 'ct.city_name')
+						->get();
+			}
             $honor = Honor::whereUserId($user_id)->where('is_draft', 0)->first();
             $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
@@ -76,7 +91,7 @@ class EducationController extends Controller
         $intended_minor = IntendedCollegeList::whereType('2')->orderBy('name','ASC')->get();
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations','cities'));
     }
 
     public function store(EducationRequest $request)
@@ -237,6 +252,13 @@ class EducationController extends Controller
         $data['user_id'] = Auth::id();
 
         if (!empty($data)) {
+			// Retrieve the city and state names based on their IDs
+			$city = Cities::findOrFail($data['high_school_city']);
+			$state = States::findOrFail($data['high_school_state']);
+
+			// Update the city and state properties in the $data array with their respective names
+			$data['high_school_city'] = $city->city_name;
+			$data['high_school_state'] = $state->state_name;
             Education::create($data);
             return redirect()->route('admin-dashboard.highSchoolResume.honors');
         }
@@ -394,6 +416,14 @@ class EducationController extends Controller
         }
 
         if (!empty($data)) {
+			// Retrieve the city and state names based on their IDs
+			$city = Cities::findOrFail($data['high_school_city']);
+			$state = States::findOrFail($data['high_school_state']);
+
+			// Update the city and state properties in the $data array with their respective names
+			$data['high_school_city'] = $city->city_name;
+			$data['high_school_state'] = $state->state_name;
+			
             $education->update($data);
             if ($resume_id != null) {
                 return redirect("user/admin-dashboard/high-school-resume/honors?resume_id=" . $resume_id);
