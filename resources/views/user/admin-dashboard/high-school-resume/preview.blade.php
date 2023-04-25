@@ -250,27 +250,21 @@
 												@endif
 												@if(!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
 													<li>
-														{{ $education->cumulative_gpa_unweighted }} UWtd .GPA,
-														{{ $education->cumulative_gpa_weighted }} Wtd
+														<b>GPA: </b>
+														Unweighted : {{ $education->cumulative_gpa_unweighted }};
+														Weighted: {{ $education->cumulative_gpa_weighted }};
+														@if(!empty($education->class_rank) || !empty($education->total_no_of_student))
+															<b>Class Rank:</b>
+															{{ $education->class_rank }} /
+															{{ $education->total_no_of_student }}
+														@endif
 													</li>
 												@endif
 											</li>
 											<li>
 												@if (!empty($testing_data))
 													@foreach ($testing_data as $data)
-														<li class="list-type">
-															<span>Name of test & Result score:</span>
-															{{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} 
-															& {{ isset($data['results_score']) ? $data['results_score'] : ''}}
-															
-														</li>
-														<li class="list-type">
-															@if(!empty($education->class_rank) || !empty($education->total_no_of_student))
-																	<span>Class Rank:</span>
-																	{{ $education->class_rank }} /
-																	{{ $education->total_no_of_student }}
-															@endif
-														</li>
+														<b>{{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} </b> : {{ isset($data['results_score']) ? $data['results_score'] : ''}}{{ !$loop->last ? ';' : '' }}
 													@endforeach
 												@endif
 											</li>
@@ -382,9 +376,9 @@
 											@if (!empty($demonstrated_data))
 												@foreach ($demonstrated_data as $data)
 													<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-													{{ $data['position'] }},
-													{{ $data['interest'] }},
-													{{ $data['details'] }}  
+													{{ $data['position'] }}
+													@if(!empty($data['interest'])), {{ $data['interest'] }}@endif
+													@if(!empty($data['details'])), {{ $data['details'] }}@endif 
 												@endforeach
 											@endif
 											@if(!empty($leadership_data))

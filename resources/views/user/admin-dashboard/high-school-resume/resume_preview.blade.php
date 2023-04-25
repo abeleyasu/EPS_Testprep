@@ -486,23 +486,25 @@
                             @if (isset($education->graduation_designation) && $education->graduation_designation != null)
                                 ({{$education->graduation_designation}})
                             @endif
+						</span>
+						<span class="span_text">
                             @if (!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
-                                {{ $education->cumulative_gpa_unweighted }} UWtd .GPA,
-                                {{ $education->cumulative_gpa_weighted }} Wtd
+                                <b>GPA: </b>
+								Unweighted : {{ $education->cumulative_gpa_unweighted }};
+								Weighted: {{ $education->cumulative_gpa_weighted }};
                             @endif
+							@if(!empty($education->class_rank) || !empty($education->total_no_of_student))
+								<b>Class Rank:</b>
+								{{ $education->class_rank }} /
+								{{ $education->total_no_of_student }}
+							@endif
                         </span>
                         @if (!empty($testing_data))
+							<li class="list-text">
                             @foreach ($testing_data as $data)
-                                <li class="list-text">
-                                    {{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} 
-                                    :{{ isset($data['results_score']) ? $data['results_score'] : ''}}
-                                    @if(!empty($education->class_rank) || !empty($education->total_no_of_student))
-                                            <span class="span_bold">Class Rank:</span>
-                                            {{ $education->class_rank }} /
-                                            {{ $education->total_no_of_student }}
-                                    @endif
-                                </li>
+								<b>{{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} </b> : {{ isset($data['results_score']) ? $data['results_score'] : ''}}{{ !$loop->last ? ';' : '' }}
                             @endforeach
+							</li>
                         @endif
 
                         {{-- <span class="span_text">
@@ -605,9 +607,9 @@
 						@foreach ($demonstrated_data as $data)
 							<span class="span_text">
 								<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-								{{ $data['position'] }},
-								{{ $data['interest'] }},
-								{{ $data['details'] }}
+								{{ $data['position'] }}
+								@if(!empty($data['interest'])), {{ $data['interest'] }}@endif
+								@if(!empty($data['details'])), {{ $data['details'] }}@endif
 							</span>
 						@endforeach
 					@endif
