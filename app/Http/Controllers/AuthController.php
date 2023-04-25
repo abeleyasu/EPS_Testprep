@@ -51,7 +51,15 @@ class AuthController extends Controller
         ]);
 
         if($user){
-            return redirect()->intended(route('signin'));
+            $user->sendEmailVerificationNotification();
+            Auth::login($user);
+            if ($user->role === 1) {
+                return redirect()->intended(route('admin-dashboard'));
+            } elseif ($user->role === 3) {
+                return redirect()->intended(route('user-dashboard'));
+            } else {
+                return redirect()->intended('/login');
+            }
         }
 
         return back()->withErrors("Unable to create your account")
