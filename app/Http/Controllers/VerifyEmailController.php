@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CourseManagement\UserTaskStatus;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class VerifyEmailController extends Controller
 {
@@ -30,9 +30,8 @@ class VerifyEmailController extends Controller
         return back()->with('resent', 'Verification link sent!');
     }
 
-    public function verfiy(EmailVerificationRequest $request) {
-        $request->fulfill();
-        $user = $request->user();
+    public function verfiy(Request $request) {
+        $user = User::where('id', $request->id)->first();
         if ($user->hasVerifiedEmail()) {
             if ((int) $user->role === 1) {
                 return redirect()->intended(route('admin-dashboard'));

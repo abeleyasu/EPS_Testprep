@@ -303,6 +303,6 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
 
 Route::group(['middleware' => ['auth']],function () {
     Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
-    Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });
+Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
