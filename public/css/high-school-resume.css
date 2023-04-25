@@ -379,6 +379,11 @@
         background-color: #f4f4f4;
         padding: 40px;
     }
+	
+	.text-border-no-bg {
+		background-color: transparent;
+		margin-bottom: 0px !important;
+	}
 
     .text-border h1 {
         margin-bottom: 0;
@@ -394,7 +399,13 @@
     .text-border h1 span {
         font-weight: 800;
     }
-
+	
+	.resume-heading {
+		color: DodgerBlue !important;
+		letter-spacing: normal !important;
+		margin-bottom: 10px !important;
+	}
+	
     .preview-list h3 {
         font-size: 20px;
         color: #45464b;
@@ -403,6 +414,7 @@
         text-transform: uppercase;
         letter-spacing: 5px;
     }
+	
 
     .preview-list {
         border-bottom: 2px solid #a8a8a8;
