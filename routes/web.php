@@ -46,6 +46,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\AthleticPositionController;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\VerifyEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +63,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::group(['middleware' => ['auth', 'cors']], function () {
+Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
@@ -300,3 +301,9 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
+
+Route::group(['middleware' => ['auth']],function () {
+    Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
+    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
+});
+Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');

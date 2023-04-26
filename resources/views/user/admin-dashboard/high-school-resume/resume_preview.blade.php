@@ -315,13 +315,20 @@
         /* .preview-list {
             padding-left: 20px
         } */
+		
+		.resume-heading {
+			color: DodgerBlue !important;
+			letter-spacing: normal !important;
+			margin-bottom: 10px !important;
+			margin-top: 20px !important;
+		}
     </style>
 </head>
 
 <body>
     <div style="margin-bottom: 0">
         <div
-            style="font-weight:400; padding:10px 50px 10px;background-color: #f4f4f4; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0">
+            style="font-weight:400; padding:10px 50px 10px; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0">
             <b>{{ $personal_info->first_name }}<b> {{ $personal_info->middle_name }} {{ $personal_info->last_name }} {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
                 </b>
             <span style="display: block; font-size: 12px; margin-top: 10px; margin-bottom: 10px; font-weight: 400">
@@ -382,183 +389,75 @@
                     </span>
                 @endif
                 </span>
+				<hr />
             </p>
         </div>
     </div>
     <div class="clear-both" style="margin-top: 0">  
-        <div class="preview-left col-lg-6">
-            
-            @if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
-                <div class="border-bottom d-block " >
-                    @if (!empty($featured_skills_data))
-                        <div class="pb-3 border-bottom-0 preview-list ps-0 features-list-after ">
-                            @if ($featuredAttribute)
-                                <h3>FEATURED</h3>
-                            @endif
-                            <div class="preview-list_skill ">
-                                @if ($featuredAttribute->featured_skills_data[0]['skill'] != null)
-                                    <span class="span_h2">Skills:</span>
-                                    @foreach ($featuredAttribute->featured_skills_data as $featured_skills)
-                                        <span class="list-type">
-                                            {{ $featured_skills['skill'] }}
-                                        </span>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                    @if (!empty($featured_awards_data))
-                        <div class="preview-list pb-3  ps-0 border-bottom-0">
-                            <div class="preview-list_skill">
-                                @if ($featuredAttribute->featured_awards_data[0]['award'] != null)
-                                    <span class="span_h2">Awards:</span>
-                                    @foreach ($featuredAttribute->featured_awards_data as $featured_awards)
-                                        <span class="list-type">
-                                            {{ $featured_awards['award'] }}
-                                        </span>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                    @if (!empty($featured_languages_data))
-                        <div class="preview-list" style="padding-bottom: 10px;padding-left: 0">
-                            <span class="preview-list_skill">
-                                <span class="span_h2">Languages:</span>
-                                @foreach ($featuredAttribute->featured_languages_data as $featured_languages)
-                                    <span class="list-type">
-                                        Multilingual({{ $featured_languages['language'] }})
-                                    </span>
-
-                                @endforeach
-                            </span>
-                        </div>
-                    @endif
-                    {{-- @if (!empty($dual_citizenship_data))
-                        <span class="preview-list"
-                            style="margin-top: 10px;display: inline-block;padding-left: 0;margin-bottom: 10px;">
-                            <span class="preview-list_skill ">
-                                <span class="span_h2">Dual Citizen</span>
-                                @foreach ($featuredAttribute->dual_citizenship_data as $dual_citizenship)
-                                    <span class="list-type">
-                                        {{ $dual_citizenship['country'] }}
-                                    </span>
-                                @endforeach
-                            </span>
-                        </span>
-                    @endif --}}
-                </div>
-            @endif
-
-            @if (!empty($employment_data)) 
-            <div class="border-bottom d-block">
-                        <div class="preview-list employ-list-after">
-                            <h3>Employment & Certifications</h3>
-                            @foreach ($employment_data as $data)
-                                <span style="display: block;margin-bottom: 5px">
-                            <span class="list-type">
-                                    @if(isset($data['grade']) && !empty($data['grade']))
-                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                    @endif
-                                    @if(!is_null($data['job_title']))
-                                            {{ $data['job_title'] }},
-                                    @endif
-                                    @if(!is_null($data['name_of_company']))
-                                            {{ $data['name_of_company'] }},
-                                    @endif
-                                    @if(!is_null($data['location']))
-                                            {{ $data['location'] }},
-                                    @endif
-                                    @if(!is_null($data['honor_award']))
-                                            {{ $data['honor_award'] }}
-                                    @endif
-                            </span>      
-                                </span>
-                            @endforeach
-                            {{-- <span style="margin-bottom: 5px;display: block">
-                                @foreach ($employment_data as $data)
-                                    
-                                @endforeach
-                            </span> --}}
-                            {{-- <span style="margin-bottom: 5px;display: block">
-                                @foreach ($employment_data as $data)
-                                    
-                                @endforeach
-                            </span> --}}
-                        </div>
-            </div>
-                    @endif
-                    @if (!empty($significant_data)) 
-                    <div class="border-bottom d-block">
-
-                        <span class="preview-list responsible-list-after">
-                            <h3>RESPONSIBILITIES OR INTERESTS</h3>
-                            @foreach ($significant_data as $data)
-                            <span style="margin-bottom: 5px; display: block">
-                            <span class="list-type">
-                                    @if(isset($data['grade']) && !empty($data['grade']))
-                                            {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                    @endif
-                                    @if(isset($data['interest']) && !empty($data['interest']))
-                                            {{ $data['interest'] }},
-                                    @endif
-                                    @if(isset($data['location']) && !empty($data['location']))
-                                            {{ $data['location'] }},
-                                    @endif
-                                    @if(isset($data['honor_award']) && !empty($data['honor_award']))
-                                            {{ $data['honor_award'] }}
-                                    @endif
-                            </span>
-                                </span>
-                                @endforeach
-                            {{-- <span class="span_h2">Grade(s)</span>
-                            <span style="margin-bottom: 10px;display: block">
-                                @foreach ($significant_data as $data)
-                                    
-                                @endforeach
-                            </span> --}}
-                        </span>
-                    </div>
-                    @endif
-            @if (!empty($honor))
-                <div class="preview-list">
-                    <h3>HONORS / ACHIEVEMENTS / AWARDS</h3>
-                    @foreach ($honor->honors_data as $honor_data)
-                    <span style="margin-bottom: 5px;display: block">
-                            <span class="list-type">
-                                @if(isset($honor_data['grade']) && !empty($honor_data['grade']))
-                                    {{ \App\Helpers\Helper::getGradeByIdArray($honor_data['grade']) }}
-                                @endif
-                                {{ $honor_data['position'] }},
-                                {{ $honor_data['honor_achievement_award'] }},
-                                {{ $honor_data['location'] }}
-                                
-                            </span>    
-                        </span>
-                        @endforeach
-                    {{-- <span style="margin-bottom: 5px;display: block">
-                        @foreach ($honor->honors_data as $honor_data)
-                            
-                        @endforeach
-                    </span>
-                    <span style="margin-bottom: 5px;display: block">
-                        @foreach ($honor->honors_data as $honor_data)
-                            
-                        @endforeach
-                    </span>
-                    <span style="margin-bottom: 5px;display: block">
-                        @foreach ($honor->honors_data as $honor_data)
-                            
-                        @endforeach
-                    </span> --}}
-                </div>
-            @endif
-        </div>
-        <div class="preview-right">
-            @if (!empty($education))
-                <div class="preview-list d-block {{ (!empty($activity)) ? 'border-bottom' : '' }}" style="padding-left: 20px;padding-bottom: 10px">
-                    <h3>Education</h3>
-                    <span>
+		
+		{{-- sbz Starts here --}}
+		@if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
+		<div class="row">
+			<div class="col">
+				@if (!empty($featured_skills_data))
+					<div class="preview-list">
+						@if ($featuredAttribute)
+							<h3 class='resume-heading'>FEATURED</h3>
+						@endif
+						<span class="span_text">
+							<span class="span_bold">Skills:</span>
+								@php
+								$skills = implode(", ", array_column($featuredAttribute->featured_skills_data, "skill"));
+									echo "$skills";
+								@endphp
+						</span>
+					</div>
+				@endif
+				@if (!empty($featured_awards_data))
+					<div class="preview-list">
+						@if ($featuredAttribute->featured_awards_data[0]['award'] != null)
+							<span class="span_text">
+								<span class="span_bold">Awards:</span>
+								@php
+								$awards = implode(", ", array_column($featuredAttribute->featured_awards_data, "award"));
+								echo "$awards";
+								@endphp
+							</span>
+						@endif
+					</div>
+				@endif
+				@if (!empty($featured_languages_data))
+					<div class="preview-list">
+						<span class="span_text">
+							<span class="span_bold">Languages:</span>
+							@php
+							$languages = implode(", ", array_column($featuredAttribute->featured_languages_data, "language"));
+							echo "$languages";
+							@endphp
+						</span>
+					</div>
+				@endif
+				{{-- @if (!empty($dual_citizenship_data))
+					<div class="preview-list">
+						<span class="span_text">
+							<span class="span_bold">Dual Citizen:</span>
+							@php
+							$countries = implode(", ", array_column($featuredAttribute->dual_citizenship_data, "country"));
+							echo "$countries";
+							@endphp
+						</span>
+					</div>
+				@endif --}}
+			</div>
+		</div>
+		@endif
+		
+		@if (!empty($education)) 
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>EDUCATION</h3>
+					<span>
                         @if ($education->grade_level && $education->college_name != null)
                             <span class="span_text">
                                 <span class="span_bold">
@@ -587,23 +486,25 @@
                             @if (isset($education->graduation_designation) && $education->graduation_designation != null)
                                 ({{$education->graduation_designation}})
                             @endif
+						</span>
+						<span class="span_text">
                             @if (!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
-                                {{ $education->cumulative_gpa_unweighted }} UWtd .GPA,
-                                {{ $education->cumulative_gpa_weighted }} Wtd
+                                <b>GPA: </b>
+								Unweighted : {{ $education->cumulative_gpa_unweighted }};
+								Weighted: {{ $education->cumulative_gpa_weighted }};
                             @endif
+							@if(!empty($education->class_rank) || !empty($education->total_no_of_student))
+								<b>Class Rank:</b>
+								{{ $education->class_rank }} /
+								{{ $education->total_no_of_student }}
+							@endif
                         </span>
                         @if (!empty($testing_data))
+							<li class="list-text">
                             @foreach ($testing_data as $data)
-                                <li class="list-text">
-                                    {{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} 
-                                    :{{ isset($data['results_score']) ? $data['results_score'] : ''}}
-                                    @if(!empty($education->class_rank) || !empty($education->total_no_of_student))
-                                            <span class="span_bold">Class Rank:</span>
-                                            {{ $education->class_rank }} /
-                                            {{ $education->total_no_of_student }}
-                                    @endif
-                                </li>
+								<b>{{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} </b> : {{ isset($data['results_score']) ? $data['results_score'] : ''}}{{ !$loop->last ? ';' : '' }}
                             @endforeach
+							</li>
                         @endif
 
                         {{-- <span class="span_text">
@@ -644,18 +545,16 @@
                             <span class="span_text">
                                 <span class="span_bold">Concurrent Enrollment:</span>
                                 @foreach ($college_list as $college)
-                                    <div>
-                                        {{\App\Helpers\Helper::getCollegeNameByIdArray($college)}} : 
-                                        @foreach ($education->course_data as $course_data)
-                                            @if(isset($course_data['search_college_name']))
-                                                @if (in_array($college, $course_data['search_college_name']))
-                                                    @if (isset($course_data['course_name']))      
-                                                            {{$course_data['course_name']}}
-                                                    @endif
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </div>
+									{{\App\Helpers\Helper::getCollegeNameByIdArray($college)}} : 
+									@foreach ($education->course_data as $course_data)
+										@if(isset($course_data['search_college_name']))
+											@if (in_array($college, $course_data['search_college_name']))
+												@if (isset($course_data['course_name']))      
+														{{$course_data['course_name']}}
+												@endif
+											@endif
+										@endif
+									@endforeach
                                 @endforeach
                             </span>
                         @endif
@@ -675,41 +574,50 @@
                         </span>
                     </span>
                 </div>
-            @endif
-            @if (!empty($activity))
-                <div class="preview-list d-block activity-list-after" style="padding-left: 20px;">
-                    <h3>Activities</h3>
-                    {{-- @if (!empty($demonstrated_data))
-                                @foreach ($demonstrated_data as $data)
-                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                @endforeach
-                                @foreach ($demonstrated_data as $data)
-                                        {{ $data['position'] }}
-                                @endforeach
-                                @foreach ($demonstrated_data as $data)
-                                        {{ $data['interest'] }}
-                                @endforeach
-                                @foreach ($demonstrated_data as $data)
-                                        {{ $data['details'] }}
-                                @endforeach
-                    @endif --}}
-                    @if (!empty($demonstrated_data))
-                          
-                        <span class="list-type">
-                        @foreach ($demonstrated_data as $data)
-                                {{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}
-                                {{ $data['position'] }},
-                                {{ $data['interest'] }},
-                                {{ $data['details'] }}
-                        @endforeach
-                        </span>
-                    @endif
-                            
-                    @if(!empty($leadership_data))    
-                        @foreach($leadership_data as $data)
-                            <span class="list-type">
+			</div>
+		</div>
+		@endif
+		
+		@if (!empty($honor))
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>HONORS, ACHIEVEMENTS, AND AWARDS</h3>
+					@foreach ($honor->honors_data as $honor_data)
+						<span class="span_text">
+							@if(isset($honor_data['grade']) && !empty($honor_data['grade']))
+								<b>{{ \App\Helpers\Helper::getGradeByIdArray($honor_data['grade']) }}: </b>
+							@endif
+							{{ $honor_data['position'] }},
+							{{ $honor_data['honor_achievement_award'] }},
+							{{ $honor_data['location'] }}
+						</span>
+					@endforeach
+				</div>
+			</div>
+		</div>
+		@endif
+		
+		@if (!empty($activity))
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>ACTIVITIES</h3>
+					@if (!empty($demonstrated_data))
+						@foreach ($demonstrated_data as $data)
+							<span class="span_text">
+								<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
+								{{ $data['position'] }}
+								@if(!empty($data['interest'])), {{ $data['interest'] }}@endif
+								@if(!empty($data['details'])), {{ $data['details'] }}@endif
+							</span>
+						@endforeach
+					@endif
+					@if(!empty($leadership_data))
+						@foreach($leadership_data as $data)
+                            <span class="span_text">
                                 @if(!empty($data['grade']))
-                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
+									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
                                 @endif
                                 @if(!empty($data['status']))
                                         {{ $data['status'] }},
@@ -721,90 +629,158 @@
                                         {{ $data['organization'] }}
                                 @endif
                             </span>
-                        @endforeach        
-                    @endif
-                    @if(!empty($activities_data))    
-                
-                    @foreach ($activities_data as $data)
-                        <span class="list-type">
-                            @if(!empty($data['grade']))
-                                {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                            @endif
-                            @if(!empty($data['position']))
-                                    {{ $data['position'] }},
-                            @endif
-                            @if(!empty($data['activity']))
-                                    {{ $data['activity'] }},
-                            @endif
-                            @if(!empty($data['honor_award']))
-                                    {{ $data['honor_award'] }}
-                            @endif
-                        </span>  
-                    @endforeach  
-                               
-                    @endif
-                    @if(!empty($athletics_data))    
-                        <h3>ATHLETICS</h3>
-                        @foreach ($athletics_data as $data)
-                            <span class="list-type">
-                                @if(!empty($data['grade']))
-                                        {{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}
-                                @endif
-                                @if(isset($data['position']))
-                                        {{ $data['position'] }},
-                                @endif
-                                @if(isset($data['activity']))
-                                        {{ $data['activity'] }},
-                                @endif
-                                
-                                @if(isset($data['honor']))
-                                        {{ $data['honor'] }}
-                                @endif
-                            </span>
-                        @endforeach           
-                    @endif
-                    @if(!empty($community_service_data))    
-                        <span style="margin-bottom: 5px;display: block">
-                            <h3 class="span_h2">Community Service</h3>
-                            @php
-                                $community_service_array = [];
-                            @endphp
-                            @foreach ($community_service_data as $data)
-                                @php
-                                    if(isset($data['level'])){
-                                        $community_service_array['level'][] = $data['level'];
-                                    }
-                                    if(isset($data['service'])){
-                                        $community_service_array['service'][] = $data['service'];
-                                    }
-                                    if(isset($data['grade'])){
-                                        $community_service_array['grade'][] = $data['grade'];
-                                    }
-                                    if(isset($data['location'])){
-                                        $community_service_array['location'][] = $data['location'];
-                                    }
-                                @endphp
-                            @endforeach
-                            <span class="list-type">
-                                @if(isset($data['grade']) && !empty($data['grade']))
-                                        {{ \App\Helpers\Helper::getGradeAllByIdArray($community_service_array['grade']) }}
-                                @endif
-                                @if(isset($data['level']))
-                                        {{ implode(",", $community_service_array['level']) }},
-                                @endif
-                                @if(isset($data['service']))
-                                        {{ implode(",", $community_service_array['service']) }},
-                                @endif
-                                @if(isset($data['location']))
-                                        {{ implode(",", $community_service_array['location']) }}
-                                @endif
-                        </span>
-                    @endif
-                </div>
-            @endif
-        </div>
-    </div>
-
+                        @endforeach  
+					@endif
+					@if(!empty($activities_data))
+						@foreach ($activities_data as $data)
+							<span class="span_text">
+								@if(!empty($data['grade']))
+									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+								@endif
+								@if(!empty($data['position']))
+										{{ $data['position'] }},
+								@endif
+								@if(!empty($data['activity']))
+										{{ $data['activity'] }},
+								@endif
+								@if(!empty($data['honor_award']))
+										{{ $data['honor_award'] }}
+								@endif
+							</span>  
+						@endforeach  
+					@endif
+				</div>
+			</div>
+		</div>
+		@endif
+		
+		@if(!empty($athletics_data))  
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>ATHLETICS</h3>
+					@foreach ($athletics_data as $data)
+						<span class="span_text">
+							@if(!empty($data['grade']))
+								<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+							@endif
+							@if(isset($data['position']))
+									{{ $data['position'] }},
+							@endif
+							@if(isset($data['activity']))
+									{{ $data['activity'] }},
+							@endif
+							
+							@if(isset($data['honor']))
+									{{ $data['honor'] }}
+							@endif
+						</span>
+					@endforeach    
+				</div>
+			</div>
+		</div>
+		@endif
+		
+		@if(!empty($community_service_data))
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>COMMUNITY SERVICE</h3>
+					@php
+						$community_service_array = [];
+					@endphp
+					@foreach ($community_service_data as $data)
+						@php
+							if(isset($data['level'])){
+								$community_service_array['level'][] = $data['level'];
+							}
+							if(isset($data['service'])){
+								$community_service_array['service'][] = $data['service'];
+							}
+							if(isset($data['grade'])){
+								$community_service_array['grade'][] = $data['grade'];
+							}
+							if(isset($data['location'])){
+								$community_service_array['location'][] = $data['location'];
+							}
+						@endphp
+					@endforeach
+					<span class="span_text">
+						@if(isset($data['grade']) && !empty($data['grade']))
+							<b>{{ \App\Helpers\Helper::getGradeAllByIdArray($community_service_array['grade']) }}: </b>
+						@endif
+						@if(isset($data['level']))
+							{{ implode(",", $community_service_array['level']) }},
+						@endif
+						@if(isset($data['service']))
+							{{ implode(",", $community_service_array['service']) }},
+						@endif
+						@if(isset($data['location']))
+							{{ implode(",", $community_service_array['location']) }}
+						@endif
+				</span>
+				</div>
+			</div>
+		</div>
+		@endif
+		
+		@if (!empty($employment_data)) 
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>EMPLOYMENT</h3>
+					@foreach ($employment_data as $data)
+						<span class="span_text">
+							@if(isset($data['grade']) && !empty($data['grade']))
+								<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+							@endif
+							@if(!is_null($data['job_title']))
+									{{ $data['job_title'] }},
+							@endif
+							@if(!is_null($data['name_of_company']))
+									{{ $data['name_of_company'] }},
+							@endif
+							@if(!is_null($data['location']))
+									{{ $data['location'] }},
+							@endif
+							@if(!is_null($data['honor_award']))
+									{{ $data['honor_award'] }}
+							@endif
+						</span>
+					@endforeach
+				</div>
+			</div>
+		</div>
+		@endif
+		
+		@if (!empty($significant_data)) 
+		<div class="row">
+			<div class="col">
+				<div class="preview-list">
+					<h3 class='resume-heading'>RESPONSIBILITIES OR INTERESTS</h3>
+					@foreach ($significant_data as $data)
+						<span class="span_text">
+							@if(isset($data['grade']) && !empty($data['grade']))
+								<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+							@endif
+							@if(isset($data['interest']) && !empty($data['interest']))
+									{{ $data['interest'] }},
+							@endif
+							@if(isset($data['location']) && !empty($data['location']))
+									{{ $data['location'] }},
+							@endif
+							@if(isset($data['honor_award']) && !empty($data['honor_award']))
+									{{ $data['honor_award'] }}
+							@endif
+						</span>
+					@endforeach
+				</div>
+			</div>
+		</div>
+		@endif
+		
+		{{-- sbz ends here --}}
+		
 </body>
 
 </html>

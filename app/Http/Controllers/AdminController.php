@@ -88,6 +88,9 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        if ($user) {
+            $user->sendEmailVerificationNotification();
+        }
         return redirect(route('admin-user-list'));
     }
 
