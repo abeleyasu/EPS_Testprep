@@ -47,6 +47,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\AthleticPositionController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,7 +135,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
         Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
         Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
-        // new 
+        // new
         Route::post('editSection', [PracticeQuestionController::class, 'editSection'])->name('edit_section');
         Route::post('updateSection', [PracticeQuestionController::class, 'updateSection'])->name('update_section');
         Route::post('deleteSection', [PracticeQuestionController::class, 'deleteSection'])->name('delete_section');
@@ -172,11 +173,13 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
 
         Route::view('student-view-dashboard', 'user/student-view-dashboard');
         Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
-        // new 
+        // new
         Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
+        Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
+        Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
@@ -279,11 +282,14 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
-        // Please make any changes you think it's necessary to routing 
+        // Please make any changes you think it's necessary to routing
         Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
+
+        //plans and subscription
+        Route::get('plans', [PlanController::class, 'index'])->name('plan.index');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');

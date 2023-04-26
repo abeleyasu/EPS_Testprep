@@ -8,9 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use Laravel\Cashier\Billable;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -52,5 +54,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isUser(){
         return (int) $this->role !== 1;
+    }
+
+    public function billing_details(){
+        return $this->hasOne(StudentBillingDetail::class, 'user_id','id');
     }
 }
