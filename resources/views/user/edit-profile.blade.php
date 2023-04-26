@@ -11,6 +11,17 @@
         border: 1px solid black;
         box-shadow: 1px 1px 5px;
     }
+
+    .updatebtn {
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        background-clip: padding-box;
+        border: 1px solid #dfe3ea;
+        border-radius: 0.25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
 </style>
 <!-- Main Container -->
 <main id="main-container">
@@ -29,43 +40,32 @@
                             Profile Picture <input type="file" name="image" accept="image/*">
                             <img class="profile_pic" src="{{url('profile_images/'.$user->profile_pic)}}" alt="">
                         </div>
-                        <div class="mb-4">
+                        <div class="mb-4 col-md-5">
                             <label for="">First Name</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('first_name') ? 'is-invalid' : ''}}" id="first_name" name="first_name" placeholder="First Name" value="{{$user->first_name}}">
                             @error('first_name')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
-                        <div class="mb-4">
+                        <div class="mb-4 col-md-5">
                             <label for="">Last Name</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('last_name') ? 'is-invalid' : ''}}" id="last_name" name="last_name" placeholder="Last Name" value="{{$user->last_name}}">
                             @error('last_name')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
-                        <div class="mb-4">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control form-control-lg form-control-alt {{$errors->has('email') ? 'is-invalid' : ''}}" id="email" name="email" value="{{$user->email}}" readonly>
-                        </div>
-                        <div class="mb-4">
+                        <div class="mb-4 col-md-5">
                             <label for="">Phone Number</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('phone') ? 'is-invalid' : ''}}" id="phone" name="phone" placeholder="Phone" value="{{$user->phone}}">
                             @error('phone')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
-                        <div class="mb-4">
-                            <label for="">Password</label>
-                            <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
-                            @error('password')
-                            <div class="invalid-feedback">{{$message}}</div>
-                            @enderror
-                        </div>
                     </div>
                     <input type="text" name="id" value="{{$user->id}}" hidden>
-                    <div class="row mb-4">
-                        <div class="col-md-6 col-xl-5">
-                            <button type="submit" class="btn w-100 btn-alt-success">
+                    <div class="mb-4 col-md-5">
+                        <div class="">
+                            <button type="submit" class="btn w-100 btn-alt-success updatebtn">
                                 <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Update User
                             </button>
                         </div>

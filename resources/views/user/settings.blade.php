@@ -25,23 +25,52 @@
                 <form action="{{route('user.settings')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="py-3">
-                        <div class="mb-4">
+                        <div class="mb-4 col-md-5">
                             <label for="">Email</label>
                             <input type="email" class="form-control form-control-lg form-control-alt {{$errors->has('email') ? 'is-invalid' : ''}}" id="email" name="email" value="{{$user->email}}">
                         </div>
-                        <div class="mb-4">
-                            <label for="">Password</label>
+                    </div>
+
+                    <input type="text" name="id" value="{{$user->id}}" hidden>
+                    <div class="mb-4 col-md-5">
+                        <div class="">
+                            <button type="submit" class="btn w-100 btn-alt-success">
+                                <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Update Email
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form action="{{route('user.settings_update')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="py-3">
+                        <div class="mb-4 col-md-5">
+                            <label for="">Current Password</label>
                             <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
                             @error('password')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
+                        <div class="mb-4 col-md-5">
+                            <label for="">New Password</label>
+                            <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('new_password') ? 'is-invalid' : ''}}" id="new_password" name="new_password" placeholder="New Password">
+                            @error('new_password')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-4 col-md-5">
+                            <label for="">Confirm Password</label>
+                            <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('new_password_confirmation') ? 'is-invalid' : ''}}" id="new_password_confirmation" name="new_password_confirmation" placeholder="Confirm Password">
+                            @error('new_password_confirmation')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
+                        </div>
                     </div>
+
                     <input type="text" name="id" value="{{$user->id}}" hidden>
-                    <div class="row mb-4">
-                        <div class="col-md-6 col-xl-5">
+                    <div class="mb-4 col-md-5">
+                        <div class="">
                             <button type="submit" class="btn w-100 btn-alt-success">
-                                <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Update
+                                <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Update Password
                             </button>
                         </div>
                     </div>

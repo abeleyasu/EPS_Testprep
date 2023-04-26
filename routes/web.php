@@ -178,6 +178,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
         Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
+        Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
+        Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
@@ -302,7 +304,7 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
-Route::group(['middleware' => ['auth']],function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });
