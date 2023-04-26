@@ -3,6 +3,15 @@
 @section('title', 'User Dashboard : CPS')
 
 @section('user-content')
+<style>
+    .profile_pic {
+        height: 80px;
+        width: 80px;
+        border-radius: 40px;
+        border: 1px solid black;
+        box-shadow: 1px 1px 5px;
+    }
+</style>
 <!-- Main Container -->
 <main id="main-container">
     <!-- Page Content -->
@@ -13,31 +22,40 @@
                 <h3 class="block-title">Edit User</h3>
             </div>
             <div class="block-content block-content-full">
-                <form action="{{route('user.edit-profile')}}" method="POST">
+                <form action="{{route('user.edit-profile')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="py-3">
                         <div class="mb-4">
+                            Profile Picture <input type="file" name="image" accept="image/*">
+                            <img class="profile_pic" src="{{url('profile_images/'.$user->profile_pic)}}" alt="">
+                        </div>
+                        <div class="mb-4">
+                            <label for="">First Name</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('first_name') ? 'is-invalid' : ''}}" id="first_name" name="first_name" placeholder="First Name" value="{{$user->first_name}}">
                             @error('first_name')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
                         <div class="mb-4">
+                            <label for="">Last Name</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('last_name') ? 'is-invalid' : ''}}" id="last_name" name="last_name" placeholder="Last Name" value="{{$user->last_name}}">
                             @error('last_name')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
                         <div class="mb-4">
+                            <label for="">Email</label>
                             <input type="email" class="form-control form-control-lg form-control-alt {{$errors->has('email') ? 'is-invalid' : ''}}" id="email" name="email" value="{{$user->email}}" readonly>
                         </div>
                         <div class="mb-4">
+                            <label for="">Phone Number</label>
                             <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('phone') ? 'is-invalid' : ''}}" id="phone" name="phone" placeholder="Phone" value="{{$user->phone}}">
                             @error('phone')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
                         <div class="mb-4">
+                            <label for="">Password</label>
                             <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
                             @error('password')
                             <div class="invalid-feedback">{{$message}}</div>

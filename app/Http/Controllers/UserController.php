@@ -43,6 +43,7 @@ class UserController extends Controller
 					'last_name' => ['required', 'min:3'],
 					'phone' => ['required', 'numeric'],
 					'password' => ['required', 'min:6'],
+					'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
 				],
 				[
 					'first_name.required' => 'First Name is required',
@@ -56,11 +57,16 @@ class UserController extends Controller
 				]
 			);
 
+			$image = time() . '.' . $request->image->extension();
+
+			$request->image->move(public_path('profile_images'), $image);
+
 			$user = User::find($request->id);
 			$user->name = $request->first_name . " " . $request->last_name;
 			$user->first_name = $request->first_name;
 			$user->last_name = $request->last_name;
 			$user->phone = $request->phone;
+			$user->profile_pic = $image;
 			$user->password = Hash::make($request->password);
 			$user->save();
 		}
@@ -68,6 +74,35 @@ class UserController extends Controller
 
 		if ($user)
 			return view('user.edit-profile', ['user' => $user]);
+		else
+			return redirect(route('admin-user-list'));
+	}
+
+	public function settings(Request $request)
+	{
+		$id =  Auth::id();
+		if (isset($request->id)) {
+			$request->validate(
+				[
+					'password' => ['required', 'min:6'],
+				],
+				[
+					'email.required' => 'Email is required',
+					'email.unique' => 'Email already exist',
+					'password.required' => 'Password is required',
+					'password.min' => 'The password must be at least 6 characters',
+				]
+			);
+
+			$user = User::find($request->id);
+			$user->email = $request->email;
+			$user->password = Hash::make($request->password);
+			$user->save();
+		}
+		$user = User::where('role', '!=', 1)->find($id);
+
+		if ($user)
+			return view('user.settings', ['user' => $user]);
 		else
 			return redirect(route('admin-user-list'));
 	}

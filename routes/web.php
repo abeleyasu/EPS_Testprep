@@ -176,6 +176,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
+        Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
