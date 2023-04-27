@@ -67,7 +67,6 @@
                     <!-- END Edit User Form -->
                 </div>
             </div>
-            {{-- {{dd($user->billing_details)}} --}}
 
             <div class="block block-rounded">
                 <div class="block-header block-header-default">

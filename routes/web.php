@@ -178,8 +178,11 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
-        Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
         Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
+        Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
+        Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
+        Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
+        Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
