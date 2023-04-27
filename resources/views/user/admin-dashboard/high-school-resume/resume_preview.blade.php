@@ -328,10 +328,10 @@
 <body>
     <div style="margin-bottom: 0">
         <div
-            style="font-weight:400; padding:10px 50px 10px; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0">
+            style="font-weight:400; padding:10px 50px 10px; text-align:left;color: #43464c;font-size:2.25rem;margin-top: 0; margin-bottom:0">
             <b>{{ $personal_info->first_name }}<b> {{ $personal_info->middle_name }} {{ $personal_info->last_name }} {{ isset($personal_info->nick_name) && $personal_info->nick_name != null ? "(" .$personal_info->nick_name. ")" : ''}}
                 </b>
-            <span style="display: block; font-size: 12px; margin-top: 10px; margin-bottom: 10px; font-weight: 400">
+            <span style="display: block; font-size: 12px; margin-top: 10px; margin-bottom: 10px; font-weight: 400;" >
                 @if(isset($personal_info->street_address_one) || isset($personal_info->street_address_two) || isset($personal_info->zip_code))
                     <li style="display: flex">
                         <span class="span_list">
@@ -349,7 +349,7 @@
                     </li>
                 @endif  
             </span>
-            <p style="display: inline-block !important; font-size: 12px; margin-top: 5px; font-weight: 400">
+            <p style="display: inline-block !important; font-size: 12px; margin-top: 5px; font-weight: 400;margin-top:0 ;margin-bottom:0">
                 <span style="display: inline-block">
                     @if(isset($personal_info->email))
                         <span class="span_text">
@@ -389,7 +389,7 @@
                     </span>
                 @endif
                 </span>
-				<hr />
+				<hr style = "margin-top:0; margin-bottom:0"/>
             </p>
         </div>
     </div>
