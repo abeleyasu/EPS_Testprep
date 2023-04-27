@@ -71,6 +71,7 @@ class UserController extends Controller
 				$user->profile_pic = $image;
 			// $user->password = Hash::make($request->password);
 			$user->save();
+			return redirect()->back()->with('success', 'Profile updated successfully');
 		}
 		$user = User::where('role', '!=', 1)->find($id);
 
@@ -95,6 +96,7 @@ class UserController extends Controller
 			$user = User::find($request->id);
 			$user->email = $request->email;
 			$user->save();
+			return redirect()->back()->with('success', 'Email updated successfully');
 		}
 		$user = User::where('role', '!=', 1)->find($id);
 
@@ -127,6 +129,7 @@ class UserController extends Controller
 
 			$user->password = Hash::make($request->new_password);
 			$user->save();
+			return redirect()->back()->with('success', 'Password updated successfully');
 		}
 		$user = User::where('role', '!=', 1)->find($id);
 

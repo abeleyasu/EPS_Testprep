@@ -36,9 +36,19 @@
                 <form action="{{route('user.edit-profile')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="py-3">
-                        <div class="mb-4">
-                            Profile Picture <input type="file" name="image" accept="image/*">
-                            <img class="profile_pic" src="{{url('profile_images/'.$user->profile_pic)}}" alt="">
+                        @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                        <div style="display: flex;">
+                            <div class="form-group col-md-5">
+                                <label for="image">Profile Picture:</label>
+                                <input type="file" class="form-control" id="image" name="image" onchange="previewImage(event)">
+                                <!-- <label>Preview</label><br> -->
+                                <img id="preview" src="" alt="" style="max-width: 100px; margin-top: 10px;">
+                            </div>
+                            <div class="form-group" style="margin-left: 2rem;">
+                                <img class="profile_pic" id="preview" src="{{ $user->profile_pic ? asset('profile_images/' . $user->profile_pic) : asset('images/no_image.png') }}" alt="No Image" height="150">
+                            </div>
                         </div>
                         <div class="mb-4 col-md-5">
                             <label for="">First Name</label>
@@ -72,9 +82,16 @@
                     </div>
                 </form>
                 <!-- END Edit User Form -->
+
             </div>
         </div>
     </div>
 </main>
+<script>
+    function previewImage(event) {
+        var preview = document.getElementById('preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
 <!-- END Main Container -->
 @endsection
