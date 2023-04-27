@@ -228,8 +228,18 @@ class EducationController extends Controller
             $data['honor_course_data'] = null;
         }
 
+        
+        if (!empty($request->is_tested)) {
+            $data['test_taken_status'] = $request->is_tested;
+        }
+
         if (!empty($request->testing_data)) {
-            $data['testing_data'] = array_values($request->testing_data);
+            if (!empty($request->is_tested)) {
+                if($request->is_tested == 0) {
+                    $data['testing_data'] = array_values($request->testing_data);
+                }
+            }
+            
         }
 
         if (isset($data['ib_courses']) && !empty($data['ib_courses'])) {
@@ -394,8 +404,21 @@ class EducationController extends Controller
             $data['honor_course_data'] = null;
         }
 
+        // echo "is_tested = $request->is_tested";exit;
+        if (!empty($request->is_tested)) {
+            $data['test_taken_status'] = $request->is_tested;
+        } else {
+            $data['test_taken_status'] = 0;
+        }
+
         if (!empty($request->testing_data)) {
-            $data['testing_data'] = array_values($request->testing_data);
+            if($data['test_taken_status'] == 0) {
+                $data['testing_data'] = array_values($request->testing_data);
+            } else {
+                $data['testing_data'] = NULL;
+            }
+        } else {
+            $data['testing_data'] = NULL;
         }
 
         if (isset($data['ib_courses']) && !empty($data['ib_courses'])) {

@@ -478,7 +478,19 @@
                                         <div class="main-form-input">
                                             <div class="mb-4">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="1" id="is_tested" name="is_tested">
+                                                    @php
+                                                        $test_taken_status_flag = 0;
+                                                        if(!empty($education->test_taken_status)) {
+                                                            if($education->test_taken_status == 1) {
+                                                                $test_taken_status_flag = 1;
+                                                            }
+                                                        }
+                                                    @endphp
+                                                    <input class="form-check-input" type="checkbox" value="1" id="is_tested" name="is_tested" 
+                                                    @if ($test_taken_status_flag)
+                                                        checked="checked"
+                                                    @endif
+                                                    >
                                                     <label class="form-check-label" for="is_tested">
                                                         I haven't taken a test yet
                                                     </label>
@@ -527,7 +539,7 @@
                                                                     <input type="text" class="form-control" value="{{ $testing_data['date'] }}" id="testing-date-{{ $index }}" name="testing_data[{{ $index }}][date]" placeholder="Enter Date" autocomplete="off" readonly>
                                                                 </td>
                                                                 <td>                                                            
-                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                    <a href="javascript:void(0)" class="add-btn plus-icon d-flex" id="testing-add-btn-id">
                                                                         <i data-count="{{ count($education->testing_data) != 0 ? count($education->testing_data) - 1 : 0 }}" class="fa-solid  {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addTestingData(this)' : 'removeTestingData(this)' }}"></i>
                                                                     </a>                                                        
                                                                 </td>
@@ -550,7 +562,7 @@
                                                                 <input type="text" class="form-control" value="{{ old('date') }}" id="testing-date-0" name="testing_data[0][date]" placeholder="Enter Date" autocomplete="off" readonly>
                                                             </td>
                                                             <td>                                                            
-                                                                <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
+                                                                <a href="javascript:void(0)" class="add-btn plus-icon d-flex" id="testing-add-btn-id">
                                                                     <i data-count="0" class="fa-solid fa-plus" onclick="addTestingData(this)"></i>
                                                                 </a>                                                        
                                                             </td>
@@ -682,6 +694,12 @@
             format: 'mm'
         });
 
+        let test_taken_status = "{{ isset($education->test_taken_status) ? $education->test_taken_status : '' }}";
+        if(test_taken_status != '') {
+            $(".testing_data_table").find("input,button,textarea,select").attr("disabled", "disabled");
+            $('#testing-add-btn-id').css('pointer-events', 'none');
+        }
+
         let total_testing_count = "{{ isset($education->testing_data) ? count($education->testing_data) : 0 }}";
 
         let total_search_college_name_count = "{{ isset($education->course_data) && $education->course_data != null ? count($education->course_data) : 0 }}";
@@ -795,6 +813,15 @@
                     $('.testing_data_table td input').removeClass('error');
                     $('.testing_data_table label.error').remove();
 
+                    $('.testing_data_table td select').prop('selectedIndex', 0);
+                    $('.testing_data_table td input').val('');
+                    $('.testing_data_table input').val('');
+                    $('#testing-add-btn-id').css('pointer-events', 'none');
+
+                    $('.testing_data_table input').prop('disabled', true);
+                    $('.testing_data_table select').prop('disabled', true);
+
+
                     $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
                         $(this).rules("add", {
                             required: false
@@ -806,6 +833,11 @@
                         });
                     });
                 }else{
+
+                    $('.testing_data_table input').prop('disabled', false);
+                    $('.testing_data_table select').prop('disabled', false);
+                    $('#testing-add-btn-id').css('pointer-events', 'auto');
+                    
                     $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
                         $(this).rules("add", {
                             required: true,
