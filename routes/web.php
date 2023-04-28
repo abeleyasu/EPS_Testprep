@@ -153,6 +153,15 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/update-category-type', [PracticeQuestionController::class, 'updateCategoryType'])->name('updateCategoryType');
         Route::post('/delete-category-type', [PracticeQuestionController::class, 'deleteCategoryType'])->name('deleteCategoryType');
         Route::get('/category-type', [PracticeQuestionController::class, 'indexCategoryType'])->name('indexCategoryType');
+
+        Route::group(['prefix' => 'plan', 'as' => 'admin.plan.'], function () {
+            Route::get('/plan-list', [PlanController::class, 'planList'])->name('plan_list');
+            Route::get('/create', [PlanController::class, 'addPlanForm'])->name('plan_add');
+            Route::post('add', [PlanController::class, 'createPlan'])->name('plan_create');
+            Route::get('/update/{id}', [PlanController::class, 'updatePlanShow'])->name('plan_update_show');
+            Route::post('/edit', [PlanController::class, 'editplan'])->name('plan_edit');
+            Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
+        });
     });
 
     //User Routes
@@ -292,7 +301,9 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
 
         //plans and subscription
-        Route::get('plans', [PlanController::class, 'index'])->name('plan.index');
+        Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
+        Route::get('/plans', [PlanController::class, 'index'])->name('plan.index');
+        Route::get('/plans/{plan}', [PlanController::class, 'show'])->name('plans.show');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');

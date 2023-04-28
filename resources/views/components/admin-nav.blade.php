@@ -215,6 +215,24 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-main-item {{ Route::is('admin.plan.*') ? 'open' : ''}}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon fas fa-cogs"></i>
+                        <span class="nav-main-link-name">Plan Management</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is('admin.plan.plan_list') ? 'active' : ''}}" href="{{route('admin.plan.plan_list')}}">
+                                <span class="nav-main-link-name">List Plan</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is('admin.plan.plan_add') ? 'active' : ''}}" href="{{route('admin.plan.plan_add')}}">
+                                <span class="nav-main-link-name">Create Plan</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

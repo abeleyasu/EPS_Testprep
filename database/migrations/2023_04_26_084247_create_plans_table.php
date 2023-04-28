@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->string('stripe_product_id');
             $table->string('stripe_plan');
+            $table->string('plan_type');
             $table->integer('price');
             $table->text('description');
             $table->timestamps();

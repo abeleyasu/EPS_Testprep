@@ -38,6 +38,7 @@
                     <div class="p-2" style="display:grid">
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.edit-profile')}}">Edit Profile</a></span>
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.settings')}}">Settings</a></span>
+                        <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('plan.index')}}">Subscription</a></span>
                         <a class="dropdown-item d-flex align-items-center justify-content-between" href="{{ route('signout') }}">
                             <span class="fs-sm fw-medium">Log Out</span>
                         </a>

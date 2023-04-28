@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Crypt;
 class UserController extends Controller
 {
     public $states;
-
+	private $stripe;
+	public function __construct() {
+        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
+    }
     public function dashboard()
     {
         return view('user/dashboard');
@@ -41,8 +44,7 @@ class UserController extends Controller
         echo 'Cache Removed';
     }
 
-    public function profile(Request $request)
-    {
+    public function profile(Request $request) {
         $id = Auth::id();
         if (isset($request->id)) {
             $request->validate(
@@ -63,20 +65,37 @@ class UserController extends Controller
                     'phone.numeric' => 'Phone must be numeric',
                 ],
             );
+				$request->image->move(public_path('profile_images'), $image);
+				$user = User::find($request->id);
+				$user->name = $request->first_name . " " . $request->last_name;
+				$user->first_name = $request->first_name;
+				$user->last_name = $request->last_name;
+				$user->phone = $request->phone;
+				if ($image != '') {
+					$user->profile_pic = $image;
+					// $user->password = Hash::make($request->password);
+					$user->save();
+					return redirect()->back()->with('success', 'Profile updated successfully');
+				}
+		}
+		// $user = User::where('role', '!=', 1)->find($id);
 
-            $user = User::find($request->id);
-            $user->name = $request->first_name . ' ' . $request->last_name;
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
-            $user->phone = $request->phone;
-            $user->password = Hash::make($request->password);
-            $user->save();
-        }
+        //     $user = User::find($request->id);
+        //     $user->name = $request->first_name . ' ' . $request->last_name;
+        //     $user->first_name = $request->first_name;
+        //     $user->last_name = $request->last_name;
+        //     $user->phone = $request->phone;
+        //     $user->password = Hash::make($request->password);
+        //     $user->save();
+        // }
         $user = User::where('role', '!=', 1)->find($id);
         $this->states = States::get();
-
+		$intent = auth()->user()->createSetupIntent();
         if ($user) {
-            return view('user.edit-profile', ['user' => $user, 'states' => $this->states]);
+			if (Auth::user()->stripe_id) {
+				$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
+			}
+            return view('user.edit-profile', ['user' => $user, 'states' => $this->states, 'cards' => $cards, 'intent' => $intent->client_secret]);
         } else {
             return redirect(route('admin-user-list'));
         }
@@ -84,45 +103,30 @@ class UserController extends Controller
 
     public function studentBillingDetails(Request $request)
     {
-        $request->validate(
-            [
-                'billing_address' => ['required'],
-                'billing_state' => ['required'],
-                'billing_city' => ['required'],
-                'billing_zip' => ['required'],
-                'card_number' => ['required', 'numeric', 'digits:12'],
-                'card_expiry_month' => ['required'],
-                'card_expiry_year' => ['required'],
-            ],
-            [
-                'billing_address.required' => 'Bilind address is required',
-                'billing_state.required' => 'State is required',
-                'billing_city.required' => 'City is required',
-                'billing_zip.required' => 'Zipcode is required',
-                'card_number.required' => 'Card Number is required',
-                'card_number.numeric' => 'Card Number must be number',
-                'card_number.digits' => 'Card Number must be 12 digit',
-                'card_expiry_month.required' => 'Expiry month is required',
-                'card_expiry_year.required' => 'Expiry year is required',
-            ],
-        );
-        $billingDetail = StudentBillingDetail::where('user_id', Auth::user()->id)->first();
-        if (!$billingDetail) {
-            $billingDetail = new StudentBillingDetail();
-        }
-        $billingDetail->user_id = Auth::user()->id;
-        $billingDetail->billing_address = $request->billing_address;
-        $billingDetail->billing_state = $request->billing_state;
-        $billingDetail->billing_city = $request->billing_city;
-        $billingDetail->billing_zip = $request->billing_zip;
-        $billingDetail->card_number = Crypt::encrypt($request->card_number);
-        $billingDetail->card_expiry_month = $request->card_expiry_month;
-        $billingDetail->card_expiry_year = $request->card_expiry_year;
-        $billingDetail->save();
-
-        $this->states = States::get();
-        return view('user.edit-profile', ['user' => Auth::user(), 'states' => $this->states]);
+		$user = Auth::user();
+		if ($user->stripe_id) {
+			$source = $this->stripe->paymentMethods->attach($request->stripeToken, [
+				'customer' => $user->stripe_id 
+			]);
+			dd($source);
+		} else {
+			$customer = $this->stripe->customers->create([
+				'payment_method' => $request->stripeToken,
+				"email" => $user->email
+			]);
+			$user->stripe_id = $customer['id'];
+			$user->save();
+		}
+		$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
+		$intent = auth()->user()->createSetupIntent();
+		$this->states = States::get();
+		return view('user.edit-profile', ['user' => $user, 'states' => $this->states, 'cards' => $cards, 'intent' => $intent->client_secret]);
     }
+
+	public function deleteCard(Request $request) {
+		$this->stripe->paymentMethods->detach($request->id, []);
+		return "success";
+	}
 
     public function getCity(Request $request, $state_id)
     {
@@ -191,6 +195,7 @@ class UserController extends Controller
 			$user = User::find($request->id);
 			$user->email = $request->email;
 			$user->save();
+			return redirect()->back()->with('success', 'Email updated successfully');
 		}
 		$user = User::where('role', '!=', 1)->find($id);
 
@@ -223,6 +228,7 @@ class UserController extends Controller
 
 			$user->password = Hash::make($request->new_password);
 			$user->save();
+			return redirect()->back()->with('success', 'Password updated successfully');
 		}
 		$user = User::where('role', '!=', 1)->find($id);
 

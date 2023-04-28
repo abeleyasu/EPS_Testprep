@@ -20,9 +20,11 @@ return new class extends Migration
             $table->string('billing_city')->nullable();
             $table->string('billing_state')->nullable();
             $table->string('billing_zip')->nullable();
+            $table->string('card_holder_name');
             $table->text('card_number');
             $table->text('card_expiry_month');
             $table->text('card_expiry_year');
+            $table->text('card_cvv');
             $table->timestamps();
         });
     }

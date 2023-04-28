@@ -22,6 +22,9 @@
                 <h3 class="block-title">Edit User</h3>
             </div>
             <div class="block-content block-content-full">
+                @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
                 <form action="{{route('user.settings')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="py-3">
@@ -58,7 +61,7 @@
                             @enderror
                         </div>
                         <div class="mb-4 col-md-5">
-                            <label for="">Confirm Password</label>
+                            <label for="">Confirm New Password</label>
                             <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('new_password_confirmation') ? 'is-invalid' : ''}}" id="new_password_confirmation" name="new_password_confirmation" placeholder="Confirm Password">
                             @error('new_password_confirmation')
                             <div class="invalid-feedback">{{$message}}</div>
