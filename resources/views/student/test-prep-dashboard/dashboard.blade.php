@@ -1169,6 +1169,15 @@
                                         <option value="danger">Danger</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEventTime" class="form-label">Event Time</label>
+                                    {{-- <input type="time" class="form-control" name="time" id="exampleInputEventTime"> --}}
+                                    <input type="text" class="js-flatpickr form-control" id="exampleInputEventTime" name="time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEventDescription" class="form-label">Event Description</label>
+                                    <textarea class="form-control" name="description" id="exampleInputEventDescription"></textarea>
+                                </div>
                             </form>
                         </div>
                         <div class="block-content block-content-full text-end bg-body">
@@ -1214,6 +1223,15 @@
                                         <option value="danger">Danger</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="AddInputEventTime" class="form-label">Event Time</label>
+                                    {{-- <input type="time" class="form-control" data-plugin="timepicker" name="time" id="AddInputEventTime"> --}}
+                                    <input type="text" class="js-flatpickr form-control" id="AddInputEventTime" name="time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="AddInputEventDescription" class="form-label">Event Description</label>
+                                    <textarea class="form-control" name="description" id="AddInputEventDescription"></textarea>
+                                </div>
                                 <input type="hidden" name="start_date" id="AddInputStartDate">
                                 <input type="hidden" name="end_date" id="AddInputEndDate">
                             </form>
@@ -1238,6 +1256,18 @@
     <script src="{{ asset('assets/_js/pages/be_comp_calendar.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
 
+    <script src="{{asset('assets/js/oneui.app.min.js')}}"></script>
+    <script src="{{asset('assets/js/lib/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/jquery.maskedinput/jquery.maskedinput.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/dropzone/min/dropzone.min.js')}}"></script>
+    <script>One.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-masked-inputs', 'jq-rangeslider', 'jq-colorpicker']);</script>
+
     <script>
         let eventObj = @json($final_arr);
 
@@ -1247,6 +1277,7 @@
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
             });
+
         });
 
         $('input[type="checkbox"]').click(function(e) {
@@ -1342,6 +1373,15 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
+
+    <link rel="stylesheet" id="css-main" href="{{asset('assets/css/oneui.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/dropzone/min/dropzone.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
+
     <style>
         .fc-toolbar-title {
             font-size: 120% !important;
