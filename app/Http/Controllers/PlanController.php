@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Plan;
 use Illuminate\Validation\Rule;
@@ -128,8 +130,18 @@ class PlanController extends Controller
 
     public function showPlan(Plan $plan, Request $request)
     {
-        $intent = auth()->user()->createSetupIntent();
-        return view("user.subscription", compact("plan", "intent"));
+        $id = Auth::user()->id;
+
+        $user = User::find($id);
+        $subscription_obj = $user->newSubscription('default',$plan->stripe_plan_id)
+            ->checkout([
+                'success_url' => route('plan.index'),
+                'cancel_url'=>route('home') // add cancel_url by default add now home
+            ]);
+        return redirect($subscription_obj->url);
+//        $intent = auth()->user()->createSetupIntent();
+//        $cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
+//        return view("user.subscription", compact("plan", "intent","cards"));
     }
 
 

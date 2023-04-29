@@ -34,10 +34,11 @@
                     @endif
                   </div>
                 </div>
+                    <div class="block-content block-content-full bg-body-light">
+                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                    </div>
               @endforeach
-              <div class="block-content block-content-full bg-body-light">
-                <a href="{{ route('plans.show', $product->id) }}" class="btn btn-secondary px-4">Choose</a>
-              </div>
+
               <div class="block-content">
                 <div class="fs-sm py-2">
                   <p>test</p>
@@ -58,17 +59,17 @@
     // const stripe = Stripe('{{ env('STRIPE_KEY') }}')
     // const elements = stripe.elements()
     // const cardElement = elements.create('card')
-  
+
     // // cardElement.mount('#card-element')
-  
+
     // const form = document.getElementById('payment-form')
     // const cardBtn = document.getElementById('card-button')
     // const cardHolderName = document.getElementById('card-holder-name')
-  
+
     // cardBtn.addEventListener('click', async (e) => {
     //   console.log(cardElement);
     //   e.preventDefault()
-  
+
     //   cardBtn.disabled = true
     //   const { setupIntent, error } = await stripe.confirmCardSetup(
     //     cardBtn.dataset.secret, {
@@ -80,9 +81,9 @@
     //       }
     //     }
     //   )
-  
+
     //   console.log('token:'+ setupIntent.payment_method);
-  
+
     //   if(error) {
     //       cardBtn.disable = false
     //   } else {

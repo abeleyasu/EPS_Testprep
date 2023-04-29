@@ -68,6 +68,9 @@ Route::get('/', function () {
     return redirect('login');
 });
 
+Route::get('/home', function () {
+    return redirect('login');
+})->name('home');
 Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
