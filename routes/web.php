@@ -6,6 +6,7 @@ use App\Http\Controllers\PassagesController;
 use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
 use App\Http\Controllers\CourseManagement\TaskController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
@@ -304,6 +305,9 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
         Route::get('/plans', [PlanController::class, 'index'])->name('plan.index');
         Route::get('/plans/{plan}', [PlanController::class, 'show'])->name('plans.show');
+        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
+        Route::get('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.addSubsciption");
+
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');
