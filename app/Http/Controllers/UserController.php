@@ -11,6 +11,7 @@ use App\Models\StudentBillingDetail;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 use Illuminate\Support\Facades\Crypt;
+use Laravel\Cashier\Cashier;
 
 class UserController extends Controller
 {
@@ -105,17 +106,12 @@ class UserController extends Controller
     {
 		$user = Auth::user();
 		if ($user->stripe_id) {
-			$source = $this->stripe->paymentMethods->attach($request->stripeToken, [
-				'customer' => $user->stripe_id 
-			]);
-			dd($source);
+			$user->addPaymentMethod($request->stripeToken);
 		} else {
-			$customer = $this->stripe->customers->create([
-				'payment_method' => $request->stripeToken,
-				"email" => $user->email
-			]);
-			$user->stripe_id = $customer['id'];
-			$user->save();
+			$user->createOrGetStripeCustomer();
+			if ($request->stripeToken) {
+				$user->addPaymentMethod($request->stripeToken);
+			}
 		}
 		$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
 		$intent = auth()->user()->createSetupIntent();

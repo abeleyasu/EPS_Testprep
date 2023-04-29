@@ -17,16 +17,26 @@ class SubscriptionController extends Controller
     public function addSubsciption(Request $request)
     {
         $plan = Plan::find($request->plan);
-        $id = Auth::user()->id;
-
-       $user = User::find($id);
-
-        $subscription_obj = $user->newSubscription('default','plan_NnmkXGjlQN5HQQ')
-            ->checkout([
-            'success_url' => route('plan.index'),
-                'cancel_url'=>route('home')
-        ]);
+        $user = Auth::user();
+        $user->createOrGetStripeCustomer();
+        $paymentmethod = NULL;
+        if ($request->payment_method) {
+            $paymentmethod = $user->addPaymentMethod($request->payment_method);
+            $user->updateDefaultPaymentMethod($request->payment_method);
+        }
+        // dd($paymentmethod);
+        if ($user->hasDefaultPaymentMethod()) {
+            $sub = $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentmethod ? $paymentmethod->id : '');
+            if ($user->subscribed('default')) {
+                dd($sub);
+            }
+        }
+        // $subscription_obj = $user->newSubscription('default','plan_NnmkXGjlQN5HQQ')
+        //     ->checkout([
+        //     'success_url' => route('plan.index'),
+        //         'cancel_url'=>route('home')
+        // ]);
 //        dd($subscription_obj->url);
-        return redirect($subscription_obj->url);
+        // return redirect($subscription_obj->url);
     }
 }

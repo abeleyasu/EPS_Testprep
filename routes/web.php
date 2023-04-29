@@ -331,8 +331,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
         Route::get('/plans', [PlanController::class, 'getUserPlan'])->name('plan.index');
         Route::get('/plans/{plan}', [PlanController::class, 'showPlan'])->name('plans.show');
-        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
-        Route::get('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.addSubsciption");
+        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription");
+        Route::post('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.create");
 
     });
 

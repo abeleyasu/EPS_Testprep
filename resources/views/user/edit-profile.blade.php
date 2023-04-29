@@ -131,21 +131,21 @@
                 </div>
             </div>
             @foreach($cards['data'] as $card)
-            <div class="block-bordered block-rounded block overflow-hidden mb-1">
-                <div class="block-header block-header-default">
-                    <div>
-                        <span>{{ $card->card->brand }}</span>
-                        <span>{{ $card->billing_details->name }}</span>
-                    </div>
-                    <span class="text-uppercase">{{ $card->card->brand }}({{$card->card->last4}})</span>
-                    <span>{{ $card->card->exp_month }}/{{$card->card->exp_year}}</span>
-                    <div>
-                        <button type="button" class="btn btn-sm btn-alt-secondary delete-card" data-id="{{$card->id}}" data-bs-toggle="tooltip" title="Delete Card">
-                            <i class="fa fa-fw fa-times"></i>
-                        </button>
+                <div class="block-bordered block-rounded block overflow-hidden mb-1">
+                    <div class="block-header block-header-default">
+                        <div>
+                            <span>{{ $card->card->brand }}</span>
+                            <span>{{ $card->billing_details->name }}</span>
+                        </div>
+                        <span class="text-uppercase">{{ $card->card->brand }}({{$card->card->last4}})</span>
+                        <span>{{ $card->card->exp_month }}/{{$card->card->exp_year}}</span>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-alt-secondary delete-card" data-id="{{$card->id}}" data-bs-toggle="tooltip" title="Delete Card">
+                                <i class="fa fa-fw fa-times"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
     </main>
@@ -156,7 +156,6 @@
 
     <script>
         $(document).ready(function() {
-            console.log($('#billing_state').val());
             getCity($('#billing_state').val());
                 $('#billing_state').on('change', function() {
                     getCity(this.value);

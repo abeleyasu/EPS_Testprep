@@ -130,18 +130,19 @@ class PlanController extends Controller
 
     public function showPlan(Plan $plan, Request $request)
     {
-        $id = Auth::user()->id;
-
-        $user = User::find($id);
-        $subscription_obj = $user->newSubscription('default',$plan->stripe_plan_id)
-            ->checkout([
-                'success_url' => route('plan.index'),
-                'cancel_url'=>route('home') // add cancel_url by default add now home
-            ]);
-        return redirect($subscription_obj->url);
-//        $intent = auth()->user()->createSetupIntent();
-//        $cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
-//        return view("user.subscription", compact("plan", "intent","cards"));
+        $user = Auth::user();
+        $product_name = Product::find($plan->product_id);
+        $plan['name'] = $product_name['title'];
+        // $subscription_obj = $user->newSubscription('default',$plan->stripe_plan_id)
+        //     ->checkout([
+        //         'success_url' => route('plan.index'),
+        //         'cancel_url'=>route('home') // add cancel_url by default add now home
+        //     ]);
+        // return redirect($subscription_obj->url);
+        $intent = auth()->user()->createSetupIntent();
+        $cards = $this->stripe->customers->allPaymentMethods($user->stripe_id);
+        $customer = $this->stripe->customers->retrieve($user->stripe_id);
+        return view("user.subscription", compact("plan", "intent","cards"));
     }
 
 
@@ -149,8 +150,7 @@ class PlanController extends Controller
     {
         $plan = Plan::find($request->plan);
 
-        $subscription = $request->user()->newSubscription($request->plan, $plan->stripe_plan)
-                        ->create($request->token);
+        $subscription = $request->user()->newSubscription($request->plan, $plan->stripe_plan)->create($request->token);
 
         return view("subscription_success");
     }
