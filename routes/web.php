@@ -48,8 +48,11 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\AthleticPositionController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\VerifyEmailController;
-use App\Http\Controllers\PlanController;
 
+// pending
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -155,13 +158,33 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/delete-category-type', [PracticeQuestionController::class, 'deleteCategoryType'])->name('deleteCategoryType');
         Route::get('/category-type', [PracticeQuestionController::class, 'indexCategoryType'])->name('indexCategoryType');
 
-        Route::group(['prefix' => 'plan', 'as' => 'admin.plan.'], function () {
-            Route::get('/plan-list', [PlanController::class, 'planList'])->name('plan_list');
-            Route::get('/create', [PlanController::class, 'addPlanForm'])->name('plan_add');
-            Route::post('add', [PlanController::class, 'createPlan'])->name('plan_create');
-            Route::get('/update/{id}', [PlanController::class, 'updatePlanShow'])->name('plan_update_show');
-            Route::post('/edit', [PlanController::class, 'editplan'])->name('plan_edit');
-            Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
+        Route::group(['as' => 'admin.'], function () {
+            Route::group(['prefix' => 'product-category', 'as' => 'category.'], function () {
+                Route::get('/list', [ProductCategoryController::class, 'index'])->name('list');
+                Route::get('/create', [ProductCategoryController::class, 'show'])->name('create');
+                Route::post('/create', [ProductCategoryController::class, 'create'])->name('category_create');
+                Route::get('/edit/{id}', [ProductCategoryController::class, 'editshow'])->name('edit');
+                Route::post('/edit', [ProductCategoryController::class, 'edit'])->name('category_edit');
+                Route::post('/delete', [ProductCategoryController::class, 'deleyeCateogry'])->name('category_delete');
+            });
+
+            Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
+                Route::get('/list', [ProductController::class, 'index'])->name('list');
+                Route::get('/create', [ProductController::class, 'show'])->name('create');
+                Route::post('/create', [ProductController::class, 'create'])->name('product_create');
+                Route::get('/edit/{id}', [ProductController::class, 'editshow'])->name('edit');
+                Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
+                Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
+            });
+
+            Route::group(['prefix' => 'plan', 'as' => 'plan.'], function () {
+                Route::get('/list', [PlanController::class, 'index'])->name('list');
+                Route::get('/create', [PlanController::class, 'show'])->name('create');
+                Route::post('create', [PlanController::class, 'create'])->name('plan_create');
+                Route::get('/edit/{id}', [PlanController::class, 'editshow'])->name('edit');
+                Route::post('/edit', [PlanController::class, 'edit'])->name('plan_edit');
+                Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
+            });
         });
     });
 
@@ -303,8 +326,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
 
         //plans and subscription
         Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
-        Route::get('/plans', [PlanController::class, 'index'])->name('plan.index');
-        Route::get('/plans/{plan}', [PlanController::class, 'show'])->name('plans.show');
+        Route::get('/plans', [PlanController::class, 'getUserPlan'])->name('plan.index');
+        Route::get('/plans/{plan}', [PlanController::class, 'showPlan'])->name('plans.show');
         Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
         Route::get('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.addSubsciption");
 

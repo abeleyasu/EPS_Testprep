@@ -21,10 +21,11 @@ class SubscriptionController extends Controller
 
        $user = User::find($id);
         $customer = Cashier::findBillable(Auth::user()->stripe_id);
-
+        $customer = $this->stripe->customers->allPaymentMethods($user->stripe_id);
+        // dd($customer);
 //        $token = $this->generateAccessToken($card);
-//dd($user->asStripeCustomer());
-        $subscription_obj = $user->newSubscription('primary','plan_Nnjo4zFX8rSxGy')->create($card->id);
+// dd($user->asStripeCustomer());
+        $subscription_obj = $user->newSubscription('default','plan_Nnjo4zFX8rSxGy')->create($card->id);
         dd($subscription_obj);
 
     }

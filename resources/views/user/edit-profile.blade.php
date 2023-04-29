@@ -217,7 +217,6 @@
                     }
                 }
             )
-            console.log('setupIntent -->', setupIntent.payment_method)
             if(error) {
                 cardBtn.disable = false
             } else {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Plan;
 use Illuminate\Validation\Rule;
+use App\Models\Product;
 
 class PlanController extends Controller
 {
@@ -13,21 +14,13 @@ class PlanController extends Controller
     public function __construct() {
         $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
     }
-    public function planList() {
+    public function index() {
         $plans = Plan::get();
         return view('admin.plan.list', ['plans' => $plans]);
     }
 
     public function planTypes() {
         $data =  [
-            [
-                'option' => 'Day',
-                'value' => 'day'
-            ],
-            [
-                'option' => 'Week',
-                'value' => 'week'
-            ],
             [
                 'option' => 'Month',
                 'value' => 'month'
@@ -40,66 +33,70 @@ class PlanController extends Controller
         return json_decode(json_encode($data));
     }
 
-    public function addPlanForm() {
+    public function show() {
         $plantypes = $this->planTypes();
-        return view('admin.plan.add', ['types' => $plantypes]);
+        $products = Product::get();
+        return view('admin.plan.add', ['types' => $plantypes, 'products' => $products]);
     }
 
-    public function createPlan(Request $request) {
+    public function create(Request $request) {
         $rules = [
-            'name' => 'required|unique:plans,name',
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'plan_type' => 'required',
+            'product_id' => 'required',
+            'amount' => 'required|numeric',
+            'interval' => 'required',
         ];
+        if ($request->interval === 'month') {
+            $rules['interval_count'] = 'required|numeric|digits_between:1,12';
+        }
         $customMessages = [
-            'name.required' => 'Plan name is required',
-            'name.unique' => 'Plan name must be unique',
-            'description.required' => 'Description is required',
-            'price.required' => 'Price is required',
-            'price.numeric' => 'Price should be number only',
-            'plan_type.required' => 'Plan type is required',
+            'product_id.required' => 'Product is required',
         ];
         $request->validate($rules, $customMessages);
-        $product = $product = $this->createStripeProduct($request);
-        $createProductPlan = $this->createStripePlan($request, $product['id']);
-        $plan = plan::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-            'stripe_product_id' => $product['id'],
-            'stripe_plan' => $createProductPlan['id'],
-            'plan_type' => $request->plan_type,
-            'price' => $request->price
+        $product = Product::find($request->product_id);
+        $plan = $this->stripe->plans->create([
+            'amount' => $request->amount * 100,
+            'currency' => config('stripe.api_keys.currency'),
+            'interval' => $request->interval,
+            'product' => $product->stripe_product_id,
+            'interval_count' => $request->interval === 'month' ? $request->interval_count : 1
+        ]);
+        $display_amount = $request->amount;
+        if ($request->interval === 'month') {
+            $display_amount = $request->amount / $request->interval_count;
+        }
+        $create = Plan::create([
+            'product_id' => $request->product_id,
+            'stripe_plan_id' => $plan['id'],
+            'interval_count' => $request->interval === 'month' ? $request->interval_count : 1,
+            'interval' => $request->interval,
+            'amount' => $request->amount,
+            'display_amount' => number_format($display_amount, 2, ".", "")
         ]);
 
-        if ($plan) {
-            return redirect()->intended(route('admin.plan.plan_list'));
+        if ($create) {
+            return redirect()->intended(route('admin.plan.list'));
         }
         return back()->withErrors("Unable to create your account")
         ->onlyInput('name', 'description', 'price');
+
     }
 
-    public function updatePlanShow($id) {
+    public function editshow($id) {
         $plan = Plan::find($id);
+        $products = Product::get();
         $plantypes = $this->planTypes();
-        return view('admin.plan.edit', ['plan' => $plan, 'types' => $plantypes]);
+        return view('admin.plan.edit', ['plan' => $plan, 'types' => $plantypes, 'products' => $products]);
     }
 
-    public function editplan(Request $request) {
+    public function edit(Request $request) {
         $rules = [
-            'name' => ['required', Rule::unique('plans', 'name')->ignore($request->id)],
-            'description' => 'required',
-            'price' => 'required|numeric',
-            'plan_type' => 'required',
+            'product_id' => 'required',
+            'amount' => 'required|numeric',
+            'interval' => 'required',
+            'interval_count' => 'required_if:interval:month|numeric|digits_between:1,12'
         ];
         $customMessages = [
-            'name.required' => 'Plan name is required',
-            'name.unique' => 'Plan name must be unique',
-            'description.required' => 'Description is required',
-            'price.required' => 'Price is required',
-            'price.numeric' => 'Price should be number only',
-            'plan_type.required' => 'Plan type is required',
+            'product_id.required' => 'Product is required',
         ];
         $request->validate($rules, $customMessages);
         $plan = Plan::find($request->id);
@@ -121,32 +118,15 @@ class PlanController extends Controller
         return "success";
     }
 
-    public function createStripeProduct($request) {
-        return $this->stripe->products->create([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
-    }
-
-    public function createStripePlan($request, $stripe_product_id) {
-        return $this->stripe->plans->create([
-            'amount' => $request->price * 100,
-            'currency' => config('stripe.api_keys.currency'),
-            'interval' => $request->plan_type,
-            'product' => $stripe_product_id
-        ]);
-    }
-
-    public function index()
-    {
-        $plans = Plan::get();
+    public function getUserPlan() {
+        // $plans = Plan::get();
+        $products = Product::with('plans')->get();
         $intent = auth()->user()->createSetupIntent();
-
-        return view("user.plan", compact("plans",'intent'));
+        // dd($plans);
+        return view("user.plan", compact("products",'intent'));
     }
 
-
-    public function show(Plan $plan, Request $request)
+    public function showPlan(Plan $plan, Request $request)
     {
         $intent = auth()->user()->createSetupIntent();
         return view("user.subscription", compact("plan", "intent"));

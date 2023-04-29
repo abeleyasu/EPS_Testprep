@@ -6,29 +6,42 @@
 <main id="main-container">
   <div class="content">
     <div class="row justify-content-center">
-      @if(count($plans) === 0)
+      @if(count($products) === 0)
       <div class="alert alert-warning">There is no plan available</div>
       @endif
       <div class="row">
-        @foreach($plans as $plan)
+        @foreach($products as $product)
           <div class="col-md-6 col-xl-3">
             <div class="block block-rounded block-link-shadow text-center">
               <div class="block-header">
-                <h3 class="block-title">{{ $plan->name }}</h3>
+                <h3 class="block-title">{{ $product->title }}</h3>
               </div>
-              <div class="block-content bg-body-light">
-                <div class="py-2">
-                  <p class="h1 fw-bold mb-2">${{ $plan->price }}</p>
-                  <p class="h6 text-muted">Per <span class="text-capitalize">{{ $plan->plan_type }}</span></p>
+              <div class="block-header">
+                <h6>{{ $product->description }}</h6>
+              </div>
+              @foreach($product->plans as $plan)
+                <div class="block-content bg-body-light">
+                  <div class="py-2">
+                    <p class="h1 fw-bold mb-2">${{ $plan->display_amount }}
+                      @if($plan->interval === 'month')
+                        <p class="text-muted">/Per <span class="text-capitalize">{{ $plan->interval }}</span></p>
+                      @endif
+                    </p>
+                    @if($plan->interval === 'month')
+                      <p class="h6 text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
+                    @else
+                      <p class="h6 text-muted"><span class="text-capitalize">/year</span></p>
+                    @endif
+                  </div>
                 </div>
+              @endforeach
+              <div class="block-content block-content-full bg-body-light">
+                <a href="{{ route('plans.show', $product->id) }}" class="btn btn-secondary px-4">Choose</a>
               </div>
               <div class="block-content">
                 <div class="fs-sm py-2">
-                  <p>{{ $plan->description }}</p>
+                  <p>test</p>
                 </div>
-              </div>
-              <div class="block-content block-content-full bg-body-light">
-                <a href="{{ route('plans.show', $plan->slug) }}" class="btn btn-secondary px-4">Choose</a>
               </div>
             </div>
           </div>
@@ -40,7 +53,7 @@
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
-  const plans = '{{ $plans }}';
+  const plans = '{{ $products }}';
   if (plans.length > 0) {
     // const stripe = Stripe('{{ env('STRIPE_KEY') }}')
     // const elements = stripe.elements()

@@ -18,37 +18,31 @@
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Product List</h3>
+                <h3 class="block-title">Category List</h3>
             </div>
             <div class="block-content block-content-full">
                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
                     <thead>
                         <tr>
-                            <th>Plan Id</th>
-                            <th>Interval</th>
-                            <th>Interval Count</th>
-                            <th>Currency</th>
-                            <th>Price</th>
+                            <th>Name</th>
+                            <th class="" style="width: 60%;">Plan key</th>
                             <th style="width: 15%;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($plans as $plan)
+                        @foreach($categories as $category)
                         <tr>
-                            <td class="fw-semibold fs-sm">{{ $plan->stripe_plan_id }}</td>
+                            <td class="fw-semibold fs-sm">{{ $category->title }}</td>
                             <td class="fs-sm">
-                                {{ $plan->interval }}
+                                {{ $category->description }}
                             </td>
-                            <td class="">{{ $plan->interval_count }}</td>
-                            <td class="">{{ $plan->currency }}</td>
-                            <td class="">{{ $plan->amount }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <!-- <a href="{{route('admin.plan.edit', ['id' => $plan->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit User">
+                                    <a href="{{route('admin.category.edit', ['id' => $category->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit User">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
-                                    </a> -->
-                                    <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="{{$plan->id}}" data-bs-toggle="tooltip" title="Delete User">
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="{{$category->id}}" data-bs-toggle="tooltip" title="Delete User">
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
                                 </div>
@@ -71,9 +65,9 @@
 
     <script>
         $('.delete-user').click(function(){
-            if(confirm("Are you sure to delete this plan?") == true){
+            if(confirm("Are you sure to delete this category?") == true){
                 $.ajax({
-                    'url': "{{route('admin.plan.plan_delete')}}",
+                    'url': "{{route('admin.category.category_delete')}}",
                     'type': "POST",
                     'data': {id: $(this).data('id')},
                     'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}

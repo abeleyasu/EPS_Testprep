@@ -9,18 +9,17 @@ class Plan extends Model
 {
     use HasFactory;
 
+    protected $table = 'product_plan';
+
     protected $fillable = [
         'name',
-        'slug',
-        'stripe_product_id',
-        'stripe_plan',
-        'plan_type',
-        'price',
-        'description',
+        'product_id',
+        'stripe_plan_id',
+        'interval_count',
+        'interval',
+        'currency',
+        'amount',
+        'display_amount',
+        'status'
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
 }
