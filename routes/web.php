@@ -180,6 +180,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
         Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
+        Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
