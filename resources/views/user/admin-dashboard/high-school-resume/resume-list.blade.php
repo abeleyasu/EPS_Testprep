@@ -8,13 +8,15 @@
             <div class="bg-black-10">
                 <div class="content content-full text-center">
                     <br>
-                    <h1 class="h2 text-white mb-0">High School Resume Tool</h1>
+                    <h1 class="h2 text-white mb-0">High School Resume</h1>
                     <br>
                 </div>
             </div>
         </div>
         <div class="">
             <div class="block-content resume-list-table">
+                <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal"
+                    data-bs-target="#add_new_resume" onclick="window.location.href='{{ route('admin-dashboard.highSchoolResume.personalInfo') }}'">+ Add Resume</button>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-vcenter" id="resumeTable">
                         <thead>

@@ -14,7 +14,8 @@
         <div>
             <!-- Close Sidebar, Visible only on mobile screens -->
             <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-            <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
+            <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1" data-toggle="layout" data-action="sidebar_close"
+                href="javascript:void(0)">
                 <i class="fa fa-fw fa-times"></i>
             </a>
             <!-- END Close Sidebar -->
@@ -41,7 +42,8 @@
                     </a>    
                 </li> -->
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['courses.index', 'courses.detail']) ? 'active' : '' }}" href="{{ route('courses.index') }}">
+                    <a class="nav-main-link {{ Route::is(['courses.index', 'courses.detail']) ? 'active' : '' }}"
+                        href="{{ route('courses.index') }}">
                         <i class="nav-main-link-icon si si-book-open"></i>
                         <span class="nav-main-link-name">Courses</span>
                     </a>
@@ -55,13 +57,15 @@
                 </li>
 
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}" href="{{ route('test_prep_dashboard') }}">
+                    <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}"
+                        href="{{ route('test_prep_dashboard') }}">
                         <i class="nav-main-link-icon si si-book-open"></i>
                         <span class="nav-main-link-name">Test Prep</span>
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}" href="{{ route('test-review.review') }}">
+                    <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}"
+                        href="{{ route('test-review.review') }}">
                         <i class="nav-main-link-icon si si-book-open"></i>
                         <span class="nav-main-link-name">Test Review</span>
                     </a>
@@ -73,14 +77,21 @@
                     </a>
                 </li> -->
                 <li class="nav-main-item {{ Route::is(['admin-dashboard.*']) ? 'open' : '' }}">
-                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                        aria-expanded="false" href="#">
                         <i class="nav-main-link-icon si si-briefcase"></i>
                         <span class="nav-main-link-name">Admissions dashboard</span>
                     </a>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.personalInfo') ? 'active' : '' }}" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}">
+                            {{-- <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.personalInfo') ? 'active' : '' }}"
+                                href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}">
                                 <i class="nav-main-link-icon si si-pencil"></i>
+                                <span class="nav-main-link-name">High school resume</span>
+                            </a> --}}
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') || Route::is('admin-dashboard.highSchoolResume.personalInfo') || Route::is('admin-dashboard.highSchoolResume.educationInfo') || Route::is('admin-dashboard.highSchoolResume.honors') || Route::is('admin-dashboard.highSchoolResume.activities') || Route::is('admin-dashboard.highSchoolResume.employmentCertification') || Route::is('admin-dashboard.highSchoolResume.featuresAttributes') || Route::is('admin-dashboard.highSchoolResume.preview') ? 'active' : '' }}"
+                                href="{{ route('admin-dashboard.highSchoolResume.list') }}">
+                                <i class="nav-main-link-icon si si-list"></i>
                                 <span class="nav-main-link-name">High school resume</span>
                             </a>
                         </li>
@@ -100,7 +111,7 @@
                         </li>
 
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="{{route('user.cost_comparison')}}">
+                            <a class="nav-main-link" href="#">
                                 <i class="nav-main-link-icon si si-calculator"></i>
                                 <span class="nav-main-link-name">Cost Comparison tool</span>
                             </a>
@@ -113,12 +124,13 @@
                             </a>
                         </li>
 
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}" href="{{ route('admin-dashboard.highSchoolResume.list') }}">
+                        {{-- <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}"
+                                href="{{ route('admin-dashboard.highSchoolResume.list') }}">
                                 <i class="nav-main-link-icon si si-list"></i>
                                 <span class="nav-main-link-name">Resume listing</span>
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- <li class="nav-main-item">
                             <a class="nav-main-link"
@@ -131,48 +143,54 @@
 
 
                         {{-- <li class="nav-main-item {{ Route::is('admin-dashboard.*') ? 'open' : '' }}">
-                        <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
-                            <i class="nav-main-link-icon si si-graduation"></i>
-                            <span class="nav-main-link-name">Admissions dashboard</span>
-                        </a>
-                        <ul class="nav-main-submenu">
-                            <li class="nav-main-item">
-                                <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.personalInfo') ? 'active' : '' }}" href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}">
-                                    <i class="nav-main-link-icon si si-book-open"></i>
-                                    <span class="nav-main-link-name">High School Resume tool</span>
-                                </a>
-                            </li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}" href="{{ route('admin-dashboard.highSchoolResume.list') }}">
-                                    <i class="fa fa-2x fa-address-card"></i>
-                                    <span class="nav-main-link-name">Resume listing</span>
-                                </a>
-                            </li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link {{ Route::is('admin-dashboard.initialCollegeList') ? 'active' : '' }}" href="{{ route('admin-dashboard.initialCollegeList') }}">
-                                    <i class="fa fa-2x fa-rectangle-list"></i>
-                                    <span class="nav-main-link-name">Initial College List tool</span>
-                                </a>
-                            </li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link {{ Route::is('admin-dashboard.collegeApplicationDeadline') ? 'active' : '' }}" href="{{ route('admin-dashboard.collegeApplicationDeadline') }}">
-                                    <i class="fa fa-2x fa-toolbox"></i>
-                                    <span class="nav-main-link-name">College Application Deadline Organizer
-                                        tool</span>
-                                </a>
-                            </li>
-                            <li class="nav-main-item">
-                                <a class="nav-main-link {{ Route::is('admin-dashboard.costComparison') ? 'active' : '' }}" href="{{ route('admin-dashboard.costComparison') }}">
-                                    <i class="far fa-2x fa-money-bill-1"></i>
-                                    <span class="nav-main-link-name">Cost Comparison tool</span>
-                                </a>
-                            </li>
-                        </ul>
-                </li> --}}
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                                aria-expanded="false" href="#">
+                                <i class="nav-main-link-icon si si-graduation"></i>
+                                <span class="nav-main-link-name">Admissions dashboard</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.personalInfo') ? 'active' : '' }}"
+                                        href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}">
+                                       <i class="nav-main-link-icon si si-book-open"></i>
+                                        <span class="nav-main-link-name">High School Resume tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') ? 'active' : '' }}"
+                                        href="{{ route('admin-dashboard.highSchoolResume.list') }}">
+                                        <i class="fa fa-2x fa-address-card"></i>
+                                        <span class="nav-main-link-name">Resume listing</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.initialCollegeList') ? 'active' : '' }}"
+                                        href="{{ route('admin-dashboard.initialCollegeList') }}">
+                                        <i class="fa fa-2x fa-rectangle-list"></i>
+                                        <span class="nav-main-link-name">Initial College List tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.collegeApplicationDeadline') ? 'active' : '' }}"
+                                        href="{{ route('admin-dashboard.collegeApplicationDeadline') }}">
+                                        <i class="fa fa-2x fa-toolbox"></i>
+                                        <span class="nav-main-link-name">College Application Deadline Organizer
+                                            tool</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{ Route::is('admin-dashboard.costComparison') ? 'active' : '' }}"
+                                        href="{{ route('admin-dashboard.costComparison') }}">
+                                        <i class="far fa-2x fa-money-bill-1"></i>
+                                        <span class="nav-main-link-name">Cost Comparison tool</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li> --}}
 
-            </ul>
+                    </ul>
 
-            </li>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->
