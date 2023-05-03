@@ -245,6 +245,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 });
             });
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
+            Route::post('/college_save', [CollegeApplicationDeadlineController::class, 'college_save'])->name('college_save');
+            Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
                 Route::controller(SelectingSearchParamsController::class)->group(function () {
                     Route::get('/selecting-search-params', 'index')->name('selectingSearchParams');
