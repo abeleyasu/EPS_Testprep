@@ -106,12 +106,11 @@
                                 <div>
                                 @if(isset($personal_info->street_address_one) || isset($personal_info->street_address_two) || isset($personal_info->zip_code) || isset($personal_info->state) || isset($personal_info->city))
                                         <div>
-                                            {{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : '' }}
-                                            @if(isset($personal_info->street_address_one)) @endif
-                                            {{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : '' }},
-                                            @if(isset($personal_info->street_address_two)) @endif
-                                            {{ $personal_info->city . ',' . $personal_info->state }}
-                                            {{ isset($personal_info->zip_code) ? $personal_info->zip_code : '' }}
+											{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one . ',' : '' }}
+											{{ isset($personal_info->street_address_two) ? $personal_info->street_address_two . ',' : '' }}
+											{{ $personal_info->city . ',' }}
+											{{ $personal_info->state }}
+											{{ isset($personal_info->zip_code) ? $personal_info->zip_code : '' }}
                                         </div>
                                 @endif
                                 </div>
@@ -173,7 +172,7 @@
 														<li class="list-type">
 															<span>Skills:</span>
 															@php
-															$skills = implode(", ", array_column($featuredAttribute->featured_skills_data, "skill"));
+															$skills = implode("; ", array_column($featuredAttribute->featured_skills_data, "skill"));
 																echo "$skills";
 																
 															@endphp
@@ -183,7 +182,7 @@
 														<li class="list-type">
 															<span>Awards:</span>
 															@php
-															$awards = implode(", ", array_column($featuredAttribute->featured_awards_data, "award"));
+															$awards = implode("; ", array_column($featuredAttribute->featured_awards_data, "award"));
 															echo "$awards";
 															@endphp
 														</li>
@@ -192,7 +191,7 @@
 														<li class="list-type">
 															<span>Languages:</span>
 															@php
-															$languages = implode(", ", array_column($featuredAttribute->featured_languages_data, "language"));
+															$languages = implode("; ", array_column($featuredAttribute->featured_languages_data, "language"));
 															echo "$languages";
 															@endphp
 														</li>
@@ -375,10 +374,16 @@
 										<ul class="list">
 											@if (!empty($demonstrated_data))
 												@foreach ($demonstrated_data as $data)
-													<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-													{{ $data['position'] }}
-													@if(!empty($data['interest'])), {{ $data['interest'] }}@endif
-													@if(!empty($data['details'])), {{ $data['details'] }}@endif 
+													<li class="list-type">
+														<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
+														{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['details'])),@endif
+														@if(!empty($data['interest'])) 
+															{{ $data['interest'] }}@if(!empty($data['details'])),@endif
+														@endif
+														@if(!empty($data['details']))
+															{{ $data['details'] }}
+														@endif 
+													</li>
 												@endforeach
 											@endif
 											@if(!empty($leadership_data))
@@ -406,10 +411,13 @@
 															<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
 														@endif
 														@if(!empty($data['position']))
-															{{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['honor_award'])),@endif
+															{{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['location']) || !empty($data['honor_award'])),@endif
 														@endif
 														@if(!empty($data['activity']))
-															{{ $data['activity'] }}@if(!empty($data['honor_award'])),@endif
+															{{ $data['activity'] }}@if(!empty($data['location']) || !empty($data['honor_award'])),@endif
+														@endif
+														@if(!empty($data['location']))
+															{{ $data['location'] }}@if(!empty($data['honor_award'])),@endif
 														@endif
 														@if(!empty($data['honor_award']))
 															{{ $data['honor_award'] }}
@@ -430,22 +438,25 @@
 									<div class="preview-list ps-0">
 										<h3 class='resume-heading'>ATHLETICS</h3>
 										<ul class="list">
-										@foreach ($athletics_data as $key => $data)
-											<li class="list-type">
-												@if(!empty($data['grade']))
-													<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
-												@endif
-												@if(isset($data['position']) && !empty($data['position']))
-													{{ $data['position'] }}@if($key !== count($athletics_data) - 1),@endif
-												@endif
-												@if(isset($data['activity']) && !empty($data['activity']))
-													{{ $data['activity'] }}@if($key !== count($athletics_data) - 1),@endif
-												@endif
-												@if(isset($data['honor']) && !empty($data['honor']))
-													{{ $data['honor'] }}
-												@endif
-											</li>
-										@endforeach
+											@foreach ($athletics_data as $key => $data)
+												<li class="list-type">
+													@if(!empty($data['grade']))
+														<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}:</b>
+													@endif
+													@if(isset($data['position']) && !empty($data['position']))
+														{{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['location']) || !empty($data['honor'])),@endif
+													@endif
+													@if(isset($data['activity']) && !empty($data['activity']))
+														{{ $data['activity'] }}@if(!empty($data['location']) || !empty($data['honor'])),@endif
+													@endif
+													@if(isset($data['location']) && !empty($data['location']))
+														{{ $data['location'] }}@if(!empty($data['honor'])),@endif
+													@endif
+													@if(isset($data['honor']) && !empty($data['honor']))
+														{{ $data['honor'] }}
+													@endif
+												</li>
+											@endforeach
 										</ul>
 									</div>
 								</div>
