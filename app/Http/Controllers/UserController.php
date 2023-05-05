@@ -238,4 +238,32 @@ class UserController extends Controller
 	{
 		return view('user.cost_comparison');
 	}
+
+	public function compare(Request $request)
+	{
+		$colleges = $request->input('colleges');
+		$housingA = $request->input('housingA');
+		$foodA = $request->input('foodA');
+		$optionA1 = $request->input('optionA1');
+		$optionA2 = $request->input('optionA2');
+		$housingB = $request->input('housingB');
+		$foodB = $request->input('foodB');
+		$optionB1 = $request->input('optionB1');
+		$optionB2 = $request->input('optionB2');
+		$creditsA = $request->input('creditsA');
+		$creditsB = $request->input('creditsB');
+
+		$totalA = $housingA + $foodA + $optionA1 + $optionA2 - $creditsA;
+		$totalB = $housingB + $foodB + $optionB1 + $optionB2 - $creditsB;
+
+		if ($totalA == $totalB) {
+			$result = "Both colleges cost the same.";
+		} else if ($totalA < $totalB) {
+			$result = $colleges['A'] . " is cheaper than " . $colleges['B'] . " by " . ($totalB - $totalA) . ".";
+		} else {
+			$result = $colleges['B'] . " is cheaper than " . $colleges['A'] . " by " . ($totalA - $totalB) . ".";
+		}
+
+		return view('user.cost_comparison', ['result' => $result]);
+	}
 }

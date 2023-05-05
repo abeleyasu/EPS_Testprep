@@ -15,14 +15,25 @@ class UserCalendarController extends Controller
     {
         $title = $request->title;
         $color = $request->color;
+        $time = $request->time;
+        $desc = $request->desc;
         $start_date = $request->start_date;
+
+        //sbz change starts
+        $event_start_date = strtotime($request->start_date);
+        $event_time = strtotime($time);
+        $start_date = date('Y-m-d', $event_start_date) . ' ' . date('H:i:s', $event_time);
+        //sbz change ends
+
         $end_date = isset($request->end_date) ? $request->end_date : null;
 
         $calendarEvent = CalendarEvent::create([
             "user_id" => Auth::id(),
             "title" => $title,
+            "description" => $desc,
             "color" => $color,
-            "is_assigned" => 1
+            "is_assigned" => 1,
+            'event_time' => $time
         ]);
 
         UserCalendar::create([
@@ -48,6 +59,8 @@ class UserCalendarController extends Controller
             if(!empty($event->event)) {
                 $event_arr['id'] = $event->id;
                 $event_arr['title'] = $event->event->title;
+                $event_arr['description'] = $event->event->description;
+                $event_arr['time'] = $event->event->event_time;
                 $event_arr['start'] = $event->start_date;
                 $event_arr['color'] = $this->findColor($event->event->color);
                 $event_arr['end'] = isset($event->end_date) ? date('Y-m-d H:i:s', strtotime('+1 day', strtotime($event->end_date))) : null;
@@ -128,11 +141,25 @@ class UserCalendarController extends Controller
     {
         $title = $request->title;
         $color = $request->color;
+        $time = $request->time;
+        $desc = $request->desc;
 
         CalendarEvent::whereId($id)->update([
             "title" => $title,
-            "color" => $color
+            "color" => $color,
+            "description" => $desc,
+            "event_time" => $time
         ]);
+
+        $userCalendar = UserCalendar::where('event_id', $id)->first();
+        if ($userCalendar) {
+            $event_start_date = strtotime($userCalendar->start_date);
+            $event_time = strtotime($time);
+            $start_date = date('Y-m-d', $event_start_date) . ' ' . date('H:i:s', $event_time);
+            // Update the start_date time of the UserCalendar record
+            $userCalendar->start_date = $start_date;
+            $userCalendar->save();
+        }
 
         return response()->json(["success" => true, "data" => $this->fetchAllEvents(), "message" => "Event updated successfully"]);
     }

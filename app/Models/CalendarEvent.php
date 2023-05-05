@@ -14,7 +14,9 @@ class CalendarEvent extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'description',
         'is_assigned',
-        'color'
+        'color',
+        'event_time'
     ];
 }

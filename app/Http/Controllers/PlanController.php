@@ -140,9 +140,11 @@ class PlanController extends Controller
         //     ]);
         // return redirect($subscription_obj->url);
         $intent = auth()->user()->createSetupIntent();
-        $cards = $this->stripe->customers->allPaymentMethods($user->stripe_id);
-        $customer = $this->stripe->customers->retrieve($user->stripe_id);
-        return view("user.subscription", compact("plan", "intent","cards"));
+        if ($user->stripe_id) {
+            $cards = $this->stripe->customers->allPaymentMethods($user->stripe_id);
+            $customer = $this->stripe->customers->retrieve($user->stripe_id);
+        }
+        return view("user.subscription", compact("plan", "intent"));
     }
 
 

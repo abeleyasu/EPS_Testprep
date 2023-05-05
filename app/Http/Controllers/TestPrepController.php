@@ -36,6 +36,8 @@ class TestPrepController extends Controller
             if(!empty($event->event)) {
                 $event_arr['id'] = $event->id;
                 $event_arr['title'] = $event->event->title;
+                $event_arr['description'] = $event->event->description;
+                $event_arr['time'] = $event->event->event_time;
                 $event_arr['start'] = $event->start_date;
                 $event_arr['color'] = $this->findColor($event->event->color);
                 $event_arr['end'] = isset($event->end_date) ? date('Y-m-d H:i:s', strtotime('+1 day', strtotime($event->end_date))) : null;
@@ -43,6 +45,7 @@ class TestPrepController extends Controller
                 array_push($final_arr, $event_arr);
             }
         }
+        // echo '<pre>';print_r($final_arr);exit;
 
         return view('student.test-prep-dashboard.dashboard' , compact('getAllPracticeTests'), compact('events', 'final_arr'));
     }

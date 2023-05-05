@@ -53,6 +53,7 @@
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
+
                         <div class="mb-4 col-md-5">
                             <label for="">New Password</label>
                             <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('new_password') ? 'is-invalid' : ''}}" id="new_password" name="new_password" placeholder="New Password">

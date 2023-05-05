@@ -63,24 +63,24 @@
   
         cardBtn.disabled = true
         const { setupIntent, error } = await stripe.confirmCardSetup(
-            cardBtn.dataset.secret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: {
-                      name: cardHolderName.value
-                    }   
-                }
+          cardBtn.dataset.secret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: {
+                name: cardHolderName.value
+              }   
             }
+          }
         )
         if(error) {
             cardBtn.disable = false
         } else {
-            let token = document.createElement('input')
-            token.setAttribute('type', 'hidden')
-            token.setAttribute('name', 'payment_method')
-            token.setAttribute('value', setupIntent.payment_method)
-            form.appendChild(token)
-            form.submit();
+          let token = document.createElement('input')
+          token.setAttribute('type', 'hidden')
+          token.setAttribute('name', 'payment_method')
+          token.setAttribute('value', setupIntent.payment_method)
+          form.appendChild(token)
+          form.submit();
         }
     })
 </script>
