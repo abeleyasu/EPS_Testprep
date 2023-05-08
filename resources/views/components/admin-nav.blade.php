@@ -116,7 +116,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>                   
+                </li>
                 <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit','categories.index','categories.create','categories.edit'])) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
@@ -221,35 +221,56 @@
                         <span class="nav-main-link-name">Plan Management</span>
                     </a>
                     <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is('admin.category.list') ? 'active' : ''}}" href="{{route('admin.category.list')}}">
-                                <span class="nav-main-link-name">List Category</span>
+                        <li class="nav-main-item {{ Route::is(['admin.category.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                <span class="nav-main-link-name">Category Management</span>
                             </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is('admin.category.list') ? 'active' : ''}}" href="{{route('admin.category.list')}}">
+                                        <span class="nav-main-link-name">List</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is('admin.category.create') ? 'active' : ''}}" href="{{route('admin.category.create')}}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is('admin.category.create') ? 'active' : ''}}" href="{{route('admin.category.create')}}">
-                                <span class="nav-main-link-name">Create Product Category</span>
+                        <li class="nav-main-item {{ Route::is(['admin.product.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                <span class="nav-main-link-name">Product Management</span>
                             </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is('admin.product.list') ? 'active' : ''}}" href="{{route('admin.product.list')}}">
+                                        <span class="nav-main-link-name">List</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is('admin.product.create') ? 'active' : ''}}" href="{{route('admin.product.create')}}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is('admin.product.list') ? 'active' : ''}}" href="{{route('admin.product.list')}}">
-                                <span class="nav-main-link-name">List Product</span>
+                        <li class="nav-main-item {{ Route::is(['admin.plan.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                                <span class="nav-main-link-name">Plan Management</span>
                             </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is('admin.product.create') ? 'active' : ''}}" href="{{route('admin.product.create')}}">
-                                <span class="nav-main-link-name">Create Product</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is('admin.plan.list') ? 'active' : ''}}" href="{{route('admin.plan.list')}}">
-                                <span class="nav-main-link-name">List Plan</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is('admin.plan.create') ? 'active' : ''}}" href="{{route('admin.plan.create')}}">
-                                <span class="nav-main-link-name">Create Plan</span>
-                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is('admin.plan.list') ? 'active' : ''}}" href="{{route('admin.plan.list')}}">
+                                        <span class="nav-main-link-name">List</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link {{Route::is('admin.plan.create') ? 'active' : ''}}" href="{{route('admin.plan.create')}}">
+                                        <span class="nav-main-link-name">Create</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

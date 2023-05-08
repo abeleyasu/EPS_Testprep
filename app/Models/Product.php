@@ -21,7 +21,13 @@ class Product extends Model
         'status',
     ];
 
-    public function plans() {
-        return $this->hasMany(Plan::class, 'product_id','id');
+    public function plans()
+    {
+        return $this->hasMany(Plan::class, 'product_id', 'id');
+    }
+
+    public function inclusions()
+    {
+        return $this->hasMany(ProductInclusion::class, 'product_id', 'id');
     }
 }

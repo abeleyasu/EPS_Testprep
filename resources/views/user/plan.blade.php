@@ -41,7 +41,9 @@
 
               <div class="block-content">
                 <div class="fs-sm py-2">
-                  <p>test</p>
+                    @foreach($product->inclusions as $inc)
+                        <p class="text-start"><i class="fa fa-fw fa-check me-1"></i> {!! $inc->inclusion !!}</p>
+                    @endforeach
                 </div>
               </div>
             </div>

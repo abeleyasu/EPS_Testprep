@@ -43,6 +43,7 @@
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
+                    @include('admin.plan.product.inclusion')
                     <div class="row mb-4">
                         <div class="col-md-6 col-xl-5">
                             <button type="submit" class="btn w-100 btn-alt-success">

@@ -122,7 +122,7 @@ class PlanController extends Controller
 
     public function getUserPlan() {
         // $plans = Plan::get();
-        $products = Product::with('plans')->get();
+        $products = Product::with(['plans', 'inclusions'])->get();
         $intent = auth()->user()->createSetupIntent();
         // dd($plans);
         return view("user.plan", compact("products",'intent'));
