@@ -436,7 +436,7 @@
 						</span>
 					</div>
 				@endif
-				{{-- @if (!empty($dual_citizenship_data))
+				@if (!empty($dual_citizenship_data))
 					<div class="preview-list">
 						<span class="span_text">
 							<span class="span_bold">Dual Citizen:</span>
@@ -446,7 +446,7 @@
 							@endphp
 						</span>
 					</div>
-				@endif --}}
+				@endif
 			</div>
 		</div>
 		@endif

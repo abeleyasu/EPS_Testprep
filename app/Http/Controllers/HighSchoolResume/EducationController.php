@@ -175,7 +175,7 @@ class EducationController extends Controller
                 //     $ap_array = array_replace($data['ap_courses'], [$index => $ap_info->id]);
                 //     $data['ap_courses'] = $ap_array;
                 // }
-                if(isset($ib_data['name_of_ap_course']) && !empty($ib_data['name_of_ap_course'])){
+                if(isset($ap_data['name_of_ap_course']) && !empty($ap_data['name_of_ap_course'])){
                     if(!in_array($ap_data['name_of_ap_course'], $education_courses_ids)){
                         EducationCourse::create(['name' => $ap_data['name_of_ap_course'] , 'course_type' => 2 , 'user_id' => Auth::id()]);
                     }
@@ -385,7 +385,7 @@ class EducationController extends Controller
                 //     $ap_array = array_replace($data['ap_courses'], [$index => $ap_info->id]);
                 //     $data['ap_courses'] = $ap_array;
                 // }
-                if(isset($ib_data['name_of_ap_course']) && !empty($ib_data['name_of_ap_course'])){
+                if(isset($ap_data['name_of_ap_course']) && !empty($ap_data['name_of_ap_course'])){
                     if(!in_array($ap_data['name_of_ap_course'], $education_courses_ids)){
                         EducationCourse::create(['name' => $ap_data['name_of_ap_course'] , 'course_type' => 2 , 'user_id' => Auth::id()]);
                     }

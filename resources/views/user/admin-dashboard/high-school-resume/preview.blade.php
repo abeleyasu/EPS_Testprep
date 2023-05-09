@@ -160,7 +160,7 @@
                             <div class="printableArea_main">
 								<div class="row">
 									<div class="col">
-										<div class="position-relative preview-list ps-0 pb-3 {{ !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($featured_skills_data) ? '' : 'd-none' }}">
+										<div class="position-relative preview-list ps-0 {{ !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($featured_skills_data) ? '' : 'd-none' }}">
 										@if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
 											<div class="mb-0 border-bottom-0">
 												@if ($featuredAttribute)
@@ -193,6 +193,15 @@
 															@php
 															$languages = implode("; ", array_column($featuredAttribute->featured_languages_data, "language"));
 															echo "$languages";
+															@endphp
+														</li>
+													@endif
+													@if (!empty($dual_citizenship_data))
+														<li class="list-type">
+															<span>Dual Citizen:</span>
+															@php
+															$dualCitizenship = implode("; ", array_column($featuredAttribute->dual_citizenship_data, "country"));
+															echo "$dualCitizenship";
 															@endphp
 														</li>
 													@endif

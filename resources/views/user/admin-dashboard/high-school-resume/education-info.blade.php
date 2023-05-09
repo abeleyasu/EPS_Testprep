@@ -872,7 +872,7 @@
         });
 
         let test_taken_status = "{{ isset($education->test_taken_status) ? $education->test_taken_status : '' }}";
-        if(test_taken_status != '') {
+        if(test_taken_status == 1) {
             $(".testing_data_table").find("input,button,textarea,select").attr("disabled", "disabled");
             $('#testing-add-btn-id').css('pointer-events', 'none');
         }
