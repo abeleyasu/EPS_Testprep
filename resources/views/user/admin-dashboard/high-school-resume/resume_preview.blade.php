@@ -525,13 +525,19 @@
                         @if (!empty($education->ib_courses))
                             <span class="span_text">
                                 <span class="span_bold">IB Courses:</span>
-                                    {{ implode(',', $ib_courses) }}
+                                    {{-- {{ implode(',', $ib_courses) }} --}}
+                                    @foreach ($education->ib_courses as $ib_course)
+                                        <b>{{ isset($ib_course['name_of_ib_course']) ? $ib_course['name_of_ib_course'] : '' }}</b> : {{ isset($ib_course['score_of_test']) ? $ib_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
+                                    @endforeach
                             </span>
                         @endif
                         @if (!empty($education->ap_courses))
                             <span class="span_text">
                                 <span class="span_bold">AP Courses:</span>
-                                    {{ implode(',', $ap_courses) }}
+                                    {{-- {{ implode(',', $ap_courses) }} --}}
+                                    @foreach ($education->ap_courses as $ap_course)
+                                        <b>{{ isset($ap_course['name_of_ap_course']) ? $ap_course['name_of_ap_course'] : '' }}</b> : {{ isset($ap_course['score_of_test']) ? $ap_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
+                                    @endforeach
                             </span>
                         @endif
                         @if (!empty($education->honor_course_data))
@@ -612,9 +618,12 @@
 						@foreach ($demonstrated_data as $data)
 							<span class="span_text">
 								<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-								{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['details'])),@endif
+								{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['location']) || !empty($data['details'])),@endif
                                 @if(!empty($data['interest'])) 
-                                    {{ $data['interest'] }}@if(!empty($data['details'])),@endif
+                                    {{ $data['interest'] }}@if(!empty($data['details']) || !empty($data['location'])),@endif
+                                @endif
+                                @if(!empty($data['location'])) 
+                                    {{ $data['location'] }}@if(!empty($data['details'])),@endif
                                 @endif
                                 @if(!empty($data['details']))
                                     {{ $data['details'] }}
@@ -629,13 +638,16 @@
 									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
                                 @endif
                                 @if(!empty($data['status']))
-                                        {{ $data['status'] }},
+                                    {{ $data['status'] }}@if(!empty($data['position'] || !empty($data['location']) || !empty($data['organization']))),@endif
                                 @endif
                                 @if(!empty($data['position']))
-                                        {{ $data['position'] }},
+                                    {{ $data['position'] }}@if(!empty($data['location']) || !empty($data['organization'])),@endif
+                                @endif
+                                @if(!empty($data['location']))
+                                    {{ $data['location'] }}@if(!empty($data['organization'])),@endif
                                 @endif
                                 @if(!empty($data['organization']))
-                                        {{ $data['organization'] }}
+                                    {{ $data['organization'] }}
                                 @endif
                             </span>
                         @endforeach  

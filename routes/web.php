@@ -267,6 +267,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
             Route::get('/answer-type', [TestReviewController::class, 'answerType'])->name('answer-type');
         });
 
+        Route::get('/education/courses/list', [EducationController::class, 'getEducationCourseNameList'])->name('educationCourseList');
         Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
         Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');
         Route::get('/grades/list', [GradesController::class, 'getGradeList'])->name('gradesList');
