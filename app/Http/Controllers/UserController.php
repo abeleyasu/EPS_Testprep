@@ -93,6 +93,9 @@ class UserController extends Controller
         $this->states = States::get();
 		$intent = auth()->user()->createSetupIntent();
         if ($user) {
+			$cards = [
+				'data' => []
+			];
 			if (Auth::user()->stripe_id) {
 				$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
 			}

@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('product_inclusion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('product');
+            $table->integer('product_id');
             $table->string('inclusion')->nullable();
             $table->timestamps();
         });

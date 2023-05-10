@@ -3,46 +3,97 @@
 @section('title', 'Plans : CPS')
 
 @section('user-content')
+<style>
+  .inclusion-check-icon {
+    font-size: 15px;
+    color: #B2CB20;
+    font-weight: 900;
+  }
+  .inclusion {
+    font-size: 15px;
+  }
+  .product-list {
+    padding: 35px 5px;
+  }
+  .product-title {
+    color: #384141;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 0px;
+    letter-spacing: 0px;
+    margin: 0px;
+    min-height: auto;
+    text-transform: none;
+  }
+  .product-description {
+    font-size: 14px;
+    letter-spacing: 0px;
+    margin: 0px;
+    min-height: auto;
+    text-transform: none;
+    font-weight: normal;
+    line-height: 1.7;
+    margin-bottom: 30px !important;
+    padding: 0px 10px;
+    color: #808080
+  }
+  .pricing-price {
+    padding: 15px 0 14px 0;
+    border-top: 1px solid rgba(139, 144, 157, 0.18);
+    border-bottom: 1px solid rgba(139, 144, 157, 0.18)
+  }
+  .pricing-description p {
+    margin: 0px;
+    color: #384141
+  }
+  .pricing-description .currency {
+    font-weight: 300;
+    font-size: 2rem;
+  }
+  .interval {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+</style>
+
+
 <main id="main-container">
   <div class="content">
     <div class="row justify-content-center">
       @if(count($products) === 0)
       <div class="alert alert-warning">There is no plan available</div>
       @endif
-      <div class="row">
+      <div class="row d-flex justify-content-center">
         @foreach($products as $product)
           <div class="col-md-6 col-xl-3">
-            <div class="block block-rounded block-link-shadow text-center">
+            <div class="block block-rounded block-link-shadow text-center product-list">
               <div class="block-header">
-                <h3 class="block-title">{{ $product->title }}</h3>
+                <h3 class="block-title product-title">{{ $product->title }}</h3>
               </div>
-              <div class="block-header">
-                <h6>{{ $product->description }}</h6>
-              </div>
+              <p class="product-description">{{ $product->description }}</p>
               @foreach($product->plans as $plan)
-                <div class="block-content bg-body-light">
-                  <div class="py-2">
-                    <p class="h1 fw-bold mb-2">${{ $plan->display_amount }}
+                <div class="block-content pricing-price">
+                  <div class="py-2 pricing-description">
+                    <p class="currency">${{ $plan->display_amount }}
                       @if($plan->interval === 'month')
-                        <p class="text-muted">/Per <span class="text-capitalize">{{ $plan->interval }}</span></p>
+                        <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
                       @endif
                     </p>
                     @if($plan->interval === 'month')
-                      <p class="h6 text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
+                      <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
                     @else
-                      <p class="h6 text-muted"><span class="text-capitalize">/year</span></p>
+                      <p class="text-muted"><span class="text-capitalize">/year</span></p>
                     @endif
                   </div>
+                  <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
                 </div>
-                    <div class="block-content block-content-full bg-body-light">
-                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
-                    </div>
               @endforeach
 
               <div class="block-content">
                 <div class="fs-sm py-2">
                     @foreach($product->inclusions as $inc)
-                        <p class="text-start"><i class="fa fa-fw fa-check me-1"></i> {!! $inc->inclusion !!}</p>
+                        <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
                     @endforeach
                 </div>
               </div>

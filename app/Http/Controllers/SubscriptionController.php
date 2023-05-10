@@ -26,6 +26,7 @@ class SubscriptionController extends Controller
         }
         // dd($paymentmethod);
         if ($user->hasDefaultPaymentMethod()) {
+            // plan_RandomNumerb
             $sub = $user->newSubscription('default', 'price_1N4I7rSJaQu22sp2YNFWMEks')->create($paymentmethod ? $paymentmethod->id : '');
             if ($user->subscribed('default')) {
                 dd($sub);

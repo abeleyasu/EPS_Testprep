@@ -91,32 +91,37 @@ class PlanController extends Controller
     }
 
     public function edit(Request $request) {
-        $rules = [
-            'product_id' => 'required',
-            'amount' => 'required|numeric',
-            'interval' => 'required',
-            'interval_count' => 'required_if:interval:month|numeric|digits_between:1,12'
-        ];
-        $customMessages = [
-            'product_id.required' => 'Product is required',
-        ];
-        $request->validate($rules, $customMessages);
-        $plan = Plan::find($request->id);
-        $product = $this->stripe->products->update($plan->stripe_product_id, [
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
-        $plan->name = $request->name;
-        $plan->description = $request->description;
-        $plan->stripe_product_id = $product['id'];
-        $plan->stripe_plan = $product['default_price'];
-        $plan->price = $request->price;
-        $plan->save();
+        // $rules = [
+        //     'product_id' => 'required',
+        //     'amount' => 'required|numeric',
+        //     'interval' => 'required',
+        //     'interval_count' => 'required_if:interval:month|numeric|digits_between:1,12'
+        // ];
+        // $customMessages = [
+        //     'product_id.required' => 'Product is required',
+        // ];
+        // $request->validate($rules, $customMessages);
+        // $plan = Plan::find($request->id);
+        // $product = $this->stripe->products->update($plan->stripe_product_id, [
+        //     'name' => $request->name,
+        //     'description' => $request->description,
+        // ]);
+        // $plan->name = $request->name;
+        // $plan->description = $request->description;
+        // $plan->stripe_product_id = $product['id'];
+        // $plan->stripe_plan = $product['default_price'];
+        // $plan->price = $request->price;
+        // $plan->save();
         return redirect()->intended(route('admin.plan.plan_list'));
     }
 
     public function deletePlan(Request $request) {
-        $plan = Plan::find($request->id)->delete();
+        $plan = Plan::find($request->id);
+        // $stripe->prices->update(
+        //     $plan->stripe_plan_id,
+        //     ['active' => false]
+        // );
+        $plan->delete();
         return "success";
     }
 
