@@ -129,7 +129,7 @@
                                                         @if(!empty($employmentCertification->employment_data))
                                                             @foreach ($employmentCertification->employment_data as $index => $employment_data)
                                                                 <tr class="employment_data_table_row {{ $loop->first ? '' : 'remove_employement_data' }}">
-                                                                    <td>                                                               
+                                                                    <td>
                                                                         <input type="text"
                                                                             class="form-control"
                                                                             id="name_of_company"
@@ -138,9 +138,15 @@
                                                                             placeholder="Ex: Starbucks">
                                                                     </td>
                                                                     <td>
-                                                                        <input type="text"
+                                                                        {{-- <input type="text"
                                                                             class="form-control" id="job_title" value="{{ $employment_data['job_title'] }}"
-                                                                            name="employment_data[{{ $index }}][job_title]" placeholder="Enter Job title">
+                                                                            name="employment_data[{{ $index }}][job_title]" placeholder="Enter Job title"> --}}
+                                                                        <select class="js-select2 form-select single-select2-class" id="job_title_{{ $index }}" name="employment_data[{{ $index }}][job_title]" style="width: 100%;" data-placeholder="Select" multiple="multiple">
+                                                                            <option value="">Select</option>
+                                                                            @foreach($demonstrated_positions as $position)
+                                                                                <option value="{{$position->position_name}}" {{ isset($employment_data['job_title']) && $employment_data['job_title'] != null ? ($employment_data['job_title']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </td>
                                                                     <td>
                                                                         <select class="js-select2 select" id="employment_select_{{ $index }}"
@@ -174,7 +180,7 @@
                                                             @endforeach
                                                         @else 
                                                             <tr class="employment_data_table_row">
-                                                                <td>                                                               
+                                                                <td>
                                                                     <input type="text"
                                                                         class="form-control"
                                                                         id="name_of_company"
@@ -182,9 +188,15 @@
                                                                         placeholder="Ex: Starbucks">
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text"
+                                                                    {{-- <input type="text"
                                                                         class="form-control" id="job_title"
-                                                                        name="employment_data[0][job_title]" placeholder="Enter Job title">
+                                                                        name="employment_data[0][job_title]" placeholder="Enter Job title"> --}}
+                                                                    <select class="js-select2 form-select single-select2-class" id="job_title" name="employment_data[0][job_title]" style="width: 100%;" data-placeholder="Select" multiple="multiple">
+                                                                        <option value="">Select</option>
+                                                                        @foreach($demonstrated_positions as $position)
+                                                                            <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </td>
                                                                 <td>
                                                                     <select class="js-select2 select" id="employment_select_0"
@@ -404,6 +416,23 @@
     <script>
         let total_employment_count = "{{ isset($employmentCertification->employment_data) && $employmentCertification->employment_data != null ? count($employmentCertification->employment_data) : 0 }}";
         let total_significant_count = "{{ isset($employmentCertification->significant_data) && $employmentCertification->significant_data != null ? count($employmentCertification->significant_data) : 0 }}";
+
+        $(document).ready(function() {
+            $('.single-select2-class').select2({
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                }
+            });
+        });
 
         $(document).ready(() => {
             if(total_employment_count > 0) {

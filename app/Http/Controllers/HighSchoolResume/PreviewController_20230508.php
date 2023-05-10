@@ -115,28 +115,16 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         if(isset($education->ib_courses) && !empty($education->ib_courses)){
-            // foreach ((json_decode($education->ib_courses)) as $ib) {
-            //     $ib_course = EducationCourse::whereId($ib)->first();
-            //     $ib_courses[] = $ib_course->name;
-            // }
-            foreach($education->ib_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ib_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
             }
         }
-
+        
         if(isset($education->ap_courses) && !empty($education->ap_courses)){
-            // foreach ((json_decode($education->ap_courses)) as $ap) {
-            //     $ap_course = EducationCourse::whereId($ap)->first();
-            //     $ap_courses[] = $ap_course->name;
-            // }
-            foreach($education->ap_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ap_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
             }
         }
 
@@ -278,28 +266,16 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         if(isset($education->ib_courses) && !empty($education->ib_courses)){
-            // foreach ((json_decode($education->ib_courses)) as $ib) {
-            //     $ib_course = EducationCourse::whereId($ib)->first();
-            //     $ib_courses[] = $ib_course->name;
-            // }
-            foreach($education->ib_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ib_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
             }
         }
         
         if(isset($education->ap_courses) && !empty($education->ap_courses)){
-            // foreach ((json_decode($education->ap_courses)) as $ap) {
-            //     $ap_course = EducationCourse::whereId($ap)->first();
-            //     $ap_courses[] = $ap_course->name;
-            // }
-            foreach($education->ap_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ap_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
             }
         }
 
@@ -464,28 +440,16 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         if(isset($education->ib_courses) && !empty($education->ib_courses)){
-            // foreach ((json_decode($education->ib_courses)) as $ib) {
-            //     $ib_course = EducationCourse::whereId($ib)->first();
-            //     $ib_courses[] = $ib_course->name;
-            // }
-            foreach($education->ib_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ib_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
             }
         }
         
         if(isset($education->ap_courses) && !empty($education->ap_courses)){
-            // foreach ((json_decode($education->ap_courses)) as $ap) {
-            //     $ap_course = EducationCourse::whereId($ap)->first();
-            //     $ap_courses[] = $ap_course->name;
-            // }
-            foreach($education->ap_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ap_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
             }
         }
 
@@ -610,28 +574,16 @@ class PreviewController extends Controller
         $ap_courses = [];
 
         if(isset($education->ib_courses) && !empty($education->ib_courses)){
-            // foreach ((json_decode($education->ib_courses)) as $ib) {
-            //     $ib_course = EducationCourse::whereId($ib)->first();
-            //     $ib_courses[] = $ib_course->name;
-            // }
-            foreach($education->ib_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ib_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ib_courses)) as $ib) {
+                $ib_course = EducationCourse::whereId($ib)->first();
+                $ib_courses[] = $ib_course->name;
             }
         }
         
         if(isset($education->ap_courses) && !empty($education->ap_courses)){
-            // foreach ((json_decode($education->ap_courses)) as $ap) {
-            //     $ap_course = EducationCourse::whereId($ap)->first();
-            //     $ap_courses[] = $ap_course->name;
-            // }
-            foreach($education->ap_courses as $data){
-                $filterTest = array_filter($data);
-                if($filterTest != null ){
-                    array_push($ap_courses, $filterTest);
-                }
+            foreach ((json_decode($education->ap_courses)) as $ap) {
+                $ap_course = EducationCourse::whereId($ap)->first();
+                $ap_courses[] = $ap_course->name;
             }
         }
         

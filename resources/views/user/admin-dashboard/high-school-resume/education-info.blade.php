@@ -88,8 +88,7 @@
                                             <div class="row mb-4">
                                                 <div class="col-lg-6">
                                                     <div class="select2-container_main">
-                                                        <label class="form-label" for="current_grade">Current
-                                                            Grade
+                                                        <label class="form-label" for="current_grade">Current Grade
                                                             <span class="text-danger">*</span>
                                                         </label>
                                                         <select class="js-select2 select"
@@ -104,16 +103,21 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <!-- start  -->
-                                                    <div class="select2-container_main">
-                                                        <label class="form-label" for="graduation_designation">
-                                                            Graduation Designation 
-                                                        </label>
-                                                        <select class="js-select2 form-select" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
-                                                            <option value="">Select Graduation Designation</option>
-                                                            @foreach($graduation_designations as $graduation_designation)
-                                                                <option {{ isset($education['graduation_designation']) && $education['graduation_designation'] != null ? ($education['graduation_designation'] == $graduation_designation ? 'selected' : '') : '' }} > {{ $graduation_designation }} </option>
-                                                            @endforeach
-                                                        </select>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="select2-container_main">
+                                                                <label class="form-label" for="graduation_designation">
+                                                                    Graduation Designation 
+                                                                </label>
+                                                                <select class="js-select2 form-select single-select2-class" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation" multiple="multiple">
+                                                                    <option value="">Select Graduation Designation</option>
+                                                                    @foreach($graduation_designations as $graduation_designation)
+                                                                        <option value="{{ $graduation_designation->designation}}" {{ isset($education['graduation_designation']) && $education['graduation_designation'] != null ? ($education['graduation_designation'] == $graduation_designation->designation ? 'selected' : '') : '' }}>{{$graduation_designation->designation}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -309,12 +313,183 @@
                                 <div id="collapseFive" class="collapse" data-parent=".accordionExample2">
                                     <div class="block-content">
                                         <div class="main-form-input">
+
+                                            <div class="row mb-4">
+                                                <div class="col-lg-12 ">
+                                                    {{-- sbz IB Courses Starts --}}
+                                                    <table class="table IB_courses_table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width='65%'>
+                                                                    <label class="form-label" for="name_of_test">
+                                                                        IB Course
+                                                                    </label>
+                                                                </td>
+                                                                <td width='30%'>
+                                                                    <label class="form-label" for="name_of_test">
+                                                                        IB Course Score
+                                                                    </label>
+                                                                </td>
+                                                                <td width='5%'>
+                                                                    <label class="form-label">Action</label><br>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            @if(!empty($education->ib_courses))
+                                                                @foreach($education->ib_courses as $index => $ib_course_data)
+                                                                    <tr class="IB_course_table_row {{ $loop->first ? '' : 'remove_IB_course_data' }}">
+                                                                        <td>
+                                                                            <select class="js-select2 form-select single-select2-class" name="ib_courses[{{ $index }}][name_of_ib_course]" id="ib_courses[{{ $index }}][name_of_ib_course]" style="width: 100%;" data-placeholder="Select IB course" multiple="multiple">
+                                                                                <option value="">Select IB course</option>
+                                                                                @foreach($courses_list as $course_list)
+                                                                                @if($course_list->course_type == 1)
+                                                                                    <option value="{{ $course_list->name }}" {{ isset($ib_course_data['name_of_ib_course']) && $ib_course_data['name_of_ib_course'] != null ? ($ib_course_data['name_of_ib_course'] == $course_list->name ? 'selected' : '') : '' }}>{{ $course_list->name }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <select class="form-select" id="score_of_test" name="ib_courses[{{ $index }}][score_of_test]" id="ib_courses[{{ $index }}][score_of_test]" style="width: 100%;">
+                                                                                <option value="">Select IB course score</option>
+                                                                                @for ($i = 1; $i <= 7; $i++)
+                                                                                    <option value="{{ $i }}" {{ isset($ib_course_data['score_of_test']) && $ib_course_data['score_of_test'] != null ? ($ib_course_data['score_of_test'] == $i ? 'selected' : '') : '' }}>{{ $i }}</option>
+                                                                                @endfor
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="javascript:void(0)"
+                                                                                class="add-btn d-flex plus-icon">
+                                                                                <i ib-course-count="{{ count($education->ib_courses) != 0 ? count($education->ib_courses) - 1 : 0 }}"
+                                                                                    class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"
+                                                                                    onclick="{{ $loop->first ? 'addIBCourseData(this)' : 'removeIBcourseData(this)' }}"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr class="IB_course_table_row">
+                                                                    <td>
+                                                                        <select class="js-select2 form-select single-select2-class" name="ib_courses[0][name_of_ib_course]" id="ib_courses[0][name_of_ib_course]" style="width: 100%;" data-placeholder="Select IB course" multiple="multiple">
+                                                                            <option value="">Select IB course</option>
+                                                                            @foreach($courses_list as $course_list)
+                                                                                @if($course_list->course_type == 1)
+                                                                                    <option value="{{ $course_list->name }}">{{ $course_list->name }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="form-select" id="score_of_test" name="ib_courses[0][score_of_test]" style="width: 100%;">
+                                                                            <option value="">Select IB course score</option>
+                                                                            @for ($i = 1; $i <= 7; $i++)
+                                                                                <option value="{{ $i }}">{{ $i }}</option>
+                                                                            @endfor
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" ib-course-count="0" onclick="addIBCourseData(this)" class="add-btn d-flex plus-icon">
+                                                                            <i class="fa-solid fa-plus"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                    {{-- sbz IB Courses ENDS --}}
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <div class="col-lg-12 ">
+                                                    {{-- sbz AP Courses Starts --}}
+                                                    <table class="table AP_courses_table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width='65%'>
+                                                                    <label class="form-label" for="name_of_test">
+                                                                        AP Course
+                                                                    </label>
+                                                                </td>
+                                                                <td width='30%'>
+                                                                    <label class="form-label" for="name_of_test">
+                                                                        AB Course Score
+                                                                    </label>
+                                                                </td>
+                                                                <td width='5%'>
+                                                                    <label class="form-label">Action</label><br>
+                                                                </td>
+                                                            </tr>
+                                                            @if(!empty($education->ap_courses))
+                                                                @foreach($education->ap_courses as $index => $ap_course_data)
+                                                                    <tr class="AP_course_table_row {{ $loop->first ? '' : 'remove_AP_course_data' }}">
+                                                                        <td>
+                                                                            <select class="js-select2 form-select ap_courses-select2-class" name="ap_courses[{{ $index }}][name_of_ap_course]" id="ap_courses[{{ $index }}][name_of_ap_course]" style="width: 100%;" data-placeholder="Select AP course" multiple="multiple">
+                                                                                <option value="">Select AP course</option>
+                                                                                @foreach($courses_list as $course_list)
+                                                                                @if($course_list->course_type == 2)
+                                                                                    <option value="{{ $course_list->name }}" {{ isset($ap_course_data['name_of_ap_course']) && $ap_course_data['name_of_ap_course'] != null ? ($ap_course_data['name_of_ap_course'] == $course_list->name ? 'selected' : '') : '' }}>{{ $course_list->name }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <select class="form-select" id="score_of_test" name="ap_courses[{{ $index }}][score_of_test]" id="ap_courses[{{ $index }}][score_of_test]" style="width: 100%;">
+                                                                                <option value="">Select AP course score</option>
+                                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                                    <option value="{{ $i }}" {{ isset($ap_course_data['score_of_test']) && $ap_course_data['score_of_test'] != null ? ($ap_course_data['score_of_test'] == $i ? 'selected' : '') : '' }}>{{ $i }}</option>
+                                                                                @endfor
+                                                                            </select>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="javascript:void(0)"
+                                                                                class="add-btn d-flex plus-icon">
+                                                                                <i ap-course-count="{{ count($education->ap_courses) != 0 ? count($education->ap_courses) - 1 : 0 }}"
+                                                                                    class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"
+                                                                                    onclick="{{ $loop->first ? 'addAPCourseData(this)' : 'removeAPcourseData(this)' }}"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr class="AP_course_table_row">
+                                                                    <td>
+                                                                        <select class="js-select2 form-select ap_courses-select2-class" name="ap_courses[0][name_of_ap_course]" id="ap_courses[0][name_of_ap_course]" style="width: 100%;" data-placeholder="Select AP course" multiple="multiple">
+                                                                            <option value="">Select AP course</option>
+                                                                            @foreach($courses_list as $course_list)
+                                                                                @if($course_list->course_type == 2)
+                                                                                    <option value="{{ $course_list->name }}">{{ $course_list->name }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="form-select" id="score_of_test" name="ap_courses[0][score_of_test]" style="width: 100%;">
+                                                                            <option value="">Select AP course score</option>
+                                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                                <option value="{{ $i }}">{{ $i }}</option>
+                                                                            @endfor
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" ap-course-count="0" onclick="addAPCourseData(this)" class="add-btn d-flex plus-icon">
+                                                                            <i class="fa-solid fa-plus"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                    {{-- sbz AP Courses ENDS --}}
+                                                </div>
+                                            </div>
+
+                                            {{-- sbz comment starts
                                             <div class="row mb-4">
                                                 <div class="col-lg-6 ">
                                                     <div class="select2-container_main">
                                                         <label class="form-label" for="ib_courses">
                                                             IB Courses
-                                                            {{-- <span class="text-danger">*</span> --}}
+                                                            <span class="text-danger">*</span>
                                                         </label><br>
                                                         <select class="js-select2 select" data-placeholder="Select IB courses" id="ib_courses" name="ib_courses[]" multiple="multiple" >
                                                             @foreach($courses_list as $course_list)
@@ -329,7 +504,7 @@
                                                     <div class="select2-container_main">
                                                         <label class="form-label" for="ap_courses">
                                                             AP Courses
-                                                            {{-- <span class="text-danger">*</span> --}}
+                                                            <span class="text-danger">*</span>
                                                         </label><br>
                                                         
                                                         <select class="js-select2 select" data-placeholder="Select AP courses" id="ap_courses" name="ap_courses[]" multiple="multiple">
@@ -342,9 +517,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            sbz comment Ends --}}
+
                                             <table class="table course_table">
                                                 <tbody>
-                                                    <tr>                                                        
+                                                    <tr>
                                                         <td>
                                                             <label class="form-label" for="course_name">
                                                                 Concurrent Course Name
@@ -527,9 +704,9 @@
                                                                 <td>
                                                                     <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
                                                                         <option value="" disabled selected hidden>Select Name Of Test</option>
-                                                                        <option value="SAT – 400 – 1600" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT – 400 – 1600' ? 'selected' : '' ) : '' ) }}>SAT – 400 – 1600</option>
-                                                                        <option value="PSAT 320-1520" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT 320-1520' ? 'selected' : '' ) : '' ) }}>PSAT 320-1520</option>
-                                                                        <option value="ACT 1-36" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT 1-36' ? 'selected' : '' ) : '' ) }}>ACT 1-36</option>
+                                                                        <option value="SAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'SAT' ? 'selected' : '' ) : '' ) }}>SAT</option>
+                                                                        <option value="PSAT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'PSAT' ? 'selected' : '' ) : '' ) }}>PSAT</option>
+                                                                        <option value="ACT" {{ (isset($testing_data['name_of_test']) && $testing_data['name_of_test'] != null ? ($testing_data['name_of_test'] == 'ACT' ? 'selected' : '' ) : '' ) }}>ACT</option>
                                                                     </select>   
                                                                 </td>
                                                                 <td>                                                            
@@ -550,9 +727,9 @@
                                                             <td>
                                                                 <select class="form-select" id="name_of_test" name="testing_data[0][name_of_test]" style="width: 100%;">
                                                                     <option value="">Select name of test</option>
-                                                                    <option value="SAT – 400 – 1600">SAT – 400 – 1600</option>
-                                                                    <option value="PSAT 320-1520">PSAT 320-1520</option>
-                                                                    <option value="ACT 1-36">ACT 1-36</option>
+                                                                    <option value="SAT">SAT</option>
+                                                                    <option value="PSAT">PSAT</option>
+                                                                    <option value="ACT">ACT</option>
                                                                 </select>
                                                             </td>
                                                             <td>                                                            
@@ -695,7 +872,7 @@
         });
 
         let test_taken_status = "{{ isset($education->test_taken_status) ? $education->test_taken_status : '' }}";
-        if(test_taken_status != '') {
+        if(test_taken_status == 1) {
             $(".testing_data_table").find("input,button,textarea,select").attr("disabled", "disabled");
             $('#testing-add-btn-id').css('pointer-events', 'none');
         }
@@ -759,6 +936,35 @@
         });
 
         $(document).ready(function() {
+            $('.single-select2-class').select2({
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                }
+            });
+            $('.ap_courses-select2-class').select2({
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                }
+            });
+
             let validations_rules = @json($validations_rules);
             let validations_messages = @json($validations_messages);
             
@@ -934,7 +1140,27 @@
 			});
 			 
 			});
-            
+
+
+            //Graduation Designation and Other Graduation Designation LOGIC STARTS
+            // var graduationSelect = $('select[name="graduation_designation"]');
+            // var otherGraduationDiv = $('.other-graduation-designation');
+            // if(graduationSelect.val() == 'Other') {
+            //     otherGraduationDiv.show();
+            // } else {
+            //     otherGraduationDiv.hide();
+            // }
+
+            // graduationSelect.on('change', function() {
+            //     var selectedValue = $(this).val();
+
+            //     if (selectedValue === 'Other') {
+            //         otherGraduationDiv.show();
+            //     } else {
+            //         otherGraduationDiv.hide();
+            //     }
+            // });
+            //Graduation Designation and Other Graduation Designation LOGIC ENDS
         });
 
         for (let key = 0; key < $('.course_data_table_row').length; key++) {

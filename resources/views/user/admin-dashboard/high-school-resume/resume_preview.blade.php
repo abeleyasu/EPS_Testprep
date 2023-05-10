@@ -339,11 +339,10 @@
                                 src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Image/location.svg'))) }} " style="width: 8px; margin-top: 2px">
                         </span>
                         <span>
-                            {{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : '' }}
-                            @if(isset($personal_info->street_address_one)),  @endif
-                            {{ isset($personal_info->street_address_two) ? $personal_info->street_address_two : '' }}
-                            @if(isset($personal_info->street_address_two)), @endif
-                            {{ $personal_info->city . ',' . $personal_info->state }}
+                            {{ isset($personal_info->street_address_one) ? $personal_info->street_address_one . ',' : '' }}
+                            {{ isset($personal_info->street_address_two) ? $personal_info->street_address_two . ',' : '' }}
+                            {{ $personal_info->city . ',' }}
+                            {{ $personal_info->state }}
                             {{ isset($personal_info->zip_code) ? $personal_info->zip_code : '' }}
                         </span>
                     </li>
@@ -407,7 +406,7 @@
 						<span class="span_text">
 							<span class="span_bold">Skills:</span>
 								@php
-								$skills = implode(", ", array_column($featuredAttribute->featured_skills_data, "skill"));
+								$skills = implode("; ", array_column($featuredAttribute->featured_skills_data, "skill"));
 									echo "$skills";
 								@endphp
 						</span>
@@ -419,7 +418,7 @@
 							<span class="span_text">
 								<span class="span_bold">Awards:</span>
 								@php
-								$awards = implode(", ", array_column($featuredAttribute->featured_awards_data, "award"));
+								$awards = implode("; ", array_column($featuredAttribute->featured_awards_data, "award"));
 								echo "$awards";
 								@endphp
 							</span>
@@ -431,13 +430,13 @@
 						<span class="span_text">
 							<span class="span_bold">Languages:</span>
 							@php
-							$languages = implode(", ", array_column($featuredAttribute->featured_languages_data, "language"));
+							$languages = implode("; ", array_column($featuredAttribute->featured_languages_data, "language"));
 							echo "$languages";
 							@endphp
 						</span>
 					</div>
 				@endif
-				{{-- @if (!empty($dual_citizenship_data))
+				@if (!empty($dual_citizenship_data))
 					<div class="preview-list">
 						<span class="span_text">
 							<span class="span_bold">Dual Citizen:</span>
@@ -447,7 +446,7 @@
 							@endphp
 						</span>
 					</div>
-				@endif --}}
+				@endif
 			</div>
 		</div>
 		@endif
@@ -484,7 +483,13 @@
                             {{ $education->high_school_state }} /
                             {{ $education->high_school_district }}
                             @if (isset($education->graduation_designation) && $education->graduation_designation != null)
-                                ({{$education->graduation_designation}})
+                                @if ($education->graduation_designation === 'Other')
+                                    @if (isset($education->other_graduation_designation) && $education->other_graduation_designation != null)
+                                        ({{$education->other_graduation_designation}})	
+                                    @endif
+                                @else
+                                    ({{$education->graduation_designation}})
+                                @endif
                             @endif
 						</span>
 						<span class="span_text">
@@ -520,13 +525,19 @@
                         @if (!empty($education->ib_courses))
                             <span class="span_text">
                                 <span class="span_bold">IB Courses:</span>
-                                    {{ implode(',', $ib_courses) }}
+                                    {{-- {{ implode(',', $ib_courses) }} --}}
+                                    @foreach ($education->ib_courses as $ib_course)
+                                        <b>{{ isset($ib_course['name_of_ib_course']) ? $ib_course['name_of_ib_course'] : '' }}</b> : {{ isset($ib_course['score_of_test']) ? $ib_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
+                                    @endforeach
                             </span>
                         @endif
                         @if (!empty($education->ap_courses))
                             <span class="span_text">
                                 <span class="span_bold">AP Courses:</span>
-                                    {{ implode(',', $ap_courses) }}
+                                    {{-- {{ implode(',', $ap_courses) }} --}}
+                                    @foreach ($education->ap_courses as $ap_course)
+                                        <b>{{ isset($ap_course['name_of_ap_course']) ? $ap_course['name_of_ap_course'] : '' }}</b> : {{ isset($ap_course['score_of_test']) ? $ap_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
+                                    @endforeach
                             </span>
                         @endif
                         @if (!empty($education->honor_course_data))
@@ -607,9 +618,16 @@
 						@foreach ($demonstrated_data as $data)
 							<span class="span_text">
 								<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-								{{ $data['position'] }}
-								@if(!empty($data['interest'])), {{ $data['interest'] }}@endif
-								@if(!empty($data['details'])), {{ $data['details'] }}@endif
+								{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['location']) || !empty($data['details'])),@endif
+                                @if(!empty($data['interest'])) 
+                                    {{ $data['interest'] }}@if(!empty($data['details']) || !empty($data['location'])),@endif
+                                @endif
+                                @if(!empty($data['location'])) 
+                                    {{ $data['location'] }}@if(!empty($data['details'])),@endif
+                                @endif
+                                @if(!empty($data['details']))
+                                    {{ $data['details'] }}
+                                @endif 
 							</span>
 						@endforeach
 					@endif
@@ -620,13 +638,16 @@
 									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
                                 @endif
                                 @if(!empty($data['status']))
-                                        {{ $data['status'] }},
+                                    {{ $data['status'] }}@if(!empty($data['position'] || !empty($data['location']) || !empty($data['organization']))),@endif
                                 @endif
                                 @if(!empty($data['position']))
-                                        {{ $data['position'] }},
+                                    {{ $data['position'] }}@if(!empty($data['location']) || !empty($data['organization'])),@endif
+                                @endif
+                                @if(!empty($data['location']))
+                                    {{ $data['location'] }}@if(!empty($data['organization'])),@endif
                                 @endif
                                 @if(!empty($data['organization']))
-                                        {{ $data['organization'] }}
+                                    {{ $data['organization'] }}
                                 @endif
                             </span>
                         @endforeach  
@@ -638,14 +659,17 @@
 									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
 								@endif
 								@if(!empty($data['position']))
-										{{ $data['position'] }},
-								@endif
-								@if(!empty($data['activity']))
-										{{ $data['activity'] }},
-								@endif
-								@if(!empty($data['honor_award']))
-										{{ $data['honor_award'] }}
-								@endif
+                                    {{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['location']) || !empty($data['honor_award'])),@endif
+                                @endif
+                                @if(!empty($data['activity']))
+                                    {{ $data['activity'] }}@if(!empty($data['location']) || !empty($data['honor_award'])),@endif
+                                @endif
+                                @if(!empty($data['location']))
+                                    {{ $data['location'] }}@if(!empty($data['honor_award'])),@endif
+                                @endif
+                                @if(!empty($data['honor_award']))
+                                    {{ $data['honor_award'] }}
+                                @endif
 							</span>  
 						@endforeach  
 					@endif
@@ -664,16 +688,18 @@
 							@if(!empty($data['grade']))
 								<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
 							@endif
-							@if(isset($data['position']))
-									{{ $data['position'] }},
-							@endif
-							@if(isset($data['activity']))
-									{{ $data['activity'] }},
-							@endif
-							
-							@if(isset($data['honor']))
-									{{ $data['honor'] }}
-							@endif
+							@if(isset($data['position']) && !empty($data['position']))
+                                {{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['location']) || !empty($data['honor'])),@endif
+                            @endif
+                            @if(isset($data['activity']) && !empty($data['activity']))
+                                {{ $data['activity'] }}@if(!empty($data['location']) || !empty($data['honor'])),@endif
+                            @endif
+                            @if(isset($data['location']) && !empty($data['location']))
+                                {{ $data['location'] }}@if(!empty($data['honor'])),@endif
+                            @endif
+                            @if(isset($data['honor']) && !empty($data['honor']))
+                                {{ $data['honor'] }}
+                            @endif
 						</span>
 					@endforeach    
 				</div>

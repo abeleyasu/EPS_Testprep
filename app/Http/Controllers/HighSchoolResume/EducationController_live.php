@@ -17,7 +17,6 @@ use App\Models\HighSchoolResume\Honor;
 use App\Models\HighSchoolResume\States;
 use App\Models\HighSchoolResume\Cities;
 use App\Models\IntendedCollegeList;
-use App\Models\HighSchoolResume\GraduationDesignation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -33,8 +32,8 @@ class EducationController extends Controller
         $ib_courses = Config::get('constants.ib_courses');
         $ap_courses = Config::get('constants.ap_courses');
 
-        // $graduation_designations = Config::get('constants.graduation_designation');
-        $graduation_designations = GraduationDesignation::select('id','designation')->orderBY('designation', 'asc')->get();
+        $graduation_designations = Config::get('constants.graduation_designation');
+        
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -51,16 +50,6 @@ class EducationController extends Controller
             $activity = $resumedata->activity;
             $employmentCertification = $resumedata->employmentCertification;
             $featuredAttribute = $resumedata->featuredAttribute;
-            
-            if(isset($education->high_school_state) && !empty($education->high_school_state)){
-                $cities = Cities::from('cities as ct')
-						->join('states as st', function ($join) use($education){
-									$join->on('ct.state_id', '=', 'st.id')
-										 ->where('st.state_name', '=',$education->high_school_state);
-						})
-						->select('ct.id', 'ct.city_name')
-						->get();
-            }
         } else {
             $user_id = Auth::id();
             $education = Education::whereUserId($user_id)->where('is_draft', 0)->first();
@@ -108,11 +97,6 @@ class EducationController extends Controller
     public function store(EducationRequest $request)
     {
         $data = $request->validated();
-        // echo 'store<pre>';
-        // print_r($data);
-        // echo '</pre>';
-        // exit;
-
         $college_ids = CollegeInformation::pluck('id')->toArray();
 
         if(isset($data['course_data']) && !empty($data['course_data'])){
@@ -149,36 +133,26 @@ class EducationController extends Controller
             }
         }
 
-        $education_courses_ids = EducationCourse::pluck('name')->toArray();
+        $education_courses_ids = EducationCourse::pluck('id')->toArray();
 
         if(isset($data['ib_courses']) && !empty($data['ib_courses'])){
             foreach($data['ib_courses'] as $ib_data){
-                // if(!in_array($ib_data, $education_courses_ids)){
-                //     $ib_info = EducationCourse::create(['name' => $ib_data , 'course_type' => 1 , 'user_id' => Auth::id()])  ;                
-                //     $index = array_search($ib_data, $data['ib_courses']);
-                //     $ib_array = array_replace($data['ib_courses'], [$index => $ib_info->id]);
-                //     $data['ib_courses'] = $ib_array;
-                // }
-                if(isset($ib_data['name_of_ib_course']) && !empty($ib_data['name_of_ib_course'])){
-                    if(!in_array($ib_data['name_of_ib_course'], $education_courses_ids)){
-                        EducationCourse::create(['name' => $ib_data['name_of_ib_course'] , 'course_type' => 1 , 'user_id' => Auth::id()]);
-                    }
+                if(!in_array($ib_data, $education_courses_ids)){
+                    $ib_info = EducationCourse::create(['name' => $ib_data , 'course_type' => 1 , 'user_id' => Auth::id()])  ;                
+                    $index = array_search($ib_data, $data['ib_courses']);
+                    $ib_array = array_replace($data['ib_courses'], [$index => $ib_info->id]);
+                    $data['ib_courses'] = $ib_array;
                 }
             }
         }
 
         if(isset($data['ap_courses']) && !empty($data['ap_courses'])){
             foreach($data['ap_courses'] as $ap_data){
-                // if(!in_array($ap_data, $education_courses_ids)){
-                //     $ap_info = EducationCourse::create(['name' => $ap_data , 'course_type' => 2 , 'user_id' => Auth::id()])  ;                
-                //     $index = array_search($ap_data, $data['ap_courses']);
-                //     $ap_array = array_replace($data['ap_courses'], [$index => $ap_info->id]);
-                //     $data['ap_courses'] = $ap_array;
-                // }
-                if(isset($ap_data['name_of_ap_course']) && !empty($ap_data['name_of_ap_course'])){
-                    if(!in_array($ap_data['name_of_ap_course'], $education_courses_ids)){
-                        EducationCourse::create(['name' => $ap_data['name_of_ap_course'] , 'course_type' => 2 , 'user_id' => Auth::id()]);
-                    }
+                if(!in_array($ap_data, $education_courses_ids)){
+                    $ap_info = EducationCourse::create(['name' => $ap_data , 'course_type' => 2 , 'user_id' => Auth::id()])  ;                
+                    $index = array_search($ap_data, $data['ap_courses']);
+                    $ap_array = array_replace($data['ap_courses'], [$index => $ap_info->id]);
+                    $data['ap_courses'] = $ap_array;
                 }
             }
         }
@@ -245,11 +219,7 @@ class EducationController extends Controller
         }
 
         if (!empty($data['graduation_designation'])) {
-            $data['graduation_designation'] = $data['graduation_designation'];
-            $existingGraduations = GraduationDesignation::pluck('designation')->toArray();
-            if (!in_array($data['graduation_designation'], $existingGraduations)) {
-                GraduationDesignation::create(['designation' => $data['graduation_designation']]);
-            }
+            $data['graduation_designation'] = json_encode($data['graduation_designation']);
         }
 
         if (isset($data['honor_course_data']) && !empty($data['honor_course_data'])) {
@@ -258,30 +228,18 @@ class EducationController extends Controller
             $data['honor_course_data'] = null;
         }
 
-        
-        if (!empty($request->is_tested)) {
-            $data['test_taken_status'] = $request->is_tested;
-        }
-
         if (!empty($request->testing_data)) {
-            if (!empty($request->is_tested)) {
-                if($request->is_tested == 0) {
-                    $data['testing_data'] = array_values($request->testing_data);
-                }
-            }
-            
+            $data['testing_data'] = array_values($request->testing_data);
         }
 
         if (isset($data['ib_courses']) && !empty($data['ib_courses'])) {
-            // $data['ib_courses'] = json_encode($data['ib_courses']);
-            $data['ib_courses'] = array_values($data['ib_courses']);
+            $data['ib_courses'] = json_encode($data['ib_courses']);
         }else{
             $data['ib_courses'] = null;
         }
 
         if (isset($data['ap_courses']) && !empty($data['ap_courses'])) {
-            // $data['ap_courses'] = json_encode($data['ap_courses']);
-            $data['ap_courses'] = array_values($data['ap_courses']);
+            $data['ap_courses'] = json_encode($data['ap_courses']);
         }else{
             $data['ap_courses'] = null;
         }
@@ -310,11 +268,6 @@ class EducationController extends Controller
     {
         $data = $request->validated();
 
-        // echo 'update<pre>';
-        // print_r($data);
-        // echo '</pre>';
-        // exit;
-
         $college_ids = CollegeInformation::pluck('id')->toArray();
 
         if(isset($data['course_data']) && !empty($data['course_data'])){
@@ -330,14 +283,6 @@ class EducationController extends Controller
                     }              
                 }
                 $data['course_data'][$key1] = $course_data;
-            }
-        }
-
-        if (!empty($data['graduation_designation'])) {
-            $data['graduation_designation'] = $data['graduation_designation'];
-            $existingGraduations = GraduationDesignation::pluck('designation')->toArray();
-            if (!in_array($data['graduation_designation'], $existingGraduations)) {
-                GraduationDesignation::create(['designation' => $data['graduation_designation']]);
             }
         }
 
@@ -359,36 +304,26 @@ class EducationController extends Controller
             }
         }
 
-        $education_courses_ids = EducationCourse::pluck('name')->toArray();
+        $education_courses_ids = EducationCourse::pluck('id')->toArray();
 
         if(isset($data['ib_courses']) && !empty($data['ib_courses'])){
             foreach($data['ib_courses'] as $ib_data){
-                // if(!in_array($ib_data, $education_courses_ids)){
-                //     $ib_info = EducationCourse::create(['name' => $ib_data , 'course_type' => 1 , 'user_id' => Auth::id()])  ;                
-                //     $index = array_search($ib_data, $data['ib_courses']);
-                //     $ib_array = array_replace($data['ib_courses'], [$index => $ib_info->id]);
-                //     $data['ib_courses'] = $ib_array;
-                // }
-                if(isset($ib_data['name_of_ib_course']) && !empty($ib_data['name_of_ib_course'])){
-                    if(!in_array($ib_data['name_of_ib_course'], $education_courses_ids)){
-                        EducationCourse::create(['name' => $ib_data['name_of_ib_course'] , 'course_type' => 1 , 'user_id' => Auth::id()]);
-                    }
+                if(!in_array($ib_data, $education_courses_ids)){
+                    $ib_info = EducationCourse::create(['name' => $ib_data , 'course_type' => 1 , 'user_id' => Auth::id()])  ;                
+                    $index = array_search($ib_data, $data['ib_courses']);
+                    $ib_array = array_replace($data['ib_courses'], [$index => $ib_info->id]);
+                    $data['ib_courses'] = $ib_array;
                 }
             }
         }
         
         if(isset($data['ap_courses']) && !empty($data['ap_courses'])){
             foreach($data['ap_courses'] as $ap_data){
-                // if(!in_array($ap_data, $education_courses_ids)){
-                //     $ap_info = EducationCourse::create(['name' => $ap_data , 'course_type' => 2 , 'user_id' => Auth::id()])  ;                
-                //     $index = array_search($ap_data, $data['ap_courses']);
-                //     $ap_array = array_replace($data['ap_courses'], [$index => $ap_info->id]);
-                //     $data['ap_courses'] = $ap_array;
-                // }
-                if(isset($ap_data['name_of_ap_course']) && !empty($ap_data['name_of_ap_course'])){
-                    if(!in_array($ap_data['name_of_ap_course'], $education_courses_ids)){
-                        EducationCourse::create(['name' => $ap_data['name_of_ap_course'] , 'course_type' => 2 , 'user_id' => Auth::id()]);
-                    }
+                if(!in_array($ap_data, $education_courses_ids)){
+                    $ap_info = EducationCourse::create(['name' => $ap_data , 'course_type' => 2 , 'user_id' => Auth::id()])  ;                
+                    $index = array_search($ap_data, $data['ap_courses']);
+                    $ap_array = array_replace($data['ap_courses'], [$index => $ap_info->id]);
+                    $data['ap_courses'] = $ap_array;
                 }
             }
         }
@@ -459,33 +394,18 @@ class EducationController extends Controller
             $data['honor_course_data'] = null;
         }
 
-        // echo "is_tested = $request->is_tested";exit;
-        if (!empty($request->is_tested)) {
-            $data['test_taken_status'] = $request->is_tested;
-        } else {
-            $data['test_taken_status'] = 0;
-        }
-
         if (!empty($request->testing_data)) {
-            if($data['test_taken_status'] == 0) {
-                $data['testing_data'] = array_values($request->testing_data);
-            } else {
-                $data['testing_data'] = NULL;
-            }
-        } else {
-            $data['testing_data'] = NULL;
+            $data['testing_data'] = array_values($request->testing_data);
         }
 
         if (isset($data['ib_courses']) && !empty($data['ib_courses'])) {
-            // $data['ib_courses'] = json_encode($data['ib_courses']);
-            $data['ib_courses'] = array_values($data['ib_courses']);
+            $data['ib_courses'] = json_encode($data['ib_courses']);
         }else{
             $data['ib_courses'] = null;
         }
 
         if (isset($data['ap_courses']) &&!empty($data['ap_courses'])) {
-            // $data['ap_courses'] = json_encode($data['ap_courses']);
-            $data['ap_courses'] = array_values($data['ap_courses']);
+            $data['ap_courses'] = json_encode($data['ap_courses']);
         }else{
             $data['ap_courses'] = null;
 
@@ -512,17 +432,4 @@ class EducationController extends Controller
             }
         }
     }
-
-    public function getEducationCourseNameList()
-    {
-        $user = Auth::user();
-        if($user->role == 1) {
-            $courses_list = EducationCourse::all();
-        } else {
-            $courses_list = EducationCourse::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
-        }
-
-        return response()->json(['success' => true, 'dropdown_list' => $courses_list]);
-    }
-    
 }

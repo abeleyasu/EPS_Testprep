@@ -86,8 +86,7 @@
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <a class="text-white fw-600 collapsed"> Demonstrated Activity In The Area Of Your
-                                            major</a>
+                                        <a class="text-white fw-600 collapsed"> Demonstrated Activity In The Area Of Your major</a>
                                     </div>
                                     <div id="collapseOne"
                                         class="collapse show"
@@ -123,6 +122,9 @@
                                                                     Details
                                                                 </label>
                                                             </td>
+                                                            <td>
+                                                                <label class="form-label">Action</label><br>
+                                                            </td>
                                                             {{-- <td>
                                                                 <label class="form-label">Action</label><br>
                                                             </td> --}}
@@ -131,10 +133,10 @@
                                                             @foreach ($activity->demonstrated_data as $index => $demonstrated_data)
                                                                 <tr class="demonstrated_data_table_row {{ $loop->first ? '' : 'remove_demonstrated_data' }}">
                                                                     <td style="min-width:220px;">
-                                                                        <select class="js-select2 form-select" id="demonstrated_position_{{ $index }}" name="demonstrated_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
+                                                                        <select class="js-select2 form-select single-select2-class" id="demonstrated_position_{{ $index }}" name="demonstrated_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
-                                                                                <option value="{{$position}}" {{ isset($demonstrated_data['position']) && $demonstrated_data['position'] != null ? ($demonstrated_data['position']  == $position ? 'selected' : '') : '' }}> {{$position}} </option>
+                                                                                <option value="{{$position->position_name}}" {{ isset($demonstrated_data['position']) && $demonstrated_data['position'] != null ? ($demonstrated_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -164,25 +166,20 @@
                                                                         <textarea class="form-control" id="details" name="demonstrated_data[{{ $index }}][details]" rows="1"
                                                                             placeholder="Enter Details">{{ $demonstrated_data['details'] }}</textarea>
                                                                     </td>
-                                                                    {{-- <td>
+                                                                    <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                             <i data-count="{{ count($activity->demonstrated_data) != 0 ? count($activity->demonstrated_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addDemonstratedData(this)' : 'removeDemonstratedData(this)' }}"></i>
                                                                         </a>
-                                                                    </td> --}}
+                                                                    </td>
                                                                 </tr>
                                                             @endforeach
                                                         @else
                                                             <tr class="demonstrated_data_table_row">
                                                                 <td>
-                                                                    {{-- <input type="text"
-                                                                        class="form-control"
-                                                                        value="" id="position"
-                                                                        name="demonstrated_data[0][position]" placeholder="Vice President" autocomplete="off"> --}}
-
-                                                                    <select class="js-select2 form-select" id="demonstrated_position_0" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
+                                                                    <select class="js-select2 form-select single-select2-class" id="demonstrated_position_0" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
-                                                                            <option value="{{$position}}"> {{$position}} </option>
+                                                                            <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -212,11 +209,11 @@
                                                                     <textarea class="form-control" id="details" name="demonstrated_data[0][details]" rows="1"
                                                                         placeholder="Enter Details"></textarea>
                                                                 </td>
-                                                                {{-- <td>
+                                                                <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                         <i data-count="0" class="fa-solid fa-plus" onclick="addDemonstratedData(this)"></i>
                                                                     </a>
-                                                                </td> --}}
+                                                                </td>
                                                             </tr>
                                                         @endif
                                                     </tbody>
@@ -238,32 +235,32 @@
                                                 <table class="table table_leadership_data">
                                                     <tbody>
                                                         <tr>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="leadership_status">
                                                                     Status
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="leadership_position">
                                                                     Position
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="leadership_organization">
                                                                     Organization
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td  width='15%'>
                                                                 <label class="form-label" for="leadership_location">
                                                                     Location
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="leadership_grade">
                                                                     Grade(s)
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='5%'>
                                                                 <label class="form-label">Action</label><br>
                                                             </td>
                                                         </tr>
@@ -271,25 +268,33 @@
                                                             @foreach($activity->leadership_data as $index => $leadership_data)
                                                                 <tr class="leadership_data_table_row {{ $loop->first ? '' : 'remove_leadership_data' }}">
                                                                     <td>
-                                                                        <input type="text"
+                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_status_{{ $index }}" name="leadership_data[{{ $index }}][status]" style="width: 100%;" data-placeholder="Select Status" multiple="multiple">
+                                                                            <option value="">Select Status</option>
+                                                                            @foreach($status as $sta)
+                                                                                <option value="{{ $sta->status }}" {{ isset($leadership_data['status']) && $leadership_data['status'] != null ? ($leadership_data['status'] == $sta->status ? 'selected' : '') : '' }} > {{ $sta->status }} </option>
+                                                                            @endforeach
+                                                                        </select>
+
+
+                                                                        {{-- <input type="text"
                                                                             class="form-control"
                                                                             id="leadership_status" name="leadership_data[{{ $index }}][status]"
                                                                             value="{{ $leadership_data['status'] }}"
-                                                                            placeholder="Enter Status">
+                                                                            placeholder="Enter Status"> --}}
                                                                     </td>
-                                                                    <td style="min-width:220px">
-                                                                        <select class="js-select2 form-select" id="leadership_position_{{ $index }}" name="leadership_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
+                                                                    <td>
+                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_position_{{ $index }}" name="leadership_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
-                                                                                <option value="{{$position}}" {{ isset($leadership_data['position']) && $leadership_data['position'] != null ? ($leadership_data['position']  == $position ? 'selected' : '') : '' }}> {{$position}} </option>
+                                                                                <option value="{{$position->position_name}}" {{ isset($leadership_data['position']) && $leadership_data['position'] != null ? ($leadership_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
-                                                                    <td style="min-width:270px;">
-                                                                        <select class="js-select2 form-select" id="leadership_organization_{{ $index }}" name="leadership_data[{{ $index }}][organization]" style="width: 100%;" data-placeholder="Select Organization">
+                                                                    <td>
+                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_organization_{{ $index }}" name="leadership_data[{{ $index }}][organization]" style="width: 100%;" data-placeholder="Select Organization" multiple="multiple">
                                                                             <option value="">Select Organization</option>
                                                                             @foreach($organizations as $organization)
-                                                                                <option value="{{ $organization }}" {{ isset($leadership_data['organization']) && $leadership_data['organization'] != null ? ($leadership_data['organization'] == $organization ? 'selected' : '') : '' }} > {{ $organization }} </option>
+                                                                                <option value="{{ $organization->name }}" {{ isset($leadership_data['organization']) && $leadership_data['organization'] != null ? ($leadership_data['organization'] == $organization->name ? 'selected' : '') : '' }} > {{ $organization->name }} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -318,17 +323,22 @@
                                                         @else   
                                                             <tr class="leadership_data_table_row">
                                                                 <td>
-                                                                    <input type="text"
+                                                                    <select class="js-select2 form-select single-select2-class" data-placeholder="Select Status" id="leadership_status_0" name="leadership_data[0][status]" style="width: 100%;" multiple="multiple">
+                                                                        <option value="" style='display: none'></option>
+                                                                        @foreach($status as $sta)
+                                                                            <option value="{{ $sta->status }}" > {{ $sta->status }} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    {{-- <input type="text"
                                                                         class="form-control"
                                                                         id="leadership_status" name="leadership_data[0][status]"
-                                                                        placeholder="Enter Status">
-                                                                   
+                                                                        placeholder="Enter Status"> --}}
                                                                 </td>
                                                                 <td>
                                                                     <select class="js-select2 form-select" id="leadership_position_0" name="leadership_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
-                                                                            <option value="{{$position}}" > {{$position}} </option>
+                                                                            <option value="{{$position->position}}" > {{$position->position}} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -337,7 +347,7 @@
                                                                         name="leadership_data[0][organization]" data-placeholder="Select Organization" >
                                                                         <option value="">Select Organization</option>
                                                                         @foreach ($organizations as $organization)
-                                                                            <option value="{{ $organization }}">{{ $organization }}</option>
+                                                                            <option value="{{ $organization->name }}">{{ $organization->name }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -417,7 +427,7 @@
                                                                         <select class="js-select2 form-select" id="activity_position_{{ $index }}" name="activities_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
-                                                                                <option value="{{$position}}" {{ isset($activities_data['position']) && $activities_data['position'] != null ? ($activities_data['position']  == $position ? 'selected' : '') : '' }}> {{$position}} </option>
+                                                                                <option value="{{$position->position_name}}" {{ isset($activities_data['position']) && $activities_data['position'] != null ? ($activities_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -425,7 +435,7 @@
                                                                         <select class="js-select2 form-select" id="activity_activity_{{ $index }}" name="activities_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Organization">
                                                                             <option value="">Select Organization</option>
                                                                             @foreach($organizations as $organization)
-                                                                                <option value="{{ $organization }}" {{ isset($activities_data['activity']) && $activities_data['activity'] != null ? ($activities_data['activity'] == $organization ? 'selected' : '') : '' }} > {{ $organization }} </option>
+                                                                                <option value="{{ $organization->name }}" {{ isset($activities_data['activity']) && $activities_data['activity'] != null ? ($activities_data['activity'] == $organization->name ? 'selected' : '') : '' }} > {{ $organization->name }} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -464,7 +474,7 @@
                                                                     <select class="js-select2 form-select" id="activity_position_0" name="activities_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
-                                                                            <option value="{{$position}}"> {{$position}} </option>
+                                                                            <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -472,7 +482,7 @@
                                                                     <select class="js-select2 form-select" id="activity_activity_0" name="activities_data[0][activity]" style="width: 100%;" data-placeholder="Select Organization">
                                                                         <option value="">Select Organization</option>
                                                                         @foreach($organizations as $organization)
-                                                                            <option value="{{ $organization }}"> {{ $organization }} </option>
+                                                                            <option value="{{ $organization->name }}"> {{ $organization->name }} </option>
                                                                         @endforeach
                                                                     </select>
                                                                 </td>
@@ -522,32 +532,32 @@
                                                 <table class="table athletics_table">
                                                     <tbody>
                                                         <tr>
-                                                            <td>
+                                                            <td width='20%'>
                                                                  <label class="form-label" for="athletics_position">
                                                                     Position
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="athletics_activity">
                                                                      Activity
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='15%'>
                                                                 <label class="form-label" for="athletics_grade">
                                                                     Grade(s)
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="athletics_location">
                                                                     Location
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='20%'>
                                                                 <label class="form-label" for="athletics_honor">
                                                                     Honor
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td width='5%'>
                                                                 <label class="form-label">Action</label><br>
                                                             </td>
                                                         </tr>
@@ -555,13 +565,14 @@
                                                             @foreach ($activity->athletics_data as $index => $athletics_data)
                                                                 <tr class="athletics_data_table_row {{ $loop->first ? '' : 'remove_athletics_data' }}">
 																   <td>
-                                                                        <input type="text"
-                                                                            class="form-control"
-                                                                            id="athletics_activity" name="athletics_data[{{ $index }}][position]"
-                                                                            value="{{ $athletics_data['position'] }}"
-                                                                            placeholder="Enter Position">
+                                                                        <select class="js-select2 form-select" id="athletics_activity_{{ $index }}" name="athletics_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
+                                                                            <option value="">Select Position</option>
+                                                                            @foreach($demonstrated_positions as $position)
+                                                                                <option value="{{$position->position_name}}" {{ isset($athletics_data['position']) && $athletics_data['position'] != null ? ($athletics_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
+                                                                            @endforeach
+                                                                        </select>
                                                                     </td>
-                                                                    <td style="min-width:220px;">
+                                                                    <td>
                                                                         <select class="js-select2 form-select" id="athletics_position_{{ $index }}" name="athletics_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Activity">
                                                                             <option value="">Select Activity</option>
                                                                             @foreach($athletics_positions as $athletics_position)
@@ -602,13 +613,19 @@
                                                         @else
                                                             <tr class="athletics_data_table_row">
 																<td>
-                                                                    <input type="text"
+                                                                    <select class="js-select2 form-select" id="athletics_activity" name="athletics_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
+                                                                        <option value="">Select Position</option>
+                                                                        @foreach($demonstrated_positions as $position)
+                                                                            <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    {{-- <input type="text"
                                                                         class="form-control"
                                                                         id="athletics_activity" name="athletics_data[0][position]"
                                                                         value=""
-                                                                        placeholder="Enter Position">
+                                                                        placeholder="Enter Position"> --}}
                                                                 </td>
-                                                                <td style="min-width:220px;">
+                                                                <td>
                                                                     {{-- <input type="text"
                                                                         class="form-control"
                                                                         id="athletics_positions" name="athletics_data[0][activity]"
@@ -691,9 +708,9 @@
                                                                     Location
                                                                 </label>
                                                             </td>
-                                                            {{-- <td>
+                                                            <td>
                                                                 <label class="form-label">Action</label><br>
-                                                            </td> --}}
+                                                            </td>
                                                         </tr>
                                                         @if(!empty($activity->community_service_data))
                                                             @foreach ($activity->community_service_data as $index => $community_service_data)
@@ -702,7 +719,7 @@
                                                                         <select class="js-select2 form-select" id="community_level_{{ $index }}" name="community_service_data[{{$index}}][level]" style="width: 100%;" data-placeholder="Select Position">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
-                                                                                <option value="{{$position}}"  {{ isset($community_service_data['level']) && $community_service_data['level'] != null ? ($community_service_data['level']  == $position ? 'selected' : '') : '' }}> {{$position}} </option>
+                                                                                <option value="{{$position->position_name}}"  {{ isset($community_service_data['level']) && $community_service_data['level'] != null ? ($community_service_data['level']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </td>
@@ -728,11 +745,11 @@
                                                                             value = "{{ $community_service_data['location'] }}"
                                                                             placeholder="Enter Location">
                                                                     </td>
-                                                                    {{-- <td>
+                                                                    <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                             <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus'}}" onclick="{{ $loop->first ? 'addCommunityData(this)' :'removeCommunityData(this)' }}" data-count="{{ count($activity->community_service_data) != 0 ? count($activity->community_service_data) - 1 : 0 }}"></i>
                                                                         </a>
-                                                                    </td> --}}
+                                                                    </td>
                                                                 </tr>
                                                             @endforeach
                                                         @else
@@ -770,11 +787,11 @@
                                                                         id="community_location" name="community_service_data[0][location]"
                                                                         placeholder="Enter Location">
                                                                 </td>
-                                                                {{-- <td>
+                                                                <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
                                                                         <i class="fa-solid fa-plus" onclick="addCommunityData(this)" data-count="0"></i>
                                                                     </a>
-                                                                </td> --}}
+                                                                </td>
                                                             </tr>
                                                         @endif
                                                     </tbody>
@@ -841,6 +858,23 @@
         let total_activity_count = "{{ isset($activity->activities_data) && $activity->activities_data != null ? count($activity->activities_data) : 0 }}";
         let total_athletics_count = "{{ isset($activity->athletics_data) && $activity->athletics_data != null ? count($activity->athletics_data) : 0 }}";
         let total_community_count = "{{ isset($activity->community_service_data) && $activity->community_service_data != null ? count($activity->community_service_data) : 0 }}";
+
+        $(document).ready(function() {
+            $('.single-select2-class').select2({
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                }
+            });
+        });
 
         $(document).ready(() => {
             if(total_demonstrated_count > 0) {
