@@ -79,7 +79,7 @@ class CollegeApplicationDeadlineController extends Controller
         $college->css_status = $request->css_status;
         $college->application_checklist = implode(",", $request->application_checklist);
         $college->save();
-        return redirect()->back()->with('success', 'College added successfully');
+        return redirect()->back()->with('success', 'Details added successfully');
     }
 
     public function edit($id)

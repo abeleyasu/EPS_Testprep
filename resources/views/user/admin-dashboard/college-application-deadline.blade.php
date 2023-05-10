@@ -3,6 +3,38 @@
 @section('title', 'College Application DeadLine : CPS')
 
 @section('user-content')
+<style>
+    .row {
+        margin-bottom: 15px;
+    }
+
+    /* Style the button that is used to open and close the collapsible content */
+    .collapsible {
+        background-color: #eee;
+        color: #444;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active,
+    .collapsible:hover {
+        background-color: #ccc;
+    }
+
+    /* Style the collapsible content. Note: hidden by default */
+    .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+    }
+</style>
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
         @if(session('success'))
@@ -31,466 +63,388 @@
                 <span class="note-text">Note:</span> Adding or removing a college from this list will also add it to or remove it from all tools on your profile, including the My College List tool.
             </p>
 
-            <table class="js-table-sections table">
-                <thead>
-                    <tr>
-                        <th style="width: 30px;"></th>
-                        <th style="width: 30px;"></th>
-                        <th></th>
-                        <th style="width: 20px;"></th>
-                    </tr>
-                    <tr>
-                        <th style="width: 30px;"></th>
-                        <th style="width: 30px;"></th>
-                        <th></th>
-                        <th style="width: 20px;"></th>
-                    </tr>
-                    <tr>
-                        <th style="width: 30px;"></th>
-                        <th style="width: 30px;"></th>
-                        <th></th>
-                        <th style="width: 20px;">Completed?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($colleges as $college)
-                    <tr>
-                        <td colspan="4">
-                            <div class="js-table-sections-header table-default-active">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="text-center">
-                                        <i class="fa fa-angle-right"></i>
-                                    </div>
-                                    <div>
-                                        <i class="fa fa-bars"></i>
-                                    </div>
-                                    <div class="fw-semibold fs-sm">
-                                        {{ $college->name }}
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="form-check d-inline-block">
-                                            <input class="form-check-input" type="checkbox" value="" id="College_checkAll" name="row_1">
-                                        </div>
-                                    </div>
+            <div class="">
+                <div>
+                    <div>
+                        <div>
+                            @foreach ($colleges as $college)
+                            <div class="">
+                                <div class="collapsible">
+                                    {{ $college->name }}
                                 </div>
-                            </div>
+                                <div class="content">
+                                    <form action="./college_application_save" method="POST" style="margin-left: 35px;">
 
-                            <form action="./college_application_save" method="POST">
-
-                                <div class="fs-sm">
-                                    @csrf
-                                    <input type="hidden" name="college_id" id="college_id" value="{{$college->id}}">
-                                    <div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="text-center"></div>
-                                            <div class="text-center"></div>
-                                            <div class="fw-semibold fs-sm">
+                                        <div class="fs-sm">
+                                            @csrf
+                                            <input type="hidden" name="college_id" id="college_id" value="{{$college->id}}">
+                                            <div class="row">
+                                                <div class="col-4 fw-semibold fs-sm">
+                                                    <div>
+                                                        <label class="form-label" for="example-select">Type of Application</label>
+                                                        <select class="form-select" id="type_of_application" name="type_of_application">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Common App</option>
+                                                            <option value="2">Coalition App</option>
+                                                            <option value="3">Universal App</option>
+                                                            <option value="4">College System App</option>
+                                                            <option value="5">Apply Directly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 text-center">
+                                                    <div class="form-check d-inline-block td-position">
+                                                        <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_2" name="row_1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4 fw-semibold fs-sm">
                                                 <div>
-                                                    <label class="form-label" for="example-select">Type of Application</label>
-                                                    <select class="form-select" id="type_of_application" name="type_of_application">
+                                                    <label class="form-label" for="admission_option">Admissions Option</label>
+                                                    <select class="form-select" id="admission_option" name="admission_option">
                                                         <option selected>Select One</option>
-                                                        <option value="1">Common App</option>
-                                                        <option value="2">Coalition App</option>
-                                                        <option value="3">Universal App</option>
-                                                        <option value="4">College System App</option>
-                                                        <option value="5">Apply Directly</option>
+                                                        <option value="1">Early Action</option>
+                                                        <option value="2">Regular Decision</option>
+                                                        <option value="3">Rolling Admissions</option>
+                                                        <option value="2">Early Decision</option>
+                                                        <option value="2">Early Decision II</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="text-center">
+                                            <div class="col-4 text-center">
                                                 <div class="form-check d-inline-block td-position">
-                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_2" name="row_1">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-4 text-center"></div>
-                                        <div class="col-4 text-center"></div>
-                                        <div class="col-4 fw-semibold fs-sm">
-                                            <div>
-                                                <label class="form-label" for="admission_option">Admissions Option</label>
-                                                <select class="form-select" id="admission_option" name="admission_option">
+                                        <div class="row">
+                                            <div class="col-md-6 fw-semibold fs-sm">
+                                                <label class="form-label" for="number_of_essaya">Number of Essays</label>
+                                                <select class="form-select" id="number_of_essaya" name="number_of_essaya">
                                                     <option selected>Select One</option>
-                                                    <option value="1">Early Action</option>
-                                                    <option value="2">Regular Decision</option>
-                                                    <option value="3">Rolling Admissions</option>
-                                                    <option value="2">Early Decision</option>
-                                                    <option value="2">Early Decision II</option>
+                                                    <option value="1">0</option>
+                                                    <option value="2">1</option>
+                                                    <option value="3">2</option>
+                                                    <option value="4">3</option>
+                                                    <option value="5">4</option>
+                                                    <option value="6">5</option>
+                                                    <option value="7">6</option>
+                                                    <option value="8">7</option>
+                                                    <option value="9">8</option>
+                                                    <option value="10">9</option>
+                                                    <option value="11">10</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="col-4 text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-6 fw-semibold fs-sm">
-                                            <label class="form-label" for="number_of_essaya">Number of Essays</label>
-                                            <select class="form-select" id="number_of_essaya" name="number_of_essaya">
-                                                <option selected>Select One</option>
-                                                <option value="1">0</option>
-                                                <option value="2">1</option>
-                                                <option value="3">2</option>
-                                                <option value="4">3</option>
-                                                <option value="5">4</option>
-                                                <option value="6">5</option>
-                                                <option value="7">6</option>
-                                                <option value="8">7</option>
-                                                <option value="9">8</option>
-                                                <option value="10">9</option>
-                                                <option value="11">10</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-2 text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-2"></div>
-                                        <div class="col-2"></div>
-                                        <div class="col-8 fw-semibold fs-sm">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="admissions_deadline">Admissions Deadline</label>
-                                                    <input type="text" class="date-own form-control" id="admissions_deadline" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="ad_status">Status</label>
-                                                    <select class="form-select" id="ad_status" name="ad_status">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Applied</option>
-                                                        <option value="2">Not Applied</option>
-                                                        <option value="3">Not Applicable</option>
-                                                    </select>
+                                            <div class="col-md-2 text-center">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-2 text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-2"></div>
-                                        <div class="col-2"></div>
-                                        <div class="col-8 fw-semibold fs-sm">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="competitive_scholarship_deadline">Competitive Scholarship Deadline</label>
-                                                    <input type="text" class="date-own form-control" id="competitive_scholarship_deadline" name="competitive_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                        <div class="row">
+                                            <div class="col-8 fw-semibold fs-sm">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="admissions_deadline">Admissions Deadline</label>
+                                                        <input type="text" class="date-own form-control" id="admissions_deadline" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="ad_status">Status</label>
+                                                        <select class="form-select" id="ad_status" name="ad_status">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Applied</option>
+                                                            <option value="2">Not Applied</option>
+                                                            <option value="3">Not Applicable</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="csd_status">Status</label>
-                                                    <select class="form-select" id="csd_status" name="csd_status">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Applied</option>
-                                                        <option value="2">Not Applied</option>
-                                                        <option value="3">Not Applicable</option>
-                                                    </select>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-2 text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-8 fw-semibold fs-sm">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label class="form-label" for="departmental_scholarship">Departmental/STEM Scholarship Deadline</label>
-                                                    <input type="text" class="date-own form-control" id="departmental_scholarship_deadline" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                        <div class="row">
+                                            <div class="col-8 fw-semibold fs-sm">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="competitive_scholarship_deadline">Competitive Scholarship Deadline</label>
+                                                        <input type="text" class="date-own form-control" id="competitive_scholarship_deadline" name="competitive_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="csd_status">Status</label>
+                                                        <select class="form-select" id="csd_status" name="csd_status">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Applied</option>
+                                                            <option value="2">Not Applied</option>
+                                                            <option value="3">Not Applicable</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label" for="dsd_status">Status</label>
-                                                    <select class="form-select" id="dsd_status" name="dsd_status">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Applied</option>
-                                                        <option value="2">Not Applied</option>
-                                                        <option value="3">Not Applicable</option>
-                                                    </select>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-2 text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-2 text-center"></div>
-                                        <div class="col-2 text-center"></div>
-                                        <div class="col-8 fw-semibold fs-sm">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="honors_college">Honors College Deadline</label>
-                                                    <input type="text" class="date-own form-control" id="honors_college_deadline" name="honors_college_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                        <div class="row">
+                                            <div class="col-md-8 fw-semibold fs-sm">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label" for="departmental_scholarship">Departmental/STEM Scholarship Deadline</label>
+                                                        <input type="text" class="date-own form-control" id="departmental_scholarship_deadline" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label" for="dsd_status">Status</label>
+                                                        <select class="form-select" id="dsd_status" name="dsd_status">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Applied</option>
+                                                            <option value="2">Not Applied</option>
+                                                            <option value="3">Not Applicable</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="honors_college_status">Status</label>
-                                                    <select class="form-select" id="hcd_status" name="hcd_status">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Applied</option>
-                                                        <option value="2">Not Applied</option>
-                                                        <option value="3">Not Applicable</option>
-                                                    </select>
+                                            </div>
+                                            <div class="col-md-2 text-center">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-2 text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="fw-semibold fs-sm">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="fafsa_deadline">FAFSA Deadline</label>
-                                                    <input type="text" class="date-own form-control" id="fafsa_deadline" name="fafsa_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                        <div class="row">
+                                            <div class="col-8 fw-semibold fs-sm">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="honors_college">Honors College Deadline</label>
+                                                        <input type="text" class="date-own form-control" id="honors_college_deadline" name="honors_college_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="honors_college_status">Status</label>
+                                                        <select class="form-select" id="hcd_status" name="hcd_status">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Applied</option>
+                                                            <option value="2">Not Applied</option>
+                                                            <option value="3">Not Applicable</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="fafsa_deadline_status">Status</label>
-                                                    <select class="form-select" id="fafsa_status" name="fafsa_status">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Applied</option>
-                                                        <option value="2">Not Applied</option>
-                                                        <option value="3">Not Applicable</option>
-                                                    </select>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="fw-semibold fs-sm">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label class="form-label" for="css_profile">CSS Profile Deadline</label>
-                                                    <input type="text" class="date-own form-control" id="css_profile_deadline" name="css_profile_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                        <div class="row">
+                                            <div class="col-8 fw-semibold fs-sm">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="fafsa_deadline">FAFSA Deadline</label>
+                                                        <input type="text" class="date-own form-control" id="fafsa_deadline" name="fafsa_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="fafsa_deadline_status">Status</label>
+                                                        <select class="form-select" id="fafsa_status" name="fafsa_status">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Applied</option>
+                                                            <option value="2">Not Applied</option>
+                                                            <option value="3">Not Applicable</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6">
-                                                    <label class="form-label" for="css_status">Status</label>
-                                                    <select class="form-select" id="css_status" name="css_status">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Applied</option>
-                                                        <option value="2">Not Applied</option>
-                                                        <option value="3">Not Applicable</option>
-                                                    </select>
+                                            </div>
+                                            <div class="text-center col-2">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-center">
-                                            <div class="form-check d-inline-block td-position">
-                                                <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                                <label class="form-check-label " for="row_1"></label>
+                                        <div class="row">
+                                            <div class="col-8 fw-semibold fs-sm">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="css_profile">CSS Profile Deadline</label>
+                                                        <input type="text" class="date-own form-control" id="css_profile_deadline" name="css_profile_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="form-label" for="css_status">Status</label>
+                                                        <select class="form-select" id="css_status" name="css_status">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Applied</option>
+                                                            <option value="2">Not Applied</option>
+                                                            <option value="3">Not Applicable</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-center col-2">
+                                                <div class="form-check d-inline-block td-position">
+                                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
+                                                    <label class="form-check-label " for="row_1"></label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="" name="application_checklist[]">
-                                                <label class="form-check-label mb-3" for="Application_Checklist"><b>Application Checklist Complete</b></label>
-                                                <button type="button" class="btn btn-alt-primary w-100" data-bs-toggle="popover" data-bs-animation="true" data-bs-placement="bottom" title="Checklist Information" data-bs-content="Once all of the checkboxes below are checked off, this checkbox will automatically be checked.">i</button>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="" name="application_checklist[]">
+                                                    <label class="form-check-label mb-3" for="Application_Checklist"><b>Application Checklist Complete</b></label>
+                                                    <button type="button" class="btn btn-alt-primary w-100" data-bs-toggle="popover" data-bs-animation="true" data-bs-placement="bottom" title="Checklist Information" data-bs-content="Once all of the checkboxes below are checked off, this checkbox will automatically be checked.">i</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col text-center"></div>
-                                        <div class="col text-center"></div>
-                                        <div class="col text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="completed" name="application_checklist[]">
-                                                <label class="form-check-label" for="completed">Completed College Application?</label>
+                                        <div class="row">
+                                            <div class="col text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="completed" name="application_checklist[]">
+                                                    <label class="form-check-label" for="completed">Completed College Application?</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-8 text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="Request_pay" name="application_checklist[]">
-                                                <label class="form-check-label" for="Request_pay">Request &amp; pay for test scores (if applicable) to be sent to the colleges you will apply to</label>
+                                        <div class="row">
+                                            <div class="col-md-12 text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="Request_pay" name="application_checklist[]">
+                                                    <label class="form-check-label" for="Request_pay">Request & pay for test scores (if applicable) to be sent to the colleges you will apply to</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="request_your_official" name="application_checklist[]">
-                                                <label class="form-check-label" for="request_your_official">Request your official high school transcripts from your counseling office</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="request_your_official" name="application_checklist[]">
+                                                    <label class="form-check-label" for="request_your_official">Request your official high school transcripts from your counseling office</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-2 text-center"></div>
-                                        <div class="col-md-8 text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="high_school_transcript" name="application_checklist[]">
-                                                <label class="form-check-label" for="high_school_transcript">Pay the high school transcript submittal fee (This varies by high school)</label>
+                                        <div class="row">
+                                            <div class="col-md-8 text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="high_school_transcript" name="application_checklist[]">
+                                                    <label class="form-check-label" for="high_school_transcript">Pay the high school transcript submittal fee (This varies by high school)</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="request_letters" name="application_checklist[]">
-                                                <label class="form-check-label" for="request_letters">Request letters of recommendation from your teachers and outside recommenders</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="request_letters" name="application_checklist[]">
+                                                    <label class="form-check-label" for="request_letters">Request letters of recommendation from your teachers and outside recommenders</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="high_school_counseling_office" name="application_checklist[]">
-                                                <label class="form-check-label" for="high_school_counseling_office">Confirm that your official high school transcripts have been sent by your high school's counseling office</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="high_school_counseling_office" name="application_checklist[]">
+                                                    <label class="form-check-label" for="high_school_counseling_office">Confirm that your official high school transcripts have been sent by your high school's counseling office</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="school_report" name="application_checklist[]">
-                                                <label class="form-check-label" for="school_report">Confirm that the school report and counselor recommendation have been sent by your high school's counseling office</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="school_report" name="application_checklist[]">
+                                                    <label class="form-check-label" for="school_report">Confirm that the school report and counselor recommendation have been sent by your high school's counseling office</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="test_scores" name="application_checklist[]">
-                                                <label class="form-check-label" for="test_scores">Confirm that your test scores
-                                                    have
-                                                    been
-                                                    sent</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="test_scores" name="application_checklist[]">
+                                                    <label class="form-check-label" for="test_scores">Confirm that your test scores
+                                                        have
+                                                        been
+                                                        sent</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="letters_of_recommendation" name="application_checklist[]">
-                                                <label class="form-check-label" for="letters_of_recommendation">Confirm that your
-                                                    letters of
-                                                    recommendation have been submitted</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="letters_of_recommendation" name="application_checklist[]">
+                                                    <label class="form-check-label" for="letters_of_recommendation">Confirm that your
+                                                        letters of
+                                                        recommendation have been submitted</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="pay_application_fee" name="application_checklist[]">
-                                                <label class="form-check-label" for="pay_application_fee">Pay application
-                                                    fee</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="pay_application_fee" name="application_checklist[]">
+                                                    <label class="form-check-label" for="pay_application_fee">Pay application
+                                                        fee</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="submit_application" name="submit_application">
-                                                <label class="form-check-label" for="submit_application">Submit
-                                                    application</label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="submit_application" name="submit_application">
+                                                    <label class="form-check-label" for="submit_application">Submit
+                                                        application</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div class="text-left">
-                                            <div class="form-check d-inline-block">
-                                                <input class="form-check-input" type="checkbox" value="" id="submit_your_application" name="application_checklist[]">
-                                                <label class="form-check-label" for="submit_your_application">After you submit
-                                                    your application,
-                                                    set
-                                                    up your student portal to confirm that the college has received your application
-                                                    and
-                                                    required documentation (Usually the college will send you an email with
-                                                    directions
-                                                    on how to set up your student portal once they've received your application)
-                                                </label>
+                                        <div class="row">
+                                            <div class="text-left">
+                                                <div class="form-check d-inline-block">
+                                                    <input class="form-check-input" type="checkbox" value="" id="submit_your_application" name="application_checklist[]">
+                                                    <label class="form-check-label" for="submit_your_application">After you submit
+                                                        your application,
+                                                        set
+                                                        up your student portal to confirm that the college has received your application
+                                                        and
+                                                        required documentation (Usually the college will send you an email with
+                                                        directions
+                                                        on how to set up your student portal once they've received your application)
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!--<div>
-                            <div class="text-center"></div>
-                            <div class="text-center"></div>
-                            <div class="fw-semibold fs-sm">
-                                <div class="col-sm-6 col-xl-3">
-                                    <label class="form-label" for="final_admissions_decision">Final Admissions Decision</label>
-                                    <select class="form-select" id="final_admissions_decision" name="final_admissions_decision">
-                                        <option selected>Select One</option>
-                                        <option value="1">Accepted</option>
-                                        <option value="2">Denied</option>
-                                        <option value="3">Pending</option>
-                                        <option value="4">Waitlisted</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <div class="form-check d-inline-block">
-                                    <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
-                                    <label class="form-check-label" for="row_1"></label>
-                                </div>
-                            </div>
-                        </div>-->
+                                        <!--<div>
+                                                <div class="text-center"></div>
+                                                <div class="text-center"></div>
+                                                <div class="fw-semibold fs-sm">
+                                                    <div class="col-sm-6 col-xl-3">
+                                                        <label class="form-label" for="final_admissions_decision">Final Admissions Decision</label>
+                                                        <select class="form-select" id="final_admissions_decision" name="final_admissions_decision">
+                                                            <option selected>Select One</option>
+                                                            <option value="1">Accepted</option>
+                                                            <option value="2">Denied</option>
+                                                            <option value="3">Pending</option>
+                                                            <option value="4">Waitlisted</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div class="form-check d-inline-block">
+                                                        <input class="form-check-input form-check-input_all" type="checkbox" value="" id="row_1" name="row_1">
+                                                        <label class="form-check-label" for="row_1"></label>
+                                                    </div>
+                                                </div>
+                                            </div>-->
 
-                                    <div>
-                                        <div class="text-center"></div>
-                                        <div class="text-center"></div>
-                                        <div colspan="2" class="text-center">
-                                            <button class="btn btn-primary" type="submit" value="Submit">Save</button>
+                                        <div>
+                                            <div colspan="2" class="text-center">
+                                                <button class="btn btn-primary" type="submit" value="Submit">Save</button>
+                                            </div>
                                         </div>
-                                    </div>
-
+                                    </form>
                                 </div>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -556,7 +510,18 @@
 
 @section('user-script')
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
 
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            jQuery(this).parent().find(".content").toggle();
+
+        });
+    }
+</script>
 <script>
     $('.date-own').datepicker({
         format: 'dd-mm-yyyy',
