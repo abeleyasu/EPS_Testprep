@@ -11,6 +11,7 @@ use App\Models\StudentBillingDetail;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Cashier\Cashier;
 
 class UserController extends Controller
@@ -90,16 +91,8 @@ class UserController extends Controller
         //     $user->save();
         // }
         $user = User::where('role', '!=', 1)->find($id);
-        $this->states = States::get();
-		$intent = auth()->user()->createSetupIntent();
         if ($user) {
-			$cards = [
-				'data' => []
-			];
-			if (Auth::user()->stripe_id) {
-				$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
-			}
-            return view('user.edit-profile', ['user' => $user, 'states' => $this->states, 'cards' => $cards, 'intent' => $intent->client_secret]);
+            return view('user.edit-profile', ['user' => $user]);
         } else {
             return redirect(route('admin-user-list'));
         }
@@ -116,10 +109,11 @@ class UserController extends Controller
 				$user->addPaymentMethod($request->stripeToken);
 			}
 		}
-		$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
-		$intent = auth()->user()->createSetupIntent();
-		$this->states = States::get();
-		return view('user.edit-profile', ['user' => $user, 'states' => $this->states, 'cards' => $cards, 'intent' => $intent->client_secret]);
+//		$cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
+//		$intent = auth()->user()->createSetupIntent();
+//		$this->states = States::get();
+//		return view('user.edit-profile', ['user' => $user, 'states' => $this->states, 'cards' => $cards, 'intent' => $intent->client_secret]);
+        return Redirect::back();
     }
 
 	public function deleteCard(Request $request) {
@@ -269,4 +263,54 @@ class UserController extends Controller
 
 		return view('user.cost_comparison', ['result' => $result]);
 	}
+
+	public function billing_details(Request $request) {
+        $id = Auth::id();
+        $user = User::where('role', '!=', 1)->find($id);
+        $cards = [
+            'data' => []
+        ];
+        $intent = auth()->user()->createSetupIntent();
+        $this->states = States::get();
+        $this->cities = [];
+        if ($user->state_id) {
+            $this->cities = Cities::where('state_id', $user->state_id)->get();
+        }
+        if (Auth::user()->stripe_id) {
+            $cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
+        }
+        return view('user.billing-details', ['user' => $user, 'states' => $this->states, 'cities' => $this->cities, 'cards' => $cards, 'intent' => $intent->client_secret]);
+    }
+
+	public function save_basic_details(Request $request) {
+        $id = Auth::id();
+        $request->validate(
+            [
+                'state_id' => ['required'],
+                'city_id' => ['required'],
+                'address_line_1' => ['required', 'min:5'],
+                'address_line_2' => ['required', 'min:5'],
+                'postal_code' => ['required', 'min:4'],
+            ],
+            [
+                'state_id.required' => 'State is required',
+                'city_id.required' => 'City is required',
+                'address_line_1.required' => 'Address line 1 is required',
+                'address_line_2.required' => 'Address line 2 is required',
+                'postal_code.required' => 'Postal code is required',
+                'address_line_1.min' => 'Address line 1 must be at least 5 characters',
+                'address_line_2.min' => 'Address line 2 must be at least 5 characters',
+                'postal_code.min' => 'Postal code must be at least 6 characters',
+
+            ],
+        );
+        User::where('id', $id)->update([
+            'state_id' => $request->state_id,
+            'city_id' => $request->city_id,
+            'address_line_1' => $request->address_line_1,
+            'address_line_2' => $request->address_line_2,
+            'postal_code' => $request->postal_code,
+        ]);
+        return Redirect::back();
+    }
 }

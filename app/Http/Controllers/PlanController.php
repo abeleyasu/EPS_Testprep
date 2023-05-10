@@ -138,27 +138,49 @@ class PlanController extends Controller
         $user = Auth::user();
         $product_name = Product::find($plan->product_id);
         $plan['name'] = $product_name['title'];
-        // $subscription_obj = $user->newSubscription('default',$plan->stripe_plan_id)
-        //     ->checkout([
-        //         'success_url' => route('plan.index'),
-        //         'cancel_url'=>route('home') // add cancel_url by default add now home
-        //     ]);
-        // return redirect($subscription_obj->url);
-        $intent = auth()->user()->createSetupIntent();
+
+        $intent = auth()->user()->createSetupIntent([
+            'payment_method_types' => ['card'],
+            'usage' => 'off_session',
+        ]);
         if ($user->stripe_id) {
             $cards = $this->stripe->customers->allPaymentMethods($user->stripe_id);
             $customer = $this->stripe->customers->retrieve($user->stripe_id);
         }
-        return view("user.subscription", compact("plan", "intent"));
+        return view("user.subscription", compact("plan", "intent", "cards"));
     }
 
 
     public function subscription(Request $request)
     {
-        $plan = Plan::find($request->plan);
+        $plan = Plan::where('stripe_plan_id', $request->plan)->first();
 
-        $subscription = $request->user()->newSubscription($request->plan, $plan->stripe_plan)->create($request->token);
+        // Get the Payment Method ID from the Stripe Elements card input form
+        $paymentMethodId = $request->payment_method;
+        try {
 
-        return view("subscription_success");
+            // Create a new subscription with Cashier
+            $user = $request->user();
+            $user->newSubscription('default', $plan->stripe_plan_id)
+                ->create($paymentMethodId, [
+                    'setup_future_usage' => 'off_session',
+                ]);
+
+            // Handle successful subscription creation
+            return view("user.subscription_success");
+        } catch (\Stripe\Exception\CardException $e) {
+            // Handle Setup Intent confirmation error, which may include a 3D Secure authentication flow
+            if ($e->getStripeCode() === 'authentication_required') {
+                $paymentIntentId = $e->getStripeParam('payment_intent');
+                $paymentIntent = $this->stripe->paymentIntents->retrieve($paymentIntentId);
+                return view('user.subscription', [
+                    'client_secret' => $paymentIntent->client_secret,
+                    'return_url' => route('plans.show'),
+                ]);
+            } else {
+                // Handle other Setup Intent confirmation errors
+                return redirect()->route('plan.index')->with('message', $e->getMessage());
+            }
+        }
     }
 }

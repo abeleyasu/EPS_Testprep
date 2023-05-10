@@ -96,57 +96,6 @@
                     </form>
                 </div>
             </div>
-
-            <div class="block block-rounded">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">Billing Detail</h3>
-                </div>
-                <div class="block-content block-content-full">
-                    <form id="payment-form" action="{{ route('user.billing-detail') }}" method="POST">
-                        @csrf
-                        <div class="py-3">
-                            <div class="mb-4">
-                                <label for="card_number" class="form-label">Card Holder Name</label>
-                                <input type="text"
-                                    class="form-control form-control-lg form-control-alt {{ $errors->has('card_holder_name') ? 'is-invalid' : '' }}"
-                                    id="card_holder_name" name="card_holder_name" placeholder="Card Holder Name"
-                                    value="{{ isset($user->billing_details) ? $user->billing_details->card_holder_name : null }}">
-                                @error('card_holder_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-4">
-                                <div id="card-element" name="token" class="form-control"></div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-6 col-xl-5">
-                                <button id="button" type="submit" class="btn w-100 btn-alt-success" data-secretkey="{{ $intent }}">
-                                    <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Add Payment Details
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- END Edit User Form -->
-                </div>
-            </div>
-            @foreach($cards['data'] as $card)
-                <div class="block-bordered block-rounded block overflow-hidden mb-1">
-                    <div class="block-header block-header-default">
-                        <div>
-                            <span>{{ $card->card->brand }}</span>
-                            <span>{{ $card->billing_details->name }}</span>
-                        </div>
-                        <span class="text-uppercase">{{ $card->card->brand }}({{$card->card->last4}})</span>
-                        <span>{{ $card->card->exp_month }}/{{$card->card->exp_year}}</span>
-                        <div>
-                            <button type="button" class="btn btn-sm btn-alt-secondary delete-card" data-id="{{$card->id}}" data-bs-toggle="tooltip" title="Delete Card">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
         </div>
     </main>
     <!-- END Main Container -->
@@ -182,64 +131,5 @@
             var preview = document.getElementById('preview');
             preview.src = URL.createObjectURL(event.target.files[0]);
         }
-    </script>
-
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        const stripe = Stripe('{{ env('STRIPE_KEY') }}')
-    
-        const elements = stripe.elements()
-        const cardElement = elements.create('card')
-    
-        cardElement.mount('#card-element')
-
-        cardElement.on('change', function (event) {
-            document.getElementById("button").disabled = event.empty;
-        })
-        const form = document.getElementById('payment-form')
-        const cardBtn = document.getElementById('button')
-        const cardHolderName = document.getElementById('card_holder_name')
-
-
-        const intent = "{{ $intent }}";
-    
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault()
-            cardBtn.disabled = true
-            const { setupIntent, error } = await stripe.confirmCardSetup(
-                intent, {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: {
-                            name: cardHolderName.value
-                        }   
-                    }
-                }
-            )
-            if(error) {
-                cardBtn.disable = false
-            } else {
-                let token = document.createElement('input')
-                token.setAttribute('type', 'hidden')
-                token.setAttribute('name', 'stripeToken')
-                token.setAttribute('value', setupIntent.payment_method)
-                form.appendChild(token)
-                form.submit();
-            }
-        })
-    </script>
-    <script>
-        $('.delete-card').click(function(){
-            if(confirm("Are you sure to delete this card?") == true){
-                $.ajax({
-                    'url': "{{route('user.delete.card')}}",
-                    'type': "POST",
-                    'data': {id: $(this).data('id')},
-                    'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-                }).done(function(data){
-                    document.location.reload();
-                });
-            }
-        });
     </script>
 @endsection

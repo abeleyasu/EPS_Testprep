@@ -218,6 +218,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
         Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
+        Route::get('/billing-detail', [UserController::class, 'billing_details'])->name('user.get-billing-detail');
+        Route::post('/basic_billing-detail', [UserController::class, 'save_basic_details'])->name('user.save-billing-detail');
         Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
         Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
 
@@ -332,8 +334,9 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
         Route::get('/plans', [PlanController::class, 'getUserPlan'])->name('plan.index');
         Route::get('/plans/{plan}', [PlanController::class, 'showPlan'])->name('plans.show');
-        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription");
-        Route::post('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.create");
+        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
+        Route::post('pay-subscription', [PlanController::class, 'paySubscription'])->name("subscription.paycard");
+//        Route::post('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.create");
 
     });
 
