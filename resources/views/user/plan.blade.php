@@ -61,44 +61,46 @@
 <main id="main-container">
   <div class="content">
     <div class="row justify-content-center">
-      @if(count($products) === 0)
+      @if(count($products) === 0 )
       <div class="alert alert-warning">There is no plan available</div>
       @endif
       <div class="row d-flex justify-content-center">
         @foreach($products as $product)
-          <div class="col-md-6 col-xl-3">
-            <div class="block block-rounded block-link-shadow text-center product-list">
-              <div class="block-header">
-                <h3 class="block-title product-title">{{ $product->title }}</h3>
-              </div>
-              <p class="product-description">{{ $product->description }}</p>
-              @foreach($product->plans as $plan)
-                <div class="block-content pricing-price">
-                  <div class="py-2 pricing-description">
-                    <p class="currency">${{ $plan->display_amount }}
-                      @if($plan->interval === 'month')
-                        <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
-                      @endif
-                    </p>
-                    @if($plan->interval === 'month')
-                      <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
-                    @else
-                      <p class="text-muted"><span class="text-capitalize">/year</span></p>
-                    @endif
-                  </div>
-                  <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+          @if (count($product->plans) > 0)
+            <div class="col-md-6 col-xl-3">
+              <div class="block block-rounded block-link-shadow text-center product-list">
+                <div class="block-header">
+                  <h3 class="block-title product-title">{{ $product->title }}</h3>
                 </div>
-              @endforeach
+                <p class="product-description">{{ $product->description }}</p>
+                @foreach($product->plans as $plan)
+                  <div class="block-content pricing-price">
+                    <div class="py-2 pricing-description">
+                      <p class="currency">${{ $plan->display_amount }}
+                        @if($plan->interval === 'month')
+                          <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
+                        @endif
+                      </p>
+                      @if($plan->interval === 'month')
+                        <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
+                      @else
+                        <p class="text-muted"><span class="text-capitalize">/year</span></p>
+                      @endif
+                    </div>
+                    <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                  </div>
+                @endforeach
 
-              <div class="block-content">
-                <div class="fs-sm py-2">
-                    @foreach($product->inclusions as $inc)
-                        <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
-                    @endforeach
+                <div class="block-content">
+                  <div class="fs-sm py-2">
+                      @foreach($product->inclusions as $inc)
+                          <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
+                      @endforeach
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          @endif
         @endforeach
       </div>
     </div>

@@ -22,40 +22,25 @@ class SubscriptionController extends Controller
 
     public function mysubscriptions()
     {
+        if (!Auth::user()->subscribed('default')) {
+            $products = Product::with(['plans', 'inclusions'])->get();
+            $intent = auth()->user()->createSetupIntent();
+            // dd($plans);
+            return view("user.plan", compact("products",'intent'));        
+        }
         $user = Auth::user();
-        $subscriptions = $user->subscriptions;
-        $subscriptions->each(function ($subscription) {
-            $subscription->plan = Plan::where('stripe_plan_id', $subscription->stripe_price)->first();
-            $subscription->product_title = Product::where('id', $subscription->plan->product_id)->get();
-        });
-        return view('user.my_subscriptions', compact('subscriptions'));
+        $subscription = $user->subscriptions->first();
+        $currentPlan = Plan::where('stripe_plan_id', $subscription->stripe_price)->first();
+        $card = $user->defaultPaymentMethod();
+        return view('user.my_subscriptions', ['subscription' => $subscription, 'currentPlan' => $currentPlan, 'card' => $card]);
     }
 
 
     public function cancelsubscriptions(Request $request)
     {
-        $subscriptionName = $request->subscriptionName;
-        if ($subscriptionName) {
-            $user = auth()->user();
-            $user->subscription($subscriptionName)->cancel();
-            return "Subscription is cancelled";
-        }
-        // Retrieve the subscription
-        // $user = Auth::user();
-        // DB::table('subscriptions')->where('stripe_id', $request->id)->update(['stripe_status' => 'cancelled']);;
-        // $subscription = $this->stripe->subscriptions->cancel($request->id);
-
-        // // print_r($subscription);
-        // // die();
-        // // Cancel the subscription
-        // // $subscription->cancel();
-
-        // // Redirect back with success message
-        // return back()->with('success', 'Subscription cancelled successfully.');
-        // } catch (ApiErrorException $e) {
-        //     // Handle any errors
-        //     return back()->with('error', $e->getMessage());
-        // }
+        $user = Auth::user();
+        $user->subscription('default')->cancelNow();
+        return "success";
     }
 
     public function resumesubscriptions(Request $request)

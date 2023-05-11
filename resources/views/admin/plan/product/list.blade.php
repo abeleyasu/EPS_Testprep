@@ -18,7 +18,10 @@
         <!-- Dynamic Table Full -->
         <div class="block block-rounded">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Plan List</h3>
+                <h3 class="block-title">Product List</h3>
+                <div class="block-options">
+                    <a href="{{route('admin.product.create')}}" class="btn btn-sm btn-alt-success"><i class="fa fa-plus mr-1"></i> Add New Product</a>
+                </div>
             </div>
             <div class="block-content block-content-full">
                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
@@ -44,10 +47,10 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{route('admin.product.edit', ['id' => $product->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit User">
+                                    <a href="{{route('admin.product.edit', ['id' => $product->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Product">
                                         <i class="fa fa-fw fa-pencil-alt"></i>
                                     </a>
-                                    <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="{{$product->id}}" data-bs-toggle="tooltip" title="Delete User">
+                                    <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="{{$product->id}}" data-bs-toggle="tooltip" title="Delete Product">
                                         <i class="fa fa-fw fa-times"></i>
                                     </button>
                                 </div>

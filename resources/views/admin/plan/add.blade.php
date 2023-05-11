@@ -53,10 +53,6 @@
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
-                    <div class="mb-4" id="pe_month_ele">
-                        <label for="description" class="form-label">Per Month:</label>
-                        <input type="text" disabled class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}" id="p_month"  placeholder="Per month">
-                    </div>
                     <div class="row mb-4">
                         <div class="col-md-6 col-xl-5">
                             <button type="submit" class="btn w-100 btn-alt-success">
@@ -73,43 +69,4 @@
 @endsection
 
 @section('admin-script')
-    <script>
-
-        $('#interval').on('change', function (e) {
-            console.log(e.target.value)
-            if (e.target.value === 'year') {
-                document.getElementById("in-count-ele").style.display = "none";
-                document.getElementById("pe_month_ele").style.display = "none";
-            } else {
-                document.getElementById("in-count-ele").style.display = "block";
-                document.getElementById("pe_month_ele").style.display = "block";
-            }
-        })
-
-        $('#interval_count').on('change', function (e) {
-            calculatedisplayPrice()
-        })
-
-        $('#amount').on('change', function (e) {
-            calculatedisplayPrice()
-        })
-
-        function calculatedisplayPrice() {
-            const amount = Number($('#amount').val());
-            const interval = $('#interval').val();
-            const interval_count = Number($('#interval_count').val());
-            if (interval === 'month') {
-                if (amount === 0) {
-                    $('#p_month').val(0)
-                    return;
-                }
-                if (interval_count === 0) {
-                    $('#p_month').val(amount)
-                    return;
-                }
-                const calculate = (amount / interval_count).toFixed(2)
-                $('#p_month').val(calculate)
-            }
-        }
-    </script>
 @endsection

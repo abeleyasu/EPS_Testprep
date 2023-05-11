@@ -335,9 +335,9 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::get('/plans', [PlanController::class, 'getUserPlan'])->name('plan.index');
         Route::get('/plans/{plan}', [PlanController::class, 'showPlan'])->name('plans.show');
         Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
-        Route::post('pay-subscription', [PlanController::class, 'paySubscription'])->name("subscription.paycard");
-//        Route::post('addSubsciption', [SubscriptionController::class, 'addSubsciption'])->name("subscription.create");
-
+        Route::get('/my-subscription', [SubscriptionController::class, 'mysubscriptions'])->name('mysubscriptions.index');
+        Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelsubscriptions'])->name('mysubscriptions.cancel');
+        Route::get('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');

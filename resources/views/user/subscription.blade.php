@@ -8,16 +8,38 @@
   display: flex;
   flex-wrap: wrap;
 }
+.block-content {
+  padding: 1.25rem !important
+}
+.StripeElement {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  width: 100%;
+  margin-top: 10px;
+}
+.StripeElement--empty {
+  background-color: white;
+}
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+.StripeElement--focus {
+  border-color: #1e1e1e;
+}
 </style>
 <main id="main-container">
   <div class="content">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">
+        <div class="block block-rounded block-link-shadow">
+          <div class="block-header">
             You will be charged ${{ number_format($plan->amount, 2) }} for {{ $plan->name }} Plan
           </div>
-          <div class="card-body">
+          <div class="block-content">
             <form id="payment-form" action="{{ route('subscription.create') }}" method="POST">
               @csrf
               <input type="hidden" name="plan" id="plan" value="{{ $plan->stripe_plan_id }}">
@@ -31,7 +53,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row mt-3">
                 <div class="col">
                   <div class="form-group">
                     <label for="">Card details</label>
@@ -40,31 +62,18 @@
                 </div>
               </div>
 
-              <div class="col-xl-12 col-lg-12">
-                <button type="submit" class="btn btn-primary" id="card-button" data-secret="{{ $intent->client_secret }}">Purchase</button>
+              <div id="card-errors" class="text-danger"></div>
+
+              <div class="row mt-3">
+                <div class="col">
+                  <div class="form-group d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary" id="card-button" data-secret="{{ $intent->client_secret }}">Subscribe Now</button>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
         </div>
-          @foreach($cards['data'] as $card)
-              <div class="block-bordered block-rounded block overflow-hidden mb-1">
-                  <div class="block-header block-header-default" id="app-card">
-                    <input type="radio" name="" id="paycard" value="{{$card->id}}">
-                      <div>
-                          <span>{{ $card->card->brand }}</span>
-                          <span>{{ $card->billing_details->name }}</span>
-                      </div>
-                      <span class="text-uppercase">{{ $card->card->brand }}({{$card->card->last4}})</span>
-                      <span>{{ $card->card->exp_month }}/{{$card->card->exp_year}}</span>
-                  </div>
-              </div>
-          @endforeach
-          <!-- <div>
-            <input type="hidden" name="" id="card_value" value="">
-              <button id="pay_card" type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Pay">
-                  <i class="fa fa-fw fa-times"></i>Pay
-              </button>
-          </div> -->
       </div>
     </div>
   </div>
@@ -78,35 +87,44 @@
     const cardElement = elements.create('card')
 
     cardElement.mount('#card-element')
+    const cardBtn = document.getElementById('card-button')
+    cardElement.on('change', (e) => {
+      if(e.error) {
+        cardBtn.disabled = true
+        $('#card-errors').text(e.error.message)
+      } else {
+        cardBtn.disabled = false
+        $('#card-errors').text('')
+      }
+    })
 
     const form = document.getElementById('payment-form')
-    const cardBtn = document.getElementById('card-button')
     const cardHolderName = document.getElementById('card-holder-name')
 
     form.addEventListener('submit', async (e) => {
-        e.preventDefault()
+      e.preventDefault()
 
-        cardBtn.disabled = true
-        const { setupIntent, error } = await stripe.confirmCardSetup(
-            cardBtn.dataset.secret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: {
-                      name: cardHolderName.value
-                    }
-                }
+      cardBtn.disabled = true
+      const { setupIntent, error } = await stripe.confirmCardSetup(
+        cardBtn.dataset.secret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: cardHolderName.value
             }
-        )
-        if(error) {
-            cardBtn.disable = false
-        } else {
-            let token = document.createElement('input')
-            token.setAttribute('type', 'hidden')
-            token.setAttribute('name', 'payment_method')
-            token.setAttribute('value', setupIntent.payment_method)
-            form.appendChild(token)
-            form.submit();
+          }
         }
+      )
+      if(error) {
+        cardBtn.disable = false
+      } else {
+        let token = document.createElement('input')
+        token.setAttribute('type', 'hidden')
+        token.setAttribute('name', 'payment_method')
+        token.setAttribute('value', setupIntent.payment_method)
+        form.appendChild(token)
+        form.submit();
+      }
     })
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -114,29 +132,5 @@
   $('input[type="radio"]').on('change', function() {
   $('input[type="radio"]').not(this).prop('checked', false);
 });
-
-  // $(document).ready(function(){
-  //         $('input[type="radio"]').click(function() {
-  //           var selectedOption = $(this).val();
-  //           $("#card_value").val(selectedOption);
-  //           // console.log(selectedOption);
-  //         });
-
-  //         $("#pay_card").click(function(){
-  //           var cardName = $("#card_value").val();
-  //           var planid = $('#plan').val();
-  //           // if($(this).is(':checked')){
-  //             $.ajax({
-  //                   'url': "{{route('subscription.paycard')}}",
-  //                   'type': "POST",
-  //                   'data': {cardName, planid},
-  //                   'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-  //                   success:function(response){
-  //                     console.log(response)
-  //                   }
-  //               })
-  //           // }
-  //         });
-  //       });
 </script>
 @endsection

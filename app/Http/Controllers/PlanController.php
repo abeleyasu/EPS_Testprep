@@ -62,17 +62,13 @@ class PlanController extends Controller
             'product' => $product->stripe_product_id,
             'interval_count' => $request->interval === 'month' ? $request->interval_count : 1
         ]);
-        $display_amount = $request->amount;
-        if ($request->interval === 'month') {
-            $display_amount = $request->amount / $request->interval_count;
-        }
         $create = Plan::create([
             'product_id' => $request->product_id,
             'stripe_plan_id' => $plan['id'],
             'interval_count' => $request->interval === 'month' ? $request->interval_count : 1,
             'interval' => $request->interval,
             'amount' => $request->amount,
-            'display_amount' => number_format($display_amount, 2, ".", "")
+            'display_amount' => number_format($request->amount, 2, ".", "")
         ]);
 
         if ($create) {
@@ -117,10 +113,9 @@ class PlanController extends Controller
 
     public function deletePlan(Request $request) {
         $plan = Plan::find($request->id);
-        // $stripe->prices->update(
-        //     $plan->stripe_plan_id,
-        //     ['active' => false]
-        // );
+        $this->stripe->plans->update(
+            $plan->stripe_plan_id
+        );
         $plan->delete();
         return "success";
     }
@@ -157,6 +152,8 @@ class PlanController extends Controller
 
         // Get the Payment Method ID from the Stripe Elements card input form
         $paymentMethodId = $request->payment_method;
+        $customer = $request->user()->createOrGetStripeCustomer();
+        Auth::user()->updateDefaultPaymentMethod($paymentMethodId);
         try {
 
             // Create a new subscription with Cashier
@@ -164,10 +161,21 @@ class PlanController extends Controller
             $user->newSubscription('default', $plan->stripe_plan_id)
                 ->create($paymentMethodId, [
                     'setup_future_usage' => 'off_session',
+                    'default_payment_method' => $paymentMethodId,
+                    'default_source' => $paymentMethodId,
+                    'collection_method' => 'charge_automatically',
+                    'cancel_at' => now()->addMonth($plan->interval_count)->timestamp,
                 ]);
 
-            // Handle successful subscription creation
-            return view("user.subscription_success");
+            $subscription = $user->subscriptions->first();
+            $currentPlan = Plan::where('stripe_plan_id', $subscription->stripe_price)->first();
+            $card = $user->defaultPaymentMethod();
+
+            return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully')->with([
+                'plan' => $currentPlan,
+                'card' => $card,
+                'subscription' => $subscription
+            ]);
         } catch (\Stripe\Exception\CardException $e) {
             // Handle Setup Intent confirmation error, which may include a 3D Secure authentication flow
             if ($e->getStripeCode() === 'authentication_required') {
