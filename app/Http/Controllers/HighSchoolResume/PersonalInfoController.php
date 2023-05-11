@@ -45,6 +45,16 @@ class PersonalInfoController extends Controller
             $activity = $resumedata->activity; 
             $employmentCertification = $resumedata->employmentCertification; 
             $featuredAttribute = $resumedata->featuredAttribute;
+
+            if(isset($personal_info->state) && !empty($personal_info->state)){
+                $cities = Cities::from('cities as ct')
+						->join('states as st', function ($join) use($personal_info){
+									$join->on('ct.state_id', '=', 'st.id')
+										 ->where('st.state_name', '=',$personal_info->state);
+						})
+						->select('ct.id', 'ct.city_name')
+						->get();
+            }
         } else {
             $user_id = Auth::id();
             $personal_info = PersonalInfo::whereUserId($user_id)->where('is_draft', 0)->first();
