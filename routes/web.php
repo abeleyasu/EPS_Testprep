@@ -286,6 +286,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 });
             });
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
+            Route::post('/college_save', [CollegeApplicationDeadlineController::class, 'college_save'])->name('college_save');
+            Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
                 Route::controller(SelectingSearchParamsController::class)->group(function () {
                     Route::get('/selecting-search-params', 'index')->name('selectingSearchParams');
@@ -308,6 +310,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
             Route::get('/answer-type', [TestReviewController::class, 'answerType'])->name('answer-type');
         });
 
+        Route::get('/education/courses/list', [EducationController::class, 'getEducationCourseNameList'])->name('educationCourseList');
         Route::get('/honors/courses/list', [HonorsCourseNameListController::class, 'getCourseNameList'])->name('honorsCourseList');
         Route::get('/colleges/list', [CollegeInformationController::class, 'getCollegeList'])->name('collegesList');
         Route::get('/grades/list', [GradesController::class, 'getGradeList'])->name('gradesList');

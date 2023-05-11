@@ -160,7 +160,7 @@
                             <div class="printableArea_main">
 								<div class="row">
 									<div class="col">
-										<div class="position-relative preview-list ps-0 pb-3 {{ !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($featured_skills_data) ? '' : 'd-none' }}">
+										<div class="position-relative preview-list ps-0 {{ !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($featured_skills_data) ? '' : 'd-none' }}">
 										@if (!empty($featured_skills_data) || !empty($featured_awards_data) || !empty($featured_languages_data) || !empty($dual_citizenship_data))
 											<div class="mb-0 border-bottom-0">
 												@if ($featuredAttribute)
@@ -193,6 +193,15 @@
 															@php
 															$languages = implode("; ", array_column($featuredAttribute->featured_languages_data, "language"));
 															echo "$languages";
+															@endphp
+														</li>
+													@endif
+													@if (!empty($dual_citizenship_data))
+														<li class="list-type">
+															<span>Dual Citizen:</span>
+															@php
+															$dualCitizenship = implode("; ", array_column($featuredAttribute->dual_citizenship_data, "country"));
+															echo "$dualCitizenship";
 															@endphp
 														</li>
 													@endif
@@ -278,18 +287,37 @@
 											</li> --}}
 											
 										   
-											@if (!empty($education->ib_courses))
+											{{-- @if (!empty($education->ib_courses))
 												<li>
 													<span><u>IB Courses:</u></span>
 													{{ implode(',', $ib_courses) }}
 												</li>
+											@endif --}}
+											@if (!empty($education->ib_courses))
+												<li>
+													<span><u>IB Courses:</u></span>
+													@foreach ($education->ib_courses as $ib_course)
+														<b>{{ isset($ib_course['name_of_ib_course']) ? $ib_course['name_of_ib_course'] : '' }} </b> : {{ isset($ib_course['score_of_test']) ? $ib_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
+													@endforeach
+												</li>
 											@endif
-											@if (!empty($education->ap_courses))
+
+											{{-- @if (!empty($education->ap_courses))
 												<li>
 													<span><u>AP Courses:</u></span>
 													{{ implode(',', $ap_courses) }}
 												</li>
+											@endif --}}
+
+											@if (!empty($education->ap_courses))
+												<li>
+													<span><u>AP Courses:</u></span>
+													@foreach ($education->ap_courses as $ap_course)
+														<b>{{ isset($ap_course['name_of_ap_course']) ? $ap_course['name_of_ap_course'] : '' }} </b> : {{ isset($ap_course['score_of_test']) ? $ap_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
+													@endforeach
+												</li>
 											@endif
+
 											@if (!empty($education->honor_course_data))
 												<li>
 													<span> <u>Honors Course :</u></span>
@@ -376,9 +404,12 @@
 												@foreach ($demonstrated_data as $data)
 													<li class="list-type">
 														<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-														{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['details'])),@endif
+														{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['location']) || !empty($data['details'])),@endif
 														@if(!empty($data['interest'])) 
-															{{ $data['interest'] }}@if(!empty($data['details'])),@endif
+															{{ $data['interest'] }}@if(!empty($data['details']) || !empty($data['location'])),@endif
+														@endif
+														@if(!empty($data['location'])) 
+															{{ $data['location'] }}@if(!empty($data['details'])),@endif
 														@endif
 														@if(!empty($data['details']))
 															{{ $data['details'] }}
@@ -393,10 +424,13 @@
 														<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
 													@endif
 													@if(!empty($data['status']))
-														{{ $data['status'] }}@if(!empty($data['position'])),@endif
+														{{ $data['status'] }}@if(!empty($data['position'] || !empty($data['location']) || !empty($data['organization']))),@endif
 													@endif
 													@if(!empty($data['position']))
-														{{ $data['position'] }}@if(!empty($data['organization'])),@endif
+														{{ $data['position'] }}@if(!empty($data['location']) || !empty($data['organization'])),@endif
+													@endif
+													@if(!empty($data['location']))
+														{{ $data['location'] }}@if(!empty($data['organization'])),@endif
 													@endif
 													@if(!empty($data['organization']))
 														{{ $data['organization'] }}

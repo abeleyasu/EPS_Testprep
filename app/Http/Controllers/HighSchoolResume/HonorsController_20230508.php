@@ -10,8 +10,6 @@ use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
 use App\Models\HighSchoolResume\Honor;
-use App\Models\HighSchoolResume\HonorsStatuses;
-use App\Models\HighSchoolResume\HonorsAchievementAwards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -46,10 +44,8 @@ class HonorsController extends Controller
         }
         $validations_rules = Config::get('validation.honors.rules');
         $validations_messages = Config::get('validation.honors.messages');
-        // $status = Config::get('constants.status');
-        $status = HonorsStatuses::select('id','status')->orderBY('status', 'asc')->get();
-        // $awards = Config::get('constants.honor_achievement_awards');
-        $awards = HonorsAchievementAwards::select('id','award')->orderBY('award', 'asc')->get();
+        $status = Config::get('constants.status');
+        $awards = Config::get('constants.honor_achievement_awards');
         $grades = Grade::all();
         $details = 0;
         return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages', 'grades','status','awards'));
@@ -63,21 +59,6 @@ class HonorsController extends Controller
 
         if(isset($data['honors_data']) && !empty($data['honors_data'])){
             foreach($data['honors_data'] as $key => $value){
-
-                if(isset($value['position']) && !empty($value['position'])){
-                    $existingStatus = HonorsStatuses::pluck('status')->toArray();
-                    if (!in_array($value['position'], $existingStatus)) {
-                        HonorsStatuses::create(['status' => $value['position']]);
-                    }
-                }
-
-                if(isset($value['honor_achievement_award']) && !empty($value['honor_achievement_award'])){
-                    $existingAward = HonorsAchievementAwards::pluck('award')->toArray();
-                    if (!in_array($value['honor_achievement_award'], $existingAward)) {
-                        HonorsAchievementAwards::create(['award' => $value['honor_achievement_award']]);
-                    }
-                }
-
                 if(isset($value['grade']) && !empty($value['grade'])){
                     foreach($value['grade'] as $grade){
                         if(!in_array($grade , $grade_ids)){
@@ -111,21 +92,6 @@ class HonorsController extends Controller
         $grade_ids = Grade::pluck('id')->toArray();
         if(isset($data['honors_data']) && !empty($data['honors_data'])){
             foreach($data['honors_data'] as $key => $value){
-                
-                if(isset($value['position']) && !empty($value['position'])){
-                    $existingStatus = HonorsStatuses::pluck('status')->toArray();
-                    if (!in_array($value['position'], $existingStatus)) {
-                        HonorsStatuses::create(['status' => $value['position']]);
-                    }
-                }
-
-                if(isset($value['honor_achievement_award']) && !empty($value['honor_achievement_award'])){
-                    $existingAward = HonorsAchievementAwards::pluck('award')->toArray();
-                    if (!in_array($value['honor_achievement_award'], $existingAward)) {
-                        HonorsAchievementAwards::create(['award' => $value['honor_achievement_award']]);
-                    }
-                }
-
                 if (isset($value['grade']) && !empty($value['grade'])) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {

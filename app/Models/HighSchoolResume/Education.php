@@ -15,6 +15,8 @@ class Education extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'ib_courses' => 'array',
+        'ap_courses' => 'array',
         'course_data' => 'array',
         'honor_course_data' => 'array',
         'testing_data' => 'array'

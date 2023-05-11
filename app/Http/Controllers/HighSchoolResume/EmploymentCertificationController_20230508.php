@@ -8,7 +8,6 @@ use App\Models\Grade;
 use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
-use App\Models\HighSchoolResume\DemonstratedPositions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -41,8 +40,7 @@ class EmploymentCertificationController extends Controller
             }
             $details = 0;
             $grades = Grade::all();
-            $demonstrated_positions = DemonstratedPositions::select('position_name')->orderBY('position_name', 'asc')->get();
-            return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'grades', 'demonstrated_positions'));
+            return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'grades'));
         } catch (\Throwable $th) {
             Log::info($th);
         }
@@ -56,12 +54,6 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data['employment_data'])) {
             foreach ($data['employment_data'] as $key => $value) {
-                if(isset($value['job_title']) && !empty($value['job_title'])){
-                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
-                    if (!in_array($value['job_title'], $existingPosition)) {
-                        DemonstratedPositions::create(['position_name' => $value['job_title']]);
-                    }
-                }
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -109,12 +101,6 @@ class EmploymentCertificationController extends Controller
 
         if (!empty($data['employment_data'])) {
             foreach ($data['employment_data'] as $key => $value) {
-                if(isset($value['job_title']) && !empty($value['job_title'])){
-                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
-                    if (!in_array($value['job_title'], $existingPosition)) {
-                        DemonstratedPositions::create(['position_name' => $value['job_title']]);
-                    }
-                }
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {

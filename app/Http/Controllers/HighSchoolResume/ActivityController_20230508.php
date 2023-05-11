@@ -9,9 +9,6 @@ use App\Models\HighSchoolResume;
 use App\Models\HighSchoolResume\Activity;
 use App\Models\HighSchoolResume\EmploymentCertification;
 use App\Models\HighSchoolResume\FeaturedAttribute;
-use App\Models\HighSchoolResume\DemonstratedPositions;
-use App\Models\HighSchoolResume\HonorsStatuses;
-use App\Models\HighSchoolResume\LeadershipOrganization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -21,9 +18,7 @@ class ActivityController extends Controller
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
-        // $demonstrated_positions = Config::get('constants.demonstrated_positions');
-        $demonstrated_positions = DemonstratedPositions::select('position_name')->orderBY('position_name', 'asc')->get();
-        $status = HonorsStatuses::select('id','status')->orderBY('status', 'asc')->get();
+        $demonstrated_positions = Config::get('constants.demonstrated_positions');
 
         if (isset($resume_id) && $resume_id != null) {
             $resumedata = HighSchoolResume::where('id', $resume_id)->with([
@@ -49,30 +44,21 @@ class ActivityController extends Controller
         $grades = Grade::all();
         $validations_rules = Config::get('validation.activities.rules');
         $validations_messages = Config::get('validation.activities.messages');
-        // $organizations = Config::get('constants.leadership_organization');
-        $organizations = LeadershipOrganization::select('name')->get();
+        $organizations = Config::get('constants.leadership_organization');
         $athletics_positions = Config::get('constants.athletics_position');
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions','organizations','athletics_positions', 'status'));
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions','organizations','athletics_positions'));
     }
 
     public function store(ActivityRequest $request)
     {
         $data = $request->validated();
-        
+
         $grade_ids = Grade::pluck('id')->toArray();
 
         if (isset($data['demonstrated_data']) && !empty($data['demonstrated_data'])) {
             foreach ($data['demonstrated_data'] as $key => $value) {
-
-                if(isset($value['position']) && !empty($value['position'])){
-                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
-                    if (!in_array($value['position'], $existingPosition)) {
-                        DemonstratedPositions::create(['position_name' => $value['position']]);
-                    }
-                }
-
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -87,24 +73,8 @@ class ActivityController extends Controller
             $data['demonstrated_data'] = array_values($data['demonstrated_data']);
         }
 
-
         if (isset($data['leadership_data']) && !empty($data['leadership_data'])) {
             foreach ($data['leadership_data'] as $key => $value) {
-
-                if(isset($value['status']) && !empty($value['status'])){
-                    $existingStatus = HonorsStatuses::pluck('status')->toArray();
-                    if (!in_array($value['status'], $existingStatus)) {
-                        HonorsStatuses::create(['status' => $value['status']]);
-                    }
-                }
-
-                if(isset($value['position']) && !empty($value['position'])){
-                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
-                    if (!in_array($value['position'], $existingPosition)) {
-                        DemonstratedPositions::create(['position_name' => $value['position']]);
-                    }
-                }
-                
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -183,14 +153,6 @@ class ActivityController extends Controller
 
         if (isset($data['demonstrated_data']) && !empty($data['demonstrated_data'])) {
             foreach ($data['demonstrated_data'] as $key => $value) {
-
-                if(isset($value['position']) && !empty($value['position'])){
-                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
-                    if (!in_array($value['position'], $existingPosition)) {
-                        DemonstratedPositions::create(['position_name' => $value['position']]);
-                    }
-                }
-
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -207,21 +169,6 @@ class ActivityController extends Controller
 
         if (isset($data['leadership_data']) && !empty($data['leadership_data'])) {
             foreach ($data['leadership_data'] as $key => $value) {
-
-                if(isset($value['status']) && !empty($value['status'])){
-                    $existingStatus = HonorsStatuses::pluck('status')->toArray();
-                    if (!in_array($value['status'], $existingStatus)) {
-                        HonorsStatuses::create(['status' => $value['status']]);
-                    }
-                }
-
-                if(isset($value['position']) && !empty($value['position'])){
-                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
-                    if (!in_array($value['position'], $existingPosition)) {
-                        DemonstratedPositions::create(['position_name' => $value['position']]);
-                    }
-                }
-
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
