@@ -89,7 +89,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            
+            $user->createOrGetStripeCustomer();
             if((int) $user->role == 1) {
                 return redirect()->intended(route('admin-dashboard'));
             }    

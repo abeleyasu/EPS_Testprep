@@ -124,7 +124,9 @@ class PlanController extends Controller
     public function getUserPlan() {
         // $plans = Plan::get();
 //        $products = Product::with(['plans', 'inclusions'])->get();
-        $categories = ProductCategory::has('products')->with(['products', 'products.plans', 'products.inclusions'])->get();
+        $categories = ProductCategory::whereHas('products', function ($q) {
+            $q->has('plans');
+        })->with(['products', 'products.plans', 'products.inclusions'])->get();
         $intent = auth()->user()->createSetupIntent();
         // dd($plans);
         return view("user.plan", compact("categories",'intent'));
