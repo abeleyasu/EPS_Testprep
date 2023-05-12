@@ -103,25 +103,41 @@
                     <!-- END Edit User Form -->
                 </div>
             </div>
-            @foreach($cards['data'] as $card)
-                <div class="block-bordered block-rounded block overflow-hidden mb-1">
-                    <div class="block-header block-header-default">
-                        <div>
-                            <span>{{ $card->card->brand }}</span>
-                            <span>{{ $card->billing_details->name }}</span>
-                        </div>
-                        <span class="text-uppercase">{{ $card->card->brand }}({{$card->card->last4}})</span>
-                        <span>{{ $card->card->exp_month }}/{{$card->card->exp_year}}</span>
-                        <div>
-                            <button type="button" class="btn btn-sm btn-alt-secondary delete-card"
-                                    data-id="{{$card->id}}"
-                                    data-bs-toggle="tooltip" title="Delete Card">
-                                <i class="fa fa-fw fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
+            <div class="block block-rounded">
+                <div class="block-header">
+                    <h3 class="block-title">Saved Cards</h3>
                 </div>
-            @endforeach
+                <div class="block-content block-content-full space-y-3">
+                    @foreach($cards['data'] as $key => $card)
+                        <div class="form-check form-block">
+                            <input type="radio" class="form-check-input" value="{{ $card->id }}" @if($customer && $customer->id === $card->id) checked @endif>
+                            <label class="form-check-label">
+                            <span class="d-block fw-normal p-1">
+                                <div class="row">
+                                <div class="col-5">
+                                    <span class="fw-semibold mb-1">{{ $card->billing_details->name }} ({{ $card->card->exp_month }}/{{ $card->card->exp_year }})</span>
+                                </div>
+                                <div class="col-5">
+                                    <span class="fw-semibold mb-1">{{ $card->card->brand }} ({{ $card->card->last4 }})</span>
+                                </div>
+                                <div class="col-2">
+                                    @if($customer && $customer->id === $card->id)
+                                    <div class="btn btn-sm btn-alt-success">
+                                        default
+                                    </div>
+                                    @else
+                                    <a class="btn btn-sm btn-alt-primary" href="{{ route('user.setAsDefault', ['payment_id' => $card->id]) }}" >
+                                        Set default
+                                    </a>
+                                    @endif
+                                </div>
+                                </div>
+                            </span>
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </main>
     <!-- END Main Container -->

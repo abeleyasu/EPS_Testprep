@@ -341,6 +341,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::get('/my-subscription', [SubscriptionController::class, 'mysubscriptions'])->name('mysubscriptions.index');
         Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelsubscriptions'])->name('mysubscriptions.cancel');
         Route::get('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/subscription-create', [PlanController::class, 'subscriptioncreatewithexistingcard'])->name('subscriptions.create-custome');
+        Route::get('/set-as-default/{payment_id}', [UserController::class, 'setAsDefaultCard'])->name('user.setAsDefault');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');

@@ -278,8 +278,9 @@ class UserController extends Controller
         }
         if (Auth::user()->stripe_id) {
             $cards = $this->stripe->customers->allPaymentMethods(Auth::user()->stripe_id);
+			$customer = $user->defaultPaymentMethod();
         }
-        return view('user.billing-details', ['user' => $user, 'states' => $this->states, 'cities' => $this->cities, 'cards' => $cards, 'intent' => $intent->client_secret]);
+        return view('user.billing-details', ['user' => $user, 'states' => $this->states, 'cities' => $this->cities, 'cards' => $cards, 'intent' => $intent->client_secret, 'customer' => $customer]);
     }
 
 	public function save_basic_details(Request $request) {
@@ -313,4 +314,10 @@ class UserController extends Controller
         ]);
         return Redirect::back();
     }
+
+	public function setAsDefaultCard($payment_id) {
+		$user = Auth::user();
+		$user->updateDefaultPaymentMethod($payment_id);
+		return Redirect::back();
+	}
 }

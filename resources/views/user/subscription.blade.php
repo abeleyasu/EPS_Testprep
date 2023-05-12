@@ -74,6 +74,58 @@
             </form>
           </div>
         </div>
+
+        @if(count($cards['data']) > 0)
+        <div class="block block-rounded">
+          <div class="block-header">
+            <h3 class="block-title">
+              Saved Cards
+            </h3>
+          </div>
+          <div class="block-content block-content-full space-y-3">
+            <form id="payment-form" action="{{ route('subscriptions.create-custome') }}" method="POST">
+              @csrf
+              <input type="hidden" name="plan" id="plan" value="{{ $plan->stripe_plan_id }}">
+              @foreach($cards['data'] as $key => $card)
+              <div class="form-check form-block">
+                <input type="radio" class="form-check-input" id="checkout-delivery-{{$key + 1}}" name="user_card" value="{{ $card->id }}" @if($customer && $customer->id === $card->id) checked @endif>
+                <label class="form-check-label" for="checkout-delivery-{{$key + 1}}">
+                  <span class="d-block fw-normal p-1">
+                    <div class="row">
+                      <div class="col-5">
+                        <span class="fw-semibold mb-1">{{ $card->billing_details->name }} ({{ $card->card->exp_month }}/{{ $card->card->exp_year }})</span>
+                      </div>
+                      <div class="col-5">
+                        <span class="fw-semibold mb-1">{{ $card->card->brand }} ({{ $card->card->last4 }})</span>
+                      </div>
+                      <div class="col-2">
+                        @if($customer && $customer->id === $card->id)
+                          <div class="btn btn-sm btn-alt-success">
+                            default
+                          </div>
+                        @endif
+                      </div>
+                    </div>
+                  </span>
+                </label>
+              </div>
+              @endforeach
+              <div class="row mt-3">
+                <div class="col">
+                  <div class="form-group d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary" data-secret="{{ $intent->client_secret }}">Subscribe With Existing Card</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        @else
+        <div class="alert alert-warning">
+          <p class="mb-0">No card found. Please <a href="{{ route('user.get-billing-detail') }}" class="fw-semibold">Add Card</a> to subscribe. 
+          </p>
+        </div>
+        @endif
       </div>
     </div>
   </div>
