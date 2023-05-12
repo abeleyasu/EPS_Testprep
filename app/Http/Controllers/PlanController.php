@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class PlanController extends Controller
         $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
     }
     public function index() {
-        $plans = Plan::get();
+        $plans = Plan::with('product')->get();
         return view('admin.plan.list', ['plans' => $plans]);
     }
 
@@ -122,10 +123,11 @@ class PlanController extends Controller
 
     public function getUserPlan() {
         // $plans = Plan::get();
-        $products = Product::with(['plans', 'inclusions'])->get();
+//        $products = Product::with(['plans', 'inclusions'])->get();
+        $categories = ProductCategory::has('products')->with(['products', 'products.plans', 'products.inclusions'])->get();
         $intent = auth()->user()->createSetupIntent();
         // dd($plans);
-        return view("user.plan", compact("products",'intent'));
+        return view("user.plan", compact("categories",'intent'));
     }
 
     public function showPlan(Plan $plan, Request $request)

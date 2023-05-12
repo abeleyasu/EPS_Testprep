@@ -29,17 +29,19 @@
                     <thead>
                         <tr>
                             <th>Plan Id</th>
+                            <th>Product</th>
                             <th>Interval</th>
                             <th>Interval Count</th>
                             <th>Currency</th>
                             <th>Price</th>
-                            <th style="width: 15%;">Action</th>
+                            <th style="width: 10%;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($plans as $plan)
                         <tr>
                             <td class="fw-semibold fs-sm">{{ $plan->stripe_plan_id }}</td>
+                            <td class="fw-semibold fs-sm">@if($plan->product) {!! $plan->product->title !!} @endif</td>
                             <td class="fs-sm">
                                 {{ $plan->interval }}
                             </td>

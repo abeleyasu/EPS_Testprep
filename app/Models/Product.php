@@ -30,4 +30,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductInclusion::class, 'product_id', 'id');
     }
+
+    public function productCategory() {
+        return $this->hasOne(ProductCategory::class, 'id', 'product_category_id');
+    }
 }

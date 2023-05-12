@@ -29,16 +29,18 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th class="" style="width: 60%;">Description</th>
+                            <th>Category</th>
+                            <th class="" style="width: 55%;">Description</th>
                             <th>Product Key</th>
-                            <th style="width: 15%;">Action</th>
-                            
+                            <th style="width: 10%;">Action</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($products as $product)
                         <tr>
                             <td class="fw-semibold fs-sm">{{ $product->title }}</td>
+                            <td class="fw-semibold fs-sm">@if($product->productCategory) {!! $product->productCategory->title !!} @endif</td>
                             <td class="fs-sm">
                                 {{ $product->description }}
                             </td>

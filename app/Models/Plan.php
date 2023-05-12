@@ -22,4 +22,8 @@ class Plan extends Model
         'display_amount',
         'status'
     ];
+
+    public function product() {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

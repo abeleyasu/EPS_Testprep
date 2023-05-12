@@ -23,10 +23,11 @@ class SubscriptionController extends Controller
     public function mysubscriptions()
     {
         if (!Auth::user()->subscribed('default')) {
-            $products = Product::with(['plans', 'inclusions'])->get();
-            $intent = auth()->user()->createSetupIntent();
-            // dd($plans);
-            return view("user.plan", compact("products",'intent'));        
+//            $products = Product::with(['plans', 'inclusions'])->get();
+//            $intent = auth()->user()->createSetupIntent();
+//            // dd($plans);
+//            return view("user.plan", compact("products",'intent'));
+            return redirect('/user/plans');
         }
         $user = Auth::user();
         $subscription = $user->subscriptions->first();
