@@ -164,29 +164,35 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::group(['as' => 'admin.'], function () {
             Route::group(['prefix' => 'product-category', 'as' => 'category.'], function () {
                 Route::get('/list', [ProductCategoryController::class, 'index'])->name('list');
+                Route::get('/get-list', [ProductCategoryController::class, 'displayRecords'])->name('category_list');
                 Route::get('/create', [ProductCategoryController::class, 'show'])->name('create');
                 Route::post('/create', [ProductCategoryController::class, 'create'])->name('category_create');
                 Route::get('/edit/{id}', [ProductCategoryController::class, 'editshow'])->name('edit');
                 Route::post('/edit', [ProductCategoryController::class, 'edit'])->name('category_edit');
                 Route::post('/delete', [ProductCategoryController::class, 'deleyeCateogry'])->name('category_delete');
+                Route::post('/change-order', [ProductCategoryController::class, 'changeOrder'])->name('category_change_order');
             });
 
             Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
                 Route::get('/list', [ProductController::class, 'index'])->name('list');
+                Route::get('/get-list', [ProductController::class, 'displayRecords'])->name('product_list');
                 Route::get('/create', [ProductController::class, 'show'])->name('create');
                 Route::post('/create', [ProductController::class, 'create'])->name('product_create');
                 Route::get('/edit/{id}', [ProductController::class, 'editshow'])->name('edit');
                 Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
                 Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
+                Route::post('/change-order', [ProductController::class, 'changeOrder'])->name('product_change_order');
             });
 
             Route::group(['prefix' => 'plan', 'as' => 'plan.'], function () {
                 Route::get('/list', [PlanController::class, 'index'])->name('list');
+                Route::get('/get-list', [PlanController::class, 'displayRecords'])->name('plan_list');
                 Route::get('/create', [PlanController::class, 'show'])->name('create');
                 Route::post('create', [PlanController::class, 'create'])->name('plan_create');
                 Route::get('/edit/{id}', [PlanController::class, 'editshow'])->name('edit');
                 Route::post('/edit', [PlanController::class, 'edit'])->name('plan_edit');
                 Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
+                Route::post('/change-order', [PlanController::class, 'changeOrder'])->name('plan_change_order');
             });
         });
     });

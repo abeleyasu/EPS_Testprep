@@ -83,7 +83,7 @@
             </h3>
           </div>
           <div class="block-content block-content-full space-y-3">
-            <form id="payment-form" action="{{ route('subscriptions.create-custome') }}" method="POST">
+            <form id="user-card-form" action="{{ route('subscriptions.create-custome') }}" method="POST">
               @csrf
               <input type="hidden" name="plan" id="plan" value="{{ $plan->stripe_plan_id }}">
               @foreach($cards['data'] as $key => $card)
@@ -130,7 +130,10 @@
     </div>
   </div>
 </main>
+@endsection
 
+@section('user-script')
+<script src="{{asset('assets/js/sweetalert2/sweetalert2.all.min.js')}}"></script>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     const stripe = Stripe('{{ env('STRIPE_KEY') }}')
@@ -178,11 +181,25 @@
         form.submit();
       }
     })
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-  $('input[type="radio"]').on('change', function() {
-  $('input[type="radio"]').not(this).prop('checked', false);
-});
+
+
+    const userExistingcardForm = document.getElementById('user-card-form')
+
+    userExistingcardForm.addEventListener('submit', function(e) {
+      e.preventDefault()
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to subscribe with this card!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, subscribe it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          userExistingcardForm.submit()
+        }
+      })
+    })
 </script>
 @endsection

@@ -9,9 +9,55 @@ use Illuminate\Validation\Rule;
 
 class ProductCategoryController extends Controller
 {
-    public function index() {
-        $category = ProductCategory::get();
-        return view('admin.plan.category.list', ['categories' => $category]);
+    public function index(Request $request) {
+        return view('admin.plan.category.list');
+
+    }
+
+    public function displayRecords(Request $request) {
+        $limit = isset($request->limit) ? $request->limit : 10;
+        $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
+
+
+        $categories = ProductCategory::orderBy('order_index', 'asc');
+        $totalCustomerRecords = ProductCategory::get()->count();
+
+        if (!empty($search)) {
+            $categories = $categories->where(function ($category) use ($search) {
+                return $category->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+            $totalCustomerRecords = $categories->count();
+        }
+
+        $categories = $categories->paginate($limit);
+        $categories = $categories->toArray();
+
+
+        $data = [];
+        foreach ($categories['data'] as $category) {
+            $data[] = [
+                'id' => $category['id'],
+                'title' => $category['title'],
+                'description' => $category['description'],
+                'order_index' => $category['order_index'],
+                'action' => '<div class="btn-group">
+                                <a href="' . route('admin.category.edit', ['id' => $category['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Category">
+                                    <i class="fa fa-fw fa-pencil-alt"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $category['id'] . '" data-bs-toggle="tooltip" title="Delete Category">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>'
+            ];
+        }
+        $json_data = [
+            "draw"            => intval( $request->draw ),   
+            "recordsTotal"    => $totalCustomerRecords,  
+            "recordsFiltered" => $totalCustomerRecords,
+            "data"            => $data
+        ];
+        return response()->json($json_data);
     }
 
     public function show() {
@@ -54,6 +100,14 @@ class ProductCategoryController extends Controller
 
     public function deleyeCateogry(Request $request) {
         $category = ProductCategory::find($request->id)->delete();
+        return "success";
+    }
+
+    public function changeOrder(Request $request) {
+        $order_index = $request->data;
+        foreach ($order_index as $key => $value) {
+            $category = ProductCategory::find($value['id'])->update(['order_index' => $value['order_index']]);
+        }
         return "success";
     }
 }

@@ -22,14 +22,10 @@ class SubscriptionController extends Controller
 
     public function mysubscriptions()
     {
-        if (!Auth::user()->subscribed('default')) {
-//            $products = Product::with(['plans', 'inclusions'])->get();
-//            $intent = auth()->user()->createSetupIntent();
-//            // dd($plans);
-//            return view("user.plan", compact("products",'intent'));
-            return redirect('/user/plans');
-        }
         $user = Auth::user();
+        if (!$user->subscribed('default')) {
+            return redirect('/user/plans');  
+        }
         $subscription = $user->subscriptions->first();
         $currentPlan = Plan::where('stripe_plan_id', $subscription->stripe_price)->first();
         $card = $user->defaultPaymentMethod();

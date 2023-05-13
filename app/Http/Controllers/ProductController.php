@@ -18,8 +18,56 @@ class ProductController extends Controller
 
     public function index()
     {
-        $product = Product::with('productCategory')->get();
-        return view('admin.plan.product.list', ['products' => $product]);
+        // $product = Product::with('productCategory')->get();
+        return view('admin.plan.product.list');
+    }
+
+    public function displayRecords(Request $request) {
+        $limit = isset($request->limit) ? $request->limit : 10;
+        $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
+
+
+        $products = Product::with('productCategory')->orderBy('order_index', 'asc');
+        $totalProductCount = Product::get()->count();
+
+        if (!empty($search)) {
+            $products = $products->where(function ($product) use ($search) {
+                return $product->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+            $totalProductCount = $products->count();
+        }
+
+        $products = $products->paginate($limit);
+        $products = $products->toArray();
+
+
+        $data = [];
+        foreach ($products['data'] as $product) {
+            $data[] = [
+                'id' => $product['id'],
+                'title' => $product['title'],
+                'category' => $product['product_category']['title'],
+                'description' => $product['description'],
+                'product_key' => $product['stripe_product_id'],
+                'order_index' => $product['order_index'],
+                'action' => '<div class="btn-group">
+                                <a href="' . route('admin.product.edit', ['id' => $product['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Category">
+                                    <i class="fa fa-fw fa-pencil-alt"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $product['id'] . '" data-bs-toggle="tooltip" title="Delete Category">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>'
+            ];
+        }
+        $json_data = [
+            "draw"            => intval( $request->draw ),   
+            "recordsTotal"    => $totalProductCount,  
+            "recordsFiltered" => $totalProductCount,
+            "data"            => $data
+        ];
+        return response()->json($json_data);
     }
 
     public function show()
@@ -125,6 +173,14 @@ class ProductController extends Controller
         $product = Product::find($request->id);
         $this->stripe->products->delete($product->stripe_product_id, []);
         $product->delete();
+        return "success";
+    }
+
+    public function changeOrder(Request $request) {
+        $order_index = $request->data;
+        foreach ($order_index as $key => $value) {
+            $category = Product::find($value['id'])->update(['order_index' => $value['order_index']]);
+        }
         return "success";
     }
 }

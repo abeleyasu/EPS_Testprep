@@ -19,11 +19,12 @@ class Product extends Model
         'discount',
         'sale',
         'status',
+        'order_index',
     ];
 
     public function plans()
     {
-        return $this->hasMany(Plan::class, 'product_id', 'id');
+        return $this->hasMany(Plan::class, 'product_id', 'id')->orderBy('order_index', 'asc');
     }
 
     public function inclusions()

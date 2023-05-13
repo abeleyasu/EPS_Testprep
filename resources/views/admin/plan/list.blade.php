@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.dataTables.min.css">
 @endsection
 
 @section('admin-content')
@@ -16,6 +17,9 @@
     <!-- Page Content -->
     <div class="content">
         <!-- Dynamic Table Full -->
+        <div class="alert alert-warning">
+            To order the plans, please drag and drop "<b>Plan Id</b>" of the plan.
+        </div>
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Plan List</h3>
@@ -24,43 +28,20 @@
                 </div>
             </div>
             <div class="block-content block-content-full">
-                <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
+                <table id="plan" class="table table-bordered table-striped table-vcenter">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Plan Id</th>
                             <th>Product</th>
                             <th>Interval</th>
                             <th>Interval Count</th>
                             <th>Currency</th>
                             <th>Price</th>
+                            <th>order</th>
                             <th style="width: 10%;">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($plans as $plan)
-                        <tr>
-                            <td class="fw-semibold fs-sm">{{ $plan->stripe_plan_id }}</td>
-                            <td class="fw-semibold fs-sm">@if($plan->product) {!! $plan->product->title !!} @endif</td>
-                            <td class="fs-sm">
-                                {{ $plan->interval }}
-                            </td>
-                            <td class="">{{ $plan->interval_count }}</td>
-                            <td class="">{{ $plan->currency }}</td>
-                            <td class="">{{ $plan->amount }}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <!-- <a href="{{route('admin.plan.edit', ['id' => $plan->id])}}" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit User">
-                                        <i class="fa fa-fw fa-pencil-alt"></i>
-                                    </a> -->
-                                    <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="{{$plan->id}}" data-bs-toggle="tooltip" title="Delete Plan">
-                                        <i class="fa fa-fw fa-times"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -72,20 +53,74 @@
 @endsection
 
 @section('admin-script')
-
+    <script src="https://cdn.datatables.net/rowreorder/1.2.6/js/dataTables.rowReorder.min.js"></script> 
 
     <script>
-        $('.delete-user').click(function(){
-            if(confirm("Are you sure to delete this plan?") == true){
-                $.ajax({
-                    'url': "{{route('admin.plan.plan_delete')}}",
-                    'type': "POST",
-                    'data': {id: $(this).data('id')},
-                    'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-                }).done(function(data){
-                    document.location.reload();
-                });
+
+        const dataTable = $('#plan').DataTable({
+            processing: true,
+            serverSide: true,
+            aaSorting: [],
+            searchDelay: 600,
+            retrieve: true,
+            rowReorder: true,
+            ajax: {
+                url: "{{route('admin.plan.plan_list')}}",
+                method: 'GET',
+            },
+            columns: [
+                { "data": "id", "visible": false, "searchable": false, "orderable": false },
+                { "data": "plan_id", "name": "plan_id", "orderable": false },
+                { "data": "product", "name": "product", "orderable": false },
+                { "data": "interval", "name": "interval", "orderable": false },
+                { "data": "interval_count", "name": "interval_count", "orderable": false },
+                { "data": "currency", "name": "currency", "orderable": false },
+                { "data": "price", "name": "price", "orderable": false },
+                { "data": "order_index", "name": "order_index", "orderable": false },
+                { "data": "action", "name": "action", "orderable": false },
+            ],
+            rowReorder: {
+                dataSrc: 'title'
             }
         });
+
+        dataTable.on('row-reorder', function (e, details) {
+            if (details.length > 0) {
+                const rows = details.map((data) => {
+                    return {
+                        id: dataTable.row(data.node).data().id,
+                        order_index: data.newPosition,
+                    }
+                })
+                $.ajax({
+                    'url': "{{ route('admin.plan.plan_change_order') }}",
+                    'type': "POST",
+                    'data': {
+                        data: rows,
+                    },
+                    'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                }).
+                done(function (data) {
+                    dataTable.ajax.reload();
+                })
+            }
+        })
+
+        dataTable.on('draw.dt', function () {
+            $('.delete-user').click(function(){
+                if(confirm("Are you sure to delete this plan?") == true){
+                    $.ajax({
+                        'url': "{{route('admin.plan.plan_delete')}}",
+                        'type': "POST",
+                        'data': {id: $(this).data('id')},
+                        'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                    }).done(function(data){
+                        dataTable.ajax.reload();
+                    });
+                }
+            });
+        });
+
+        
     </script>
 @endsection

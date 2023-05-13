@@ -16,10 +16,11 @@ class ProductCategory extends Model
         'slug',
         'status',
         'description',
+        'order_index',
     ];
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'product_category_id', 'id');
+        return $this->hasMany(Product::class, 'product_category_id', 'id')->orderBy('order_index', 'asc');
     }
 }

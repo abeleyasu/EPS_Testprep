@@ -18,8 +18,63 @@ class PlanController extends Controller
         $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
     }
     public function index() {
-        $plans = Plan::with('product')->get();
-        return view('admin.plan.list', ['plans' => $plans]);
+        // $plans = Plan::with('product')->get();
+        return view('admin.plan.list');
+    }
+
+    public function displayRecords(Request $request) {
+        $limit = isset($request->limit) ? $request->limit : 10;
+        $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
+
+
+        $plans = Plan::with('product')->orderBy('order_index', 'asc');
+        $totalPlanCount = Plan::get()->count();
+
+        if (!empty($search)) {
+            $plans = $plans->where(function ($plan) use ($search) {
+                return $plan->where('title', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+            $totalPlanCount = $plans->count();
+        }
+
+        $plans = $plans->paginate($limit);
+        $plans = $plans->toArray();
+
+
+        $data = [];
+        foreach ($plans['data'] as $plan) {
+            $data[] = [
+                'id' => $plan['id'],
+                'plan_id' => $plan['stripe_plan_id'],
+                'product' => $plan['product']['title'],
+                'interval' => $plan['interval'],
+                'interval_count' => $plan['interval_count'],
+                'currency' => $plan['currency'],
+                'price' => $plan['amount'],
+                'order_index' => $plan['order_index'],
+                'action' => '<div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Category">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                            </div>'
+            ];
+        }
+        $json_data = [
+            "draw"            => intval( $request->draw ),   
+            "recordsTotal"    => $totalPlanCount,  
+            "recordsFiltered" => $totalPlanCount,
+            "data"            => $data
+        ];
+        return response()->json($json_data);
+    }
+
+    public function changeOrder(Request $request) {
+        $order_index = $request->data;
+        foreach ($order_index as $key => $value) {
+            $category = Plan::find($value['id'])->update(['order_index' => $value['order_index']]);
+        }
+        return "success";
     }
 
     public function planTypes() {
@@ -122,19 +177,23 @@ class PlanController extends Controller
     }
 
     public function getUserPlan() {
-        // $plans = Plan::get();
-//        $products = Product::with(['plans', 'inclusions'])->get();
+        $user = Auth::user();
+        if ($user->subscribed('default')) {
+            return redirect()->route('mysubscriptions.index');
+        }
         $categories = ProductCategory::whereHas('products', function ($q) {
             $q->has('plans');
-        })->with(['products', 'products.plans', 'products.inclusions'])->get();
+        })->with(['products', 'products.plans', 'products.inclusions'])->orderBy('order_index', 'asc')->get();
         $intent = auth()->user()->createSetupIntent();
-        // dd($plans);
         return view("user.plan", compact("categories",'intent'));
     }
 
     public function showPlan(Plan $plan, Request $request)
     {
         $user = Auth::user();
+        if ($user->subscribed('default')) {
+            return redirect()->route('mysubscriptions.index');
+        }
         $product_name = Product::find($plan->product_id);
         $plan['name'] = $product_name['title'];
 

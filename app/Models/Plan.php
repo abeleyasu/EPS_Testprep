@@ -20,7 +20,8 @@ class Plan extends Model
         'currency',
         'amount',
         'display_amount',
-        'status'
+        'status',
+        'order_index',
     ];
 
     public function product() {
