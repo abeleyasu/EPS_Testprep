@@ -78,17 +78,18 @@
                                         <div class="fs-sm">
                                             @csrf
                                             <input type="hidden" name="college_id" id="college_id" value="{{$college->id}}">
+                                            <input type="hidden" name="rec_id" id="rec_id" value="{{ $collegeDetails[$college->id]->id ?? ''}}">
                                             <div class="row">
                                                 <div class="col-4 fw-semibold fs-sm">
                                                     <div>
                                                         <label class="form-label" for="example-select">Type of Application</label>
                                                         <select class="form-select" id="type_of_application" name="type_of_application">
-                                                            <option selected>Select One</option>
-                                                            <option value="1">Common App</option>
-                                                            <option value="2">Coalition App</option>
-                                                            <option value="3">Universal App</option>
-                                                            <option value="4">College System App</option>
-                                                            <option value="5">Apply Directly</option>
+                                                            <option>Select One</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->type_of_application ?? '')==1) ?"selected":"" }}>Common App</option>
+                                                            <option value=" 2" {{ (($collegeDetails[$college->id]->type_of_application ?? '')==2) ?"selected":"" }}>Coalition App</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->type_of_application ?? '')==3) ?"selected":"" }}>Universal App</option>
+                                                            <option value="4" {{ (($collegeDetails[$college->id]->type_of_application ?? '')==4) ?"selected":"" }}>College System App</option>
+                                                            <option value="5" {{ (($collegeDetails[$college->id]->type_of_application ?? '')==5) ?"selected":"" }}>Apply Directly</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -104,12 +105,12 @@
                                                 <div>
                                                     <label class="form-label" for="admission_option">Admissions Option</label>
                                                     <select class="form-select" id="admission_option" name="admission_option">
-                                                        <option selected>Select One</option>
-                                                        <option value="1">Early Action</option>
-                                                        <option value="2">Regular Decision</option>
-                                                        <option value="3">Rolling Admissions</option>
-                                                        <option value="2">Early Decision</option>
-                                                        <option value="2">Early Decision II</option>
+                                                        <option>Select One</option>
+                                                        <option value="1" {{ (($collegeDetails[$college->id]->admission_option ?? '')==1) ?"selected":"" }}>Early Action</option>
+                                                        <option value="2" {{ (($collegeDetails[$college->id]->admission_option ?? '')==2) ?"selected":"" }}>Regular Decision</option>
+                                                        <option value="3" {{ (($collegeDetails[$college->id]->admission_option ?? '')==3) ?"selected":"" }}>Rolling Admissions</option>
+                                                        <option value="4" {{ (($collegeDetails[$college->id]->admission_option ?? '')==4) ?"selected":"" }}>Early Decision</option>
+                                                        <option value="5" {{ (($collegeDetails[$college->id]->admission_option ?? '')==5) ?"selected":"" }}>Early Decision II</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -123,18 +124,18 @@
                                             <div class="col-md-6 fw-semibold fs-sm">
                                                 <label class="form-label" for="number_of_essaya">Number of Essays</label>
                                                 <select class="form-select" id="number_of_essaya" name="number_of_essaya">
-                                                    <option selected>Select One</option>
-                                                    <option value="1">0</option>
-                                                    <option value="2">1</option>
-                                                    <option value="3">2</option>
-                                                    <option value="4">3</option>
-                                                    <option value="5">4</option>
-                                                    <option value="6">5</option>
-                                                    <option value="7">6</option>
-                                                    <option value="8">7</option>
-                                                    <option value="9">8</option>
-                                                    <option value="10">9</option>
-                                                    <option value="11">10</option>
+                                                    <option>Select One</option>
+                                                    <option value="1" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==1) ?"selected":"" }}>0</option>
+                                                    <option value="2" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==2) ?"selected":"" }}>1</option>
+                                                    <option value="3" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==3) ?"selected":"" }}>2</option>
+                                                    <option value="4" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==4) ?"selected":"" }}>3</option>
+                                                    <option value="5" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==5) ?"selected":"" }}>4</option>
+                                                    <option value="6" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==6) ?"selected":"" }}>5</option>
+                                                    <option value="7" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==7) ?"selected":"" }}>6</option>
+                                                    <option value="8" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==8) ?"selected":"" }}>7</option>
+                                                    <option value="9" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==9) ?"selected":"" }}>8</option>
+                                                    <option value="10" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==10) ?"selected":"" }}>9</option>
+                                                    <option value="11" {{ (($collegeDetails[$college->id]->number_of_essaya ?? '')==11) ?"selected":"" }}>10</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-2 text-center">
@@ -148,15 +149,15 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="admissions_deadline">Admissions Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="admissions_deadline" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" value="{{ $collegeDetails[$college->id]->admissions_deadline ?? ''}}" id="admissions_deadline" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="ad_status">Status</label>
                                                         <select class="form-select" id="ad_status" name="ad_status">
-                                                            <option selected>Select One</option>
-                                                            <option value="1">Applied</option>
-                                                            <option value="2">Not Applied</option>
-                                                            <option value="3">Not Applicable</option>
+                                                            <option>Select One</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->ad_status ?? '')==1) ?"selected":"" }}>Applied</option>
+                                                            <option value="2" {{ (($collegeDetails[$college->id]->ad_status ?? '')==2) ?"selected":"" }}>Not Applied</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->ad_status ?? '')==3) ?"selected":"" }}>Not Applicable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -172,15 +173,15 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="competitive_scholarship_deadline">Competitive Scholarship Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="competitive_scholarship_deadline" name="competitive_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" value="{{ $collegeDetails[$college->id]->competitive_scholarship_deadline ?? ''}}" class="date-own form-control" id="competitive_scholarship_deadline" name="competitive_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="csd_status">Status</label>
                                                         <select class="form-select" id="csd_status" name="csd_status">
-                                                            <option selected>Select One</option>
-                                                            <option value="1">Applied</option>
-                                                            <option value="2">Not Applied</option>
-                                                            <option value="3">Not Applicable</option>
+                                                            <option>Select One</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->csd_status ?? '')==1) ?"selected":"" }}>Applied</option>
+                                                            <option value="2" {{ (($collegeDetails[$college->id]->csd_status ?? '')==2) ?"selected":"" }}>Not Applied</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->csd_status ?? '')==3) ?"selected":"" }}>Not Applicable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -196,15 +197,15 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label class="form-label" for="departmental_scholarship">Departmental/STEM Scholarship Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="departmental_scholarship_deadline" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" value="{{ $collegeDetails[$college->id]->departmental_scholarship_deadline ?? ''}}" class="date-own form-control" id="departmental_scholarship_deadline" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label" for="dsd_status">Status</label>
                                                         <select class="form-select" id="dsd_status" name="dsd_status">
                                                             <option selected>Select One</option>
-                                                            <option value="1">Applied</option>
-                                                            <option value="2">Not Applied</option>
-                                                            <option value="3">Not Applicable</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->dsd_status ?? '')==1) ?"selected":"" }}>Applied</option>
+                                                            <option value="2" {{ (($collegeDetails[$college->id]->dsd_status ?? '')==2) ?"selected":"" }}>Not Applied</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->dsd_status ?? '')==3) ?"selected":"" }}>Not Applicable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -220,15 +221,15 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="honors_college">Honors College Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="honors_college_deadline" name="honors_college_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" value="{{ $collegeDetails[$college->id]->honors_college_deadline ?? ''}}" class="date-own form-control" id="honors_college_deadline" name="honors_college_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="honors_college_status">Status</label>
                                                         <select class="form-select" id="hcd_status" name="hcd_status">
-                                                            <option selected>Select One</option>
-                                                            <option value="1">Applied</option>
-                                                            <option value="2">Not Applied</option>
-                                                            <option value="3">Not Applicable</option>
+                                                            <option>Select One</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->hcd_status ?? '')==1) ?"selected":"" }}>Applied</option>
+                                                            <option value="2" {{ (($collegeDetails[$college->id]->hcd_status ?? '')==2) ?"selected":"" }}>Not Applied</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->hcd_status ?? '')==3) ?"selected":"" }}>Not Applicable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -244,15 +245,15 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="fafsa_deadline">FAFSA Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="fafsa_deadline" name="fafsa_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" value="{{ $collegeDetails[$college->id]->fafsa_deadline ?? ''}}" class="date-own form-control" id="fafsa_deadline" name="fafsa_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="fafsa_deadline_status">Status</label>
                                                         <select class="form-select" id="fafsa_status" name="fafsa_status">
                                                             <option selected>Select One</option>
-                                                            <option value="1">Applied</option>
-                                                            <option value="2">Not Applied</option>
-                                                            <option value="3">Not Applicable</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->fafsa_status ?? '')==1) ?"selected":"" }}>Applied</option>
+                                                            <option value="2" {{ (($collegeDetails[$college->id]->fafsa_status ?? '')==2) ?"selected":"" }}>Not Applied</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->fafsa_status ?? '')==3) ?"selected":"" }}>Not Applicable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -268,15 +269,15 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="css_profile">CSS Profile Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="css_profile_deadline" name="css_profile_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" value="{{ $collegeDetails[$college->id]->css_profile_deadline ?? ''}}" class="date-own form-control" id="css_profile_deadline" name="css_profile_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="css_status">Status</label>
                                                         <select class="form-select" id="css_status" name="css_status">
-                                                            <option selected>Select One</option>
-                                                            <option value="1">Applied</option>
-                                                            <option value="2">Not Applied</option>
-                                                            <option value="3">Not Applicable</option>
+                                                            <option>Select One</option>
+                                                            <option value="1" {{ (($collegeDetails[$college->id]->css_status ?? '')==1) ?"selected":"" }}>Applied</option>
+                                                            <option value="2" {{ (($collegeDetails[$college->id]->css_status ?? '')==2) ?"selected":"" }}>Not Applied</option>
+                                                            <option value="3" {{ (($collegeDetails[$college->id]->css_status ?? '')==3) ?"selected":"" }}>Not Applicable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -300,7 +301,7 @@
                                         <div class="row">
                                             <div class="col text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="completed" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'completed') !== false)?"checked":"" }} type="checkbox" value="completed" id="completed" name="application_checklist[]">
                                                     <label class="form-check-label" for="completed">Completed College Application?</label>
                                                 </div>
                                             </div>
@@ -308,7 +309,7 @@
                                         <div class="row">
                                             <div class="col-md-12 text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="Request_pay" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'Request_pay') !== false)?"checked":"" }} type="checkbox" value="Request_pay" id="Request_pay" name="application_checklist[]">
                                                     <label class="form-check-label" for="Request_pay">Request & pay for test scores (if applicable) to be sent to the colleges you will apply to</label>
                                                 </div>
                                             </div>
@@ -316,7 +317,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="request_your_official" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'request_your_official') !== false)?"checked":"" }} type="checkbox" value="request_your_official" id="request_your_official" name="application_checklist[]">
                                                     <label class="form-check-label" for="request_your_official">Request your official high school transcripts from your counseling office</label>
                                                 </div>
                                             </div>
@@ -324,7 +325,7 @@
                                         <div class="row">
                                             <div class="col-md-8 text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="high_school_transcript" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'high_school_transcript') !== false)?"checked":"" }} type="checkbox" value="high_school_transcript" id="high_school_transcript" name="application_checklist[]">
                                                     <label class="form-check-label" for="high_school_transcript">Pay the high school transcript submittal fee (This varies by high school)</label>
                                                 </div>
                                             </div>
@@ -332,7 +333,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="request_letters" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'request_letters') !== false)?"checked":"" }} type="checkbox" value="request_letters" id="request_letters" name="application_checklist[]">
                                                     <label class="form-check-label" for="request_letters">Request letters of recommendation from your teachers and outside recommenders</label>
                                                 </div>
                                             </div>
@@ -340,7 +341,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="high_school_counseling_office" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'high_school_counseling_office') !== false)?"checked":"" }} type="checkbox" value="high_school_counseling_office" id="high_school_counseling_office" name="application_checklist[]">
                                                     <label class="form-check-label" for="high_school_counseling_office">Confirm that your official high school transcripts have been sent by your high school's counseling office</label>
                                                 </div>
                                             </div>
@@ -348,7 +349,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="school_report" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'school_report') !== false)?"checked":"" }} type="checkbox" value="school_report" id="school_report" name="application_checklist[]">
                                                     <label class="form-check-label" for="school_report">Confirm that the school report and counselor recommendation have been sent by your high school's counseling office</label>
                                                 </div>
                                             </div>
@@ -356,7 +357,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="test_scores" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'test_scores') !== false)?"checked":"" }} type="checkbox" value="test_scores" id="test_scores" name="application_checklist[]">
                                                     <label class="form-check-label" for="test_scores">Confirm that your test scores
                                                         have
                                                         been
@@ -367,7 +368,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="letters_of_recommendation" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'letters_of_recommendation') !== false)?"checked":"" }} type="checkbox" value="letters_of_recommendation" id="letters_of_recommendation" name="application_checklist[]">
                                                     <label class="form-check-label" for="letters_of_recommendation">Confirm that your
                                                         letters of
                                                         recommendation have been submitted</label>
@@ -377,7 +378,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="pay_application_fee" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'pay_application_fee') !== false)?"checked":"" }} type="checkbox" value="pay_application_fee" id="pay_application_fee" name="application_checklist[]">
                                                     <label class="form-check-label" for="pay_application_fee">Pay application
                                                         fee</label>
                                                 </div>
@@ -386,7 +387,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="submit_application" name="submit_application">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'submit_application') !== false)?"checked":"" }} type="checkbox" value="submit_application" id="submit_application" name="submit_application">
                                                     <label class="form-check-label" for="submit_application">Submit
                                                         application</label>
                                                 </div>
@@ -395,7 +396,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" type="checkbox" value="" id="submit_your_application" name="application_checklist[]">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'submit_your_application') !== false)?"checked":"" }} type="checkbox" value="submit_your_application" id="submit_your_application" name="application_checklist[]">
                                                     <label class="form-check-label" for="submit_your_application">After you submit
                                                         your application,
                                                         set
@@ -430,7 +431,6 @@
                                                     </div>
                                                 </div>
                                             </div>-->
-
                                         <div>
                                             <div colspan="2" class="text-center">
                                                 <button class="btn btn-primary" type="submit" value="Submit">Save</button>

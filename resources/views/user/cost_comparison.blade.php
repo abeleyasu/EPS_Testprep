@@ -47,30 +47,16 @@
                             <td>OUTSIDE SCHLORSHIP AID/YEAR</td>
                             <td>COST OF ATTENDENCE/YEAR</td>
                         </tr>
-                        <tr>
-                            <td>St John's</td>
-                            <td>$66,370</td>
-                            <td>$31,500</td>
-                            <td>$0</td>
-                            <td>$0</td>
-                            <td>$34,874</td>
+                        @foreach ($college_details as $data)
+                        <tr class="text-center">
+                            <td>{{$data->college_name}}</td>
+                            <td>{{number_format($data->direct_cost)}}</td>
+                            <td>{{number_format($data->merit_aid)}}</td>
+                            <td>{{number_format($data->need_based_aid)}}</td>
+                            <td>{{number_format($data->outside_schlorship_aid)}}</td>
+                            <td>{{number_format($data->cost_of_attendence)}}</td>
                         </tr>
-                        <tr>
-                            <td>Temple University</td>
-                            <td>$43,230</td>
-                            <td>$12,500</td>
-                            <td>$0</td>
-                            <td>$0</td>
-                            <td>$30,730</td>
-                        </tr>
-                        <tr>
-                            <td>Lowa University</td>
-                            <td>$43,792</td>
-                            <td>$24,500</td>
-                            <td>$0</td>
-                            <td>$0</td>
-                            <td>$19,292</td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </form>
