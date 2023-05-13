@@ -6,6 +6,7 @@ use App\Http\Controllers\PassagesController;
 use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
 use App\Http\Controllers\CourseManagement\TaskController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
@@ -48,6 +49,10 @@ use App\Http\Controllers\AthleticPositionController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\VerifyEmailController;
 
+// pending
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +68,9 @@ Route::get('/', function () {
     return redirect('login');
 });
 
+Route::get('/home', function () {
+    return redirect('login');
+})->name('home');
 Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
@@ -134,7 +142,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
         Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
         Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
-        // new 
+        // new
         Route::post('editSection', [PracticeQuestionController::class, 'editSection'])->name('edit_section');
         Route::post('updateSection', [PracticeQuestionController::class, 'updateSection'])->name('update_section');
         Route::post('deleteSection', [PracticeQuestionController::class, 'deleteSection'])->name('delete_section');
@@ -152,6 +160,35 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/update-category-type', [PracticeQuestionController::class, 'updateCategoryType'])->name('updateCategoryType');
         Route::post('/delete-category-type', [PracticeQuestionController::class, 'deleteCategoryType'])->name('deleteCategoryType');
         Route::get('/category-type', [PracticeQuestionController::class, 'indexCategoryType'])->name('indexCategoryType');
+
+        Route::group(['as' => 'admin.'], function () {
+            Route::group(['prefix' => 'product-category', 'as' => 'category.'], function () {
+                Route::get('/list', [ProductCategoryController::class, 'index'])->name('list');
+                Route::get('/create', [ProductCategoryController::class, 'show'])->name('create');
+                Route::post('/create', [ProductCategoryController::class, 'create'])->name('category_create');
+                Route::get('/edit/{id}', [ProductCategoryController::class, 'editshow'])->name('edit');
+                Route::post('/edit', [ProductCategoryController::class, 'edit'])->name('category_edit');
+                Route::post('/delete', [ProductCategoryController::class, 'deleyeCateogry'])->name('category_delete');
+            });
+
+            Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
+                Route::get('/list', [ProductController::class, 'index'])->name('list');
+                Route::get('/create', [ProductController::class, 'show'])->name('create');
+                Route::post('/create', [ProductController::class, 'create'])->name('product_create');
+                Route::get('/edit/{id}', [ProductController::class, 'editshow'])->name('edit');
+                Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
+                Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
+            });
+
+            Route::group(['prefix' => 'plan', 'as' => 'plan.'], function () {
+                Route::get('/list', [PlanController::class, 'index'])->name('list');
+                Route::get('/create', [PlanController::class, 'show'])->name('create');
+                Route::post('create', [PlanController::class, 'create'])->name('plan_create');
+                Route::get('/edit/{id}', [PlanController::class, 'editshow'])->name('edit');
+                Route::post('/edit', [PlanController::class, 'edit'])->name('plan_edit');
+                Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
+            });
+        });
     });
 
     //User Routes
@@ -172,14 +209,18 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
 
         Route::view('student-view-dashboard', 'user/student-view-dashboard');
         Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
-        // new 
+        // new
         Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
+        Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
         Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
         Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
+        Route::get('/billing-detail', [UserController::class, 'billing_details'])->name('user.get-billing-detail');
+        Route::post('/basic_billing-detail', [UserController::class, 'save_basic_details'])->name('user.save-billing-detail');
+        Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
         Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
@@ -286,11 +327,22 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
-        // Please make any changes you think it's necessary to routing 
+        // Please make any changes you think it's necessary to routing
         Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
+
+        //plans and subscription
+        Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
+        Route::get('/plans', [PlanController::class, 'getUserPlan'])->name('plan.index');
+        Route::get('/plans/{plan}', [PlanController::class, 'showPlan'])->name('plans.show');
+        Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
+        Route::get('/my-subscription', [SubscriptionController::class, 'mysubscriptions'])->name('mysubscriptions.index');
+        Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelsubscriptions'])->name('mysubscriptions.cancel');
+        Route::get('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/subscription-create', [PlanController::class, 'subscriptioncreatewithexistingcard'])->name('subscriptions.create-custome');
+        Route::get('/set-as-default/{payment_id}', [UserController::class, 'setAsDefaultCard'])->name('user.setAsDefault');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');
@@ -308,7 +360,7 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']],function () {
     Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });

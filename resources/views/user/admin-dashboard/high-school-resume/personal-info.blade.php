@@ -194,7 +194,7 @@
                                                             <input type="text"
                                                                 class="form-control"
                                                                 value="{{ isset($personal_info->apartment_no) && $personal_info->apartment_no != null ? $personal_info->apartment_no : "" }}"
-                                                                id="apartment_no" name="apartment_no" placeholder="Enter Apartment No">
+                                                                id="apartment_no" name="apartment_no" placeholder="Enter Apartment No" autocomplete="__away">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
@@ -266,7 +266,7 @@
                                                                 class="form-control"
                                                                 value="{{ isset($personal_info->cell_phone) && $personal_info->cell_phone != null  ? $personal_info->cell_phone : '' }}"
                                                                 id="cell_phone" name="cell_phone"
-                                                                placeholder="Enter cell phone no">
+                                                                placeholder="Enter cell phone">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -294,7 +294,7 @@
                                                                         <input type="text" class="form-control social_links"
                                                                             name="social_links[{{ $index }}][link]"
                                                                             value="{{ $social_link['link'] }}"
-                                                                            placeholder="Enter Social links">
+                                                                            placeholder="Enter Social links" autocomplete="__away">
                                                                     </div>
                                                                     <div class="col-lg-1">
                                                                         <a href="javascript:void(0)" class="add-btn">
