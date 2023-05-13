@@ -387,7 +387,7 @@
                                         <div class="row">
                                             <div class="text-left">
                                                 <div class="form-check d-inline-block">
-                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'submit_application') !== false)?"checked":"" }} type="checkbox" value="submit_application" id="submit_application" name="submit_application">
+                                                    <input class="form-check-input" {{(strpos($collegeDetails[$college->id]->application_checklist ??'', 'submit_application') !== false)?"checked":"" }} type="checkbox" value="submit_application" id="submit_application" name="application_checklist[]">
                                                     <label class="form-check-label" for="submit_application">Submit
                                                         application</label>
                                                 </div>
