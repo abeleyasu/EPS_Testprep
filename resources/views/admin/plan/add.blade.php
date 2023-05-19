@@ -18,7 +18,7 @@
                     <div class="mb-4">
                         <label class="from-label">Product Category:</label>
                         <select id="product_category" name="product_id" class="form-control form-control-lg form-control-alt {{$errors->has('plan_type') ? 'is-invalid' : ''}}">
-                            <option value="">Select Product</option>
+                            <option value="">Select Product Category</option>
                             @foreach($product_categories as $cateogry)
                                 <option value="{{ $cateogry->id }}">{{ $cateogry->title }}</option>
                             @endforeach

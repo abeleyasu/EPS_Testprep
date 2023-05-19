@@ -45,7 +45,7 @@ class VerifyEmailNotification extends Notification
     {
         return (new MailMessage)
                     ->subject('Welcome to College Prep System – Please Verify Your Email')
-                    ->view('email-template.email-verification', ['url' => $this->verificationUrl($notifiable), 'name' => $notifiable->name]);
+                    ->view('email-template.email-verification', ['url' => $this->verificationUrl($notifiable), 'name' => $notifiable->first_name]);
     }
 
     /**

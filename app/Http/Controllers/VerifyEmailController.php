@@ -32,25 +32,9 @@ class VerifyEmailController extends Controller
 
     public function verfiy(Request $request) {
         $user = User::where('id', $request->id)->first();
-        if ($user->hasVerifiedEmail()) {
-            if ((int) $user->role === 1) {
-                return redirect()->intended(route('admin-dashboard'));
-            } elseif ((int) $user->role === 3) {
-                return redirect()->intended(route('user-dashboard'));
-            } else {
-                Auth::logout();
-                return redirect()->intended('/login');
-            }
-        }
         $user->email_verified_at = now();
         $user->save();
-        if ((int) $user->role === 1) {
-            return redirect()->intended(route('admin-dashboard'));
-        } elseif ((int) $user->role === 3) {
-            return redirect()->intended(route('user-dashboard'));
-        } else {
-            Auth::logout();
-            return redirect()->intended('/login');
-        }
+        Auth::logout();
+        return redirect()->route('signin')->with('email_verified_success', 'Your Email Verified Successfully. Please Login.');
     }
 }

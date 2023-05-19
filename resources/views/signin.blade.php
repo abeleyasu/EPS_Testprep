@@ -30,6 +30,19 @@
                             </div>
                             <div class="block-content">
                                 <div class="p-sm-3 px-lg-4 px-xxl-5 py-lg-5">
+                                    @if (session('email_verified_success'))
+                                        <div class="alert alert-success d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="fa fa-fw fa-check"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <p class="mb-0">
+                                                    {{session('email_verified_success')}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <h1 class="h2 mb-1">{{ config('app.app_name') }}</h1>
                                     <p class="fw-medium text-muted">
                                         Welcome, please login.
