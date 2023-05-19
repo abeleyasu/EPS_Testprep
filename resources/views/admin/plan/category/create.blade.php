@@ -24,9 +24,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="description" class="form-label">Description:</label>
-                        <textarea id="js-ckeditor" name="description" class="form-control form-control-lg form-control-alt {{$errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Description">
-                            {{ old('description') }}
-                        </textarea>
+                        <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Cateogry description" value="{{old('description')}}">
                         @error('description')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror

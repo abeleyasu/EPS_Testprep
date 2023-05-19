@@ -29,16 +29,14 @@
                     </div>
                     <div class="mb-4">
                         <label for="description" class="form-label">Product Name:</label>
-                        <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('title') ? 'is-invalid' : ''}}" id="title" name="title" placeholder="Product Name" value="{{old('title')}}">
+                        <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid' : ''}}" id="title" name="title" placeholder="Product Name" value="{{old('title')}}">
                         @error('title')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
                     <div class="mb-4">
                         <label for="description" class="form-label">Description:</label>
-                        <textarea id="js-ckeditor" name="description" class="form-control form-control-lg form-control-alt {{$errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Description">
-                            {{ old('description') }}
-                        </textarea>
+                        <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid' : ''}}" id="description" name="description" placeholder="Product Description" value="{{old('description')}}">
                         @error('description')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror

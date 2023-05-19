@@ -34,6 +34,7 @@
                             <th></th>
                             <th>Plan Id</th>
                             <th>Product</th>
+                            <th>Cateogry</th>
                             <th>Interval</th>
                             <th>Interval Count</th>
                             <th>Currency</th>
@@ -64,6 +65,8 @@
             searchDelay: 600,
             retrieve: true,
             rowReorder: true,
+            bPaginate: false, // hide pagination
+            info: false, // hide table information
             ajax: {
                 url: "{{route('admin.plan.plan_list')}}",
                 method: 'GET',
@@ -72,6 +75,7 @@
                 { "data": "id", "visible": false, "searchable": false, "orderable": false },
                 { "data": "plan_id", "name": "plan_id", "orderable": false },
                 { "data": "product", "name": "product", "orderable": false },
+                { "data": "category", "name": "category", "orderable": false },
                 { "data": "interval", "name": "interval", "orderable": false },
                 { "data": "interval_count", "name": "interval_count", "orderable": false },
                 { "data": "currency", "name": "currency", "orderable": false },

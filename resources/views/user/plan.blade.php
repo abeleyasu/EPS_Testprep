@@ -140,12 +140,12 @@
                                   <p class="currency">${{ $plan->display_amount }}
                                     @if($plan->interval === 'month')
                                       <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
+                                    @else
+                                      <span class="text-muted interval"><span class="text-capitalize">/year</span></span>
                                     @endif
                                   </p>
                                   @if($plan->interval === 'month')
                                     <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
-                                  @else
-                                    <p class="text-muted"><span class="text-capitalize">/year</span></p>
                                   @endif
                                 </div>
                                 <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>

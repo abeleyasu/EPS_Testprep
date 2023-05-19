@@ -17,7 +17,7 @@ class ProductCategoryController extends Controller
     public function displayRecords(Request $request) {
         $limit = isset($request->limit) ? $request->limit : 10;
         $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
-
+        $start = isset($request->start) ? $request->start : 0;
 
         $categories = ProductCategory::orderBy('order_index', 'asc');
         $totalCustomerRecords = ProductCategory::get()->count();
@@ -30,17 +30,17 @@ class ProductCategoryController extends Controller
             $totalCustomerRecords = $categories->count();
         }
 
-        $categories = $categories->paginate($limit);
-        $categories = $categories->toArray();
+        // $categories = $categories->skip($start)->take($limit);
+        $categories = $categories->get();
 
 
         $data = [];
-        foreach ($categories['data'] as $category) {
+        foreach ($categories as $category) {
             $data[] = [
                 'id' => $category['id'],
                 'title' => $category['title'],
                 'description' => $category['description'],
-                'order_index' => $category['order_index'],
+                'order_index' => $category['order_index'] + 1,
                 'action' => '<div class="btn-group">
                                 <a href="' . route('admin.category.edit', ['id' => $category['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Category">
                                     <i class="fa fa-fw fa-pencil-alt"></i>
@@ -70,10 +70,12 @@ class ProductCategoryController extends Controller
             'description' => 'required'
         ];
         $request->validate($rules);
+        $lastOrderIndex = ProductCategory::max('order_index');
         $create = ProductCategory::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'description' => $request->description
+            'description' => $request->description,
+            'order_index' => $lastOrderIndex + 1
         ]);
         if ($create) {
             return redirect()->intended(route('admin.category.list'));

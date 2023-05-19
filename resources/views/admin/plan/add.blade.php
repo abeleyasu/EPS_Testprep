@@ -16,12 +16,20 @@
                 <form action="{{route('admin.plan.plan_create')}}" method="POST">
                     @csrf
                     <div class="mb-4">
+                        <label class="from-label">Product Category:</label>
+                        <select id="product_category" name="product_id" class="form-control form-control-lg form-control-alt {{$errors->has('plan_type') ? 'is-invalid' : ''}}">
+                            <option value="">Select Product</option>
+                            @foreach($product_categories as $cateogry)
+                                <option value="{{ $cateogry->id }}">{{ $cateogry->title }}</option>
+                            @endforeach
+                        </select>
+                        @error('product_id')
+                            <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
                         <label class="from-label">Select Product:</label>
                         <select id="product_id" name="product_id" class="form-control form-control-lg form-control-alt {{$errors->has('plan_type') ? 'is-invalid' : ''}}">
-                            <option value="">Select Product</option>
-                            @foreach($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->title }}</option>
-                            @endforeach
                         </select>
                         @error('product_id')
                             <div class="invalid-feedback">{{$message}}</div>
@@ -69,4 +77,28 @@
 @endsection
 
 @section('admin-script')
+<script>
+    $(document).ready(function() {
+        $('#product_category').change(function() {
+            var product_category_id = $(this).val();
+            if(product_category_id) {
+                var url = "{{ route('admin.plan.get_product', ':product_category_id') }}";
+                $.ajax({
+                    url: url.replace(':product_category_id', product_category_id),
+                    type: "GET",
+                    success:function(data) {
+                        $('#product_id').empty();
+                        $('#product_id').append('<option value="">Select Product</option>');
+                        $.each(data, function(key, value) {
+                            $('#product_id').append('<option value="'+ value.id +'">'+ value.title +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#product_id').empty();
+                $('#product_id').append('<option value="">Select Product</option>');
+            }
+        });
+    });
+</script>
 @endsection

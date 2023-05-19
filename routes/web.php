@@ -193,6 +193,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::post('/edit', [PlanController::class, 'edit'])->name('plan_edit');
                 Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
                 Route::post('/change-order', [PlanController::class, 'changeOrder'])->name('plan_change_order');
+                Route::get('/get-product/{id}', [PlanController::class, 'getProduct'])->name('get_product');
             });
         });
     });

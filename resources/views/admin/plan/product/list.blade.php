@@ -62,6 +62,8 @@
             searchDelay: 600,
             retrieve: true,
             rowReorder: true,
+            bPaginate: false, // hide pagination
+            info: false, // hide table information
             ajax: {
                 url: "{{route('admin.product.product_list')}}",
                 method: 'GET',

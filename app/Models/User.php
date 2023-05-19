@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Notifications\VerifyEmailNotification;
 use Laravel\Cashier\Billable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -59,4 +59,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function billing_details(){
         return $this->hasOne(StudentBillingDetail::class, 'user_id','id');
     }
+
+    public function sendEmailVerificationNotification() {
+        $this->notify(new VerifyEmailNotification);
+    }
+
 }

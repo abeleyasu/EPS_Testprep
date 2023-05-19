@@ -25,7 +25,7 @@ class ProductController extends Controller
     public function displayRecords(Request $request) {
         $limit = isset($request->limit) ? $request->limit : 10;
         $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
-
+        $start = isset($request->start) ? $request->start : 0;
 
         $products = Product::with('productCategory')->orderBy('order_index', 'asc');
         $totalProductCount = Product::get()->count();
@@ -38,24 +38,23 @@ class ProductController extends Controller
             $totalProductCount = $products->count();
         }
 
-        $products = $products->paginate($limit);
-        $products = $products->toArray();
-
-
+        // $products = $products->skip($start)->take($limit);
+        $products = $products->get()->toArray();
+        
         $data = [];
-        foreach ($products['data'] as $product) {
+        foreach ($products as $product) {
             $data[] = [
                 'id' => $product['id'],
                 'title' => $product['title'],
                 'category' => $product['product_category']['title'],
                 'description' => $product['description'],
                 'product_key' => $product['stripe_product_id'],
-                'order_index' => $product['order_index'],
+                'order_index' => $product['order_index'] + 1,
                 'action' => '<div class="btn-group">
-                                <a href="' . route('admin.product.edit', ['id' => $product['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Category">
+                                <a href="' . route('admin.product.edit', ['id' => $product['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Product">
                                     <i class="fa fa-fw fa-pencil-alt"></i>
                                 </a>
-                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $product['id'] . '" data-bs-toggle="tooltip" title="Delete Category">
+                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $product['id'] . '" data-bs-toggle="tooltip" title="Delete Product">
                                     <i class="fa fa-fw fa-times"></i>
                                 </button>
                             </div>'
@@ -92,11 +91,13 @@ class ProductController extends Controller
             'name' => $request->title,
             'description' => $request->description
         ]);
+        $lastOrderIndex = Product::max('order_index');
         $create = Product::create([
             'title' => $request->title,
             'description' => $request->description,
             'product_category_id' => $request->product_category_id,
-            'stripe_product_id' => $product['id']
+            'stripe_product_id' => $product['id'],
+            'order_index' => $lastOrderIndex + 1
         ]);
         $inclusions = array_map(function ($item) use ($create) {
             return ['product_id' => $create->id, 'inclusion' => $item];

@@ -25,7 +25,7 @@ class PlanController extends Controller
     public function displayRecords(Request $request) {
         $limit = isset($request->limit) ? $request->limit : 10;
         $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
-
+        $start = isset($request->start) ? $request->start : 0;
 
         $plans = Plan::with('product')->orderBy('order_index', 'asc');
         $totalPlanCount = Plan::get()->count();
@@ -38,23 +38,23 @@ class PlanController extends Controller
             $totalPlanCount = $plans->count();
         }
 
-        $plans = $plans->paginate($limit);
-        $plans = $plans->toArray();
-
+        // $plans = $plans->skip($start)->take($limit);
+        $plans = $plans->get()->toArray();
 
         $data = [];
-        foreach ($plans['data'] as $plan) {
+        foreach ($plans as $plan) {
             $data[] = [
                 'id' => $plan['id'],
                 'plan_id' => $plan['stripe_plan_id'],
                 'product' => $plan['product']['title'],
+                'category' => $plan['product']['product_category']['title'],
                 'interval' => $plan['interval'],
                 'interval_count' => $plan['interval_count'],
                 'currency' => $plan['currency'],
                 'price' => $plan['amount'],
-                'order_index' => $plan['order_index'],
+                'order_index' => $plan['order_index'] + 1,
                 'action' => '<div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Category">
+                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Plan">
                                     <i class="fa fa-fw fa-times"></i>
                                 </button>
                             </div>'
@@ -91,10 +91,14 @@ class PlanController extends Controller
         return json_decode(json_encode($data));
     }
 
+    public function getProduct($productCategory) {
+        return Product::select('id', 'title')->where('product_category_id', $productCategory)->get()->toArray();
+    }
+
     public function show() {
         $plantypes = $this->planTypes();
-        $products = Product::get();
-        return view('admin.plan.add', ['types' => $plantypes, 'products' => $products]);
+        $productCategories = ProductCategory::get();
+        return view('admin.plan.add', ['types' => $plantypes, 'product_categories' => $productCategories]);
     }
 
     public function create(Request $request) {
@@ -110,6 +114,7 @@ class PlanController extends Controller
             'product_id.required' => 'Product is required',
         ];
         $request->validate($rules, $customMessages);
+        $lastOderIndex = Plan::max('order_index');
         $product = Product::find($request->product_id);
         $plan = $this->stripe->plans->create([
             'amount' => $request->amount * 100,
@@ -123,8 +128,9 @@ class PlanController extends Controller
             'stripe_plan_id' => $plan['id'],
             'interval_count' => $request->interval === 'month' ? $request->interval_count : 1,
             'interval' => $request->interval,
-            'amount' => $request->amount,
-            'display_amount' => number_format($request->amount, 2, ".", "")
+            'amount' => number_format($request->amount, 2, ".", ""),
+            'display_amount' => number_format($request->amount, 2, ".", ""),
+            'order_index' => $lastOderIndex + 1,
         ]);
 
         if ($create) {
