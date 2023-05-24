@@ -12,7 +12,16 @@ class CollegeApplicationDeadlineController extends Controller
     public function index()
     {
         $colleges = CollegeInformation::all();
-        return view('user.admin-dashboard.college-application-deadline', ['colleges' => $colleges]);
+        $collegeDetails = [];
+        foreach ($colleges as $college) {
+            $row = CollegeDetails::where('college_id', '=', $college->id)->first();
+            $collegeDetails[$college->id] = $row;
+        }
+        //print_r($collegeDetails);
+
+        //print_r($colleges);
+
+        return view('user.admin-dashboard.college-application-deadline', ['colleges' => $colleges, 'collegeDetails' => $collegeDetails]);
     }
 
     public function college_save(Request $request)
@@ -57,10 +66,13 @@ class CollegeApplicationDeadlineController extends Controller
             'css_profile_deadline' => 'required',
             'css_status' => 'required'
         ]);
+        $message = 'Details Added Successfully';
         // print_r($_REQUEST);
         // die();
-
         $college = new CollegeDetails;
+        if ($request->rec_id > 0) {
+            $college = CollegeDetails::findOrFail($request->rec_id);
+        }
         $college->college_id = $request->college_id;
         $college->type_of_application = $request->type_of_application;
         $college->admission_option = $request->admission_option;
@@ -78,8 +90,13 @@ class CollegeApplicationDeadlineController extends Controller
         $college->css_profile_deadline = $request->css_profile_deadline;
         $college->css_status = $request->css_status;
         $college->application_checklist = implode(",", $request->application_checklist);
-        $college->save();
-        return redirect()->back()->with('success', 'Details added successfully');
+        if ($request->rec_id > 0) {
+            $college->id = $request->rec_id;
+            $college->update();
+            $message = 'Details Updated Successfully';
+        } else
+            $college->save();
+        return redirect()->back()->with('success', $message);
     }
 
     public function edit($id)
