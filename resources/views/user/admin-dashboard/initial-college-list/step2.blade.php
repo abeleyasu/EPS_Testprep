@@ -16,186 +16,145 @@
     <div class="container">
         <div class="custom-tab-container">
             <div class="custom-college-container">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li role="presentation">
-                        <a class="nav-link " href="{{ route('admin-dashboard.initialCollegeList.selectingSearchParams') }}" id="step1-tab">
-                            <p class="d-none">1</p>
-                            <i class="fa-solid fa-check d-block "></i>
-                            <h6>Selecting Search <br> Parameters</h6>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a class="nav-link active" href="javascript:void(0)" id="step2-tab">
-                            <p>2</p>
-                            <i class="fa-solid fa-check  "></i>
-                            <h6>College Search <br> Results</h6>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step3-tab">
-                            <p>3</p>
-                            <i class="fa-solid fa-check "></i>
-                            <h6>My Academic <br> Statistics</h6>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step4-tab">
-                            <p>4</p>
-                            <i class="fa-solid fa-check "></i>
-                            <h6>Academic Qualification <br> Comparison</h6>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a class="nav-link" href="javascript:void(0)" id="step5-tab">
-                            <p>5</p>
-                            <i class="fa-solid fa-check"></i>
-                            <h6>College List</h6>
-                        </a>
-                    </li>
-                </ul>
+                @include('user.admin-dashboard.initial-college-list.stepper', [
+                    'active_stepper' => 2,
+                    'completed_step' => [1]
+                ])
             </div>
             <p class="mb-4">Here are your college search results from the Search Parameters you chose.</p>
-            <div class='search_result'>
 
-            </div>
-            <!--         <div class="block block-rounded mb-3">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">UC BERKELEY</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn btn-sm btn-alt-primary" data-bs-toggle="modal" data-bs-target="#college-details">College Details</button>
-                        <button type="button" class="btn btn-sm btn-alt-success">Add to My College List</button>
+            @if(count($college_data) == 0)
+                <div class="block block-rounded mb-3">
+                    <div class="block-header block-header-main justify-content-center flex-column">
+                        <h3 class="block-title">No College Found !</h3>
                     </div>
                 </div>
-                <div class="block-content mb-">
-                    <div class="college-search-wrapper">
-                        <h2>Berkeley, CA</h2>
-                        <div class="college-search-box">
-                            <div class="row">
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-info-light">
-                                            <i class="fa fa-4 fa-2x"></i>
-                                            <div class="fs-3 fw-semibold mt-3">Year</div>
-                                            <div class="">College</div>
+            @else
+                @foreach($college_data as $key => $college)
+                    <div class="block block-rounded mb-3">
+                        <div class="block-header block-header-default block-header-main">
+                            <h3 class="block-title">{{ $college->{'school.name'} }}</h3>
+                            <div class="block-options">
+                                <button type="button" class="btn btn-sm btn-alt-success" data-bs-toggle="modal" data-bs-target="#college-details">College Details</button>
+                                <button type="button" class="btn btn-sm btn-alt-success">Add to My College List</button>
+                            </div>
+                        </div>
+                        <div class="block-content mb-">
+                            <div class="college-search-wrapper">
+                                <h2>{{ $college->{'school.city'} }}, {{ $college->{'school.state'} }}</h2>
+                                <div class="college-search-box">
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <div class="block block-rounded text-center mb-3">
+                                                <div class="block-content py-3 bg-info text-white">
+                                                    <span class="text-black-50 college-years">4</span>
+                                                    <div class="fs-3 fw-semibold">Year</div>
+                                                    <div>College</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-danger-light">
-                                            <i class="fa fa-building fa-2x"></i>
-                                            <div class="fs-3 fw-semibold mt-3">Public</div>
-                                            <div>University</div>
+                                        <div class="col-lg-2">
+                                            <div class="block block-rounded text-center mb-3">
+                                                <div class="block-content py-3 bg-danger text-white">
+                                                    <i class="fa fa-building fa-2x college-years text-black-50"></i>
+                                                        @switch($college->{'school.ownership'})
+                                                            @case(1)
+                                                                <div class="fs-3 fw-semibold mt-3 public">Public</div>
+                                                                <div></div>
+                                                            @break
+                                                            @case(2)
+                                                                <div class="fs-3 fw-semibold mt-3">Private</div>
+                                                                <div>Nonprofit</div>
+                                                            @break
+                                                            @case(3)
+                                                                <div class="fs-3 fw-semibold mt-3">Private</div>
+                                                                <div>For-profit</div>
+                                                            @break
+                                                        @endswitch
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-primary-lighter">
-                                            <i class="fa fa-city fa-2x"></i>
-                                            <div class="fs-3 fw-semibold mt-3">Campus</div>
-                                            <div>City</div>
+                                        <div class="col-lg-2">
+                                            <div class="block block-rounded text-center mb-3">
+                                                <div class="block-content py-3 bg-primary text-white">
+                                                    <i class="fa fa-city fa-2x college-years text-black-50"></i>
+                                                    <div class="fs-3 fw-semibold mt-3">Campus</div>
+                                                    @switch($college->{'school.locale'})
+                                                        @case(11 || 12 || 13)
+                                                            <div>City</div>
+                                                        @break
+                                                        @case(21 || 22 || 23)
+                                                            <div>Suburban</div>
+                                                        @break
+                                                        @case(31 || 32 || 33)
+                                                            <div>Town</div>
+                                                        @break
+                                                        @case(41 || 42 || 43)
+                                                            <div>Rural</div>
+                                                        @break
+                                                        @default
+                                                            <div>N/A</div>
+                                                        @break
+                                                    @endswitch
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-gray-dark">
-                                            <i class="fa fa-users fa-2x text-white"></i>
-                                            <div class="fs-3 fw-semibold mt-3 text-white">Size</div>
-                                            <div class="text-white">Large</div>
+                                        <div class="col-lg-2">
+                                            <div class="block block-rounded text-center mb-3">
+                                                <div class="block-content py-3 bg-secondary text-white">
+                                                    <i class="fa fa-users fa-2x college-years text-black-50"></i>
+                                                    <div class="fs-3 fw-semibold mt-3">Size</div>
+                                                    @if($college->{'latest.student.size'} < 2000)
+                                                        <div>Small</div>
+                                                    @elseif($college->{'latest.student.size'} > 2000 && $college->{'latest.student.size'} < 15000)
+                                                        <div>Medium</div>
+                                                    @else
+                                                        <div>Large</div>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="college-text">
-                                        <p><b>Acceptance Rate:</b> 23%</p>
-                                        <p><b>Average Annual Cost:</b> $56k</p>
-                                        <p><b>Median Earnings:</b> $98k</p>
+                                        <div class="col-lg-4">
+                                            <div class="college-text">
+                                                <p>
+                                                    <b>Acceptance Rate:</b> 
+                                                    @if($college->{'latest.completion.consumer_rate'})
+                                                        {{ number_format($college->{'latest.completion.consumer_rate'} * 100, 0) . '%' }}
+                                                    @else    
+                                                        N/A
+                                                    @endif
+                                                </p>
+                                                <p><b>Average Annual Cost:</b> 
+                                                    @if($college->{'latest.cost.avg_net_price.overall'})
+                                                        {{ '$' . number_format($college->{'latest.cost.avg_net_price.overall'} / 1000, 0) . 'k' }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </p>
+                                                <p><b>Median Earnings:</b>
+                                                    @if($college->{'latest.earnings.10_yrs_after_entry.median'})
+                                                        {{ '$' . number_format($college->{'latest.earnings.10_yrs_after_entry.median'} / 1000, 0) . 'k' }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p>This school is known for its...</p>
-                </div>
-
-            </div>
-            <div class="block block-rounded">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">CU DENVER</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn btn-sm btn-alt-primary" data-bs-toggle="modal" data-bs-target="#college-details_1">College Details</button>
-                        <button type="button" class="btn btn-sm btn-alt-success">Add to My College List</button>
-                    </div>
-                </div>
-                <div class="block-content mb-">
-                    <div class="college-search-wrapper">
-                        <h2>Berkeley, CA</h2>
-                        <div class="college-search-box">
-                            <div class="row">
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-info-light">
-                                            <i class="fa fa-4 fa-2x"></i>
-                                            <div class="fs-3 fw-semibold mt-3">Year</div>
-                                            <div class="">College</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-danger-light">
-                                            <i class="fa fa-building fa-2x"></i>
-                                            <div class="fs-3 fw-semibold mt-3">Public</div>
-                                            <div>University</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-primary-lighter">
-                                            <i class="fa fa-city fa-2x"></i>
-                                            <div class="fs-3 fw-semibold mt-3">Campus</div>
-                                            <div>City</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="block block-rounded text-center mb-3">
-                                        <div class="block-content py-3 bg-gray-dark">
-                                            <i class="fa fa-users fa-2x text-white"></i>
-                                            <div class="fs-3 fw-semibold mt-3 text-white">Size</div>
-                                            <div class="text-white">Large</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="college-text">
-                                        <p><b>Acceptance Rate:</b> 56%</p>
-                                        <p><b>Average Annual Cost:</b> $32k</p>
-                                        <p><b>Median Earnings:</b> $75k</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p>This school is known for its...</p>
-                </div>
-
-            </div>
--->
+                @endforeach
+            @endif
             <div class="d-flex justify-content-between mt-3">
                 <div class="prev-btn">
-                    <a href="{{ route('admin-dashboard.initialCollegeList.selectingSearchParams') }}" class="btn btn-alt-success prev-step"> Previous Step
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-alt-success prev-step"> Previous Step
                     </a>
                 </div>
                 <div class="">
-                    <a href="{{ route('admin-dashboard.initialCollegeList.AcademicStatistics') }}" class="btn  btn-alt-success next-step">Next Step</a>
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step3') }}" class="btn  btn-alt-success next-step">Next Step</a>
                 </div>
-                {{-- <div class="next-btn">
-                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
-                    </div> --}}
             </div>
         </div>
     </div>
@@ -912,94 +871,16 @@
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/college-application-deadline.css') }}">
+<style>
+    .college-years {
+        font-size: 2em;
+        font-weight: 900;
+    }
+    .public {
+        margin-bottom: 24px;
+    }
+</style>
 @endsection
-
-
 @section('user-script')
-<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-<script src="{{ asset('js/selecting-search-params.js') }}"></script>
-<script>
-    jQuery(function() {
-        if (localStorage.getItem("searchResult") != null) {
-            var data = JSON.parse(localStorage.searchResult);
-
-            var out = "";
-            for (var i = 0; i < data.results.length; i++) {
-                var collegeNM = data.results[i].latest.school.name;
-                var cityM = data.results[i].latest.school.city;
-                var stateM = data.results[i].latest.school.state;
-
-                var averageAnnualCost = data.results[i].latest.cost.avg_net_price.public / 1000;
-                var medianEarning = data.results[i].latest.earnings['1_yr_after_completion'].median / 1000;
-                out += '<div class="block block-rounded mb-3">';
-                out += '<div class="block-header block-header-default">';
-                out += '<h3 class="block-title">' + collegeNM + '</h3>';
-                out += '<div class="block-options">';
-                out += '<button type="button" class="btn btn-sm btn-alt-primary" data-bs-toggle="modal" data-bs-target="#college-details">College Details</button>';
-                out += '<button type="button" class="btn btn-sm btn-alt-success">Add to My College List</button>';
-                out += '</div>';
-                out += '</div>';
-                out += '<div class="block-content mb-">';
-                out += '<div class="college-search-wrapper">';
-                out += '<h2>' + cityM + ', ' + stateM + '</h2>';
-                out += '<div class="college-search-box">';
-                out += '<div class="row">';
-                out += '<div class="col-lg-2">';
-                out += '<div class="block block-rounded text-center mb-3">';
-                out += '<div class="block-content py-3 bg-info-light">';
-                out += '<i class="fa fa-4 fa-2x"></i>';
-                out += '<div class="fs-3 fw-semibold mt-3">Year</div>';
-                out += '<div class="">College</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '<div class="col-lg-2">';
-                out += '<div class="block block-rounded text-center mb-3">';
-                out += '<div class="block-content py-3 bg-danger-light">';
-                out += '<i class="fa fa-building fa-2x"></i>';
-                out += '<div class="fs-3 fw-semibold mt-3">Public</div>';
-                out += '<div>University</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '<div class="col-lg-2">';
-                out += '<div class="block block-rounded text-center mb-3">';
-                out += '<div class="block-content py-3 bg-primary-lighter">';
-                out += '<i class="fa fa-city fa-2x"></i>';
-                out += '<div class="fs-3 fw-semibold mt-3">Campus</div>';
-                out += '<div>City</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '<div class="col-lg-2">';
-                out += '<div class="block block-rounded text-center mb-3">';
-                out += '<div class="block-content py-3 bg-gray-dark">';
-                out += '<i class="fa fa-users fa-2x text-white"></i>';
-                out += '<div class="fs-3 fw-semibold mt-3 text-white">Size</div>';
-                out += '<div class="text-white">Large</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '<div class="col-lg-4">';
-                out += '<div class="college-text">';
-                out += '<p><b>Acceptance Rate:</b> 23%</p>';
-                out += '<p><b>Average Annual Cost:</b> $' + averageAnnualCost + 'k</p>';
-                out += '<p><b>Median Earnings:</b> $' + medianEarning + 'k</p>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '</div>';
-                out += '<p>This school is known for its...</p>';
-                out += '</div>';
-                out += '</div>';
-            }
-            jQuery(".search_result").html(out);
-
-        }
-    })
-</script>
 @endsectioncon

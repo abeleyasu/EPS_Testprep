@@ -15,4 +15,8 @@ class CollegeInformation extends Model
         'user_id',
         'state'
     ];
+
+    public function college_details() {
+        return $this->hasOne(CollegeDetails::class, 'college_id', 'id');
+    }
 }

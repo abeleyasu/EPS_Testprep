@@ -672,6 +672,26 @@ return [
         "Portuguese",
         "Russian",
         "Spanish"
+    ],
+
+    'types_of_application' => [
+        'Common App',
+        'Coalition App',
+        'Universal App',
+        'College System App',
+        'Apply Directly',
+    ],
+    'admission_options' => [
+        'Early Action',
+        'Regular Decision',
+        'Rolling Admission',
+        'Early Decision',
+        'Early Decision II',
+    ],
+    'college_list_status' => [
+        'Applied',
+        'Not Applied',
+        'Not Applicable',
     ]
 ]
 ?>

@@ -16,47 +16,10 @@
         <div class="container">
             <div class="custom-tab-container">
                 <div class="custom-college-container">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li role="presentation">
-                            <a class="nav-link "
-                                href="{{ route('admin-dashboard.initialCollegeList.selectingSearchParams') }}"
-                                id="step1-tab">
-                                <p class="d-none">1</p>
-                                <i class="fa-solid fa-check d-block "></i>
-                                <h6>Selecting Search <br> Parameters</h6>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a class="nav-link "
-                                href="{{ route('admin-dashboard.initialCollegeList.CollegeSearchResults') }}"
-                                id="step2-tab">
-                                <p class="d-none">2</p>
-                                <i class="fa-solid fa-check d-block "></i>
-                                <h6>College Search <br> Results</h6>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a class="nav-link active" href="javascript:void(0)" id="step3-tab">
-                                <p>3</p>
-                                <i class="fa-solid fa-check"></i>
-                                <h6>My Academic <br> Statistics</h6>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a class="nav-link" href="javascript:void(0)" id="step4-tab">
-                                <p>4</p>
-                                <i class="fa-solid fa-check "></i>
-                                <h6>Academic Qualification <br> Comparison</h6>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a class="nav-link" href="javascript:void(0)" id="step5-tab">
-                                <p>5</p>
-                                <i class="fa-solid fa-check"></i>
-                                <h6>College List</h6>
-                            </a>
-                        </li>
-                    </ul>
+                    @include('user.admin-dashboard.initial-college-list.stepper', [
+                        'active_stepper' => 3,
+                        'completed_step' => [1, 2]
+                    ])
                 </div>
                 <p class="mb-4">Here are your college search results from the Search Parameters you chose.</p>
 
@@ -376,12 +339,12 @@
 
                 <div class="d-flex justify-content-between mt-3">
                     <div class="prev-btn">
-                        <a href="{{ route('admin-dashboard.initialCollegeList.CollegeSearchResults') }}"
+                        <a href="{{ route('admin-dashboard.initialCollegeList.step2') }}"
                             class="btn btn-alt-success prev-step"> Previous Step
                         </a>
                     </div>
                     <div class="">
-                        <a href="{{ route('admin-dashboard.initialCollegeList.selectingSearchParams') }}"
+                        <a href="#"
                             class="btn  btn-alt-success next-step">Next Step</a>
                     </div>
                     {{-- <div class="next-btn">

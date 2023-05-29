@@ -30,9 +30,6 @@ use App\Http\Controllers\HighSchoolResume\HonorsController;
 use App\Http\Controllers\HighSchoolResume\PersonalInfoController;
 use App\Http\Controllers\HighSchoolResume\PreviewController;
 use App\Http\Controllers\HonorsCourseNameListController;
-use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
-use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
-use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
 use App\Http\Controllers\UserController;
 use \App\Http\Controllers\QuizManagemet\QuestionsController;
 use \App\Http\Controllers\QuizManagemet\PracticeTestsController;
@@ -53,6 +50,14 @@ use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+
+// Pending
+use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
+
+// Remove
+// use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
+// use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
+// use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -295,16 +300,11 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
             Route::post('/college_save', [CollegeApplicationDeadlineController::class, 'college_save'])->name('college_save');
             Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
+            Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
-                Route::controller(SelectingSearchParamsController::class)->group(function () {
-                    Route::get('/selecting-search-params', 'index')->name('selectingSearchParams');
-                });
-                Route::controller(CollegeSearchResultsController::class)->group(function () {
-                    Route::get('/college-search-results', 'index')->name('CollegeSearchResults');
-                });
-                Route::controller(AcademicStatisticsController::class)->group(function () {
-                    Route::get('/academic-statistics', 'index')->name('AcademicStatistics');
-                });
+                Route::get('/search-college/step1', [InititalCollegeListController::class, 'step1'])->name('step1');
+                Route::get('/search-college/step2', [InititalCollegeListController::class, 'step2'])->name('step2');
+                Route::get('/search-college/step3/{id?}', [InititalCollegeListController::class, 'step3'])->name('step3');
             });
             Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');

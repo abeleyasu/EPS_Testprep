@@ -98,7 +98,7 @@
                         </li>
 
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::is('admin-dashboard.initialCollegeList.*') ? 'active' : '' }}" href="{{ route('admin-dashboard.initialCollegeList.selectingSearchParams') }}">
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.initialCollegeList.*') ? 'active' : '' }}" href="{{ route('admin-dashboard.initialCollegeList.step1') }}">
                                 <i class="nav-main-link-icon si si-book-open"></i>
                                 <span class="nav-main-link-name">Initial College List</span>
                             </a>
