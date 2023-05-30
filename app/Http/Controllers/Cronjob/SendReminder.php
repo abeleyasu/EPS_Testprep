@@ -39,8 +39,8 @@ class SendReminder extends Controller
                 $currentDateTime = $currentDate->copy()->setTime($currentTime->hour, $currentTime->minute, 0);
                 Log::channel('reminder')->info("currentDateTime = ".$currentDateTime->format('Y-m-d H:i'));
                 Log::channel('reminder')->info("Carbon now = ".Carbon::now()->format('Y-m-d H:i'));
-                echo "currentDateTime = ".$currentDateTime->format('Y-m-d H:i')."<br />";
-                echo "Carbon now = ".Carbon::now()->format('Y-m-d H:i')."<br /><br />";
+                //echo "currentDateTime = ".$currentDateTime->format('Y-m-d H:i')."<br />";
+                //echo "Carbon now = ".Carbon::now()->format('Y-m-d H:i')."<br /><br />";
 
                 if (Carbon::now()->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
                     if($method == 'text' || $method == 'both') {
@@ -71,7 +71,7 @@ class SendReminder extends Controller
         $date = date("m/d/Y");
         $time = date("h:i a", strtotime($reminder->when_time));
         $to_email = $user->email;
-        $to_email = 'khan06shahbaz@gmail.com';
+        //$to_email = 'khan06shahbaz@gmail.com';
         //$to_email = 'pocholo.hernandez@plumnetworks.com';
         Log::channel('reminder')->info("to_email = $to_email");
         $subject = "Important Reminder: Your Upcoming Deadlines and Activities";
