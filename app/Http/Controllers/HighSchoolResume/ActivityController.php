@@ -1,0 +1,388 @@
+<?php
+
+namespace App\Http\Controllers\HighSchoolResume;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\HighSchoolResume\ActivityRequest;
+use App\Models\Grade;
+use App\Models\HighSchoolResume;
+use App\Models\HighSchoolResume\Activity;
+use App\Models\HighSchoolResume\EmploymentCertification;
+use App\Models\HighSchoolResume\FeaturedAttribute;
+use App\Models\HighSchoolResume\DemonstratedPositions;
+use App\Models\HighSchoolResume\HonorsStatuses;
+use App\Models\HighSchoolResume\LeadershipOrganization;
+use App\Models\HighSchoolResume\Athletics_positions;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+
+class ActivityController extends Controller
+{
+    public function index(Request $request)
+    {
+        $resume_id = $request->resume_id;
+        // $demonstrated_positions = Config::get('constants.demonstrated_positions');
+        $demonstrated_positions = DemonstratedPositions::select('position_name')->orderBY('position_name', 'asc')->get();
+        $status = HonorsStatuses::select('id','status')->orderBY('status', 'asc')->get();
+
+        if (isset($resume_id) && $resume_id != null) {
+            $resumedata = HighSchoolResume::where('id', $resume_id)->with([
+                'personal_info',
+                'education',
+                'honor',
+                'activity',
+                'employmentCertification',
+                'featuredAttribute'
+            ])->first();
+            $personal_info = $resumedata->personal_info;
+            $education = $resumedata->education;
+            $honor = $resumedata->honor;
+            $activity = $resumedata->activity;
+            $employmentCertification = $resumedata->employmentCertification;
+            $featuredAttribute = $resumedata->featuredAttribute;
+        } else {
+            $user_id = Auth::id();
+            $activity = Activity::whereUserId($user_id)->where('is_draft', 0)->first();
+            $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
+            $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
+        }
+        $grades = Grade::all();
+        $validations_rules = Config::get('validation.activities.rules');
+        $validations_messages = Config::get('validation.activities.messages');
+        // $organizations = Config::get('constants.leadership_organization');
+        $organizations = LeadershipOrganization::select('name')->get();
+        // $athletics_positions = Config::get('constants.athletics_position');
+        $athletics_positions = Athletics_positions::select('position')->get();
+
+        $details = 0;
+        return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions','organizations','athletics_positions', 'status'));
+    }
+
+    public function store(ActivityRequest $request)
+    {
+        $data = $request->validated();
+        
+        $grade_ids = Grade::pluck('id')->toArray();
+
+        if (isset($data['demonstrated_data']) && !empty($data['demonstrated_data'])) {
+            foreach ($data['demonstrated_data'] as $key => $value) {
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);
+                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['demonstrated_data'] = array_values($data['demonstrated_data']);
+        }
+
+
+        if (isset($data['leadership_data']) && !empty($data['leadership_data'])) {
+            foreach ($data['leadership_data'] as $key => $value) {
+
+                if(isset($value['status']) && !empty($value['status'])){
+                    $existingStatus = HonorsStatuses::pluck('status')->toArray();
+                    if (!in_array($value['status'], $existingStatus)) {
+                        HonorsStatuses::create(['status' => $value['status']]);
+                    }
+                }
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['organization']) && !empty($value['organization'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['organization'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['organization']]);
+                    }
+                }
+                
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);
+                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['leadership_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['leadership_data'] = array_values($data['leadership_data']);
+        }
+
+        if (isset($data['activities_data']) && !empty($data['activities_data'])) {
+            foreach ($data['activities_data'] as $key => $value) {
+                
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['activity'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['activity']]);
+                    }
+                }
+                
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['activities_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['activities_data'] = array_values($data['activities_data']);
+        }
+
+        if (isset($data['athletics_data']) && !empty($data['athletics_data'])) {
+            foreach ($data['athletics_data'] as $key => $value) {
+                
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingAP = Athletics_positions::pluck('position')->toArray();
+                    if (!in_array($value['activity'], $existingAP)) {
+                        Athletics_positions::create(['position' => $value['activity']]);
+                    }
+                }
+                
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);
+                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['athletics_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['athletics_data'] = array_values($data['athletics_data']);
+        }
+
+        if (isset($data['community_service_data']) && !empty($data['community_service_data'])) {
+            foreach ($data['community_service_data'] as $key => $value) {
+                
+                if(isset($value['level']) && !empty($value['level'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['level'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['level']]);
+                    }
+                }
+                
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);
+                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['community_service_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['community_service_data'] = array_values($data['community_service_data']);
+        }
+
+        $data['user_id'] = Auth::id();
+
+        if (!empty($data)) {
+            Activity::create($data);
+            return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+        }
+    }
+
+    public function update(ActivityRequest $request, Activity $activity)
+    {
+        $resume_id = isset($request->resume_id) ? $request->resume_id : null;
+        $data = $request->validated();
+        $grade_ids = Grade::pluck('id')->toArray();
+
+        if (isset($data['demonstrated_data']) && !empty($data['demonstrated_data'])) {
+            foreach ($data['demonstrated_data'] as $key => $value) {
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);
+                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['demonstrated_data'] = array_values($data['demonstrated_data']);
+        }
+
+        if (isset($data['leadership_data']) && !empty($data['leadership_data'])) {
+            foreach ($data['leadership_data'] as $key => $value) {
+
+                if(isset($value['status']) && !empty($value['status'])){
+                    $existingStatus = HonorsStatuses::pluck('status')->toArray();
+                    if (!in_array($value['status'], $existingStatus)) {
+                        HonorsStatuses::create(['status' => $value['status']]);
+                    }
+                }
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['organization']) && !empty($value['organization'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['organization'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['organization']]);
+                    }
+                }
+
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);
+                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['leadership_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['leadership_data'] = array_values($data['leadership_data']);
+        }
+
+        if (isset($data['activities_data']) && !empty($data['activities_data'])) {
+            foreach ($data['activities_data'] as $key => $value) {
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['activity'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['activity']]);
+                    }
+                }
+
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['activities_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['activities_data'] = array_values($data['activities_data']);
+        }
+
+        if (isset($data['athletics_data']) && !empty($data['athletics_data'])) {
+            foreach ($data['athletics_data'] as $key => $value) {
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingAP = Athletics_positions::pluck('position')->toArray();
+                    if (!in_array($value['activity'], $existingAP)) {
+                        Athletics_positions::create(['position' => $value['activity']]);
+                    }
+                }
+                
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);
+                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['athletics_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['athletics_data'] = array_values($data['athletics_data']);
+        }
+
+        if (isset($data['community_service_data']) && !empty($data['community_service_data'])) {
+            foreach ($data['community_service_data'] as $key => $value) {
+
+                if(isset($value['level']) && !empty($value['level'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['level'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['level']]);
+                    }
+                }
+
+                if (isset($value['grade']) && !empty(array_filter($value))) {
+                    foreach ($value['grade'] as $grade) {
+                        if (!in_array($grade, $grade_ids)) {
+                            $grade_info = Grade::create(['name' => $grade]);
+                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);
+                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                            $data['community_service_data'][$key]['grade'] = $grade_array;
+                        }
+                    }
+                }
+            }
+            $data['community_service_data'] = array_values($data['community_service_data']);
+        }
+
+        if (!empty($data)) {
+            $activity->update($data);
+            if ($resume_id != null) {
+                return redirect('user/admin-dashboard/high-school-resume/employment-certifications?resume_id=' . $resume_id);
+            } else {
+                return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+            }
+        }
+    }
+}

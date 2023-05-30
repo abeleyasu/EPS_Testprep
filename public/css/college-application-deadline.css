@@ -1,0 +1,75 @@
+.college-application-wrapper {
+    margin: 25px;
+}
+
+.block-header-main {
+    background-color: #1f2937;
+    color: #fff;
+}
+
+.note-text {
+    font-weight: 600;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.table-default-active {
+    background-color: #1f2937 !important;
+    color: #fff !important;
+}
+
+.table>.table-default-active>tr:hover>*,
+.table-active {
+    --bs-table-accent-bg: #1f2937 !important;
+    color: #fff !important;
+}
+
+.td-position {
+    position: relative;
+    top: 30px;
+}
+
+.js-table-sections .form-label {
+    margin-bottom: 0.375rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.table>tbody>tr:hover>* {
+    --bs-table-accent-bg: rgb(235 238 242);
+    color: var(--bs-table-hover-color);
+}
+
+.content-flex {
+    display: grid;
+    justify-content: center;
+}
+
+.btn-inform {
+    color: #ffffff;
+    background-color: #1f2937;
+    border-color: #1f2937;
+}
+
+.btn-inform:hover {
+    color: #ffffff;
+    background-color: #1f2937;
+}
+
+.form-check {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: unset !important;
+}
+.submit-btn {
+    background-color: #1f2937;
+    color: #fff;
+    font-size: 14px;
+}
+.submit-btn:hover{
+    color: #fff;
+}
