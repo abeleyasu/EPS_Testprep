@@ -83,6 +83,21 @@ class EducationController extends Controller
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         }
 
+        $selectedCollegesNamesArray = [];
+        if(isset($education->course_data) && !empty($education->course_data)){
+            foreach($education->course_data as $index => $course_data)  {
+                if(isset($course_data['search_college_name']) && !empty($course_data['search_college_name'])){
+                    if(is_array($course_data['search_college_name'])) {
+                        $collegeIds = $course_data['search_college_name'];
+                        foreach ($course_data['search_college_name'] as $key => $collegeId) {
+                            $colleges = CollegeInformation::where('id', $collegeId)->pluck('name', 'id')->toArray();
+                            $selectedCollegesNamesArray[$collegeId] = $colleges[$collegeId];
+                        }
+                    }
+                }
+            }
+        }
+
         $user = Auth::user();
 
         if($user->role == 1) {   
@@ -95,27 +110,6 @@ class EducationController extends Controller
             $honors_course_list = HonorCourseNameList::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
         }
 
-        // $client = new Client();
-        // $colleges_list = [];
-        // $page = 0;
-        // $perPage = 100;
-        // $totalPages = 1;
-        // $college_scorecard_api_key = env('COLLEGE_SCORECARD_API_KEY');
-        // do {
-        //     $response = $client->get("https://api.data.gov/ed/collegescorecard/v1/schools?api_key=$college_scorecard_api_key&fields=id,school.name&page={$page}&per_page={$perPage}");
-        //     $data = json_decode($response->getBody()->getContents(), true);
-
-        //     $colleges = $data['results'];
-        //     $colleges_list = array_merge($colleges_list, $colleges);
-
-        //     $total = $data['metadata']['total'];
-        //     $page++;
-        // } while (($page * $perPage) < $total);
-
-        // echo '<pre>';print_r($colleges_list);echo '</pre>';
-        // exit;
-        
-
         $validations_rules = Config::get('validation.educations.rules');
         $validations_messages = Config::get('validation.educations.messages');
 
@@ -125,7 +119,7 @@ class EducationController extends Controller
         $intended_minor = IntendedCollegeList::whereType('2')->orderBy('name','ASC')->get();
 
         $details = 0;
-        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations','cities'));
+        return view('user.admin-dashboard.high-school-resume.education-info', compact('education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'courses_list', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'colleges_list', 'grades', 'intended_major', 'intended_minor','honors_course_list' ,'states', 'graduation_designations','cities', 'selectedCollegesNamesArray'));
     }
 
     public function store(EducationRequest $request)
@@ -548,4 +542,25 @@ class EducationController extends Controller
         return response()->json(['success' => true, 'dropdown_list' => $courses_list]);
     }
     
+    public function searchColleges(Request $request) 
+    {
+        $query = $request->input('query');
+        $selectedColleges = $request->input('selected_colleges', []); // Retrieve the selected colleges from the request
+        
+        // $colleges_list = CollegeInformation::whereNull('user_id')->orWhere('user_id' , Auth::id())->get();
+
+        $colleges = CollegeInformation::where('name', 'LIKE', '%' . $query . '%')
+                    ->select('id', 'name')
+                    ->limit(10) // Limit the number of results
+                    ->get();
+
+        // Add a "selected" attribute to indicate the selected colleges
+        // $colleges = $colleges->map(function ($college) use ($selectedColleges) {
+        //     $college->selected = in_array($college->id, $selectedColleges);
+        //     return $college;
+        // });
+
+        return response()->json($colleges);
+
+    }
 }
