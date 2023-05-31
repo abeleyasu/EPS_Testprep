@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Http\Controllers\Cronjob\SendReminder;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,6 +17,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        //$schedule->command('reminders:run')->everyMinute();
+        $schedule->call('App\Http\Controllers\Cronjob\SendReminder@index')->everyMinute()->appendOutputTo('/home/cpsdev/public_html/storage/logs/cronjob.log');
     }
 
     /**

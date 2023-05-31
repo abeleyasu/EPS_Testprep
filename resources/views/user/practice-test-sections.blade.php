@@ -13,6 +13,20 @@
   $('input[type="checkbox"]').click(function(e) {
     e.stopPropagation()
   })
+  $(document).on('click','.start_section',function(){
+    let section_id = $(this).attr('data-section_id');
+    let test_id = $(this).attr('data-test_id');
+    let option = $('#timingOption').val();
+    let url = $('#site_url').val();
+    $('.start_section').attr('href',`${url}/user/practice-test/${section_id}?test_id=${test_id}&time=${option}`);
+  });
+
+  $(document).on('click','.start_all_section',function(){
+    let test_id = $(this).attr('data-test_id');
+    let option = $('#timingOption').val();
+    let url = $('#site_url').val();
+    $('.start_all_section').attr('href',`${url}/user/practice-test/all/${test_id}?time=${option}`);
+  });
 </script>
 @endsection
 
@@ -38,7 +52,6 @@
         </div>
         <!-- Hero -->
         @if(isset($testSectionName) && !$testSectionName == 0)
-
         <div class="bg-body-light">
           <div class="content content-boxed">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
@@ -56,6 +69,18 @@
                       {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
                     </h6> --}}
                   </div>
+                  @if ($testSection[0]->test_source == '2')
+                    <select id="timingOption" class="select-menu">
+                      <option value="untimed">Untimed</option>
+                    </select>
+                  @else
+                    <select id="timingOption" class="select-menu">
+                      <option value="regular">Regular Time</option>
+                      <option value="50per">50% Extended Time</option>
+                      <option value="100per">100% Extended Time</option>
+                      <option value="untimed">Untimed</option>
+                    </select>
+                  @endif 
                 @if($check_test_completed == 'yes')
                   @if (isset($testSections[0]) && !empty($testSections[0]))
                     <a  href="{{route('single_review', ['test' => $testSections[0]->title , 'id' => $testSections[0]->testid ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="margin-right: 10px;white-space: nowrap" class="btn btn-alt-primary fs-8 ms-2">
@@ -66,7 +91,7 @@
                     </a>
                   @endif
                 @elseif($check_test_completed == 'Yes')
-                  <a  href="{{route('all_section', ['id' => $selected_test_id])}}" style="white-space: nowrap" class="btn btn-alt-primary fs-8  ms-2" >
+                  <a  href="{{route('all_section', ['id' => $selected_test_id]).'?time=regular'}}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}" class="btn btn-alt-primary fs-8  ms-2 start_all_section" >
                     <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                   </a>
                   <a  href="{{route('reset_test', ['id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
@@ -114,15 +139,6 @@
         <!-- Page Content -->
         <div class="content content-boxed">
           <!-- Timeline -->
-          <!--
-              Available classes for timeline list:
-
-              'timeline'                                      A normal timeline with icons to the left in all screens
-              'timeline timeline-centered timeline-alt'       A centered timeline with odd events to the left and even events to the right (screen width > 1200px)
-              'timeline timeline-centered'                    A centered timeline with all events to the left. You can add the class 'timeline-event-alt'
-                                                              to 'timeline-event' elements to position them to the right (screen width > 1200px) (useful, if you
-                                                              would like to have multiple events to the left or to the right section)
-          -->
 
         {{-- start Description  --}}
           <h6 class="fs-6 mb-3 p-2 test-description text-muted mt-2">
@@ -169,8 +185,12 @@
                      
                         @if(isset($singletestSections['check_if_section_completed']) && $singletestSections['check_if_section_completed'][0] == 'yes')
                        
-
                         <div>
+                          <a href="#"  
+                              style='padding: 5px 20px fs-5'
+                              class="btn btn-alt-success text-success">
+                              {{$score[$singletestSections['Sections'][0]['id']]}}
+                            </a>
                           <a href="{{route('single_review', ['test' => $singletestSections['Sections'][0]['title'] , 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id .'&type=single' }}"  
                             style='padding: 5px 20px fs-5'
                              class="btn btn-alt-success text-success">
@@ -192,7 +212,7 @@
 
                         @else
                         <a href="{{route('single_section', ['id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id}}" 
-                          style="padding: 5px 20px fs-5" class="btn btn-alt-secondary text-primary">
+                          style="padding: 5px 20px fs-5" class="btn btn-alt-secondary text-primary start_section" data-section_id="{{$singletestSections['Sections'][0]['id']}}" data-test_id="{{$current_section_id}}">
                           {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
                           <i class="fa-solid fa-circle-check" style='margin-right:5px'></i> Start Section
                         </a>
@@ -213,7 +233,26 @@
             <!-- END SECTION -->
 
             @endforeach
-
+            <li class="timeline-event">
+              {{-- <div class="timeline-event-icon bg-success"> --}}
+                {{-- <i class="fa-solid fa-{{++$count}}"></i> --}}
+              {{-- </div> --}}
+              <div class="timeline-event-block block">
+                <div class="block-header block-header-default">
+                  <h3 class="block-title">COMPOSITE SCORE</h3>
+                </div>
+                <hr class="m-0">
+                <div class="block-content pb-3 d-flex justify-content-center align-items-center">
+                  @if($check_test_completed == 'yes')
+                    <a href="#"  
+                    style='padding: 5px 20px fs-5'
+                    class="btn btn-alt-success text-success">
+                    {{ number_format($total_score, 0)}}
+                    </a>
+                  @endif
+                </div>
+              </div>
+            </li>
           </ul>
           @elseif(isset($testSections) && $testSections == 0)
           <div class="timeline-event-time block-options-item fs-sm fw-semibold text-danger">
@@ -283,6 +322,17 @@
   .content-boxed{
     overflow: hidden !important;
    }
+
+  .select-menu{
+    width: 240px;
+    border-radius: 6px;
+    padding: 7px 15px;
+    background: #f6f6f6;
+    font-size: 16px;
+    color: #313131;
+    font-weight: 500;
+    border: 1px solid #bcbcbc
+  }
   
 </style>
 @endsection

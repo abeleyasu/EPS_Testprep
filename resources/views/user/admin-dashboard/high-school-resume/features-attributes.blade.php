@@ -375,6 +375,7 @@
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
+    <script src="{{ asset('js/no-browser-back.js') }}"></script>
     <style>
         .swal2-styled.swal2-default-outline:focus {
             box-shadow: none;
@@ -385,6 +386,11 @@
         }
     </style>
     <script>
+        // Disable autocomplete for all input fields on a page
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].setAttribute("autocomplete", "off");
+        }
         function errorMsg()
         {
             Swal.fire({
@@ -394,7 +400,11 @@
                 confirmButtonColor: '#F27474',
                 confirmButtonText: 'Okay'
             }).then((result) => {
-                window.location.href = "{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}";
+                // window.location.href = "{{ route('admin-dashboard.highSchoolResume.featuresAttributes') }}";
+                var form = $('#features_attributes_form');
+                if (form.valid()) {
+                    // form.submit();
+                }
             });
         }
 

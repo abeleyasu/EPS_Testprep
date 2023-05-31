@@ -12,7 +12,7 @@ function addLinks(data) {
         let html = ``;
         html += `<div class="row p-0 mt-3 remove_links">`;
         html += `<div class="col-lg-11">`;
-        html += `<input type="text" class="form-control social_links" name="social_links[${$count}][link]" placeholder="Enter Social links">`;
+        html += `<input type="text" class="form-control social_links" name="social_links[${$count}][link]" placeholder="Enter Social links" autocomplete="off">`;
         html += `</div>`;
         html += `<div class="col-lg-1">`;
         html += `<a href="javascript:void(0)" class="add-btn" onclick="removeLinks(this)">`;
@@ -125,11 +125,11 @@ async function addCourseData(data){
         let html = ``;
             html += `<tr class="course_data_table_row remove_courses">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="course_name_${$count}" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101">`;
+            html += `<input type="text" class="form-control" id="course_name_${$count}" name="course_data[${$count}][course_name]" placeholder="Ex: College English 101" autocomplete="off">`;
             html += `</td>`;
             html += `<td class="select2-container_main select2-container_main-position">`;
             html += `<select class="js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name" disabled>`;
-            html += await dropdown_lists(`/user/colleges/list`);
+            //html += await dropdown_lists(`/user/colleges/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -145,6 +145,30 @@ async function addCourseData(data){
             $(`#search_college_name_${$count}`).select2({
                 tags: true,
                 placeholder: "Select search college name",
+                ajax: {
+                    url: '/colleges/search',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            query: params.term, // Search query
+                            selected_colleges: $(this).val() // Pass the selected colleges
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.map(function(college) {
+                                return {
+                                    id: college.id,
+                                    text: college.name,
+                                    selected: college.selected
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 1 // Minimum characters to trigger the search
             });            
         });
 
@@ -377,7 +401,7 @@ function addTestingData(data){
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="results_score" name="testing_data[${$count}][results_score]" placeholder="Enter Results score">`;
+            html += `<input type="text" class="form-control" id="results_score" name="testing_data[${$count}][results_score]" placeholder="Enter Results score" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="testing-date-${$count}" name="testing_data[${$count}][date]" placeholder="Enter Date" autocomplete="off" readonly>`;
@@ -510,7 +534,7 @@ async function addHonorsData(data){
             html += `</div>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" name="honors_data[${$count}][location]" placeholder="Ex: DRHS">`;
+            html += `<input type="text" class="form-control" name="honors_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn d-flex plus-icon">`;
@@ -611,15 +635,17 @@ async function addDemonstratedData(data) {
             html += `</td>`;
 
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="interest" name="demonstrated_data[${$count}][interest]" placeholder="Enter Interest">`;
+            html += `<input type="text" class="form-control" id="interest" name="demonstrated_data[${$count}][interest]" placeholder="Enter Interest" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
+            html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" id="demonstrated_select_${$count}" data-placeholder="Select Demonstrated Grade" name="demonstrated_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
+            html += `</div>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="location" name="demonstrated_data[${$count}][location]" placeholder="Enter Location">`;
+            html += `<input type="text" class="form-control" id="location" name="demonstrated_data[${$count}][location]" placeholder="Enter Location" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<textarea class="form-control" id="details" name="demonstrated_data[${$count}][details]" rows="1" placeholder="Enter Details"></textarea>`;
@@ -650,6 +676,15 @@ async function addDemonstratedData(data) {
                 if (selectedOptions && selectedOptions.length >= 1) {
                     event.preventDefault();
                 }
+            });
+
+            $('select[name^="demonstrated_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
             });
         })
 
@@ -691,12 +726,14 @@ async function addLeadershipData(data) {
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="leadership_location" name="leadership_data[${$count}][location]" placeholder="Ex: DRHS">`;
+            html += `<input type="text" class="form-control" id="leadership_location" name="leadership_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
+            html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" data-placeholder="Select leadership Grade" id="leadership_select_${$count}" name="leadership_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -756,6 +793,15 @@ async function addLeadershipData(data) {
                     event.preventDefault();
                 }
             });
+
+            $('select[name^="leadership_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
         });
         
 
@@ -780,27 +826,29 @@ async function addActivityData(data) {
         let html = ``;
             html += `<tr class="activity_data_table_row remove_activity_data">`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="activity_position_${$count}" name="activities_data[${$count}][position]" data-placeholder="Select Position">`;
+            html += `<select class="js-select2 select" id="activity_position_${$count}" name="activities_data[${$count}][position]" data-placeholder="Select Position" multiple="multiple">`;
             html += `<option value="">Select Position</option>`;
             html += await single_dropdown_lists(`/user/position/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<select class="js-select2 select" id="activity_organization_${$count}" name="activities_data[${$count}][activity]" data-placeholder="Select Organization">`;
+            html += `<select class="js-select2 select" id="activity_organization_${$count}" name="activities_data[${$count}][activity]" data-placeholder="Select Organization" multiple="multiple">`;
             html += `<option value="">Select Organization</option>`;
             html += await single_dropdown_lists(`/user/organizations/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
+            html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" data-placeholder="Select activities Grade" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="activity_location" name="activities_data[${$count}][location]" placeholder="Ex: DRHS">`;
+            html += `<input type="text" class="form-control" id="activity_location" name="activities_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="activity_honor_award" name="activities_data[${$count}][honor_award]" placeholder="Enter Honor/Award">`;
+            html += `<input type="text" class="form-control" id="activity_honor_award" name="activities_data[${$count}][honor_award]" placeholder="Enter Honor/Award" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -817,9 +865,45 @@ async function addActivityData(data) {
             }); 
             $(`#activity_organization_${$count}`).select2({
                 tags: true,
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                }
             });
             $(`#activity_position_${$count}`).select2({
                 tags: true,
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                    $(this).on('keydown', function (e) {
+                        e.preventDefault();
+                    });
+                }
+            });
+
+            $('select[name^="activities_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
             });
         })
 
@@ -846,27 +930,29 @@ async function addAthleticsData(data){
         html += `<tr class="athletics_data_table_row remove_athletics_data">`;
         
         html += `<td>`;
-        html += `<select class="js-select2 select" id="athletics_activity_${$count}" name="athletics_data[${$count}][position]" data-placeholder="Select Position">`;
+        html += `<select class="js-select2 select" id="athletics_activity_${$count}" name="athletics_data[${$count}][position]" data-placeholder="Select Position" multiple="multiple">`;
         html += `<option value="">Select Position</option>`;
         html += await single_dropdown_lists(`/user/position/list`);
         html += `</select>`;
         html += `</td>`;
 		html += `<td>`;
-        html += `<select class="js-select2 select" id="athletics_positions_${$count}" name="athletics_data[${$count}][activity]" data-placeholder="Select Activity">`;
+        html += `<select class="js-select2 select" id="athletics_positions_${$count}" name="athletics_data[${$count}][activity]" data-placeholder="Select Activity" multiple="multiple">`;
         html += `<option value="">Select Activity</option>`;
         html += await single_dropdown_lists(`/user/athletic/position/list`);
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
+        html += `<div class="select2-container_main">`;
         html += `<select class="js-select2 select" data-placeholder="Select atheletics Grade" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;
         html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
+        html += `</div>`;
         html += `</td>`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="athletics_location" name="athletics_data[${$count}][location]" placeholder="Ex: DRHS">`;
+        html += `<input type="text" class="form-control" id="athletics_location" name="athletics_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="athletics_honor" name="athletics_data[${$count}][honor]" placeholder="Enter Honor">`;
+        html += `<input type="text" class="form-control" id="athletics_honor" name="athletics_data[${$count}][honor]" placeholder="Enter Honor" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
         html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -882,10 +968,49 @@ async function addAthleticsData(data){
                 tags: true
             });
             $(`#athletics_positions_${$count}`).select2({
-                tags: true
+                tags: true,
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                    $(this).on('keydown', function (e) {
+                        e.preventDefault();
+                    });
+                }
             });
             $(`#athletics_activity_${$count}`).select2({
-                tags: true
+                tags: true,
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                    $(this).on('keydown', function (e) {
+                        e.preventDefault();
+                    });
+                }
+            });
+
+            $('select[name^="athletics_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
             });
         });
         
@@ -915,7 +1040,7 @@ async function addCommunityData(data){
         html += `<td>`;
         //html += `<input type="text" class="form-control" id="participation_level" name="community_service_data[${$count}][level]" placeholder="Enter Participation level">`;
 
-        html += `<select class="js-select2 form-select" data-placeholder="Select Position" name="community_service_data[${$count}][level]" id="community_service_level_${$count}"">`;
+        html += `<select class="js-select2 form-select" data-placeholder="Select Position" name="community_service_data[${$count}][level]" id="community_service_level_${$count}" multiple="multiple">`;
         html += `<option value="">Select Position</option>`;
         html += await single_dropdown_lists(`/user/position/list`);
         html += `</select>`;
@@ -923,15 +1048,17 @@ async function addCommunityData(data){
 
         html += `</td>`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="community_service" name="community_service_data[${$count}][service]" placeholder="Enter Service">`;
+        html += `<input type="text" class="form-control" id="community_service" name="community_service_data[${$count}][service]" placeholder="Enter Service" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
+        html += `<div class="select2-container_main">`;
         html += `<select class="js-select2 select" data-placeholder="Select community Grade" id="community_select_${$count}" name="community_service_data[${$count}][grade][]" multiple="multiple">`;
         html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
+        html += `</div>`;
         html += `</td>`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="community_location" name="community_service_data[${$count}][location]" placeholder="Enter Location">`;
+        html += `<input type="text" class="form-control" id="community_location" name="community_service_data[${$count}][location]" placeholder="Enter Location" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
         html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -947,7 +1074,31 @@ async function addCommunityData(data){
                 tags: true
             });
             $(`#community_service_level_${$count}`).select2({
-                tags: true
+                tags: true,
+                maximumSelectionLength: 1,
+                tags: true,
+                language: {
+                    maximumSelected: function () {
+                        return '';
+                    }
+                }
+            }).on('select2:opening', function (event) {
+                var selectedOptions = $(this).val();
+                if (selectedOptions && selectedOptions.length >= 1) {
+                    event.preventDefault();
+                    $(this).on('keydown', function (e) {
+                        e.preventDefault();
+                    });
+                }
+            });
+
+            $('select[name^="community_service_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
             });
         });
 
@@ -977,7 +1128,7 @@ async function addEmploymentData(data){
 
         html += `<tr class="employment_data_table_row remove_employement_data">`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="name_of_company" name="employment_data[${$count}][name_of_company]" placeholder="Ex: Starbucks">`;
+        html += `<input type="text" class="form-control" id="name_of_company" name="employment_data[${$count}][name_of_company]" placeholder="Ex: Starbucks" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
         //html += `<input type="text" class="form-control" id="job_title" name="employment_data[${$count}][job_title]" placeholder="Enter Job title">`;
@@ -994,10 +1145,10 @@ async function addEmploymentData(data){
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="employment_location" name="employment_data[${$count}][location]" placeholder="Enter Location">`;
+        html += `<input type="text" class="form-control" id="employment_location" name="employment_data[${$count}][location]" placeholder="Enter Location" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
-        html += `<input type="text" class="form-control" id="employment_honor_award" name="employment_data[${$count}][honor_award]" placeholder="Enter Honor / Award">`;
+        html += `<input type="text" class="form-control" id="employment_honor_award" name="employment_data[${$count}][honor_award]" placeholder="Enter Honor / Award" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
         html += `<a href="javascript:void(${$count})" class="add-btn plus-icon d-flex">`;
@@ -1040,7 +1191,7 @@ async function addSignificantData(data)
         let html = ``;
             html += `<tr class="significant_data_table_row remove_significant_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="responsibility_interest" name="significant_data[${$count}][interest]" placeholder="Enter Responsibility/interest">`;
+            html += `<input type="text" class="form-control" id="responsibility_interest" name="significant_data[${$count}][interest]" placeholder="Enter Responsibility/interest" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" data-placeholder="Select significant grade" id="significant_select_${$count}" name="significant_data[${$count}][grade][]" multiple="multiple">`;
@@ -1048,10 +1199,10 @@ async function addSignificantData(data)
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="significant_location" name="significant_data[${$count}][location]" placeholder="Enter Location">`;
+            html += `<input type="text" class="form-control" id="significant_location" name="significant_data[${$count}][location]" placeholder="Enter Location" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="significant_honor_award" name="significant_data[${$count}][honor_award]" placeholder="Enter Honor / Award">`;
+            html += `<input type="text" class="form-control" id="significant_honor_award" name="significant_data[${$count}][honor_award]" placeholder="Enter Honor / Award" autocomplete="off">`;
             html += `</td>`;
             html += `<td>                                                                `;
             html += `<a href="javascript:void(${$count})" class="add-btn plus-icon d-flex">`;
@@ -1089,7 +1240,7 @@ function addFeaturedSkillData(data) {
         let html = ``;
             html += `<tr class="featured_skill_data_table_row remove_featured_skill_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="featured_skill" name="featured_skills_data[${$count}][skill]" placeholder="Enter Featured Qualities">`;
+            html += `<input type="text" class="form-control" id="featured_skill" name="featured_skills_data[${$count}][skill]" placeholder="Enter Featured Qualities" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -1119,7 +1270,7 @@ function addFeaturedAwardData(data) {
         let html = ``;
             html += `<tr class="featured_award_data_table_row remove_featured_award_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="featured_award" name="featured_awards_data[${$count}][award]" placeholder="Enter Featured Award">`;
+            html += `<input type="text" class="form-control" id="featured_award" name="featured_awards_data[${$count}][award]" placeholder="Enter Featured Award" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -1150,7 +1301,7 @@ function addDualCitizenShipData(data) {
         let html = ``;
             html += `<tr class="dual_citizenship_table_table_row remove_dual_citizenship_data">`;
             html += `<td>`;
-            html += `<input type="text" class="form-control" id="countries" name="dual_citizenship_data[${$count}][country]" placeholder="Ex: Canada">`;
+            html += `<input type="text" class="form-control" id="countries" name="dual_citizenship_data[${$count}][country]" placeholder="Ex: Canada" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -1181,10 +1332,10 @@ function addFeaturedLanguageData(data) {
         let html = ``;
             html += `<tr class="featured_language_data_table_row remove_featured_language_data">`;            
             html += `<td>`;            
-            html += `<input type="text" class="form-control" id="featured_language" name="featured_languages_data[${$count}][language]" placeholder="Enter Language">`;            
+            html += `<input type="text" class="form-control" id="featured_language" name="featured_languages_data[${$count}][language]" placeholder="Enter Language" autocomplete="off">`;            
             html += `</td>`;            
             html += `<td>`;            
-            html += `<input type="text" class="form-control" id="languages_level" name="featured_languages_data[${$count}][level]" placeholder="Fluent">`;            
+            html += `<input type="text" class="form-control" id="languages_level" name="featured_languages_data[${$count}][level]" placeholder="Fluent" autocomplete="off">`;            
             html += `</td>`;            
             html += `<td>`;            
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;            

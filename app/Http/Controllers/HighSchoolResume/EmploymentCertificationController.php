@@ -12,6 +12,7 @@ use App\Models\HighSchoolResume\DemonstratedPositions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 
 class EmploymentCertificationController extends Controller
 {
@@ -41,8 +42,10 @@ class EmploymentCertificationController extends Controller
             }
             $details = 0;
             $grades = Grade::all();
+            $validations_rules = Config::get('validation.employment_certifications.rules');
+            $validations_messages = Config::get('validation.employment_certifications.messages');
             $demonstrated_positions = DemonstratedPositions::select('position_name')->orderBY('position_name', 'asc')->get();
-            return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'grades', 'demonstrated_positions'));
+            return view('user.admin-dashboard.high-school-resume.employment-certification', compact('employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'grades', 'demonstrated_positions', 'validations_rules', 'validations_messages'));
         } catch (\Throwable $th) {
             Log::info($th);
         }

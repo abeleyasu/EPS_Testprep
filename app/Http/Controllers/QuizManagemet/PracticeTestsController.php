@@ -12,6 +12,9 @@ use App\Models\PracticeTestSection;
 use App\Models\QuestionType;
 use App\Models\Passage;
 use App\Models\PracticeCategoryType;
+use App\Models\Score;
+use App\Models\SuperCategory;
+use App\Models\UserAnswers;
 use Illuminate\Support\Facades\View;
 
 class PracticeTestsController extends Controller
@@ -19,10 +22,12 @@ class PracticeTestsController extends Controller
     use CRUD;
 	public $testformat = ['SAT'=>'SAT PRACTICE TEST','ACT'=>'ACT PRACTICE TEST', 'PSAT' => 'PSAT PRACTICE TEST'];
 	public $questionformat = ['ACT'=> 'ACT Question', 'SAT'=>'SAT Question', 'PSAT'=>'PSAT Question'];
+    public $testSource = ['0' => 'College Prep System Practice Test', '1' => 'Official Released Practice Test', '2' => 'Quiz Questions'];
 	public function __construct(){
 		View::share('testformats', $this->testformat);
 		View::share('questionformats', $this->questionformat);
         View::share('passages', Passage::get());
+        View::share('testsources', $this->testSource);
     }
 	
 	public function index()
@@ -89,6 +94,7 @@ class PracticeTestsController extends Controller
             $practice = new PracticeTest();
             $practice->title = $request->title;
             $practice->format = $request->format;
+            $practice->test_source = $request->source;
             $practice->is_test_completed = '';
             $practice->save();
         }
@@ -99,6 +105,7 @@ class PracticeTestsController extends Controller
             foreach($practices as $practice) {
                 $practice->title = $request->title;
                 $practice->format = $request->format;
+                $practice->test_source = $request->source;
                 $practice->save();
             }
         }
@@ -172,9 +179,19 @@ class PracticeTestsController extends Controller
      */
     public function destroy(PracticeTest $practicetests, $id)
     {
-		// dd($id);
+        UserAnswers::where('test_id',$id)->delete();
+		Score::where('test_id',$id)->delete();
+        PracticeTestSection::where('testid',$id)->delete();
 		$practicetests = PracticeTest::find($id);
         $practicetests->delete();
         return redirect()->route('practicetests.index')->with('message','Question deleted successfully');
+    }
+
+    public function addDropdownOption(Request $request){
+        $super_option = SuperCategory::where('format',$request['format'])->get();
+        $category = PracticeCategoryType::where('format',$request['format'])->get();
+        $questionType = QuestionType::where('format',$request['format'])->get();
+        
+        return response()->json(['super' => $super_option,'category' => $category, 'questionType' => $questionType]);
     }
 }

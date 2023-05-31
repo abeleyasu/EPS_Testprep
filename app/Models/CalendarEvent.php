@@ -13,6 +13,7 @@ class CalendarEvent extends Model
     
     protected $fillable = [
         'user_id',
+        'reminders_id',
         'title',
         'description',
         'is_assigned',

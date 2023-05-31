@@ -412,24 +412,26 @@
                                                                             </th>
                                                                             <th>Status</th>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <a class="fw-medium"
-                                                                                    href="javascript:void(0)">Official ACT
-                                                                                    74F April 2017</a>
-                                                                            </td>
-                                                                            <td class="text-end text-muted">
-                                                                                <button type="button"
-                                                                                    class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success-light text-success js-bs-tooltip-enabled"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    data-bs-animation="true"
-                                                                                    data-bs-placement="top" title=""
-                                                                                    data-bs-original-title="Click to see your exam analysis, including which question types you missed and their lessons/strategies"><i
-                                                                                        class="fa fa-lg fa-circle-check me-1"></i>Exam
-                                                                                    Analyzer</button>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
+                                                                        <?php $count = 0; ?>
+                                                                        @foreach ($getOfficialPracticeTests as $getOfficialPracticeTest)
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <a class="fw-medium"
+                                                                                    href="{{route('single_test', ['id' => $getOfficialPracticeTest['id']])}}">Official Released {{ $getOfficialPracticeTest['title'] }} #{{ ++$count }}</a>
+                                                                                </td>
+                                                                                <td class="text-end text-muted">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning fs-xs fw-semibold me-1 mb-3 bg-warning-light text-warning"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        data-bs-animation="true"
+                                                                                        data-bs-placement="top" title=""
+                                                                                        data-bs-original-title="Click to see your exam analysis, including which question types you missed and their lessons/strategies"><i
+                                                                                            class="fa fa-lg fa-circle-exclamation me-1"></i>Exam
+                                                                                        Analyzer</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                        {{-- <tr>
                                                                             <td>
                                                                                 <a class="fw-medium"
                                                                                     href="javascript:void(0)">Official ACT
@@ -443,10 +445,10 @@
                                                                                     data-bs-placement="top" title=""
                                                                                     data-bs-original-title="You have scored your test and can review it, but you need to upgrade to access the Exam Analyzer"><i
                                                                                         class="fa fa-lg fa-circle-exclamation me-1"></i>Exam
-                                                                                    Analyzer</button>
+                                                                                    Analyzer</button> --}}
                                                                                 <!--
                                                           <button type="button"class="btn btn-success fs-xs fw-semibold me-1 mb-3 bg-success text-gray"></i>UPGRADE</button>-->
-                                                                            </td>
+                                                                            {{-- </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>
@@ -464,7 +466,7 @@
                                                                                         class="fa fa-lg fa-circle-exclamation me-1"></i>Calculate
                                                                                     Score</button>
                                                                             </td>
-                                                                        </tr>
+                                                                        </tr> --}}
 
                                                                     </tbody>
                                                                 </table>
@@ -1255,8 +1257,7 @@
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/_js/pages/be_comp_calendar.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
-
-    <script src="{{asset('assets/js/oneui.app.min.js')}}"></script>
+    
     <script src="{{asset('assets/js/lib/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
@@ -1266,7 +1267,9 @@
     <script src="{{asset('assets/js/plugins/jquery.maskedinput/jquery.maskedinput.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/dropzone/min/dropzone.min.js')}}"></script>
+
     <script>One.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-masked-inputs', 'jq-rangeslider', 'jq-colorpicker']);</script>
+
 
     <script>
         let eventObj = @json($final_arr);
@@ -1277,7 +1280,6 @@
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
             });
-
         });
 
         $('input[type="checkbox"]').click(function(e) {
@@ -1373,9 +1375,10 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
-
+    
     <link rel="stylesheet" id="css-main" href="{{asset('assets/css/oneui.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">

@@ -6,7 +6,6 @@ use App\Http\Controllers\PassagesController;
 use App\Http\Controllers\CourseManagement\ModuleController;
 use App\Http\Controllers\CourseManagement\SectionController;
 use App\Http\Controllers\CourseManagement\TaskController;
-use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
@@ -43,21 +42,24 @@ use App\Http\Controllers\AwardController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\AthleticPositionController;
+use App\Http\Controllers\DiffRatingController;
+use App\Http\Controllers\QuestionTagController;
+use App\Http\Controllers\SuperCategoryController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\VerifyEmailController;
-
-// pending
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
-
-// Pending
 use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
 
 // Remove
 // use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
 // use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
 // use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Cronjob\SendReminder;
+use App\Http\Controllers\Cronjob\FetchCollegeInformation;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,14 +70,11 @@ use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return redirect('login');
-});
-
-Route::get('/home', function () {
+    Session::flush();
     return redirect('login');
 })->name('home');
+
 Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
@@ -115,6 +114,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
             Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
         });
         Route::resource('tags', TagController::class);
+        Route::resource('questiontags',QuestionTagController::class);
         Route::resource('categories', CategoryController::class);
         Route::post('categories/update_data/{id}', [CategoryController::class, 'update_data'])->name('categories.update_data');
         Route::resource('sub_categories', SubCategoryController::class);
@@ -128,12 +128,31 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::resource('questions', QuestionsController::class);
         Route::get('get-passages-by-format/{format}', [QuestionsController::class, 'getPassagesByFormat']);
         Route::resource('practicetests', PracticeTestsController::class);
+        //new for diff ratings
+        Route::resource('diffratings', DiffRatingController::class);
+        Route::resource('supercategories', SuperCategoryController::class);
+        Route::post('addSelfMadeSuperCategory',[SuperCategoryController::class,'addSelfMadeSuperCategory'])->name('addSelfMadeSuperCategory');
+        Route::post('removeSelfMadeSuperCategory',[SuperCategoryController::class,'removeSelfMadeSuperCategory'])->name('removeSelfMadeSuperCategory');
+        Route::post('addSelfMadeCategory',[PracticeQuestionController::class,'addSelfMadeCategory'])->name('addSelfMadeCategory');
+        Route::post('removeSelfMadeCategory',[PracticeQuestionController::class,'removeSelfMadeCategory'])->name('removeSelfMadeCategory');
+        Route::post('addSelfMadeQuestionType',[PracticeQuestionController::class,'addSelfMadeQuestionType'])->name('addSelfMadeQuestionType');
+        Route::post('removeSelfMadeQuestionType',[PracticeQuestionController::class,'removeSelfMadeQuestionType'])->name('removeSelfMadeQuestionType');
+        Route::post('addSelfMadeQuestionTag',[PracticeQuestionController::class,'addSelfMadeQuestionTag'])->name('addSelfMadeQuestionTag');
+        Route::post('removeSelfMadeQuestionTag',[PracticeQuestionController::class,'removeSelfMadeQuestionTag'])->name('removeSelfMadeQuestionTag');
         Route::post('addPracticeQuestion', [PracticeQuestionController::class, 'addPracticeQuestion'])->name('addPracticeQuestion');
+        //new
+        Route::post('/score/save', [PracticeQuestionController::class, 'saveScore'])->name('score_save');
+        Route::post('/check/score', [PracticeQuestionController::class, 'checkScore'])->name('check_score');
+        Route::post('/check/section', [PracticeQuestionController::class, 'checkSectionType'])->name('check_section_type');
 
         Route::post('addPracticeTest', [PracticeTestsController::class, 'addPracticeTest'])->name('addPracticeTest');
+        Route::post('addDropdownOption', [PracticeTestsController::class, 'addDropdownOption'])->name('addDropdownOption');
 
         Route::post('addPracticeCategoryType', [PracticeQuestionController::class, 'addPracticeCategoryType'])->name('addPracticeCategoryType');
         Route::post('addPracticeQuestionType', [PracticeQuestionController::class, 'addPracticeQuestionType'])->name('addPracticeQuestionType');
+        Route::post('addSuperCategory', [PracticeQuestionController::class, 'addSuperCategory'])->name('addSuperCategory');
+        Route::post('addDiffRating', [PracticeQuestionController::class, 'addDiffRating'])->name('addDiffRating');
+        Route::post('addQuestionTag', [PracticeQuestionController::class, 'addQuestionTag'])->name('addQuestionTag');
         Route::get('getPracticeCategoryType', [PracticeQuestionController::class, 'getPracticeCategoryType'])->name('getPracticeCategoryType');
         Route::get('getPracticeQuestionType', [PracticeQuestionController::class, 'getPracticeQuestionType'])->name('getPracticeQuestionType');
 
@@ -147,7 +166,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('deletePracticeQuestionById', [PracticeQuestionController::class, 'deletePracticeQuestionById'])->name('deletePracticeQuestionById');
         Route::post('sectionOrder', [PracticeQuestionController::class, 'sectionOrder'])->name('sectionOrder');
         Route::post('questionOrder', [PracticeQuestionController::class, 'questionOrder'])->name('questionOrder');
-        // new
+        // new 
         Route::post('editSection', [PracticeQuestionController::class, 'editSection'])->name('edit_section');
         Route::post('updateSection', [PracticeQuestionController::class, 'updateSection'])->name('update_section');
         Route::post('deleteSection', [PracticeQuestionController::class, 'deleteSection'])->name('delete_section');
@@ -162,10 +181,12 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::get('/category-type/add', [PracticeQuestionController::class, 'addCategoryType'])->name('add_category_type');
         Route::get('/category-type/edit/{id}', [PracticeQuestionController::class, 'editCategoryTypes'])->name('edit_category_type');
         Route::post('/store-category-type', [PracticeQuestionController::class, 'storeCategoryType'])->name('storeCategoryType');
+        Route::post('/find-super-category', [PracticeQuestionController::class, 'findSuperCategory'])->name('findSuperCategory');
+        Route::post('/find-category', [PracticeQuestionController::class, 'findCategory'])->name('findCategory');
         Route::post('/update-category-type', [PracticeQuestionController::class, 'updateCategoryType'])->name('updateCategoryType');
         Route::post('/delete-category-type', [PracticeQuestionController::class, 'deleteCategoryType'])->name('deleteCategoryType');
         Route::get('/category-type', [PracticeQuestionController::class, 'indexCategoryType'])->name('indexCategoryType');
-
+        
         Route::group(['as' => 'admin.'], function () {
             Route::group(['prefix' => 'product-category', 'as' => 'category.'], function () {
                 Route::get('/list', [ProductCategoryController::class, 'index'])->name('list');
@@ -218,22 +239,28 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
         Route::post('/task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
         Route::get('/clearCache', [UserController::class, 'clearCache']);
+        Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
 
         Route::view('student-view-dashboard', 'user/student-view-dashboard');
         Route::get('/practice-tests/{test}/{id}/review-page', [TestPrepController::class, 'singleReview'])->name('single_review');
-        // new
+        // new 
         Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
-        Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
+        Route::any('/reminders', [UserController::class, 'reminders'])->name('user.reminders');
+        Route::any('/reminders-submit', [UserController::class, 'store'])->name('user.reminders.submit');
+        Route::any('/reminders-update/{id}', [UserController::class, 'update'])->name('user.reminders.update');
+        Route::delete('/reminders-delete/{id}', [UserController::class, 'delete'])->name('user.reminders.delete');
         Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
         Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
+        Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
+        
+        Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
         Route::get('/billing-detail', [UserController::class, 'billing_details'])->name('user.get-billing-detail');
         Route::post('/basic_billing-detail', [UserController::class, 'save_basic_details'])->name('user.save-billing-detail');
         Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
-        Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
 
         Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
@@ -304,7 +331,14 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
                 Route::get('/search-college/step1', [InititalCollegeListController::class, 'step1'])->name('step1');
                 Route::get('/search-college/step2', [InititalCollegeListController::class, 'step2'])->name('step2');
-                Route::get('/search-college/step3/{id?}', [InititalCollegeListController::class, 'step3'])->name('step3');
+                Route::post('/step2/save-college', [InititalCollegeListController::class, 'saveCollege'])->name('step2.saveCollege');
+                Route::delete('step2/remove-college/{id}/{sid}', [InititalCollegeListController::class, 'removeCollge'])->name('step2.removeCollge');
+                Route::get('/search-college/step3', [InititalCollegeListController::class, 'step3'])->name('step3');
+                Route::put('/step3/save-academic-statistics/{id}', [InititalCollegeListController::class, 'saveAcademicStatistics'])->name('step3.saveAcademicStatistics');
+                Route::post('/step3/submit-form', [InititalCollegeListController::class, 'submitForm'])->name('step3.submitForm');
+                Route::get('/search-college/step4', [InititalCollegeListController::class, 'step4'])->name('step4');
+                Route::get('/search-college/step4/get-college-list/{id}', [InititalCollegeListController::class, 'getSelectedCollegeList'])->name('step4.getSelectedCollegeList');
+                Route::patch('/search-college/step4/update-order/{id}', [InititalCollegeListController::class, 'updateOrder'])->name('step4.updateOrder');
             });
             Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
@@ -334,12 +368,21 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
-        // Please make any changes you think it's necessary to routing
+        // Please make any changes you think it's necessary to routing 
         Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
-
+        
+        Route::get('/test-home-page', [TestPrepController::class, 'testHomePage'])->name('test_home_page');
+        Route::get('/self-made-test', function(){
+            return view('student.self-made-test.self_made_test');
+        })->name('self-made-test');
+        Route::post('/gettypes',[TestPrepController::class, 'gettypes'])->name('gettypes');
+        Route::post('/getSelfMadeTestQuestion',[TestPrepController::class, 'getSelfMadeTestQuestion'])->name('getSelfMadeTestQuestion');
+        Route::post('/changeTitleSelfMade',[TestPrepController::class, 'changeTitleSelfMade'])->name('changeTitleSelfMade');
+        Route::post('/get_time',[TestPrepController::class,'get_time'])->name('get_time');
+        
         //plans and subscription
         Route::post('/delete/card', [UserController::class, 'deleteCard'])->name('user.delete.card');
         Route::get('/plans', [PlanController::class, 'getUserPlan'])->name('plan.index');
@@ -372,3 +415,6 @@ Route::group(['middleware' => ['auth']],function () {
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
+Route::get('/sendreminder', [SendReminder::class, 'index']);
+Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
+Route::get('/colleges/search', [EducationController::class, 'searchColleges']);

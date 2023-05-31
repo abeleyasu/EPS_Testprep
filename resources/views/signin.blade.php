@@ -42,7 +42,7 @@
                                             </div>
                                         </div>
                                     @endif
-
+                                    
                                     <h1 class="h2 mb-1">{{ config('app.app_name') }}</h1>
                                     <p class="fw-medium text-muted">
                                         Welcome, please login.

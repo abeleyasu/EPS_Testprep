@@ -45,7 +45,7 @@ class PersonalInfoController extends Controller
             $activity = $resumedata->activity; 
             $employmentCertification = $resumedata->employmentCertification; 
             $featuredAttribute = $resumedata->featuredAttribute;
-
+            
             if(isset($personal_info->state) && !empty($personal_info->state)){
                 $cities = Cities::from('cities as ct')
 						->join('states as st', function ($join) use($personal_info){

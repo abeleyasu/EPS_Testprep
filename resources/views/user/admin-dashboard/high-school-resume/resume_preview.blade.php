@@ -493,29 +493,34 @@
                             @endif
 						</span>
 						<span class="span_text">
-                            @if (!empty($education->cumulative_gpa_weighted) || !empty($education->cumulative_gpa_unweighted))
-                                <b>GPA: </b>
-								Unweighted : {{ $education->cumulative_gpa_unweighted }};
-								Weighted: {{ $education->cumulative_gpa_weighted }};
+                            <b>GPA: </b>
+                            Unweighted: {{ $education->cumulative_gpa_unweighted }};Weighted: {{ $education->cumulative_gpa_weighted }};@if(!empty($education->class_rank) || !empty($education->total_no_of_student))<b>Class Rank:</b>
+                                {{ $education->class_rank }} /
+                                {{ $education->total_no_of_student }}
                             @endif
-							@if(!empty($education->class_rank) || !empty($education->total_no_of_student))
-								<b>Class Rank:</b>
-								{{ $education->class_rank }} /
-								{{ $education->total_no_of_student }}
-							@endif
                         </span>
                         @if (!empty($testing_data))
-							<li class="list-text">
-                            @foreach ($testing_data as $data)
-								<b>{{ isset($data['name_of_test']) ? $data['name_of_test'] : '' }} </b> : {{ isset($data['results_score']) ? $data['results_score'] : ''}}{{ !$loop->last ? ';' : '' }}
-                            @endforeach
-							</li>
+                            <span class="span_text">
+                                @php
+                                    $count = count($testing_data);
+                                    foreach ($testing_data as $key => $data) {
+                                        if(isset($data['name_of_test'])) {
+                                            echo "<b>".$data['name_of_test']."</b>: ";
+                                            if(isset($data['results_score'])) {
+                                                echo $data['results_score'];
+                                                if ($key !== $count - 1)
+                                                    echo ";";
+                                            }
+                                        }
+                                            
+                                    }
+                                @endphp
+							</span>
                         @endif
 
-                        {{-- <span class="span_text">
-                            <span class="span_bold">Current Grade :
-                            </span>{{ implode(',', $current_grade) }}
-                        </span> --}}
+                        <span class="span_text">
+                            <span class="span_bold">Current Grade:</span>{{ implode(',', $current_grade) }}
+                        </span>
 
                         {{-- <span class="span_text">
                             <span class="span_bold">Month / Year :
@@ -524,62 +529,68 @@
                         </span> --}}
                         @if (!empty($education->ib_courses))
                             <span class="span_text">
-                                <span class="span_bold">IB Courses:</span>
+                                <span class="span_bold">IB Courses</span>:
                                     {{-- {{ implode(',', $ib_courses) }} --}}
-                                    @foreach ($education->ib_courses as $ib_course)
-                                        <b>{{ isset($ib_course['name_of_ib_course']) ? $ib_course['name_of_ib_course'] : '' }}</b> : {{ isset($ib_course['score_of_test']) ? $ib_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
-                                    @endforeach
+                                    @foreach ($education->ib_courses as $ib_course)<b>{{ isset($ib_course['name_of_ib_course']) ? $ib_course['name_of_ib_course'] : '' }}</b>: {{ isset($ib_course['score_of_test']) ? $ib_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}@endforeach
                             </span>
                         @endif
                         @if (!empty($education->ap_courses))
                             <span class="span_text">
-                                <span class="span_bold">AP Courses:</span>
+                                <span class="span_bold">AP Courses</span>:
                                     {{-- {{ implode(',', $ap_courses) }} --}}
-                                    @foreach ($education->ap_courses as $ap_course)
-                                        <b>{{ isset($ap_course['name_of_ap_course']) ? $ap_course['name_of_ap_course'] : '' }}</b> : {{ isset($ap_course['score_of_test']) ? $ap_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}
-                                    @endforeach
+                                    @foreach ($education->ap_courses as $ap_course)<b>{{ isset($ap_course['name_of_ap_course']) ? $ap_course['name_of_ap_course'] : '' }}</b>: {{ isset($ap_course['score_of_test']) ? $ap_course['score_of_test'] : ''}}{{ !$loop->last ? ';' : '' }}@endforeach
                             </span>
                         @endif
                         @if (!empty($education->honor_course_data))
                             <span class="span_text">
-                                <span class="span_bold">Honors Course :</span>
-                                @foreach ($education->honor_course_data as $honor_course_data)
-                                    @foreach ($education->honor_course_data as $honor_course_data)
-                                        @if(isset($honor_course_data['course_data']) && !empty($honor_course_data['course_data']))
-                                                {{ \App\Helpers\Helper::getHonorCourseByIdArray($honor_course_data['course_data']) }}
-                                        @endif
-                                    @endforeach
-                                @endforeach
+                                <span class="span_bold">Honors Course</span>:
+                                    @php
+                                        $count = count($education->honor_course_data);
+                                        foreach ($education->honor_course_data as $index =>$honor_course_data) {
+                                            if(isset($honor_course_data['course_data']) && !empty($honor_course_data['course_data']))
+                                            {
+                                                echo \App\Helpers\Helper::getHonorCourseByIdArray($honor_course_data['course_data']);
+                                                if ($index !== $count - 1)
+                                                    echo ";";
+                                            }
+                                        }
+                                    @endphp
                             </span>
                         @endif
                         @if (!empty($course_data))
                             <span class="span_text">
-                                <span class="span_bold">Concurrent Enrollment:</span>
-                                @foreach ($college_list as $college)
-									{{\App\Helpers\Helper::getCollegeNameByIdArray($college)}} : 
-									@foreach ($education->course_data as $course_data)
-										@if(isset($course_data['search_college_name']))
-											@if (in_array($college, $course_data['search_college_name']))
-												@if (isset($course_data['course_name']))      
-														{{$course_data['course_name']}}
-												@endif
-											@endif
-										@endif
-									@endforeach
-                                @endforeach
+                                <span class="span_bold">Concurrent Enrollment</span>:
+                                @php
+                                    foreach ($college_list as $college) {
+                                        echo \App\Helpers\Helper::getCollegeNameByIdArray($college);
+                                        $count = count($education->course_data);
+                                        foreach ($education->course_data as $key => $course_data) {
+                                            if (isset($course_data['search_college_name'])) {
+                                                if (in_array($college, $course_data['search_college_name'])) {
+                                                    College:
+                                                    if (isset($course_data['course_name'])) {
+                                                        echo $course_data['course_name'];
+                                                        if ($key !== $count - 1)
+                                                            echo ";";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                @endphp
                             </span>
                         @endif
                         <span>
                             @if (!empty($intended_major))
                                 <span class="span_text">
                                     <span class="span_bold">Intended College Major(s):</span>
-                                        {{ implode(',', $intended_major) }}
+                                        {{ implode(', ', $intended_major) }}
                                 </span>
                             @endif
                             @if (!empty($intended_major))
                                 <span class="span_text">
                                     <span class="span_bold">Intended College Minor(s):</span>
-                                        {{ implode(',', $intended_minor) }}
+                                        {{ implode(', ', $intended_minor) }}
                                 </span>
                             @endif
                         </span>
@@ -593,7 +604,7 @@
 		<div class="row">
 			<div class="col">
 				<div class="preview-list">
-					<h3 class='resume-heading'>HONORS, ACHIEVEMENTS, AND AWARDS</h3>
+					<h3 class='resume-heading'>HONORS, ACHIEVEMENTS & AWARDS</h3>
 					@foreach ($honor->honors_data as $honor_data)
 						<span class="span_text">
 							@if(isset($honor_data['grade']) && !empty($honor_data['grade']))
@@ -618,14 +629,16 @@
 						@foreach ($demonstrated_data as $data)
 							<span class="span_text">
 								<b>{{isset($data['grade']) && $data['grade'] != null ? (\App\Helpers\Helper::getGradeByIdArray($data['grade'])) : ''}}: </b>
-								{{ $data['position'] }}@if(!empty($data['interest']) || !empty($data['location']) || !empty($data['details'])),@endif
-                                @if(!empty($data['interest'])) 
-                                    {{ $data['interest'] }}@if(!empty($data['details']) || !empty($data['location'])),@endif
+                                @if(isset($data['position']) && !empty($data['position'])) 
+                                    {{ $data['position'] }}@if((isset($data['interest']) && !empty($data['interest'])) || (isset($data['location']) && !empty($data['location'])) || (isset($data['details']) && !empty($data['details']))),@endif
                                 @endif
-                                @if(!empty($data['location'])) 
-                                    {{ $data['location'] }}@if(!empty($data['details'])),@endif
+                                @if(isset($data['interest']) && !empty($data['interest'])) 
+                                    {{ $data['interest'] }}@if((isset($data['details']) && !empty($data['details'])) || (isset($data['location']) && !empty($data['location']))),@endif
                                 @endif
-                                @if(!empty($data['details']))
+                                @if(isset($data['location']) && !empty($data['location'])) 
+                                    {{ $data['location'] }}@if(isset($data['details']) && !empty($data['details'])),@endif
+                                @endif
+                                @if(isset($data['details']) && !empty($data['details']))
                                     {{ $data['details'] }}
                                 @endif 
 							</span>
@@ -634,19 +647,19 @@
 					@if(!empty($leadership_data))
 						@foreach($leadership_data as $data)
                             <span class="span_text">
-                                @if(!empty($data['grade']))
-									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+                                @if(isset($data['grade']) && !empty($data['grade']))
+                                    <b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
                                 @endif
-                                @if(!empty($data['status']))
-                                    {{ $data['status'] }}@if(!empty($data['position'] || !empty($data['location']) || !empty($data['organization']))),@endif
+                                @if(isset($data['status']) && !empty($data['status']))
+                                    {{ $data['status'] }}@if((isset($data['position']) && !empty($data['position']) || (isset($data['location']) && !empty($data['location'])) || (isset($data['organization']) && !empty($data['organization'])))),@endif
                                 @endif
-                                @if(!empty($data['position']))
-                                    {{ $data['position'] }}@if(!empty($data['location']) || !empty($data['organization'])),@endif
+                                @if(isset($data['position']) && !empty($data['position']))
+                                    {{ $data['position'] }}@if((isset($data['location']) && !empty($data['location'])) || (isset($data['organization']) && !empty($data['organization']))),@endif
                                 @endif
-                                @if(!empty($data['location']))
-                                    {{ $data['location'] }}@if(!empty($data['organization'])),@endif
+                                @if(isset($data['location']) && !empty($data['location']))
+                                    {{ $data['location'] }}@if(isset($data['organization']) && !empty($data['organization'])),@endif
                                 @endif
-                                @if(!empty($data['organization']))
+                                @if(isset($data['organization']) && !empty($data['organization']))
                                     {{ $data['organization'] }}
                                 @endif
                             </span>
@@ -655,19 +668,19 @@
 					@if(!empty($activities_data))
 						@foreach ($activities_data as $data)
 							<span class="span_text">
-								@if(!empty($data['grade']))
-									<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
-								@endif
-								@if(!empty($data['position']))
-                                    {{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['location']) || !empty($data['honor_award'])),@endif
+								@if(isset($data['grade']) && !empty($data['grade']))
+                                    <b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
                                 @endif
-                                @if(!empty($data['activity']))
-                                    {{ $data['activity'] }}@if(!empty($data['location']) || !empty($data['honor_award'])),@endif
+                                @if(isset($data['position']) && !empty($data['position']))
+                                    {{ $data['position'] }}@if((isset($data['activity']) && !empty($data['activity'])) || (isset($data['location']) && !empty($data['location'])) || (isset($data['honor_award']) && !empty($data['honor_award']))),@endif
                                 @endif
-                                @if(!empty($data['location']))
-                                    {{ $data['location'] }}@if(!empty($data['honor_award'])),@endif
+                                @if(isset($data['activity']) && !empty($data['activity']))
+                                    {{ $data['activity'] }}@if((isset($data['location']) && !empty($data['location'])) || (isset($data['honor_award']) && !empty($data['honor_award']))),@endif
                                 @endif
-                                @if(!empty($data['honor_award']))
+                                @if(isset($data['location']) && !empty($data['location']))
+                                    {{ $data['location'] }}@if(isset($data['honor_award']) && !empty($data['honor_award'])),@endif
+                                @endif
+                                @if(isset($data['honor_award']) && !empty($data['honor_award']))
                                     {{ $data['honor_award'] }}
                                 @endif
 							</span>  
@@ -685,17 +698,17 @@
 					<h3 class='resume-heading'>ATHLETICS</h3>
 					@foreach ($athletics_data as $data)
 						<span class="span_text">
-							@if(!empty($data['grade']))
-								<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
-							@endif
-							@if(isset($data['position']) && !empty($data['position']))
-                                {{ $data['position'] }}@if(!empty($data['activity']) || !empty($data['location']) || !empty($data['honor'])),@endif
+							@if(isset($data['grade']) && !empty($data['grade']))
+                                <b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}:</b>
+                            @endif
+                            @if(isset($data['position']) && !empty($data['position']))
+                                {{ $data['position'] }}@if((isset($data['activity']) && !empty($data['activity'])) || (isset($data['location']) && !empty($data['location'])) || (isset($data['honor']) && !empty($data['honor']))),@endif
                             @endif
                             @if(isset($data['activity']) && !empty($data['activity']))
-                                {{ $data['activity'] }}@if(!empty($data['location']) || !empty($data['honor'])),@endif
+                                {{ $data['activity'] }}@if((isset($data['location']) && !empty($data['location'])) || (isset($data['honor']) &&  !empty($data['honor']))),@endif
                             @endif
                             @if(isset($data['location']) && !empty($data['location']))
-                                {{ $data['location'] }}@if(!empty($data['honor'])),@endif
+                                {{ $data['location'] }}@if(isset($data['honor']) && !empty($data['honor'])),@endif
                             @endif
                             @if(isset($data['honor']) && !empty($data['honor']))
                                 {{ $data['honor'] }}
@@ -758,20 +771,20 @@
 					@foreach ($employment_data as $data)
 						<span class="span_text">
 							@if(isset($data['grade']) && !empty($data['grade']))
-								<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
-							@endif
-							@if(!is_null($data['job_title']))
-									{{ $data['job_title'] }},
-							@endif
-							@if(!is_null($data['name_of_company']))
-									{{ $data['name_of_company'] }},
-							@endif
-							@if(!is_null($data['location']))
-									{{ $data['location'] }},
-							@endif
-							@if(!is_null($data['honor_award']))
-									{{ $data['honor_award'] }}
-							@endif
+                                <b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+                            @endif
+                            @if(isset($data['job_title']) && !is_null($data['job_title']))
+                                {{ $data['job_title'] }}@if((isset($data['name_of_company']) && (isset($data['name_of_company']) && !is_null($data['name_of_company']))) || (isset($data['location']) && !is_null($data['location'])) || (isset($data['honor_award']) && !is_null($data['honor_award']))),@endif
+                            @endif
+                            @if(isset($data['name_of_company']) && !is_null($data['name_of_company']))
+                                {{ $data['name_of_company'] }}@if((isset($data['location']) && !is_null($data['location'])) || (isset($data['honor_award']) && !is_null($data['honor_award']))),@endif
+                            @endif
+                            @if(isset($data['location']) && !is_null($data['location']))
+                                {{ $data['location'] }}@if(isset($data['honor_award']) && !is_null($data['honor_award'])),@endif
+                            @endif
+                            @if(isset($data['honor_award']) && !is_null($data['honor_award']))
+                                {{ $data['honor_award'] }}
+                            @endif
 						</span>
 					@endforeach
 				</div>

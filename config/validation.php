@@ -155,5 +155,41 @@ return [
             "honors_data[*][location]" => "Honors location field is required",
 
         ]
-    ]
+    ],
+    "activities" => [
+        "rules" => [
+            "demonstrated_data[*][grade][]" =>[
+                "required" => true,
+            ],
+            "activities_data[*][grade][]" =>[
+                "required" => true,
+            ],
+            "athletics_data[*][grade][]" =>[
+                "required" => true,
+            ],
+            "community_service_data[*][grade][]" =>[
+                "required" => true,
+            ],
+        ],
+        "messages" => [
+            "demonstrated_data[*][grade][]" => "Demonstrated Activity In The Area Of Your major grade field is required",
+            "activities_data[*][grade][]" => "Activities & Clubs grade field is required",
+            "athletics_data[*][grade][]" => "Athletics grade field is required",
+            "community_service_data[*][grade][]" => "Community Service / Volunteerism grade field is required",
+        ]
+    ],
+    "employment_certifications" => [
+        "rules" => [
+            "employment_data[*][grade][]" =>[
+                "required" => true,
+            ],
+            "significant_data[*][grade][]" =>[
+                "required" => true,
+            ],
+        ],
+        "messages" => [
+            "employment_data[*][grade][]" => "Employment & Certifications grade field is required",
+            "significant_data[*][grade][]" => "Other Significant Responsibilities Or Interests grade field is required",
+        ]
+    ],
 ];

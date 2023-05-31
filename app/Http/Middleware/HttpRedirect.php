@@ -22,4 +22,5 @@ class HttpRedirect
         }
         return $next($request);
     }
+
 }

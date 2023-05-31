@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class Role
 {
@@ -17,6 +17,7 @@ class Role
      */
     public function handle(Request $request, Closure $next, String $role)
     {
+
         if(Auth::check()) {
             $user = Auth::user();
             $role_status = $user->role == 1 ? 'super_admin' : 'standard_user';

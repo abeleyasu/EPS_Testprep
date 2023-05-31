@@ -56,6 +56,20 @@
                                     <option value="">Select passage</option>
                                 </select>
                             </div>
+                            <?php 
+                                $helper = new Helper;
+                                $ratings = $helper->getAllDifficultyRating();
+                            ?>
+                            <div class="mb-2">
+                                <label class="form-label" for="diff_rating">Difficulty Rating</label>
+                                <select id="diff_rating" name="diff_rating" class="form-control">
+                                    <option value="">Select Difficulty</option>
+                                    @foreach ($ratings as $rating)
+                                    <option value="{{ $rating['id'] }}">{{ $rating['title'] }}</option>    
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
                             <div class="col-md-6 col-xl-5 mb-4">
                                 <button type="submit" class="btn w-100 btn-alt-success">
                                     <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question

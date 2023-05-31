@@ -116,8 +116,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit','categories.index','categories.create','categories.edit'])) ? 'open' : ''}}">
+                </li>                   
+                <li class="nav-main-item {{(Route::is(['quiztags.index','quiztags.create','quiztags.edit','passages.index','passages.create','passages.edit','categories.index','categories.create','categories.edit','diffratings.index','diffratings.create','diffratings.edit','questiontags.index','questiontags.create','questiontags.edit','supercategories.index','supercategories.create','supercategories.edit','indexCategoryType','add_category_type','edit_category_type','indexQuestionType','add_question_type','edit_question_type'])) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fa-solid fa-file"></i>
                         <span class="nav-main-link-name">Quiz Management</span>
@@ -156,9 +156,25 @@
                     </ul>
                     <ul class="nav-main-submenu">
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{Route::is(['indexQuestionType','add_question_type','edit_question_type']) ? 'active' : ''}}"
-                               href="{{route('indexQuestionType')}}">
-                                <span class="nav-main-link-name">Question Types</span>
+                            <a class="nav-main-link {{Route::is(['diffratings.index','diffratings.create','diffratings.edit']) ? 'active' : ''}}"
+                               href="{{route('diffratings.index')}}">
+                                <span class="nav-main-link-name">Difficulty Rating</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['questiontags.index','questiontags.create','questiontags.edit']) ? 'active' : ''}}"
+                               href="{{route('questiontags.index')}}">
+                                <span class="nav-main-link-name">Question Tags</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['supercategories.index','supercategories.create','supercategories.edit']) ? 'active' : ''}}"
+                               href="{{route('supercategories.index')}}">
+                                <span class="nav-main-link-name">Super Category</span>
                             </a>
                         </li>
                     </ul>
@@ -167,6 +183,14 @@
                             <a class="nav-main-link {{Route::is(['indexCategoryType','add_category_type','edit_category_type']) ? 'active' : ''}}"
                                href="{{route('indexCategoryType')}}">
                                 <span class="nav-main-link-name">Category Types</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is(['indexQuestionType','add_question_type','edit_question_type']) ? 'active' : ''}}"
+                               href="{{route('indexQuestionType')}}">
+                                <span class="nav-main-link-name">Question Types</span>
                             </a>
                         </li>
                     </ul>

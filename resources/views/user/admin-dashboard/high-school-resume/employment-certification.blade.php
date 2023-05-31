@@ -110,6 +110,7 @@
                                                             <td>
                                                                 <label class="form-label" for="employment_grade">
                                                                     Grade(s)
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -149,12 +150,14 @@
                                                                         </select>
                                                                     </td>
                                                                     <td>
-                                                                        <select class="js-select2 select" id="employment_select_{{ $index }}"
-                                                                            name="employment_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
-                                                                                <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array($grade->id ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                            @endforeach
-                                                                        </select>
+                                                                        <div class="select2-container_main">
+                                                                            <select class="js-select2 select" id="employment_select_{{ $index }}"
+                                                                                name="employment_data[{{ $index }}][grade][]" multiple="multiple">
+                                                                                @foreach ($grades as $grade)
+                                                                                    <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array($grade->id ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <input type="text"
@@ -199,12 +202,14 @@
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    <select class="js-select2 select" id="employment_select_0"
-                                                                        name="employment_data[0][grade][]" multiple="multiple">
-                                                                        @foreach ($grades as $grade)
-                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
+                                                                    <div class="select2-container_main">
+                                                                        <select class="js-select2 select" id="employment_select_0"
+                                                                            name="employment_data[0][grade][]" multiple="multiple">
+                                                                            @foreach ($grades as $grade)
+                                                                                <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <input type="text"
@@ -256,6 +261,7 @@
                                                                  <label class="form-label"
                                                                     for="significant_grade">
                                                                     Grade(s)
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -284,15 +290,17 @@
                                                                             name="significant_data[{{ $index }}][interest]"
                                                                             placeholder="Enter Responsibility/interest">
                                                                     </td>
-                                                                    <td>                                                               
-                                                                        <select class="js-select2 select"
-                                                                            id="significant_select_{{ $index }}"
-                                                                            name="significant_data[{{ $index }}][grade][]"
-                                                                            multiple="multiple">
-                                                                            @foreach ($grades as $grade)
-                                                                                <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array($grade->id ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                            @endforeach
-                                                                        </select>
+                                                                    <td>
+                                                                        <div class="select2-container_main">
+                                                                            <select class="js-select2 select"
+                                                                                id="significant_select_{{ $index }}"
+                                                                                name="significant_data[{{ $index }}][grade][]"
+                                                                                multiple="multiple">
+                                                                                @foreach ($grades as $grade)
+                                                                                    <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array($grade->id ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
                                                                     </td>
                                                                     <td>                                                               
                                                                         <input type="text"
@@ -326,15 +334,17 @@
                                                                         name="significant_data[0][interest]"
                                                                         placeholder="Enter Responsibility/interest">
                                                                 </td>
-                                                                <td>                                                               
-                                                                    <select class="js-select2 select"
-                                                                        id="significant_select_0"
-                                                                        name="significant_data[0][grade][]"
-                                                                        multiple="multiple">
-                                                                        @foreach ($grades as $grade)
-                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
+                                                                <td>
+                                                                    <div class="select2-container_main">
+                                                                        <select class="js-select2 select"
+                                                                            id="significant_select_0"
+                                                                            name="significant_data[0][grade][]"
+                                                                            multiple="multiple">
+                                                                            @foreach ($grades as $grade)
+                                                                                <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
                                                                 </td>
                                                                 <td>                                                               
                                                                     <input type="text"
@@ -404,16 +414,27 @@
             border-color: #f27474;
             color: #f27474;
         }
+        .select2-container_main .error {
+            top: 40px !important;
+        }
     </style>
 @endsection
 
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('js/no-browser-back.js') }}"></script>
     <script>
+        // Disable autocomplete for all input fields on a page
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].setAttribute("autocomplete", "off");
+        }
+
         let total_employment_count = "{{ isset($employmentCertification->employment_data) && $employmentCertification->employment_data != null ? count($employmentCertification->employment_data) : 0 }}";
         let total_significant_count = "{{ isset($employmentCertification->significant_data) && $employmentCertification->significant_data != null ? count($employmentCertification->significant_data) : 0 }}";
 
@@ -474,7 +495,11 @@
                 confirmButtonColor: '#F27474',
                 confirmButtonText: 'Okay'
             }).then((result) => {
-                window.location.href = "{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}";
+                // window.location.href = "{{ route('admin-dashboard.highSchoolResume.employmentCertification') }}";
+                var form = $('#employment_form');
+                if (form.valid()) {
+                    // form.submit();
+                }
             });
         }
 
@@ -494,5 +519,64 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+
+
+        $(document).ready(function() {
+            let validations_rules = @json($validations_rules);
+            let validations_messages = @json($validations_messages);
+            $("#employment_form").validate({
+                rules: validations_rules,
+                messages: validations_messages,
+                ignore: false,
+                submitHandler: function(form) {
+                    form.submit();
+                },
+                errorPlacement: function(error, element) {
+                    var placement = $(element).data('error');
+                    if (placement) {
+                        $(placement).append(error)
+                        $(element).parents(".select2-container_main").css("margin-bottom", '0');
+                    } else {
+                        error.insertAfter(element);
+                        element.parents().find('.collapse').addClass('show');
+                        $(element).parents(".select2-container_main").css("margin-bottom", '20px');
+                    }
+                    if ($(element).is('.js-select2.error')) {
+                        $(element).parents('td.select2-container_main').find(
+                            '.select2-selection--multiple').removeAttr('style');
+                        $(element).parents('td.select2-container_main').find(
+                            '.select2-selection--single').removeAttr('style');    
+                    }
+                },
+                success: function(label, element) {
+                    label.parent().removeClass('error');
+                    label.remove();
+                    $(element).parents('td.select2-container_main').find('.select2-selection--multiple')
+                        .attr('style', 'border: 1px solid #198754 !important');
+                    $(element).parents('td.select2-container_main').find('.select2-selection--single')
+                        .attr('style', 'border: 1px solid #198754 !important');        
+                },
+            });
+
+            $('select[name^="employment_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
+
+            $('select[name^="significant_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
+            
+        });
+
     </script>
 @endsection

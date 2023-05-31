@@ -4,6 +4,7 @@ namespace App\Http\Controllers\QuizManagemet;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\DiffRating;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\PracticeQuestion;
@@ -11,8 +12,14 @@ use App\Models\PracticeTestSection;
 use App\Models\PracticeCategoryType;
 use App\Models\QuestionType;
 use App\Models\Passage;
+use App\Models\PracticeTest;
+use App\Models\QuestionTag;
+use App\Models\Score;
+use App\Models\SuperCategory;
 use App\Models\UserAnswers;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PracticeQuestionController extends Controller
 {
@@ -57,12 +64,23 @@ class PracticeQuestionController extends Controller
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
 		$question->question_order = $request->question_order;
-		if(isset($request->tags)){
-			$tags = Arr::flatten(json_decode($request->tags, true));
-			$question->tags = implode(",", $tags);
-        } else{
-			$question->tags = $request->tags;
-        }
+		$rating_array = $request->diff_rating;
+		foreach($rating_array as $key => $value){
+			$rating_id = DiffRating::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->diff_rating = $rating_id['id'];
+
+		$tag_array = $request->tags;
+		foreach($tag_array as $key => $value){
+			$tag_id = QuestionTag::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->tags = $tag_id['id'];
+		// if(isset($request->tags)){
+		// 	$tags = Arr::flatten(json_decode($request->tags, true));
+		// 	$question->tags = implode(",", $tags);
+        // } else{
+		// 	$question->tags = $request->tags;
+        // }
 		$cat_array = $request->get_category_type_values;
 		foreach ($cat_array as $key => $value) {
 			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
@@ -74,9 +92,37 @@ class PracticeQuestionController extends Controller
 			$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
 			$qt_array[$key] = $practice_question_id->id;
 		}
+		
+		$super_array = $request->super_category;
+		foreach($super_array as $key => $value){
+			$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->super_category = $super_id['id'];
+
 		$question->category_type = json_encode($cat_array);
 		$question->question_type_id = json_encode($qt_array);
+		$question->test_source = $request->test_source;
 		$question->save();
+		$test_id = PracticeTestSection::where('id',$request->section_id)->get('testid');
+		$count = PracticeQuestion::where('practice_test_sections_id',$request->section_id)->count();
+		// Score::create([
+		// 	// 'question_id' => $question->id,
+		// 	'question_id' => $count,
+		// 	'section_id' => $question->practice_test_sections_id,
+		// 	'section_type' => $request->testSectionType,
+		// 	'test_id' => $test_id[0]->testid
+		// ]);
+		
+		if(UserAnswers::where('section_id',$request->section_id)->exists()){
+			$answers = UserAnswers::where('section_id',$request->section_id)->get();
+			$answer_data = json_decode($answers[0]->answer, true);
+			$flag_data = json_decode($answers[0]->flag, true);
+			$guess_data = json_decode($answers[0]->guess, true);
+			$answer_data[$question->id] = '-';
+			$flag_data[$question->id] = 'no';
+			$guess_data[$question->id] = 'no';
+			UserAnswers::where('section_id',$request->section_id)->update(['answer' => json_encode($answer_data), 'flag' => json_encode($flag_data), 'guess' => json_encode($guess_data)]);
+		}
 
 		return response()->json(['question_id'=>$question->id,'question_order' => $question->question_order,'section_id' => $question->practice_test_sections_id]);
 	}
@@ -95,6 +141,10 @@ class PracticeQuestionController extends Controller
 		$question->question_type_strategies = $request->question_type_strategies;
 		$question->question_type_identification_methods = $request->question_type_identification_methods;
 		$question->question_type_identification_activity = $request->question_type_identification_activity;
+		$question->format = $request->test_format;
+		$question->super_category_id = $request->super_category;
+		$question->category_id = $request->category_id;
+		$question->section_type = $request->section_type;
 		$question->save();
 		return $question->id;
 	}
@@ -106,12 +156,13 @@ class PracticeQuestionController extends Controller
 
 	public function editQuestionTypes(Request $request)
 	{
-		$getquestionDetails = DB::table('question_types')->where('question_types.id', $request->id)->get();
-		
-		return view('admin.quiz-management.questiontypes.edit',['getquestionDetails'=>$getquestionDetails]);
+		$getquestionDetails = DB::table('question_types')->where('question_types.id', $request->id)->first();
+		$getSuperCategory = SuperCategory::where('format',$getquestionDetails->format)->get();
+		$getCategory = PracticeCategoryType::where('format',$getquestionDetails->format)->get();
+
+		return view('admin.quiz-management.questiontypes.edit',['getquestionDetails'=>$getquestionDetails,'getSuperCategory' => $getSuperCategory,'getCategory' => $getCategory]);
 	}
 	public function updateQuestionType(Request $request){
-
 		$updatequestion = DB::table('question_types')
 		->where('question_types.id', $request->question_type_id)
 		->update(['question_type_title' => $request->question_type_title,
@@ -119,7 +170,11 @@ class PracticeQuestionController extends Controller
 		'question_type_lesson' => $request->question_type_lesson,
 		'question_type_strategies' => $request->question_type_strategies,
 	    'question_type_identification_methods' => $request->question_type_identification_methods,
-	    'question_type_identification_activity' => $request->question_type_identification_activity
+	    'question_type_identification_activity' => $request->question_type_identification_activity,
+		'format' => $request->format,
+		'super_category_id' => $request->super_category,
+		'category_id' => $request->category_id,
+		'section_type' => $request->section_type
 		]);
 		return $updatequestion;
 	}
@@ -131,12 +186,9 @@ class PracticeQuestionController extends Controller
 		return view('admin.quiz-management.questiontypes.index', compact('questionTypes'));
 	}
 	public function updatePracticeQuestion(Request $request) {
-		// $get_order = DB::table('practice_questions')->where('id',$request->id)->get();
-
-		// $answer_arr = ['a'=>'f','b'=>'g','c'=>'h','d'=>'j','e'=>'k'];
-
 		$question = PracticeQuestion::find($request->id);
 		$question->format = $request->format;
+		$question->test_source = $request->test_source;
 		$question->title = $request->question;
 		$question->question_order = $request->question_order;
 		$question->type = $request->question_type;
@@ -155,12 +207,23 @@ class PracticeQuestionController extends Controller
 		$question->fill = $request->fill;
 		$question->fillType = $request->fillType;
 		$question->multiChoice = $request->multiChoice;
-		if(isset($request->tags)){
-			$tags = Arr::flatten(json_decode($request->tags, true));
-			$question->tags = implode(",", $tags);
-        } else{
-			$question->tags = $request->tags;
-        }
+		$rating_array = $request->diff_rating;
+		foreach($rating_array as $key => $value){
+			$rating_id = DiffRating::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->diff_rating = $rating_id['id'];
+
+		$tag_array = $request->tags;
+		foreach($tag_array as $key => $value){
+			$tag_id = QuestionTag::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->tags = $tag_id['id'];
+		// if(isset($request->tags)){
+		// 	$tags = Arr::flatten(json_decode($request->tags, true));
+		// 	$question->tags = implode(",", $tags);
+        // } else{
+		// 	$question->tags = $request->tags;
+        // }
 
 		$cat_array = $request->get_category_type_values;
 		foreach ($cat_array as $key => $value) {
@@ -173,6 +236,12 @@ class PracticeQuestionController extends Controller
 			$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
 			$qt_array[$key] = $practice_question_id->id;
 		}
+
+		$super_array = $request->super_category;
+		foreach($super_array as $key => $value){
+			$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->super_category = $super_id['id'];
 		
 		$question->category_type = json_encode($cat_array);
 		$question->question_type_id = json_encode($qt_array);
@@ -254,8 +323,21 @@ class PracticeQuestionController extends Controller
 		$question_delete = PracticeQuestion::where('id', $request->id)->first();
 		$question_ids = $this->orderQuestion($question_delete->id);
 		PracticeQuestion::where('id', $request->id)->delete();
+		$sec_id = $question_delete['practice_test_sections_id'];
+		$remaining_question = PracticeQuestion::where('practice_test_sections_id',$sec_id)->count();
+		$sec = PracticeTestSection::where('id',$sec_id)->get(['practice_test_type','testid']);
+		$sec_type = $sec[0]['practice_test_type'];
+		$test_id = $sec[0]['testid'];
+		if($sec_type == 'Math_no_calculator' || $sec_type == 'Math_with_calculator'){
+			$section = PracticeTestSection::where('testid',$test_id)->whereIn('practice_test_type',['Math_no_calculator','Math_with_calculator'])->pluck('id')->toArray();
+			$remaining_question = PracticeQuestion::whereIn('practice_test_sections_id',$section)->count();
+			Score::where('test_id',$test_id)->whereIn('section_type',['Math_no_calculator','Math_with_calculator'])->where('question_id','>',$remaining_question)->delete();
+		} else {
+			Score::where('test_id',$test_id)->where('section_type',$sec_type)->where('question_id','>',$remaining_question)->delete();
+		}
 		return response()->json(['question_ids' => $question_ids]);
 	}
+	
 	public function getPracticePassage(Request $request) {
 		$passages = Passage::where('type', $request->format)->get();
 		return $passages;
@@ -264,7 +346,7 @@ class PracticeQuestionController extends Controller
 	public function getPracticeQuestionById(Request $request) {
 		
 		$question = PracticeQuestion::where('id', $request->question_id)->get();
-		return response()->json($question);
+		return response()->json(['question' => $question]);
 
 	}
 
@@ -273,13 +355,29 @@ class PracticeQuestionController extends Controller
 		$sectionQuestions = $testSectionQuestions = DB::table('practice_questions')
 		->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
 		->select('practice_questions.id as question_id','practice_questions.title as question_title','practice_questions.type as practice_type' ,'practice_questions.answer as question_answer' ,'practice_questions.answer_content as question_answer_options' ,'practice_questions.multiChoice as is_multiple_choice' ,'practice_questions.question_order' , 'practice_questions.passages_id' ,'practice_questions.tags' )
-		->where('practice_test_sections.id', $request->sectionId)
+		->where('practice_test_sections.id', $request->sectionId)				
 		->orderBy('question_order', 'asc')
 		->get(); 
 		return response()->json($sectionQuestions);
 	}
 
 	public function addPracticeTestSection(Request $request) {
+		// if(isset($request->regular)){
+		// 	$regular = Helper::TimeChangeInMinutes($request->regular);
+		// } else {
+		// 	$regular = null;
+		// }
+		// if(isset($request->fifty)){
+		// 	$fifty_extended = Helper::TimeChangeInMinutes($request->fifty);
+		// } else {
+		// 	$fifty_extended = null;
+		// }
+		// if(isset($request->hundred)){
+		// 	$hundred_extended = Helper::TimeChangeInMinutes($request->hundred);
+		// } else {
+		// 	$hundred_extended = null;
+		// }
+
 		$practiceSection = new PracticeTestSection();
 		$practiceSection->format = $request->format;
 		$practiceSection->section_title = $request->testSectionTitle;
@@ -287,29 +385,60 @@ class PracticeQuestionController extends Controller
 		$practiceSection->testid = $request->get_test_id;
 		$practiceSection->section_order = $request->order;
 		$practiceSection->is_section_completed = '';
+		$practiceSection->regular_time = $request->regular;
+		$practiceSection->fifty_per_extended = $request->fifty;
+		$practiceSection->hundred_per_extended = $request->hundred;
 		$practiceSection->save();
+		DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
+		if($request->testSectionType == 'Math_with_calculator'){
+			$exist_section = Score::where('test_id',$request->get_test_id)->where('section_type','Math_no_calculator')->get();
+			if(isset($exist_section) && !empty($exist_section)){
+				foreach($exist_section as $section){
+					Score::create(['section_id'=>$practiceSection->id,'question_id'=>$section['question_id'], 'actual_score'=>$section['actual_score'], 'converted_score'=>$section['converted_score'], 'section_type'=>$request->testSectionType, 'test_id'=>$request->get_test_id]);
+				}
+			}
+			
+		} else if($request->testSectionType == 'Math_no_calculator'){
+			$exist_section = Score::where('test_id',$request->get_test_id)->where('section_type','Math_with_calculator')->get();
+			if(isset($exist_section) && !empty($exist_section)){
+				foreach($exist_section as $section){
+					Score::create(['section_id'=>$practiceSection->id,'question_id'=>$section['question_id'], 'actual_score'=>$section['actual_score'], 'converted_score'=>$section['converted_score'], 'section_type'=>$request->testSectionType, 'test_id'=>$request->get_test_id]);
+				}
+			}
+			
+		}
 		return $practiceSection->id;
 	}
 
 	public function addPracticeCategoryType(Request $request)
 	{
-		if(!empty($request->searchValue))
+		if(isset($request->searchValue) && !empty($request->searchValue))
 		{
+			$super_category_id = SuperCategory::where('id',$request['super_category'][0])->orWhere('title',$request['super_category'][0])->first();
 			$practiceCatType = PracticeCategoryType::create([
-				'category_type_title' => $request->searchValue
+				'category_type_title' => $request->searchValue,
+				'format' => $request->format,
+				'super_category_id' => $super_category_id->id,
+				'section_type' => $request->section_type
 			]);
 			$id = $practiceCatType->id;
 			$title = $practiceCatType->category_type_title;
-			return response()->json(["success" => true, 'id' => $id, 'category_type_title' => $title]); 
+			return response()->json(["success" => true, 'id' => $id, 'category_type_title' => $title]);
 		}
 	}
 
 	public function addPracticeQuestionType(Request $request)
 	{
-		if(!empty($request->searchValue))
+		if(isset($request->searchValue) && !empty($request->searchValue))
 		{
+			$super_category_id = SuperCategory::where('id',$request['super_category'][0])->orWhere('title',$request['super_category'][0])->first();
+			$category_id = PracticeCategoryType::where('id',$request['category'][0])->orWhere('category_type_title',$request['category'][0])->first();
 			$practiceQuesType = QuestionType::create([
-				'question_type_title' => $request->searchValue
+				'question_type_title' => $request->searchValue,
+				'format' => $request->format,
+				'super_category_id' => isset($super_category_id->id) ? $super_category_id->id : null,
+				'section_type' => $request->section_type,
+				'category_id' => isset($category_id->id) ? $category_id->id : null
 			]);
 			$id = $practiceQuesType->id;
 			$title = $practiceQuesType->question_type_title;
@@ -422,12 +551,20 @@ class PracticeQuestionController extends Controller
 	}
 
 	public function getPracticeCategoryType(){
-		$category_type = PracticeCategoryType::get();
+		if(isset($_GET['testType']) && !empty($_GET['testType'])){
+			$category_type = PracticeCategoryType::where('format',$_GET['testType'])->get();
+		} else {
+			$category_type = PracticeCategoryType::get();
+		}
 		return response()->json(['success' => true, 'dropdown_list' => $category_type, 'type' => 'category_type']);
 	}
 
 	public function getPracticeQuestionType(){
-		$question_type = QuestionType::get();
+		if(isset($_GET['testType']) && !empty($_GET['testType'])){
+			$question_type = QuestionType::where('format',$_GET['testType'])->get();
+		} else {
+			$question_type = QuestionType::get();
+		}
 		return response()->json(['success' => true, 'dropdown_list' => $question_type, 'type' => 'question_type']);
 	}
 
@@ -439,9 +576,11 @@ class PracticeQuestionController extends Controller
 	}
 
 	public function storeCategoryType(Request $request) {
-
 		$category = new PracticeCategoryType();
 		$category->category_type_title = $request->category_type_title;
+		$category->format = $request->format;
+		$category->section_type = $request->section_type;
+		$category->super_category_id = $request->super_category;
 		$category->category_type_description = $request->category_type_description;
 		$category->category_type_lesson = $request->category_type_lesson;
 		$category->category_type_strategies = $request->category_type_strategies;
@@ -458,9 +597,10 @@ class PracticeQuestionController extends Controller
 
 	public function editCategoryTypes(Request $request)
 	{
-		$getcategoryDetails = DB::table('practice_category_types')->where('practice_category_types.id', $request->id)->get();
+		$getcategoryDetails = DB::table('practice_category_types')->where('practice_category_types.id', $request->id)->first();
+		$getSuperCategory = SuperCategory::where('format',$getcategoryDetails->format)->get();
 		
-		return view('admin.quiz-management.categorytypes.edit',['getcategoryDetails'=>$getcategoryDetails]);
+		return view('admin.quiz-management.categorytypes.edit',['getcategoryDetails'=>$getcategoryDetails, 'getSuperCategory'=>$getSuperCategory]);
 	}
 
 	public function updateCategoryType(Request $request){
@@ -472,7 +612,10 @@ class PracticeQuestionController extends Controller
 		'category_type_lesson' => $request->category_type_lesson,
 		'category_type_strategies' => $request->category_type_strategies,
 	    'category_type_identification_methods' => $request->category_type_identification_methods,
-	    'category_type_identification_activity' => $request->category_type_identification_activity
+	    'category_type_identification_activity' => $request->category_type_identification_activity,
+		'format' => $request->format,
+		'super_category_id' => $request->super_category,
+		'section_type' => $request->section_type
 		]);
 		return $updatecategory;
 	}
@@ -490,9 +633,28 @@ class PracticeQuestionController extends Controller
 	}
 
 	public function updateSection(Request $request){
+		// if(isset($request->regular)){
+		// 	$regular = Helper::TimeChangeInMinutes($request->regular);
+		// } else {
+		// 	$regular = null;
+		// }
+		// if(isset($request->fifty)){
+		// 	$fifty_extended = Helper::TimeChangeInMinutes($request->fifty);
+		// } else {
+		// 	$fifty_extended = null;
+		// }
+		// if(isset($request->hundred)){
+		// 	$hundred_extended = Helper::TimeChangeInMinutes($request->hundred);
+		// } else {
+		// 	$hundred_extended = null;
+		// }
+
 		PracticeTestSection::where('id',$request->sectionId)->update([
 			"section_title" => $request->sectionTitle,
-			"practice_test_type" => $request->sectionType
+			"practice_test_type" => $request->sectionType,
+			"regular_time" => $request->regular,
+			"fifty_per_extended" => $request->fifty,
+			"hundred_per_extended" => $request->hundred
 		]);
 
 		$updatedSection = PracticeTestSection::where('id',$request->sectionId)->first();
@@ -502,9 +664,155 @@ class PracticeQuestionController extends Controller
 	}
 
 	public function deleteSection(Request $request){
-		PracticeTestSection::where('id',$request->sectionId)->delete();																																															
+		$testid = Score::where('section_id',$request->sectionId)->get('test_id');
+		$all_section = PracticeTestSection::where('testid',$testid[0]['test_id'])->whereIn('practice_test_type',['Math_with_calculator','Math_no_calculator'])->pluck('id')->toArray();
+		$total_test_question = PracticeQuestion::whereIn('practice_test_sections_id',$all_section)->count();
+		$count_section_questions = PracticeQuestion::where('practice_test_sections_id',$request->sectionId)->count();
+		$final_count =  $total_test_question - $count_section_questions;
+		if($request->sectionType == 'Math_with_calculator' || $request->sectionType == 'Math_no_calculator'){
+			Score::where('test_id',$testid[0]['test_id'])->whereNotIn('section_id',[$request->sectionId])->where('question_id','>',$final_count)->delete();
+		}
+		Score::where('section_id',$request->sectionId)->delete();
+		PracticeTestSection::where('id',$request->sectionId)->delete();	
+		UserAnswers::where('section_id',$request->sectionId)->delete();																																													
 		return redirect(url('admin/practicetests/create'));
 	}
 
+	public function saveScore(Request $request){
+		$section_id = $request['scores'][0]['sectionId'];
+		$section_type = $request['scores'][0]['sectionType'];
+		$test_id = PracticeTestSection::where('id',$section_id)->get('testid');
+		if($section_type == 'Math_no_calculator'){
+			$section_ava = PracticeTestSection::where('testid',$test_id[0]['testid'])->whereIn('practice_test_type',['Math_with_calculator','Math_no_calculator'])->whereNotIn('id',[$section_id])->get();
+		} else if($section_type == 'Math_with_calculator') {
+			$section_ava = PracticeTestSection::where('testid',$test_id[0]['testid'])->whereIn('practice_test_type',['Math_no_calculator','Math_with_calculator'])->whereNotIn('id',[$section_id])->get();
+		}
+
+		$datas = $request->all();
+		if($section_type == 'Math_no_calculator' || $section_type == 'Math_with_calculator'){
+			foreach ($datas['scores'] as $data) {
+				if ($data['questionId'] == 'undefined') {
+					$data['questionId'] = $data['sectionId'];
+				}
+				Score::updateOrCreate(
+					['section_id' => $data['sectionId'], 'question_id' => $data['questionId']],
+					['actual_score' => $data['actualScore'], 'converted_score' => $data['convertedScore'], 'section_type' => $data['sectionType'], 'test_id' => $data['testId']]
+				);
+				if(isset($section_ava[0]['id']) && !empty($section_ava[0]['id'])){
+					foreach($section_ava as $section){
+						Score::updateOrCreate(
+							['section_id' => $section->id, 'question_id' => $data['questionId']],
+							['actual_score' => $data['actualScore'], 'converted_score' => $data['convertedScore'], 'section_type' => $section->practice_test_type, 'test_id' => $data['testId']]
+						);
+					}
+					
+				}
+			}
+		} else {
+			foreach ($datas['scores'] as $data) {
+				if ($data['questionId'] == 'undefined') {
+					$data['questionId'] = $data['sectionId'];
+				}
+				Score::updateOrCreate(
+					['section_id' => $data['sectionId'], 'question_id' => $data['questionId']],
+					['actual_score' => $data['actualScore'], 'converted_score' => $data['convertedScore'], 'section_type' => $data['sectionType'], 'test_id' => $data['testId']]
+				);
+			}
+		}
+
+		return response()->json(['datas' => $datas]);
+	}
+
+	public function checkScore(Request $request){
+		$section_id = $request['section_id'];
+		$records = Score::where(['section_id' => $section_id])->get();
+		return response()->json(['records' => $records]);
+	}
+
+
+	public function checkSectionType(Request $request){
+		$section_id = $request['section_id'];
+		$test_id = $request['test_id'];
+		$records = Score::where('test_id',$test_id)->whereIn('section_type',['Math_no_calculator','Math_with_calculator'])->get();
+		return response()->json(['records' => $records]);
+	}
+
+	public function addDiffRating(Request $request){
+		if(isset($request->searchValue) && !empty($request->searchValue))
+		{
+			$diffRating = DiffRating::updateOrCreate([
+				'title' => $request->searchValue[0]
+			]);
+			$id = $diffRating->id;
+			$title = $diffRating->title;
+			return response()->json(["success" => true, 'id' => $id, 'diff_rating_title' => $title]); 
+		}
+	}
+
+	public function addQuestionTag(Request $request){
+		if(isset($request->searchValue) && !empty($request->searchValue))
+		{
+			$questionTag = QuestionTag::updateOrCreate([
+				'title' => $request->searchValue[0]
+			]);
+			$id = $questionTag->id;
+			$title = $questionTag->title;
+			return response()->json(["success" => true, 'id' => $id, 'question_tag' => $title]); 
+		}
+	}
+
+	public function getCategoryType(Request $request){
+		$category = PracticeCategoryType::where('format',$request['format'])->get();
+		return response()->json(['category' => $category]);
+	}
+
+	public function addSuperCategory(Request $request){
+		if(isset($request->searchValue) && !empty($request->searchValue))
+		{
+			$superCategory = SuperCategory::updateOrCreate([
+				'title' => $request->searchValue,
+				'format' => $request->format,
+				'section_type' => $request->section_type
+			]);
+			$id = $superCategory->id;
+			$title = $superCategory->title;
+			return response()->json(["success" => true, 'id' => $id, 'super_category_title' => $title]); 
+		}
+	}
+
+	public function findSuperCategory(Request $request){
+		$super_categories = SuperCategory::where('format',$request['format'])->where('section_type',$request['section_type'])->get();
+		$categories = PracticeCategoryType::where('format',$request['format'])->where('section_type',$request['section_type'])->get();
+		return response()->json(['superCategory' => $super_categories, 'categories' => $categories]);
+	}
+
+	public function findCategory(Request $request){
+		$categories = PracticeCategoryType::where('section_type',$request['section_type'])->get();
+		return response()->json(['categories' => $categories]);
+	}
+
+	public function addSelfMadeCategory(Request $request){
+		PracticeCategoryType::where('id',$request['searchValue'])->update(['selfMade' => 1]);
+	}
+
+	public function removeSelfMadeCategory(Request $request){
+		PracticeCategoryType::where('id',$request['searchValue'])->update(['selfMade' => 0]);
+	}
+
+	public function addSelfMadeQuestionType(Request $request){
+		QuestionType::where('id',$request['searchValue'])->update(['selfMade' => 1]);
+	}
+
+	public function removeSelfMadeQuestionType(Request $request){
+		QuestionType::where('id',$request['searchValue'])->update(['selfMade' => 0]);
+	}
+
+	public function addSelfMadeQuestionTag(Request $request){
+		QuestionTag::where('id',$request['searchValue'])->update(['selfMade' => 1]);
+	}
+
+	public function removeSelfMadeQuestionTag(Request $request){
+		QuestionTag::where('id',$request['searchValue'])->update(['selfMade' => 0]);
+	}
 	
 }

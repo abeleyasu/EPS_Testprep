@@ -61,6 +61,20 @@
                     </a>
                 </li>
                 <li class="nav-main-item">
+                    <a class="nav-main-link {{ Route::is(['test_home_page']) ? 'active' : '' }}"
+                        href="{{ route('test_home_page') }}">
+                        <i class="nav-main-link-icon si si-book-open"></i>
+                        <span class="nav-main-link-name">Test Home Page</span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{ Route::is(['self-made-test']) ? 'active' : '' }}"
+                        href="{{ route('self-made-test') }}">
+                        <i class="nav-main-link-icon si si-graduation"></i>
+                        <span class="nav-main-link-name">Self Made Test</span>
+                    </a>
+                </li>
+                <li class="nav-main-item">
                     <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}" href="{{ route('test-review.review') }}">
                         <i class="nav-main-link-icon si si-book-open"></i>
                         <span class="nav-main-link-name">Test Review</span>
@@ -72,7 +86,7 @@
                         <span class="nav-main-link-name">Test Prep Dashboard</span>
                     </a>
                 </li> -->
-                <li class="nav-main-item {{ Route::is(['admin-dashboard.*']) || Route::is(['user.*']) ? 'open' : '' }}">
+                <li class="nav-main-item {{ Route::is(['admin-dashboard.*'])|| Route::is(['user.*']) ? 'open' : '' }} ? 'open' : '' }}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
                         <i class="nav-main-link-icon si si-briefcase"></i>
                         <span class="nav-main-link-name">Admissions dashboard</span>

@@ -674,6 +674,12 @@ return [
         "Spanish"
     ],
 
+    "reminders_frequency" => [
+        "Daily",
+        "Weekly",
+        "Monthly",
+    ],
+    
     'types_of_application' => [
         'Common App',
         'Coalition App',
@@ -692,6 +698,394 @@ return [
         'Applied',
         'Not Applied',
         'Not Applicable',
+    ],
+    'test_type' => [
+        'ACT',
+        'SAT',
+        'PSAT'
+    ],
+    'college_size_option' => [
+        [
+            'option' => 'Small',
+            'value' => '1..2000',
+        ],
+        [
+            'option' => 'Medium',
+            'value' => '2000..15000',
+        ],
+        [
+            'option' => 'Large',
+            'value' => '15001..',
+        ]
+    ],
+    'type_of_school' => [
+        [
+            'option' => 'Public',
+            'value' => 1,
+        ],
+        [
+            'option' => 'Private Nonprofit',
+            'value' => 2,
+        ],
+        [
+            'option' => 'Private For-Profit',
+            'value' => 3,
+        ]
+    ],
+    'urbanicity' => [
+        [
+            'option' => 'City',
+            'value' => '11,12,13',
+        ],
+        [
+            'option' => 'Suburban',
+            'value' => '21,22,23',
+        ],
+        [
+            'option' => 'Town',
+            'value' => '31,32,33',
+        ],
+        [
+            'option' => 'Rural',
+            'value' => '41,42,43',
+        ]
+    ],
+    'undergraduate_degree_option' => [
+        [
+            'option' => 'Certificate',
+            'value' => 1,
+        ],
+        [
+            'option' => 'Associate\'s Degree',
+            'value' => 2,
+        ],
+        [
+            'option' => 'Bachelor\'s Degree',
+            'value' => 3,
+        ]
+    ],
+    'graduate_degree_option' => [
+        [
+            'option' => 'Master\'s Degree',
+            'value' => 5,
+        ],
+        [
+            'option' => 'Post-baccalaureate Certificate',
+            'value' => 4,
+        ],
+        [
+            'option' => 'Doctoral Degree',
+            'value' => 6,
+        ],
+        [
+            'option' => 'First Professional Degree',
+            'value' => 7,
+        ],
+        [
+            'option' => 'Graduate/Professional Certificate',
+            'value' => 8,
+        ]
+    ],
+    'specialized_mission_options' => [
+        [
+            'option' => 'Women-Only',
+            'value' => 1,
+            'search_key' => 'school.women_only'
+        ],
+        [
+            'option' => 'Men-Only',
+            'value' => 1,
+            'search_key' => 'school.men_only'
+        ],
+        [
+            'option' => 'Asian American and Native American Pacific Islander-Serving Institution',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.aanipi'
+        ],
+        [
+            'option' => 'Alaska Native and Native Hawaiian-Serving Institution',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.annh'
+        ],
+        [
+            'option' => 'Hispanic-Serving Institution',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.hispanic'
+        ],
+        [
+            'option' => 'Historically Black College and University',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.historically_black'
+        ],
+        [
+            'option' => 'Native American Non-Tribal Institution',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.nant'
+        ],
+        [
+            'option' => 'Predominantly Black Institution',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.predominantly_black'
+        ],
+        [
+            'option' => 'Tribal College and University',
+            'value' => 1,
+            'search_key' => 'school.minority_serving.tribal'
+        ]
+    ],
+    'religious_affiliation_options' => [
+        [
+            'option' => 'African Methodist Episcopal',
+            'value' => 51,
+        ],
+        [
+            'option' => 'African Methodist Episcopal Zion Church',
+            'value' => 24,
+        ],
+        [
+            'option' => 'American Baptist',
+            'value' => 52,
+        ],
+        [
+            'option' => 'American Evangelical Lutheran Church',
+            'value' => 22,
+        ],
+        [
+            'option' => 'American Lutheran',
+            'value' => 53,
+        ],
+        [
+            'option' => 'Assemblies of God Church',
+            'value' => 27,
+        ],
+        [
+            'option' => 'Baptist',
+            'value' => 54,
+        ],
+        [
+            'option' => 'Brethren Church',
+            'value' => 28,
+        ],
+        [
+            'option' => 'Christ and Missionary Alliance Church',
+            'value' => 34,
+        ],
+        [
+            'option' => 'Christian Church (Disciples of Christ)',
+            'value' => 61,
+        ],
+        [
+            'option' => 'Christian Churches and Churches of Christ',
+            'value' => 48,
+        ],
+        [
+            'option' => 'Christian Methodist Episcopal',
+            'value' => 55,
+        ],
+        [
+            'option' => 'Christian Reformed Church',
+            'value' => 35,
+        ],
+        [
+            'option' => 'Church of Brethren',
+            'value' => 58,
+        ],
+        [
+            'option' => 'Church of God',
+            'value' => 57,
+        ],
+        [
+            'option' => 'Church of the Nazarene',
+            'value' => 59,
+        ],
+        [
+            'option' => 'Churches of Christ',
+            'value' => 74,
+        ],
+        [
+            'option' => 'Cumberland Presbyterian',
+            'value' => 60,
+        ],
+        [
+            'option' => 'Ecumenical Christian',
+            'value' => 101,
+        ],
+        [
+            'option' => 'Episcopal Church, Reformed',
+            'value' => 50,
+        ],
+        [
+            'option' => 'Evangelical Christian',
+            'value' => 102,
+        ],
+        [
+            'option' => 'Evangelical Congregational Church',
+            'value' => 36,
+        ],
+        [
+            'option' => 'Evangelical Covenant Church of America',
+            'value' => 37,
+        ],
+        [
+            'option' => 'Evangelical Free Church of America',
+            'value' => 38,
+        ],
+        [
+            'option' => 'Evangelical Lutheran Church',
+            'value' => 39,
+        ],
+        [
+            'option' => 'Free Methodist',
+            'value' => 64,
+        ],
+        [
+            'option' => 'Free Will Baptist Church',
+            'value' => 41,
+        ],
+        [
+            'option' => 'Friends',
+            'value' => 65,
+        ],
+        [
+            'option' => 'Greek Orthodox',
+            'value' => 91,
+        ],
+        [
+            'option' => 'Interdenominational',
+            'value' => 42,
+        ],
+        [
+            'option' => 'International United Pentecostal Church',
+            'value' => 40,
+        ],
+        [
+            'option' => 'Jewish',
+            'value' => 80,
+        ],
+        [
+            'option' => 'Latter Day Saints (Mormon Church)',
+            'value' => 94,
+        ],
+        [
+            'option' => 'Lutheran Church - Missouri Synod',
+            'value' => 68,
+        ],
+        [
+            'option' => 'Lutheran Church in America',
+            'value' => 67,
+        ],
+        [
+            'option' => 'Mennonite Brethren Church',
+            'value' => 43,
+        ],
+        [
+            'option' => 'Mennonite Church',
+            'value' => 69,
+        ],
+        [
+            'option' => 'Missionary Church Inc',
+            'value' => 87,
+        ],
+        [
+            'option' => 'Moravian Church',
+            'value' => 44,
+        ],
+        [
+            'option' => 'Multiple Protestant Denomination',
+            'value' => 78,
+        ],
+        [
+            'option' => 'North American Baptist',
+            'value' => 45,
+        ],
+        [
+            'option' => 'Original Free Will Baptist',
+            'value' => 100,
+        ],
+        [
+            'option' => 'Other Protestant',
+            'value' => 79,
+        ],
+        [
+            'option' => 'Pentecostal Holiness Church',
+            'value' => 47,
+        ],
+        [
+            'option' => 'Presbyterian',
+            'value' => 103,
+        ],
+        [
+            'option' => 'Presbyterian Church (USA)',
+            'value' => 66,
+        ],
+        [
+            'option' => 'Protestant Episcopal',
+            'value' => 73,
+        ],
+        [
+            'option' => 'Protestant, not specified',
+            'value' => 77,
+        ],
+        [
+            'option' => 'Reformed Church in America',
+            'value' => 49,
+        ],
+        [
+            'option' => 'Reformed Presbyterian Church',
+            'value' => 81,
+        ],
+        [
+            'option' => 'Roman Catholic',
+            'value' => 30,
+        ],
+        [
+            'option' => 'Russian Orthodox',
+            'value' => 92,
+        ],
+        [
+            'option' => 'Seventh Day Adventists',
+            'value' => 95,
+        ],
+        [
+            'option' => 'Southern Baptist',
+            'value' => 75,
+        ],
+        [
+            'option' => 'The Presbyterian Church in America',
+            'value' => 97,
+        ],
+        [
+            'option' => 'Undenominational',
+            'value' => 88,
+        ],
+        [
+            'option' => 'Unitarian Universalist',
+            'value' => 93,
+        ],
+        [
+            'option' => 'United Brethren Church',
+            'value' => 84,
+        ],
+        [
+            'option' => 'United Church of Christ',
+            'value' => 76,
+        ],
+        [
+            'option' => 'United Methodist',
+            'value' => 71,
+        ],
+        [
+            'option' => 'Wesleyan',
+            'value' => 89,
+        ],
+        [
+            'option' => 'Seventh Day Adventists',
+            'value' => 33,
+        ],
+        [
+            'option' => 'Wisconsin Evangelical Lutheran Synod',
+            'value' => 99,
+        ]
     ]
 ]
 ?>

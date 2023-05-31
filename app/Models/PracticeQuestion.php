@@ -9,7 +9,7 @@ class PracticeQuestion extends Model
 {
     use HasFactory;
 	protected $fillable = [
-        'title','format','practice_test_sections_id', 'order', 'passage_number', 'passages_id', 'answer', 'fill', 'type', 'multiChoice', 'passages', 'answer_content', 'fillType'
+        'title','format','practice_test_sections_id','type','passages_id','passages','passage_number','answer','answer_content','answer_exp','fill','fillType','multiChoice','question_order','tags','question_type_id','category_type','diff_rating','super_category','selfMade'
     ];
 
     public function getpassage(){

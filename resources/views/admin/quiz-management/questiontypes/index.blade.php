@@ -10,7 +10,21 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <link rel="stylesheet" id="css-main" href="{{asset('assets/css/admin.css')}}">
-
+    <style>
+        .teble-checkBox{
+            width: 17px;
+            height: 17px;
+            accent-color: #1f2937;
+        }
+        .custom-table{
+            display: block;
+            overflow-x: scroll;
+            overflow-x: auto;
+        }
+        .table-vcenter td{
+            vertical-align: top;
+        }
+    </style>
 
 @endsection
 
@@ -34,10 +48,11 @@
             </div>
             <div class="block-content block-content-full table-view">
                 <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-full hidden">
+                <table class="table table-bordered table-striped table-vcenter js-dataTable-full hidden custom-table">
                     <thead>
                         <tr>
                             <th>Title</th>
+                            <th>Test Format</th>
                             <th class="">Description</th>
                              <th >Lesson</th>
                              <th >Strategies</th>
@@ -50,6 +65,7 @@
                         @foreach($questionTypes as $singlequestionType)
                         <tr>
                             <td class="fw-semibold fs-sm">{!! $singlequestionType->question_type_title !!}</td>
+                            <td>{{ $singlequestionType->format }}</td>
                             <td class="fs-sm">
                                 {!! $singlequestionType->question_type_description !!}
                             </td>
@@ -75,6 +91,7 @@
                                         
                                         {{ csrf_field() }}
                                     </form>
+                                    <div class="btn btn-sm btn-alt-secondary"> <input type="checkbox" class="teble-checkBox questionType mt-1" value="{{ $singlequestionType->id }}" @if ($singlequestionType->selfMade == 1) checked @endif></div>
                                 </div>
                             </td>
                         </tr>
@@ -97,6 +114,36 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
+
+    $(document).on('change','.questionType',function(){
+        let type_id = $(this).val();
+        if($(this).is(':checked')){
+            $.ajax({
+                type: 'post',
+                url: '{{ route("addSelfMadeQuestionType") }}',
+                data:{
+                    searchValue: type_id,
+                    '_token': $('input[name="_token"]').val()
+                },
+                success: function(res){
+                    
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '{{ route("removeSelfMadeQuestionType") }}',
+                data:{
+                    searchValue: type_id,
+                    '_token': $('input[name="_token"]').val()
+                },
+                success: function(res){
+                    
+                }
+            });
+        }
+    });  
+
 	function deleteItem_fun(id) {
         console.log(id);
 		// var id = $(this).data("id");

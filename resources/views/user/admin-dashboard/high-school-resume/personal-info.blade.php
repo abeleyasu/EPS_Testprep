@@ -110,7 +110,7 @@
                                                                 class="form-control"
                                                                 value="{{ isset($personal_info->first_name) && $personal_info->first_name != null ? $personal_info->first_name : "" }}"
                                                                 id="first_name" name="first_name"
-                                                                placeholder="Enter First Name">
+                                                                placeholder="Enter First Name" autocomplete="__away">
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3">
@@ -173,7 +173,7 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <textarea class="form-control" id="street_address_one"
-                                                                name="street_address_one" placeholder="Enter Street Address 1">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : "" }}</textarea>
+                                                                name="street_address_one" placeholder="Enter Street Address 1" autocomplete="__away">{{ isset($personal_info->street_address_one) ? $personal_info->street_address_one : "" }}</textarea>
                                                         </div>
                                                     </div>
                                                     {{-- <div class="col-lg-6">
@@ -392,7 +392,14 @@
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
-    <script>    
+    <script src="{{ asset('js/no-browser-back.js') }}"></script>
+    <script>
+
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].setAttribute("autocomplete", "__away");
+        }
+        
         function errorMsg()
         {
             Swal.fire({
@@ -402,7 +409,11 @@
                 confirmButtonColor: '#F27474',
                 confirmButtonText: 'Okay'
             }).then((result) => {
-                window.location.href = "{{ route('admin-dashboard.highSchoolResume.personalInfo') }}";
+                // window.location.href = "{{ route('admin-dashboard.highSchoolResume.personalInfo') }}";
+                var form = $('#personal_info_form');
+                if (form.valid()) {
+                    // form.submit();
+                }
             });
         }
 

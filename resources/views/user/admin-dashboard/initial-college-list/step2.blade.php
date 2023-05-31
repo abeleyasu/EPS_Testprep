@@ -36,7 +36,11 @@
                             <h3 class="block-title">{{ $college->{'school.name'} }}</h3>
                             <div class="block-options">
                                 <button type="button" class="btn btn-sm btn-alt-success" data-bs-toggle="modal" data-bs-target="#college-details">College Details</button>
-                                <button type="button" class="btn btn-sm btn-alt-success">Add to My College List</button>
+                                @if(in_array($college->id, $selected_college))
+                                    <button type="button" class="btn btn-sm btn-alt-danger remove-list" data-id="{{ $college->id }}">Remove College From List</button>
+                                @else
+                                    <button type="button" class="btn btn-sm btn-alt-success add-list" data-id="{{ $college->id }}">Add to My College List</button>
+                                @endif
                             </div>
                         </div>
                         <div class="block-content mb-">
@@ -149,11 +153,11 @@
             @endif
             <div class="d-flex justify-content-between mt-3">
                 <div class="prev-btn">
-                    <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-alt-success prev-step"> Previous Step
+                    <a href="{{ URL::previous() }}" class="btn btn-alt-success prev-step"> Previous Step
                     </a>
                 </div>
                 <div class="">
-                    <a href="{{ route('admin-dashboard.initialCollegeList.step3') }}" class="btn  btn-alt-success next-step">Next Step</a>
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step3', ['college_lists_id' => request()->get('college_lists_id')]) }}" class="btn  btn-alt-success next-step">Next Step</a>
                 </div>
             </div>
         </div>
@@ -872,6 +876,7 @@
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
 <link rel="stylesheet" href="{{ asset('css/college-application-deadline.css') }}">
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
 <style>
     .college-years {
         font-size: 2em;
@@ -882,5 +887,91 @@
     }
 </style>
 @endsection
+
 @section('user-script')
+<script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    $(document).on('click', '.add-list', function (e) {
+        const schools = @json($college_data);
+        const college_list_id = "{{ request()->get('college_lists_id') }}"
+        const school = schools.find(college => college.id == e.target.dataset.id)
+        $.ajax({
+            type: "POST",
+            url: "{{ route('admin-dashboard.initialCollegeList.step2.saveCollege') }}",
+            data: {
+                school_lists_id: college_list_id,
+                school_id: e.target.dataset.id,
+                school_name: school['school.name'],
+                size: school['latest.student.size'],
+                ownership: school['school.ownership'],
+                locale: school['school.locale'],
+                college_acceptance_rate: school['latest.completion.consumer_rate'],
+                college_average_anual_cost: school['latest.cost.avg_net_price.overall'],
+                college_median_earnings: school['latest.earnings.10_yrs_after_entry.median'],
+            },
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+        }).done((response) => {
+            if (response.success) {
+                e.target.className = 'btn btn-sm btn-alt-danger remove-list'
+                e.target.innerHTML = 'Remove College From List'
+                e.target.blur()
+                toastr.success(response.message)
+            } else {
+                toastr.error(response.message)
+            }
+        })
+    })
+
+    $(document).on('click', '.remove-list', function (e) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to remove this college?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const school_id = e.target.dataset.id
+                let url = "{{ route('admin-dashboard.initialCollegeList.step2.removeCollge', [ 'id' => request()->get('college_lists_id'), 'sid' => 'school_id' ]) }}"
+                url = url.replace('school_id', school_id)
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                }).done((response) => {
+                    if (response.success) {
+                        e.target.className = 'btn btn-sm btn-alt-success add-list'
+                        e.target.innerHTML = 'Add to My College List'
+                        e.target.blur()
+                        toastr.success(response.message)
+                    } else {
+                        toastr.error(response.message)
+                    }
+                })
+            }
+        })
+    })
+</script>
+
 @endsectioncon

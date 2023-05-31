@@ -12,6 +12,7 @@ use App\Models\HighSchoolResume\FeaturedAttribute;
 use App\Models\HighSchoolResume\DemonstratedPositions;
 use App\Models\HighSchoolResume\HonorsStatuses;
 use App\Models\HighSchoolResume\LeadershipOrganization;
+use App\Models\HighSchoolResume\Athletics_positions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -51,7 +52,8 @@ class ActivityController extends Controller
         $validations_messages = Config::get('validation.activities.messages');
         // $organizations = Config::get('constants.leadership_organization');
         $organizations = LeadershipOrganization::select('name')->get();
-        $athletics_positions = Config::get('constants.athletics_position');
+        // $athletics_positions = Config::get('constants.athletics_position');
+        $athletics_positions = Athletics_positions::select('position')->get();
 
         $details = 0;
         return view('user.admin-dashboard.high-school-resume.activities', compact('activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages', 'grades','demonstrated_positions','organizations','athletics_positions', 'status'));
@@ -104,6 +106,13 @@ class ActivityController extends Controller
                         DemonstratedPositions::create(['position_name' => $value['position']]);
                     }
                 }
+
+                if(isset($value['organization']) && !empty($value['organization'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['organization'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['organization']]);
+                    }
+                }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
@@ -121,6 +130,21 @@ class ActivityController extends Controller
 
         if (isset($data['activities_data']) && !empty($data['activities_data'])) {
             foreach ($data['activities_data'] as $key => $value) {
+                
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['activity'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['activity']]);
+                    }
+                }
+                
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -137,6 +161,21 @@ class ActivityController extends Controller
 
         if (isset($data['athletics_data']) && !empty($data['athletics_data'])) {
             foreach ($data['athletics_data'] as $key => $value) {
+                
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingAP = Athletics_positions::pluck('position')->toArray();
+                    if (!in_array($value['activity'], $existingAP)) {
+                        Athletics_positions::create(['position' => $value['activity']]);
+                    }
+                }
+                
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -153,6 +192,14 @@ class ActivityController extends Controller
 
         if (isset($data['community_service_data']) && !empty($data['community_service_data'])) {
             foreach ($data['community_service_data'] as $key => $value) {
+                
+                if(isset($value['level']) && !empty($value['level'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['level'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['level']]);
+                    }
+                }
+                
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -222,6 +269,13 @@ class ActivityController extends Controller
                     }
                 }
 
+                if(isset($value['organization']) && !empty($value['organization'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['organization'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['organization']]);
+                    }
+                }
+
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -238,6 +292,21 @@ class ActivityController extends Controller
 
         if (isset($data['activities_data']) && !empty($data['activities_data'])) {
             foreach ($data['activities_data'] as $key => $value) {
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingLO = LeadershipOrganization::pluck('name')->toArray();
+                    if (!in_array($value['activity'], $existingLO)) {
+                        LeadershipOrganization::create(['name' => $value['activity']]);
+                    }
+                }
+
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -254,6 +323,21 @@ class ActivityController extends Controller
 
         if (isset($data['athletics_data']) && !empty($data['athletics_data'])) {
             foreach ($data['athletics_data'] as $key => $value) {
+
+                if(isset($value['position']) && !empty($value['position'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['position'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['position']]);
+                    }
+                }
+
+                if(isset($value['activity']) && !empty($value['activity'])){
+                    $existingAP = Athletics_positions::pluck('position')->toArray();
+                    if (!in_array($value['activity'], $existingAP)) {
+                        Athletics_positions::create(['position' => $value['activity']]);
+                    }
+                }
+                
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {
@@ -270,6 +354,14 @@ class ActivityController extends Controller
 
         if (isset($data['community_service_data']) && !empty($data['community_service_data'])) {
             foreach ($data['community_service_data'] as $key => $value) {
+
+                if(isset($value['level']) && !empty($value['level'])){
+                    $existingPosition = DemonstratedPositions::pluck('position_name')->toArray();
+                    if (!in_array($value['level'], $existingPosition)) {
+                        DemonstratedPositions::create(['position_name' => $value['level']]);
+                    }
+                }
+
                 if (isset($value['grade']) && !empty(array_filter($value))) {
                     foreach ($value['grade'] as $grade) {
                         if (!in_array($grade, $grade_ids)) {

@@ -53,6 +53,16 @@ height: 270px
 .scroll_target p{
     margin-bottom: 0px !important;
 }
+.clock-button{
+    min-width: 100px;
+    display: inline-flex;
+    align-items: center;
+    padding-left: 11px;
+}
+.dcg-wrapper{
+    width: 100% !important;
+    height: 500px !important;
+}
 
 </style>
 
@@ -76,22 +86,10 @@ height: 270px
             </nav>
         </div>
     </div>
-
-    {{-- <div class="bg-body-extra-light">
-        <div class="content content-boxed py-3">
-            <div class="row">
-                <div class="col-xl-4">
-                    <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
-                    <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
-                    <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
-                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-clock me-1"></i> 35:12</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <input type="hidden" id="section_id" value="{{$section_id}}">
     <input type="hidden" id="get_offset" value="{{$set_offset}}">
     <input type="hidden" id="get_question_type" value="{{$question_type}}">
+    <input type="hidden" id="time_selected" value="">
     <!-- Page Content -->
     <div class="content content-boxed content-height">
         <div class="row">
@@ -107,11 +105,8 @@ height: 270px
                             <strong id="passage_type">PASSAGE TYPE: NATURAL SCIENCE</strong><br /><span id="passage_title">This is adapted from author Blah.</span>
                         </h5>
                         <div class="mb-4">
-                            {{-- <div id="passage_description" class="form-control scroll_target"></div> --}}
-                            <textarea id="passage_description" class="form-control scroll_target bg-transparent"  readonly></textarea>
-                            {{-- <textarea  class="form-control scroll_target"  name="example-textarea-input" id="passage_description_content"  placeholder="Textarea content..">The first prehistoric avian bird of its kind was discovered in Antarctica in December of the year 2032. Its unique features, which include an obvious membranous extension to its fin and a fold in its flight-bends, put its scientific discovery into the same realms as that of Darwin's fin-flap animal. This incredible bird is a truly remarkable feat. It was discovered in deep waters in the Beaufort Gyre, an area of the southern ocean that is one of the most important underwater ecosystems for biological discovery, in a collection of fossils that span the entire 400 million year history of the animal.
-                      Notably, this remarkable feat is the result of a scientific exploration by veteran experts in Antarctic science who are passionate about the advancement of paleoceanography. 
-                      Astronaut Dr. Stephen Wright joins Bryan Johnson to detail the remarkable life and legacy of Dr. Frank White, a scientist who spent 32 days in space, leaving behind much scientific knowledge. It is estimated that at least 500 additional species of plant and animal have now been discovered. This volume documents that entire collection of scientific specimens from Dr. White, who is considered the father of modern scientific exploration.</textarea> --}}
+                            <div id="passage_description" class="form-control scroll_target" style="resize: vertical;"></div>
+                            {{-- <textarea id="passage_description" class="form-control scroll_target bg-transparent"></textarea> --}}
                         </div>
                         <div class="output">
 
@@ -139,12 +134,9 @@ height: 270px
                     <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev" data-count="0"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
                     <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next" data-count="0">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
-                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-clock me-1"></i> 35:12</button>
+                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i><span id="timer">00:00:00</span></button>
                 </div>
                 <div class="col-xl-4">
-                    <!-- <button type="button" class="btn btn-sm btn-outline-danger fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-flag me-1" style="color:red"></i>Flag</button> -->
-                    
-                    <!-- <button type="button" id= "btn_guess" class="btn btn-sm btn-outline-warning fs-xs fw-semibold me-1 mb-3 guess"><i class="fa fa-fw fa-circle-question me-1"></i>Guess</button> -->
                     <label class="btn btn-sm btn-outline-danger fs-xs fw-semibold me-1 mb-3 checkbox-button main_flag_section">
                         <input type="checkbox" class="flag" />
                         <span><i class="fa fa-fw fa-flag me-1" style="color:red"></i>Flag</span>
@@ -157,10 +149,25 @@ height: 270px
                         <span><i class="fa fa-fw fa-circle-question me-1"></i>Guess</span>
                     </label>
 
-                    <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
+                    <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
                 </div>
                 <div class="col-xl-4">
                     <button type="button" disabled class="btn btn-sm btn-outline-success fs-xs fw-semibold me-1 mb-3 submit_section_btn"><i class="fa fa-fw fa-circle-check me-1"></i>Submit Section</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="calculator-container"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -176,11 +183,22 @@ height: 270px
     .content {
         width: 90%;
     }
+    .modal-dialog{
+        max-width: 1000px;
+    }
 </style>
 <script src="{{asset('assets/js/lib/jquery.min.js')}}"></script>
 <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
 <script>
-         jQuery(document).ready(function(){
+        $(document).on('click','.calculator', function(){
+            $('#exampleModal #calculator-container').html('');
+            const calculator = Desmos.GraphingCalculator(document.getElementById('calculator-container'));
+            $('#exampleModal').modal('show');
+        });
+        
+        jQuery(document).ready(function(){
             var selected_answer = [];
             var selected_gusess_details = [];
             var selected_flag_details = [];
@@ -192,6 +210,7 @@ height: 270px
             var getSelectedAnswer ;
             var check_click_type = 'onload';
             get_first_question(get_offset);
+            get_time();
 
             $('.content').on('click', 'input[name=example-radios-default]:radio', function() {
                 var get_question_id = jQuery('.get_question_id').val();
@@ -222,6 +241,10 @@ height: 270px
                         store_multi += this.value+','; 
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
+                } else if($("input[name='example-textbox-default']")){
+                    store_multi = $("input[name='example-textbox-default']").val();
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
                 } else {
@@ -303,6 +326,10 @@ height: 270px
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
+                }  else if($("input[name='example-textbox-default']")){
+                    store_multi = $("input[name='example-textbox-default']").val();
+                    selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
                 } else {
                     selected_answer[get_question_id] = '-';
                     selected_skip_details[get_question_id] = 'yes';
@@ -347,7 +374,11 @@ height: 270px
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
                     selected_skip_details[get_question_id] = 'no';
-                }
+                } else if($("input[name='example-textbox-default']")){
+                    store_multi = $("input[name='example-textbox-default']").val();
+                    selected_answer[get_question_id] = store_multi;
+                    selected_skip_details[get_question_id] = 'no';
+                } 
 
                 if(!$(".guess").is(':checked'))
                 {
@@ -606,7 +637,7 @@ height: 270px
 
             function confirm(){
 
-                var get_question_id = jQuery('.get_question_id').val();
+                var get_question_id = jQuery('#onload_question_id').val();
                 if($(".flag").is(':checked'))
                 {
                     selected_flag_details[get_question_id] = 'yes';
@@ -648,7 +679,10 @@ height: 270px
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
-                } else {
+                } else if($("input[name='example-textbox-default']")){
+                    store_multi = $("input[name='example-textbox-default']").val();
+                    selected_answer[get_question_id] = store_multi;
+                }  else {
                     selected_answer[get_question_id] = '-';
                 }
 
@@ -696,12 +730,18 @@ height: 270px
                     } else {
                         answer_details[question_ids[index]] = '-';
                     }
-                }
-
+                }  
                 answer_details = answer_details.filter(function(element, key){
                     return element !== 'undefined';
                 });
-                answer_details = answer_details.associate(question_ids);
+                // var new_answer_detail = [];
+                // answer_details.map(function(key,index){
+                //     if(key !== 'undefined'){
+                //         new_answer_detail.push({[index]: key})
+                //     }
+                    
+                // });
+                answer_details = answer_details.associate(question_ids);  
 
                 flag_detail = flag_detail.filter(function(element, key){
                     return element !== 'undefined';
@@ -712,7 +752,7 @@ height: 270px
                     return element !== 'undefined';
                 });
                 guess_detail = guess_detail.associate(question_ids);
-                
+
                 // let flag_details = selected_flag_details.associate(question_ids);
                 // let gusess_details = selected_gusess_details.associate(question_ids);
 
@@ -777,11 +817,10 @@ height: 270px
                             // var set_passage_type = '<strong>'+passage_type+'</strong><br />'+passage_title+'';
                             $('.passageContainer').css('display','none');
                         }
-                        if(passage_description)
-                        {
-                            passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
-                        }    
-                        // passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
+                        // if(passage_description)
+                        // {
+                        //     passage_description = passage_description.replace(/(<([^>]+)>)/gi, "");
+                        // }   
 
                         var get_question_title = result.questions[0].question_title;
                         // get_question_title = result.questions[0].question_title.replace(/(<([^>]+)>)/gi, "");
@@ -794,9 +833,8 @@ height: 270px
                         if(result.questions[0].question_answer_options){
                             var get_options = result.questions[0].question_answer_options.replace(/(<([<p></p>]+)>)/gi, "");
                         } else {
-                            get_options = '0';
+                            get_options = '["a"]';
                         }  
-                        
                         jQuery.each(JSON.parse(get_options), function (key,val) {
                            var get_option_number = 'A';
                            if(result.questions[0].practice_type == "choiceOneInFive_Odd"){
@@ -910,6 +948,12 @@ height: 270px
                                 {
                                     get_option_number = 'j';
                                 }
+                        } else if(result.questions[0].practice_type == "choiceMultInFourFill" && result.questions[0].is_multiple_choice == 2){
+                            if(key == 0)
+                            {
+                                get_option_number = result.questions[0].question_answer;
+                            } 
+
                         } else {                                                                                                                                                                                                                
                             if(key == 0)
                                 {
@@ -949,15 +993,35 @@ height: 270px
                                     var array = selected_answer[result.questions[0].question_id].split(',');
                                     if(jQuery.inArray(get_option_number, array) == -1)
                                     {
-                                        set_questions_options += '<div class="space-y-2">';
-                                        set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default"  value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>';
+                                        if(jQuery.type(result.questions[0].is_multiple_choice) == 'null'){
+                                            set_questions_options += '<div class="space-y-2">';
+                                            set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default"  value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>';
+                                        } else if(result.questions[0].is_multiple_choice == 1){
+                                            set_questions_options += '<div class="space-y-2">';
+                                            set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default"  value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>';
+                                        } else if(result.questions[0].is_multiple_choice == 2){
+                                            set_questions_options += '<div class="space-y-2"><input type="text" id="'+get_option_number+'" name="example-textbox-default" value="'+array+'"></div>';
+                                        } else {
+                                            set_questions_options += '<div class="space-y-2">';
+                                            set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                        }
                                     }
                                     
                                     $.each(array, function( index, value ) {
                                        if(value == get_option_number)
                                        {
+                                        if(jQuery.type(result.questions[0].is_multiple_choice) == 'null'){
+                                            set_questions_options += '<div class="space-y-2">';
+                                            set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" checked value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                        } else if(result.questions[0].is_multiple_choice == 1){
                                             set_questions_options += '<div class="space-y-2">';
                                             set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" checked value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                        } else if(result.questions[0].is_multiple_choice == 2){
+                                            set_questions_options += '<div class="space-y-2"><input type="text" id="'+get_option_number+'" name="example-textbox-default" value="'+value+'" ></div>';
+                                        } else {
+                                            set_questions_options += '<div class="space-y-2">';
+                                            set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" checked value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                        }
                                        }
                                     });
                                 }
@@ -969,12 +1033,20 @@ height: 270px
                                     set_questions_options += '<div class="space-y-2">';
                                     set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
                                 }
-                                else
+                                else if(result.questions[0].is_multiple_choice == 1)
                                 {
                                     set_questions_options += '<div class="space-y-2">';
                                     set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
                                 }
-                                
+                                else if(result.questions[0].is_multiple_choice == 2)
+                                {
+                                    set_questions_options += '<div class="space-y-2"><input type="text" id="'+get_option_number+'" name="example-textbox-default" ></div>';
+                                }
+                                else
+                                {
+                                    set_questions_options += '<div class="space-y-2">';
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                }
                            }
                         });
 
@@ -1014,12 +1086,13 @@ height: 270px
                         jQuery('#set_question_data').html(set_questions_options);
                         jQuery('#passage_type').text(passage_type);
                         jQuery('#passage_title').text(passage_title);
-                        // jQuery('#passage_description').text(passage_description);                   
-                        var $editor = $("#passage_description");
+                        // jQuery('#passage_description').text(passage_description); 
+                        $('#passage_description').html('');    
+                        $('#passage_description').append(passage_description);
                             
-                        $editor.html(passage_description)
-                                .attr('contenteditable', true)
-                                .height($editor.height());
+                        // $editor.html(passage_description)
+                        //         .attr('contenteditable', true)
+                        //         .height($editor.height());
 
 
 
@@ -1064,5 +1137,107 @@ height: 270px
                 }});
             }
         });
+
+        function get_time(){
+            let option = new URLSearchParams(window.location.search);
+            let OptionValue = option.get('time');
+            let section_id = $('#section_id').val();
+            let question_type = $('#get_question_type').val();
+            $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                  }
+                });
+
+                jQuery.ajax({
+                    url: "{{ route('get_time') }}",
+                    method: 'post',
+                    data: {
+                        'time':OptionValue,
+                        'section_id':section_id,
+                        question_type: question_type,
+                    },
+                    success: function(result){
+                        console.log(result);
+                        if(OptionValue == 'regular'){
+                            $('#time_selected').val(result.time.regular_time);
+                        } else if(OptionValue == '50per'){
+                            $('#time_selected').val(result.time.fifty_per_extended);
+                        } else if(OptionValue == '100per'){
+                            $('#time_selected').val(result.time.hundred_per_extended);
+                        } else {
+                            $('#time_selected').val('00:00:00');
+                        }
+
+                        var targetTime = $('#time_selected').val();
+                        var parts = targetTime.split(':');
+                        var targetHours = parseInt(parts[0], 10);
+                        var targetMinutes = parseInt(parts[1], 10);
+                        var targetSeconds = parseInt(parts[2], 10);
+                        var targetMilliseconds = ((targetHours * 60 * 60) + (targetMinutes * 60) + targetSeconds) * 1000;
+
+                        var hours = targetHours;
+                        var minutes = targetMinutes;
+                        var seconds = targetSeconds;
+                        var elapsedMilliseconds = 0;
+
+                        var timerInterval = setInterval(function() {
+                            elapsedMilliseconds += 1000;
+
+                            if (elapsedMilliseconds < targetMilliseconds && OptionValue != 'untimed' ) {
+                                var remainingMilliseconds = targetMilliseconds - elapsedMilliseconds;
+                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+                            } else if (OptionValue == 'untimed' ){
+                                var remainingMilliseconds = targetMilliseconds + elapsedMilliseconds ;
+                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+                            }
+                            else {
+                                clearInterval(timerInterval);
+                                hours = 0;
+                                minutes = 0;
+                                seconds = 0;
+                            }
+
+                            var formattedHours = hours.toString().padStart(2, '0');
+                            var formattedMinutes = minutes.toString().padStart(2, '0');
+                            var formattedSeconds = seconds.toString().padStart(2, '0');
+
+                            $('#timer').text(formattedHours + ':' + formattedMinutes + ':' + formattedSeconds);
+                            
+                            if(OptionValue != 'untimed'){
+                                if (hours === 0 && minutes === 5 && seconds === 0) {
+                                    swal({
+                                        icon: 'warning',
+                                        title: 'Time is elapsed!',
+                                        text: 'You have 5 minutes remaining.',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'OK'
+                                    },2000);
+                                }
+
+                                if (hours === 0 && minutes === 0 && seconds === 0) {
+                                    clearInterval(timerInterval);
+                                    swal({
+                                        icon: 'warning',
+                                        title: 'Time is over!',
+                                        text: 'Your time has expired.',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Continue'
+                                    },function(isConfirm){
+                                        if(isConfirm){
+                                            $('.submit_section_btn').trigger('click');
+                                        }
+                                    });
+                                }
+                            }
+                        }, 1000);
+                    }
+
+                });
+        }
 </script>
 @endsection

@@ -177,7 +177,7 @@
                                                                             value="{{ $honors_data['location'] }}"
                                                                             id="location"
                                                                             name="honors_data[{{ $index }}][location]"
-                                                                            placeholder="Ex: DRHS">
+                                                                            placeholder="Ex: DRHS"  autocomplete="off">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)"
@@ -226,7 +226,7 @@
                                                                 <td>
                                                                     <input type="text" class="form-control"
                                                                         id="location" name="honors_data[0][location]"
-                                                                        placeholder="Ex: DRHS">
+                                                                        placeholder="Ex: DRHS" autocomplete="off">
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)"
@@ -318,6 +318,7 @@
     <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/no-browser-back.js') }}"></script>
     <script>
         let total_honors_count = "{{ isset($honor->honors_data) && $honor->honors_data != null ? count($honor->honors_data) : 0 }}";
 
@@ -447,7 +448,11 @@
                 confirmButtonColor: '#F27474',
                 confirmButtonText: 'Okay'
             }).then((result) => {
-                window.location.href = "{{ route('admin-dashboard.highSchoolResume.honors') }}";
+                // window.location.href = "{{ route('admin-dashboard.highSchoolResume.honors') }}";
+                var form = $('#honors_form');
+                if (form.valid()) {
+                    // form.submit();
+                }
             });
         }
 

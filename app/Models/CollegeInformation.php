@@ -12,8 +12,9 @@ class CollegeInformation extends Model
     protected $fillable = [
         'name',
         'city',
+        'state',
         'user_id',
-        'state'
+        'college_id'
     ];
 
     public function college_details() {

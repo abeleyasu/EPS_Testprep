@@ -370,6 +370,7 @@
             background-color: #e5e5e5 !important;
             color: #000 !important;
             font-weight: 400 !important;
+            max-width: 260px !important;
         }
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
             color: #000 !important;
@@ -405,12 +406,67 @@
 #mainSectionContainer .sectionTypesFull{
     border: 2px solid transparent;
 }
-    </style>
+
+.rating-tag .select2-container{
+    width: 100% !important;
+}
+/* .rating-tag .select2-container--default .select2-selection--multiple{
+    padding: 5px !important;
+} */
+.type-check[type="checkbox"]{
+    width: 30px;
+    height: 30px;   
+    accent-color: #1f2937;
+    margin-left: 10px;
+}
+.select2-container .select2-search--inline .select2-search__field {
+    margin-top: 7px !important;
+    height: 20px !important;
+    padding: 0 4px;
+}
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(125 125 125 / 100%);
+    z-index: 9999999;
+    cursor: none;
+}
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #334155;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+</style>
 @endsection
 
 @section('admin-content')
     <!-- Main Container -->
     <main id="main-container">
+        <div class="preloader" style="display: none">
+            <div class="loader" ></div>
+        </div>
+        <input type="hidden" id="section_type" value="">
         <!-- Page Content -->
         <form action="{{ route('practicetests.store') }}" method="POST" id="regForm">
             @csrf
@@ -454,6 +510,15 @@
                                                             @foreach ($testformats as $key => $testformat)
                                                                 <option value="{{ $key }}">{{ $testformat }}</option>
                                                             @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12 ptype mt-2">
+                                                        <label class="form-label">Test Source:</label>
+                                                        <select id="source" name="source" class="form-control js-select2 select">
+                                                            <option value="">Select test type</option>
+                                                            <option value="0">College Prep System Practice Test</option>
+                                                            <option value="1">Official Released Practice Test</option>
+                                                            <option value="2">Quiz Questions</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -521,10 +586,47 @@
 
                         <div class="mb-2 col-12">
                             <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
-                            <select id="testSectionType" name="testSectionType" class="form-control js-select2 select">
+                            <select id="testSectionType" name="testSectionType" class="form-control js-select2 select" onchange="addClassScore(this)">
 
                             </select>
                         </div>
+
+                        {{-- <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">Regular Time</label>
+                            <input type="time" id="regular_time" name="regular_time" step="1" class="form-control">
+                        </div> --}}
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">Regular Time</label>
+                            <div id="time-span" class="d-flex">
+                                <input type="number" id="regular_time_hour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="regular_time_minute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="regular_time_second" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                            </div>
+                        </div>
+                        
+                        {{-- <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">50% Extended Time</label>
+                            <input type="time" id="50extended" name="50extended" step="1" class="form-control">
+                        </div> --}}
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">50% Extended Time</label>
+                            <div id="time-span" class="d-flex">
+                                <input type="number" id="50extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="50extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="50extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                            </div>
+                        </div>
+
+                        {{-- <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">100% Extended Time</label>
+                            <input type="time" id="100extended" name="100extended" step="1" class="form-control">
+                        </div>  --}}
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">100% Extended Time</label>
+                            <div id="time-span" class="d-flex">
+                                <input type="number" id="100extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="100extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="100extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -562,6 +664,43 @@
 
                             </select>
                         </div>
+
+                        {{-- <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">Regular Time</label>
+                            <input type="time" id="edit_regular_time" name="edit_regular_time" step="1" class="form-control">
+                        </div> --}}
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">Regular Time</label>
+                            <div id="time-span" class="d-flex">
+                                <input type="number" id="edit_regular_hour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="edit_regular_minute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="edit_regular_second" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                            </div>
+                        </div>
+
+                        {{-- <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">50% Extended Time</label>
+                            <input type="time" id="edit50extended" name="edit50extended" step="1" class="form-control">
+                        </div>  --}}
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">50% Extended Time</label>
+                            <div id="time-span" class="d-flex">
+                                <input type="number" id="edit50extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="edit50extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="edit50extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                            </div>
+                        </div>
+
+                        {{-- <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">100% Extended Time</label>
+                            <input type="time" id="edit100extended" name="edit100extended" step="1" class="form-control">
+                        </div> --}}
+
+                        <div class="mb-2">
+                            <label class="form-label" style="font-size: 13px;">100% Extended Time</label>
+                            <div id="time-span" class="d-flex">
+                                <input type="number" id="edit100extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="edit100extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="edit100extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -572,7 +711,7 @@
             </div>
         </div>
     </div>
-
+    {{-- start add question multi model  --}}
     <div class="modal fade" id="questionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -587,42 +726,80 @@
                         <div class="mb-2">
                             <label class="form-label validError" style="font-size: 13px; color: red;"></label>
                         </div>
-                        <div class="mb-2">
+                       <div class=" d-flex justify-content-between">
+                        <div class="mb-2 col-md-6 pe-3">
                             <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
                             <input id="testSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
                         </div>
+                        {{-- new for diff ratings  --}}
+                        <?php 
+                          $helper = new Helper;
+                          $ratings = $helper->getAllDifficultyRating();
+                        ?>
+                        <div class="mb-2 col-md-6 ps-3 rating-tag">
+                            <label class="form-label" style="font-size: 13px;">Difficulty Rating</label>
+                            <select class="js-select2 select diffRating" id="diff_rating_create" name="diff_rating_create" onchange="insertDiffRating(this)" multiple>
+                                @foreach ($ratings['ratings'] as $rating)
+                                    <option value="{{ $rating['id'] }}">{{ $rating['title'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                       </div>
                         <div class="mb-2">
                             <label class="form-label" style="font-size: 13px;">Question:<span class="text-danger">*</span></label>
                             <textarea id="js-ckeditor-addQue" name="js-ckeditor-addQue"
                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                             <span class="text-danger" id="questionError"></span>    
                         </div>
-
-                        <div class="mb-2">
+                        <?php 
+                            $helper = new Helper;
+                            $tags = $helper->getAllQuestionTags();
+                        ?>
+                        <div class="mb-2 rating-tag ">
                             <label class="form-label" for="tags">Question Tags<span class="text-danger">*</span></label>
-                            <input name="tags" placeholder="add tags" class="form-control"/>
+                            <div class="d-flex align-items-center">
+                                <select class="js-select2 select questionTag" id="question_tags_create" name="question_tags_create" onchange="insertQuestionTag(this)" multiple>
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag['id'] }}">{{ $tag['title'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <span class="text-danger" id="tagError"></span>
+                        </div>
+                        {{-- new for the super category  --}}
+                        <div class="mb-2 rating-tag ">
+                            <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center">
+                                <select class="js-select2 select superCategory" id="super_category_create" name="super_category_create" onchange="insertSuperCategory(this)" multiple>
+                                    
+                                </select>
+                            </div>
+                            <span class="text-danger" id="superCategoryError"></span>
                         </div>
                         <div class="input-container" id="addNewType">
                             <div class="d-flex input-field align-items-center">
                                 {{-- start  --}}
                                 <div class="col-md-5 mb-2 me-2 category-custom">
                                     <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
-                                    <select class="js-select2 select categoryType w-100" id="category_type_0" name="category_type" onchange="insertCategoryType(this)" multiple>
-                                        @foreach ($getCategoryTypes as $categoryType)
+                                   <div class="d-flex align-items-center">
+                                    <select class="js-select2 select categoryType w-100" id="category_type_0" name="category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
+                                        {{-- @foreach ($getCategoryTypes as $categoryType)
                                             <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
-                                    <span class="text-danger" id="categoryTypeError"></span>
+                                </div>
+                                <span class="text-danger" id="categoryTypeError"></span>
                                 </div>
                                 <div class="mb-2 col-md-5 add_question_type_select">
                                     <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
-                                    <select class="js-select2 select questionType" id="search-input_0" name="search-input" onchange="insertQuestionType(this)" multiple>
-                                        @foreach ($getQuestionTypes as $questionType)
+                                   <div class="d-flex align-items-center">
+                                    <select class="js-select2 select questionType" id="search-input_0" name="search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
+                                        {{-- @foreach ($getQuestionTypes as $questionType)
                                             <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
-                                    <span class="text-danger" id="questionTypeError"></span>
+                                </div>
+                                <span class="text-danger" id="questionTypeError"></span>
                                 </div>
                                 <div class="col-md-2 add-position">
                                     <button class="plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
@@ -640,8 +817,8 @@
                                 <span class="text-danger" id="passNumberError"></span>
                             </div>
                             <div class="mb-2 col-md-5">
-                                <label class="form-label">Passages:<span class="text-danger">*</span></label>
-                                <select name="passagesType" class="form-control passagesType js-select2 select"></select>
+                                <label class="form-label">Passages<span class="text-danger">*</span></label>
+                                <select name="passagesType" id="passagesType" class="form-control passagesType js-select2 select"></select>
                                 <span class="text-danger" id="passageTypeError"></span>
                             </div>
                             <div class="col-md-2">
@@ -686,7 +863,7 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                type="radio" value="d" name="choiceOneInFour">
+                                                type="radio" value="d" name="choiceOneInFour"></label>
                                         <textarea id="choiceOneInFour_OddAnswer_4" name="choiceOneInFourAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -891,8 +1068,8 @@
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
-                                                type="radio" value="d" name="choiceOneInFourPass"></label>
+                                    <li><label class="form-label" style="font-size: 13px;"><span>D: </span>
+                                        <input type="radio" value="d" name="choiceOneInFourPass"></label>
                                         <textarea id="choiceOneInFourPass_OddAnswer_4" name="choiceOneInFourPassAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -966,7 +1143,7 @@
                                 </label>
 
 
-                                <div class="multi_field">
+                                <div class="multi_field" style="display: none">
                                     <ul class="answerOptionLsit">
                                         <li><label class="form-label" style="font-size: 13px;"><span>A: </span> <input
                                                     type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
@@ -1010,7 +1187,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="multiChoice_field">
+                                <div class="multiChoice_field" style="display: none">
                                     <ul class="answerOptionLsit">
                                         <li><label class="form-label" style="font-size: 13px;"><span>A: </span> <input
                                                     type="radio" value="a"
@@ -1092,6 +1269,36 @@
     </div>
     <!-- Modal -->
 
+    {{-- start model  --}}
+    <div class="modal fade" id="scoreModalMulti" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Score Modal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-responsive">
+                        <thead class="table-Light">
+                          <tr>
+                            <th scope="col">Actual Score</th>
+                            <th scope="col">Converted Score</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table_body">
+
+                        </tbody>
+                      </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" class="totalQuestion" value="" >
+                    <button type="button" class="btn btn-primary save_scores_btn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end model  --}}
+
     {{-- start update question modal  --}}
     <div class="modal fade" id="editQuestionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -1107,9 +1314,24 @@
                         <div class="mb-2">
                             <label class="form-label validError" style="font-size: 13px; color: red;"></label>
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
-                            <input id="edittestSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
+                        <div class="d-flex justify-content-between">
+                            <div class="mb-2 col-md-6 pe-3">
+                                <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
+                                <input id="edittestSectionTypeRead" readonly name="testSectionTypeRead" class="form-control">
+                            </div>
+                            <?php
+                               $helper = new Helper; 
+                               $ratings = $helper->getAllDifficultyRating();  
+                            ?>
+                            {{-- new for the diff rating  --}}
+                            <div class="mb-2 col-md-6 pr-3 rating-tag">
+                                <label class="form-label" style="font-size: 13px;">Difficulty Rating</label>
+                                <select class="js-select2 select diffRating" id="diff_rating_edit" name="diff_rating_edit" onchange="insertDiffRating(this)" multiple>
+                                    @foreach ($ratings['ratings'] as $rating)
+                                        <option value="{{ $rating['id'] }}">{{ $rating['title'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" style="font-size: 13px;">Question:<span class="text-danger">*</span></label>
@@ -1117,29 +1339,53 @@
                             <span class="text-danger" id="questionError"></span>
                         </div>
 
-                        <div class="mb-2">
+                        <?php 
+                            $helper = new Helper;
+                            $tags = $helper->getAllQuestionTags();
+                        ?>
+                        <div class="mb-2 rating-tag ">
                             <label class="form-label" for="tags">Question Tags<span class="text-danger">*</span></label>
-                            <input name="questionTags" id="questionTag" placeholder="add tags" class="form-control"/>
+                            <div class="d-flex align-items-center">
+                                <select class="js-select2 select questionTag" id="question_tags_edit" name="question_tags_edit" onchange="insertQuestionTag(this)" multiple>
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag['id'] }}">{{ $tag['title'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <span class="text-danger" id="tagError"></span>
+                        </div>
+                        {{-- new for the super category  --}}
+                        <div class="mb-2 rating-tag ">
+                            <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center">
+                                <select class="js-select2 select superCategory" id="super_category_edit" name="super_category_edit" onchange="insertSuperCategory(this)" multiple>
+
+                                </select>
+                            </div>
+                            <span class="text-danger" id="superCategoryError"></span>
                         </div>
                         <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
                                 <div class="col-md-5 mb-2 me-2">
                                     <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
-                                    <select class="js-select2 select categoryType" id="edit_category_type_0" name="edit_category_type" onchange="insertCategoryType(this)" multiple>
-                                        @foreach ($getCategoryTypes as $categoryType)
-                                            <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="d-flex align-items-center">
+                                        <select class="js-select2 select categoryType" id="edit_category_type_0" name="edit_category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
+                                            {{-- @foreach ($getCategoryTypes as $categoryType)
+                                                <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
                                     <span class="text-danger" id="categoryTypeError"></span>
                                 </div>
                                 <div class="mb-2 col-md-5 add_question_type_select">
                                     <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
-                                    <select class="js-select2 select questionType" id="edit_search-input_0" name="edit_search-input" onchange="insertQuestionType(this)" multiple>
-                                        @foreach ($getQuestionTypes as $questionType)
-                                            <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="d-flex align-items-center">
+                                        <select class="js-select2 select questionType" id="edit_search-input_0" name="edit_search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
+                                            {{-- @foreach ($getQuestionTypes as $questionType)
+                                                <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
                                     <span class="text-danger" id="questionTypeError"></span>
                                 </div>
                                 <div class="col-md-2 add-position">
@@ -1160,7 +1406,7 @@
                             </div>
                             <div class="mb-2 col-md-5">
                                 <label class="form-label">Passages<span class="text-danger">*</span></label>
-                                <select name="editPassagesType" class="form-control editPassagesType js-select2 select"></select>
+                                <select name="editPassagesType" id="edit_passage_type" class="form-control editPassagesType js-select2 select"></select>
                                 <span class="text-danger" id="passageTypeError"></span>
                             </div>
                             <div class="col-md-2">
@@ -1202,7 +1448,8 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_3">
-                                        <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFour"></label>
+                                        <label class="form-label" style="font-size: 13px;"><span>D: </span>
+                                            <input type="radio"  value="d" name="choiceOneInFour"></label>
                                         <textarea id="editChoiceOneInFour_OddAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1459,7 +1706,7 @@
                                     <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
                                 </label>
 
-                                <div class="multi_field withOutFillOpt">
+                                <div class="multi_field withOutFillOpt" style="display: none">
                                     <ul class="answerOptionLsit">
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_1" name="editChoiceMultInFourFillAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
@@ -1590,9 +1837,13 @@
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script>
+        let is_edit = false;
         var questionCount = 1;
         var questionOrder = 0;
         var sectionOrder = 0;
+
+        var preGetPracticeCategoryType = "";
+        var preGetPracticeQuestionType = "";
 
         $("#passageRequired_1").click(function() {
             if ($(this).is(":checked")) {
@@ -1614,20 +1865,95 @@
             }
         });
 
+        function insertSuperCategory(data) {
+            let super_category_type = $(data).val();
+                super_category_type = super_category_type.join(" ");
+            let section_type = $('#section_type').val();
+            let format = $('#format').val();
+            if(super_category_type != '' && !containsOnlyNumbers(super_category_type)) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addSuperCategory") }}',
+                    data:{
+                        searchValue: super_category_type,
+                        format:format,
+                        section_type:section_type,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".superCategory").append('<option value=' + res.id + '>' + res.super_category_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
+
         function insertCategoryType(data) {
             let category_type = $(data).val();
                 category_type = category_type.join(" ");
+            let section_type = $('#section_type').val();
+            let format = $('#format').val();   
+            let super_category = ''; 
+            if(is_edit == true){
+                super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val(); 
+            } else {
+                super_category = $('#questionMultiModal select[name="super_category_create"]').val(); 
+            }
             if(category_type != '' && !containsOnlyNumbers(category_type)) {
                 $.ajax({
                     type: 'post',
                     url: '{{ route("addPracticeCategoryType") }}',
                     data:{
                         searchValue: category_type,
+                        format:format,
+                        section_type:section_type,
+                        super_category:super_category,
                         '_token': $('input[name="_token"]').val()
                     },
                     success: function(res){
                         if(res.success) {
                             $(".categoryType").append('<option value=' + res.id + '>' + res.category_type_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
+
+        function insertDiffRating(data){
+            let diff_rating = $(data).val();
+            if(diff_rating != '' && !containsOnlyNumbers(diff_rating)){
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addDiffRating") }}',
+                    data:{
+                        searchValue: diff_rating,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".diffRating").append('<option value=' + res.id + '>' + res.diff_rating_title + '</option>');
+                        }
+                    }
+                });
+            }
+        }
+
+        function insertQuestionTag(data){
+            let question_tag = $(data).val();
+            let format = $('#format').val();
+            if(question_tag != '' && !containsOnlyNumbers(question_tag)){
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route("addQuestionTag") }}',
+                    data:{
+                        searchValue: question_tag,
+                        format:format,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res){
+                        if(res.success) {
+                            $(".questionTag").append('<option value=' + res.id + '>' + res.question_tag + '</option>');
                         }
                     }
                 });
@@ -1641,12 +1967,28 @@
         function insertQuestionType(data){
             let question_type = $(data).val();
                 question_type = question_type.join(" ");
+            let section_type = $('#section_type').val();
+            let format = $('#format').val();
+            let id = $(data).attr('data-id');
+            let super_category = ''; 
+            let category = '';
+            if(is_edit == true){
+                super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val(); 
+                category = $(`#editQuestionMultiModal #edit_category_type_${id}`).val();
+            } else {
+                super_category = $('#questionMultiModal select[name="super_category_create"]').val(); 
+                category = $(`#questionMultiModal #category_type_${id}`).val();
+            }
             if(question_type != '' && !containsOnlyNumbers(question_type)) {
                 $.ajax({
                     type: 'post',
                     url: '{{ route("addPracticeQuestionType") }}',
                     data:{
                         searchValue: question_type,
+                        format:format,
+                        section_type:section_type,
+                        super_category:super_category,
+                        category:category,
                         '_token': $('input[name="_token"]').val()
                     },
                     success: function(res){
@@ -1675,22 +2017,26 @@
                 }
     
                 if(question_type == '') {
-                    toastr.error('Please select a question type!');
+                    toastr .error('Please select a question type!');
                     return false;
                 }
             }
 
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
-                html += `<div class="mb-2 col-md-5 me-2">`;                
-                html += `<select class="js-select2 select categoryType" id="edit_category_type_${key}" name="edit_category_type" onchange="insertCategoryType(this)" multiple>`;                              
-                html += await dropdown_lists(`/admin/getPracticeCategoryType`);            
-                html += `</select>`;                
+                html += `<div class="mb-2 col-md-5 me-2">`;   
+                html += `<div class="d-flex align-items-center">`;             
+                html += `<select class="js-select2 select categoryType" id="edit_category_type_${key}" name="edit_category_type" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
+                html += preGetPracticeCategoryType;
+                html += `</select>`; 
                 html += `</div>`;                
-                html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
-                html += `<select class="js-select2 select questionType" id="edit_search-input_${key}" name="edit_search-input" onchange="insertQuestionType(this)" multiple>`;                             
-                html += await dropdown_lists(`/admin/getPracticeQuestionType`);          
-                html += `</select>`;                
+                html += `</div>`;                
+                html += `<div class="mb-2 col-md-5 add_question_type_select">`;   
+                html += `<div class="d-flex align-items-center">`;             
+                html += `<select class="js-select2 select questionType" id="edit_search-input_${key}" name="edit_search-input" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
+                html += preGetPracticeQuestionType;
+                html += `</select>`;    
+                html += `</div>`;             
                 html += `</div>`; 
                 html += `<div class="col-md-2 add-minus-icon">`;                
                 html += `<button class="minus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;                
@@ -1721,6 +2067,7 @@
         async function addNewType(data,type) {
             let key = $(data).attr('data-id');
                 key = parseInt(key);
+            let testType = $('#format').val();
 
                 let category_type = $(`#category_type_${key - 1}`).val();
                 let question_type = $(`#search-input_${key - 1}`).val();
@@ -1734,19 +2081,25 @@
                     toastr.error('Please select a question type!');
                     return false;
                 }
-            
+                
+                preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
+                preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
 
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewType">`;
-                html += `<div class="mb-2 col-md-5 me-2">`;                
-                html += `<select class="js-select2 select categoryType" id="category_type_${key}" name="category_type" onchange="insertCategoryType(this)" multiple>`;                            
-                html += await dropdown_lists(`/admin/getPracticeCategoryType`);            
-                html += `</select>`;                
+                html += `<div class="mb-2 col-md-5 me-2">`; 
+                html += `<div class="d-flex align-items-center">`;                 
+                html += `<select class="js-select2 select categoryType" id="category_type_${key}" name="category_type" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                            
+                html += preGetPracticeCategoryType;            
+                html += `</select>`;  
+                html += `</div>`;               
                 html += `</div>`;                
-                html += `<div class="mb-2 col-md-5 add_question_type_select">`;                
-                html += `<select class="js-select2 select questionType" id="search-input_${key}" name="search-input" onchange="insertQuestionType(this)" multiple>`;                          
-                html += await dropdown_lists(`/admin/getPracticeQuestionType`);                
-                html += `</select>`;                
+                html += `<div class="mb-2 col-md-5 add_question_type_select">`; 
+                html += `<div class="d-flex align-items-center">`;               
+                html += `<select class="js-select2 select questionType" id="search-input_${key}" name="search-input" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                          
+                html += preGetPracticeQuestionType;                
+                html += `</select>`; 
+                html += `</div>`;                
                 html += `</div>`; 
                 html += `<div class="col-md-2 add-minus-icon">`;                
                 html += `<button class="minus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
@@ -1816,7 +2169,7 @@
             $('.edit-plus-button').attr('data-id', count - 1);
         }
 
-        $(document).ready(function() { 
+        $(document).ready(async function() { 
             $( '#questionMultiModal' ).modal( {
                 focus: false
             } );
@@ -1825,11 +2178,43 @@
                 focus: false
             } );
          
-            $('input[name=tags]').tagify();
+            // $('input[name=tags]').tagify();
+            $(`#question_tags_create`).select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Question Tag",
+                maximumSelectionLength: 1
+            });
+
+            $(`#super_category_create`).select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Super Category",
+                maximumSelectionLength: 1
+            });
+
+            $(`#super_category_edit`).select2({
+                dropdownParent: $('#editQuestionMultiModal'),
+                tags: true,
+                placeholder : "Select Super Category",
+                maximumSelectionLength: 1
+            });
+
+            $(`#question_tags_edit`).select2({
+                dropdownParent: $('#editQuestionMultiModal'),
+                tags: true,
+                placeholder : "Select Question Tag",
+                maximumSelectionLength: 1
+            });
 
             $(`#format`).select2({
                 // minimumResultsForSearch: -1,
                 placeholder : "Select test type"
+            });
+
+            $(`#source`).select2({
+                // minimumResultsForSearch: -1,
+                placeholder : "Select test source"
             });
 
             $(`#search-input_0`).select2({
@@ -1843,6 +2228,20 @@
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
+                maximumSelectionLength: 1
+            });
+
+            $(`#diff_rating_create`).select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags : true,
+                placeholder : "Select Difficulty Rating",
+                maximumSelectionLength: 1
+            });
+
+            $(`#diff_rating_edit`).select2({
+                dropdownParent: $('#editQuestionMultiModal'),
+                tags : true,
+                placeholder : "Select Difficulty Rating",
                 maximumSelectionLength: 1
             });
 
@@ -1891,6 +2290,9 @@
                 dropdownParent: $('#editQuestionMultiModal'),
                 placeholder : "Select Passages",
             });
+            preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType`);
+            preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType`);
+
         })
         
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
@@ -1900,10 +2302,27 @@
             keyboard: false
         });
         var allowedContent = true;
-        CKEDITOR.replace('js-ckeditor-desc', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
+
+        $('.preloader').css('display', 'block');
+        $('textarea').each(function() {
+            let textAreaId = $(this).attr('id');
+            CKEDITOR.replace(textAreaId, {
+                extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+                allowedContent: true,
+                on: {
+                instanceReady: function(event) {
+                    if (textAreaId === $('textarea:last').attr('id')) {
+                        $('.preloader').css('display', 'none');
+                    }
+                }
+                }
+            });
         });
+
+        // CKEDITOR.replace('js-ckeditor-desc', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
         /*CKEDITOR.replace( 'js-ckeditor-addQuesection',{
         	extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         	allowedContent
@@ -1912,623 +2331,623 @@
         	extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         	allowedContent
         });*/
-        CKEDITOR.replace('js-ckeditor-addQue', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_OddAnswer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_OddAnswer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_OddAnswer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_OddAnswer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('js-ckeditor-addQue', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_OddAnswer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_OddAnswer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_OddAnswer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_OddAnswer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace('choiceOneInFour_EvenAnswer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_EvenAnswer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_EvenAnswer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_EvenAnswer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Odd_Answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Odd_Answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Odd_Answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Odd_Answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Odd_Answer_5', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_5', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace('choiceOneInFive_Even_Answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Even_Answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Even_Answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Even_Answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFive_Even_Answer_5', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace('choiceOneInFive_Even_Answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Even_Answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Even_Answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Even_Answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFive_Even_Answer_5', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd5', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd5', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even5', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even5', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_OddAnswer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFourPass_OddAnswer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFourPass_OddAnswer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFourPass_OddAnswer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultInFourFillAnswer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceMultInFourFillAnswer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceMultInFourFillAnswer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceMultInFourFillAnswer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultInFourFillAnswer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceMultInFourFillAnswer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceMultInFourFillAnswer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceMultInFourFillAnswer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultInFourFill_explanation_answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_1', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_1', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_2', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_2', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_3', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_3', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_4', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_4', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        //for edit functionality
-        CKEDITOR.replace('js-ckeditor-edit-addQue', {
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // //for edit functionality
+        // CKEDITOR.replace('js-ckeditor-edit-addQue', {
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_5',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_5',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_5',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_5',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd5',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd5',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even5',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even5',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        // new 
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // // new 
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
-        CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_1',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_2',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_3',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
-        CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_4',{
-            extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-            allowedContent
-        });
+        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_1',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_2',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_3',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
+        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_4',{
+        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
+        //     allowedContent
+        // });
 
         $('.edit_question').click(function() {
 			var id = $(this).data('id');
@@ -2565,6 +2984,7 @@
 
         $('.add_section_modal_btn').click(function() {
             $('#testSectiontitle').val('');
+            $('#regular_time_hour, #regular_time_minute, #regular_time_second, #50extendedhour, #50extendedminute, #50extendedsecond, #100extendedhour, #100extendedminute, #100extendedsecond').val('');
             var optionObj = [];
             var modelCount = $('.sectionTypesFull').length;
             $('#currentModelId').val(modelCount);
@@ -2581,7 +3001,7 @@
                 var typeVal = optionObj[format][i].replace(/\s/g, '_');
                 typeVallev = typeVal.replace(')', '');
                 typeVallev2 = typeVallev.replace('(', '');
-                opt += '<option value="' + typeVallev2 + '">' + optionObj[format][i] + '</option>';
+                opt += `<option value="${typeVallev2}" data-isMath="${typeVallev2 == 'Math_no_calculator' || typeVallev2 == 'Math_with_calculator' ? true : false }" >${optionObj[format][i]}</option>`;
             }
             $('#testSectionType').html(opt);
             $('#sectionModal').modal('show');
@@ -2601,12 +3021,29 @@
             $('input[name="choiceMultInFourFill_fill[]"]').val('');
         }
 
+        function clearError(){
+            $('#questionMultiModal #questionError').text('');
+            $('#questionMultiModal #tagError').text('');
+            $('#questionMultiModal #categoryTypeError').text('');
+            $('#questionMultiModal #questionTypeError').text('');
+            $('#questionMultiModal #passNumberError').text('');
+            $('#questionMultiModal #passageTypeError').text('');
+            $('#questionMultiModal #superCategoryError').text('');
+        }
+
         $(document).on('click', '.add_question_modal_multi', function() {
+            is_edit = false;
             clearModel();
+            clearError();
             $('#passageRequired_1').prop('checked',true);
             $('#passage_number').prop('disabled',false);
             $('select[name="passagesType"]').prop('disabled',false);
+            $('#questionMultiModal #diff_rating_create').val('').trigger('change');
+            $('#questionMultiModal #question_tags_create').val('').trigger('change');
+            $('#questionMultiModal #super_category_create').val('').trigger('change');
             let section_id = $(this).parents('.sectionTypesFull').attr('data-id');
+            let section_type = $(`.selectedSection_${section_id}`).val();
+            $('#section_type').val(section_type);
             if($(`.section_${section_id} .firstRecord .sectionList`).length >= 0) {
                 questionOrder = $(`.section_${section_id} .firstRecord .sectionList`).length;
             } else {
@@ -2614,7 +3051,6 @@
             }
             $('.sectionAddId').val(section_id);
             questionCount = $(`.section_${section_id} .sectionList`).length + 1;
-            console.log(questionCount);
             // count++;
             var dataId = $(this).attr("data-id");
             var AnuserOpts = $('#sectionDisplay_' + dataId + ' .firstRecord ul li span .selectedSecTxt').val();
@@ -2632,6 +3068,205 @@
             getPassages(format);
             removeMoreFillOption();
             $('#questionMultiModal').modal('show');
+        });
+
+        // $(document).on('click','.add_score_btn',function(){
+        //     $('.table_body').empty();
+        //     let section_id = $(this).attr('data-id');
+        //     let total_question = $(`.section_${section_id} .sectionTypesFullMutli .sectionList`);
+        //     if(total_question.length > 0){
+        //         for (var i = 0; i < total_question.length + 1; i++) {
+        //             let element = total_question[i];
+        //             let questionId = $(element).attr('data-id');
+        //             // $(`.table_body #score_${section_id}_${questionId}`).remove();
+        //             $('.table_body').append('<tr id="score_'+questionId+'" data-section_id="'+section_id+'" data-question_id="'+questionId+'" ><td><input type="number" placeholder="Actual score" id="actualScore_'+questionId+'" class="form-control"></td><td><input type="number" placeholder="Converted Score" id="convertedScore_'+questionId+'" class="form-control"></td></tr>');
+        //         }
+        //     }
+        //     $('#scoreModalMulti').modal('show');
+        // });
+
+        function addClassScore(data){
+            let checkIsmath = $(data).find('option:selected').attr('data-ismath');
+
+            if(checkIsmath == "true") {
+                $('#sectionModal .save_section').attr('data-class', 'checkMathDiv');
+            } else {
+                $('#sectionModal .save_section').attr('data-class', '');
+            }
+        }
+
+        //new
+        $(document).on('click','.add_score_btn', function(){
+            $('.table_body').empty();
+            let section_id = $(this).attr('data-id');
+            let section_types = $(this).attr('data-section_type');
+            let test_ids = $(this).attr('data-test_id');
+            let total_question = $(`.section_${section_id} .sectionTypesFullMutli .sectionList`);
+            // if(total_question.length > 0){
+                $.ajax({
+                    type: 'POST',
+                    url: '{{route("check_score")}}',
+                    data: {
+                        section_id: section_id,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(res) {
+                        var result = res.records;
+                        if(result.length > 0){
+                            // for (var i = 0; i < result.length; i++) {
+                            //     $('.table_body').append(`<tr id="score_${result[i]['section_id']}_${i}" data-section_id="${result[i]['section_id']}" data-question_id="${result[i]['question_id']}" data-section_type="${result[i]['section_type']}" data-test_id="${result[i]['test_id']}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${result[i]['question_id']}" name="actualScore" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" value="${result[i]['actual_score'] != null ? result[i]['actual_score'] : ''}"></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${result[i]['question_id']}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"  value="${result[i]['converted_score'] != null ? result[i]['converted_score'] : ''}"></td></tr>`);
+                            // }
+                            if(section_types == 'Math_no_calculator' || section_types == 'Math_with_calculator'){
+                                let mathDivs = $('.checkMathDiv').find('.firstRecord .sectionList');
+                                    for (var i = 0; i < mathDivs.length+1; i++) {
+                                        if(i < result.length){
+                                            $('.table_body').append(`<tr id="score_${result[i]['section_id']}_${i}" data-section_id="${result[i]['section_id']}" data-question_id="${result[i]['question_id']}" data-section_type="${result[i]['section_type']}" data-test_id="${result[i]['test_id']}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${result[i]['question_id']}" name="actualScore" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" value="${result[i]['actual_score'] != null ? result[i]['actual_score'] : ''}"></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${result[i]['question_id']}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"  value="${result[i]['converted_score'] != null ? result[i]['converted_score'] : ''}"></td></tr>`);
+                                        } else {
+                                            $('.table_body').append(`<tr id="score_${section_id}_${i}" data-section_id="${section_id}" data-question_id="${i}" data-section_type="${section_types}" data-test_id="${test_ids}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td></tr>`);
+                                        }
+                                    }
+                            } else {
+                                for (var i = 0; i < total_question.length + 1; i++) {
+                                    if(i < result.length){
+                                        $('.table_body').append(`<tr id="score_${result[i]['section_id']}_${i}" data-section_id="${result[i]['section_id']}" data-question_id="${result[i]['question_id']}" data-section_type="${result[i]['section_type']}" data-test_id="${result[i]['test_id']}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${result[i]['question_id']}" name="actualScore" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" value="${result[i]['actual_score'] != null ? result[i]['actual_score'] : ''}"></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${result[i]['question_id']}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"  value="${result[i]['converted_score'] != null ? result[i]['converted_score'] : ''}"></td></tr>`);
+                                    } else {
+                                        $('.table_body').append(`<tr id="score_${section_id}_${i}" data-section_id="${section_id}" data-question_id="${i}" data-section_type="${section_types}" data-test_id="${test_ids}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td></tr>`);
+                                    }
+                                } 
+                            }
+                        } else {
+                            if(section_types == 'Math_no_calculator' || section_types == 'Math_with_calculator'){
+                                let mathDivs = $('.checkMathDiv').find('.firstRecord .sectionList');
+                                for (var i = 0; i < mathDivs.length + 1; i++) {
+                                    let element = mathDivs[i];
+                                    let questionId = $(element).attr('data-id');
+                                    $('.table_body').append(`<tr id="score_${section_id}_${i}" data-section_id="${section_id}" data-question_id="${i}" data-section_type="${section_types}" data-test_id="${test_ids}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td></tr>`);
+                                }
+                            } else {
+                                for (var i = 0; i < total_question.length + 1; i++) {
+                                    let element = total_question[i];
+                                    let questionId = $(element).attr('data-id');
+                                    $('.table_body').append(`<tr id="score_${section_id}_${i}" data-section_id="${section_id}" data-question_id="${i}" data-section_type="${section_types}" data-test_id="${test_ids}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td></tr>`);
+                                }
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            // }                                                                                                                                                                                         
+            $('#scoreModalMulti').modal('show');
+        });
+
+        // $(document).on('click', '.save_scores_btn', function() {
+        //         let scores = [];
+        //         $('.table_body tr').each(function() {
+        //             let questionId = $(this).attr('data-question_id');
+        //             let sectionId = $(this).attr('data-section_id');
+        //             let actualScore = $('#actualScore_'+questionId).val();
+        //             let convertedScore = $('#convertedScore_'+questionId).val();
+        //             let scoreObj = {
+        //                 'sectionId': sectionId,
+        //                 'questionId': questionId,
+        //                 'actualScore': actualScore,
+        //                 'convertedScore': convertedScore
+        //             };
+        //         scores.push(scoreObj);
+        //         });
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '{{route("score_save")}}',
+        //         data: {
+        //             'scores': scores,
+        //             '_token': $('input[name="_token"]').val()
+        //         },
+        //         success: function(response) {
+        //             console.log(response);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.log(xhr.responseText);
+        //         }
+        //     });
+        //     $('#scoreModalMulti').modal('hide');
+        // });
+
+        //new
+        var closeModal = document.getElementById("scoreModalMulti");
+        closeModal.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                let scores = [];
+                $('.table_body tr').each(function() {
+                    let questionId = $(this).attr('data-question_id');
+                    let sectionId = $(this).attr('data-section_id');
+                    let sectionType = $(this).attr('data-section_type');
+                    let testId = $(this).attr('data-test_id');
+                    let actualScore = $('#actualScore_'+questionId).val();
+                    let convertedScore = $('#convertedScore_'+questionId).val();
+                    
+                    let scoreObj = {
+                        'sectionId': sectionId,
+                        'questionId': questionId,
+                        'actualScore': actualScore,
+                        'convertedScore': convertedScore,
+                        'sectionType': sectionType,
+                        'testId': testId
+                    };
+                    scores.push(scoreObj);
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: '{{route("score_save")}}',
+                    data: {
+                        'scores': scores,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    success: function(response) {
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+                $('#scoreModalMulti').modal('hide')
+            }
+        });
+
+        $(document).on('click', '.save_scores_btn', function() {
+            let scores = [];
+            $('.table_body tr').each(function() {
+                let questionId = $(this).attr('data-question_id');
+                let sectionId = $(this).attr('data-section_id');
+                let sectionType = $(this).attr('data-section_type');
+                let testId = $(this).attr('data-test_id');
+                let actualScore = $('#actualScore_'+questionId).val();
+                let convertedScore = $('#convertedScore_'+questionId).val();
+                
+                let scoreObj = {
+                    'sectionId': sectionId,
+                    'questionId': questionId,
+                    'actualScore': actualScore,
+                    'convertedScore': convertedScore,
+                    'sectionType': sectionType,
+                    'testId': testId
+                };
+                scores.push(scoreObj);
+            });
+            $.ajax({
+                type: 'POST',
+                url: '{{route("score_save")}}',
+                data: {
+                    'scores': scores,
+                    '_token': $('input[name="_token"]').val()
+                },
+                success: function(response) {
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+            $('#scoreModalMulti').modal('hide');
         });
 
         $('.save_question').click(function() {
@@ -2654,8 +3289,22 @@
         });
         
         $('.save_section').click(function() {
+            var rHour = $('#regular_time_hour').val();
+            var rMinute = $('#regular_time_minute').val();
+            var rSecond = $('#regular_time_second').val();
+            var fiftyHour = $('#50extendedhour').val();
+            var fiftyMinute = $('#50extendedminute').val();
+            var fiftySecond = $('#50extendedsecond').val();
+            var hundredHour = $('#100extendedhour').val();
+            var hundredMinute = $('#100extendedminute').val();
+            var hundredSecond = $('#100extendedsecond').val();
+
+            var regularTime = ("0" + rHour).slice(-2) + ":" + ("0" + rMinute).slice(-2) + ":" + ("0" + rSecond).slice(-2);
+            var fiftyExtended = ("0" + fiftyHour).slice(-2) + ":" + ("0" + fiftyMinute).slice(-2) + ":" + ("0" + fiftySecond).slice(-2);
+            var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + ("0" + hundredSecond).slice(-2);
 
             var whichModel = $(this).parent().find('.whichModel').val();
+            let scoreClass = $(this).attr('data-class');
             $('.sectionTypesFull').show();
             var format = $('.ptype #format').val();
             var currentModelId = $('#currentModelId').val();
@@ -2694,13 +3343,17 @@
                         'testSectionType': testSectionType,
                         'get_test_id': get_test_id,
                         'order': sectionOrder,
+                        'regular': regularTime,
+                        'fifty': fiftyExtended,
+                        'hundred': hundredExtended,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: '{{ route("addPracticeTestSection") }}',
                     method: 'post',
                     success: (res) => {
+                        let  ScoreClass = `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
                         $('.sectionContainerList').append(
-                            '<div class="sectionTypesFull section_'+res+'" data-id='+res+' id="sectionDisplay_' + currentModelId +
+                            '<div class="sectionTypesFull '+scoreClass+' section_'+res+'" data-id='+res+' id="sectionDisplay_' + currentModelId +
                             '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
                             format +
                             '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_'+res+'"><strong>' +
@@ -2709,11 +3362,11 @@
                             testSectionType +
                             '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
                             res +
-                            '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="'+res+'" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                            '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="'+res+'" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="'+res+'" data-section_type="'+testSectionType+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
                             res +
                             '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="' +
                             currentModelId +
-                            '" class="btn w-25 btn-alt-success add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
+                            '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="'+res+'" data-section_type="'+testSectionType+'" data-test_id="'+get_test_id+'" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
                             res +
                             '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
                             res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
@@ -2735,12 +3388,15 @@
 
 
             } else {
-
+                var test_source = $('#source option:selected').val();
                 var testSectionType = $('#testSectionTypeRead').val();
                 var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
                 var activeAnswerType = '.' + $('#selectedAnswerType').val();
                 //var new_question_type = $('#new_question_type').val();
                 var new_question_type_select = $('#new_question_type_select').val();
+                var difficulty = $('#diff_rating_create').val();
+                var tags = $('#question_tags_create').val();
+                var super_category = $('#super_category_create').val();
 
                 var question_category_type_value = $('#category_type').val();
                 var get_category_type_values = $('select[name=category_type]').map(function(i,v) {
@@ -2770,20 +3426,52 @@
                 var passagesTypeTxt = $(".passagesType option:selected").text();
 
                 if($('#passageRequired_1').is(':checked')){
-                    if (format == '' || testSectionType == '' || question == '' || questionType == '' || passagesType == ''){
-                        $('#questionMultiModal .validError').text('Below fields are required!');
+                    if(question =='' || tags.length ==0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || jQuery.type(passNumber) == "null" || passagesType =='' || format =='' || testSectionType =='' || super_category ==''){
+                        $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                        $('#js-ckeditor-addQue').focus();
+                        $('#questionMultiModal #tagError').text(tags.length ==0 ? 'Tag is required!' : '');
+                        $('#addTag').focus();
+                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                        $('#category_type_0').focus();
+                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                        $('#search-input_0').focus();
+                        $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ? 'Passage Number is required!' : '');
+                        $('#passage_number').focus();
+                        $('#questionMultiModal #passageTypeError').text(passagesType =='' ? 'Passage Type is required!' : '');
+                        $('#passagesType').focus();
+                        $('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
+                        $('#super_category_create').focus();
                         return false;
-                    } else {
-                        $('#questionMultiModal .validError').text('');
+                    }else{
+                        $('#questionMultiModal #questionError').text('');
+                        $('#questionMultiModal #tagError').text('');
+                        $('#questionMultiModal #categoryTypeError').text('');
+                        $('#questionMultiModal #questionTypeError').text('');
+                        $('#questionMultiModal #passNumberError').text('');
+                        $('#questionMultiModal #passageTypeError').text('');
+                        $('#questionMultiModal #superCategoryError').text('');
                     }
                 } else {
-                    if (format == '' || testSectionType == '' || question == '' || questionType == ''){
-                        $('#questionMultiModal .validError').text('Below fields are required!');
+                    if(question =='' || tags.length ==0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' || super_category ==''){
+                        $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                        $('#js-ckeditor-addQue').focus();
+                        $('#questionMultiModal #tagError').text(tags.length ==0 ? 'Tag is required!' : '');
+                        $('#addTag').focus();
+                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                        $('#category_type_0').focus();
+                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        $('#search-input_0').focus();
+                        $('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
+                        $('#super_category_create').focus();
                         return false;
                     } else {
-                        $('#questionMultiModal .validError').text('');
+                        $('#questionMultiModal #questionError').text('');
+                        $('#questionMultiModal #tagError').text('');
+                        $('#questionMultiModal #categoryTypeError').text('');
+                        $('#questionMultiModal #questionTypeError').text('');
+                        $('#questionMultiModal #superCategoryError').text('');
                     }
-                } 
+                }   
                 
                 if($('#passageRequired_1').is(':checked')){
                     var pass = $('select[name="passagesType"] :selected').text();
@@ -2829,6 +3517,7 @@
 
                     if (typeof fillVals !== 'undefined' && fillVals.length !== 0) {
                         fill = fillVals.join();
+                        answerType = fill;
                     }
                     if ($('#questionMultiModal #selectedLayoutQuestion ' + activeAnswerType +
                             ' .choiceMultInFourFill_filltype').val() != '') {
@@ -2877,6 +3566,7 @@
                 $.ajax({
                     data: {
                         'format': format,
+                        'test_source':test_source,
                         'testSectionType': testSectionType,
                         'question': question,
                         'question_order': questionOrder,
@@ -2889,9 +3579,11 @@
                         'answer_exp' : answerExpJson,
                         'fill': fill,
                         'fillType': fillType,
+                        'diff_rating':difficulty,
                         'multiChoice': multiChoice,
                         'tags': tags,
                         'section_id': section_id,
+                        'super_category':super_category,
                         'new_question_type_select': new_question_type_select,
                         'get_category_type_values': get_category_type_values,
                         'get_question_type_values': get_question_type_values,
@@ -2920,7 +3612,7 @@
                         $('.addQuestion').val('');
                         $('.validError').text('');
 
-                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Question"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
+                    $('#sectionDisplay_' + currentModelQueId + ' .firstRecord').append('<ul class="sectionList singleQuest_'+res.question_id+'" data-id="'+res.question_id+'"><li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li><button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')"> <i class="fa fa-fw fa-pencil-alt"></i></button> <button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Delete Question"   onclick="practQuestioDel('+res.question_id+')">  <i class="fa fa-fw fa-times"></i></button> </li></ul>');
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
                     
                     $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-id="'+res.question_id+'" data-section_id="'+section_id+'" style="display:none;">\n' +
@@ -2997,89 +3689,97 @@
                 }
             });
         }
-        function practQuestioEdit(id){
-            clearModel();
-            $.ajax({
-                data:{
-                    'question_id':id,
-                    '_token': $('input[name="_token"]').val()
-                },
-                url: '{{route("getPracticeQuestionById")}}',
-                method: 'post',
-                success: (res) => {
-                    if(res.length>0){
-                        var result = res[0];
-                        let categorytypeArr = JSON.parse(result.category_type);
-                        let questiontypeArr = JSON.parse(result.question_type_id);
-                        $('#editQuestionOrder').val(result.question_order);
-                        $('#editCurrentModelQueId').val(result.id);
-                        $('#quesFormat').val(result.format);
-                        $('.sectionAddId').val(result.practice_test_sections_id);
-                        $('#edittestSectionTypeRead').val(result.type);
-                        $('#new_question_type_select').val(result.question_type_id);
-                        $('#category_type').val(result.category_type);
-                        $('#editSelectedAnswerType').val(result.type);
-                        CKEDITOR.instances['js-ckeditor-edit-addQue'].setData(result.title);
-                        var tagsString = result.tags;
-                        
-                        $('input[name=questionTags]').val(tagsString);
-                        $(".passNumber").val(result.passage_number).change();
-                        for (let index = 1; index < categorytypeArr.length; index++) { 
-                            addNewTypes(index,'repet');
-                        }
+function practQuestioEdit(id){
+    is_edit = true;
+    clearModel();
+    $.ajax({
+        data:{
+            'question_id':id,
+            '_token': $('input[name="_token"]').val()
+        },
+        url: '{{route("getPracticeQuestionById")}}',
+        method: 'post',
+        success: (res) => {
+            if(res.question.length>0){
+                var result = res.question[0];
+                let categorytypeArr = JSON.parse(result.category_type);
+                let questiontypeArr = JSON.parse(result.question_type_id);
+                $('#editQuestionOrder').val(result.question_order);
+                $('#editCurrentModelQueId').val(result.id);
+                $('#quesFormat').val(result.format);
+                $('.sectionAddId').val(result.practice_test_sections_id);
+                $('#edittestSectionTypeRead').val(result.type);
+                $('#new_question_type_select').val(result.question_type_id);
+                $('#category_type').val(result.category_type);
+                $('#editSelectedAnswerType').val(result.type);
+                $('#diff_rating_edit').val(result.diff_rating).trigger('change');
+                $('#super_category_edit').val(result.super_category).trigger('change');
+                $('#question_tags_edit').val(result.tags).trigger('change');
+                CKEDITOR.instances['js-ckeditor-edit-addQue'].setData(result.title);
+                let section_type = $(`.selectedSection_${result.practice_test_sections_id}`).val();
+                $('#section_type').val(section_type);
+                
+                // $('#question_tags_edit').val(result.tags).trigger('change');
+                
+                $(".passNumber").val(result.passage_number).change();
+                for (let index = 1; index < categorytypeArr.length; index++) { 
+                    addNewTypes(index,'repet');
+                }
 
-                        //new
-                        if(result.passages_id != null){
-                            $('input[name="passageRequired_2"]').prop('checked', true);
-                            $('#edit_passage_number').prop("disabled", false);
-                            $('select[name="editPassagesType"]').prop("disabled", false);
-                        } else {
-                            $('input[name="passageRequired_2"]').prop('checked', false);
-                            $('#edit_passage_number').prop("disabled", true);
-                            $('select[name="editPassagesType"]').prop("disabled", true);
-                        }
+                //new
+                if(result.passages_id != null){
+                    $('input[name="passageRequired_2"]').prop('checked', true);
+                    $('#edit_passage_number').prop("disabled", false);
+                    $('select[name="editPassagesType"]').prop("disabled", false);
+                } else {
+                    $('input[name="passageRequired_2"]').prop('checked', false);
+                    $('#edit_passage_number').prop("disabled", true);
+                    $('select[name="editPassagesType"]').prop("disabled", true);
+                }
 
-                        setTimeout(function(){ 
-                            $(categorytypeArr).each((i,v) => {
-                                $(`#edit_category_type_${i}`).val(v);
-                                $(`#edit_category_type_${i}`).trigger('change');
-                            });
-            
-                            $(questiontypeArr).each((i,v) => {
-                                $(`#edit_search-input_${i}`).val(v);
-                                $(`#edit_search-input_${i}`).trigger('change');
-                            });
-                        }, 1000);
+                // setTimeout(function(){ 
+                    $(categorytypeArr).each((i,v) => {
+                        $(`#edit_category_type_${i}`).val(v);
+                        $(`#edit_category_type_${i}`).trigger('change');
+                    });
+    
+                    $(questiontypeArr).each((i,v) => {
+                        $(`#edit_search-input_${i}`).val(v);
+                        $(`#edit_search-input_${i}`).trigger('change');
+                    });
+                // }, 1000);
 
-                        $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
+                $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
+                
 
-                        $.ajax({
-                            data:{
-                                'format': result.format,
-                                '_token': $('input[name="_token"]').val()
-                            },
-                            url: '{{route("getPracticePassage")}}',
-                            method: 'post',
-                            success: (passRes) => {
-                                var opt = '';
-                                $.each(passRes, function( key, val){
-                                    if(val.id == passRes.passages_id){
-                                        opt +='<option value="'+val.id+'" selected="selected">'+val.title+'</option>';
-                                    }else{
-                                        opt +='<option value="'+val.id+'">'+val.title+'</option>';
-                                    }                        
-                                });
-                                $('.editPassagesType').html(opt);
-                                $("select[name=editPassagesType]").val(result.passages_id).trigger('change');
-                            }
+                $.ajax({
+                    data:{
+                        'format': result.format,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    url: '{{route("getPracticePassage")}}',
+                    method: 'post',
+                    success: (passRes) => {
+                        var opt = '';
+                        $.each(passRes, function( key, val){
+                            if(val.id == passRes.passages_id){
+                                opt +='<option value="'+val.id+'" selected="selected">'+val.title+'</option>';
+                            }else{
+                                opt +='<option value="'+val.id+'">'+val.title+'</option>';
+                            }       
                         });
-                        getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format ,result.multiChoice);
+                        $('.editPassagesType').html(opt);
+                        $("select[name=editPassagesType]").val(result.passages_id).trigger('change');
                     }
-                    $('#editQuestionMultiModal').modal('show');
-                    $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
-                } 
-            }); 
-        }
+                });
+                getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format ,result.multiChoice);
+            }
+            $('#editQuestionMultiModal').modal('show');
+            $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
+        } 
+    }); 
+}
+
 
 function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, format, multiChoice){
         answer_exp = JSON.parse(answer_exp);
@@ -3424,6 +4124,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
     $('.update_question_section').click(function() {
 
         $('.sectionTypesFull').show();
+        var test_source = $('#source option:selected').val();
         var currentModelQueId = $('#editCurrentModelQueId').val();
         var format = $('#quesFormat').val();
         var fill = 'N/A';
@@ -3432,7 +4133,9 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var fillVals =[];
         var multiChoice = '';
         // var tags = $('input[name="tags"]').val();
-        var tags = $("#questionTag").val();
+        var tags = $("#question_tags_edit").val();
+        var difficulty = $('#diff_rating_edit').val();
+        var super_category = $('#super_category_edit').val();
                         
         var testSectionType = $('#edittestSectionTypeRead').val();
         var get_category_type_values = $('select[name=edit_category_type]').map(function(i,v) {
@@ -3462,58 +4165,51 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var passagesType = $('.editPassagesType').val();
         var passagesTypeTxt = $(".editPassagesType option:selected").text();
 
-        // if($('#passageRequired_2').is(':checked')){
-        //     if(format =='' || testSectionType =='' || question =='' || questionType =='' || pass =='' || passNumber ==''){
-        //         $('#editQuestionMultiModal .validError').text('Below fields are required!');
-        //         return false;
-        //     } else { 
-        //         $('#editQuestionMultiModal .validError').text('');
-        //     }
-        // } else {
-        //     if(format =='' || testSectionType =='' || question =='' || questionType ==''){
-                
-        //         $('#editQuestionMultiModal .validError').text('Below fields are required!');
-        //         return false;
-        //     }else{
-        //         $('#editQuestionMultiModal .validError').text('');
-        //     }
-        // }
-
-        if($('#passageRequired_2').is(':checked')){
-                if(question =='' || tags.trim() =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || passNumber =='' || passagesType == '' || format =='' || testSectionType ==''){
-                // if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
-                    // $('#questionMultiModal .validError').text('Below fields are required!');
+            if($('#passageRequired_2').is(':checked')){
+                if(question =='' || tags =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || jQuery.type(passNumber) =='null' || jQuery.type(passagesType) == 'null' || format =='' || testSectionType =='' || super_category ==''){
                     $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
-                    $('#editQuestionMultiModal #tagError').text(tags.trim() == '' ? 'Tag is required!' : '');
+                    $('#js-ckeditor-edit-addQue').focus();
+                    $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
+                    $('#questionTag').focus();
                     $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                    $('#edit_category_type_0').focus();
                     $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                    $('#editQuestionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
-                    $('#editQuestionMultiModal #passageTypeError').text(passagesType =='' ? 'Passage Type is required!' : '');
+                    $('#edit_search-input_0').focus();
+                    $('#editQuestionMultiModal #passNumberError').text(jQuery.type(passNumber) =='null' ? 'Passage Number is required!' : '');
+                    $('#edit_passage_number').focus();
+                    $('#editQuestionMultiModal #passageTypeError').text(jQuery.type(passagesType) =='null' ? 'Passage Type is required!' : '');
+                    $('#edit_passage_type').focus();
+                    $('#editQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
+                    $('#super_category_edit').focus();
                     return false;
                 }else{
-                    // $('#questionMultiModal .validError').text('');
                     $('#editQuestionMultiModal #questionError').text('');
                     $('#editQuestionMultiModal #tagError').text('');
                     $('#editQuestionMultiModal #categoryTypeError').text('');
                     $('#editQuestionMultiModal #questionTypeError').text('');
                     $('#editQuestionMultiModal #passNumberError').text('');
                     $('#editQuestionMultiModal #passageTypeError').text('');
+                    $('#editQuestionMultiModal #superCategoryError').text('');
                 }
             } else {
-                if(question =='' || tags.trim() =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType ==''){
-                // if(format =='' || testSectionType =='' || question =='' || questionType ==''){
-                    // $('#questionMultiModal .validError').text('Below fields are required!');
+                if(question =='' || tags =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' || super_category ==''){
                     $('#editQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
-                    $('#editQuestionMultiModal #tagError').text(tags.trim() =='' ? 'Tag is required!' : '');
+                    $('#js-ckeditor-edit-addQue').focus();
+                    $('#editQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
+                    $('#questionTag').focus();
                     $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                    $('#edit_category_type_0').focus();
                     $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                    $('#edit_search-input_0').focus();
+                    $('#editQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
+                    $('#super_category_edit').focus();
                     return false;
                 }else{
-                    // $('#questionMultiModal .validError').text('');
                     $('#editQuestionMultiModal #questionError').text('');
                     $('#editQuestionMultiModal #tagError').text('');
                     $('#editQuestionMultiModal #categoryTypeError').text('');
                     $('#editQuestionMultiModal #questionTypeError').text('');
+                    $('#editQuestionMultiModal #superCategoryError').text('');
                 }
             }
 
@@ -3559,6 +4255,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
 
                 if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
                     fill = fillVals.join();    
+                    answerType = fill;
                 }
                 if($('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
                     fillType = $('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val();
@@ -3603,6 +4300,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 data:{
                     'id': currentModelQueId,
                     'format': format,
+                    'test_source':test_source,
                     'testSectionType': testSectionType,
                     'question': question,
                     'question_order': questionOrderUpdated,
@@ -3615,9 +4313,11 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     'answer_exp' : answerExpContentJson,
                     'fill': fill,
                     'fillType': fillType,
+                    'diff_rating':difficulty,
                     'multiChoice':multiChoice,
                     'section_id':section_id,
                     'tags':tags,
+                    'super_category':super_category,
                     'get_question_type_values':get_question_type_values,
                     'get_category_type_values':get_category_type_values,
                     '_token': $('input[name="_token"]').val()
@@ -3803,26 +4503,68 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
             fixStepIndicator(n)
         }
 
-        function nextPrev(n) {
+        async function nextPrev(n) {
             var x = document.getElementsByClassName("tab");
 
             var test_title_val = jQuery(".test_title").val();
             var test_format_type_val = jQuery('#format').val();
+            var test_source = jQuery('#source').val();
             var get_test_id = jQuery('#get_question_id').val();
 
+            preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${test_format_type_val}`);
+            preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${test_format_type_val}`);
+            
             if (test_title_val != '') {
                 $('.testvalidError').text('');
                 $.ajax({
                     data: {
                         'format': test_format_type_val,
                         'title': test_title_val,
+                        'source': test_source,
                         'get_test_id': get_test_id,
                         '_token': $('input[name="_token"]').val()
                     },
-                    url: '{{ route('addPracticeTest') }}',
+                    url: "{{ route('addPracticeTest') }}",
                     method: 'post',
                     success: (res) => {
                         jQuery("#get_question_id").val(res);
+                        // document.cookie = "format = " + $('#format').val();
+                    }
+                });
+                $.ajax({
+                    data: {
+                        'format': test_format_type_val,
+                        '_token': $('input[name="_token"]').val()
+                    },
+                    url: "{{ route('addDropdownOption') }}",
+                    method: 'post',
+                    success: (res) => {
+                        $('select[name="super_category_create"').html('');
+                        $('select[name="super_category_edit"').html('');
+                        $('select[name="category_type"').html('');
+                        $('select[name="edit_category_type"').html('');
+                        $('select[name="search-input"').html('');
+                        $('select[name="edit_search-input"').html('');
+                        let super_option = ``;
+                        $.each(res.super,function(i,v){
+                            super_option += `<option value=${v['id']}>${v['title']}</option>`;
+                        });
+                        $('select[name="super_category_create"').append(super_option);
+                        $('select[name="super_category_edit"').append(super_option);
+
+                        let category_option = ``;
+                        $.each(res.category,function(i,v){
+                            category_option += `<option value=${v['id']}>${v['category_type_title']}</option>`;
+                        });
+                        $('select[name="category_type"').append(category_option);
+                        $('select[name="edit_category_type"').append(category_option);
+
+                        let questionType_option = ``;
+                        $.each(res.questionType,function(i,v){
+                            questionType_option += `<option value=${v['id']}>${v['question_type_title']}</option>`;
+                        });
+                        $('select[name="search-input"').append(questionType_option);
+                        $('select[name="edit_search-input"').append(questionType_option);
                     }
                 });
             } else if (test_title_val == '') {
@@ -3881,10 +4623,14 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 $('#selectedLayoutQuestion .multi_field').hide();
                 $('#selectedLayoutQuestion .multiChoice_field').show();
                 $('#selectedLayoutQuestion .fill_field').hide();
-            } else {
+            } else if(arg == 2) {
                 $('#selectedLayoutQuestion .multi_field').hide();
                 $('#selectedLayoutQuestion .multiChoice_field').hide();
                 $('#selectedLayoutQuestion .fill_field').show();
+            } else {
+                $('#selectedLayoutQuestion .multi_field').hide();
+                $('#selectedLayoutQuestion .multiChoice_field').hide();
+                $('#selectedLayoutQuestion .fill_field').hide();
             }
         }
         //new 
@@ -3899,12 +4645,18 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 $('#EditSelectedLayoutQuestion .multiChoice_field').show();
                 $('#EditSelectedLayoutQuestion .fill_field').hide();
                 $('input[name="choiceMultInFourFill_fill[]"]').remove();
-            }else{
+            }else if(arg == 2) {
                 $('#EditSelectedLayoutQuestion .multi_field').hide();
                 $('input[name="choiceMultInFourFill[]"').prop("checked",false);
                 $('#EditSelectedLayoutQuestion .multiChoice_field').hide();
                 $('input[name="editChoiceMultiChoiceInFourFill"').prop("checked",false);
                 $('#EditSelectedLayoutQuestion .fill_field').show();
+            } else {
+                $('#EditSelectedLayoutQuestion .multi_field').hide();
+                $('input[name="choiceMultInFourFill[]"').prop("checked",false);
+                $('#EditSelectedLayoutQuestion .multiChoice_field').hide();
+                $('input[name="editChoiceMultiChoiceInFourFill"').prop("checked",false);
+                $('#EditSelectedLayoutQuestion .fill_field').hide();
             }
         }
 
@@ -4369,7 +5121,7 @@ function getEditAnswerExpContent(answerOpt, fill){
                     $.each(results, function(index,val){
                         $('.section_'+val.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+val.question['id']+'').remove();
                         let html = '';
-                            html += `<ul class="sectionList singleQuest_${val.question['id']}">`;
+                            html += `<ul class="sectionList singleQuest_${val.question['id']}" data-id="${val.question['id']}">`;
                             html += `<li>${val.question['title']}</li>`;
                             html += `<li class="answerValUpdate_${val.question['id']}">${val.question['answer']}</li>`;
                             html += `<li>${val.question['passages'] ? val.question['passages'] : ''}</li>`;
@@ -4437,6 +5189,22 @@ function getEditAnswerExpContent(answerOpt, fill){
                     $('#editTestSectionType').html(opt);
                     $('#editTestSectionTitle').val(`${res.sectionDetails.section_title}`);
                     $('#currentSectionId').val(`${res.sectionDetails.id}`);
+
+                    let regularTime = res.sectionDetails.regular_time.split(':');
+                    let fiftyTime = res.sectionDetails.fifty_per_extended.split(':');
+                    let hundredTime = res.sectionDetails.hundred_per_extended.split(':');
+
+                    $('#edit_regular_hour').val(regularTime[0]);
+                    $('#edit_regular_minute').val(regularTime[1]);
+                    $('#edit_regular_second').val(regularTime[2]);
+
+                    $('#edit50extendedhour').val(fiftyTime[0]);
+                    $('#edit50extendedminute').val(fiftyTime[1]);
+                    $('#edit50extendedsecond').val(fiftyTime[2]);
+
+                    $('#edit100extendedhour').val(hundredTime[0]);
+                    $('#edit100extendedminute').val(hundredTime[1]);
+                    $('#edit100extendedsecond').val(hundredTime[2]);
                 }
             });
             $('#editSectionModal').modal('show');
@@ -4446,12 +5214,28 @@ function getEditAnswerExpContent(answerOpt, fill){
             let id = $('#currentSectionId').val();
             let testSectionTitle = $('#editTestSectionTitle').val();
             let testSectionType = $('#editTestSectionType').val();
+            let rHour = $('#edit_regular_hour').val();
+            let rMinute = $('#edit_regular_minute').val();
+            let rSecond = $('#edit_regular_second').val();
+            let fiftyHour = $('#edit50extendedhour').val();
+            let fiftyMinute = $('#edit50extendedminute').val();
+            let fiftySecond = $('#edit50extendedsecond').val();
+            let hundredHour = $('#edit100extendedhour').val();
+            let hundredMinute = $('#edit100extendedminute').val();
+            let hundredSecond = $('#edit100extendedsecond').val();
+
+            var regularTime = ("0" + rHour).slice(-2) + ":" + ("0" + rMinute).slice(-2) + ":" + ("0" + rSecond).slice(-2);
+            var fiftyExtended = ("0" + fiftyHour).slice(-2) + ":" + ("0" + fiftyMinute).slice(-2) + ":" + ("0" + fiftySecond).slice(-2);
+            var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + ("0" + hundredSecond).slice(-2);
 
             $.ajax({
                 data: {
                     'sectionId': id ,
                     'sectionTitle': testSectionTitle,
-                    'sectionType': testSectionType, 
+                    'sectionType': testSectionType,
+                    'regular': regularTime,
+                    'fifty': fiftyExtended,
+                    'hundred': hundredExtended, 
                     '_token': $('input[name="_token"]').val()
                 },
                 url: '{{ route("update_section") }}',
@@ -4466,8 +5250,16 @@ function getEditAnswerExpContent(answerOpt, fill){
             $('#editSectionModal').modal('hide');
         });
 
+        function validateInput(input) {
+            var value = parseInt(input.value);
+            if (value > parseInt(input.max)) {
+                input.value = input.max;
+            }
+        }
+
         function deleteSection(data) {
             let id = $(data).attr('data-id');
+            let type = $(data).attr('data-section_type');
             var result = confirm("Are you sure to remove section ?");
             if(!result){
                 return false;
@@ -4478,6 +5270,7 @@ function getEditAnswerExpContent(answerOpt, fill){
             $.ajax({
                 data: {
                     'sectionId': id ,
+                    'sectionType': type,
                     '_token': $('input[name="_token"]').val()
                 },
                 url: '{{ route("delete_section") }}',

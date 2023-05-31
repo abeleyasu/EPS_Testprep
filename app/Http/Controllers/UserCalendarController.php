@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalendarEvent;
 use App\Models\UserCalendar;
+use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -174,6 +175,11 @@ class UserCalendarController extends Controller
 
         $calendarEvent = CalendarEvent::whereId($id)->first();
 
+        if($calendarEvent->reminders_id > 0) {
+            $reminder = Reminder::findOrFail($calendarEvent->reminders_id);
+            $reminder->update(['enabled' => 0]);
+        }
+        
         UserCalendar::where('event_id', $id)->delete();
 
         $data['fetchAllEvents'] = $this->fetchAllEvents();

@@ -3,10 +3,17 @@
 namespace App\Helpers;
 
 use App\Models\CollegeInformation;
+use App\Models\DiffRating;
 use App\Models\Grade;
 use App\Models\HonorCourseNameList;
 use App\Models\Passage;
+use App\Models\PracticeCategoryType;
+use App\Models\PracticeQuestion;
+use App\Models\QuestionTag;
+use App\Models\QuestionType;
+use App\Models\SuperCategory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Helper
 {
@@ -86,5 +93,83 @@ class Helper
         } else {
             return '';
         }
+    }
+
+    public function stringExactMatch($correctString, $string) 
+    {
+        if(Str::contains($string, ",")) {
+            $string = explode(",",$string);
+            foreach($string as $str) {
+                if(in_array($str,explode(",",$correctString))) {
+                    $status = true;
+                } else {
+                    $status = false;
+                }
+            }
+        } else {
+            if(in_array($string,explode(",",$correctString))) {
+                $status = true;
+            } else {
+                $status = false;
+            }
+        }
+        return $status;
+    }
+
+    public function getAllDifficultyRating(){
+        $ratings = DiffRating::all();
+        $questions = [];
+        foreach($ratings as $rating){
+            $questions[$rating->id] = PracticeQuestion::where('diff_rating',$rating->id)->where('test_source','2')->count();
+        }
+        
+        return ['ratings' => $ratings, 'questions' => $questions];
+    }
+
+    public function getAllQuestionTags(){
+        $tags = QuestionTag::all();
+        
+        return $tags;
+    }
+
+    public function getSelfMadeCategory(){
+        $category = PracticeCategoryType::where('selfMade',1)->get();
+        
+        return $category;
+    }
+
+    public function getSelfMadeQuestionType(){
+        $questionType = QuestionType::where('selfMade',1)->get();
+        
+        return $questionType;
+    }
+
+    public function getSelfMadeTags(){
+        $tags = QuestionTag::where('selfMade',1)->get();
+        
+        return $tags;
+    }
+
+    public function getSuperCategory($format){
+        $super_categories = SuperCategory::where('format',$format)->get();
+
+        return $super_categories;
+    }
+
+    public function getCategory($format){
+        $categories = PracticeCategoryType::where('format',$format)->get();
+
+        return $categories;
+    }
+
+    public function getQuestionType($format){
+        $questionTypes = QuestionType::where('format',$format)->get();
+
+        return $questionTypes;
+    }
+
+    public static function TimeChangeInMinutes($timeString){
+        [$hours,$minutes] = explode(':', $timeString);
+        return ($hours * 60) + $minutes;
     }
 }
