@@ -122,6 +122,11 @@ return [
             'path' => storage_path('logs/reminder_cronjob.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'fetchcollegeinfo' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/fetchcollegeinformation_cronjob.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

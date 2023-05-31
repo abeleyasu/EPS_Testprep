@@ -53,6 +53,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Cronjob\SendReminder;
 use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
+use App\Http\Controllers\Cronjob\FetchCollegeInformation;
 
 /*
 |--------------------------------------------------------------------------
@@ -403,3 +404,5 @@ Route::group(['middleware' => ['auth']],function () {
 });
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
 Route::get('/sendreminder', [SendReminder::class, 'index']);
+Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
+Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
