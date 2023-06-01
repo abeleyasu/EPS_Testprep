@@ -77,14 +77,18 @@ class SendReminder extends Controller
         $subject = "Important Reminder: Your Upcoming Deadlines and Activities";
         $body = "Dear $user->first_name,<br /><br />We hope you're doing well. This is your automated College Prep System Reminder, making sure you stay on top of your important deadlines and activities. Here's your reminder:<br /><br /><b>$reminder->reminder_name - $date at $time ET.</b><br /><br />Staying organized is important in order to achieve your admissions and test goals. We're here to help you stay on track. If you have any questions or need assistance, feel free to contact our support team.<br /><br />Best of luck with your upcoming activities!<br /><br />Sincerely,<br />College Prep System Team";
         
-        $sent = Mail::send([], [], function ($message) use ($to_email, $subject, $body) {
-            $message->to($to_email)->subject($subject)->html($body);
-        });
-    
-        if ($sent) {
-            Log::channel('reminder')->info("Email sent successfully to $to_email");
-        } else {
-            Log::channel('reminder')->error("Failed to send email to $to_email");
+        try {
+            $sent = Mail::send([], [], function ($message) use ($to_email, $subject, $body) {
+                $message->to($to_email)->subject($subject)->html($body);
+            });
+        
+            if ($sent) {
+                Log::channel('reminder')->info("Email sent successfully to $to_email");
+            } else {
+                Log::channel('reminder')->error("Failed to send email to $to_email");
+            }
+        } catch (\Exception $e) {
+            Log::channel('reminder')->error("An error occurred while sending email to $to_email: " . $e->getMessage());
         }
     }
 
@@ -119,6 +123,7 @@ class SendReminder extends Controller
                         )
                     );
             Log::channel('reminder')->info("message->sid = $message->sid");
+            Log::channel('reminder')->info("Twilio Response:\n" . json_encode($message, JSON_PRETTY_PRINT));
             Log::channel('reminder')->info("SMS sent successfully to $toPhoneNumber");
         } catch (Exception $e) {
             Log::channel('reminder')->info("Failed to send SMS: ". $e->getMessage());
