@@ -145,13 +145,81 @@ class HonorsController extends Controller
         
         if (!empty($data)) {
             $honor->update($data);
-            if($resume_id != null)
-            {
-                return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
-            }else{
-                return redirect()->route('admin-dashboard.highSchoolResume.activities');
-            }
 
+            //SBZ starts here
+            //old logic starts
+            // if($resume_id != null)
+            // {
+            //     return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
+            // }else{
+            //     return redirect()->route('admin-dashboard.highSchoolResume.activities');
+            // }
+            //old logic Ends
+
+            // new logic starts
+            $redirect_link = $request->redirect_link;
+            // echo "redirect_link = $redirect_link";
+            // exit;
+            if(!empty($redirect_link)){
+                if (strpos($redirect_link, 'personal') !== false) {
+                    if ($resume_id != null) {
+                        return redirect("user/admin-dashboard/high-school-resume/personal-info?resume_id=" . $resume_id);
+                    } else {
+                        return redirect()->route('admin-dashboard.highSchoolResume.personalInfo');
+                    }
+                }
+                else if (strpos($redirect_link, 'education') !== false) {
+                    if($resume_id != null) {
+                        return redirect("user/admin-dashboard/high-school-resume/education-info?resume_id=".$resume_id);
+                    } else {
+                        return redirect()->route('admin-dashboard.highSchoolResume.educationInfo');
+                    }
+                }
+                else if (strpos($redirect_link, 'activities') !== false) {
+                    if($resume_id != null)
+                    {
+                        return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
+                    }else{
+                        return redirect()->route('admin-dashboard.highSchoolResume.activities');
+                    }
+                }
+                else if (strpos($redirect_link, 'employment') !== false) {
+                    if ($resume_id != null) {
+                        return redirect('user/admin-dashboard/high-school-resume/employment-certifications?resume_id=' . $resume_id);
+                    } else {
+                        return redirect()->route('admin-dashboard.highSchoolResume.employmentCertification');
+                    }
+                }
+                else if (strpos($redirect_link, 'features') !== false) {
+                    if ($resume_id != null) {
+                        return redirect("user/admin-dashboard/high-school-resume/features-attributes?resume_id=" . $resume_id);
+                    } else {
+                        return redirect()->route('admin-dashboard.highSchoolResume.featuresAttributes');
+                    }
+                } 
+                else if (strpos($redirect_link, 'preview') !== false) {
+                    if($resume_id != null) {
+                        return redirect("user/admin-dashboard/high-school-resume/preview?resume_id=".$resume_id);
+                    } else{
+                        return redirect()->route('admin-dashboard.highSchoolResume.preview');
+                    }
+                }
+                else {
+                    if($resume_id != null) {
+                        return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
+                    } else {
+                        return redirect()->route('admin-dashboard.highSchoolResume.activities');
+                    }
+                }
+            } else {
+                if($resume_id != null) {
+                    return redirect("user/admin-dashboard/high-school-resume/activities?resume_id=".$resume_id);
+                } else {
+                    return redirect()->route('admin-dashboard.highSchoolResume.activities');
+                }
+            }
+            // new logic Ends
+            //SBZ Ends here
         }
     }
 }
