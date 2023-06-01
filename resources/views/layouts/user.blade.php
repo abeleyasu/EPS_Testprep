@@ -2,6 +2,7 @@
 
 @section('page-content')
 <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed">
+    <div id="page-loader" class="show"></div>
     @include('components.user-nav')
     @include('components.user-header')
 

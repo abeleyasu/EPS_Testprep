@@ -31,6 +31,13 @@
                 ])
             </div>
             <p class="mb-5">Input the aspects of colleges that matter to you the most -OR- directly search for colleges</p>
+
+            @if(session('cmessage'))
+            <div class="alert alert-success">
+                {{ session('cmessage') }}
+            </div>
+            @endif
+
             <form>
                 <div class="block block-rounded tab-container ">
                     <ul class="nav nav-tabs nav-tabs-block" role="tablist">
@@ -47,6 +54,7 @@
                             </div>
                         </li>
                     </ul>
+
                     <div class="block-content tab-content college-content">
                         <div class="tab-pane active" id="btabs-static-home" role="tabpanel" aria-labelledby="btabs-static-home-tab">
                             <form method="get">
@@ -76,12 +84,6 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                <!-- <div class="mb-2">
-                                                                    <label class="form-check-label bold-label" for="search_major">
-                                                                        Search Specific College Majors
-                                                                    </label>
-                                                                    <input class="form-control form-control-lg form-control-alt" type="text" id="search_major" placeholder="Start Typing to Search...">
-                                                                </div> -->
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label" for="degree_type">
                                                                         Degree Type

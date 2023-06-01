@@ -20,11 +20,11 @@
             'route' => route('admin-dashboard.initialCollegeList.step4'),
             'number' => 4,
         ],
-        [
-            'title' => 'College List',
-            'route' => 'javascript:void(0)',
-            'number' => 5,
-        ],
+        // [
+        //     'title' => 'College List',
+        //     'route' => 'javascript:void(0)',
+        //     'number' => 5,
+        // ],
     ];
 ?>
 
