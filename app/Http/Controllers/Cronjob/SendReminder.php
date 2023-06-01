@@ -39,8 +39,8 @@ class SendReminder extends Controller
                 $currentDateTime = $currentDate->copy()->setTime($currentTime->hour, $currentTime->minute, 0);
                 Log::channel('reminder')->info("currentDateTime = ".$currentDateTime->format('Y-m-d H:i'));
                 Log::channel('reminder')->info("Carbon now = ".Carbon::now()->format('Y-m-d H:i'));
-                echo "currentDateTime = ".$currentDateTime->format('Y-m-d H:i')."<br />";
-                echo "Carbon now = ".Carbon::now()->format('Y-m-d H:i')."<br /><br />";
+                //echo "currentDateTime = ".$currentDateTime->format('Y-m-d H:i')."<br />";
+                //echo "Carbon now = ".Carbon::now()->format('Y-m-d H:i')."<br /><br />";
 
                 if (Carbon::now()->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
                     if($method == 'text' || $method == 'both') {
@@ -71,20 +71,24 @@ class SendReminder extends Controller
         $date = date("m/d/Y");
         $time = date("h:i a", strtotime($reminder->when_time));
         $to_email = $user->email;
-        $to_email = 'khan06shahbaz@gmail.com';
+        //$to_email = 'khan06shahbaz@gmail.com';
         //$to_email = 'pocholo.hernandez@plumnetworks.com';
         Log::channel('reminder')->info("to_email = $to_email");
         $subject = "Important Reminder: Your Upcoming Deadlines and Activities";
         $body = "Dear $user->first_name,<br /><br />We hope you're doing well. This is your automated College Prep System Reminder, making sure you stay on top of your important deadlines and activities. Here's your reminder:<br /><br /><b>$reminder->reminder_name - $date at $time ET.</b><br /><br />Staying organized is important in order to achieve your admissions and test goals. We're here to help you stay on track. If you have any questions or need assistance, feel free to contact our support team.<br /><br />Best of luck with your upcoming activities!<br /><br />Sincerely,<br />College Prep System Team";
         
-        $sent = Mail::send([], [], function ($message) use ($to_email, $subject, $body) {
-            $message->to($to_email)->subject($subject)->html($body);
-        });
-    
-        if ($sent) {
-            Log::channel('reminder')->info("Email sent successfully to $to_email");
-        } else {
-            Log::channel('reminder')->error("Failed to send email to $to_email");
+        try {
+            $sent = Mail::send([], [], function ($message) use ($to_email, $subject, $body) {
+                $message->to($to_email)->subject($subject)->html($body);
+            });
+        
+            if ($sent) {
+                Log::channel('reminder')->info("Email sent successfully to $to_email");
+            } else {
+                Log::channel('reminder')->error("Failed to send email to $to_email");
+            }
+        } catch (\Exception $e) {
+            Log::channel('reminder')->error("An error occurred while sending email to $to_email: " . $e->getMessage());
         }
     }
 
@@ -119,6 +123,7 @@ class SendReminder extends Controller
                         )
                     );
             Log::channel('reminder')->info("message->sid = $message->sid");
+            Log::channel('reminder')->info("Twilio Response:\n" . json_encode($message, JSON_PRETTY_PRINT));
             Log::channel('reminder')->info("SMS sent successfully to $toPhoneNumber");
         } catch (Exception $e) {
             Log::channel('reminder')->info("Failed to send SMS: ". $e->getMessage());
