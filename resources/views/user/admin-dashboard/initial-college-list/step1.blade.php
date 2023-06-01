@@ -7,6 +7,10 @@
     .bold-label {
         font-weight: 800;
     }
+    .semi-bold {
+        font-weight: 600;
+        color: #61656a
+    }
 </style>
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
@@ -27,6 +31,13 @@
                 ])
             </div>
             <p class="mb-5">Input the aspects of colleges that matter to you the most -OR- directly search for colleges</p>
+
+            @if(session('cmessage'))
+            <div class="alert alert-success">
+                {{ session('cmessage') }}
+            </div>
+            @endif
+
             <form>
                 <div class="block block-rounded tab-container ">
                     <ul class="nav nav-tabs nav-tabs-block" role="tablist">
@@ -43,6 +54,7 @@
                             </div>
                         </li>
                     </ul>
+
                     <div class="block-content tab-content college-content">
                         <div class="tab-pane active" id="btabs-static-home" role="tabpanel" aria-labelledby="btabs-static-home-tab">
                             <form method="get">
@@ -62,40 +74,36 @@
                                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
                                                                 <div class="mb-2">
-                                                                    <label class="form-check-label bold-label" for="search_major">
-                                                                        Search Specific College Majors
+                                                                    <label class="form-check-label bold-label mb-2" for="college_majors_options">
+                                                                        College Majors
                                                                     </label>
-                                                                    <input class="form-control form-control-lg form-control-alt" type="text" id="search_major" name="search_major" placeholder="Start Typing to Search...">
-                                                                </div>
-                                                                @include('user.admin-dashboard.initial-college-list.common-dropdown', [
-                                                                    'title' => 'Browse All College Majors',
-                                                                    'name' => 'college_majors_options[]',
-                                                                    'id' => 'step2',
-                                                                    'accordion_id' => 'browse_colloege',
-                                                                    'options' => [
-                                                                        'Agriculture',
-                                                                        'Architecture',
-                                                                    ],
-                                                                    'ishide' => false,
-                                                                ])
-                                                                <div class="mb-2">
-                                                                    <label class="form-check-label bold-label mb-2" for="religious_affiliation">
-                                                                        Academic Fields
-                                                                    </label>
-                                                                    <select class="js-select2 form-select single-select2-class" id="religious_affiliation" name="religious_affiliation" style="width: 100%;" data-placeholder="Select One.">
-                                                                        <option value="">Select One.</option>
+                                                                    <select class="js-example-basic-single js-states form-control" id="college_majors_options" name="college_majors_options" style="width: 100%;" data-placeholder="Select One.">
+                                                                        <option></option>
+                                                                        @foreach($college_major_data as $option) 
+                                                                            <option value="{{ $option->code }}">{{ $option->title }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label" for="degree_type">
                                                                         Degree Type
                                                                     </label>
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="degree_1" name="degree_1">
-                                                                        <label class="form-check-label" for="degree_1">
-                                                                            Bachelor's Degree Associate's Degree Certificate
-                                                                        </label>
-                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-2 ms-2">
+                                                                    <label for="" class="semi-bold">Undergraduate</label>
+                                                                    @include('user.admin-dashboard.initial-college-list.common-options', [
+                                                                        'name' => 'degree[]',
+                                                                        'options' => config('constants.undergraduate_degree_option'),
+                                                                        'value_key' => 'value',
+                                                                        'text_key' => 'option',
+                                                                    ])
+                                                                    <label for="" class="semi-bold">Graduate</label>
+                                                                    @include('user.admin-dashboard.initial-college-list.common-options', [
+                                                                        'name' => 'degree[]',
+                                                                        'options' => config('constants.graduate_degree_option'),
+                                                                        'value_key' => 'value',
+                                                                        'text_key' => 'option',
+                                                                    ])
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -107,10 +115,10 @@
                                                         <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
                                                                 <div class="mb-2">
-                                                                    <label class="form-check-label bold-label" for="search_major">
+                                                                    <label class="form-check-label bold-label" for="search_state">
                                                                         Search by Location
                                                                     </label>
-                                                                    <input class="form-control form-control-lg form-control-alt" type="text" id="search_major" name="search_major" placeholder="Start Typing to Search...">
+                                                                    <input class="form-control form-control-lg form-control-alt" type="text" id="search_state" placeholder="Start Typing to Search...">
                                                                 </div>
                                                                 @include('user.admin-dashboard.initial-college-list.common-dropdown', [
                                                                     'title' => 'Browse by Location',
@@ -133,7 +141,7 @@
                                                             <div class="college-content-wrapper college-content">
                                                                 <div class="mb-2">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="is_select_college_size" name="is_select_college_size">
+                                                                        <input class="form-check-input" type="checkbox" value="1" id="is_select_college_size">
                                                                         <label class="form-check-label" for="is_select_college_size">
                                                                             College Size
                                                                         </label>
@@ -142,38 +150,34 @@
                                                                             'name' => 'college_size_option[]',
                                                                             'id' => 'college_size_step',
                                                                             'accordion_id' => 'college_size_accordion',
-                                                                            'options' => [
-                                                                                'Small',
-                                                                                'Medium',
-                                                                                'Large',
-                                                                            ],
+                                                                            'options' => config('constants.college_size_option'),
                                                                             'ishide' => true,
+                                                                            'value_key' => 'value',
+                                                                            'text_key' => 'option',
                                                                         ])
                                                                     </div>
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="is_type_school" name="is_type_school">
+                                                                        <input class="form-check-input" type="checkbox" value="1" id="is_type_school">
                                                                         <label class="form-check-label" for="is_type_school">
-                                                                            urbanicity
+                                                                            Type of School
                                                                         </label>
                                                                         @include('user.admin-dashboard.initial-college-list.common-dropdown', [
                                                                             'title' => 'Type of School',
                                                                             'name' => 'type_of_school[]',
                                                                             'id' => 'type_of_school_step',
                                                                             'accordion_id' => 'type_of_school_accordion',
-                                                                            'options' => [
-                                                                                'Public',
-                                                                                'Private Nonprofit',
-                                                                                'Private For-Profit',
-                                                                            ],
+                                                                            'options' => config('constants.type_of_school'),
                                                                             'ishide' => true,
+                                                                            'value_key' => 'value',
+                                                                            'text_key' => 'option',
                                                                         ])
                                                                     </div>
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="is_urbanicity" name="is_urbanicity">
+                                                                        <input class="form-check-input" type="checkbox" value="1" id="is_urbanicity">
                                                                         <label class="form-check-label" for="is_urbanicity">
                                                                             Urbanicity
                                                                         </label>
@@ -182,13 +186,10 @@
                                                                             'name' => 'urbanicity[]',
                                                                             'id' => 'urbanicity_step',
                                                                             'accordion_id' => 'urbanicity_accordion',
-                                                                            'options' => [
-                                                                                'City',
-                                                                                'Suburban',
-                                                                                'Town',
-                                                                                'Rural',
-                                                                            ],
+                                                                            'options' => config('constants.urbanicity'),
                                                                             'ishide' => true,
+                                                                            'value_key' => 'value',
+                                                                            'text_key' => 'option',
                                                                         ])
                                                                     </div>
                                                                 </div>
@@ -196,16 +197,22 @@
                                                                     <label class="form-check-label bold-label mb-2" for="specialized_mission">
                                                                         Specialized Mission
                                                                     </label>
-                                                                    <select class="js-select2 form-select single-select2-class" id="specialized_mission" name="specialized_mission" style="width: 100%;" data-placeholder="Select One.">
-                                                                        <option value="">Select One.</option>
+                                                                    <select class="js-example-basic-single js-states form-control" id="specialized_mission" name="specialized_mission" style="width: 100%;" data-placeholder="Select One.">
+                                                                        <option></option>
+                                                                        @foreach(config('constants.specialized_mission_options') as $option) 
+                                                                            <option value="{{ $option['search_key'] }}">{{ $option['option'] }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="religious_affiliation">
                                                                         Religious Affiliation
                                                                     </label>
-                                                                    <select class="js-select2 form-select single-select2-class" id="religious_affiliation" name="religious_affiliation" style="width: 100%;" data-placeholder="Select One.">
-                                                                        <option value="">Select One.</option>
+                                                                    <select class="js-example-basic-single js-states form-control" id="religious_affiliation" name="religious_affiliation" style="width: 100%;" data-placeholder="Select One.">
+                                                                        <option></option>
+                                                                        @foreach(config('constants.religious_affiliation_options') as $option) 
+                                                                            <option value="{{ $option['value'] }}">{{ $option['option'] }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -241,7 +248,7 @@
                                                         </div>
                                                         <div id="collapseSix" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
-                                                                <div class="mb-2">
+                                                                <!-- <div class="mb-2">
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="checkbox" value="1" id="Competitiveness" name="Competitiveness">
                                                                         <label class="form-check-label" for="Competitiveness">
@@ -256,7 +263,7 @@
                                                                             GPA
                                                                         </label>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="Math_Score">
                                                                         SAT Math
@@ -334,48 +341,61 @@
 <script src="{{ asset('js/selecting-search-params.js') }}"></script>
 <script>
 
+    $('.js-example-basic-single').select2({
+        placeholder: 'Select an option',
+        allowClear: true
+    });
+
     $('#is_select_college_size').on('change', function(e) {
         hideshow('college_size_step', this.checked);
-        $('#' + e.target.id).val(e.target.checked ? 1 : 0)
     });
 
     $('#is_type_school').on('change', function(e) {
         hideshow('type_of_school_step', this.checked);
-        $('#' + e.target.id).val(e.target.checked ? 1 : 0)
     });
 
     $('#is_urbanicity').on('change', function(e) {
         hideshow('urbanicity_step', this.checked);
-        $('#' + e.target.id).val(e.target.checked ? 1 : 0)
     });
+
+    $('#search_state').on('keyup', function(e) {
+        const originalArray = @json($states);
+        const searchValue = e.target.value;
+        if (searchValue.length > 0) {
+            const filteredArray = originalArray.filter((item) => {
+                return item.state_name.toLowerCase().includes(searchValue.toLowerCase());
+            });
+            setStateOption(filteredArray);
+        } else {
+            setStateOption(originalArray);
+        }
+    });
+
+    function setStateOption(data) {
+        document.getElementById('content-browse_colloege').innerHTML = '';
+        const options = data.map((item, index) => {
+            return `
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="${item.state_name}${index}" value="${item.state_code}" name="state[]">
+                        <label class="form-check-label" for="${item.state_name}${index}">
+                            ${item.state_name}
+                        </label>
+                    </div>
+                </div>
+            `
+        });
+        if (options.length > 0) {
+            options.forEach($options => {
+                document.getElementById('content-browse_colloege').innerHTML += $options;
+            })
+        } else {
+            document.getElementById('content-browse_colloege').innerHTML = '<h6 class="text-center">No Result</h6>';
+        }
+    }
 
     function hideshow(elementid, isshow) {
         $('#' + elementid).attr("style", `display: ${isshow ? 'block' : 'none'} !important`);
-    }
-
-
-    var retrivedData = "";
-
-    function retriveCollegeByName() {
-        const collegeName = jQuery(".search_college_by_name").val();
-
-        $.ajax({
-            url: "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=PzDzDnBqAja14KXZF7C9guQB33Wrnltd0Mk4dNbw&page=0&school.search=" + collegeName,
-            method: "GET",
-            dataType: "json",
-            success: function(data) {
-                // Process the response data here
-                console.log(data);
-                localStorage.setItem("searchResult", JSON.stringify(data));
-                window.location = "{{ route('admin-dashboard.initialCollegeList.step2') }}";
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                // Handle the error here
-                console.log("Request failed: " + textStatus + ", " + errorThrown);
-            }
-        });
-
-
     }
 </script>
 @endsection

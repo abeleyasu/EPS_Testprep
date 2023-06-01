@@ -17,14 +17,14 @@
         ],
         [
             'title' => 'Academic Qualification Comparison',
-            'route' => 'javascript:void(0)',
+            'route' => route('admin-dashboard.initialCollegeList.step4'),
             'number' => 4,
         ],
-        [
-            'title' => 'College List',
-            'route' => 'javascript:void(0)',
-            'number' => 5,
-        ],
+        // [
+        //     'title' => 'College List',
+        //     'route' => 'javascript:void(0)',
+        //     'number' => 5,
+        // ],
     ];
 ?>
 
@@ -34,7 +34,7 @@
         @foreach($stepper as $key => $step)
             <div class="col">
                 <li class="m-0" role="presentation">
-                    <a class="nav-link {{ $active_stepper === $step['number'] ? 'active' : '' }}" href="{{ $step['route'] }}" id="step1-tab">
+                    <a class="nav-link {{ $active_stepper === $step['number'] ? 'active' : '' }}">
                         <p class="{{ in_array($step['number'], $completed_step) ? 'd-none' : '' }}">{{ $step['number'] }}</p>
                         <i class="fa-solid fa-check {{ in_array($step['number'], $completed_step) ? 'd-block' : '' }} "></i>
                         <h6>{{ $step['title'] }}</h6>

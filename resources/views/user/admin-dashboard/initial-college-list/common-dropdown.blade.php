@@ -5,14 +5,21 @@
                 <a class=" text-white fw-600 collapsed">{{ $title }} <i class="fa fa-2x fa-angle-down"></i></a>
             </div>
             <div id="{{ $accordion_id }}" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample1">
-                <div class="college-content-wrapper college-content">
+                <div class="college-content-wrapper college-content" id="content-{{ $accordion_id }}">
                     @foreach($options as $key => $option)
                     <div class="mb-2">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="{{ isset($text_key) ? $option[$text_key]  : $option }}{{ $key }}" value="{{ isset($value_key) ? $option[$value_key]  : $option }}" name="{{ $name }}">
-                            <label class="form-check-label" for="{{ isset($text_key) ? $option[$text_key]  : $option }}{{ $key }}">
-                                {{ isset($text_key) ? $option[$text_key]  : $option }}
-                            </label>
+                            @if(gettype($option) == 'array')
+                                <input class="form-check-input" type="checkbox" id="{{ isset($text_key) ? $option[$text_key]  : $option }}{{ $key }}" value="{{ isset($value_key) ? $option[$value_key]  : $option }}" name="{{ $name }}">
+                                <label class="form-check-label" for="{{ isset($text_key) ? $option[$text_key]  : $option }}{{ $key }}">
+                                    {{ isset($text_key) ? $option[$text_key]  : $option }}
+                                </label>
+                            @else
+                                <input class="form-check-input" type="checkbox" id="{{ isset($text_key) ? $option->$text_key  : $option }}{{ $key }}" value="{{ isset($value_key) ? $option->$value_key  : $option }}" name="{{ $name }}">
+                                <label class="form-check-label" for="{{ isset($text_key) ? $option->$text_key  : $option }}{{ $key }}">
+                                    {{ isset($text_key) ? $option->$text_key  : $option }}
+                                </label>
+                            @endif
                         </div>
                     </div>
                     @endforeach

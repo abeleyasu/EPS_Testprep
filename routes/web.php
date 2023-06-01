@@ -50,9 +50,14 @@ use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
+
+// Remove
+// use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
+// use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
+// use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Cronjob\SendReminder;
-use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
 use App\Http\Controllers\Cronjob\FetchCollegeInformation;
 
 /*
@@ -325,8 +330,21 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
             Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
                 Route::get('/search-college/step1', [InititalCollegeListController::class, 'step1'])->name('step1');
-                Route::get('/search-college/step2', [InititalCollegeListController::class, 'step2'])->name('step2');
-                Route::get('/search-college/step3/{id?}', [InititalCollegeListController::class, 'step3'])->name('step3');
+                Route::group(['middleware' => ['initialcollegestep']], function () {
+                    Route::get('/search-college/step2', [InititalCollegeListController::class, 'step2'])->name('step2');
+                    Route::get('/search-college/step3', [InititalCollegeListController::class, 'step3'])->name('step3');
+                    Route::get('/search-college/step4', [InititalCollegeListController::class, 'step4'])->name('step4');
+                });
+                Route::post('/step2/save-college', [InititalCollegeListController::class, 'saveCollege'])->name('step2.saveCollege');
+                Route::get('/step2/get-college/{id}', [InititalCollegeListController::class, 'getSingleCollege'])->name('step2.getSingleCollege');
+                Route::delete('step2/remove-college/{id}/{sid}', [InititalCollegeListController::class, 'removeCollge'])->name('step2.removeCollge');
+                Route::put('/step3/save-academic-statistics/{id}', [InititalCollegeListController::class, 'saveAcademicStatistics'])->name('step3.saveAcademicStatistics');
+                Route::post('/step3/submit-form', [InititalCollegeListController::class, 'submitForm'])->name('step3.submitForm');
+                Route::get('/search-college/step4/get-college-list/{id}', [InititalCollegeListController::class, 'getSelectedCollegeList'])->name('step4.getSelectedCollegeList');
+                Route::patch('/search-college/step4/update-order/{id}', [InititalCollegeListController::class, 'updateOrder'])->name('step4.updateOrder');
+                Route::get('/search-college/step4/get-college/{id}', [InititalCollegeListController::class, 'collegeList'])->name('step4.collegeList');
+                Route::patch('/search-college/step4/store-college-selection/{id}', [InititalCollegeListController::class, 'storeSelection'])->name('step4.storeSelection');
+                Route::patch('search-college/save/{id}', [InititalcollegeListController::class, 'saveCollegeList'])->name('saveCollegeList');
             });
             Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
