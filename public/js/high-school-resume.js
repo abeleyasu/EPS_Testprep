@@ -129,7 +129,7 @@ async function addCourseData(data){
             html += `</td>`;
             html += `<td class="select2-container_main select2-container_main-position">`;
             html += `<select class="js-select2 select" multiple="multiple" name="course_data[${$count}][search_college_name][]" id="search_college_name_${$count}" data-placeholder="Select college name" disabled>`;
-            html += await dropdown_lists(`/user/colleges/list`);
+            //html += await dropdown_lists(`/user/colleges/list`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -145,6 +145,30 @@ async function addCourseData(data){
             $(`#search_college_name_${$count}`).select2({
                 tags: true,
                 placeholder: "Select search college name",
+                ajax: {
+                    url: '/colleges/search',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            query: params.term, // Search query
+                            selected_colleges: $(this).val() // Pass the selected colleges
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.map(function(college) {
+                                return {
+                                    id: college.id,
+                                    text: college.name,
+                                    selected: college.selected
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 1 // Minimum characters to trigger the search
             });            
         });
 
@@ -614,8 +638,10 @@ async function addDemonstratedData(data) {
             html += `<input type="text" class="form-control" id="interest" name="demonstrated_data[${$count}][interest]" placeholder="Enter Interest" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
+            html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" id="demonstrated_select_${$count}" data-placeholder="Select Demonstrated Grade" name="demonstrated_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
+            html += `</div>`;
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
@@ -650,6 +676,15 @@ async function addDemonstratedData(data) {
                 if (selectedOptions && selectedOptions.length >= 1) {
                     event.preventDefault();
                 }
+            });
+
+            $('select[name^="demonstrated_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
             });
         })
 
@@ -694,9 +729,11 @@ async function addLeadershipData(data) {
             html += `<input type="text" class="form-control" id="leadership_location" name="leadership_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
             html += `</td>`;
             html += `<td>`;
+            html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" data-placeholder="Select leadership Grade" id="leadership_select_${$count}" name="leadership_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
             html += `<td>`;
             html += `<a href="javascript:void(0)" class="add-btn plus-icon d-flex">`;
@@ -756,6 +793,15 @@ async function addLeadershipData(data) {
                     event.preventDefault();
                 }
             });
+
+            $('select[name^="leadership_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
         });
         
 
@@ -792,9 +838,11 @@ async function addActivityData(data) {
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;
+            html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" data-placeholder="Select activities Grade" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
             html += await dropdown_lists(`/user/grades/list`);
             html += `</select>`;
+            html += `</div>`;
             html += `</td>`;
             html += `<td>`;
             html += `<input type="text" class="form-control" id="activity_location" name="activities_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
@@ -848,6 +896,15 @@ async function addActivityData(data) {
                     });
                 }
             });
+
+            $('select[name^="activities_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
         })
 
         $(data).attr('data-count', $count);
@@ -885,9 +942,11 @@ async function addAthleticsData(data){
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
+        html += `<div class="select2-container_main">`;
         html += `<select class="js-select2 select" data-placeholder="Select atheletics Grade" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;
         html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
+        html += `</div>`;
         html += `</td>`;
         html += `<td>`;
         html += `<input type="text" class="form-control" id="athletics_location" name="athletics_data[${$count}][location]" placeholder="Ex: DRHS" autocomplete="off">`;
@@ -944,6 +1003,15 @@ async function addAthleticsData(data){
                     });
                 }
             });
+
+            $('select[name^="athletics_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
         });
         
         $(data).attr('data-count', $count);
@@ -983,9 +1051,11 @@ async function addCommunityData(data){
         html += `<input type="text" class="form-control" id="community_service" name="community_service_data[${$count}][service]" placeholder="Enter Service" autocomplete="off">`;
         html += `</td>`;
         html += `<td>`;
+        html += `<div class="select2-container_main">`;
         html += `<select class="js-select2 select" data-placeholder="Select community Grade" id="community_select_${$count}" name="community_service_data[${$count}][grade][]" multiple="multiple">`;
         html += await dropdown_lists(`/user/grades/list`);
         html += `</select>`;
+        html += `</div>`;
         html += `</td>`;
         html += `<td>`;
         html += `<input type="text" class="form-control" id="community_location" name="community_service_data[${$count}][location]" placeholder="Enter Location" autocomplete="off">`;
@@ -1020,6 +1090,15 @@ async function addCommunityData(data){
                         e.preventDefault();
                     });
                 }
+            });
+
+            $('select[name^="community_service_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
             });
         });
 

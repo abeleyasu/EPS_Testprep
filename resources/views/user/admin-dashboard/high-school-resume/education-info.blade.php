@@ -545,13 +545,20 @@
                                                                     <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" data-count="{{$index}}" id="course_name_{{$index}}" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101" onchange="change(this)">
                                                                 </td>
                                                                 <td class="select2-container_main select2-container_main-position">
-                                                                    <select class=" js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name" disabled>
+                                                                    {{-- <select class=" js-select2 select" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name" disabled>
                                                                         @foreach ($colleges_list as $college_info)
                                                                             <option
                                                                                 {{ in_array($college_info->id,  (isset($course_data['search_college_name']) ?  is_array($course_data['search_college_name']) : '') ? $course_data['search_college_name'] : []) ? 'selected' : '' }}
                                                                                 value="{{ $college_info->id }}">{{ $college_info->name }}
                                                                             </option>
                                                                         @endforeach
+                                                                    </select> --}}
+                                                                    <select class="js-select2" id="search_college_name_{{ $index }}" name="course_data[{{ $index }}][search_college_name][]" multiple="multiple" data-placeholder="Select college name" disabled>
+                                                                        @if(isset($course_data['search_college_name']))
+                                                                            @foreach($course_data['search_college_name'] as $collegeId)
+                                                                                <option value="{{ $collegeId }}" selected>{{ $selectedCollegesNamesArray[$collegeId] }}</option>
+                                                                            @endforeach
+                                                                        @endif
                                                                     </select>
                                                                 </td>
                                                                 <td>
@@ -567,13 +574,13 @@
                                                                 <input type="text" class="form-control" id="course_name_0" data-count="0" name="course_data[0][course_name]" placeholder="Ex: College English 101" onchange="change(this)">
                                                             </td>
                                                             <td class="select2-container_main select2-container_main-position">
-                                                                <select class=" js-select2"
+                                                                <select class="js-select2"
                                                                     id="search_college_name_0" name="course_data[0][search_college_name][]"
                                                                     multiple="multiple" data-placeholder="Select college name" disabled>
-                                                                    @foreach ($colleges_list as $college_info)
+                                                                    {{-- @foreach ($colleges_list as $college_info)
                                                                         <option value="{{ $college_info->id }}">{{ $college_info->name }}
                                                                         </option>
-                                                                    @endforeach
+                                                                    @endforeach --}}
                                                                 </select>
                                                             </td>   
                                                             <td>
@@ -906,21 +913,21 @@
                 });
             }
 
-            if (total_search_college_name_count > 0) {
-                for (let index = 0; index < total_search_college_name_count; index++) {
-                    $(`#search_college_name_${index}`).select2({
-                        tags: true,
-                        placeholder: "Select search college name ",
-                        allowClear: true
-                    });
-                }
-            } else {
-                $("#search_college_name_0").select2({
-                    tags: true,
-                    placeholder: "Select search college name ",
-                    allowClear: true
-                });
-            }
+            // if (total_search_college_name_count > 0) {
+            //     for (let index = 0; index < total_search_college_name_count; index++) {
+            //         // $(`#search_college_name_${index}`).select2({
+            //         //     tags: true,
+            //         //     placeholder: "Select search college name ",
+            //         //     allowClear: true
+            //         // });
+            //     }
+            // } else {
+            //     $("#search_college_name_0").select2({
+            //         tags: true,
+            //         placeholder: "Select search college name ",
+            //         allowClear: true
+            //     });
+            // }
 
             if (total_honor_course_count > 0) {
                 for (let index = 0; index < total_honor_course_count; index++) {
@@ -1171,24 +1178,52 @@
             //Graduation Designation and Other Graduation Designation LOGIC ENDS
         });
 
-        for (let key = 0; key < $('.course_data_table_row').length; key++) {
-            $(`input[name='course_data[${key}][course_name]']`).each(function(i,e){
-                let course_name = $(e).val();
-                if(course_name != ''){
-                    if($(`#search_college_name_${key}`).length && $(`#search_college_name_${key}`).length > 0){
-                        $(`#search_college_name_${key}`).removeAttr('disabled');
-                        $(`#search_college_name_${key}`).attr('required','true');
+        $(document).ready(function() {
+            for (let key = 0; key < $('.course_data_table_row').length; key++) {
+                $(`input[name='course_data[${key}][course_name]']`).each(function(i,e){
+                    let course_name = $(e).val();
+                    if(course_name != ''){
+                        if($(`#search_college_name_${key}`).length && $(`#search_college_name_${key}`).length > 0){
+                            $(`#search_college_name_${key}`).removeAttr('disabled');
+                            $(`#search_college_name_${key}`).attr('required','true');
 
-                        // $(`#search_college_name_${key}`).rules("add",{
-                        //     required: true,
-                        //     messages: {
-                        //         required: "search college name is required"
-                        //     }
-                        // });                        
+                            // $(`#search_college_name_${key}`).rules("add",{
+                            //     required: true,
+                            //     messages: {
+                            //         required: "search college name is required"
+                            //     }
+                            // });
+                            $(`#search_college_name_${key}`).select2({
+                                ajax: {
+                                    url: '/colleges/search',
+                                    dataType: 'json',
+                                    delay: 250,
+                                    data: function(params) {
+                                        return {
+                                            query: params.term, // Search query
+                                            selected_colleges: $(this).val() // Pass the selected colleges
+                                        };
+                                    },
+                                    processResults: function(data) {
+                                        return {
+                                            results: data.map(function(college) {
+                                                return {
+                                                    id: college.id,
+                                                    text: college.name,
+                                                    selected: college.selected
+                                                };
+                                            })
+                                        };
+                                    },
+                                    cache: true
+                                },
+                                minimumInputLength: 1 // Minimum characters to trigger the search
+                            });
+                        } 
                     } 
-                } 
-            });
-        }
+                });
+            }
+        });
 
         function change(value) {
             let id = $(value).attr("data-count");
@@ -1203,6 +1238,33 @@
                 //         required: "search college name is required"
                 //     }
                 // })
+
+                $(`#search_college_name_${id}`).select2({
+                    ajax: {
+                        url: '/colleges/search',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                query: params.term, // Search query
+                                selected_colleges: $(this).val() // Pass the selected colleges
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data.map(function(college) {
+                                    return {
+                                        id: college.id,
+                                        text: college.name,
+                                        selected: college.selected
+                                    };
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    minimumInputLength: 1 // Minimum characters to trigger the search
+                });
             }else{
                 $(`#search_college_name_${id}`).attr('disabled','true');
             }
@@ -1224,7 +1286,7 @@
         });
         
         
-        function errorMsg()
+        function errorMsgOld()
         {
             Swal.fire({
                 title: 'Complete Current Step',
@@ -1239,6 +1301,14 @@
                     // form.submit();
                 }
             });
+        }
+
+        function errorMsg()
+        {
+            var form = $('#education_form');
+            if (form.valid()) {
+                form.submit();
+            }
         }
 
         toastr.options = {
