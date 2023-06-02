@@ -6,17 +6,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CollegeInformation;
 use App\Models\CollegeDetails;
+use App\Models\CollegeList;
+use App\Models\CollegeSearchAdd;
 
 class CollegeApplicationDeadlineController extends Controller
 {
     public function index()
     {
-        $college_list_deadline = CollegeInformation::where('user_id', '=', Auth::id())->with('college_details')->get();
+        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->with('college_details')->get();
+        $selectedCollegeId = $college_list_deadline->pluck('college_id')->toArray();
+        $college_list = CollegeList::select('id')->where('user_id', '=', Auth::id())->with(['college_list_details' => function ($query) {
+            $query->select('id', 'college_name', 'college_lists_id');
+        }])->where('status', 'completed')->get();
+        // dd($college_list_deadline);
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),
             'admision_option' => config('constants.admission_options'),
             'college_list_status' => config('constants.college_list_status'),
-            'college_list_deadline' => $college_list_deadline, 
+            'college_list_deadline' => $college_list_deadline,
+            'college_list' => $college_list,
+            'selected_college_id' => $selectedCollegeId,
         ]);
     }
 
@@ -25,23 +34,15 @@ class CollegeApplicationDeadlineController extends Controller
         $id =  Auth::id();
         // Validate the input data
         $request->validate([
-            'name' => 'required|max:255',
-            'city' => 'required|max:255',
-            'state' => 'required|max:255'
+            'college' => 'required',
         ], [
-            'name.required' => 'College name is required',
-            'city.required' => 'City is required',
-            'state.required' => 'State is required'
+            'college.required' => 'Please select college',
         ]);
-
-        // Create a new college object and save it to the database
-        $college = new CollegeInformation;
-        $college->user_id = $id;
-        $college->name = $request->name;
-        $college->city = $request->city;
-        $college->state = $request->state;
-        $college->save();
-
+        $data = [
+            'user_id' => $id,
+            'college_id' => $request->college,
+        ];
+        $college = CollegeDetails::create($data);
         return redirect()->back()->with('success', 'College added successfully');
     }
 
@@ -108,11 +109,19 @@ class CollegeApplicationDeadlineController extends Controller
     }
 
     public function set_application_completed(Request $request) {
-        if ($request->college_detail_id) {
-            $college = CollegeDetails::where('id', $request->college_detail_id)->update(['is_completed_all_process' => $request->is_completed_all_process]);
-        } else {
-            $this->create($request);
-        }
+        $data = [
+            'is_completed_all_process' => $request->is_completed_all_process,
+            'is_complete_application_type' => $request->is_completed_all_process,
+            'is_complete_admission_open' => $request->is_completed_all_process,
+            'is_complete_number_of_essays' => $request->is_completed_all_process,
+            'is_complete_admission_deadline' => $request->is_completed_all_process,
+            'is_complete_competitive_scholarship_deadline' => $request->is_completed_all_process,
+            'is_complete_scholarship_deadline' => $request->is_completed_all_process,
+            'is_completed_honors_college_deadline' => $request->is_completed_all_process,
+            'is_completed_fafsa_deadline' => $request->is_completed_all_process,
+            'is_completed_css_profile_deadline' => $request->is_completed_all_process,
+        ];
+        $college = CollegeDetails::where('id', $request->college_detail_id)->update($data);
         return "success";
     }
 

@@ -58,4 +58,8 @@ class CollegeList extends Model
         'active_step',
         'status',
     ];
+
+    public function college_list_details() {
+        return $this->hasMany(CollegeSearchAdd::class, 'college_lists_id', 'id');
+    }
 }

@@ -22,9 +22,15 @@
         padding: 15px;
     }
 
-    /* #page-container.page-header-fixed #main-container {
-        padding-top: 0px;
-    } */
+    .no-data {
+        border: 1px solid;
+        border-style: dashed;
+        border-color: darkgray;
+        padding: 10px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 500;
+    }
 </style>
 <main id="main-container">
     <div class="bg-body-light">
@@ -42,7 +48,7 @@
             <h3 class="block-title">COLLEGE LIST & APPLICATION DEADLINES</h3>
         </div>
         <div class="block-content">
-            <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add New College</button>
+            <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
             <p>
                 <span class="note-text">Note:</span> Adding or removing a college from this list will also add it to or remove it from all tools on your profile, including the My College List tool.
             </p>
@@ -60,19 +66,15 @@
                         @foreach($college_list_deadline as $i => $college)
                         <form action="{{route('admin-dashboard.college_application_save')}}" id="form-{{ $i }}" method="POST">
                             @csrf
-                            <input type="hidden" name="college_id" value="{{ $college['id'] }}">
-
-                            @if($college['college_details']) 
-                                <input type="hidden" name="college_detail_id" value="{{ $college['college_details']['id'] }}">
-                            @endif
+                            <input type="hidden" name="college_detail_id" value="{{ $college['id'] }}">
 
                             <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                 <div class="block-header block-header-tab row">
                                     <div class="col-10" type="button" data-toggle="collapse" data-target="#collapse{{ $i }}" aria-expanded="true">
-                                        <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle{{ $i }}"></i>{{ $college['name'] }}</a> 
+                                        <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle{{ $i }}"></i>{{ $college['college_details']['college_name'] }}</a> 
                                     </div>
                                     <div class="col-2">
-                                        <input class="form-check-input form-check-input_all chagecollagecheckbox" id="iscompleted-{{ $i }}" data-college_id="{{$college['id']}}" data-college_detail_id="{{ $college['college_details'] ? $college['college_details']['id'] : null  }}" @if($college['college_details'] && $college['college_details']['is_completed_all_process']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_completed_all_process'] : '' }}" name="is_completed_all_process" type="checkbox" value="">
+                                        <input class="form-check-input form-check-input_all chagecollagecheckbox" id="{{ $i }}" data-college_id="{{$college['id']}}" data-college_detail_id="{{ $college ? $college['id'] : null  }}" @if($college && $college['is_completed_all_process']) checked @endif value="{{ $college ? $college['is_completed_all_process'] : '' }}" name="is_completed_all_process" type="checkbox" value="">
                                     </div>
                                 </div>
                                 <div id="collapse{{ $i }}" class="collapse" aria-labelledby="headingOne" data-id="{{ $i }}" data-parent=".accordionExample">
@@ -83,12 +85,12 @@
                                                 <select class="form-select" id="type_of_application-{{ $i }}" name="type_of_application">
                                                     <option value="">Select One</option>
                                                     @foreach($applications as $application)
-                                                        <option value="{{ $application }}" @if($college['college_details'] && $college['college_details']['type_of_application'] == $application) selected @endif>{{ $application }}</option>
+                                                        <option value="{{ $application }}" @if($college['type_of_application'] == $application) selected @endif>{{ $application }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_complete_application_type" name="is_complete_application_type" @if($college['college_details'] && $college['college_details']['is_complete_application_type']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_submit_application'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_complete_application_type-{{ $i }}" name="is_complete_application_type" @if($college['is_complete_application_type']) checked @endif value="{{ $college ? $college['is_complete_application_type'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -97,12 +99,12 @@
                                                 <select class="form-select" id="admission_option-{{ $i }}" name="admission_option">
                                                     <option value="">Select One</option>
                                                     @foreach($admision_option as $admission)
-                                                        <option value="{{ $admission }}" @if($college['college_details'] && $college['college_details']['admission_option'] == $admission) selected @endif>{{ $admission }}</option>
+                                                        <option value="{{ $admission }}" @if($college['admission_option'] == $admission) selected @endif>{{ $admission }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_complete_admission_open-{{ $i }}" name="is_complete_admission_open" @if($college['college_details'] && $college['college_details']['is_complete_admission_open']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_complete_admission_open'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_complete_admission_open-{{ $i }}" name="is_complete_admission_open" @if($college['is_complete_admission_open']) checked @endif value="{{ $college ? $college['is_complete_admission_open'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -111,12 +113,12 @@
                                                 <select class="form-select" id="number_of_essaya-{{ $i }}" name="number_of_essaya">
                                                     <option value="">Select One</option>
                                                     @for($Essays = 0; $Essays <= 10; $Essays++)
-                                                        <option value="{{ $Essays }}" @if($college['college_details'] && $college['college_details']['number_of_essaya'] == $Essays) selected @endif>{{ $Essays }}</option>
+                                                        <option value="{{ $Essays }}" @if($college['number_of_essaya'] == $Essays) selected @endif>{{ $Essays }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_complete_number_of_essays-{{ $i }}" name="is_complete_number_of_essays" @if($college['college_details'] && $college['college_details']['is_complete_number_of_essays']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_complete_number_of_essays'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_complete_number_of_essays-{{ $i }}" name="is_complete_number_of_essays" @if($college['is_complete_number_of_essays']) checked @endif value="{{ $college ? $college['is_complete_number_of_essays'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -124,21 +126,21 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="admissions_deadline-{{ $i }}">Admissions Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="admissions_deadline-{{ $i }}" name="admissions_deadline" value="{{ $college['college_details'] ? $college['college_details']['admissions_deadline'] : '' }}" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" id="admissions_deadline-{{ $i }}" name="admissions_deadline" value="{{ $college ? $college['admissions_deadline'] : '' }}" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="ad_status">Status</label>
                                                         <select class="form-select" id="ad_status" name="ad_status">
                                                             <option value="">Select One</option>
                                                             @foreach($college_list_status as $status)
-                                                                <option value="{{ $status }}" @if($college['college_details'] && $college['college_details']['ad_status'] == $status) selected @endif>{{ $status }}</option>
+                                                                <option value="{{ $status }}" @if($college['ad_status'] == $status) selected @endif>{{ $status }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_complete_admission_deadline-{{ $i }}" name="is_complete_admission_deadline" @if($college['college_details'] && $college['college_details']['is_complete_admission_deadline']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_complete_admission_deadline'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_complete_admission_deadline-{{ $i }}" name="is_complete_admission_deadline" @if($college['is_complete_admission_deadline']) checked @endif value="{{ $college ? $college['is_complete_admission_deadline'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -146,21 +148,21 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="competitive_scholarship_deadline-{{ $i }}">Competitive Scholarship Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="competitive_scholarship_deadline-{{ $i }}" value="{{ $college['college_details'] ? $college['college_details']['competitive_scholarship_deadline'] : '' }}" name="competitive_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" id="competitive_scholarship_deadline-{{ $i }}" value="{{ $college ? $college['competitive_scholarship_deadline'] : '' }}" name="competitive_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="csd_status">Status</label>
                                                         <select class="form-select" id="csd_status" name="csd_status">
                                                             <option value="">Select One</option>
                                                             @foreach($college_list_status as $status)
-                                                                <option value="{{ $status }}" @if($college['college_details'] && $college['college_details']['csd_status'] == $status) selected @endif>{{ $status }}</option>
+                                                                <option value="{{ $status }}" @if($college['csd_status'] == $status) selected @endif>{{ $status }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_complete_competitive_scholarship_deadline-{{ $i }}" name="is_complete_competitive_scholarship_deadline" @if($college['college_details'] && $college['college_details']['is_complete_competitive_scholarship_deadline']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_complete_competitive_scholarship_deadline'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_complete_competitive_scholarship_deadline-{{ $i }}" name="is_complete_competitive_scholarship_deadline" @if($college['is_complete_competitive_scholarship_deadline']) checked @endif value="{{ $college ? $college['is_complete_competitive_scholarship_deadline'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -168,21 +170,21 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="departmental_scholarship_deadline-{{ $i }}">Departmental/STEM Scholarship Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="departmental_scholarship_deadline-{{ $i }}" value="{{ $college['college_details'] ? $college['college_details']['departmental_scholarship_deadline'] : '' }}" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" id="departmental_scholarship_deadline-{{ $i }}" value="{{ $college ? $college['departmental_scholarship_deadline'] : '' }}" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="dsd_status">Status</label>
                                                         <select class="form-select" id="dsd_status" name="dsd_status">
                                                             <option value="">Select One</option>
                                                             @foreach($college_list_status as $status)
-                                                                <option value="{{ $status }}" @if($college['college_details'] && $college['college_details']['dsd_status'] == $status) selected @endif>{{ $status }}</option>
+                                                                <option value="{{ $status }}" @if($college['dsd_status'] == $status) selected @endif>{{ $status }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_complete_scholarship_deadline-{{ $i }}" name="is_complete_scholarship_deadline" @if($college['college_details'] && $college['college_details']['is_complete_scholarship_deadline']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_complete_scholarship_deadline'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_complete_scholarship_deadline-{{ $i }}" name="is_complete_scholarship_deadline" @if($college['is_complete_scholarship_deadline']) checked @endif value="{{ $college ? $college['is_complete_scholarship_deadline'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -190,21 +192,21 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="honors_college_deadline-{{ $i }}">Honors College Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="honors_college_deadline-{{ $i }}" value="{{ $college['college_details'] ? $college['college_details']['honors_college_deadline'] : '' }}" name="honors_college_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" id="honors_college_deadline-{{ $i }}" value="{{ $college ? $college['honors_college_deadline'] : '' }}" name="honors_college_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="hcd_status">Status</label>
                                                         <select class="form-select" id="hcd_status" name="hcd_status">
                                                             <option value="">Select One</option>
                                                             @foreach($college_list_status as $status)
-                                                                <option value="{{ $status }}" @if($college['college_details'] && $college['college_details']['hcd_status'] == $status) selected @endif>{{ $status }}</option>
+                                                                <option value="{{ $status }}" @if($college['hcd_status'] == $status) selected @endif>{{ $status }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_completed_honors_college_deadline-{{ $i }}" name="is_completed_honors_college_deadline" @if($college['college_details'] && $college['college_details']['is_completed_honors_college_deadline']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_completed_honors_college_deadline'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_completed_honors_college_deadline-{{ $i }}" name="is_completed_honors_college_deadline" @if($college['is_completed_honors_college_deadline']) checked @endif value="{{ $college ? $college['is_completed_honors_college_deadline'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -212,21 +214,21 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="fafsa_deadline-{{ $i }}">FAFSA Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="fafsa_deadline-{{ $i }}" value="{{ $college['college_details'] ? $college['college_details']['fafsa_deadline'] : '' }}" name="fafsa_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" id="fafsa_deadline-{{ $i }}" value="{{ $college ? $college['fafsa_deadline'] : '' }}" name="fafsa_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="fafsa_status">Status</label>
                                                         <select class="form-select" id="fafsa_status" name="fafsa_status">
                                                             <option value="">Select One</option>
                                                             @foreach($college_list_status as $status)
-                                                                <option value="{{ $status }}" @if($college['college_details'] && $college['college_details']['fafsa_status'] == $status) selected @endif>{{ $status }}</option>
+                                                                <option value="{{ $status }}" @if($college['fafsa_status'] == $status) selected @endif>{{ $status }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_completed_fafsa_deadline-{{ $i }}" name="is_completed_fafsa_deadline" @if($college['college_details'] && $college['college_details']['is_completed_fafsa_deadline']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_completed_fafsa_deadline'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_completed_fafsa_deadline-{{ $i }}" name="is_completed_fafsa_deadline" @if($college['is_completed_fafsa_deadline']) checked @endif value="{{ $college ? $college['is_completed_fafsa_deadline'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -234,93 +236,93 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <label class="form-label" for="css_profile_deadline-{{ $i }}">CSS Profile Deadline</label>
-                                                        <input type="text" class="date-own form-control" id="css_profile_deadline-{{ $i }}" value="{{ $college['college_details'] ? $college['college_details']['css_profile_deadline'] : '' }}" name="css_profile_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                                        <input type="text" class="date-own form-control" id="css_profile_deadline-{{ $i }}" value="{{ $college ? $college['css_profile_deadline'] : '' }}" name="css_profile_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="form-label" for="css_status">Status</label>
                                                         <select class="form-select" id="css_status" name="css_status">
                                                             <option value="">Select One</option>
                                                             @foreach($college_list_status as $status)
-                                                                <option value="{{ $status }}" @if($college['college_details'] && $college['college_details']['css_status'] == $status) selected @endif>{{ $status }}</option>
+                                                                <option value="{{ $status }}" @if($college['css_status'] == $status) selected @endif>{{ $status }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <input class="form-check-input form-check-input_all status" id="is_completed_css_profile_deadline-{{ $i }}" name="is_completed_css_profile_deadline" @if($college['college_details'] && $college['college_details']['is_completed_css_profile_deadline']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_completed_css_profile_deadline'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status" id="is_completed_css_profile_deadline-{{ $i }}" name="is_completed_css_profile_deadline" @if($college['is_completed_css_profile_deadline']) checked @endif value="{{ $college ? $college['is_completed_css_profile_deadline'] : '' }}" type="checkbox">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all application_checklist" id="is_application_checklist-{{ $i }}" name="is_application_checklist" @if($college['college_details'] && $college['college_details']['is_application_checklist']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_application_checklist'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all application_checklist" id="is_application_checklist-{{ $i }}" name="is_application_checklist" @if($college['is_application_checklist']) checked @endif value="{{ $college ? $college['is_application_checklist'] : '' }}" type="checkbox">
                                                 <b class="ml-4">Application Checklist Complete</b>
                                                 <i class="fa fa-2x fa-circle-info" data-bs-toggle="popover" data-bs-animation="true" data-bs-placement="bottom" title="Checklist Information" data-bs-content="Once all of the checkboxes below are checked off, this checkbox will automatically be checked."></i>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_completed_application-{{ $i }}" value="{{ $college['college_details'] ? $college['college_details']['is_completed_application'] : '' }}" @if($college['college_details'] && $college['college_details']['is_completed_application']) checked @endif name="is_completed_application" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_completed_application-{{ $i }}" value="{{ $college ? $college['is_completed_application'] : '' }}" @if($college['is_completed_application']) checked @endif name="is_completed_application" type="checkbox">
                                                 Completed College Application?
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_request_pay-{{ $i }}" name="is_request_pay" @if($college['college_details'] && $college['college_details']['is_request_pay']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_request_pay'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_request_pay-{{ $i }}" name="is_request_pay" @if($college['is_request_pay']) checked @endif value="{{ $college ? $college['is_request_pay'] : '' }}" type="checkbox">
                                                 Request & pay for test scores (if applicable) to be sent to the colleges you will apply to
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_high_school_transcript-{{ $i }}" name="is_high_school_transcript" @if($college['college_details'] && $college['college_details']['is_high_school_transcript']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_high_school_transcript'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_high_school_transcript-{{ $i }}" name="is_high_school_transcript" @if($college['is_high_school_transcript']) checked @endif value="{{ $college ? $college['is_high_school_transcript'] : '' }}" type="checkbox">
                                                 Pay the high school transcript submittal fee (This varies by high school)
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_letter_of_recommedation-{{ $i }}" name="is_letter_of_recommedation" @if($college['college_details'] && $college['college_details']['is_letter_of_recommedation']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_letter_of_recommedation'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_letter_of_recommedation-{{ $i }}" name="is_letter_of_recommedation" @if($college['is_letter_of_recommedation']) checked @endif value="{{ $college ? $college['is_letter_of_recommedation'] : '' }}" type="checkbox">
                                                 Request letters of recommedation from your teachers and outside recommenders
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_your_offical_high_school_transcripts-{{ $i }}" name="is_your_offical_high_school_transcripts" @if($college['college_details'] && $college['college_details']['is_your_offical_high_school_transcripts']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_your_offical_high_school_transcripts'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_your_offical_high_school_transcripts-{{ $i }}" name="is_your_offical_high_school_transcripts" @if($college['is_your_offical_high_school_transcripts']) checked @endif value="{{ $college ? $college['is_your_offical_high_school_transcripts'] : '' }}" type="checkbox">
                                                 Confirm that your official high school transcripts have been sent by your high school's counseling office
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_school_report_and_counselor-{{ $i }}" name="is_school_report_and_counselor" @if($college['college_details'] && $college['college_details']['is_school_report_and_counselor']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_school_report_and_counselor'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_school_report_and_counselor-{{ $i }}" name="is_school_report_and_counselor" @if($college['is_school_report_and_counselor']) checked @endif value="{{ $college ? $college['is_school_report_and_counselor'] : '' }}" type="checkbox">
                                                 Confirm that the school report and counselor recommendation have been sent by your high school's counseling office
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_test_scores_sent-{{ $i }}" name="is_test_scores_sent" @if($college['college_details'] && $college['college_details']['is_test_scores_sent']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_test_scores_sent'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_test_scores_sent-{{ $i }}" name="is_test_scores_sent" @if($college['is_test_scores_sent']) checked @endif value="{{ $college ? $college['is_test_scores_sent'] : '' }}" type="checkbox">
                                                 Confirm that your test scores have been sent
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_letters_of_recommendation_submitted-{{ $i }}" name="is_letters_of_recommendation_submitted" @if($college['college_details'] && $college['college_details']['is_letters_of_recommendation_submitted']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_letters_of_recommendation_submitted'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_letters_of_recommendation_submitted-{{ $i }}" name="is_letters_of_recommendation_submitted" @if($college['is_letters_of_recommendation_submitted']) checked @endif value="{{ $college ? $college['is_letters_of_recommendation_submitted'] : '' }}" type="checkbox">
                                                 Confirm that your letters of recommendation have been submitted
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_pay_application_fee-{{ $i }}" name="is_pay_application_fee" @if($college['college_details'] && $college['college_details']['is_pay_application_fee']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_pay_application_fee'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_pay_application_fee-{{ $i }}" name="is_pay_application_fee" @if($college['is_pay_application_fee']) checked @endif value="{{ $college ? $college['is_pay_application_fee'] : '' }}" type="checkbox">
                                                 Pay application fee
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col">
-                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_submit_application-{{ $i }}" name="is_submit_application" @if($college['college_details'] && $college['college_details']['is_submit_application']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_submit_application'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all status application-{{ $i }}" id="is_submit_application-{{ $i }}" name="is_submit_application" @if($college['is_submit_application']) checked @endif value="{{ $college ? $college['is_submit_application'] : '' }}" type="checkbox">
                                                 Submit application
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col d-flex">
-                                                <input class="form-check-input form-check-input_all inline-block me-1 status application-{{ $i }}" id="is_received_application-{{ $i }}" name="is_received_application" @if($college['college_details'] && $college['college_details']['is_received_application']) checked @endif value="{{ $college['college_details'] ? $college['college_details']['is_received_application'] : '' }}" type="checkbox">
+                                                <input class="form-check-input form-check-input_all inline-block me-1 status application-{{ $i }}" id="is_received_application-{{ $i }}" name="is_received_application" @if($college['is_received_application']) checked @endif value="{{ $college ? $college['is_received_application'] : '' }}" type="checkbox">
                                                 After you submit your application, set up your student portal to confirm that the college has received your application and required documentation <br>
                                                 (Usually the college will send you an email with directions on how to set up your student portal once they've received your application)
                                             </div>
@@ -333,6 +335,10 @@
                             </div>
                         </form>
                         @endforeach
+
+                        @if(count($college_list_deadline) === 0)
+                            <div class="no-data">No data found</div>
+                        @endif  
                     </div>
                 </div>
             </div>
@@ -348,7 +354,7 @@
                 @csrf
                 <div class="block block-rounded block-transparent mb-0">
                     <div class="block-header colleg-add-header">
-                        <h3 class="block-title">Header</h3>
+                        <h3 class="block-title">Add College</h3>
                         <div class="block-options">
                             <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="fa fa-fw fa-times"></i>
@@ -357,31 +363,23 @@
                     </div>
 
                     <div class="row block-content">
-                        <div class="col-12 mb-3">
-                            <label for="">College Name</label>
-                            <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" placeholder="College Name" value="">
-                            @error('name')
-                                <div class="invalid-feedback">{{$message}}</div>
-                            @enderror
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="">City</label>
-                            <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('city') ? 'is-invalid' : ''}}" id="city" name="city" placeholder="City Name" value="">
-                            @error('city')
-                                <div class="invalid-feedback">{{$message}}</div>
-                            @enderror
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="">State</label>
-                            <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('state') ? 'is-invalid' : ''}}" id="state" name="state" placeholder="State Name" value="">
-                            @error('state')
-                                <div class="invalid-feedback">{{$message}}</div>
-                            @enderror
+                        <div>
+                            <label for="college" class="form-label">Select College</label>
+                            <select class="form-select" id="college" name="college">
+                                <option value="">Select One</option>
+                                @foreach($college_list as $list)
+                                    @foreach($list->college_list_details as $college)
+                                        @if(!in_array($college->id, $selected_college_id))
+                                            <option value="{{ $college->id }}">{{ $college->college_name }}</option>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="block-content block-content-full text-end">
                         <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn submit-btn">Submit</button>
+                        <button type="submit" class="btn submit-btn">Add</button>
                     </div>
                 </div>
             </form>
@@ -414,6 +412,16 @@
     })
 
     $('.chagecollagecheckbox').on('change', function (e) {
+        const id = e.target.id
+        $('#is_complete_application_type-' + id).attr('checked', e.target.checked);
+        $('#is_complete_admission_open-' + id).attr('checked', e.target.checked);
+        $('#is_completed_css_profile_deadlineon_open-' + id).attr('checked', e.target.checked);
+        $('#is_complete_number_of_essays-' + id).attr('checked', e.target.checked);
+        $('#is_complete_admission_deadline-' + id).attr('checked', e.target.checked);
+        $('#is_complete_competitive_scholarship_deadline-' + id).attr('checked', e.target.checked);
+        $('#is_complete_scholarship_deadline-' + id).attr('checked', e.target.checked);
+        $('#is_completed_honors_college_deadline-' + id).attr('checked', e.target.checked);
+        $('#is_completed_fafsa_deadline-' + id).attr('checked', e.target.checked);
         $.ajax({
             url: "{{ route('admin-dashboard.set_application_completed') }}",
             type: 'POST',
@@ -423,7 +431,7 @@
                 ...e.target.dataset
             }
         }).done(function(data){
-            window.location.reload();
+            // window.location.reload();
         });
     })
 
