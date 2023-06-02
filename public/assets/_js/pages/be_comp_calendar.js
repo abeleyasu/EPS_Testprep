@@ -215,11 +215,20 @@ class pageCompCalendar {
                                 let time = resp.data.event.event_time;
                                 let formattedTime = time.slice(0, 5);
 
+                                const input = document.querySelector('#exampleInputEventTime');
+                                const picker = flatpickr(input, {
+                                    enableTime: true,
+                                    noCalendar: true,
+                                    dateFormat: "H:i",
+                                });
+                                picker.setDate(formattedTime, false, "H:i");
+
                                 $('#exampleInputEventTitle').val(title);
                                 $('#exampleInputEventColor').val(color);
-                                $('#exampleInputEventTime').val(formattedTime);
+                                // $('#exampleInputEventTime').val(formattedTime);
                                 $('#exampleInputEventDescription').val(desc);
                                 $("#event-click-model .btn-main-id").attr("data-id", resp.data.event.id);
+
                             }
                         },
                         error: function (err) {
@@ -272,6 +281,7 @@ class pageCompCalendar {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    showLoadingIndicator();
                     $.ajax({
                         url: `${site_url}/user/calendar/delete-event/${id}`,
                         type: "DELETE",
@@ -299,9 +309,11 @@ class pageCompCalendar {
                                 $('.list-events').append(html);
                                 toastr.success(resp.message);
                             }
+                            hideLoadingIndicator();
                         },
                         error: function(err) {
                             console.log("err =>>>", err);
+                            hideLoadingIndicator();
                         }
                     });  
                 }
@@ -337,6 +349,7 @@ class pageCompCalendar {
                 toastr.error("Please Input Description!");
                 return false;
             }
+            showLoadingIndicator();
 
             $.ajax({
                 url: `${site_url}/user/calendar/update-event/${id}`,
@@ -353,6 +366,7 @@ class pageCompCalendar {
                 },
                 success: function(resp) {
                     if (resp.success) {
+                        hideLoadingIndicator();
                         $('#event-click-model').modal('hide');
                         $('#exampleInputEventTitle').val('');
                         $('#exampleInputEventColor').val('');
@@ -366,6 +380,7 @@ class pageCompCalendar {
                     }
                 },
                 error: function(err) {
+                    hideLoadingIndicator();
                     console.log("err =>>>", err);
                 }
             });
@@ -401,6 +416,8 @@ class pageCompCalendar {
                 toastr.error("Please Input Description!");
                 return false;
             }
+            showLoadingIndicator();
+
             $.ajax({
                 url: `${site_url}/user/calendar/add-assign-event`,
                 type: "POST",
@@ -429,14 +446,28 @@ class pageCompCalendar {
                         calendar.addEventSource(resp.data);
                         toastr.success(resp.message);
                     }
+                    hideLoadingIndicator();
                 },
                 error: function(err) {
                     console.log("err =>>>", err);
+                    hideLoadingIndicator();
                 }
             });
         });
 
         calendar.render();
+
+        // Function to show the loading indicator
+        function showLoadingIndicator() {
+            $('#loadingIndicator').show();
+            $('#addEvent').prop('disabled', true);
+        }
+
+        // Function to hide the loading indicator
+        function hideLoadingIndicator() {
+            $('#loadingIndicator').hide();
+            $('#addEvent').prop('disabled', false);
+        }
     }
 
     /*

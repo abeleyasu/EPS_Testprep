@@ -7,6 +7,8 @@ use App\Models\UserCalendar;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\GoogleCalendar\Event as GoogleCalendarEvent;
+use Carbon\Carbon;
 
 class UserCalendarController extends Controller
 {
@@ -28,13 +30,30 @@ class UserCalendarController extends Controller
 
         $end_date = isset($request->end_date) ? $request->end_date : null;
 
+        //Add Event on google calendar starts
+        $startDateTime = Carbon::parse($start_date);
+        $endDateTime = clone $startDateTime;
+        $endDateTime->addMinutes(30);
+
+        $google_calendar_event = new GoogleCalendarEvent;
+        $google_calendar_event->name = $title;
+        $google_calendar_event->description = $desc;
+        $google_calendar_event->startDateTime = $startDateTime;
+        $google_calendar_event->colorId = $this->google_calendar_findColor($color);
+        $google_calendar_event->endDateTime = $endDateTime;
+        $newEvent = $google_calendar_event->save();
+        $lastInsertedGoogleCalenderEventId = $newEvent->id;
+        //Add Event on google calendar ends
+
+
         $calendarEvent = CalendarEvent::create([
             "user_id" => Auth::id(),
             "title" => $title,
             "description" => $desc,
             "color" => $color,
             "is_assigned" => 1,
-            'event_time' => $time
+            'event_time' => $time,
+            'google_calendar_event_id' => $lastInsertedGoogleCalenderEventId
         ]);
 
         UserCalendar::create([
@@ -92,6 +111,24 @@ class UserCalendarController extends Controller
         return $c_code;
     }
 
+    public function google_calendar_findColor($color)
+    {
+        //Google calendar color code 
+        // 1 = blue / 2 = green / 3 = purple / 4 = red / 5 = yellow / 6 = orange / 7 = turquoise / 8 = gray / 9 = bold blue / 10 = bold green / 11 = bold red
+        if($color == "info") {
+            $c_code = 1; // Blue
+        } else if($color == "warning") {
+            $c_code = 6; // Orange
+        } else if($color == "success") {
+            $c_code = 2; // Green
+        } else if($color == "danger") {
+            $c_code = 4; // Red
+        } else {
+            $c_code = 3; //purple
+        }
+        return $c_code;
+    }
+
     /* Assign event to calendar */
 
     public function store(Request $request)
@@ -99,13 +136,34 @@ class UserCalendarController extends Controller
         $event_id = $request->event_id;
         $start_date = $request->start_date;
 
+        $calendarEvent = CalendarEvent::whereId($event_id)->first();
+        $lastInsertedGoogleCalenderEventId = "";
+        if (!empty($calendarEvent)) {
+            //Add Event on google calendar starts
+            $startDateTime = Carbon::parse($start_date);
+            $endDateTime = clone $startDateTime;
+            $endDateTime->addMinutes(30);
+
+            $event = new GoogleCalendarEvent;
+            $event->name = $calendarEvent->title;
+            $event->description = $calendarEvent->description;
+            $event->startDateTime = $startDateTime;
+            $event->colorId = $this->google_calendar_findColor($calendarEvent->color);
+            $event->endDateTime = $endDateTime;
+            $newEvent = $event->save();
+            $lastInsertedGoogleCalenderEventId = $newEvent->id;
+            //Add Event on google calendar ends
+        }
+
         UserCalendar::create([
             "event_id" => $event_id,
             "start_date" => $start_date
         ]);
 
+
         CalendarEvent::whereId($event_id)->update([
-            "is_assigned" => 1
+            "is_assigned" => 1,
+            "google_calendar_event_id" => $lastInsertedGoogleCalenderEventId
         ]);
 
         return response()->json(["success" => true, "data" => $this->fetchAllEvents(), "message" => "Event assigned successfully"]);
@@ -160,7 +218,41 @@ class UserCalendarController extends Controller
             // Update the start_date time of the UserCalendar record
             $userCalendar->start_date = $start_date;
             $userCalendar->save();
+
+            $startDateTime = Carbon::parse($start_date);
+            $endDateTime = clone $startDateTime;
+            $endDateTime->addMinutes(30);
+
+            //Update in google calendar
+            $googleCalendarEventId = CalendarEvent::find($id)->google_calendar_event_id;
+            if(isset($googleCalendarEventId) && $googleCalendarEventId != null) {   
+                $google_calendar_event = GoogleCalendarEvent::find($googleCalendarEventId);
+
+                $google_calendar_event->update([
+                    'name' => $title,
+                    "description" => $desc,
+                    "startDateTime" => $startDateTime,
+                    "colorId" => $this->google_calendar_findColor($color),
+                    "endDateTime" => $endDateTime,
+                ]);
+            } 
+            else {
+                //Add Event on google calendar starts
+                $google_calendar_event = new GoogleCalendarEvent;
+                $google_calendar_event->name = $title;
+                $google_calendar_event->description = $desc;
+                $google_calendar_event->startDateTime = $startDateTime;
+                $google_calendar_event->colorId = $this->google_calendar_findColor($color);
+                $google_calendar_event->endDateTime = $endDateTime;
+                $newEvent = $google_calendar_event->save();
+                $lastInsertedGoogleCalenderEventId = $newEvent->id;
+                //Add Event on google calendar ends
+                CalendarEvent::whereId($id)->update([
+                    "google_calendar_event_id" => $lastInsertedGoogleCalenderEventId
+                ]);
+            }
         }
+
 
         return response()->json(["success" => true, "data" => $this->fetchAllEvents(), "message" => "Event updated successfully"]);
     }
@@ -169,8 +261,13 @@ class UserCalendarController extends Controller
 
     public function deleteEvent($id)
     {
+        $googleCalendarEventId = CalendarEvent::find($id)->google_calendar_event_id;
+        $google_calendar_event = GoogleCalendarEvent::find($googleCalendarEventId);
+        $google_calendar_event->delete();
+
         CalendarEvent::whereId($id)->update([
-            "is_assigned" => 0
+            "is_assigned" => 0,
+            "google_calendar_event_id" => ""
         ]);
 
         $calendarEvent = CalendarEvent::whereId($id)->first();
@@ -178,8 +275,10 @@ class UserCalendarController extends Controller
         if($calendarEvent->reminders_id > 0) {
             $reminder = Reminder::findOrFail($calendarEvent->reminders_id);
             $reminder->update(['enabled' => 0]);
+
+
         }
-        
+
         UserCalendar::where('event_id', $id)->delete();
 
         $data['fetchAllEvents'] = $this->fetchAllEvents();
