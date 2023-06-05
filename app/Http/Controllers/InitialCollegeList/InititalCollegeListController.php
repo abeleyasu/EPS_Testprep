@@ -584,7 +584,7 @@ class InititalCollegeListController extends Controller
         $userid = Auth::user()->id;
         $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
             $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
-        }])->first()->toArray();
+        }])->first();
 
         $totalCount = 0;
         $data = [];
@@ -616,7 +616,7 @@ class InititalCollegeListController extends Controller
             $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
                 $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
             }]);
-        }])->first()->toArray();
+        }])->first();
 
         return response()->json([
             'success' => count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
