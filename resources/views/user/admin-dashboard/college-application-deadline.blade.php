@@ -48,7 +48,9 @@
             <h3 class="block-title">COLLEGE LIST & APPLICATION DEADLINES</h3>
         </div>
         <div class="block-content">
+            @if(count($college_list_deadline) > 0)
             <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
+            @endif
             <p>
                 <span class="note-text">Note:</span> Adding or removing a college from this list will also add it to or remove it from all tools on your profile, including the My College List tool.
             </p>
