@@ -621,7 +621,7 @@ class InititalCollegeListController extends Controller
         }])->first();
 
         return response()->json([
-            'success' => count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
+            'success' => $costcomparisonsummary ? count($costcomparisonsummary['college_list_details']) > 0 ? true : false : false,
             'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
         ]);
     }
