@@ -14,11 +14,8 @@ class CollegeApplicationDeadlineController extends Controller
     public function index()
     {
         $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->with('college_details')->get();
-        $selectedCollegeId = $college_list_deadline->pluck('college_id')->toArray();
-        $college_list = CollegeList::select('id')->where('user_id', '=', Auth::id())->with(['college_list_details' => function ($query) {
-            $query->select('id', 'college_name', 'college_lists_id');
-        }])->where('status', 'completed')->get();
-        // dd($college_list_deadline);
+        $selectedCollegeId = $college_list_deadline->pluck('college_details.college_id')->toArray();
+        $college_list = CollegeInformation::orderBy('name')->whereNotIn('college_id', $selectedCollegeId)->get();
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),
             'admision_option' => config('constants.admission_options'),
@@ -27,6 +24,31 @@ class CollegeApplicationDeadlineController extends Controller
             'college_list' => $college_list,
             'selected_college_id' => $selectedCollegeId,
         ]);
+    }
+
+    public function list(Request $request) {
+
+        // dd($request->all());
+
+        $page = isset($request->page) ? $request->page : 1;
+        $search = isset($request->search) ? $request->search : null;
+        $limit = $page * 25;
+
+        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->with('college_details')->get();
+        $selectedCollegeId = $college_list_deadline->pluck('college_details.college_id')->toArray();
+        $college_list = CollegeInformation::whereNotIn('college_id', $selectedCollegeId);
+
+        if (!empty($search)) {
+            $college_list = $college_list->where(function ($list) use ($search) {
+                return $list->where('name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $college_list = $college_list->orderBy('name')->paginate($limit);
+
+        $college_list = $college_list->toArray();
+
+        return $college_list;
     }
 
     public function college_save(Request $request)

@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Http;
 use App\Models\CollegeList;
 use App\Models\CollegeSearchAdd;
 use App\Models\CollegeUserStatistics;
+use App\Models\CostComparison;
+use App\Models\CostComparisonDetail;
+use App\Models\CostComparisonOtherScholarship;
+use App\Models\CollegeDetails;
+use App\Models\CollegeInformation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 
 class InititalCollegeListController extends Controller
@@ -17,11 +23,19 @@ class InititalCollegeListController extends Controller
     public function step1(Request $request)
     {
         if (count($request->all()) > 0) {
-            $createSearchList = CollegeList::create([
-                'user_id' => auth()->user()->id,
-                'last_search_string' => json_encode($request->all()),
-                'active_step' => 2,
-            ]);
+            $createSearchList = CollegeList::where('user_id', auth()->user()->id)->first();
+            if (!$createSearchList) {
+                $createSearchList = CollegeList::create([
+                    'user_id' => auth()->user()->id,
+                    'last_search_string' => json_encode($request->all()),
+                    'active_step' => 2,
+                ]);
+            } else {
+                $createSearchList->update([
+                    'last_search_string' => json_encode($request->all()),
+                    'active_step' => 2,
+                ]);
+            }
             $route = route('admin-dashboard.initialCollegeList.step2', ['college_lists_id' => $createSearchList->id]);
             return redirect($route);
         }
@@ -144,6 +158,7 @@ class InititalCollegeListController extends Controller
             'college_median_earnings' => $request->college_median_earnings,
             'order_index' => $max_order_index ? $max_order_index + 1 : 1,
         ]);
+        $this->createCollegeListAllData($add_college->id);
         if ($add_college) {
             return response()->json([
                 'success' => true,
@@ -158,7 +173,9 @@ class InititalCollegeListController extends Controller
     }
 
     public function removeCollge($id, $college_id) {
-        $remove_college = CollegeSearchAdd::where('college_lists_id', $id)->where('college_id', $college_id)->delete();
+        $remove_college = CollegeSearchAdd::where('college_lists_id', $id)->where('college_id', $college_id)->first();
+        $this->deleteCollegeFromAllTable($remove_college->id);
+        $remove_college->delete();
         if ($remove_college) {
             return response()->json([
                 'success' => true,
@@ -528,9 +545,142 @@ class InititalCollegeListController extends Controller
         $college_list = CollegeList::where('id', $id)->update([
             'status' => 'completed',
         ]);
+        // $this->createCollegeListData($id);
         return response()->json([
             'success' => true,
             'message' => 'College list saved successfully',
         ]);
+    }
+
+    public function createCollegeListAllData($college_list_id) {
+        $userid = Auth::user()->id;
+        CollegeDetails::create([
+            'user_id' => $userid,
+            'college_id' => $college_list_id,
+        ]);
+        $createcost = CostComparison::create([
+            'user_id' => $userid,
+            'college_list_id' => $college_list_id,
+        ]);
+        CostComparisonDetail::create([
+            'cost_comparison_id' => $createcost->id,
+        ]);
+    }
+
+    public function deleteCollegeFromAllTable($college_search_id) {
+        $userid = Auth::user()->id;
+        CollegeDetails::where('user_id', $userid)->where('college_id', $college_search_id)->delete();
+        $costcomparison = CostComparison::where('user_id', $userid)->where('college_list_id', $college_search_id)->first();
+        CostComparisonDetail::where('cost_comparison_id', $costcomparison->id)->delete();
+        CostComparisonOtherScholarship::where('cost_comparison_id', $costcomparison->id)->delete();
+        $costcomparison->delete();
+    }
+
+    public function viewCostComparisonPage() {
+        return view('user.admin-dashboard.cost-comparison');
+    }
+
+    public function getCostComparisonSummary(Request $request) {
+        $userid = Auth::user()->id;
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
+            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
+        }])->first()->toArray();
+
+        $totalCount = 0;
+        $data = [];
+        foreach ($costcomparisonsummary['college_list_details'] as $college_data) {
+            $data[] = [
+                'id' => $college_data['id'],
+                'college_name' => $college_data['college_name'],
+                'total_direct_cost' => '$'.number_format($college_data['costcomparison']['total_direct_cost']),
+                'total_merit_cost' => '$'.number_format($college_data['costcomparison']['total_merit_aid']),
+                'total_need_based_aid' => '$'.number_format($college_data['costcomparison']['total_need_based_aid']),
+                'total_outside_scholarship' => '$'.number_format($college_data['costcomparison']['total_outside_scholarship']),
+                'total_cost_attendance' => '$'.number_format($college_data['costcomparison']['total_cost_attendance']),
+            ];
+
+            $totalCount = $totalCount + count($costcomparisonsummary['college_list_details']);
+        }
+        $json_data = [
+            "draw"            => intval( $request->draw ),   
+            "recordsTotal"    => $totalCount,  
+            "recordsFiltered" => $totalCount,
+            "data"            => $data
+        ];
+        return response()->json($json_data);
+    }
+
+    public function getCollegeWiseList() {
+        $userid = Auth::user()->id;
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
+            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
+                $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
+            }]);
+        }])->first()->toArray();
+
+        return response()->json([
+            'success' => count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
+            'data' => $costcomparisonsummary['college_list_details'],
+        ]);
+    }
+
+    public function getSingleCostDetails($id) {
+        $data = CostComparison::where('id', $id)->with(['costcomparisondetail', 'costcomparisonotherscholarship'])->first()->toArray();
+        return response()->json([
+            'success' => $data ? true : false,
+            'data' => $data,
+        ]);
+    }
+
+    public function saveCollegeCost(Request $request) {
+        $data = $request->collect()->except('_token', 'scholarship', 'cost_comparison_id')->all();
+        $total_direct_cost = $data['direct_tuition_free_year'] + $data['direct_room_board_year'];
+        $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
+        $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
+        CostComparisonDetail::where('cost_comparison_id', $request->cost_comparison_id)->update($data);
+        CostComparisonOtherScholarship::where('cost_comparison_id', $request->cost_comparison_id)->delete();
+        $total_outside_scholarship = 0;
+        foreach ($request->scholarship as $scholarship) {
+            if ($scholarship['name'] && $scholarship['amount']) { 
+                CostComparisonOtherScholarship::create([
+                    'cost_comparison_id' => $request->cost_comparison_id,
+                    'scholarship_name' => $scholarship['name'],
+                    'scholarship_amount' => $scholarship['amount'],
+                ]);
+                $total_outside_scholarship = $total_outside_scholarship + $scholarship['amount'];
+            }
+        }
+        $total_cost_attendance = $total_direct_cost - ($total_merit_cost + $total_need_based_aid + $total_outside_scholarship);
+        CostComparison::where('id', $request->cost_comparison_id)->update([
+            'total_direct_cost' => $total_direct_cost,
+            'total_merit_aid' => $total_merit_cost,
+            'total_need_based_aid' => $total_need_based_aid,
+            'total_outside_scholarship' => $total_outside_scholarship,
+            'total_cost_attendance' => $total_cost_attendance,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Cost comparison saved successfully',
+        ]);
+    }
+
+    public function collegeSave(Request $request) {
+        $request->validate([
+            'college' => 'required',
+        ], [
+            'college.required' => 'Please select college',
+        ]);
+        // $max_order_index = CollegeSearchAdd::where('college_lists_id', $request->school_lists_id)->max('order_index');
+        $college = CollegeInformation::where('college_id', $request->college)->first();
+        $collegelist = CollegeList::where('user_id', auth()->user()->id)->first();
+        $max_order_index = CollegeSearchAdd::where('college_lists_id', $collegelist->id)->max('order_index');
+        $add_college = CollegeSearchAdd:: create([
+            'college_lists_id' => $collegelist->id,
+            'college_id' => $request->college,
+            'college_name' => $college->name,
+            'order_index' => $max_order_index ? $max_order_index + 1 : 1,
+        ]);
+        $this->createCollegeListAllData($add_college->id);
+        return redirect()->back()->with('success', 'College added successfully');
     }
 }

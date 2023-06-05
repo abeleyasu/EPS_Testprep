@@ -1,7 +1,7 @@
 <div class="mb-4">
-    <label for="description" class="form-label">Inclusion: <span style="cursor: pointer"
-                                                                 class="p-1 px-2 btn btn-alt-success"
-                                                                 onclick="addInclusion()">+</span></label>
+    <label for="description" class="form-label">Inclusion: 
+        <span style="cursor: pointer" class="p-1 px-2 btn btn-alt-success" onclick="addInclusion()">+</span>
+    </label>
     <div id="inclusion-holder">
         <div style="display: flex" class="mb-2">
             <input type="text" class="form-control form-control-lg form-control-alt" name="inclusion[]"

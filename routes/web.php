@@ -254,7 +254,6 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::delete('/reminders-delete/{id}', [UserController::class, 'delete'])->name('user.reminders.delete');
         Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
         Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
-        Route::any('/cost_comparison', [UserController::class, 'cost_comparison'])->name('user.cost_comparison');
         Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
         
         Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
@@ -325,7 +324,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 });
             });
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
-            Route::post('/college_save', [CollegeApplicationDeadlineController::class, 'college_save'])->name('college_save');
+            Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
+            Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
             Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
@@ -346,7 +346,14 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::patch('/search-college/step4/store-college-selection/{id}', [InititalCollegeListController::class, 'storeSelection'])->name('step4.storeSelection');
                 Route::patch('search-college/save/{id}', [InititalcollegeListController::class, 'saveCollegeList'])->name('saveCollegeList');
             });
-            Route::view('/cost-comparison', 'user.admin-dashboard.cost-comparison')->name('costComparison');
+
+            Route::group(['prefix' => 'cost-comparison'], function () {
+                Route::any('/', [InititalCollegeListController::class, 'viewCostComparisonPage'])->name('cost_comparison');
+                Route::get('get', [InititalCollegeListController::class, 'getCostComparisonSummary'])->name('cost_comparison.get_cost_comparison_summary');
+                Route::get('get-college-list', [InititalCollegeListController::class, 'getCollegeWiseList'])->name('cost_comparison.get_college_list_for_cost_comparison');
+                Route::get('get-single-cost-details/{id}', [InititalCollegeListController::class, 'getSingleCostDetails'])->name('cost_comparison.get_single_cost_details');
+                Route::patch('save-cost-details', [InititalCollegeListController::class, 'saveCollegeCost'])->name('cost_comparison.save_cost_comparison_details');
+            });
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
         });
 

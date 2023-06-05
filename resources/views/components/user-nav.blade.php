@@ -119,7 +119,7 @@
                         </li>
 
                         <li class="nav-main-item">
-                            <a class="nav-main-link {{ Route::is('user.cost_comparison.*') ? 'active' : '' }}" href="{{ route('user.cost_comparison') }}">
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.cost_comparison') ? 'active' : '' }}" href="{{ route('admin-dashboard.cost_comparison') }}">
                                 <i class="nav-main-link-icon si si-calculator"></i>
                                 <span class="nav-main-link-name">Cost Comparison tool</span>
                             </a>

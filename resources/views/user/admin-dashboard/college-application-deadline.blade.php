@@ -347,10 +347,10 @@
 </main>
 
 <!--Add New College Modal -->
-<div class="modal" id="add_new_college" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
+<div class="modal" id="add_new_college" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form action="./college_save" method="POST">
+            <form action="{{ route('admin-dashboard.collegeApplicationDeadline.college_save') }}" method="POST">
                 @csrf
                 <div class="block block-rounded block-transparent mb-0">
                     <div class="block-header colleg-add-header">
@@ -365,15 +365,8 @@
                     <div class="row block-content">
                         <div>
                             <label for="college" class="form-label">Select College</label>
-                            <select class="form-select" id="college" name="college">
+                            <select class="js-data-example-ajax form-control" id="college" name="college" style="width: 100%;" data-placeholder="Select One.">
                                 <option value="">Select One</option>
-                                @foreach($college_list as $list)
-                                    @foreach($list->college_list_details as $college)
-                                        @if(!in_array($college->id, $selected_college_id))
-                                            <option value="{{ $college->id }}">{{ $college->college_name }}</option>
-                                        @endif
-                                    @endforeach
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -393,13 +386,42 @@
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/college-application-deadline.css') }}">
 <link rel="stylesheet" href="{{ asset('css/collegeExploration.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 @endsection
 
 @section('user-script')
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script>
+    $('.js-data-example-ajax').select2({
+        dropdownParent: $('#add_new_college'),
+        allowClear: true,
+        ajax: {
+            delay: 500,
+            url: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
+            dataType: 'json',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    page: params.page || 1
+                }
+                return query;
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                const result = data.data.map((item) => { return { id: item.college_id, text: item.name } });
+                return {
+                    results: result,
+                    pagination: {
+                        more: (params.page * 30) < data.total
+                    }
+                };
+            }
+        }
+    });
+
     One.helpersOnLoad(['one-table-tools-checkable', 'one-table-tools-sections']);
     $('#myTabContent').on('show.bs.collapse', function (e) {
         const id = e.target.dataset.id;
