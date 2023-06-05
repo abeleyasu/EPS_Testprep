@@ -588,18 +588,20 @@ class InititalCollegeListController extends Controller
 
         $totalCount = 0;
         $data = [];
-        foreach ($costcomparisonsummary['college_list_details'] as $college_data) {
-            $data[] = [
-                'id' => $college_data['id'],
-                'college_name' => $college_data['college_name'],
-                'total_direct_cost' => '$'.number_format($college_data['costcomparison']['total_direct_cost']),
-                'total_merit_cost' => '$'.number_format($college_data['costcomparison']['total_merit_aid']),
-                'total_need_based_aid' => '$'.number_format($college_data['costcomparison']['total_need_based_aid']),
-                'total_outside_scholarship' => '$'.number_format($college_data['costcomparison']['total_outside_scholarship']),
-                'total_cost_attendance' => '$'.number_format($college_data['costcomparison']['total_cost_attendance']),
-            ];
-
-            $totalCount = $totalCount + count($costcomparisonsummary['college_list_details']);
+        if ($costcomparisonsummary) {
+            foreach ($costcomparisonsummary['college_list_details'] as $college_data) {
+                $data[] = [
+                    'id' => $college_data['id'],
+                    'college_name' => $college_data['college_name'],
+                    'total_direct_cost' => '$'.number_format($college_data['costcomparison']['total_direct_cost']),
+                    'total_merit_cost' => '$'.number_format($college_data['costcomparison']['total_merit_aid']),
+                    'total_need_based_aid' => '$'.number_format($college_data['costcomparison']['total_need_based_aid']),
+                    'total_outside_scholarship' => '$'.number_format($college_data['costcomparison']['total_outside_scholarship']),
+                    'total_cost_attendance' => '$'.number_format($college_data['costcomparison']['total_cost_attendance']),
+                ];
+    
+                $totalCount = $totalCount + count($costcomparisonsummary['college_list_details']);
+            }
         }
         $json_data = [
             "draw"            => intval( $request->draw ),   
@@ -620,7 +622,7 @@ class InititalCollegeListController extends Controller
 
         return response()->json([
             'success' => count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
-            'data' => $costcomparisonsummary['college_list_details'],
+            'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
         ]);
     }
 
