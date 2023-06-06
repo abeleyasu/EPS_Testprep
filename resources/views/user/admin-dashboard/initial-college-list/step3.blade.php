@@ -397,7 +397,6 @@
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
     $(document).ready(function () {
-        console.log(@json("{{ $errors }}"))
         $('.high-test-name').text($('#high_school_test_type').val());
         $('.past-curent-test-name').text($('#past_current_test_type').val());
         $('.goal-test-name').text($('#goal_test_type').val());

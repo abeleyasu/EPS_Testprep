@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
 <style>
   .block-content {
     padding: 15px;
@@ -25,6 +26,9 @@
     text-align: center;
     font-size: 15px;
     font-weight: 500;
+  }
+  .w-10 {
+    width: 8%;
   }
 </style>
 @endsection
@@ -94,8 +98,7 @@
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
           <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
-            <div class="accordion accordionExample1" id="college-details-cost-comparison">
-            </div>
+            <div class="accordion accordionExample1" id="college-details-cost-comparison"></div>
           </div>
         </div>
       </div>
@@ -106,130 +109,86 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Add Cost for Harvard University</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Add Cost for <span id="modal-college-header"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="modal-body">
         <form id="cost-form">
           @csrf
           <input type="hidden" name="cost_comparison_id" id="cost-id">
-          <div class="block block-rounded">
-            <div class="block-header block-header-default block-header-main">
-              <h3 class="block-title">DIRECT COST/YEAR</h3>
-            </div>
-            <div class="block-content">
-              <div class="mb-4">
-                <label for="direct_tuition_free_year" class="from-label">Tuition & Fees / Year:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="direct_tuition_free_year" name="direct_tuition_free_year" placeholder="Tuition & Fees / Year">
-              </div>
-              <div class="mb-4">
-                <label for="direct_room_board_year" class="from-label">Room & Board / Year:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="direct_room_board_year" name="direct_room_board_year" placeholder="Room & Board / Year">
-              </div>
-            </div>
+          <div class="mb-4">
+            <label for="cost-aid" class="form-label">Select Cost/Aid</label>
+            <select name="cost_aid" class="form-control" id="cost-aid">
+              <option value="">Select Option</option>
+              <option value="cost">Cost</option>
+              <option value="aid">Aid</option>
+            </select>
           </div>
-          <div class="block block-rounded">
-            <div class="block-header block-header-default block-header-main">
-              <h3 class="block-title">INSTITUTIONAL SCHOLARSHIP AID / YEAR</h3>
-            </div>
-            <div class="block-content">
-              <div class="mb-4">
-                <label for="institutional_academic_merit_aid" class="from-label">Academic Merit Aid:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_academic_merit_aid" name="institutional_academic_merit_aid" placeholder="Academic Merit Aid">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_exchange_program_scho" class="from-label">Tuition Exchange Program Scholarship (i.e. WUE/Midwest Exchange):</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_exchange_program_scho" name="institutional_exchange_program_scho" placeholder="Tuition Exchange Program Scholarship (i.e. WUE/Midwest Exchange)">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_honors_col_program" class="from-label">Honors College Program Scholarship:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_honors_col_program" name="institutional_honors_col_program" placeholder="Honors College Program Scholarship">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_academic_department_scho" class="from-label">Academic Departmental Scholarship:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_academic_department_scho" name="institutional_academic_department_scho" placeholder="Academic Departmental Scholarship">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_atheletic_scho" class="from-label">Athletic Scholarship:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_atheletic_scho" name="institutional_atheletic_scho" placeholder="Athletic Scholarship">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_other_talent_scho" class="from-label">Other Talent Scholarship:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_other_talent_scho" name="institutional_other_talent_scho" placeholder="Other Talent Scholarship">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_diversity_scho" class="from-label">Diversity Scholarship:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_diversity_scho" name="institutional_diversity_scho" placeholder="Diversity Scholarship">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_legacy_scho" class="from-label">Legacy Scholarship:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_legacy_scho" name="institutional_legacy_scho" placeholder="Legacy Scholarship">
-              </div>
-              <div class="mb-4">
-                <label for="institutional_other_scho" class="from-label">Other Scholarships (Volunteer, Leadership, etc.):</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="institutional_other_scho" name="institutional_other_scho" placeholder="Other Scholarships (Volunteer, Leadership, etc.)">
-              </div>
-            </div>
-          </div>  
-          <div class="block block-rounded">
-            <div class="block-header block-header-default block-header-main">
-              <h3 class="block-title">NEED-BASED AID / YEAR (FEDERAL, STATE, & INSTITUTIONAL)</h3>
-            </div>
-            <div class="block-content">
-              <div class="mb-4">
-                <label for="need_base_federal_grants" class="from-label">Federal Grants (i.e. Pell Grant, Military, etc.):</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_federal_grants" name="need_base_federal_grants" placeholder="Federal Grants (i.e. Pell Grant, Military, etc.)">
-              </div>
-              <div class="mb-4">
-                <label for="need_base_institutional_grants" class="from-label">Institutional Grants:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_institutional_grants" name="need_base_institutional_grants" placeholder="Institutional Grants">
-              </div>
-              <div class="mb-4">
-                <label for="need_base_state_grants" class="from-label">State Grants:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_state_grants" name="need_base_state_grants" placeholder="State Grants">
-              </div>
-              <div class="mb-4">
-                <label for="need_base_work_study_grants" class="from-label">Work Study:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_work_study_grants" name="need_base_work_study_grants" placeholder="Work Study">
-              </div>
-              <div class="mb-4">
-                <label for="need_base_student_loans_grants" class="from-label">Student Loans:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_student_loans_grants" name="need_base_student_loans_grants" placeholder="Student Loans">
-              </div>
-              <div class="mb-4">
-                <label for="need_base_parent_plus_grants" class="from-label">Parent Plus Loan:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_parent_plus_grants" name="need_base_parent_plus_grants" placeholder="Parent Plus Loan">
-              </div>
-              <div class="mb-4">
-                <label for="need_base_other_grants" class="from-label">Other Grants:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="need_base_other_grants" name="need_base_other_grants" placeholder="Other Grants">
-              </div>
-            </div>
+          <div class="mb-4">
+            <label for="cost-aid-type" class="form-label">Select Type</label>
+            <select name="cost_aid_type" class="form-control" id="cost-aid-type">
+              <option value="">Select Option</option>
+            </select>
           </div>
-          <div class="block block-rounded">
-            <div class="block-header block-header-default block-header-main">
-              <h3 class="block-title">OUTSIDE SCHOLARSHIP AID / YEAR</h3>
-              <button class="btn btn-sm btn-alt-success add-outside-scholarship">+</button>
-            </div>
-            <div class="block-content" id="outside-scholarship">
-            </div>
+
+          <div class="mb-4">
+            <label for="cost_aid_name" class="form-label">Enter Cost/Aid Name</label>
+            <input type="text" name="cost_aid_name" class="form-control" id="cost_aid_name" placeholder="Enter Cost/Aid Name">
           </div>
-          <!-- <div class="block block-rounded">
-            <div class="block-header block-header-default block-header-main">
-              <h3 class="block-title">COST OF ATTENDANCE / YEAR</h3>
-            </div>
-            <div class="block-content">
-              <div class="mb-4">
-                <label for="cost_of_attendance_year" class="from-label">Estimated Total Cost of Attendence / Year:</label>
-                <input type="text" class="form-control form-control-lg form-control-alt" id="cost_of_attendance_year" name="cost_of_attendance_year" placeholder="Estimated Total Cost of Attendence / Year">
-              </div>
-            </div>
-          </div>   -->
+
+          <div class="mb-4">
+            <label for="cost_aid_amount" class="form-label">Enter Cost/Aid Amount</label>
+            <input type="text" name="cost_aid_amount" class="form-control" id="cost_aid_amount" placeholder="Enter Cost/Aid Amount">
+          </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" id="save-cost" class="btn btn-sm btn-success">Save cost</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit-college-cost-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Cost for <span id="edit-modal-college-header"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-cost-form">
+          @csrf
+          <input type="hidden" name="cost_comparison_id" id="edit-cost-id">
+          <input type="hidden" name="id" id="main-id">
+          <div class="mb-4">
+            <label for="edit-cost-aid" class="form-label">Select Cost/Aid</label>
+            <select name="edit_cost_aid" class="form-control" id="edit-cost-aid">
+              <option value="">Select Option</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="edit-cost-aid-type" class="form-label">Select Type</label>
+            <select name="edit_cost_aid_type" class="form-control" id="edit-cost-aid-type">
+              <option value="">Select Option</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="edit_cost_aid_name" class="form-label">Edit Cost/Aid Name</label>
+            <input type="text" name="edit_cost_aid_name" class="form-control" id="edit_cost_aid_name" placeholder="Edit Cost/Aid Name">
+          </div>
+
+          <div class="mb-4">
+            <label for="edit_cost_aid_amount" class="form-label">Edit Cost/Aid Amount</label>
+            <input type="text" name="edit_cost_aid_amount" class="form-control" id="edit_cost_aid_amount" placeholder="Edit Cost/Aid Amount">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="edit-cost" class="btn btn-sm btn-success">Edit cost</button>
       </div>
     </div>
   </div>
@@ -244,9 +203,27 @@
 <script src="{{asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js')}}"></script>
 <script src="{{asset('assets/js/pages/be_tables_datatables.min.js')}}"></script>
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
+<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
   const url = "{{route('admin-dashboard.cost_comparison.get_college_list_for_cost_comparison')}}"
+  toastr.options = {
+    "closeButton": true,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
   $('#costcomparison-summary').DataTable({
     processing: true,
     serverSide: true,
@@ -299,36 +276,35 @@
 
   $(document).on('click', '.add-cost', function (e) {
     e.preventDefault();
-    getSingleCostDetails("{{ route('admin-dashboard.cost_comparison.get_single_cost_details', ['id' => ':id']) }}".replace(':id', e.target.dataset.costcomparisonid))
-    // $('#add-college-cost-modal').modal('show')
+    $('#cost-id').val(e.target.dataset.costcomparisonid)
+    $('#modal-college-header').html($('#college-name-' + e.target.dataset.index).html())
+    $('#add-college-cost-modal').modal('show')
+  })
+
+  $('#cost-aid').on('change', function (e) {
+    const costTypes = @json($types);
+    const costType = e.target.value;
+    $('#cost-aid-type').html('')
+    $('#cost-aid-type').append('<option value="">Select Option</option>')
+    costTypes.forEach((item, index) => {
+      if (item.cost_type == costType) {
+        $('#cost-aid-type').append('<option value="' + item.id + '">' + item.name + '</option>')
+      }
+    })
+  })
+
+  $('#edit-cost-aid').on('change', function (e) {
+    const costTypes = @json($types);
+    const costType = e.target.value;
+    $('#edit-cost-aid-type').html('')
+    $('#edit-cost-aid-type').append('<option value="">Select Option</option>')
+    costTypes.forEach((item, index) => {
+      if (item.cost_type == costType) {
+        $('#edit-cost-aid-type').append('<option value="' + item.id + '">' + item.name + '</option>')
+      }
+    })
   })
   
-  $('.add-outside-scholarship').on('click', function (e) {
-    e.preventDefault();
-    const index = $('#outside-scholarship')[0].children.length
-    const element = `
-      <div class="row mb-3">
-          <div class="col-sm-12 col-lg-6">
-          <label for="" class="from-label">Scholarship Name:</label>
-          <input type="text" class="form-control form-control-lg form-control-alt" id="" name="scholarship[${index}][name]" placeholder="Scholarship Name">
-        </div>
-        <div class="col-11 col-sm-11 col-lg-5">
-          <label for="" class="from-label">Scholarship Amount:</label>
-          <input type="text" class="form-control form-control-lg form-control-alt" id="" name="scholarship[${index}][amount]" placeholder="Scholarship Amount">
-        </div>
-        <div class="col-1 col-sm-1 col-lg-1 d-flex align-items-end">
-          <button class="btn btn-alt-danger remove-outside-scholarship">-</button>
-        </div>
-      </div>
-    `
-    $('#outside-scholarship').append(element)
-  })
-
-  $(document).on('click', '.remove-outside-scholarship', function (e) {
-    e.preventDefault();
-    $(this).parent().parent().remove()
-  })
-
   $(document).on('click', '#save-cost', function (e) {
     e.preventDefault();
     if ($('#cost-form').valid()) {
@@ -343,14 +319,115 @@
         if (response.success) {
           $('#add-college-cost-modal').modal('hide')
           $('#cost-form')[0].reset()
-          $('#outside-scholarship').html('')
           getCollegeListForCostComparison(url);
           $('#costcomparison-summary').DataTable().ajax.reload();
+          toastr.success(response.message)
         } else {
+          toastr.error(response.message)
         }
-        console.log(response)
       })
     }
+  })
+
+  $(document).on('click', '.edit-cost-aid', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: "{{ route('admin-dashboard.cost_comparison.get_single_cost_details', ['id' => ':id']) }}".replace(':id', e.target.dataset.id),
+      method: 'get',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    }).done(function (response) {
+      if (response.success) {
+        const options = [
+          { value: 'cost', name: 'Cost' },
+          { value: 'aid', name: 'Aid' }
+        ]
+          
+        $('#edit-cost-aid').html('')
+        $('#edit-cost-aid').append('<option value="">Select Option</option>')
+        options.forEach((item, index) => {
+          $('#edit-cost-aid').append(`<option value="${item.value}" ${response.data.costtype.cost_type == item.value ? 'selected' : ''} >${item.name}</option>`)
+        })
+
+        const costTypes = @json($types);
+        $('#edit-cost-aid-type').html('')
+        $('#edit-cost-aid-type').append('<option value="">Select Option</option>')
+        costTypes.forEach((item, index) => {
+          if (item.cost_type == response.data.costtype.cost_type) {
+            $('#edit-cost-aid-type').append(`<option value="${item.id}" ${response.data.cost_aid_type_id == item.id ? 'selected' : ''} >${item.name}</option>`)
+          }
+        })
+
+        $('#edit_cost_aid_name').val(response.data.name)
+        $('#edit_cost_aid_amount').val(response.data.amount)
+        $('#main-id').val(response.data.id)
+        $('#edit-cost-id').val(e.target.dataset.costcomparisonid)
+        $('#edit-modal-college-header').html($('#college-name-' + e.target.dataset.index).html())
+        $('#edit-college-cost-modal').modal('show')
+      } else {
+        toastr.error(response.message)
+      }
+    })
+  })
+
+  $(document).on('click', '#edit-cost', function (e) {
+    e.preventDefault();
+    if ($('#edit-cost-form').valid()) {
+      $.ajax({
+        url: "{{route('admin-dashboard.cost_comparison.save_cost_comparison_details')}}",
+        method: 'PATCH',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+          id: $('#main-id').val(),
+          cost_comparison_id: $('#edit-cost-id').val(),
+          cost_aid_type: $('#edit-cost-aid-type').val(),
+          cost_aid_name: $('#edit_cost_aid_name').val(),
+          cost_aid_amount: $('#edit_cost_aid_amount').val(),
+        },
+      }).done(function (response) {
+        if (response.success) {
+          $('#edit-college-cost-modal').modal('hide')
+          $('#edit-cost-form')[0].reset()
+          getCollegeListForCostComparison(url);
+          $('#costcomparison-summary').DataTable().ajax.reload();
+          toastr.success(response.message)
+        } else {
+          toastr.error(response.message)
+        }
+      })
+    }
+  })
+
+  $(document).on('click', '.delete-cost-aid', function (e) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to delete this cost/aid?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "{{ route('admin-dashboard.cost_comparison.delete_cost_details', ['id' => ':id']) }}".replace(':id', e.target.dataset.id),
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        }).done(function (response) {
+          if (response.success) {
+            getCollegeListForCostComparison(url);
+            $('#costcomparison-summary').DataTable().ajax.reload();
+            toastr.success(response.message)
+          } else {
+            toastr.error(response.message)
+          }
+        })
+      }
+    })
   })
 </script>
 

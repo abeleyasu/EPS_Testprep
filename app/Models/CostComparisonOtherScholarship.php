@@ -11,7 +11,12 @@ class CostComparisonOtherScholarship extends Model
 
     protected $fillable = [
         'cost_comparison_id',
-        'scholarship_name',
-        'scholarship_amount',
+        'cost_aid_type_id',
+        'name',
+        'amount',
     ];
+
+    public function costtype() {
+        return $this->hasOne(CostTypes::class, 'id', 'cost_aid_type_id');
+    }
 }

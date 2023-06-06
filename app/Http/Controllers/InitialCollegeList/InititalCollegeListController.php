@@ -14,6 +14,8 @@ use App\Models\CostComparisonDetail;
 use App\Models\CostComparisonOtherScholarship;
 use App\Models\CollegeDetails;
 use App\Models\CollegeInformation;
+use App\Models\CostTypes;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 
@@ -577,7 +579,10 @@ class InititalCollegeListController extends Controller
     }
 
     public function viewCostComparisonPage() {
-        return view('user.admin-dashboard.cost-comparison');
+        $types = CostTypes::get();
+        return view('user.admin-dashboard.cost-comparison', [
+            'types' => $types,
+        ]);
     }
 
     public function getCostComparisonSummary(Request $request) {
@@ -615,10 +620,14 @@ class InititalCollegeListController extends Controller
     public function getCollegeWiseList() {
         $userid = Auth::user()->id;
         $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
-            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
-                $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
-            }]);
+            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
         }])->first();
+
+        if ($costcomparisonsummary) {
+            foreach($costcomparisonsummary['college_list_details'] as $key => $list) {
+                $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetails'] = $this->setCostComparisonDataAccordingToType($list->costcomparison->id);
+            }
+        }
 
         return response()->json([
             'success' => $costcomparisonsummary ? count($costcomparisonsummary['college_list_details']) > 0 ? true : false : false,
@@ -626,8 +635,15 @@ class InititalCollegeListController extends Controller
         ]);
     }
 
+    public function setCostComparisonDataAccordingToType($data) {
+        $types = CostTypes::with(['data' => function ($query) use ($data) {
+            $query->where('cost_comparison_id', $data);
+        }])->get();
+        return $types;
+    }
+
     public function getSingleCostDetails($id) {
-        $data = CostComparison::where('id', $id)->with(['costcomparisondetail', 'costcomparisonotherscholarship'])->first()->toArray();
+        $data = CostComparisonOtherScholarship::where('id', $id)->with(['costtype'])->first();
         return response()->json([
             'success' => $data ? true : false,
             'data' => $data,
@@ -635,35 +651,75 @@ class InititalCollegeListController extends Controller
     }
 
     public function saveCollegeCost(Request $request) {
-        $data = $request->collect()->except('_token', 'scholarship', 'cost_comparison_id')->all();
-        $total_direct_cost = $data['direct_tuition_free_year'] + $data['direct_room_board_year'];
-        $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
-        $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
-        CostComparisonDetail::where('cost_comparison_id', $request->cost_comparison_id)->update($data);
-        CostComparisonOtherScholarship::where('cost_comparison_id', $request->cost_comparison_id)->delete();
-        $total_outside_scholarship = 0;
-        foreach ($request->scholarship as $scholarship) {
-            if ($scholarship['name'] && $scholarship['amount']) { 
-                CostComparisonOtherScholarship::create([
-                    'cost_comparison_id' => $request->cost_comparison_id,
-                    'scholarship_name' => $scholarship['name'],
-                    'scholarship_amount' => $scholarship['amount'],
-                ]);
-                $total_outside_scholarship = $total_outside_scholarship + $scholarship['amount'];
-            }
+        $rules = [
+            'cost_comparison_id' => 'required',
+            'cost_aid_type' => 'required',
+            'cost_aid_name' => 'required',
+            'cost_aid_amount' => 'required|numeric',
+        ];
+
+        if (isset($request->id)) {
+            $rules['id'] = 'required';
         }
-        $total_cost_attendance = $total_direct_cost - ($total_merit_cost + $total_need_based_aid + $total_outside_scholarship);
-        CostComparison::where('id', $request->cost_comparison_id)->update([
-            'total_direct_cost' => $total_direct_cost,
-            'total_merit_aid' => $total_merit_cost,
-            'total_need_based_aid' => $total_need_based_aid,
-            'total_outside_scholarship' => $total_outside_scholarship,
-            'total_cost_attendance' => $total_cost_attendance,
+
+        $validate = Validator::make($request->all(), $rules,[
+            'cost_comparison_id.required' => 'Cost comparison is required',
+            'cost_aid_type.required' => 'Cost type is required',
+            'cost_aid_name.required' => 'Cost name is required',
+            'cost_aid_amount.required' => 'Cost amount is required',
+            'cost_aid_amount.numeric' => 'Cost amount must be numeric',
+            'id.required' => 'Cost id is required',
         ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validate->errors()->first(),
+            ]);
+        }
+
+        $data = [
+            'cost_comparison_id' => $request->cost_comparison_id,
+            'cost_aid_type_id' => $request->cost_aid_type,
+            'name' => $request->cost_aid_name,
+            'amount' => $request->cost_aid_amount,
+        ];
+
+        if (isset($request->id)) {
+            CostComparisonOtherScholarship::where('id', $request->id)->update($data);
+        } else {
+            CostComparisonOtherScholarship::create($data);
+        }
+
+        $this->calculateTotalCostOrAid($request->cost_comparison_id);
         return response()->json([
             'success' => true,
             'message' => 'Cost comparison saved successfully',
         ]);
+    }
+
+    public function calculateTotalCostOrAid($costcomparisonid) {
+        $types = CostTypes::get();
+        $costcomparison = CostComparisonOtherScholarship::where('cost_comparison_id', $costcomparisonid)->with(['costtype'])->get();
+        $total = $this->calculateIndividulecostandAid($costcomparison, $types);
+        CostComparison::where('id', $costcomparisonid)->update($total);
+    }
+
+    public function calculateIndividulecostandAid($data, $types) {
+        $response = array();
+        foreach ($types as $key => $type) {
+            $typedata = $data->filter(function ($value, $key) use ($type) {
+                return $value->cost_aid_type_id == $type->id;
+            });
+            $total = 0;
+            foreach ($typedata as $key => $value) {
+                $total += $value->amount;
+            }
+            $response[$type->total_field_key] = $total;
+        }
+        $total_cost_attendance = $response['total_direct_cost'] - ($response['total_merit_aid'] + $response['total_need_based_aid'] + $response['total_outside_scholarship']);
+        $response['total_cost_attendance'] = $total_cost_attendance;
+        return $response;
     }
 
     public function collegeSave(Request $request) {
@@ -684,5 +740,16 @@ class InititalCollegeListController extends Controller
         ]);
         $this->createCollegeListAllData($add_college->id);
         return redirect()->back()->with('success', 'College added successfully');
+    }
+
+    public function deleteCollegeCost($id) {
+        $data = CostComparisonOtherScholarship::where('id', $id)->first();
+        $cid = $data->cost_comparison_id;
+        $data->delete();
+        $this->calculateTotalCostOrAid($cid);
+        return response()->json([
+            'success' => true,
+            'message' => 'Cost deleted successfully',
+        ]);
     }
 }
