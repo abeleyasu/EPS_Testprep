@@ -55,7 +55,7 @@ function getCollegeListForCostComparison(url) {
               html += `
                   <tr class="even table-success">
                     <td>${typeinfor.total_field_name}</td>
-                    <td>$${costcomparison[typeinfor.total_field_key]}</td>
+                    <td>${costcomparison[typeinfor.total_field_key] && costcomparison[typeinfor.total_field_key] != 0 ? '$' + costcomparison[typeinfor.total_field_key] : '-'}</td>
                     <td></td>
                   </tr>
                 </tbody>
