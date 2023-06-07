@@ -3549,7 +3549,7 @@
                         $('#questionMultiModal #tagError').text(tags.length ==0 ? 'Tag is required!' : '');
                         $('#addTag').focus();
                         $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                        $('#super_category_create').focus();
+                        // $('#super_category_create').focus();
                         $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
                         $('#category_type_0').focus();
                         $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
@@ -3571,7 +3571,7 @@
                         $('#questionMultiModal #superCategoryError').text('');
                     }
                 } else {
-                    if(question =='' || tags.length ==0 || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' || super_category ==''){
+                    if(question =='' || tags.length ==0 || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' ){
                         $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                         $('#js-ckeditor-addQue').focus();
                         $('#questionMultiModal #tagError').text(tags.length ==0 ? 'Tag is required!' : '');
@@ -3703,7 +3703,7 @@
                         'multiChoice': multiChoice,
                         'tags': tags,
                         'section_id': section_id,
-                        'super_category':super_category,
+                        // 'super_category':super_category,
                         'ct_checkbox_values':ct_checkbox_values,
                         'super_category_values':super_category_values,
                         'new_question_type_select': new_question_type_select,
