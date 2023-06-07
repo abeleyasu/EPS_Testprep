@@ -716,7 +716,7 @@
     {{-- start add question multi model  --}}
     <div class="modal fade" id="questionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Question</h5>
@@ -782,6 +782,7 @@
                             <div class="d-flex input-field align-items-center">
                                 {{-- start  --}}
                                 <div class="col-md-1">
+                                    <label class="form-label" for="ct_checkbox">&ensp;</label>
                                     <input type="checkbox" name="ct_checkbox" id="ct_checkbox_0">
                                 </div>
 
@@ -1316,7 +1317,7 @@
 
     {{-- start update question modal  --}}
     <div class="modal fade" id="editQuestionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" >Update Question</h5>
@@ -1382,6 +1383,7 @@
                         <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
                                 <div class="col-md-1">
+                                    <label class="form-label" for="edit_ct_checkbox">&ensp;</label>
                                     <input type="checkbox" name="edit_ct_checkbox" id="edit_ct_checkbox_0">
                                 </div>
 
@@ -3110,6 +3112,7 @@
         function clearModel() {
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
+            $('#super_category_create_0').val(null).trigger("change");
             $('#category_type_0').val(null).trigger("change");
             $('#search-input_0').val(null).trigger("change");
             $(`.removeNewTypes`).remove();

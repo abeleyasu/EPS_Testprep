@@ -778,7 +778,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 {{-- start update question modal  --}}
 <div class="modal fade" id="questionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" >Update Question</h5>
@@ -844,7 +844,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="d-flex input-field align-items-center">
 
                             <div class="col-md-1">
-                                <input type="checkbox" name="edit_ct_checkbox" id="edit_ct_checkbox_0">
+                                <label class="form-label" for="ct_checkbox">&ensp;</label>
+                                <input type="checkbox" name="ct_checkbox" id="edit_ct_checkbox_0">
                             </div>
 
                             <div class="col-md-4 mb-2 me-2 rating-tag">
@@ -1302,7 +1303,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 <!-- start add  multiple question -->
 
 <div class="modal fade" id="addQuestionMultiModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" >Add Question</h5>
@@ -1389,6 +1390,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="d-flex input-field align-items-center">
 
                             <div class="col-md-1">
+                                <label class="form-label" for="ct_checkbox">&ensp;</label>
                                 <input type="checkbox" name="ct_checkbox" id="ct_checkbox_0">
                             </div>
 
