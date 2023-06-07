@@ -155,6 +155,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
         Route::post('addQuestionTag', [PracticeQuestionController::class, 'addQuestionTag'])->name('addQuestionTag');
         Route::get('getPracticeCategoryType', [PracticeQuestionController::class, 'getPracticeCategoryType'])->name('getPracticeCategoryType');
         Route::get('getPracticeQuestionType', [PracticeQuestionController::class, 'getPracticeQuestionType'])->name('getPracticeQuestionType');
+		Route::get('getSuperCategory', [PracticeQuestionController::class, 'getSuperCategory'])->name('getSuperCategory');
 
 
         Route::post('getSectionQuestions', [PracticeQuestionController::class, 'getSectionQuestions'])->name('getSectionQuestions');

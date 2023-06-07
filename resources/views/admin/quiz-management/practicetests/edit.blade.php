@@ -337,7 +337,7 @@ ul.answerOptionLsit li label input{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgb(125 125 125 / 100%);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 9999999;
     cursor: none;
 }
@@ -831,7 +831,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                     <span class="text-danger" id="tagError"></span>
                     </div>
                     {{-- new for the super category --}}
-                    <div class="mb-2 rating-tag ">
+                    {{-- <div class="mb-2 rating-tag ">
                         <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
                        <div class="d-flex input-field align-items-center">
                         <select class="js-select2 select superCate" id="super_category_edit" name="super_category_edit" onchange="insertSuperCategory(this)" multiple>
@@ -839,32 +839,48 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         </select>
                     </div>
                     <span class="text-danger" id="superCategoryError"></span>
-                    </div>
+                    </div> --}}
                     <div class="input-container" id="addNewTypes">
                         <div class="d-flex input-field align-items-center">
-                            <div class="col-md-5 mb-2 me-2">
+
+                            <div class="col-md-1">
+                                <input type="checkbox" name="edit_ct_checkbox" id="edit_ct_checkbox_0">
+                            </div>
+
+                            <div class="col-md-4 mb-2 me-2 rating-tag">
+                                <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center">
+                                    <select class="js-select2 select superCategory" id="edit_super_category_0" name="edit_super_category" data-id="0" onchange="insertSuperCategory(this)" multiple>
+                                    </select>
+                                </div>
+                                <span class="text-danger" id="superCategoryError"></span>
+                            </div>
+                            
+                            <div class="col-md-3 mb-2 me-2">
                                 <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
-                               <div class="d-flex align-items-center">
-                                <select class="js-select2 select categoryType" id="category_type_0" name="category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
-                                    {{-- @foreach ($getCategoryTypes as $categoryType)
-                                        <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
-                                    @endforeach --}}
-                                </select>
+                                <div class="d-flex align-items-center">
+                                    <select class="js-select2 select categoryType" id="category_type_0" name="category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
+                                        {{-- @foreach ($getCategoryTypes as $categoryType)
+                                            <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                </div>
+                                <span class="text-danger" id="categoryTypeError"></span>
                             </div>
-                            <span class="text-danger" id="categoryTypeError"></span>
-                            </div>
-                            <div class="mb-2 col-md-5 add_question_type_select">
+
+                            <div class="mb-2 col-md-3 add_question_type_select">
                                 <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
                                <div class="d-flex align-items-center">
-                                <select class="js-select2 select questionType" id="search-input_0" name="search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
-                                    {{-- @foreach ($getQuestionTypes as $questionType)
-                                        <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
-                                    @endforeach --}}
-                                </select>
+                                    <select class="js-select2 select questionType" id="search-input_0" name="search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
+                                        {{-- @foreach ($getQuestionTypes as $questionType)
+                                            <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                </div>
+                                <span class="text-danger" id="questionTypeError"></span>
                             </div>
-                            <span class="text-danger" id="questionTypeError"></span>
-                            </div>
-                            <div class="col-md-2 add-position">
+
+                            <div class="col-md-1 add-position">
                                 <button class="plus-button" data-id="1" onclick="addNewTypes(this,'null')"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
@@ -1350,7 +1366,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <span class="text-danger" id="tagError"></span>
                     </div>
                     {{-- new for the super category  --}}
-                    <div class="mb-2 rating-tag ">
+                    {{-- <div class="mb-2 rating-tag ">
                         <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
                         <div class="d-flex align-items-center">
                             <select class="js-select2 select superCate" id="super_category_create" name="super_category_create" onchange="insertSuperCategory(this)" multiple>
@@ -1358,7 +1374,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             </select>
                         </div>
                         <span class="text-danger" id="superCategoryError"></span>
-                    </div>
+                    </div> --}}
 
                     {{-- <div class="mb-2 mb-4"> 
                         <label for="new_question_type_select">Question type:</label>
@@ -1371,7 +1387,21 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                     </div> --}}
                     <div class="input-container" id="add_New_Types">
                         <div class="d-flex input-field align-items-center">
-                            <div class="col-md-5 mb-2 me-2 category-custom">
+
+                            <div class="col-md-1">
+                                <input type="checkbox" name="ct_checkbox" id="ct_checkbox_0">
+                            </div>
+
+                            <div class="col-md-4 mb-2 me-2 rating-tag">
+                                <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center">
+                                    <select class="js-select2 select superCategory" id="super_category_create_0" name="super_category_create" data-id="0" onchange="insertSuperCategory(this)" multiple>
+                                    </select>
+                                </div>
+                                <span class="text-danger" id="superCategoryError"></span>
+                            </div>
+
+                            <div class="col-md-3 mb-2 me-2 category-custom">
                                 <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
                                 <div class="d-flex align-items-center">
                                     <select class="js-select2 select categoryType" id="add_category_type_0" name="add_category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
@@ -1382,7 +1412,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </div>
                                 <span class="text-danger" id="categoryTypeError"></span>
                             </div>
-                            <div class="mb-2 col-md-5 add_question_type_select">
+                            <div class="mb-2 col-md-3 add_question_type_select">
                                 <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
                                 <div class="d-flex align-items-center">
                                     <select class="js-select2 select questionType" id="add_search-input_0" name="add_search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
@@ -1393,7 +1423,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </div>
                                 <span class="text-danger" id="questionTypeError"></span>
                             </div>
-                            <div class="col-md-2 add-position">
+                            <div class="col-md-1 add-position">
                                 <button class="plus-button add-plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
                             </div>
                         </div>
@@ -1911,6 +1941,7 @@ aria-hidden="true">
         getMathDiv();
         var preGetPracticeCategoryType = "";
         var preGetPracticeQuestionType = "";
+        var preGetSuperCategory = "";
         var is_edit = false;
 
         function getMathDiv(){
@@ -2046,10 +2077,12 @@ aria-hidden="true">
             let super_category = '';
             let category = '';
             if(is_edit == true){
-                super_category = $('#questionMultiModal select[name="super_category_edit"]').val(); 
+                // super_category = $('#questionMultiModal select[name="super_category_edit"]').val(); 
+                super_category = $(`#questionMultiModal #edit_super_category_${id}`).val();
                 category = $(`#questionMultiModal #category_type_${id}`).val();
             } else {
-                super_category = $('#addQuestionMultiModal select[name="super_category_create"]').val(); 
+                // super_category = $('#addQuestionMultiModal select[name="super_category_create"]').val(); 
+                super_category = $(`#addQuestionMultiModal #super_category_create_${id}`).val();
                 category = $(`#addQuestionMultiModal #add_category_type_${id}`).val();
             }
             if(question_type != '' && !containsOnlyNumbers(question_type)) {
@@ -2096,6 +2129,12 @@ aria-hidden="true">
                             option += `${value.question_type_title}`;
                             option += `</option>`;
                         }
+
+                        if(resp.type == 'super_categories') {
+                            option += `<option value="${value.id}">`;
+                            option += `${value.title}`;
+                            option += `</option>`;
+                        }
                     });
                     return option;
                 } else {
@@ -2112,10 +2151,15 @@ aria-hidden="true">
                 key = $(data).attr('data-id');
                 key = parseInt(key);
 
+                let super_category = $(`#edit_super_category_${key - 1}`).val();
                 let category_type = $(`#category_type_${key - 1}`).val();
-
                 let question_type = $(`#search-input_${key - 1}`).val();
     
+                if(super_category == '') {
+                    toastr.error('Please select a Super Category!');
+                    return false;
+                }
+
                 if(category_type == '') {
                     toastr.error('Please select a category type!');
                     return false;
@@ -2129,21 +2173,34 @@ aria-hidden="true">
 
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
-                html += `<div class="mb-2 col-md-5 me-2">`;                
+
+                html += `<div class="col-md-1">`;
+                html += `<input type="checkbox" name="edit_ct_checkbox" id="edit_ct_checkbox_${key}">`;
+                html += `</div>`;
+
+                html += `<div class="col-md-4 mb-2 me-2 rating-tag">`;
+                html += `<div class="d-flex align-items-center">`;
+                html += `<select class="js-select2 select superCategory" id="edit_super_category_${key}" name="edit_super_category" multiple>`;//onchange="insertSuperCategory(this)" 
+                html += preGetSuperCategory;
+                html += `</select>`;
+                html += `</div>`;
+                html += `</div>`;
+
+                html += `<div class="mb-2 col-md-3 me-2">`;                
                 html += `<div class="d-flex align-items-center">`;                
                 html += `<select class="js-select2 select categoryType" id="category_type_${key}" name="category_type" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
                 html += preGetPracticeCategoryType;
                 html += `</select>`;  
                 html += `</div>`;                
                 html += `</div>`;                
-                html += `<div class="mb-2 col-md-5 add_question_type_select">`; 
+                html += `<div class="mb-2 col-md-3 add_question_type_select">`; 
                 html += `<div class="d-flex align-items-center">`;                
                 html += `<select class="js-select2 select questionType" id="search-input_${key}" name="search-input" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
                 html += preGetPracticeQuestionType;
                 html += `</select>`;  
                 html += `</div>`;                
                 html += `</div>`; 
-                html += `<div class="col-md-2 add-minus-icon">`;                
+                html += `<div class="col-md-1 add-minus-icon">`;                
                 html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;               
                 html += `</div>`;
                 html += `</div>`;         
@@ -2154,6 +2211,13 @@ aria-hidden="true">
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
                 placeholder : "Select Question type",
+                maximumSelectionLength: 1
+            });
+
+            $(`#edit_super_category_${key}`).select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags : true,
+                placeholder : "Select Super Category",
                 maximumSelectionLength: 1
             });
 
@@ -2176,9 +2240,15 @@ aria-hidden="true">
             let testType = $('#format').val();
                 
 
+            let super_category = $(`#super_category_create_${key - 1}`).val();
             let category_type = $(`#add_category_type_${key - 1}`).val();
             let question_type = $(`#add_search-input_${key - 1}`).val();
           
+            if(super_category == '') {
+                toastr.error('Please select a Super category!');
+                return false;
+            }
+
             if(category_type == '') {
                 toastr.error('Please select a category type!');
                 return false;
@@ -2191,23 +2261,37 @@ aria-hidden="true">
 
             preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
             preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
+            preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
 
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewType">`;
-                html += `<div class="mb-2 col-md-5 me-2">`; 
+
+                html += `<div class="col-md-1">`;
+                html += `<input type="checkbox" name="ct_checkbox" id="ct_checkbox_${key}">`;
+                html += `</div>`;
+
+                html += `<div class="col-md-4 mb-2 me-2 rating-tag">`;
+                html += `<div class="d-flex align-items-center">`;
+                html += `<select class="js-select2 select superCategory" id="super_category_create_${key}" name="super_category_create" multiple>`;//onchange="insertSuperCategory(this)"
+                html += preGetSuperCategory;
+                html += `</select>`;
+                html += `</div>`;
+                html += `</div>`;
+
+                html += `<div class="mb-2 col-md-3 me-2">`; 
                 html += `<div class="d-flex align-items-center">`;               
                 html += `<select class="js-select2 select categoryType" id="add_category_type_${key}" name="add_category_type" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
                 html +=  preGetPracticeCategoryType;                        
                 html += `</select>`; 
                 html += `</div>`;               
                 html += `</div>`;                
-                html += `<div class="mb-2 col-md-5 add_question_type_select">`;   
+                html += `<div class="mb-2 col-md-3 add_question_type_select">`;   
                 html += `<div class="d-flex align-items-center">`;             
                 html += `<select class="js-select2 select questionType" id="add_search-input_${key}" name="add_search-input" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
-                html +=  preGetPracticeQuestionType;       
+                html +=  preGetPracticeQuestionType;
                 html += `</select>`;
-                html += `</div>`;                
-                html += `</div>`; 
+                html += `</div>`;
+                html += `</div>`;
                 html += `<div class="col-md-2 add-minus-icon">`;                
                 html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
                 html += `</div>`;
@@ -2223,6 +2307,13 @@ aria-hidden="true">
             });
 
             $(`#add_category_type_${key}`).select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                tags : true,
+                placeholder : "Select Category type",
+                maximumSelectionLength: 1
+            });
+
+            $(`#super_category_create_${key}`).select2({
                 dropdownParent: $('#addQuestionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
@@ -2262,19 +2353,19 @@ aria-hidden="true">
             maximumSelectionLength: 1
         });
 
-        $(`#super_category_edit`).select2({
-            dropdownParent: $('#questionMultiModal'),
-            tags : true,
-            placeholder : "Select Super Category",
-            maximumSelectionLength: 1
-        });
+        // $(`#super_category_edit`).select2({
+        //     dropdownParent: $('#questionMultiModal'),
+        //     tags : true,
+        //     placeholder : "Select Super Category",
+        //     maximumSelectionLength: 1
+        // });
 
-        $(`#super_category_create`).select2({
-            dropdownParent: $('#addQuestionMultiModal'),
-            tags : true,
-            placeholder : "Select Super Category",
-            maximumSelectionLength: 1
-        });
+        // $(`#super_category_create`).select2({
+        //     dropdownParent: $('#addQuestionMultiModal'),
+        //     tags : true,
+        //     placeholder : "Select Super Category",
+        //     maximumSelectionLength: 1
+        // });
 
         $(`#question_tags_edit`).select2({
             dropdownParent: $('#questionMultiModal'),
@@ -2306,6 +2397,14 @@ aria-hidden="true">
             placeholder : "Select Category type",
             maximumSelectionLength: 1
         });
+
+        $(`#edit_super_category_0`).select2({
+            dropdownParent: $('#questionMultiModal'),
+            tags: true,
+            placeholder : "Select Super Category",
+            maximumSelectionLength: 1
+        });
+       
 
         $(`#diff_rating_edit`).select2({
             dropdownParent: $('#questionMultiModal'),
@@ -2349,6 +2448,14 @@ aria-hidden="true">
             maximumSelectionLength: 1
         });
 
+        $(`#super_category_create_0`).select2({
+            dropdownParent: $('#addQuestionMultiModal'),
+            tags: true,
+            placeholder : "Select Super Category",
+            maximumSelectionLength: 1
+        });
+        
+
         $(`#add_search-input_0`).select2({
             dropdownParent: $('#addQuestionMultiModal'),
             tags: true,
@@ -2367,6 +2474,7 @@ aria-hidden="true">
         });
         preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType`);
         preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType`);
+        preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType`);
     });
 
     var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
@@ -3092,7 +3200,23 @@ aria-hidden="true">
             var fillVals =[];
             var multiChoice = '';
             var tags = $('#question_tags_edit').val();
-            var super_category = $('#super_category_edit').val();
+            // var super_category = $('#super_category_edit').val();
+
+            var ct_checkbox_values = $('input[name=edit_ct_checkbox]').map(function(i,v) {
+                var ct_checkbox_arr = [];
+                var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
+                ct_checkbox_arr.push(ct_checkbox_val);
+                return ct_checkbox_arr;
+            }).get();
+
+            var super_category_values = $('select[name=edit_super_category]').map(function(i,v) {
+                var super_category_arr = [];
+                let super_category_val = $(v).val();
+                if(super_category_val.length > 0){
+                    super_category_arr.push(super_category_val);
+                }
+                return super_category_arr;
+            }).get();
                             
             var testSectionType = $('#testSectionTypeRead').val();
             var get_category_type_values = $('select[name=category_type]').map(function(i,v) {
@@ -3123,13 +3247,17 @@ aria-hidden="true">
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
             if($('#passageRequired_2').is(':checked')){
-                if(question =='' || tags =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || passNumber =='' || jQuery.type(passagesType) == 'null' || format =='' || testSectionType =='' || super_category ==''){
+                if(question =='' || tags =='' || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || passNumber =='' || jQuery.type(passagesType) == 'null' || format =='' || testSectionType ==''){
                 // if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
                     // $('#questionMultiModal .validError').text('Below fields are required!');
                     $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
                     $('#js-ckeditor-addQue').focus();
                     $('#questionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                     $('#editQuestionTag').focus();
+
+                    $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
+                    $('#edit_super_category_0').focus();
+
                     $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
                     $('#category_type_0').focus();
                     $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
@@ -3138,8 +3266,8 @@ aria-hidden="true">
                     $('#passage_number').focus();
                     $('#questionMultiModal #passageTypeError').text(jQuery.type(passagesType) =='null' ? 'Passage Type is required!' : '');
                     $('#passagesType').focus();
-                    $('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super CAtegory is required' : '');
-                    $('#super_category_edit').focus();
+                    // $('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super CAtegory is required' : '');
+                    // $('#super_category_edit').focus();
                     return false;
                 }else{
                     // $('#questionMultiModal .validError').text('');
@@ -3152,19 +3280,23 @@ aria-hidden="true">
                     $('#questionMultiModal #superCategoryError').text('');
                 }
             } else {
-                if(question =='' || tags =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' || super_category ==''){
+                if(question =='' || tags =='' || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType ==''){
                 // if(format =='' || testSectionType =='' || question =='' || questionType ==''){
                     // $('#questionMultiModal .validError').text('Below fields are required!');
                     $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                     $('#js-ckeditor-addQue').focus();
                     $('#questionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                     $('#editQuestionTag').focus();
+
+                    $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
+                    $('#edit_super_category_0').focus();
+
                     $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
                     $('#category_type_0').focus();
                     $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
                     $('#search-input_0').focus();
-                    $('#questionMultiModal #superCategoryError').text(super_category == '' ? 'Super category is required!' : '');
-                    $('#super_category_edit').focus();
+                    // $('#questionMultiModal #superCategoryError').text(super_category == '' ? 'Super category is required!' : '');
+                    // $('#super_category_edit').focus();
                     return false;
                 }else{
                     // $('#questionMultiModal .validError').text('');
@@ -3281,7 +3413,9 @@ aria-hidden="true">
 						'multiChoice':multiChoice,
                         'section_id':section_id,
                         'tags':tags,
-                        'super_category':super_category,
+                        // 'super_category':super_category,
+                        'ct_checkbox_values':ct_checkbox_values,
+                        'super_category_values':super_category_values,
                         'get_question_type_values':get_question_type_values,
                         'get_category_type_values':get_category_type_values,
 						'_token': $('input[name="_token"]').val()
@@ -3585,7 +3719,7 @@ aria-hidden="true">
 
             if (whichModel == 'section') {
 
-                if (format == '' || testSectionType == '' || testSectionTitle == '') {
+                if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
                     $('#sectionModal .validError').text('Below fields are required!');
                     return false;
                 } else {
@@ -3664,7 +3798,23 @@ aria-hidden="true">
                 var passagesType = $('.addPassagesType').val();
                 var passagesTypeTxt = $(".addPassagesType option:selected").text();
                 var tags = $('#question_tags_create').val();
-                var super_category = $('#super_category_create').val();
+                // var super_category = $('#super_category_create').val();
+
+                var ct_checkbox_values = $('input[name=ct_checkbox]').map(function(i,v) {
+                    var ct_checkbox_arr = [];
+                    var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
+                    ct_checkbox_arr.push(ct_checkbox_val);
+                    return ct_checkbox_arr;
+                }).get();
+
+                var super_category_values = $('select[name=super_category_create]').map(function(i,v) {
+                    var super_category_arr = [];
+                    let super_category_val = $(v).val();
+                    if(super_category_val.length > 0){
+                        super_category_arr.push(super_category_val);
+                    }
+                    return super_category_arr;
+                }).get();
 
                 var get_category_type_values = $('select[name=add_category_type]').map(function(i,v) {
                     var category_type_arr = [];
@@ -3685,12 +3835,14 @@ aria-hidden="true">
                 }).get();
 
                 if($('#passageRequired_1').is(':checked')){
-                    if(question =='' || tags =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || passNumber =='' || passagesType == "" || format =='' || testSectionType =='' || super_category =='' ){
+                    if(question =='' || tags ==''|| super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || passNumber =='' || passagesType == "" || format =='' || testSectionType ==''){
                         // $('#addQuestionMultiModal .validError').text('Below fields are required!');
                             $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                             $('#js-ckeditor-add-addQue').focus();
                             $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                             $('#questionTags').focus();
+                            $('#addQuestionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
+                            $('#super_category_create').focus();
                             $('#addQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
                             $('#add_category_type_0').focus();
                             $('#addQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
@@ -3713,18 +3865,20 @@ aria-hidden="true">
                         $('#addQuestionMultiModal #superCategoryError').text('');
                     }
                 } else {
-                    if(question =='' || tags =='' || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' || super_category ==''){
+                    if(question =='' || tags =='' || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType ==''){
                         // $('#addQuestionMultiModal .validError').text('Below fields are required!');
                         $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                         $('#js-ckeditor-add-addQue').focus();
                         $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                         $('#questionTags').focus();
+                        $('#addQuestionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
+                        $('#super_category_create').focus();
                         $('#addQuestionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $('#add_category_type_0').focus();
                         $('#addQuestionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
                         $('#add_search-input_0').focus();
-                        $('#addQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required' : '');
-                        $('#super_category_create').focus();
+                        // $('#addQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required' : '');
+                        // $('#super_category_create').focus();
                         return false;
                     }else{
                         // $('#addQuestionMultiModal .validError').text('');
@@ -3839,7 +3993,9 @@ aria-hidden="true">
                         'section_id':section_id,
                         'tags':tags,
                         'diff_rating':difficulty,
-                        'super_category':super_category,
+                        // 'super_category':super_category,
+                        'ct_checkbox_values':ct_checkbox_values,
+                        'super_category_values':super_category_values,
                         'get_category_type_values':get_category_type_values,
                         'new_question_type_select':new_question_type_select,
                         'get_question_type_values': get_question_type_values,
@@ -3918,6 +4074,7 @@ async function nextPrev(n) {
 
     preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${test_format_type_val}`);
     preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${test_format_type_val}`);
+    preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${test_format_type_val}`);
 
     if (test_title_val != '') {
         $('.testvalidError').text('');
@@ -3943,7 +4100,7 @@ async function nextPrev(n) {
             url: "{{ route('addDropdownOption') }}",
             method: 'post',
             success: (res) => {
-                $('select[name="super_category_edit"').html('');
+                $('select[name="edit_super_category"').html('');
                 $('select[name="super_category_create"').html('');
                 $('select[name="category_type"').html('');
                 $('select[name="add_category_type"').html('');
@@ -3953,7 +4110,7 @@ async function nextPrev(n) {
                 $.each(res.super,function(i,v){
                     super_option += `<option value=${v['id']}>${v['title']}</option>`;
                 });
-                $('select[name="super_category_edit"').append(super_option);
+                $('select[name="edit_super_category"').append(super_option);
                 $('select[name="super_category_create"').append(super_option);
 
                 let category_option = ``;
@@ -4067,8 +4224,13 @@ function practQuestioEdit(id){
             if(res.question.length>0){
                 var result = res.question[0];
                 // document.cookie = "format = " + result.format;
-                categorytypeArr = JSON.parse(result.category_type);
-                questiontypeArr = JSON.parse(result.question_type_id);
+                let categorytypeArr = JSON.parse(result.category_type);
+                let questiontypeArr = JSON.parse(result.question_type_id);
+
+                let super_categoryArr = JSON.parse(result.super_category);
+                let is_category_checkedArr = JSON.parse(result.is_category_checked);
+                let checkedValuesArr = is_category_checkedArr.map(item => item.checked);
+
                 $('#editQuestionOrder').val(result.question_order);
                 $('#currentModelQueId').val(result.id);
                 $('#quesFormat').val(result.format);
@@ -4077,7 +4239,7 @@ function practQuestioEdit(id){
                 $('#new_question_type_select').val(result.question_type_id);
                 $('#category_type').val(result.category_type);
                 $('#diff_rating_edit').val(result.diff_rating).trigger('change');
-                $('#super_category_edit').val(result.super_category).trigger('change');
+                // $('#super_category_edit').val(result.super_category).trigger('change');
                 CKEDITOR.instances['js-ckeditor-addQue'].setData(result.title);
                 let section_type = $(`.selectedSection_${result.practice_test_sections_id}`).val();
                 $('#section_type').val(section_type);
@@ -4114,6 +4276,15 @@ function practQuestioEdit(id){
                     $(questiontypeArr).each((i,v) => {
                         $(`#search-input_${i}`).val(v);
                         $(`#search-input_${i}`).trigger('change');
+                    });
+
+                    $(super_categoryArr).each((i,v) => {
+                        $(`#edit_super_category_${i}`).val(v);
+                        $(`#edit_super_category_${i}`).trigger('change');
+                    });
+
+                    $(checkedValuesArr).each((i,v) => {
+                        $(`#edit_ct_checkbox_${i}`).prop('checked', v == "1");
                     });
                 // }, 500);
 

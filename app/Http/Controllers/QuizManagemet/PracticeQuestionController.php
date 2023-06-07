@@ -81,6 +81,23 @@ class PracticeQuestionController extends Controller
         // } else{
 		// 	$question->tags = $request->tags;
         // }
+
+		$ct_checkbox_values = $request->ct_checkbox_values;
+		$super_category_array = $request->super_category_values;
+		foreach ($super_category_array as $key => $value) {
+			$super_category_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+			$super_category_array[$key] = $super_category_id->id;
+		}
+
+		$is_category_checked_array = array();
+		foreach ($super_category_array as $key => $super_category_id) {
+			$checkbox_value = $ct_checkbox_values[$key];
+			$array_value['super_category_id'] = $super_category_id;
+			$array_value['checked'] = $checkbox_value;
+			$is_category_checked_array[] = $array_value;
+		}
+
+
 		$cat_array = $request->get_category_type_values;
 		foreach ($cat_array as $key => $value) {
 			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
@@ -93,16 +110,19 @@ class PracticeQuestionController extends Controller
 			$qt_array[$key] = $practice_question_id->id;
 		}
 		
-		$super_array = $request->super_category;
-		foreach($super_array as $key => $value){
-			$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-		}
-		$question->super_category = $super_id['id'];
+		// $super_array = $request->super_category;
+		// foreach($super_array as $key => $value){
+		// 	$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+		// }
+		//$question->super_category = $super_id['id'];
+		$question->super_category = json_encode($super_category_array);
+		$question->is_category_checked = json_encode($is_category_checked_array);
 
 		$question->category_type = json_encode($cat_array);
 		$question->question_type_id = json_encode($qt_array);
 		$question->test_source = $request->test_source;
 		$question->save();
+
 		$test_id = PracticeTestSection::where('id',$request->section_id)->get('testid');
 		$count = PracticeQuestion::where('practice_test_sections_id',$request->section_id)->count();
 		// Score::create([
@@ -225,6 +245,21 @@ class PracticeQuestionController extends Controller
 		// 	$question->tags = $request->tags;
         // }
 
+		$ct_checkbox_values = $request->ct_checkbox_values;
+		$super_category_array = $request->super_category_values;
+		foreach ($super_category_array as $key => $value) {
+			$super_category_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+			$super_category_array[$key] = $super_category_id->id;
+		}
+
+		$is_category_checked_array = array();
+		foreach ($super_category_array as $key => $super_category_id) {
+			$checkbox_value = $ct_checkbox_values[$key];
+			$array_value['super_category_id'] = $super_category_id;
+			$array_value['checked'] = $checkbox_value;
+			$is_category_checked_array[] = $array_value;
+		}
+
 		$cat_array = $request->get_category_type_values;
 		foreach ($cat_array as $key => $value) {
 			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
@@ -237,11 +272,13 @@ class PracticeQuestionController extends Controller
 			$qt_array[$key] = $practice_question_id->id;
 		}
 
-		$super_array = $request->super_category;
-		foreach($super_array as $key => $value){
-			$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-		}
-		$question->super_category = $super_id['id'];
+		// $super_array = $request->super_category;
+		// foreach($super_array as $key => $value){
+		// 	$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+		// }
+		// $question->super_category = $super_id['id'];
+		$question->super_category = json_encode($super_category_array);
+		$question->is_category_checked = json_encode($is_category_checked_array);
 		
 		$question->category_type = json_encode($cat_array);
 		$question->question_type_id = json_encode($qt_array);
@@ -566,6 +603,15 @@ class PracticeQuestionController extends Controller
 			$question_type = QuestionType::get();
 		}
 		return response()->json(['success' => true, 'dropdown_list' => $question_type, 'type' => 'question_type']);
+	}
+
+	public function getSuperCategory(){
+		if(isset($_GET['testType']) && !empty($_GET['testType'])){
+			$super_categories = SuperCategory::where('format',$_GET['testType'])->get();
+		} else {
+			$super_categories = SuperCategory::get();
+		}
+		return response()->json(['success' => true, 'dropdown_list' => $super_categories, 'type' => 'super_categories']);
 	}
 
 	//new start
