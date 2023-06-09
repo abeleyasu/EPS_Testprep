@@ -1401,6 +1401,12 @@ return [
             '43' => 37,
             '44' => 38,
         ]
-    ]
+    ],
+    'entrance_difficulty' => [
+        'Not Reported',
+        'Noncompetitive',
+        'Moderately Difficult',
+        'Most Difficult'
+    ],
 ]
 ?>

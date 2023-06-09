@@ -97,6 +97,17 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::delete('/delete_course/{id}', 'destroy')->name('deleteCourse');
             });
         });
+
+        Route::group(['prefix' => 'admission-management', 'as' => 'admin.admission-management.'], function () {
+            Route::group(['prefix' => 'college-information', 'as' => 'college-information.'], function () {
+                Route::controller(CollegeInformationController::class)->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/edit/{id}', 'editView')->name('edit');
+                    Route::post('/edit', 'update')->name('update');
+                });
+            });
+        });
+
         Route::group(['prefix' => 'course-management'], function () {
             Route::resource('courses', CoursesController::class);
             Route::post('courses/{course}/courseupdate', [CoursesController::class, 'course_update'])->name('courses.courseupdate');

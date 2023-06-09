@@ -226,7 +226,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-main-item {{ Route::is('admin.highSchoolResume.*') ? 'open' : ''}}">
+                <li class="nav-main-item {{ Route::is(['admin.highSchoolResume.*', 'admin.admission-management.*']) ? 'open' : ''}}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
                         <i class="nav-main-link-icon fas fa-cogs"></i>
                         <span class="nav-main-link-name">Admission Management</span>
@@ -235,6 +235,11 @@
                         <li class="nav-main-item">
                             <a class="nav-main-link {{Route::is('admin.highSchoolResume.settings') ? 'active' : ''}}" href="{{route('admin.highSchoolResume.settings')}}">
                                 <span class="nav-main-link-name">High School Resume Settings</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{Route::is('admin.admission-management.college-information.index') ? 'active' : ''}}" href="{{ route('admin.admission-management.college-information.index') }}">
+                                <span class="nav-main-link-name">College Information</span>
                             </a>
                         </li>
                     </ul>

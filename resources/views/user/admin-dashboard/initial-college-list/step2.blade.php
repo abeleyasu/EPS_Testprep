@@ -33,19 +33,19 @@
                 @foreach($college_data as $key => $college)
                     <div class="block block-rounded mb-3">
                         <div class="block-header block-header-default block-header-main">
-                            <h3 class="block-title">{{ $college->{'school.name'} }}</h3>
+                            <h3 class="block-title">{{ $college['school.name'] }}</h3>
                             <div class="block-options">
-                                <button type="button" class="btn btn-sm btn-alt-success college-details" data-id="{{ $college->id }}">College Details</button>
-                                @if(in_array($college->id, $selected_college))
-                                    <button type="button" class="btn btn-sm btn-alt-danger remove-list" data-id="{{ $college->id }}">Remove College From List</button>
+                                <button type="button" class="btn btn-sm btn-alt-success college-details" data-id="{{ $college['id'] }}">College Details</button>
+                                @if(in_array($college['id'], $selected_college))
+                                    <button type="button" class="btn btn-sm btn-alt-danger remove-list" data-id="{{ $college['id'] }}">Remove College From List</button>
                                 @else
-                                    <button type="button" class="btn btn-sm btn-alt-success add-list" data-id="{{ $college->id }}">Add to My College List</button>
+                                    <button type="button" class="btn btn-sm btn-alt-success add-list" data-id="{{ $college['id'] }}">Add to My College List</button>
                                 @endif
                             </div>
                         </div>
                         <div class="block-content mb-">
                             <div class="college-search-wrapper">
-                                <h2>{{ $college->{'school.city'} }}, {{ $college->{'school.state'} }}</h2>
+                                <h2>{{ $college['school.city'] }}, {{ $college['school.state'] }}</h2>
                                 <div class="college-search-box">
                                     <div class="row">
                                         <div class="col-lg-2">
@@ -61,7 +61,7 @@
                                             <div class="block block-rounded text-center mb-3">
                                                 <div class="block-content py-3 bg-danger text-white">
                                                     <i class="fa fa-building fa-2x college-years text-black-50"></i>
-                                                        @switch($college->{'school.ownership'})
+                                                        @switch($college['school.ownership'])
                                                             @case(1)
                                                                 <div class="fs-3 fw-semibold mt-3 public">Public</div>
                                                                 <div></div>
@@ -81,25 +81,29 @@
                                         <div class="col-lg-2">
                                             <div class="block block-rounded text-center mb-3">
                                                 <div class="block-content py-3 bg-primary text-white">
-                                                    <i class="fa fa-city fa-2x college-years text-black-50"></i>
+                                                    @if(in_array($college['school.locale'], [11, 12, 13]))
+                                                        <i class="fa fa-city fa-2x college-years text-black-50"></i>
+                                                    @elseif(in_array($college['school.locale'], [21, 22, 23]))
+                                                        <i class="fa fa-city fa-2x college-years text-black-50"></i>
+                                                    @elseif(in_array($college['school.locale'], [31, 32, 33]))
+                                                        <i class="fa fa-city" fa-2x college-years text-black-50"></i>
+                                                    @elseif(in_array($college['school.locale'], [41, 42, 43]))
+                                                        <i class="fa fa-building-wheat fa-2x college-years text-black-50"></i>
+                                                    @else
+                                                        <i class="fa fa-city fa-2x college-years text-black-50"></i>
+                                                    @endif
                                                     <div class="fs-3 fw-semibold mt-3">Campus</div>
-                                                    @switch($college->{'school.locale'})
-                                                        @case(11 || 12 || 13)
-                                                            <div>City</div>
-                                                        @break
-                                                        @case(21 || 22 || 23)
-                                                            <div>Suburban</div>
-                                                        @break
-                                                        @case(31 || 32 || 33)
-                                                            <div>Town</div>
-                                                        @break
-                                                        @case(41 || 42 || 43)
-                                                            <div>Rural</div>
-                                                        @break
-                                                        @default
-                                                            <div>N/A</div>
-                                                        @break
-                                                    @endswitch
+                                                    @if(in_array($college['school.locale'], [11, 12, 13]))
+                                                        <div>City</div>
+                                                    @elseif(in_array($college['school.locale'], [21, 22, 23]))
+                                                        <div>Suburban</div>
+                                                    @elseif(in_array($college['school.locale'], [31, 32, 33]))
+                                                        <div>Town</div>
+                                                    @elseif(in_array($college['school.locale'], [41, 42, 43]))
+                                                        <div>Rural</div>
+                                                    @else
+                                                        <div>N/A</div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -108,9 +112,9 @@
                                                 <div class="block-content py-3 bg-secondary text-white">
                                                     <i class="fa fa-users fa-2x college-years text-black-50"></i>
                                                     <div class="fs-3 fw-semibold mt-3">Size</div>
-                                                    @if($college->{'latest.student.size'} < 2000)
+                                                    @if($college['latest.student.size'] < 2000)
                                                         <div>Small</div>
-                                                    @elseif($college->{'latest.student.size'} > 2000 && $college->{'latest.student.size'} < 15000)
+                                                    @elseif($college['latest.student.size'] > 2000 && $college['latest.student.size'] < 15000)
                                                         <div>Medium</div>
                                                     @else
                                                         <div>Large</div>
@@ -121,23 +125,23 @@
                                         <div class="col-lg-4">
                                             <div class="college-text">
                                                 <p>
-                                                    <b>Acceptance Rate:</b> 
-                                                    @if($college->{'latest.completion.consumer_rate'})
-                                                        {{ number_format($college->{'latest.completion.consumer_rate'} * 100, 0) . '%' }}
+                                                    <b>Graduation Rate:</b> 
+                                                    @if($college['latest.completion.consumer_rate'])
+                                                        {{ number_format($college['latest.completion.consumer_rate'] * 100, 0) . '%' }}
                                                     @else    
                                                         N/A
                                                     @endif
                                                 </p>
                                                 <p><b>Average Annual Cost:</b> 
-                                                    @if($college->{'latest.cost.avg_net_price.overall'})
-                                                        {{ '$' . number_format($college->{'latest.cost.avg_net_price.overall'} / 1000, 0) . 'k' }}
+                                                    @if($college['latest.cost.avg_net_price.overall'])
+                                                        {{ '$' . number_format($college['latest.cost.avg_net_price.overall'] / 1000, 0) . 'k' }}
                                                     @else
                                                         N/A
                                                     @endif
                                                 </p>
                                                 <p><b>Median Earnings:</b>
-                                                    @if($college->{'latest.earnings.10_yrs_after_entry.median'})
-                                                        {{ '$' . number_format($college->{'latest.earnings.10_yrs_after_entry.median'} / 1000, 0) . 'k' }}
+                                                    @if($college['latest.earnings.10_yrs_after_entry.median'])
+                                                        {{ '$' . number_format($college['latest.earnings.10_yrs_after_entry.median'] / 1000, 0) . 'k' }}
                                                     @else
                                                         N/A
                                                     @endif
@@ -170,7 +174,7 @@
         <div class="modal-content">
             <div class="block block-rounded block-transparent mb-0">
                 <div class="block-header block-header-default block-header-modal">
-                    <h3 class="block-title">UC Berkeley</h3>
+                    <h3 class="block-title" id="main-college-name"></h3>
                     <div class="block-options">
                         <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                             <i class="fa fa-fw fa-times"></i>
@@ -229,25 +233,90 @@
                                             <div class="fs-base lh-base fw-large mb-3">
                                                 <a class="text-info" id="college-url" href="" target="_blank">Website <i class="fa fa-arrow-right"></i></a>
                                             </div>
-                                            <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
-                                                <i class="fa fa-graduation-cap"></i> Admissions
+                                            <div id="college-description"></div>
+                                            <div class="fs-base lh-base fw-large mb-3">
+                                                <a class="text-info" id="college-map-url" href="" target="_blank">Open Map <i class="fa fa-arrow-right"></i></a>
                                             </div>
-                                            <div class="block-title mb-2">
-                                                <div>OVERALL ADMISSION RATE</div>
-                                                <small><span id="overall-adminssion-rate"></span></small>
-                                                <!-- out of <span id="total-application"></span> total applicants -->
+                                            <div>
+                                                <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
+                                                    <i class="fa fa-graduation-cap"></i> Enrolled Freshman Academic Statistics
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>AVERAGE ACCEPTED GPA</div>
+                                                    <small id="c-avg-accepted-gpa"></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>SAT Math</div>
+                                                    <div><small>Average SAT Math</small></div>
+                                                    <small id="c-avg-sat-math"></small>
+                                                    <!-- <div><small>Range of middle 50%</small></div>
+                                                    <small id="avg-sat-middle"></small> -->
+                                                </div>
+                                                
+                                                <div class="block-title mb-2">
+                                                    <div>SAT Reading/Writing</div>
+                                                    <div><small>Average SAT Reading/Writing</small></div>
+                                                    <small id="c-avg-sat-reading-weiting"></small>
+                                                    <!-- <div><small>Range of middle 50%</small></div>
+                                                    <small id="avg-sat-reading-writing-middle"></small> -->
+                                                </div>
+    
+                                                <div class="block-title mb-2">
+                                                    <div>ACT Composite</div>
+                                                    <div><small>Average ACT Composite</small></div>
+                                                    <small id="c-avg-act-composite"></small>
+                                                    <!-- <div><small>Range of middle 50%</small></div>
+                                                    <small id="avg-act-composite-middle"></small> -->
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>ENROLLMENT</div>
+                                                    <small><span id="enrollment"></span> Undergraduates</small>
+                                                </div>
                                             </div>
-                                            <div class="block-title mb-2">
-                                                <div>AVERAGE ACCEPTED GPA</div>
-                                                <small id="avg-accepted-gpa">3.89</small>
-                                            </div>
-                                            <div class="block-title mb-2">
-                                                <div>AVERAGE ACT / SAT SCORES</div>
-                                                <small id="avg-act-sat-score">30 / 1350</small>
-                                            </div>
-                                            <div class="block-title mb-2">
-                                                <div>ENROLLMENT</div>
-                                                <small><span id="enrollment"></span> Undergraduates</small>
+                                            <div>
+                                                <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
+                                                    <i class="fa fa-comments-dollar"></i> Financial Overview
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>COST OF ATTENDANCE</div>
+                                                    <small><span id="c-cost-of-attendamce"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>TUITION AND FEES</div>
+                                                    <small><span id="c-tution-and-fees"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>ROOM AND BOARD</div>
+                                                    <small><span id="c-room-and-board"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>AVERAGE PERCENT OF NEED MET</div>
+                                                    <small><span id="c-average-percent-of-need-met"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>AVERAGE FRESHMAN AWARD</div>
+                                                    <small><span id="c-average-freshman-award"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Entrance Difficulty</div>
+                                                    <small><span id="c-entrance-difficulty"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>OVERALL ADMISSION RATE</div>
+                                                    <small><span id="overall-adminssion-rate"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Early Action Offered</div>
+                                                    <small><span id="c-early-action-offered"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Early Decision Offered</div>
+                                                    <small><span id="c-early-decision-offerd"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Regular Admission Deadline</div>
+                                                    <small><span id="c-regular-adminssion-deadline"></span></small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -496,7 +565,7 @@
                                                 <div class="block-content">
                                                     <div class="block block-rounded block-link-shadow">
                                                         <h2 class="block-title">Test Scores</h2>
-                                                        <p id="test-score-content">University of Health Sciences and Pharmacy in St. Louis has an acceptance rate of 91%. University of Health Sciences and Pharmacy in St. Louis considers admission test scores (SAT/ACT) during the application process, but does not require them. Students who were admitted to University of Health Sciences and Pharmacy in St. Louis and enrolled typically had admission test scores in these ranges.</p>
+                                                        <p id="test-score-content"><span class="test-score-college-name"></span> has an acceptance rate of <span id="test-score-acceptance-rate-percentage"></span>. <span class="test-score-college-name"></span> considers admission test scores (SAT/ACT) during the application process, but does not require them. Students who were admitted to <span class="test-score-college-name"></span> and enrolled typically had admission test scores in these ranges.</p>
                                                         <div class="mb-2 exam-detail">
                                                             <h2 class="block-title">SAT</h2>
                                                             <div>CRITICAL READING: <span id="sat-critical-reading">530-620</span></div>
@@ -545,6 +614,19 @@
         font-size: 15px;
         font-weight: 500;
     }
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+
+
+    .fa-house-building:before {
+        content: "\e1b1";
+    }
+
+    .fa-house-tree:before {
+        content: "\e1b3";
+    }
 </style>
 @endsection
 
@@ -552,6 +634,7 @@
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{asset('assets/js/moment/moment.min.js')}}"></script>
 <script>
     toastr.options = {
         "closeButton": true,
@@ -665,7 +748,7 @@
                         campus = 'City'
                     break;
                     case 21 || 22 || 23:
-                        campus = 'Suburb'
+                        campus = 'Suburban'
                     break;
                     case 31 || 32 || 33:
                         campus = 'Town'
@@ -716,6 +799,7 @@
 
                 if (firstcriticalreading && secondcriticalreading) {
                     $('#sat-critical-reading').html(`${firstcriticalreading}-${secondcriticalreading}`)
+                    // $('#avg-sat-reading-writing-middle').html(`${firstcriticalreading}-${secondcriticalreading} (200 to 800)`)
                 } else {
                     $('#sat-critical-reading').html('N/A')
                 }
@@ -734,7 +818,7 @@
                     $('.exam-detail').remove()
                 }
 
-                const calculateaccptancerate = data.latest.completion.consumer_rate ? Math.round(data.latest.completion.consumer_rate * 100) : 0
+                const calculateaccptancerate = data.latest.admissions.admission_rate.overall ? Math.round(data.latest.admissions.admission_rate.overall * 100) : 0
                 if (calculateaccptancerate > 0) {
                     $('#test-info-acceptance-rate').html(`
                         <div class="progress push">
@@ -743,13 +827,48 @@
                             </div>
                         </div>
                     `)
+                    $('#test-score-acceptance-rate-percentage').html(`${calculateaccptancerate}%`)
+                    $('.test-score-college-name').html(data.school.name)
                 } else {
                     $('#test-info-acceptance-rate').html(`
                         <div class="no-data">Data Not Available</div>
                     `)
                 }
 
+                $('#main-college-name').html(data.school.name)
 
+                $('#college-map-url').attr('href', `https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lon}`)
+
+
+                if (data.latest.college_info.description) {
+                    $('#college-description').html(`
+                        <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
+                            Description
+                        </div>
+                        <div class="mb-2">
+                            <div>${data.latest.college_info.description}</div>
+                        </div>
+                    `)
+                } else {
+                    $('#college-description').html('')
+                }
+
+                $('#c-avg-accepted-gpa').html((data.latest.college_info.gpa_average && data.latest.college_info.gpa_average !== '0' ? data.latest.college_info.gpa_average : '-'))
+                $('#c-avg-sat-math').html((data.latest.college_info.sat_math_average && data.latest.college_info.sat_math_average !== '0' ? data.latest.college_info.sat_math_average : '-'))
+                $('#c-avg-sat-reading-weiting').html((data.latest.college_info.sat_reading_writing_average && data.latest.college_info.sat_reading_writing_average !== '0' ? data.latest.college_info.sat_reading_writing_average : '-'))
+                $('#c-avg-act-composite').html((data.latest.college_info.act_composite_average && data.latest.college_info.act_composite_average !== '0' ? data.latest.college_info.act_composite_average : '-'))
+
+                $('#c-cost-of-attendamce').html((data.latest.college_info.cost_of_attendance && data.latest.college_info.cost_of_attendance !== '0' ? '$'+data.latest.college_info.cost_of_attendance : '-'))
+                $('#c-tution-and-fees').html((data.latest.college_info.tution_and_fess && data.latest.college_info.tution_and_fess !== '0' ? '$'+data.latest.college_info.tution_and_fess : '-'))
+                $('#c-room-and-board').html((data.latest.college_info.room_and_board && data.latest.college_info.room_and_board !== '0' ? '$'+data.latest.college_info.room_and_board : '-'))
+                $('#c-average-percent-of-need-met').html((data.latest.college_info.average_percent_of_need_met && data.latest.college_info.average_percent_of_need_met !== '0' ? data.latest.college_info.average_percent_of_need_met+ '%' : '-'))
+                $('#c-average-freshman-award').html((data.latest.college_info.average_freshman_award && data.latest.college_info.average_freshman_award !== '0' ? '$'+data.latest.college_info.average_freshman_award : '-'))
+
+                $('#c-entrance-difficulty').html((data.latest.college_info.entrance_difficulty ? data.latest.college_info.entrance_difficulty : '-'))
+                $('#c-early-action-offered').html((data.latest.college_info.early_action_offerd === 1 ? 'Yes' : 'No'))
+                $('#c-early-decision-offerd').html((data.latest.college_info.early_decision_offerd === 1 ? 'Yes' : 'No'))
+                $('#c-regular-adminssion-deadline').html((data.latest.college_info.regular_admission_deadline ? moment(data.latest.college_info.early_decision_deadline).format('MMMM, DD') : '-'))
+                
                 $('#overall-adminssion-rate').html(data.latest.admissions.admission_rate.overall ? Math.round(data.latest.admissions.admission_rate.overall * 100) + '%' : '0%')
                 // $('#total-application').html(data.latest.student.FAFSA_applications)
                 $('#enrollment').html(data.latest.student.size)

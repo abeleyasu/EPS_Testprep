@@ -5,7 +5,6 @@ namespace App\Http\Controllers\InitialCollegeList;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HighSchoolResume\States;
-use Illuminate\Support\Facades\Http;
 use App\Models\CollegeList;
 use App\Models\CollegeSearchAdd;
 use App\Models\CollegeUserStatistics;
@@ -18,6 +17,8 @@ use App\Models\CostTypes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
+use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Facades\Http;
 
 class InititalCollegeListController extends Controller
 {
@@ -76,72 +77,114 @@ class InititalCollegeListController extends Controller
         $data = [];
         $searchstring = CollegeList::where('id', $college_lists_id)->select('last_search_string')->first();
         $searchstring = json_decode($searchstring->last_search_string);
+        // dd($searchstring);
         if ($searchstring) {
-            $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page=0&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
+            $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page=0&per_page=50&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
             $api = $api . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit';
-            if (isset($searchstring->average_annual_cost) && $searchstring->average_annual_cost) {
-                $api = $api . '&latest.cost.avg_net_price.overall__range=' . $searchstring->average_annual_cost * 1000;
-            }
-
-            if (isset($searchstring->acceptance_rate) && $searchstring->acceptance_rate) {
-                $api = $api . '&latest.admissions.admission_rate.consumer_rate__range=' . ($searchstring->acceptance_rate / 100) . '..1';
-            }   
-
-            if (isset($searchstring->college_size_option) && count($searchstring->college_size_option) > 0) {
-                $api = $api . '&latest.student.size__range=' . Arr::join($searchstring->college_size_option, ',');
-            } else {
-                $api = $api . '&latest.student.size__range=1..';
-            }
-
-            if (isset($searchstring->type_of_school) && count($searchstring->type_of_school) > 0) {
-                $api = $api . '&school.ownership=' . Arr::join($searchstring->type_of_school, ',');
-            }
-            
-            if (isset($searchstring->urbanicity) && count($searchstring->urbanicity) > 0) {
-                $api = $api . '&school.locale=' . Arr::join($searchstring->urbanicity, ',');
-            }
-
-            if (isset($searchstring->degree) && count($searchstring->degree) > 0) {
-                $api = $api . '&latest.programs.cip_4_digit.credential.level=' . Arr::join($searchstring->degree, ',');
-            }
-
-            if (isset($searchstring->college_majors_options)) {
-                $api = $api . '&latest.programs.cip_4_digit.code=' . $searchstring->college_majors_options;
-            }
-
-            if (isset($searchstring->state) && count($searchstring->state) > 0) {
-                foreach ($searchstring->state as $option) {
-                    $api = $api . '&school.state[]=' . $option;
-                }
-            }
-
-            if (isset($searchstring->sat_math) && $searchstring->sat_math) {
-                $api = $api . '&latest.admissions.sat_scores.midpoint.math__range=..' . $searchstring->sat_math;
-            }
-
-            if (isset($searchstring->sat_critical_reading) && $searchstring->sat_critical_reading) {
-                $api = $api . '&latest.admissions.sat_scores.midpoint.critical_reading__range=..' . $searchstring->sat_critical_reading;
-            }
-
-            if (isset($searchstring->act_score) && $searchstring->act_score) {
-                $api = $api . '&latest.admissions.act_scores.midpoint.cumulative__range=..' . $searchstring->act_score;
-            }
 
             if (isset($searchstring->search_college) && !empty($searchstring->search_college)) {
                 $api = $api . '&school.search=' . $searchstring->search_college;
+            } else {
+                if (isset($searchstring->average_annual_cost) && $searchstring->average_annual_cost && $searchstring->average_annual_cost != '0') {
+                    $api = $api . '&latest.cost.avg_net_price.overall__range=' . $searchstring->average_annual_cost * 1000;
+                }
+    
+                if (isset($searchstring->acceptance_rate) && $searchstring->acceptance_rate && $searchstring->acceptance_rate != '0') {
+                    $api = $api . '&latest.admissions.admission_rate.consumer_rate__range=' . ($searchstring->acceptance_rate / 100) . '..1';
+                }   
+    
+                if (isset($searchstring->college_size_option) && count($searchstring->college_size_option) > 0) {
+                    $api = $api . '&latest.student.size__range=' . Arr::join($searchstring->college_size_option, ',');
+                } else {
+                    $api = $api . '&latest.student.size__range=1..';
+                }
+    
+                if (isset($searchstring->type_of_school) && count($searchstring->type_of_school) > 0) {
+                    $api = $api . '&school.ownership=' . Arr::join($searchstring->type_of_school, ',');
+                }
+                
+                if (isset($searchstring->urbanicity) && count($searchstring->urbanicity) > 0) {
+                    $api = $api . '&school.locale=' . Arr::join($searchstring->urbanicity, ',');
+                }
+    
+                if (isset($searchstring->degree) && count($searchstring->degree) > 0) {
+                    $api = $api . '&latest.programs.cip_4_digit.credential.level=' . Arr::join($searchstring->degree, ',');
+                }
+    
+                if (isset($searchstring->college_majors_options)) {
+                    $api = $api . '&latest.programs.cip_4_digit.code=' . $searchstring->college_majors_options;
+                }
+    
+                if (isset($searchstring->state) && count($searchstring->state) > 0) {
+                    foreach ($searchstring->state as $option) {
+                        $api = $api . '&school.state[]=' . $option;
+                    }
+                }
+    
+                if (isset($searchstring->sat_math) && $searchstring->sat_math && $searchstring->sat_math != '0') {
+                    $api = $api . '&latest.admissions.sat_scores.midpoint.math__range=..' . $searchstring->sat_math;
+                }
+    
+                if (isset($searchstring->sat_critical_reading) && $searchstring->sat_critical_reading && $searchstring->sat_critical_reading != '0') {
+                    $api = $api . '&latest.admissions.sat_scores.midpoint.critical_reading__range=..' . $searchstring->sat_critical_reading;
+                }
+    
+                if (isset($searchstring->act_score) && $searchstring->act_score && $searchstring->act_score != '0') {
+                    $api = $api . '&latest.admissions.act_scores.midpoint.cumulative__range=..' . $searchstring->act_score;
+                }
+    
+                if (isset($searchstring->specialized_mission) && !empty($searchstring->specialized_mission)) {
+                    $api = $api . '&'.$searchstring->specialized_mission.'=1';
+                }
+    
+                if (isset($searchstring->religious_affiliation) && !empty($searchstring->religious_affiliation)) {
+                    $api = $api . '&school.religious_affiliation=' . $searchstring->religious_affiliation;
+                }
+    
+                if (isset($searchstring->graduate_rate) && $searchstring->graduate_rate && $searchstring->graduate_rate != '0') {
+                    $api = $api . '&latest.completion.consumer_rate__range=' . ($searchstring->graduate_rate / 100) . '..';   
+                }
             }
 
-            if (isset($searchstring->specialized_mission) && !empty($searchstring->specialized_mission)) {
-                $api = $api . '&'.$searchstring->specialized_mission.'=1';
-            }
+            // dd($api);
 
-            if (isset($searchstring->religious_affiliation) && !empty($searchstring->religious_affiliation)) {
-                $api = $api . '&school.religious_affiliation=' . $searchstring->religious_affiliation;
-            }
+            $guzzleClient = new GuzzleClient();
+            $response = $guzzleClient->get($api);
+            $data = json_decode($response->getBody()->getContents(), true);
+            $data = $data['results'];
 
-            $response = Http::get($api);
-            $data = json_decode($response->body());
-            $data = $data->results;
+            if (!isset($searchstring->search_college)) {
+                $college_ids = collect($data)->pluck('id')->toArray();
+                $search_college_from_db = CollegeInformation::whereIn('college_id', $college_ids);
+                if (isset($searchstring->average_annual_cost_of_attendance) && !empty($searchstring->average_annual_cost_of_attendance) && $searchstring->average_annual_cost_of_attendance !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('cost_of_attendance', '<=', $searchstring->average_annual_cost_of_attendance);
+                }
+
+                if (isset($searchstring->tution_and_fees) && !empty($searchstring->tution_and_fees) && $searchstring->tution_and_fees !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('tution_and_fess', '<=', $searchstring->tution_and_fees);
+                }
+
+                if (isset($searchstring->average_percent_of_need_met) && !empty($searchstring->average_percent_of_need_met) && $searchstring->average_percent_of_need_met !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('average_percent_of_need_met', '<=', $searchstring->average_percent_of_need_met);
+                }
+
+                if (isset($searchstring->average_gpa) && !empty($searchstring->average_gpa) && $searchstring->average_gpa !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('gpa_average', '<=', $searchstring->average_gpa);
+                }
+
+                if (isset($searchstring->entrance_difficulty) && count($searchstring->entrance_difficulty) > 0) {
+                    $search_college_from_db = $search_college_from_db->whereIn('entrance_difficulty', $searchstring->entrance_difficulty);
+                }
+
+                $search_college_from_db = $search_college_from_db->get()->toArray();
+
+                if (count($search_college_from_db) > 0) {
+                    $college_ids = collect($search_college_from_db)->pluck('college_id')->toArray();
+                    $data = collect($data)->whereIn('id', $college_ids)->all();
+                } else {
+                    $data = [];
+                }
+            }
         }
         return $data;
     }
@@ -534,6 +577,10 @@ class InititalCollegeListController extends Controller
         $data = json_decode($data->body());
         if (count($data->results) > 0) {
             $data = $data->results[0];
+            $college_info = CollegeInformation::where('college_id', $data->id)->first();
+            if ($college_info) {
+                $data->latest->college_info = $college_info;
+            }
         } else {
             $data = null;
         }
