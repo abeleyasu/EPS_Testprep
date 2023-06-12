@@ -269,8 +269,8 @@
       }).done(function (response) {
         if (response.success) {
           $('#add-college-cost-modal').modal('hide')
+          getCollegeListForCostComparison(url, $('#cost-id').val());
           $('#cost-form')[0].reset()
-          getCollegeListForCostComparison(url);
           $('#costcomparison-summary').DataTable().ajax.reload();
           toastr.success(response.message)
         } else {

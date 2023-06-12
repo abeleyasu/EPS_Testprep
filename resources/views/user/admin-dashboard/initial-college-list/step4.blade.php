@@ -359,19 +359,14 @@
           const profit = data['school.ownership'] === 3 ? 'For-Profit' : data['school.ownership'] === 2 ? 'Non-Profit' : '';
           const classname = data['school.ownership'] === 1 ? 'fs-3 fw-semibold mt-3 public' : 'fs-3 fw-semibold mt-3';
           let campus = 'N/A'
-          switch(data['school.locale']) {
-            case 11 || 12 || 13 :
-              campus = 'City'
-            break;
-            case 21 || 22 || 23:
-              campus = 'Suburb'
-            break;
-            case 31 || 32 || 33:
-              campus = 'Town'
-            break;
-            case 41 || 42 || 43:
-              campus = 'Rural'
-            break;
+          if (data['school.locale'] == 11  || data['school.locale'] == 12 || data['school.locale'] == 13) {
+            campus = 'City'
+          } else if (data['school.locale'] == 21 || data['school.locale'] == 22 || data['school.locale'] == 23) {
+            campus = 'Suburban'
+          } else if (data['school.locale'] == 31 || data['school.locale'] == 32 || data['school.locale'] == 33) {
+            campus = 'Town'
+          } else if (data['school.locale'] == 41 || data['school.locale'] == 42 || data['school.locale'] == 43) {
+            campus = 'Rural'
           }
           let size = 'Large';
           if (data['latest.student.size'] < 2000) {
@@ -437,13 +432,13 @@
                     <div class="college-text">
                       <p>
                         <b>Acceptance Rate:</b> 
-                        ${ data['latest.completion.consumer_rate'] ? (data['latest.completion.consumer_rate'] * 100).toFixed(2) + '%'  : 'N/A' }
+                        ${ data['latest.admissions.admission_rate.overall'] ? (Math.round(data['latest.admissions.admission_rate.overall'] * 100)) + '%'  : 'N/A' }
                       </p>
                       <p><b>Average Annual Cost:</b> 
-                        ${ data['latest.cost.avg_net_price.overall'] ? (data['latest.cost.avg_net_price.overall'] / 1000).toFixed(2) + 'k'  : 'N/A' }
+                        ${ data['latest.cost.avg_net_price.overall'] ? (Math.round(data['latest.cost.avg_net_price.overall'] / 1000)) + 'k'  : 'N/A' }
                       </p>
                       <p><b>Median Earnings:</b>
-                        ${ data['latest.earnings.10_yrs_after_entry.median'] ? (data['latest.earnings.10_yrs_after_entry.median'] / 1000).toFixed(2) + 'k'  : 'N/A' }
+                        ${ data['latest.earnings.10_yrs_after_entry.median'] ? (Math.round(data['latest.earnings.10_yrs_after_entry.median'] / 1000)) + 'k'  : 'N/A' }
                       </p>
                     </div>
                     </div>

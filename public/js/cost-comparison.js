@@ -1,4 +1,4 @@
-function getCollegeListForCostComparison(url) {
+function getCollegeListForCostComparison(url, active_accordion = null) {
   $.ajax({
     url: url,
     method: 'GET',
@@ -18,12 +18,12 @@ function getCollegeListForCostComparison(url) {
           <div class="block block-rounded block-bordered overflow-hidden mb-1">
             <div class="block-header block-header-tab" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" data-index="${i}" aria-expanded="true">
               <a class="text-white fw-600 collapsed">
-                <i class="fa fa-2x fa-angle-right" id="toggle${i}"></i>
+                <i class="fa fa-2x ${active_accordion && active_accordion == costcomparison.id ? 'fa-angle-down' : 'fa-angle-right'}" id="toggle${i}"></i>
                 <i class="fa fa-2x fa-bars"></i>
                 <span id="college-name-${i}">${costComparisonData.college_name}</span>
               </a> 
             </div>
-            <div id="collapse${i}" class="collapse" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
+            <div id="collapse${i}" class="collapse ${active_accordion && active_accordion == costcomparison.id ? 'show' : ''}" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
               <div class="college-content-wrapper college-content">
                 <div class="text-end mb-3">
                   <button class="btn btn-success add-cost" data-index="${i}" data-id="${detail.id}" data-costcomparisonid="${detail.cost_comparison_id}">+ Add Aid</button>

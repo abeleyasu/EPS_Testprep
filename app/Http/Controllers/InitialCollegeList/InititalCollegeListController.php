@@ -80,7 +80,7 @@ class InititalCollegeListController extends Controller
         // dd($searchstring);
         if ($searchstring) {
             $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page=0&per_page=50&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
-            $api = $api . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit';
+            $api = $api . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit,latest.admissions.admission_rate.overall';
 
             if (isset($searchstring->search_college) && !empty($searchstring->search_college)) {
                 $api = $api . '&school.search=' . $searchstring->search_college;
@@ -551,7 +551,7 @@ class InititalCollegeListController extends Controller
         })->toArray();
 
         $data = collect($data)->map(function($item) use ($selectedCollege) {
-            $item->selected = in_array($item->id, $selectedCollege);
+            $item['selected'] = in_array($item['id'], $selectedCollege);
             return $item;
         })->all();
 

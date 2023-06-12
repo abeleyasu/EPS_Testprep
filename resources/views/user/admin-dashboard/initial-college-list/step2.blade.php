@@ -125,9 +125,9 @@
                                         <div class="col-lg-4">
                                             <div class="college-text">
                                                 <p>
-                                                    <b>Graduation Rate:</b> 
-                                                    @if($college['latest.completion.consumer_rate'])
-                                                        {{ number_format($college['latest.completion.consumer_rate'] * 100, 0) . '%' }}
+                                                    <b>Acceptance Rate:</b> 
+                                                    @if($college['latest.admissions.admission_rate.overall'])
+                                                        {{ number_format($college['latest.admissions.admission_rate.overall'] * 100, 0) . '%' }}
                                                     @else    
                                                         N/A
                                                     @endif
@@ -231,11 +231,45 @@
                                                 </div>
                                             </div>
                                             <div class="fs-base lh-base fw-large mb-3">
-                                                <a class="text-info" id="college-url" href="" target="_blank">Website <i class="fa fa-arrow-right"></i></a>
+                                                <a class="text-info" id="college-url" target="_blank" href="">Website <i class="fa fa-arrow-right"></i></a>
                                             </div>
                                             <div id="college-description"></div>
                                             <div class="fs-base lh-base fw-large mb-3">
+                                                <iframe
+                                                    width="450"
+                                                    height="250"
+                                                    frameborder="0" style="border:0"
+                                                    referrerpolicy="no-referrer-when-downgrade"
+                                                    src=""
+                                                    id="map-url"
+                                                >
+                                                </iframe>
                                                 <a class="text-info" id="college-map-url" href="" target="_blank">Open Map <i class="fa fa-arrow-right"></i></a>
+                                            </div>
+                                            <div>
+                                                <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
+                                                    <i class="fa fa-comments-dollar"></i> ADMISSIONS
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>ACCEPTANCE RATE</div>
+                                                    <small><span id="overall-adminssion-rate"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Entrance Difficulty</div>
+                                                    <small><span id="c-entrance-difficulty"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Early Action Offered</div>
+                                                    <small><span id="c-early-action-offered"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Early Decision Offered</div>
+                                                    <small><span id="c-early-decision-offerd"></span></small>
+                                                </div>
+                                                <div class="block-title mb-2">
+                                                    <div>Regular Admission Deadline</div>
+                                                    <small><span id="c-regular-adminssion-deadline"></span></small>
+                                                </div>
                                             </div>
                                             <div>
                                                 <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
@@ -249,24 +283,24 @@
                                                     <div>SAT Math</div>
                                                     <div><small>Average SAT Math</small></div>
                                                     <small id="c-avg-sat-math"></small>
-                                                    <!-- <div><small>Range of middle 50%</small></div>
-                                                    <small id="avg-sat-middle"></small> -->
+                                                    <div><small>Range of middle 50%</small></div>
+                                                    <small id="avg-sat-middle"></small>
                                                 </div>
                                                 
                                                 <div class="block-title mb-2">
                                                     <div>SAT Reading/Writing</div>
                                                     <div><small>Average SAT Reading/Writing</small></div>
                                                     <small id="c-avg-sat-reading-weiting"></small>
-                                                    <!-- <div><small>Range of middle 50%</small></div>
-                                                    <small id="avg-sat-reading-writing-middle"></small> -->
+                                                    <div><small>Range of middle 50%</small></div>
+                                                    <small id="avg-sat-reading-writing-middle"></small>
                                                 </div>
     
                                                 <div class="block-title mb-2">
                                                     <div>ACT Composite</div>
                                                     <div><small>Average ACT Composite</small></div>
                                                     <small id="c-avg-act-composite"></small>
-                                                    <!-- <div><small>Range of middle 50%</small></div>
-                                                    <small id="avg-act-composite-middle"></small> -->
+                                                    <div><small>Range of middle 50%</small></div>
+                                                    <small id="avg-act-composite-middle"></small>
                                                 </div>
                                                 <div class="block-title mb-2">
                                                     <div>ENROLLMENT</div>
@@ -296,26 +330,6 @@
                                                 <div class="block-title mb-2">
                                                     <div>AVERAGE FRESHMAN AWARD</div>
                                                     <small><span id="c-average-freshman-award"></span></small>
-                                                </div>
-                                                <div class="block-title mb-2">
-                                                    <div>Entrance Difficulty</div>
-                                                    <small><span id="c-entrance-difficulty"></span></small>
-                                                </div>
-                                                <div class="block-title mb-2">
-                                                    <div>OVERALL ADMISSION RATE</div>
-                                                    <small><span id="overall-adminssion-rate"></span></small>
-                                                </div>
-                                                <div class="block-title mb-2">
-                                                    <div>Early Action Offered</div>
-                                                    <small><span id="c-early-action-offered"></span></small>
-                                                </div>
-                                                <div class="block-title mb-2">
-                                                    <div>Early Decision Offered</div>
-                                                    <small><span id="c-early-decision-offerd"></span></small>
-                                                </div>
-                                                <div class="block-title mb-2">
-                                                    <div>Regular Admission Deadline</div>
-                                                    <small><span id="c-regular-adminssion-deadline"></span></small>
                                                 </div>
                                             </div>
                                         </div>
@@ -799,9 +813,19 @@
 
                 if (firstcriticalreading && secondcriticalreading) {
                     $('#sat-critical-reading').html(`${firstcriticalreading}-${secondcriticalreading}`)
-                    // $('#avg-sat-reading-writing-middle').html(`${firstcriticalreading}-${secondcriticalreading} (200 to 800)`)
+                    $('#avg-sat-reading-writing-middle').html(`${firstcriticalreading}-${secondcriticalreading} (200 to 800)`)
                 } else {
                     $('#sat-critical-reading').html('N/A')
+                    $('#avg-sat-reading-writing-middle').html('-')
+                }
+
+                const firstMathreading = data.latest.admissions.sat_scores['25th_percentile'].math
+                const secondMathreading = data.latest.admissions.sat_scores['75th_percentile'].math
+
+                if (firstMathreading && secondMathreading) {
+                    $('#avg-sat-middle').html(`${firstMathreading}-${secondMathreading} (200 to 800)`)
+                } else {
+                    $('#avg-sat-middle').html('-')
                 }
                 
                 const firstactscore = data.latest.admissions.act_scores['25th_percentile'].cumulative
@@ -809,8 +833,10 @@
 
                 if (firstactscore && secondactscore) {
                     $('#act-score').html(`${firstactscore}-${secondactscore}`)
+                    $('#avg-act-composite-middle').html(`${firstactscore}-${secondactscore} (0 to 36)`)
                 } else {
                     $('#act-score').html('N/A')
+                    $('#avg-act-composite-middle').html('-')
                 }
 
                 if (!firstcriticalreading && !secondcriticalreading && !firstactscore && !secondactscore) {
@@ -875,13 +901,39 @@
                 $('#info-ownership').html(ownership)
                 $('#info-campus').html(campus)
                 $('#info-size').html(size)
-                $('#college-url').attr('href', data.school.school_url)
+                $('#college-url').attr('href', '//'+data.school.school_url)
                 $('#avg-anual-cost').html('$' + avganualcosr)
+                const url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBQd77v02ma4YJNxmfTP5YDXa-NuIrbAh8&q=" + data.school.name + "," + data.school.city +
+                    "," + data.school.state + "," + data.school.zip + "&zoom=13";
+                $('#map-url').attr('src', url)
                 $('#college-details').modal('show');
             } else {
                 toastr.error('Oops! Something went wrong')
             }
             console.log('response -->', response)
+        })
+    })
+
+    // const link = document.getElementById('college-url');
+
+    $(document).ready(function () {
+        $('#college-url').on('click', function (e) {
+            e.preventDefault()
+            Swal.fire({
+                title: 'You are leaving the college preparation system!',
+                text: "Links are provided by the institutions and are only updated about once a year. As such, over the course of the year, some links may break or website may be taken offline",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, visit it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('e -->', e)
+                    console.log('e.target.dataset.url -->', e.target.dataset.url)
+                    window.open(e.target.href, '_blank')
+                }
+            })
         })
     })
 </script>
