@@ -365,6 +365,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::get('get-college-list', [InititalCollegeListController::class, 'getCollegeWiseList'])->name('cost_comparison.get_college_list_for_cost_comparison');
                 Route::get('get-single-cost-details/{id}', [InititalCollegeListController::class, 'getSingleCostDetails'])->name('cost_comparison.get_single_cost_details');
                 Route::patch('save-cost-details', [InititalCollegeListController::class, 'saveCollegeCost'])->name('cost_comparison.save_cost_comparison_details');
+                Route::patch('edit-college-detail/{id}', [InititalCollegeListController::class, 'editCollegeDetails'])->name('cost_comparison.edit_college_detail');
                 Route::delete('delete-cost-details/{id}', [InititalCollegeListController::class, 'deleteCollegeCost'])->name('cost_comparison.delete_cost_details');
             });
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');

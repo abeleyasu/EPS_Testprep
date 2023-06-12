@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('cost_comparison_other_scholarships', function (Blueprint $table) {
             $table->id();
             $table->integer('cost_comparison_id')->nullable();
-            $table->integer('cost_aid_type_id');
+            $table->integer('cost_aid_type_id')->nullable();
             $table->string('name')->nullable();
             $table->string('amount')->nullable();
             $table->timestamps();

@@ -30,6 +30,14 @@
   .w-10 {
     width: 8%;
   }
+
+  .td-width {
+    width: 10%
+  }
+
+  .delete-option {
+    width: 3%;
+  }
 </style>
 @endsection
 
@@ -109,7 +117,7 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Add Cost for <span id="modal-college-header"></span></h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Add OUTSIDE SCHOLARSHIP AID / YEAR for <span id="modal-college-header"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="modal-body">
@@ -117,81 +125,23 @@
           @csrf
           <input type="hidden" name="cost_comparison_id" id="cost-id">
           <div class="mb-4">
-            <label for="cost-aid" class="form-label">Select Cost/Aid</label>
-            <select name="cost_aid" class="form-control" id="cost-aid">
-              <option value="">Select Option</option>
-              <option value="cost">Cost</option>
-              <option value="aid">Aid</option>
-            </select>
-          </div>
-          <div class="mb-4">
-            <label for="cost-aid-type" class="form-label">Select Type</label>
-            <select name="cost_aid_type" class="form-control" id="cost-aid-type">
-              <option value="">Select Option</option>
-            </select>
+            <label for="name" class="form-label">Enter Name</label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Enter Name">
           </div>
 
           <div class="mb-4">
-            <label for="cost_aid_name" class="form-label">Enter Cost/Aid Name</label>
-            <input type="text" name="cost_aid_name" class="form-control" id="cost_aid_name" placeholder="Enter Cost/Aid Name">
-          </div>
-
-          <div class="mb-4">
-            <label for="cost_aid_amount" class="form-label">Enter Cost/Aid Amount</label>
-            <input type="text" name="cost_aid_amount" class="form-control" id="cost_aid_amount" placeholder="Enter Cost/Aid Amount">
+            <label for="amount" class="form-label">Enter Amount</label>
+            <input type="text" name="amount" class="form-control" id="amount" placeholder="Enter Amount">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" id="save-cost" class="btn btn-sm btn-success">Save cost</button>
+        <button type="button" id="save-cost" class="btn btn-sm btn-success">Save</button>
       </div>
     </div>
   </div>
 </div>
-
-<div class="modal fade" id="edit-college-cost-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Edit Cost for <span id="edit-modal-college-header"></span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="edit-cost-form">
-          @csrf
-          <input type="hidden" name="cost_comparison_id" id="edit-cost-id">
-          <input type="hidden" name="id" id="main-id">
-          <div class="mb-4">
-            <label for="edit-cost-aid" class="form-label">Select Cost/Aid</label>
-            <select name="edit_cost_aid" class="form-control" id="edit-cost-aid">
-              <option value="">Select Option</option>
-            </select>
-          </div>
-          <div class="mb-4">
-            <label for="edit-cost-aid-type" class="form-label">Select Type</label>
-            <select name="edit_cost_aid_type" class="form-control" id="edit-cost-aid-type">
-              <option value="">Select Option</option>
-            </select>
-          </div>
-
-          <div class="mb-4">
-            <label for="edit_cost_aid_name" class="form-label">Edit Cost/Aid Name</label>
-            <input type="text" name="edit_cost_aid_name" class="form-control" id="edit_cost_aid_name" placeholder="Edit Cost/Aid Name">
-          </div>
-
-          <div class="mb-4">
-            <label for="edit_cost_aid_amount" class="form-label">Edit Cost/Aid Amount</label>
-            <input type="text" name="edit_cost_aid_amount" class="form-control" id="edit_cost_aid_amount" placeholder="Edit Cost/Aid Amount">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" id="edit-cost" class="btn btn-sm btn-success">Edit cost</button>
-      </div>
-    </div>
-  </div>
 </div>
 @endsection
 
@@ -276,6 +226,7 @@
 
   $(document).on('click', '.add-cost', function (e) {
     e.preventDefault();
+    console.log('e -->', e)
     $('#cost-id').val(e.target.dataset.costcomparisonid)
     $('#modal-college-header').html($('#college-name-' + e.target.dataset.index).html())
     $('#add-college-cost-modal').modal('show')
@@ -329,82 +280,56 @@
     }
   })
 
-  $(document).on('click', '.edit-cost-aid', function (e) {
-    e.preventDefault();
+  $(document).on('change', '.edit-value', function (e) {
+    const data = {
+      [e.target.name] : e.target.value,
+    }
     $.ajax({
-      url: "{{ route('admin-dashboard.cost_comparison.get_single_cost_details', ['id' => ':id']) }}".replace(':id', e.target.dataset.id),
-      method: 'get',
+      url: "{{ route('admin-dashboard.cost_comparison.edit_college_detail', ['id' => ':id']) }}".replace(':id', e.target.dataset.id),
+      method: 'PATCH',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    }).done(function (response) {
+      },
+      data: data,
+    }).done((response) => {
       if (response.success) {
-        const options = [
-          { value: 'cost', name: 'Cost' },
-          { value: 'aid', name: 'Aid' }
-        ]
-          
-        $('#edit-cost-aid').html('')
-        $('#edit-cost-aid').append('<option value="">Select Option</option>')
-        options.forEach((item, index) => {
-          $('#edit-cost-aid').append(`<option value="${item.value}" ${response.data.costtype.cost_type == item.value ? 'selected' : ''} >${item.name}</option>`)
-        })
-
-        const costTypes = @json($types);
-        $('#edit-cost-aid-type').html('')
-        $('#edit-cost-aid-type').append('<option value="">Select Option</option>')
-        costTypes.forEach((item, index) => {
-          if (item.cost_type == response.data.costtype.cost_type) {
-            $('#edit-cost-aid-type').append(`<option value="${item.id}" ${response.data.cost_aid_type_id == item.id ? 'selected' : ''} >${item.name}</option>`)
-          }
-        })
-
-        $('#edit_cost_aid_name').val(response.data.name)
-        $('#edit_cost_aid_amount').val(response.data.amount)
-        $('#main-id').val(response.data.id)
-        $('#edit-cost-id').val(e.target.dataset.costcomparisonid)
-        $('#edit-modal-college-header').html($('#college-name-' + e.target.dataset.index).html())
-        $('#edit-college-cost-modal').modal('show')
+        toastr.success(response.message)
+        refreshdata(e.target.dataset.index, response)
       } else {
         toastr.error(response.message)
       }
     })
   })
 
-  $(document).on('click', '#edit-cost', function (e) {
-    e.preventDefault();
-    if ($('#edit-cost-form').valid()) {
-      $.ajax({
-        url: "{{route('admin-dashboard.cost_comparison.save_cost_comparison_details')}}",
-        method: 'PATCH',
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-          id: $('#main-id').val(),
-          cost_comparison_id: $('#edit-cost-id').val(),
-          cost_aid_type: $('#edit-cost-aid-type').val(),
-          cost_aid_name: $('#edit_cost_aid_name').val(),
-          cost_aid_amount: $('#edit_cost_aid_amount').val(),
-        },
-      }).done(function (response) {
-        if (response.success) {
-          $('#edit-college-cost-modal').modal('hide')
-          $('#edit-cost-form')[0].reset()
-          getCollegeListForCostComparison(url);
-          $('#costcomparison-summary').DataTable().ajax.reload();
-          toastr.success(response.message)
-        } else {
-          toastr.error(response.message)
-        }
-      })
+  $(document).on('change', '.edit-outside-aid', function (e) {
+    const data = {
+      amount: e.target.value,
+      id: e.target.dataset.id,
     }
+    $.ajax({
+      url: "{{route('admin-dashboard.cost_comparison.save_cost_comparison_details')}}",
+      method: 'PATCH',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: data,
+    }).done(function (response) {
+      if (response.success) {
+        toastr.success(response.message)
+        refreshdata(e.target.dataset.index, response)
+      } else {
+        toastr.error(response.message)
+      }
+    })
   })
 
-  $(document).on('click', '.delete-cost-aid', function (e) {
+  $(document).on('click', '.delete-outside-aid', function (e) {
+    e.preventDefault();
+    const id = e.target.dataset.id;
+    const index = e.target.dataset.index;
     Swal.fire({
       title: 'Are you sure?',
-      text: "You want to delete this cost/aid?",
+      text: "You want to delete this outside scholarship aid?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -412,22 +337,41 @@
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: "{{ route('admin-dashboard.cost_comparison.delete_cost_details', ['id' => ':id']) }}".replace(':id', e.target.dataset.id),
+          url: "{{ route('admin-dashboard.cost_comparison.delete_cost_details', ['id' => ':id']) }}".replace(':id', id),
           method: 'DELETE',
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
+          },
+          data: {id: id},
         }).done(function (response) {
           if (response.success) {
-            getCollegeListForCostComparison(url);
-            $('#costcomparison-summary').DataTable().ajax.reload();
             toastr.success(response.message)
+            e.target.closest('tr').remove();
+            refreshdata(index, response)
           } else {
             toastr.error(response.message)
           }
         })
       }
     })
+  })
+
+  function refreshdata (index, response) {
+    $('#costcomparison-summary').DataTable().ajax.reload();
+    $('#total_direct_cost-' + index).html(response.data.total_direct_cost ? '$'+ response.data.total_direct_cost : '$0')
+    $('#total_merit_aid-' + index).html(response.data.total_merit_aid ? '$'+ response.data.total_merit_aid : '$0')
+    $('#total_need_based_aid-' + index).html(response.data.total_need_based_aid ? '$'+ response.data.total_need_based_aid : '$0')
+    $('#total_outside_scholarship-' + index).html(response.data.total_outside_scholarship ? '$'+ response.data.total_outside_scholarship : '$0')
+    $('#total_cost_attendance-' + index).html(response.data.total_cost_attendance ? '$'+ response.data.total_cost_attendance : '$0')
+  }
+  
+
+  $(document).on('focus', '.edit-value, .edit-outside-aid', function (e) {
+    e.target.select();
+  })
+
+  $(document).on('mouseup', '.edit-value, .edit-outside-aid', function (e) {
+    e.preventDefault();
   })
 </script>
 
