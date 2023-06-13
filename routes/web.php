@@ -357,6 +357,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::get('/search-college/step4/get-college/{id}', [InititalCollegeListController::class, 'collegeList'])->name('step4.collegeList');
                 Route::patch('/search-college/step4/store-college-selection/{id}', [InititalCollegeListController::class, 'storeSelection'])->name('step4.storeSelection');
                 Route::patch('search-college/save/{id}', [InititalcollegeListController::class, 'saveCollegeList'])->name('saveCollegeList');
+                Route::patch('search-college/change-status/{id}', [InititalcollegeListController::class, 'changeSearchCollegeAddStatus'])->name('changeSearchCollegeAddStatus');
+                Route::get('get-hide-college', [InititalcollegeListController::class, 'getHideCollege'])->name('getHideCollege');
             });
 
             Route::group(['prefix' => 'cost-comparison'], function () {

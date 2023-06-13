@@ -525,7 +525,8 @@ class InititalCollegeListController extends Controller
     }
 
     public function getSelectedCollegeList($college_id) {
-        $college_list = CollegeSearchAdd::where('college_lists_id', $college_id)->orderBy('order_index', 'asc')->get();
+        // dd('called');
+        $college_list = CollegeSearchAdd::where('college_lists_id', $college_id)->where('is_active', true)->with(['collegeInformation'])->orderBy('order_index', 'asc')->get();
         return response()->json([
             'success' => true,
             'data' => $college_list,
@@ -634,8 +635,10 @@ class InititalCollegeListController extends Controller
 
     public function getCostComparisonSummary(Request $request) {
         $userid = Auth::user()->id;
-        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
-            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
+            $q->where('is_active', true); 
+        })->with(['college_list_details' => function ($query) {
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
         }])->first();
 
         $totalCount = 0;
@@ -666,8 +669,10 @@ class InititalCollegeListController extends Controller
 
     public function getCollegeWiseList() {
         $userid = Auth::user()->id;
-        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
-            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
+            $q->where('is_active', true); 
+        })->with(['college_list_details' => function ($query) {
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
                 $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
             }]);
         }])->first()->toArray();
@@ -798,5 +803,34 @@ class InititalCollegeListController extends Controller
             'message' => 'Aid deleted successfully',
             'data' => $values,
         ]);
+    }
+
+    public function changeSearchCollegeAddStatus($id) {
+        $data = CollegeSearchAdd::where('id', $id)->first();
+        $data->update([
+            'is_active' => $data->is_active ? false : true,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully',
+        ]);
+    }
+
+    public function getHideCollege() {
+        $data = CollegeList::where('user_id', Auth::user()->id)->select('id')->with(['college_list_details' => function ($query) {
+            $query->where('is_active', false)->select('id', 'college_name', 'college_lists_id');
+        }])->first();
+
+        if ($data) {
+            return response()->json([
+                'success' => true,
+                'data' => $data['college_list_details'],
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No data found',
+            ]);
+        }
     }
 }

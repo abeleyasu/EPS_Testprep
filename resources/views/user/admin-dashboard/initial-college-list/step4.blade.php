@@ -66,6 +66,7 @@
         <div class="block-header block-header-tab">
           <h3 class="block-title text-white fw-500">College List</h3>
           <button type="button" class="btn btn-sm btn-alt-success" id="add-college">Add College</button>
+          <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hide College</button>
         </div>
         <div class="block-content block-content-full">
           <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true">
@@ -93,6 +94,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="hide-college-list-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">College List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="hide-college-modal-body">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -170,6 +187,15 @@
       background-color: #ff0000;
       color: #fff;
     }
+    .no-data {
+      border: 1px solid;
+      border-style: dashed;
+      border-color: darkgray;
+      padding: 10px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+    }
 </style>
 @endsection
 
@@ -179,6 +205,7 @@
 <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
   toastr.options = {
     "closeButton": true,
@@ -224,11 +251,14 @@
             }
             const element = `
               <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
-                <div class="block-header block-header-default" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
-                  <div class="d-flex align-items-center gap-3">
+                <div class="block-header block-header-default">
+                  <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                     <i class="fa fa-bars"></i>
                     <span>${data.order_index}</span>
                     <span>${data.college_name}</span>
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
                   </div>
                 </div>
                 <div id="accodion-${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
@@ -246,15 +276,15 @@
                         <tbody>
                           <tr>
                             <th>Average Admitted GPA:</th>
-                            <th>1</th>
+                            <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
                           </tr>  
                           <tr>
                             <th>Average Accepted ACT:</th>
-                            <th>1</th>
+                            <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
                           </tr>  
                           <tr>
                             <th>Average Accepted SAT:</th>
-                            <th>1</th>
+                            <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
                           </tr>  
                         </tbody>
                       </table>
@@ -519,8 +549,26 @@
     })
   })
 
+  $(document).on('click', '.hide-college-from-list', function (e) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to hide this college?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, hide it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const response = hideshowlist(e.target.dataset.id);
+        if (response) {
+          getCollegeList();
+        }
+      }
+    })
+  })
+
   $('.save-close').on('click', function (e) {
-    console.log('e -->', e)
     let url = "{{ route('admin-dashboard.initialCollegeList.saveCollegeList', [ 'id' => request()->get('college_lists_id') ]) }}"
     $.ajax({
       type: "patch",
@@ -534,6 +582,18 @@
         toastr.error(response.message)
       }
     })
+  })
+
+  $('#view-hide-college-btn').on('click', function (e) {
+    getHideCollegeList('hide-college-list-modal')
+  })
+
+  $(document).on('click', '.show-college-from-list', function (e) {
+    const response = hideshowlist(e.target.dataset.id);
+    if (response) {
+      getCollegeList();
+      getHideCollegeList('hide-college-list-modal')
+    }
   })
 </script>
 @endsection

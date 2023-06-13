@@ -26,7 +26,7 @@ class FetchCollegeInformation extends Controller
                 // $apiEndpoint = $apiEndpoint . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit';
             
                 $apiEndpoint = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page='.$page . '&per_page='.$perPage . '&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
-                $apiEndpoint = $apiEndpoint . '&fields=id,school.name,school.city,school.state,latest.student.size,school.locale,school.ownership,latest.admissions.admission_rate.overall,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median';
+                $apiEndpoint = $apiEndpoint . '&fields=id,school.name,school.city,school.state,latest.student.size,school.locale,school.ownership,latest.admissions.admission_rate.overall,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.admissions';
 
                 // Make the API request
                 $guzzleClient = new GuzzleClient();
@@ -37,6 +37,9 @@ class FetchCollegeInformation extends Controller
                 if (!empty($data['results'])) {
                     $totalRecords = $data['metadata']['total'];
                     // Process the retrieved college data
+                    // echo "<pre>";
+                    // print_r($data['results']);
+                    // die;
                     foreach ($data['results'] as $key => $record) {
                         $name = $record['school.name'];
                         $city = $record['school.city'];
@@ -49,6 +52,9 @@ class FetchCollegeInformation extends Controller
                         $consumer_rate = $record['latest.completion.consumer_rate'];
                         $earnings_median = $record['latest.earnings.10_yrs_after_entry.median'];
                         $admission_rate = $record['latest.admissions.admission_rate.overall'] ? $record['latest.admissions.admission_rate.overall'] : null;
+
+                        $sat_avg = $record['latest.admissions.sat_scores.average.overall'];
+                        $act_avg = $record['latest.admissions.act_scores.midpoint.cumulative'];
     
                         // Check if the college_id exists in the college_information table
                         $college = CollegeInformation::where('college_id', $collegeId)->first();
@@ -62,6 +68,8 @@ class FetchCollegeInformation extends Controller
                             $college->consumer_rate = $consumer_rate;
                             $college->earnings_median = $earnings_median;
                             $college->overall_admission_rate = $admission_rate;
+                            $college->avg_act_score = $act_avg;
+                            $college->avg_sat_score = $sat_avg;
                             $college->save();
                         } else {
                             CollegeInformation::create([
@@ -75,6 +83,8 @@ class FetchCollegeInformation extends Controller
                                 'consumer_rate' => $consumer_rate,
                                 'earnings_median' => $earnings_median,
                                 'overall_admission_rate' => $overall_admission_rate,
+                                'avg_act_score' => $act_avg,
+                                'avg_sat_score' => $sat_avg,
                             ]);
                         }
                     }

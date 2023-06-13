@@ -102,6 +102,7 @@
     <div class="block block-rounded">
       <div class="block-header block-header-default block-header-main">
         <h3 class="block-title">YOUR COLLEGE LIST'S COSTS & AID</h3>
+        <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hide College</button>
       </div>
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
@@ -143,6 +144,21 @@
   </div>
 </div>
 </div>
+<div class="modal fade" id="hide-college-list-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">College List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="hide-college-modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('user-script')
@@ -155,6 +171,7 @@
 <script src="{{asset('assets/js/pages/be_tables_datatables.min.js')}}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
   const url = "{{route('admin-dashboard.cost_comparison.get_college_list_for_cost_comparison')}}"
@@ -372,6 +389,39 @@
 
   $(document).on('mouseup', '.edit-value, .edit-outside-aid', function (e) {
     e.preventDefault();
+  })
+
+  $('#view-hide-college-btn').on('click', function (e) {
+    getHideCollegeList('hide-college-list-modal')
+  })
+
+  $(document).on('click', '.show-college-from-list', function (e) {
+    const response = hideshowlist(e.target.dataset.id);
+    if (response) {
+      getHideCollegeList('hide-college-list-modal')
+      $('#costcomparison-summary').DataTable().ajax.reload();
+      getCollegeListForCostComparison(url);
+    }
+  })
+
+  $(document).on('click', '.hide-college-from-list', function (e) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to hide this college?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, hide it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const response = hideshowlist(e.target.dataset.id);
+        if (response) {
+          $('#costcomparison-summary').DataTable().ajax.reload();
+          getCollegeListForCostComparison(url);
+        }
+      }
+    })
   })
 </script>
 

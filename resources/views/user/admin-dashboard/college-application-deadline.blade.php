@@ -50,6 +50,7 @@
         <div class="block-content">
             @if(count($college_list_deadline) > 0)
             <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
+            <button type="button" class="btn btn-sm btn-alt-success mb-3 ms-2" id="view-hide-college-btn">View Hide College</button>
             @endif
             <p>
                 <span class="note-text">Note:</span> Adding or removing a college from this list will also add it to or remove it from all tools on your profile, including the My College List tool.
@@ -76,6 +77,7 @@
                                         <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle{{ $i }}"></i>{{ $college['college_details']['college_name'] }}</a> 
                                     </div>
                                     <div class="col-2">
+                                        <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="{{ $college['college_id'] }}">Hide</button>
                                         <!-- <input class="form-check-input form-check-input_all chagecollagecheckbox" id="{{ $i }}" data-college_id="{{$college['id']}}" data-college_detail_id="{{ $college ? $college['id'] : null  }}" @if($college && $college['is_completed_all_process']) checked @endif value="{{ $college ? $college['is_completed_all_process'] : '' }}" name="is_completed_all_process" type="checkbox" value=""> -->
                                         @if($college['is_application_checklist'])
                                             <i class="fa fa-2x fa-circle-check text-white"></i>
@@ -384,6 +386,21 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="hide-college-list-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">College List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="hide-college-modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!--Add New College Modal -->
 @endsection
 
@@ -392,6 +409,17 @@
 <link rel="stylesheet" href="{{ asset('css/college-application-deadline.css') }}">
 <link rel="stylesheet" href="{{ asset('css/collegeExploration.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+<style>
+    .no-data {
+        border: 1px solid;
+        border-style: dashed;
+        border-color: darkgray;
+        padding: 10px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 500;
+    }
+</style>
 @endsection
 
 @section('user-script')
@@ -399,6 +427,8 @@
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
+<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
     $('.js-data-example-ajax').select2({
         dropdownParent: $('#add_new_college'),
@@ -499,6 +529,36 @@
             }
             $('#is_application_checklist-' + elementIndex).attr('checked', true);
             $('#is_application_checklist-' + elementIndex).val(1);
+        })
+    })
+
+    $('#view-hide-college-btn').on('click', function (e) {
+        getHideCollegeList('hide-college-list-modal')
+    })
+
+    $(document).on('click', '.show-college-from-list', function (e) {
+        const response = hideshowlist(e.target.dataset.id);
+        if (response) {
+            window.location.reload();
+        }
+    })
+
+    $(document).on('click', '.hide-college-from-list', function (e) {
+        Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to hide this college?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, hide it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+        }).then((result) => {
+        if (result.isConfirmed) {
+            const response = hideshowlist(e.target.dataset.id);
+            if (response) {
+                window.location.reload();
+            }
+        }
         })
     })
 </script>
