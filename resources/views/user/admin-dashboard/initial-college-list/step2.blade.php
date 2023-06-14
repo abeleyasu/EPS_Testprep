@@ -244,7 +244,7 @@
                                                     id="map-url"
                                                 >
                                                 </iframe>
-                                                <a class="text-info" id="college-map-url" href="" target="_blank">Open Map <i class="fa fa-arrow-right"></i></a>
+                                                <!-- <a class="text-info" id="college-map-url" href="" target="_blank">Open Map <i class="fa fa-arrow-right"></i></a> -->
                                             </div>
                                             <div>
                                                 <div class="fs-base lh-base fw-large mb-0 border-bottom mb-2">
@@ -863,7 +863,7 @@
 
                 $('#main-college-name').html(data.school.name)
 
-                $('#college-map-url').attr('href', `https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lon}`)
+                // $('#college-map-url').attr('href', `https://www.google.com/maps/search/?api=1&query=${data.location.lat},${data.location.lon}`)
 
 
                 if (data.latest.college_info.description) {
@@ -903,7 +903,8 @@
                 $('#info-size').html(size)
                 $('#college-url').attr('href', '//'+data.school.school_url)
                 $('#avg-anual-cost').html('$' + avganualcosr)
-                const url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyBQd77v02ma4YJNxmfTP5YDXa-NuIrbAh8&q=" + data.school.name + "," + data.school.city +
+                const gmapKey = "{{ env('GOOGLE_MAP_KEY') }}"
+                const url = "https://www.google.com/maps/embed/v1/place?key="+gmapKey+"&q=" + data.school.name + "," + data.school.city +
                     "," + data.school.state + "," + data.school.zip + "&zoom=13";
                 $('#map-url').attr('src', url)
                 $('#college-details').modal('show');
