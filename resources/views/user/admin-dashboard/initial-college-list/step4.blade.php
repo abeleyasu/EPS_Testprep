@@ -66,7 +66,7 @@
         <div class="block-header block-header-tab">
           <h3 class="block-title text-white fw-500">College List</h3>
           <button type="button" class="btn btn-sm btn-alt-success" id="add-college">Add College</button>
-          <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hide College</button>
+          <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         </div>
         <div class="block-content block-content-full">
           <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true">

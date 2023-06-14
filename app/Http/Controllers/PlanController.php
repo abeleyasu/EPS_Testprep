@@ -149,27 +149,6 @@ class PlanController extends Controller
     }
 
     public function edit(Request $request) {
-        // $rules = [
-        //     'product_id' => 'required',
-        //     'amount' => 'required|numeric',
-        //     'interval' => 'required',
-        //     'interval_count' => 'required_if:interval:month|numeric|digits_between:1,12'
-        // ];
-        // $customMessages = [
-        //     'product_id.required' => 'Product is required',
-        // ];
-        // $request->validate($rules, $customMessages);
-        // $plan = Plan::find($request->id);
-        // $product = $this->stripe->products->update($plan->stripe_product_id, [
-        //     'name' => $request->name,
-        //     'description' => $request->description,
-        // ]);
-        // $plan->name = $request->name;
-        // $plan->description = $request->description;
-        // $plan->stripe_product_id = $product['id'];
-        // $plan->stripe_plan = $product['default_price'];
-        // $plan->price = $request->price;
-        // $plan->save();
         return redirect()->intended(route('admin.plan.plan_list'));
     }
 
@@ -187,11 +166,19 @@ class PlanController extends Controller
         if ($user->subscribed('default')) {
             return redirect()->route('mysubscriptions.index');
         }
-        $categories = ProductCategory::whereHas('products', function ($q) {
+        $categories = $this->getPlanDataCategorywise();
+        return view("user.plan", compact("categories"));
+    }
+
+    public function getPlanForNonUser() {
+        $categories = $this->getPlanDataCategorywise();
+        return view("pricing", compact("categories"));
+    }
+
+    public function getPlanDataCategorywise () {
+        return ProductCategory::whereHas('products', function ($q) {
             $q->has('plans');
         })->with(['products', 'products.plans', 'products.inclusions'])->orderBy('order_index', 'asc')->get();
-        $intent = auth()->user()->createSetupIntent();
-        return view("user.plan", compact("categories",'intent'));
     }
 
     public function showPlan(Plan $plan, Request $request)

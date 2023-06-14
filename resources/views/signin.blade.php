@@ -7,6 +7,9 @@
  
     <!-- Main Container -->
     <main id="main-container">
+        <div class="position-fixed d-flex align-items-end w-100 justify-content-end p-3">
+            <a href="{{ route('simple-pricing') }}" class="btn btn-alt-primary">Pricing</a>
+        </div>
     <!-- Page Content -->
     @php
         header("Cache-Control: no-cache, no-store, must-revalidate");

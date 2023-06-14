@@ -11,7 +11,12 @@
 <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <style>
+  .colleg-add-header {
+    background: #1f2937;
+    color: #fff;
+  }
   .block-content {
     padding: 15px;
   }
@@ -102,7 +107,8 @@
     <div class="block block-rounded">
       <div class="block-header block-header-default block-header-main">
         <h3 class="block-title">YOUR COLLEGE LIST'S COSTS & AID</h3>
-        <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hide College</button>
+        <button type="button" class="btn btn-sm btn btn-alt-success" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
+        <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
       </div>
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
@@ -159,6 +165,36 @@
     </div>
   </div>
 </div>
+
+<div class="modal" id="add_new_college" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="block block-rounded block-transparent mb-0">
+        <div class="block-header colleg-add-header">
+          <h3 class="block-title">Add College</h3>
+          <div class="block-options">
+            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+              <i class="fa fa-fw fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row block-content">
+          <div>
+            <label for="select-college" class="form-label">Select College</label>
+            <select class="js-data-example-ajax form-control" id="select-college" name="college" style="width: 100%;" data-placeholder="Select One.">
+              <option value="">Select One</option>
+            </select>
+          </div>
+        </div>
+        <div class="block-content block-content-full text-end">
+          <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn submit-btn" id="add-college">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('user-script')
@@ -171,6 +207,7 @@
 <script src="{{asset('assets/js/pages/be_tables_datatables.min.js')}}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
+<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
@@ -420,6 +457,27 @@
           $('#costcomparison-summary').DataTable().ajax.reload();
           getCollegeListForCostComparison(url);
         }
+      }
+    })
+  })
+
+  $(document).on('click', '#add-college', function (e) {
+    $.ajax({
+      url: "{{ route('admin-dashboard.collegeApplicationDeadline.college_save') }}",
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {college: $('#select-college').val()},
+    }).done((response) => {
+      if (response.success) {
+        window.localStorage.setItem('APP-REFRESHED', Date.now());
+        $('#add_new_college').modal('hide')
+        $('#costcomparison-summary').DataTable().ajax.reload();
+        getCollegeListForCostComparison(url);
+        console.log('response ==>', response)
+      } else {
+        toastr.error(response.message)
       }
     })
   })

@@ -437,6 +437,7 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::post('forget-password', [AuthController::class, 'postForgetPassword'])->name('password.email');
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+    Route::get('/pricing', [PlanController::class, 'getPlanForNonUser'])->name('simple-pricing');
 });
 
 Route::group(['middleware' => ['auth']],function () {

@@ -50,7 +50,7 @@
         <div class="block-content">
             @if(count($college_list_deadline) > 0)
             <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
-            <button type="button" class="btn btn-sm btn-alt-success mb-3 ms-2" id="view-hide-college-btn">View Hide College</button>
+            <button type="button" class="btn btn-sm btn-alt-success mb-3 ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
             @endif
             <p>
                 <span class="note-text">Note:</span> Adding or removing a college from this list will also add it to or remove it from all tools on your profile, including the My College List tool.
@@ -430,33 +430,6 @@
 <script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
-    $('.js-data-example-ajax').select2({
-        dropdownParent: $('#add_new_college'),
-        allowClear: true,
-        ajax: {
-            delay: 500,
-            url: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
-            dataType: 'json',
-            data: function (params) {
-                var query = {
-                    search: params.term,
-                    page: params.page || 1
-                }
-                return query;
-            },
-            processResults: function (data, params) {
-                params.page = params.page || 1;
-                const result = data.data.map((item) => { return { id: item.college_id, text: item.name } });
-                return {
-                    results: result,
-                    pagination: {
-                        more: (params.page * 30) < data.total
-                    }
-                };
-            }
-        }
-    });
-
     One.helpersOnLoad(['one-table-tools-checkable', 'one-table-tools-sections']);
     $('#myTabContent').on('show.bs.collapse', function (e) {
         const id = e.target.dataset.id;

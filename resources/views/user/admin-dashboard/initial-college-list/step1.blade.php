@@ -129,6 +129,7 @@
                                                                     'ishide' => false,
                                                                     'value_key' => 'state_code',
                                                                     'text_key' => 'state_name',
+                                                                    'isshow' => true,
                                                                 ])
                                                             </div>
                                                         </div>

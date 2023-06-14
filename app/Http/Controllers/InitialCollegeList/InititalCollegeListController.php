@@ -775,11 +775,23 @@ class InititalCollegeListController extends Controller
     }
 
     public function collegeSave(Request $request) {
-        $request->validate([
+        $rules = [
             'college' => 'required',
-        ], [
+        ];
+        $customMessage = [
             'college.required' => 'Please select college',
-        ]);
+        ];
+        if ($request->ajax()) {
+            $validate = Validator::make($request->all(), $rules, $customMessage);
+            if ($validate->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validate->errors()->first(),
+                ]);
+            }
+        } else {
+            $request->validate($rules, $customMessage);
+        }
         $college = CollegeInformation::where('college_id', $request->college)->first();
         $collegelist = CollegeList::where('user_id', auth()->user()->id)->first();
         $max_order_index = CollegeSearchAdd::where('college_lists_id', $collegelist->id)->max('order_index');
@@ -790,6 +802,12 @@ class InititalCollegeListController extends Controller
             'order_index' => $max_order_index ? $max_order_index + 1 : 1,
         ]);
         $this->createCollegeListAllData($add_college->id);
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'College added successfully',
+            ]);
+        }
         return redirect()->back()->with('success', 'College added successfully');
     }
 
