@@ -1408,5 +1408,6 @@ return [
         'Moderately Difficult',
         'Most Difficult'
     ],
+    'college_list_per_page' => 20,
 ]
 ?>

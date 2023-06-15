@@ -30,6 +30,12 @@
                     </div>
                 </div>
             @else
+                {{-- <div class="d-flex justify-content-end mb-3">
+                    {{ $pagination->links('user.admin-dashboard.initial-college-list.pagination') }}
+                </div> --}}
+                <div class="mb-3 total-count">
+                    {{ $total }} Results
+                </div>
                 @foreach($college_data as $key => $college)
                     <div class="block block-rounded mb-3">
                         <div class="block-header block-header-default block-header-main">
@@ -154,6 +160,10 @@
                         </div>
                     </div>
                 @endforeach
+
+                <div class="d-flex justify-content-end">
+                    {{ $pagination->links('user.admin-dashboard.initial-college-list.pagination') }}
+                </div>
             @endif
             <div class="d-flex justify-content-between mt-3">
                 <div class="prev-btn">
@@ -640,6 +650,12 @@
 
     .fa-house-tree:before {
         content: "\e1b3";
+    }
+
+    .total-count {
+        font-size: 20px;
+        font-weight: 900;
+        margin: 0px 15px
     }
 </style>
 @endsection

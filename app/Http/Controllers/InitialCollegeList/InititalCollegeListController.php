@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Http;
 use App\Models\CollegeMajorInformation;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class InititalCollegeListController extends Controller
 {
@@ -54,24 +55,34 @@ class InititalCollegeListController extends Controller
     }
 
     public function step2(Request $request) {
-        $data = $this->getCollegeData($request->college_lists_id);
+        $pageNo = isset($request->page) ? $request->page : 1;
+        $data = $this->getCollegeData($request->college_lists_id, $pageNo);
         $selectedCollege = CollegeSearchAdd::where('college_lists_id', $request->college_lists_id)->get()->map(function($item) {
             return $item->college_id;
         })->toArray();
 
+        $pagination = new Paginator($data['data'], $data['total'], config('constants.college_list_per_page'), $data['current_page'], [
+            'path' => $request->url(),
+            'query' => $request->query(),
+        ]);
+
         return view('user.admin-dashboard.initial-college-list.step2', [
-            'college_data' => $data,
+            'college_data' => $data['data'],
             'selected_college' => $selectedCollege,
+            'pagination' => $pagination,
+            'total' => $data['total']
         ]);
     }
 
-    function getCollegeData($college_lists_id) {
+    function getCollegeData($college_lists_id, $page_no) {
         $data = [];
         $searchstring = CollegeList::where('id', $college_lists_id)->select('last_search_string')->first();
         $searchstring = json_decode($searchstring->last_search_string);
         // dd($searchstring);
         if ($searchstring) {
-            $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page=0&per_page=50&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
+            $perPage = config('constants.college_list_per_page');
+            $page_no = $page_no - 1;
+            $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page='.$page_no.'&per_page='.$perPage.'&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
             $api = $api . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit,latest.admissions.admission_rate.overall';
 
             if (isset($searchstring->search_college) && !empty($searchstring->search_college)) {
@@ -143,6 +154,7 @@ class InititalCollegeListController extends Controller
             $guzzleClient = new GuzzleClient();
             $response = $guzzleClient->get($api);
             $data = json_decode($response->getBody()->getContents(), true);
+            $totalRecords = $data['metadata']['total'];
             $data = $data['results'];
 
             if (!isset($searchstring->search_college)) {
@@ -178,7 +190,12 @@ class InititalCollegeListController extends Controller
                 }
             }
         }
-        return $data;
+        return [
+            'total' => $totalRecords,
+            'data' => $data,
+            'current_page' => $page_no + 1,
+            'total_page' => ceil($totalRecords / $perPage),
+        ];
     }
 
     public function saveCollege(Request $request) {
@@ -538,12 +555,13 @@ class InititalCollegeListController extends Controller
     }
 
     function collegeList($college_id) {
-        $data = $this->getCollegeData($college_id);
+        $data = $this->getCollegeData($college_id, 1);
+        // dd($data['data']);
         $selectedCollege = CollegeSearchAdd::where('college_lists_id', $college_id)->get()->map(function($item) {
             return $item->college_id;
         })->toArray();
 
-        $data = collect($data)->map(function($item) use ($selectedCollege) {
+        $data = collect($data['data'])->map(function($item) use ($selectedCollege) {
             $item['selected'] = in_array($item['id'], $selectedCollege);
             return $item;
         })->all();

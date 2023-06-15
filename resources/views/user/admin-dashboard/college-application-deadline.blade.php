@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="col-2">
                                         <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="{{ $college['college_id'] }}">Hide</button>
-                                        <!-- <input class="form-check-input form-check-input_all chagecollagecheckbox" id="{{ $i }}" data-college_id="{{$college['id']}}" data-college_detail_id="{{ $college ? $college['id'] : null  }}" @if($college && $college['is_completed_all_process']) checked @endif value="{{ $college ? $college['is_completed_all_process'] : '' }}" name="is_completed_all_process" type="checkbox" value=""> -->
+                                        {{-- <input class="form-check-input form-check-input_all chagecollagecheckbox" id="{{ $i }}" data-college_id="{{$college['id']}}" data-college_detail_id="{{ $college ? $college['id'] : null  }}" @if($college && $college['is_completed_all_process']) checked @endif value="{{ $college ? $college['is_completed_all_process'] : '' }}" name="is_completed_all_process" type="checkbox" value=""> --}}
                                         @if($college['is_application_checklist'])
                                             <i class="fa fa-2x fa-circle-check text-white"></i>
                                         @endif
@@ -97,7 +97,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_complete_application_type-{{ $i }}" name="is_complete_application_type" @if($college['is_complete_application_type']) checked @endif value="{{ $college ? $college['is_complete_application_type'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_complete_application_type-{{ $i }}" name="is_complete_application_type" @if($college['is_complete_application_type']) checked @endif value="{{ $college ? $college['is_complete_application_type'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -111,7 +111,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_complete_admission_open-{{ $i }}" name="is_complete_admission_open" @if($college['is_complete_admission_open']) checked @endif value="{{ $college ? $college['is_complete_admission_open'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_complete_admission_open-{{ $i }}" name="is_complete_admission_open" @if($college['is_complete_admission_open']) checked @endif value="{{ $college ? $college['is_complete_admission_open'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -125,7 +125,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_complete_number_of_essays-{{ $i }}" name="is_complete_number_of_essays" @if($college['is_complete_number_of_essays']) checked @endif value="{{ $college ? $college['is_complete_number_of_essays'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_complete_number_of_essays-{{ $i }}" name="is_complete_number_of_essays" @if($college['is_complete_number_of_essays']) checked @endif value="{{ $college ? $college['is_complete_number_of_essays'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -147,7 +147,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_complete_admission_deadline-{{ $i }}" name="is_complete_admission_deadline" @if($college['is_complete_admission_deadline']) checked @endif value="{{ $college ? $college['is_complete_admission_deadline'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_complete_admission_deadline-{{ $i }}" name="is_complete_admission_deadline" @if($college['is_complete_admission_deadline']) checked @endif value="{{ $college ? $college['is_complete_admission_deadline'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -169,7 +169,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_complete_competitive_scholarship_deadline-{{ $i }}" name="is_complete_competitive_scholarship_deadline" @if($college['is_complete_competitive_scholarship_deadline']) checked @endif value="{{ $college ? $college['is_complete_competitive_scholarship_deadline'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_complete_competitive_scholarship_deadline-{{ $i }}" name="is_complete_competitive_scholarship_deadline" @if($college['is_complete_competitive_scholarship_deadline']) checked @endif value="{{ $college ? $college['is_complete_competitive_scholarship_deadline'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -191,7 +191,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_complete_scholarship_deadline-{{ $i }}" name="is_complete_scholarship_deadline" @if($college['is_complete_scholarship_deadline']) checked @endif value="{{ $college ? $college['is_complete_scholarship_deadline'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_complete_scholarship_deadline-{{ $i }}" name="is_complete_scholarship_deadline" @if($college['is_complete_scholarship_deadline']) checked @endif value="{{ $college ? $college['is_complete_scholarship_deadline'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -213,7 +213,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_completed_honors_college_deadline-{{ $i }}" name="is_completed_honors_college_deadline" @if($college['is_completed_honors_college_deadline']) checked @endif value="{{ $college ? $college['is_completed_honors_college_deadline'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_completed_honors_college_deadline-{{ $i }}" name="is_completed_honors_college_deadline" @if($college['is_completed_honors_college_deadline']) checked @endif value="{{ $college ? $college['is_completed_honors_college_deadline'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -235,7 +235,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_completed_fafsa_deadline-{{ $i }}" name="is_completed_fafsa_deadline" @if($college['is_completed_fafsa_deadline']) checked @endif value="{{ $college ? $college['is_completed_fafsa_deadline'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_completed_fafsa_deadline-{{ $i }}" name="is_completed_fafsa_deadline" @if($college['is_completed_fafsa_deadline']) checked @endif value="{{ $college ? $college['is_completed_fafsa_deadline'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3 list-content">
@@ -257,7 +257,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2">
-                                                <!-- <input class="form-check-input form-check-input_all status" id="is_completed_css_profile_deadline-{{ $i }}" name="is_completed_css_profile_deadline" @if($college['is_completed_css_profile_deadline']) checked @endif value="{{ $college ? $college['is_completed_css_profile_deadline'] : '' }}" type="checkbox"> -->
+                                                {{-- <input class="form-check-input form-check-input_all status" id="is_completed_css_profile_deadline-{{ $i }}" name="is_completed_css_profile_deadline" @if($college['is_completed_css_profile_deadline']) checked @endif value="{{ $college ? $college['is_completed_css_profile_deadline'] : '' }}" type="checkbox"> --}}
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -353,7 +353,6 @@
     </div>
 </main>
 
-<!--Add New College Modal -->
 <div class="modal" id="add_new_college" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="modal-block-extra-large" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -401,7 +400,6 @@
     </div>
   </div>
 </div>
-<!--Add New College Modal -->
 @endsection
 
 @section('page-style')
