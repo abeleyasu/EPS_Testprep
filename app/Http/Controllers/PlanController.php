@@ -210,7 +210,7 @@ class PlanController extends Controller
             $user = Auth::user();
             if ($user->subscribed('default')) {
                 $this->changeUserSubscription($plan, $paymentMethodId);
-                return redirect()->route('mysubscriptions.index')->with('message', 'Your subscribed updated successfully');
+                return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
                 $this->createSubscription($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
@@ -238,7 +238,7 @@ class PlanController extends Controller
             $user = Auth::user();
             if ($user->subscribed('default')) {
                 $this->changeUserSubscription($plan, $paymentMethodId);
-                return redirect()->route('mysubscriptions.index')->with('message', 'Your subscribed updated successfully');
+                return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
                 $this->createSubscription($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
