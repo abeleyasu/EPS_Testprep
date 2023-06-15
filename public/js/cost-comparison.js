@@ -26,9 +26,6 @@ function getCollegeListForCostComparison(url, active_accordion = null) {
             </div>
             <div id="collapse${i}" class="collapse ${active_accordion && active_accordion == costcomparison.id ? 'show' : ''}" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
               <div class="college-content-wrapper college-content">
-                <div class="text-end mb-3">
-                  <button class="btn btn-success add-cost" data-index="${i}" data-id="${detail.id}" data-costcomparisonid="${detail.cost_comparison_id}">+ Add Aid</button>
-                </div>
                 <table class="table table-bordered table-striped table-vcenter">
                   <tbody>
                     <tr>
@@ -152,7 +149,8 @@ function getCollegeListForCostComparison(url, active_accordion = null) {
                   </tbody>
                   <tbody>
                     <tr class="table-info">
-                      <th colspan="3">OUTSIDE SCHOLARSHIP AID / YEAR</th>
+                      <th>OUTSIDE SCHOLARSHIP AID / YEAR</th>
+                      <td colspan="2" class="text-end"><button class="btn btn-success add-cost" data-index="${i}" data-id="${detail.id}" data-costcomparisonid="${detail.cost_comparison_id}">+ Add Aid</button></td>
                     </tr>`
 
                     if (otherscholership.length > 0) {

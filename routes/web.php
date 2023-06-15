@@ -59,6 +59,7 @@ use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Cronjob\SendReminder;
 use App\Http\Controllers\Cronjob\FetchCollegeInformation;
+use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
 
 /*
 |--------------------------------------------------------------------------
@@ -448,3 +449,4 @@ Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy']
 Route::get('/sendreminder', [SendReminder::class, 'index']);
 Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
+Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Http;
+use App\Models\CollegeMajorInformation;
 
 class InititalCollegeListController extends Controller
 {
@@ -43,16 +44,7 @@ class InititalCollegeListController extends Controller
             return redirect($route);
         }
 
-        $college_major_api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY'). '&fields=programs.cip_4_digit.code,programs.cip_4_digit.title';
-
-        $college_major_response = Http::get($college_major_api);
-        $college_major_data = json_decode($college_major_response->body());
-
-        $data = [];
-        foreach ($college_major_data->results as $key => $value) {
-            $data = array_merge($data, $value->{'latest.programs.cip_4_digit'});
-        }
-        $data = collect($data)->unique('code')->sortBy('title')->all();
+        $data = CollegeMajorInformation::select('title', 'code')->get();
 
         $states = States::select('state_name', 'state_code')->get();
         return view('user.admin-dashboard.initial-college-list.step1', [
