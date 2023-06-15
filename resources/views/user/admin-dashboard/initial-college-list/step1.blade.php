@@ -66,12 +66,12 @@
                                     <div class="college_wants_list">
                                         <div class="tab-content" id="myTabContent">
                                             <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
-                                                <div class="accordion accordionExample">
+                                                <div class="accordion accordionExample accordionExample2">
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                             <a class=" text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
                                                         </div>
-                                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
+                                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="college_majors_options">
@@ -112,7 +112,7 @@
                                                         <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                                             <a class=" text-white fw-600 collapsed"><i class="fa fa-2x fa-clock"></i> Location</a>
                                                         </div>
-                                                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
+                                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label" for="search_state">
@@ -129,7 +129,6 @@
                                                                     'ishide' => false,
                                                                     'value_key' => 'state_code',
                                                                     'text_key' => 'state_name',
-                                                                    'isshow' => true,
                                                                 ])
                                                             </div>
                                                         </div>
@@ -454,6 +453,7 @@
         } else {
             document.getElementById('content-browse_colloege').innerHTML = '<h6 class="text-center">No Result</h6>';
         }
+        $('#browse_colloege').attr('class', 'show')
     }
 
     function hideshow(elementid, isshow) {

@@ -52,7 +52,19 @@
                           <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
                         @endif
                       </div>
-                      <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                      @if(auth()->user())
+                        @if(Auth::user()->subscribed('default'))
+                          @if(Auth::user()->subscriptions()->active()->first()->stripe_price == $plan->stripe_plan_id)
+                            <div class="btn btn-light px-4">Purchased</div>
+                          @else
+                            <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Upgrade</a>
+                          @endif
+                        @else 
+                          <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                        @endif
+                      @else
+                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                      @endif
                     </div>
                   @endforeach
 

@@ -45,7 +45,7 @@ class CollegeMajorInformationc extends Controller
             if (count($data) > 0) {
                 foreach ($data as $key => $value) {
                     $payload = [
-                        'title' => $value->title,
+                        'title' => str_replace(".", "", $value->title),
                         'code' => $value->code,
                     ];
 

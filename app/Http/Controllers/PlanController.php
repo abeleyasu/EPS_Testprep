@@ -162,10 +162,7 @@ class PlanController extends Controller
     }
 
     public function getUserPlan() {
-        $user = Auth::user();
-        if ($user->subscribed('default')) {
-            return redirect()->route('mysubscriptions.index');
-        }
+        // dd(Auth::user()->subscriptions()->active()->first()->stripe_price);
         $categories = $this->getPlanDataCategorywise();
         return view("user.plan", compact("categories"));
     }
@@ -184,9 +181,9 @@ class PlanController extends Controller
     public function showPlan(Plan $plan, Request $request)
     {
         $user = Auth::user();
-        if ($user->subscribed('default')) {
-            return redirect()->route('mysubscriptions.index');
-        }
+        // if ($user->subscribed('default')) {
+        //     return redirect()->route('mysubscriptions.index');
+        // }
         $product_name = Product::find($plan->product_id);
         $plan['name'] = $product_name['title'];
 
@@ -210,19 +207,14 @@ class PlanController extends Controller
         $paymentMethodId = $request->payment_method;
         $customer = $request->user()->createOrGetStripeCustomer();
         try {
-
-            // Create a new subscription with Cashier
-            $user = $request->user();
-            $user->newSubscription('default', $plan->stripe_plan_id)
-                ->create($paymentMethodId, [
-                    'setup_future_usage' => 'off_session',
-                    'default_payment_method' => $paymentMethodId,
-                    'default_source' => $paymentMethodId,
-                    'collection_method' => 'charge_automatically',
-                    'cancel_at' => now()->addMonth($plan->interval_count)->timestamp,
-                ]);
-
-            return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+            $user = Auth::user();
+            if ($user->subscribed('default')) {
+                $this->changeUserSubscription($plan, $paymentMethodId);
+                return redirect()->route('mysubscriptions.index')->with('message', 'Your subscribed updated successfully');
+            } else {
+                $this->createSubscription($plan, $paymentMethodId);
+                return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+            }
         } catch (\Stripe\Exception\CardException $e) {
             // Handle Setup Intent confirmation error, which may include a 3D Secure authentication flow
             if ($e->getStripeCode() === 'authentication_required') {
@@ -243,18 +235,14 @@ class PlanController extends Controller
         $plan = Plan::where('stripe_plan_id', $request->plan)->first();
         $paymentMethodId = $request->user_card;
         try {
-
-            // Create a new subscription with Cashier
-            $user = $request->user();
-            $user->newSubscription('default', $plan->stripe_plan_id)
-                ->create($paymentMethodId, [
-                    'setup_future_usage' => 'off_session',
-                    'default_payment_method' => $paymentMethodId,
-                    'default_source' => $paymentMethodId,
-                    'collection_method' => 'charge_automatically',
-                    'cancel_at' => now()->addMonth($plan->interval_count)->timestamp,
-                ]);
-
+            $user = Auth::user();
+            if ($user->subscribed('default')) {
+                $this->changeUserSubscription($plan, $paymentMethodId);
+                return redirect()->route('mysubscriptions.index')->with('message', 'Your subscribed updated successfully');
+            } else {
+                $this->createSubscription($plan, $paymentMethodId);
+                return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+            }
             return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
         } catch (\Stripe\Exception\CardException $e) {
             // Handle Setup Intent confirmation error, which may include a 3D Secure authentication flow
@@ -270,5 +258,23 @@ class PlanController extends Controller
                 return redirect()->route('plan.index')->with('message', $e->getMessage());
             }
         }
+    }
+
+    public function createSubscription($plan, $paymentMethodId) {
+        $user = Auth::user();
+        $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [
+            'setup_future_usage' => 'off_session',
+            'default_payment_method' => $paymentMethodId,
+            'default_source' => $paymentMethodId,
+            'collection_method' => 'charge_automatically',
+            'cancel_at' => now()->addMonth($plan->interval_count)->timestamp,
+        ]);
+        return true;
+    }
+
+    public function changeUserSubscription($plan, $paymentMethodId) {
+        $user = Auth::user();
+        $user->subscription('default')->swap($plan->stripe_plan_id);
+        return true;
     }
 }
