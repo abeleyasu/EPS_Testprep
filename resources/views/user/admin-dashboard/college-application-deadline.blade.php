@@ -503,12 +503,12 @@
         })
     })
 
-    $('#view-hide-college-btn').on('click', function (e) {
-        getHideCollegeList('hide-college-list-modal')
+    $('#view-hide-college-btn').on('click', async function (e) {
+        await getHideCollegeList('hide-college-list-modal')
     })
 
-    $(document).on('click', '.show-college-from-list', function (e) {
-        const response = hideshowlist(e.target.dataset.id);
+    $(document).on('click', '.show-college-from-list', async function (e) {
+        const response = await hideshowlist(e.target.dataset.id);
         if (response) {
             window.location.reload();
         }
@@ -523,9 +523,9 @@
         confirmButtonText: 'Yes, hide it!',
         cancelButtonText: 'No, cancel!',
         reverseButtons: true
-        }).then((result) => {
+        }).then(async (result) => {
         if (result.isConfirmed) {
-            const response = hideshowlist(e.target.dataset.id);
+            const response = await hideshowlist(e.target.dataset.id);
             if (response) {
                 window.location.reload();
             }

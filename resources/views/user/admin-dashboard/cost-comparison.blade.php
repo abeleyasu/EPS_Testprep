@@ -432,10 +432,10 @@
     getHideCollegeList('hide-college-list-modal')
   })
 
-  $(document).on('click', '.show-college-from-list', function (e) {
-    const response = hideshowlist(e.target.dataset.id);
+  $(document).on('click', '.show-college-from-list', async function (e) {
+    const response = await hideshowlist(e.target.dataset.id);
     if (response) {
-      getHideCollegeList('hide-college-list-modal')
+      await getHideCollegeList('hide-college-list-modal')
       $('#costcomparison-summary').DataTable().ajax.reload();
       getCollegeListForCostComparison(url);
     }
@@ -450,9 +450,9 @@
       confirmButtonText: 'Yes, hide it!',
       cancelButtonText: 'No, cancel!',
       reverseButtons: true
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = hideshowlist(e.target.dataset.id);
+        const response = await hideshowlist(e.target.dataset.id);
         if (response) {
           $('#costcomparison-summary').DataTable().ajax.reload();
           getCollegeListForCostComparison(url);
