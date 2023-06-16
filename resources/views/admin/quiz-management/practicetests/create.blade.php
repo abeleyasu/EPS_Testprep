@@ -34,13 +34,13 @@
         .tab {
             display: none
         }
-        #addNewTypes .select2-container--default,.add_question_type_select .select2-container--default,.removeNewTypes .select2-container--default,.add_question_type_select .select2-container--default {
+        /* #addNewTypes .select2-container--default,.add_question_type_select .select2-container--default,.removeNewTypes .select2-container--default,.add_question_type_select .select2-container--default {
             width: 305px !important;
         }
         .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
             height: 22px;
             margin: 6px 10px 0;
-        }
+        } */
         button {
             background-color: #4CAF50;
             color: #ffffff;
@@ -246,7 +246,7 @@
         }
 
         ul.answerOptionLsit li {
-            width: 100%;
+            /* width: 100%; */
             list-style: none;
             padding-top: 14px;
         }
@@ -419,10 +419,19 @@
             accent-color: #1f2937;
             margin-left: 10px;
         }
+        .select2-container .select2-selection--multiple{
+            min-height: 38px !important;
+        }
         .select2-container .select2-search--inline .select2-search__field {
             margin-top: 7px !important;
             height: 20px !important;
             padding: 0 4px;
+        }
+        .select2-container--default .select2-selection--multiple{
+            border-color: #dfe3ea !important;
+        }
+        .add_question_type_select .select2-container,.category-custom .select2-container,.removeNewTypes .select2-container{
+            width: 300px !important;
         }
         .preloader {
             position: fixed;
@@ -778,9 +787,8 @@
                             </div>
                             <span class="text-danger" id="superCategoryError"></span>
                         </div> --}}
-                        <div class="input-container" id="addNewType">
+                        {{-- <div class="input-container" id="addNewType">
                             <div class="d-flex input-field align-items-center">
-                                {{-- start  --}}
                                 <div class="col-md-1">
                                     <label class="form-label" for="ct_checkbox">&ensp;</label>
                                     <input type="checkbox" name="ct_checkbox" id="ct_checkbox_0">
@@ -799,9 +807,6 @@
                                     <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
                                    <div class="d-flex align-items-center">
                                         <select class="js-select2 select categoryType w-100" id="category_type_0" name="category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
-                                            {{-- @foreach ($getCategoryTypes as $categoryType)
-                                                <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
-                                            @endforeach --}}
                                         </select>
                                     </div>
                                     <span class="text-danger" id="categoryTypeError"></span>
@@ -810,9 +815,6 @@
                                     <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
                                    <div class="d-flex align-items-center">
                                     <select class="js-select2 select questionType" id="search-input_0" name="search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
-                                        {{-- @foreach ($getQuestionTypes as $questionType)
-                                            <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
-                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <span class="text-danger" id="questionTypeError"></span>
@@ -821,7 +823,7 @@
                                     <button class="plus-button" data-id="1" onclick="addNewType(this)"><i class="fa-solid fa-plus"></i></button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row passage-container align-items-center">
                             <div class="mb-2 col-md-5">
                                 <label for="passage_number" class="form-label">Passage No<span class="text-danger">*</span></label>
@@ -848,8 +850,11 @@
                             <div class="choiceOneInFour_Odd"><input type="hidden" name="questionType" id="questionType"
                                     value="choiceOneInFour_Odd">
                                 <ul class="answerOptionLsit">
-                                    <li><label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="choiceOneInFour_OddAnswer_1" name="choiceOneInFourAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -858,8 +863,11 @@
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                type="radio" value="b" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio" value="b" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="choiceOneInFour_OddAnswer_2" name="choiceOneInFourAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -868,8 +876,11 @@
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>C:</span><input
-                                                type="radio" value="c" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio" value="c" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="choiceOneInFour_OddAnswer_3" name="choiceOneInFourAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -878,8 +889,11 @@
                                         <textarea id="choiceOneInFour_Odd_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                type="radio" value="d" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio" value="d" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="choiceOneInFour_OddAnswer_4" name="choiceOneInFourAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -895,8 +909,11 @@
                             <div class="choiceOneInFour_Even"><input type="hidden" name="questionType" id="questionType"
                                 value="choiceOneInFour_Even">
                                 <ul class="answerOptionLsit">
-                                    <li><label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="choiceOneInFour_EvenAnswer_1" name="choiceOneInFourAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -905,8 +922,11 @@
                                         <textarea id="choiceOneInFour_Even_explanation_answer_1" name="choiceOneInFour_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio" value="g" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="choiceOneInFour_EvenAnswer_2" name="choiceOneInFourAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -915,8 +935,11 @@
                                         <textarea id="choiceOneInFour_Even_explanation_answer_2" name="choiceOneInFour_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>H:</span><input
-                                                type="radio" value="h" name="choiceOneInFour"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio" value="h" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="choiceOneInFour_EvenAnswer_3" name="choiceOneInFourAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
@@ -925,9 +948,12 @@
                                         <textarea id="choiceOneInFour_Even_explanation_answer_3" name="choiceOneInFour_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFour">
-                                            <textarea id="choiceOneInFour_EvenAnswer_4" name="choiceOneInFourAnswer_4"
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio" value="j" name="choiceOneInFour">
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFourEven_'])
+                                        
+                                        <textarea id="choiceOneInFour_EvenAnswer_4" name="choiceOneInFourAnswer_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question"></textarea>
                                     </li>
                                     <li>
@@ -941,8 +967,11 @@
                             <div class="choiceOneInFive_Odd"><input type="hidden" name="questionType" id="questionType"
                                     value="choiceOneInFive_Odd">
                                 <ul class="answerOptionLsit">
-                                    <li><label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="choiceOneInFive_Odd_Answer_1" name="choiceOneInFiveAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -951,8 +980,11 @@
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd1" name="choiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>B:</span><input
-                                                type="radio" value="b" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>B:</span><input type="radio" value="b" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="choiceOneInFive_Odd_Answer_2" name="choiceOneInFiveAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -961,8 +993,11 @@
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd2" name="choiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                type="radio" value="c" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio" value="c" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="choiceOneInFive_Odd_Answer_3" name="choiceOneInFiveAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -971,8 +1006,11 @@
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd3" name="choiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>D: </span><input
-                                                type="radio" value="d" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio" value="d" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="choiceOneInFive_Odd_Answer_4" name="choiceOneInFiveAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -981,8 +1019,11 @@
                                         <textarea id="choiceOneInFive_Odd_explanation_answer_odd4" name="choiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>E: </span><input
-                                                type="radio" value="e" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio" value="e" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'E', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="choiceOneInFive_Odd_Answer_5" name="choiceOneInFiveAnswer_5"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -998,8 +1039,11 @@
                             <div class="choiceOneInFive_Even"><input type="hidden" name="questionType" id="questionType"
                                 value="choiceOneInFive_Even">
                                 <ul class="answerOptionLsit">
-                                    <li><label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFiveEven_'])
+                                        
                                         <textarea id="choiceOneInFive_Even_Answer_1" name="choiceOneInFiveAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1008,8 +1052,11 @@
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even1" name="choiceOneInFive_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>G:</span><input
-                                                type="radio" value="g" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>G:</span><input type="radio" value="g" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="choiceOneInFive_Even_Answer_2" name="choiceOneInFiveAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1018,8 +1065,11 @@
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even2" name="choiceOneInFive_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>H: </span><input
-                                                type="radio" value="h" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio" value="h" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="choiceOneInFive_Even_Answer_3" name="choiceOneInFiveAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1028,8 +1078,11 @@
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even3" name="choiceOneInFive_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio" value="j" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="choiceOneInFive_Even_Answer_4" name="choiceOneInFiveAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1038,8 +1091,11 @@
                                         <textarea id="choiceOneInFive_Even_explanation_answer_even4" name="choiceOneInFive_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>K: </span><input
-                                                type="radio" value="k" name="choiceOneInFive"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio" value="k" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'K', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="choiceOneInFive_Even_Answer_5" name="choiceOneInFiveAnswer_5"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1054,8 +1110,11 @@
                             <div class="choiceOneInFourPass_Odd"><input type="hidden" name="questionType" id="questionType"
                                     value="choiceOneInFourPass_Odd">
                                 <ul class="answerOptionLsit">
-                                    <li><label class="form-label" style="font-size: 13px;"><span>A: </span><input
-                                                type="radio" value="a" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => ''])
+
                                         <textarea id="choiceOneInFourPass_OddAnswer_1" name="choiceOneInFourPassAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1064,8 +1123,11 @@
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                type="radio" value="b" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio" value="b" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => ''])
+
                                         <textarea id="choiceOneInFourPass_OddAnswer_2" name="choiceOneInFourPassAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1074,8 +1136,11 @@
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                type="radio" value="c" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio" value="c" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => ''])
+
                                         <textarea id="choiceOneInFourPass_OddAnswer_3" name="choiceOneInFourPassAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1084,8 +1149,12 @@
                                         <textarea id="choiceOneInFourPass_Odd_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>D: </span>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>D: </span>
                                         <input type="radio" value="d" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => ''])
+                                        
                                         <textarea id="choiceOneInFourPass_OddAnswer_4" name="choiceOneInFourPassAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1101,8 +1170,11 @@
                             <div class="choiceOneInFourPass_Even"><input type="hidden" name="questionType" id="questionType"
                                 value="choiceOneInFourPass_Even">
                                 <ul class="answerOptionLsit">
-                                    <li><label class="form-label" style="font-size: 13px;"><span>F: </span><input
-                                                type="radio" value="f" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="choiceOneInFourPass_EvenAnswer_1" name="choiceOneInFourPassAnswer_1"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1111,8 +1183,11 @@
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_1" name="choiceOneInFourPass_explanation_answer_1"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio" value="g" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="choiceOneInFourPass_EvenAnswer_2" name="choiceOneInFourPassAnswer_2"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1121,8 +1196,11 @@
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_2" name="choiceOneInFourPass_explanation_answer_2"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>H: </span><input
-                                                type="radio" value="h" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio" value="h" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="choiceOneInFourPass_EvenAnswer_3" name="choiceOneInFourPassAnswer_3"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1131,8 +1209,11 @@
                                         <textarea id="choiceOneInFourPass_Even_explanation_answer_3" name="choiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li><label class="form-label" style="font-size: 13px;"><span>J: </span><input
-                                                type="radio" value="j" name="choiceOneInFourPass"></label>
+                                    <li>
+                                        <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio" value="j" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="choiceOneInFourPass_EvenAnswer_4" name="choiceOneInFourPassAnswer_4"
                                             class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                     </li>
@@ -1161,8 +1242,11 @@
 
                                 <div class="multi_field" style="display: none">
                                     <ul class="answerOptionLsit">
-                                        <li><label class="form-label" style="font-size: 13px;"><span>A: </span> <input
-                                                    type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'cb_choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultInFourFillAnswer_1" name="choiceMultInFourFillAnswer_1"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1171,8 +1255,11 @@
                                             <textarea id="choiceMultInFourFill_explanation_answer_1" name="choiceMultInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="checkbox" value="b" name="choiceMultInFourFill[]"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox" value="b" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'cb_choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultInFourFillAnswer_2" name="choiceMultInFourFillAnswer_2"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1181,8 +1268,11 @@
                                             <textarea id="choiceMultInFourFill_explanation_answer_2" name="choiceMultInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                    type="checkbox" value="c" name="choiceMultInFourFill[]"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox" value="c" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'cb_choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultInFourFillAnswer_3" name="choiceMultInFourFillAnswer_3"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1191,8 +1281,11 @@
                                             <textarea id="choiceMultInFourFill_explanation_answer_3" name="choiceMultInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                    type="checkbox" value="d" name="choiceMultInFourFill[]"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="checkbox" value="d" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'cb_choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultInFourFillAnswer_4" name="choiceMultInFourFillAnswer_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1205,9 +1298,11 @@
                                 </div>
                                 <div class="multiChoice_field" style="display: none">
                                     <ul class="answerOptionLsit">
-                                        <li><label class="form-label" style="font-size: 13px;"><span>A: </span> <input
-                                                    type="radio" value="a"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="choiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultiChoiceInFourFill_1" name="choiceMultiChoiceInFourFill_1"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1216,9 +1311,11 @@
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_1" name="choiceMultiChoiceInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li><label class="form-label" style="font-size: 13px;"><span>B: </span><input
-                                                    type="radio" value="b"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio" value="b" name="choiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultiChoiceInFourFill_2" name="choiceMultiChoiceInFourFill_2"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1227,9 +1324,11 @@
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_2" name="choiceMultiChoiceInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li><label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                    type="radio" value="c"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio" value="c" name="choiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultiChoiceInFourFill_3" name="choiceMultiChoiceInFourFill_3"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1238,9 +1337,11 @@
                                             <textarea id="choiceMultiChoiceInFourFill_explanation_answer_3" name="choiceMultiChoiceInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li><label class="form-label" style="font-size: 13px;"><span>D:</span><input
-                                                    type="radio" value="d"
-                                                    name="choiceMultiChoiceInFourFill"></label>
+                                        <li>
+                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio" value="d" name="choiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'choiceMultInFourFill_'])
+
                                             <textarea id="choiceMultiChoiceInFourFill_4" name="choiceMultiChoiceInFourFill_4"
                                                 class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                         </li>
@@ -1267,6 +1368,8 @@
                                             style="font-size: 13px;"><a href="javascript:;"
                                                 onClick="addMoreFillOption();" class="switchMulti">Add More
                                                 Options</a></label></div>
+                                    
+                                    @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'fc_'])
                                 </div>
                             </div>
 
@@ -1380,7 +1483,7 @@
                             </div>
                             <span class="text-danger" id="superCategoryError"></span>
                         </div> --}}
-                        <div class="input-container" id="addNewTypes">
+                        {{-- <div class="input-container" id="addNewTypes">
                             <div class="d-flex input-field align-items-center">
                                 <div class="col-md-1">
                                     <label class="form-label" for="edit_ct_checkbox">&ensp;</label>
@@ -1400,9 +1503,6 @@
                                     <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
                                     <div class="d-flex align-items-center">
                                         <select class="js-select2 select categoryType" id="edit_category_type_0" name="edit_category_type" data-id="0" onchange="insertCategoryType(this)" multiple>
-                                            {{-- @foreach ($getCategoryTypes as $categoryType)
-                                                <option value="{{ $categoryType->id }}">{{ $categoryType->category_type_title }}</option>
-                                            @endforeach --}}
                                         </select>
                                     </div>
                                     <span class="text-danger" id="categoryTypeError"></span>
@@ -1411,9 +1511,6 @@
                                     <label for="search-input" class="form-label">Question Type<span class="text-danger">*</span></label>
                                     <div class="d-flex align-items-center">
                                         <select class="js-select2 select questionType" id="edit_search-input_0" name="edit_search-input" data-id="0" onchange="insertQuestionType(this)" multiple>
-                                            {{-- @foreach ($getQuestionTypes as $questionType)
-                                                <option value="{{ $questionType->id }}">{{ $questionType->question_type_title }}</option>
-                                            @endforeach --}}
                                         </select>
                                     </div>
                                     <span class="text-danger" id="questionTypeError"></span>
@@ -1422,7 +1519,7 @@
                                     <button class="plus-button edit-plus-button" data-id="1" onclick="addNewTypes(this,'null')"><i class="fa-solid fa-plus"></i></button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row passage-container align-items-center">
                             <div class="mb-2 col-md-5">
@@ -1452,6 +1549,9 @@
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFour_OddAnswer_0">
                                         <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="editChoiceOneInFour_OddAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1461,6 +1561,9 @@
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_1">
                                         <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="editChoiceOneInFour_OddAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1470,6 +1573,9 @@
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_2">
                                         <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="editChoiceOneInFour_OddAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1479,7 +1585,11 @@
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_3">
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span>
-                                            <input type="radio"  value="d" name="choiceOneInFour"></label>
+                                            <input type="radio"  value="d" name="choiceOneInFour">
+                                        </label>
+                                            
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'oneInFourOdd_'])
+
                                         <textarea id="editChoiceOneInFour_OddAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1496,6 +1606,9 @@
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFour_EvenAnswer_0">
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="editChoiceOneInFour_EvenAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1505,6 +1618,9 @@
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_1">
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="editChoiceOneInFour_EvenAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1514,6 +1630,9 @@
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_2">
                                         <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="editChoiceOneInFour_EvenAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1523,6 +1642,9 @@
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_3">
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFour"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFourEven_'])
+
                                         <textarea id="editChoiceOneInFour_EvenAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1534,10 +1656,13 @@
                             </div>
                         
                             <div class="choiceOneInFive_Odd">
-                                <input type="hidden" name="editQuestionType" id="editQuestionType" value="choiceOneInFive">
+                                <input type="hidden" name="editQuestionType" id="editQuestionType" value="choiceOneInFive_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFive_OddAnswer_0">
                                         <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="editChoiceOneInFive_Odd_Answer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1547,6 +1672,9 @@
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_1">
                                         <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="editChoiceOneInFive_Odd_Answer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1556,6 +1684,9 @@
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_2">
                                         <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="editChoiceOneInFive_Odd_Answer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1565,6 +1696,9 @@
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_3">
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="editChoiceOneInFive_Odd_Answer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1574,6 +1708,9 @@
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_4">
                                         <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'E', 'disp_section' => 'oneInFiveOdd_'])
+
                                         <textarea id="editChoiceOneInFive_Odd_Answer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1586,10 +1723,13 @@
 
                             {{-- new  --}}
                             <div class="choiceOneInFive_Even">
-                                <input type="hidden" name="editQuestionType" id="editQuestionType" value="choiceOneInFive">
+                                <input type="hidden" name="editQuestionType" id="editQuestionType" value="choiceOneInFive_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFive_EvenAnswer_0">
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="editChoiceOneInFive_Even_Answer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1599,6 +1739,9 @@
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_1">
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="editChoiceOneInFive_Even_Answer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1608,6 +1751,9 @@
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_2">
                                         <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="editChoiceOneInFive_Even_Answer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1617,6 +1763,9 @@
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_3">
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="editChoiceOneInFive_Even_Answer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1626,6 +1775,9 @@
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_4">
                                         <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio"  value="k" name="choiceOneInFive"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'K', 'disp_section' => 'oneInFiveEven_'])
+
                                         <textarea id="editChoiceOneInFive_Even_Answer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                     </li>
                                     <li>
@@ -1641,6 +1793,9 @@
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFourPass_OddAnswer_0">
                                         <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => ''])
+
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1650,6 +1805,9 @@
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_1">
                                         <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => ''])
+
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1659,6 +1817,9 @@
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_2">
                                         <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => ''])
+
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1668,6 +1829,9 @@
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_3">
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => ''])
+
                                         <textarea id="editChoiceOneInFourPass_OddAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1684,6 +1848,9 @@
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFourPass_EvenAnswer_0">
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1693,6 +1860,9 @@
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_1">
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1702,6 +1872,9 @@
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_2">
                                         <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio"  value="h" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1711,6 +1884,9 @@
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_3">
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFourPass"></label>
+
+                                        @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFourPassEven_'])
+
                                         <textarea id="editChoiceOneInFourPass_EvenAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                     </li>
                                     <li>
@@ -1738,25 +1914,45 @@
 
                                 <div class="multi_field withOutFillOpt" style="display: none">
                                     <ul class="answerOptionLsit">
-                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_1" name="editChoiceMultInFourFillAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_0">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'cb_choiceMultInFourFill_'])
+                                            
+                                            <textarea id="editChoiceMultInFourFillAnswer_1" name="editChoiceMultInFourFillAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer A</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_1" name="editchoiceMultInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox"  value="b" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_2" name="editChoiceMultInFourFillAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_1">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox"  value="b" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'cb_choiceMultInFourFill_'])
+
+                                            <textarea id="editChoiceMultInFourFillAnswer_2" name="editChoiceMultInFourFillAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer B</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_2" name="editchoiceMultInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox"  value="c" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_3" name="editChoiceMultInFourFillAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_2">
+                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox"  value="c" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'cb_choiceMultInFourFill_'])
+                                            
+                                            <textarea id="editChoiceMultInFourFillAnswer_3" name="editChoiceMultInFourFillAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer C</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_3" name="editchoiceMultInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D:</span><input type="checkbox"  value="d" name="choiceMultInFourFill[]"></label><textarea id="editChoiceMultInFourFillAnswer_4" name="editChoiceMultInFourFillAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptAnswer_3">
+                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="checkbox"  value="d" name="choiceMultInFourFill[]"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'cb_choiceMultInFourFill_'])
+
+                                            <textarea id="editChoiceMultInFourFillAnswer_4" name="editChoiceMultInFourFillAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer D</label>
                                             <textarea id="editchoiceMultInFourFill_explanation_answer_4" name="editchoiceMultInFourFill_explanation_answer_4"
@@ -1767,25 +1963,45 @@
                                 
                                 <div class="multiChoice_field withOutFillOptChoice" style="display:none">
                                     <ul class="answerOptionLsit">
-                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_0"><label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_1" name="editChoiceMultiChoiceInFourFill_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_0">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="editChoiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'choiceMultInFourFill_'])
+
+                                            <textarea id="editChoiceMultiChoiceInFourFill_1" name="editChoiceMultiChoiceInFourFill_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer A</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_1" name="editchoiceMultiChoiceInFourFill_explanation_answer_1"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_1"><label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_2" name="editChoiceMultiChoiceInFourFill_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_1">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="editChoiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'choiceMultInFourFill_'])
+
+                                            <textarea id="editChoiceMultiChoiceInFourFill_2" name="editChoiceMultiChoiceInFourFill_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer B</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_2" name="editchoiceMultiChoiceInFourFill_explanation_answer_2"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_2"><label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_3" name="editChoiceMultiChoiceInFourFill_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_2">
+                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="editChoiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'choiceMultInFourFill_'])
+
+                                            <textarea id="editChoiceMultiChoiceInFourFill_3" name="editChoiceMultiChoiceInFourFill_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer C</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_3" name="editchoiceMultiChoiceInFourFill_explanation_answer_3"
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
-                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_3"><label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio"  value="d" name="editChoiceMultiChoiceInFourFill"></label><textarea id="editChoiceMultiChoiceInFourFill_4" name="editChoiceMultiChoiceInFourFill_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
+                                        <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_3">
+                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio"  value="d" name="editChoiceMultiChoiceInFourFill"></label>
+
+                                            @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'choiceMultInFourFill_'])
+
+                                            <textarea id="editChoiceMultiChoiceInFourFill_4" name="editChoiceMultiChoiceInFourFill_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea></li>
                                         <li>
                                             <label class="form-label">Explanation Answer D</label>
                                             <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_4" name="editchoiceMultiChoiceInFourFill_explanation_answer_4"
@@ -1795,8 +2011,12 @@
                                 </div>
                                 <div class="fill_field withFillOpt " style="display:none">
                                     <div class="mb-2">
-                                        <label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="addChoiceMultInFourFill_filltype"  class="form-control addChoiceMultInFourFill_filltype"><option value="">Select Type</option><option value="number">Number</option><option value="decimal">Decimal</option><option value="fraction">Fraction</option></select></div><div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill:</label><input type="text" name="addChoiceMultInFourFill_fill[]"><label class="form-label extraFillOption" style="font-size: 13px;"></label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="addMoreFillOption();" class="switchMulti">Add More Options</a></label>
+                                        <label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="addChoiceMultInFourFill_filltype"  class="form-control addChoiceMultInFourFill_filltype"><option value="">Select Type</option><option value="number">Number</option><option value="decimal">Decimal</option><option value="fraction">Fraction</option></select>
                                     </div>
+                                    <div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill:</label><input type="text" name="addChoiceMultInFourFill_fill[]"><label class="form-label extraFillOption" style="font-size: 13px;"></label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="addMoreFillOption();" class="switchMulti">Add More Options</a></label>
+                                    </div>
+
+                                    @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'fc_'])
                                 </div>
                             </div>
 
@@ -1926,10 +2146,14 @@
             let section_type = $('#section_type').val();
             let format = $('#format').val();   
             let super_category = ''; 
-            if(is_edit == true){
-                super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val(); 
-            } else {
-                super_category = $('#questionMultiModal select[name="super_category_create"]').val(); 
+            // if(is_edit == true){
+            //     super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val(); 
+            // } else {
+            //     super_category = $('#questionMultiModal select[name="super_category_create"]').val(); 
+            // }
+            let closestSuperCategory = $(data).closest('.category-custom').prev('.rating-tag').find('select.superCategory');
+            if (closestSuperCategory.length > 0) {
+                super_category = closestSuperCategory.val();
             }
             if(category_type != '' && !containsOnlyNumbers(category_type)) {
                 $.ajax({
@@ -2003,15 +2227,17 @@
             let id = $(data).attr('data-id');
             let super_category = ''; 
             let category = '';
-            if(is_edit == true){
-                // super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val(); 
-                super_category = $(`#editQuestionMultiModal #edit_super_category_${id}`).val();
-                category = $(`#editQuestionMultiModal #edit_category_type_${id}`).val();
-            } else {
-                // super_category = $('#questionMultiModal select[name="super_category_create"]').val(); 
-                super_category = $(`#questionMultiModal #super_category_create_${id}`).val();
-                category = $(`#questionMultiModal #category_type_${id}`).val();
-            }
+            // if(is_edit == true){
+            //     // super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val(); 
+            //     super_category = $(`#editQuestionMultiModal #edit_super_category_${id}`).val();
+            //     category = $(`#editQuestionMultiModal #edit_category_type_${id}`).val();
+            // } else {
+            //     // super_category = $('#questionMultiModal select[name="super_category_create"]').val(); 
+            //     super_category = $(`#questionMultiModal #super_category_create_${id}`).val();
+            //     category = $(`#questionMultiModal #category_type_${id}`).val();
+            // }
+            super_category = $(data).closest('.add_question_type_select').siblings('.rating-tag').find('select.superCategory').first().val();
+            category = $(data).closest('.add_question_type_select').siblings('.category-custom').find('select.categoryType').first().val();
             if(question_type != '' && !containsOnlyNumbers(question_type)) {
                 $.ajax({
                     type: 'post',
@@ -2034,17 +2260,17 @@
         }
         
         //start new function for edit
-        async function addNewTypes(data, type) {
+        async function addNewTypes(ans_col, data, type, disp_option = '') {
             let key = null;
             if(type != 'null' && type == 'repet') {
                 key = parseInt(data);
             } else {
-                key = $(data).attr('data-id');
+                key = $(data).attr(`${disp_option}data-id-${ans_col}`);
                 key = parseInt(key);
 
-                let super_category = $(`#edit_super_category_${key - 1}`).val();
-                let category_type = $(`#edit_category_type_${key - 1}`).val();
-                let question_type = $(`#edit_search-input_${key - 1}`).val();
+                let super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
+                let category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
+                let question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
 
                 if(super_category == '') {
                     toastr.error('Please select a Super Category!');
@@ -2066,53 +2292,53 @@
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
 
                 html += `<div class="col-md-1">`;
-                html += `<input type="checkbox" name="edit_ct_checkbox" id="edit_ct_checkbox_${key}">`;
+                html += `<input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">`;
                 html += `</div>`;
 
-                html += `<div class="col-md-4 mb-2 me-2 rating-tag">`;
+                html += `<div class="col-md-3 mb-2 me-2 rating-tag">`;
                 html += `<div class="d-flex align-items-center">`;
-                html += `<select class="js-select2 select superCategory" id="edit_super_category_${key}" name="edit_super_category" onchange="insertSuperCategory(this)" multiple>`;
+                html += `<select class="js-select2 select superCategory" id="${disp_option}edit_super_category_${ans_col}_${key}" name="${disp_option}edit_super_category_${ans_col}" onchange="insertSuperCategory(this)" multiple>`;
                 html += preGetSuperCategory;
                 html += `</select>`;
                 html += `</div>`;
                 html += `</div>`;
 
-                html += `<div class="mb-2 col-md-3 me-2">`;   
-                html += `<div class="d-flex align-items-center">`;             
-                html += `<select class="js-select2 select categoryType" id="edit_category_type_${key}" name="edit_category_type" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
+                html += `<div class="mb-2 col-md-3 me-2 category-custom">`;                
+                html += `<div class="d-flex align-items-center">`;                
+                html += `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
                 html += preGetPracticeCategoryType;
-                html += `</select>`; 
+                html += `</select>`;  
                 html += `</div>`;                
                 html += `</div>`;                
-                html += `<div class="mb-2 col-md-3 add_question_type_select">`;   
-                html += `<div class="d-flex align-items-center">`;             
-                html += `<select class="js-select2 select questionType" id="edit_search-input_${key}" name="edit_search-input" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
+                html += `<div class="mb-2 col-md-3 add_question_type_select">`; 
+                html += `<div class="d-flex align-items-center">`;                
+                html += `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
                 html += preGetPracticeQuestionType;
-                html += `</select>`;    
-                html += `</div>`;             
+                html += `</select>`;  
+                html += `</div>`;                
                 html += `</div>`; 
-                html += `<div class="col-md-1 add-minus-icon">`;                
-                html += `<button class="minus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;                
+                html += `<div class="col-md-2 add-minus-icon">`;                
+                html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;               
                 html += `</div>`;
-                html += `</div>`;         
+                html += `</div>`;
+                    
+            $(`#${disp_option}addNewTypes_${ans_col}`).append(html);
 
-            $('#addNewTypes').append(html);
-
-            $(`#edit_search-input_${key}`).select2({
+            $(`#${disp_option}edit_search-input_${ans_col}_${key}`).select2({
                 dropdownParent: $('#editQuestionMultiModal'),
                 tags : true,
                 placeholder : "Select Question type",
                 maximumSelectionLength: 1
             });
 
-            $(`#edit_super_category_${key}`).select2({
+            $(`#${disp_option}edit_super_category_${ans_col}_${key}`).select2({
                 dropdownParent: $('#editQuestionMultiModal'),
                 tags : true,
                 placeholder : "Select Super Category",
                 maximumSelectionLength: 1
             });
 
-            $(`#edit_category_type_${key}`).select2({
+            $(`#${disp_option}edit_category_type_${ans_col}_${key}`).select2({
                 dropdownParent: $('#editQuestionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
@@ -2120,97 +2346,102 @@
             });
 
             if(type !== 'repet') {
-                $(data).attr('data-id', key + 1);
+                $(data).attr(`${disp_option}data-id-${ans_col}`, key + 1);
+            } else {
+                var button = document.querySelector(`button[${disp_option}ans_col="${ans_col}"]`);
+                button.setAttribute(`${disp_option}data-id-${ans_col}`, key + 1);
             }
         }
 
-        async function addNewType(data,type) {
+        async function addNewType(data, disp_option = '') {
             let key = $(data).attr('data-id');
                 key = parseInt(key);
+
+            let ans_col = $(data).attr('ans_col');
+
             let testType = $('#format').val();
-
-            let super_category = $(`#super_category_create_${key - 1}`).val();
-                let category_type = $(`#category_type_${key - 1}`).val();
-                let question_type = $(`#search-input_${key - 1}`).val();
+            let super_category = $(`#${disp_option}super_category_create_${ans_col}_${key - 1}`).val();
+            let category_type = $(`#${disp_option}add_category_type_${ans_col}_${key - 1}`).val();
+            let question_type = $(`#${disp_option}add_search-input_${ans_col}_${key - 1}`).val();
             
-                if(super_category == '') {
-                    toastr.error('Please select a Super category!');
-                    return false;
-                }
+            if(super_category == '') {
+                toastr.error('Please select a Super category!');
+                return false;
+            }
 
-                if(category_type == '') {
-                    toastr.error('Please select a category type!');
-                    return false;
-                }
+            if(category_type == '') {
+                toastr.error('Please select a category type!');
+                return false;
+            }
 
-                if(question_type == '') {
-                    toastr.error('Please select a question type!');
-                    return false;
-                }
+            if(question_type == '') {
+                toastr.error('Please select a question type!');
+                return false;
+            }
                 
-                preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
-                preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
-                preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
+            preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
+            preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
+            preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
 
             let html = ``;
+            html += `<div class="d-flex input-field align-items-center removeNewType">`;
 
-                html += `<div class="d-flex input-field align-items-center removeNewType">`;
-                
-                html += `<div class="col-md-1">`;
-                html += `<input type="checkbox" name="ct_checkbox" id="ct_checkbox_${key}">`;
-                html += `</div>`;
+            html += `<div class="col-md-1">`;
+            html += `<input type="checkbox" name="${disp_option}ct_checkbox_${ans_col}" id="${disp_option}ct_checkbox_${ans_col}_${key}">`;
+            html += `</div>`;
 
-                html += `<div class="col-md-4 mb-2 me-2 rating-tag">`;
-                html += `<div class="d-flex align-items-center">`;
-                html += `<select class="js-select2 select superCategory" id="super_category_create_${key}" name="super_category_create" multiple>`;//onchange="insertSuperCategory(this)"
-                html += preGetSuperCategory;
-                html += `</select>`;
-                html += `</div>`;
-                html += `</div>`;
+            html += `<div class="col-md-3 mb-2 me-2 rating-tag">`;
+            html += `<div class="d-flex align-items-center">`;
+            html += `<select class="js-select2 select superCategory" id="${disp_option}super_category_create_${ans_col}_${key}" name="${disp_option}super_category_create_${ans_col}" data-id="${key}" onchange="insertSuperCategory(this)" multiple>`;
+            html += preGetSuperCategory;
+            html += `</select>`;
+            html += `</div>`;
+            html += `</div>`;
 
-                html += `<div class="mb-2 col-md-3 me-2">`; 
-                html += `<div class="d-flex align-items-center">`;                 
-                html += `<select class="js-select2 select categoryType" id="category_type_${key}" name="category_type" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                            
-                html += preGetPracticeCategoryType;            
-                html += `</select>`;  
-                html += `</div>`;               
-                html += `</div>`;                
-                html += `<div class="mb-2 col-md-3 add_question_type_select">`; 
-                html += `<div class="d-flex align-items-center">`;               
-                html += `<select class="js-select2 select questionType" id="search-input_${key}" name="search-input" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                          
-                html += preGetPracticeQuestionType;                
-                html += `</select>`; 
-                html += `</div>`;                
-                html += `</div>`; 
-                html += `<div class="col-md-1 add-minus-icon">`;                
-                html += `<button class="minus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
-                html += `</div>`;
-                html += `</div>`;         
+            html += `<div class="col-md-3 mb-2 me-2 category-custom">`; 
+            html += `<div class="d-flex align-items-center">`;               
+            html += `<select class="js-select2 select categoryType" id="${disp_option}add_category_type_${ans_col}_${key}" name="${disp_option}add_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
+            html +=  preGetPracticeCategoryType;                        
+            html += `</select>`; 
+            html += `</div>`;               
+            html += `</div>`;
 
-            $('#addNewType').append(html);
+            html += `<div class="mb-2 col-md-3 add_question_type_select">`;   
+            html += `<div class="d-flex align-items-center">`;             
+            html += `<select class="js-select2 select questionType" id="${disp_option}add_search-input_${ans_col}_${key}" name="${disp_option}add_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
+            html +=  preGetPracticeQuestionType;
+            html += `</select>`;
+            html += `</div>`;
+            html += `</div>`;
 
-            $(`#search-input_${key}`).select2({
+            html += `<div class="col-md-2 add-minus-icon">`;                
+            html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
+            html += `</div>`;
+            html += `</div>`;         
+
+            $(`#${disp_option}add_New_Types_${ans_col}`).append(html);
+
+            $(`#${disp_option}super_category_create_${ans_col}_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
-                placeholder : "Select Question type",
+                placeholder : "Select Super Category",
                 maximumSelectionLength: 1
             });
 
-            $(`#category_type_${key}`).select2({
+            $(`#${disp_option}add_category_type_${ans_col}_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
                 placeholder : "Select Category type",
                 maximumSelectionLength: 1
             });
 
-            $(`#super_category_create_${key}`).select2({
+            $(`#${disp_option}add_search-input_${ans_col}_${key}`).select2({
                 dropdownParent: $('#questionMultiModal'),
                 tags : true,
-                placeholder : "Select Super Category",
+                placeholder : "Select Question type",
                 maximumSelectionLength: 1
             });
-          
-                
+
             $(data).attr('data-id', key + 1);
 
         }
@@ -2281,19 +2512,19 @@
                 maximumSelectionLength: 1
             });
 
-            $(`#super_category_create_0`).select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags: true,
-                placeholder : "Select Super Category",
-                maximumSelectionLength: 1
-            });
+            // $(`#super_category_create_0`).select2({
+            //     dropdownParent: $('#questionMultiModal'),
+            //     tags: true,
+            //     placeholder : "Select Super Category",
+            //     maximumSelectionLength: 1
+            // });
 
-            $(`#super_category_edit`).select2({
-                dropdownParent: $('#editQuestionMultiModal'),
-                tags: true,
-                placeholder : "Select Super Category",
-                maximumSelectionLength: 1
-            });
+            // $(`#super_category_edit`).select2({
+            //     dropdownParent: $('#editQuestionMultiModal'),
+            //     tags: true,
+            //     placeholder : "Select Super Category",
+            //     maximumSelectionLength: 1
+            // });
 
             $(`#question_tags_edit`).select2({
                 dropdownParent: $('#editQuestionMultiModal'),
@@ -2312,19 +2543,19 @@
                 placeholder : "Select test source"
             });
 
-            $(`#search-input_0`).select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags: true,
-                placeholder : "Select Question type",
-                maximumSelectionLength: 1
-            });
+            // $(`#search-input_0`).select2({
+            //     dropdownParent: $('#questionMultiModal'),
+            //     tags: true,
+            //     placeholder : "Select Question type",
+            //     maximumSelectionLength: 1
+            // });
 
-            $(`#category_type_0`).select2({
-                dropdownParent: $('#questionMultiModal'),
-                tags : true,
-                placeholder : "Select Category type",
-                maximumSelectionLength: 1
-            });
+            // $(`#category_type_0`).select2({
+            //     dropdownParent: $('#questionMultiModal'),
+            //     tags : true,
+            //     placeholder : "Select Category type",
+            //     maximumSelectionLength: 1
+            // });
 
             $(`#diff_rating_create`).select2({
                 dropdownParent: $('#questionMultiModal'),
@@ -2392,10 +2623,63 @@
                 dropdownParent: $('#editQuestionMultiModal'),
                 placeholder : "Select Passages",
             });
+
+            //new
+            const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_', 'oneInFourEven_', 'oneInFourPassEven_', 'choiceMultInFourFill_', 'cb_choiceMultInFourFill_'];
+            const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'];
+            disp_sections.forEach(disp_section => {
+                ans_choices.forEach(ans_choice => {
+                    $(`#${disp_section}super_category_create_${ans_choice}_0`).select2({
+                        dropdownParent: $('#questionMultiModal'),
+                        tags: true,
+                        placeholder : "Select Super Category",
+                        maximumSelectionLength: 1
+                    });
+
+                    $(`#${disp_section}add_category_type_${ans_choice}_0`).select2({
+                        dropdownParent: $('#questionMultiModal'),
+                        tags: true,
+                        placeholder : "Select Category type",
+                        maximumSelectionLength: 1
+                    });
+
+                    $(`#${disp_section}add_search-input_${ans_choice}_0`).select2({
+                        dropdownParent: $('#questionMultiModal'),
+                        tags: true,
+                        placeholder : "Select Question type",
+                        maximumSelectionLength: 1
+                    });
+
+
+
+                    $(`#${disp_section}edit_super_category_${ans_choice}_0`).select2({
+                        dropdownParent: $('#editQuestionMultiModal'),
+                        tags: true,
+                        placeholder : "Select Super Category",
+                        maximumSelectionLength: 1
+                    });
+
+                    $(`#${disp_section}edit_category_type_${ans_choice}_0`).select2({
+                        dropdownParent: $('#editQuestionMultiModal'),
+                        tags: true,
+                        placeholder : "Select Category type",
+                        maximumSelectionLength: 1
+                    });
+
+                    $(`#${disp_section}edit_search-input_${ans_choice}_0`).select2({
+                        dropdownParent: $('#editQuestionMultiModal'),
+                        tags: true,
+                        placeholder : "Select Question type",
+                        maximumSelectionLength: 1
+                    });
+                });
+            });
+            
             preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType`);
             preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType`);
+            preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType`);
 
-        })
+        });
         
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
@@ -3112,9 +3396,17 @@
         function clearModel() {
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
-            $('#super_category_create_0').val(null).trigger("change");
-            $('#category_type_0').val(null).trigger("change");
-            $('#search-input_0').val(null).trigger("change");
+            // $('#super_category_create_0').val(null).trigger("change");
+            // $('#category_type_0').val(null).trigger("change");
+            // $('#search-input_0').val(null).trigger("change");
+
+            const ans_choices = ['A', 'B', 'C', 'D'];
+            ans_choices.forEach(ans_choice => {
+                $(`#super_category_create_${ans_choice}_0`).val(null).trigger("change");
+                $(`#add_category_type_${ans_choice}_0`).val(null).trigger("change");
+                $(`#add_search-input_${ans_choice}_0`).val(null).trigger("change");
+            });
+
             $(`.removeNewTypes`).remove();
             $(`.removeNewType`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
@@ -3503,42 +3795,174 @@
                 var question_category_type_value = $('#category_type').val();
 
 
-                var ct_checkbox_values = $('input[name=ct_checkbox]').map(function(i,v) {
-                    var ct_checkbox_arr = [];
-                    var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
-                    ct_checkbox_arr.push(ct_checkbox_val);
-                    return ct_checkbox_arr;
-                }).get();
-
-                var super_category_values = $('select[name=super_category_create]').map(function(i,v) {
-                    var super_category_arr = [];
-                    let super_category_val = $(v).val();
-                    if(super_category_val.length > 0){
-                        super_category_arr.push(super_category_val);
+                var questionType = $('#questionMultiModal ' + activeAnswerType + ' #questionType').val();
+                multiChoice = $('.getFilterChoice option:selected').val();
+                
+                let ans_choices;
+                let disp_section;
+                if(questionType == 'choiceOneInFive_Odd') {
+                    ans_choices = ['A', 'B', 'C', 'D', 'E'];
+                    disp_section = 'oneInFiveOdd_';
+                } else if(questionType == 'choiceOneInFourPass_Odd') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
+                    disp_section = '';
+                } else if(questionType == 'choiceOneInFour_Odd') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
+                    disp_section = 'oneInFourOdd_';
+                } else if(questionType == 'choiceOneInFour_Even') {
+                    ans_choices = ['F', 'G', 'H', 'J'];
+                    disp_section = 'oneInFourEven_';
+                } else if (questionType == 'choiceOneInFive_Even') {
+                    ans_choices = ['F', 'G', 'H', 'J', 'K'];
+                    disp_section = 'oneInFiveEven_';
+                } else if (questionType == 'choiceOneInFourPass_Even') {
+                    ans_choices = ['F', 'G', 'H', 'J'];
+                    disp_section = 'oneInFourPassEven_';
+                } else if (questionType == 'choiceMultInFourFill') {
+                    // ans_choices = ['A', 'B', 'C', 'D'];
+                    if(multiChoice == '1') {
+                        ans_choices = ['A', 'B', 'C', 'D'];
+                        disp_section = 'cb_choiceMultInFourFill_';
+                    } else if(multiChoice == '3') {
+                        ans_choices = ['A', 'B', 'C', 'D'];
+                        disp_section = 'choiceMultInFourFill_';
+                    } else if(multiChoice == '2') {
+                        ans_choices = ['A'];
+                        disp_section = 'fc_';
                     }
-                    return super_category_arr;
-                }).get();
+                }
 
-                var get_category_type_values = $('select[name=category_type]').map(function(i,v) {
-                    var category_type_arr = [];
-                    let category_type_val = $(v).val();
-                    if(category_type_val.length > 0){
-                        category_type_arr.push(category_type_val);
-                    }
-                    return category_type_arr;
-                }).get();
+                const checkboxValues = {};
+                ans_choices.forEach(ans_choice => {
+                    checkboxValues[`${ans_choice}`] = $(`input[name="${disp_section}ct_checkbox_${ans_choice}"]`).map(function(i,v) {
+                        var ct_checkbox_arr = [];
+                        var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
+                        ct_checkbox_arr.push(ct_checkbox_val);
+                        return ct_checkbox_arr;
+                    }).get();
+                });
+                var ct_checkbox_values_A = '';
+                if (ans_choices.includes('A')) {
+                    ct_checkbox_values_A = checkboxValues['A'];
+                }
+                var ct_checkbox_values_B = '';
+                if (ans_choices.includes('B')) {
+                    ct_checkbox_values_B = checkboxValues['B'];
+                }
+                var ct_checkbox_values_C = '';
+                if (ans_choices.includes('C')) {
+                    ct_checkbox_values_C = checkboxValues['C'];
+                }
+                var ct_checkbox_values_D = '';
+                if (ans_choices.includes('D')) {
+                    ct_checkbox_values_D = checkboxValues['D'];
+                }
+                var ct_checkbox_values_E = '';
+                if (ans_choices.includes('E')) {
+                    ct_checkbox_values_E = checkboxValues['E'];
+                }
 
-                var get_question_type_values = $('select[name=search-input]').map(function(i,v) {
-                    var question_type_arr = [];
-                    let question_type_val = $(v).val();
-                    if(question_type_val.length > 0){
-                        question_type_arr.push(question_type_val);
-                    }
-                    return question_type_arr;
-                }).get();
+                const superCategoryValues = {};
+                ans_choices.forEach(ans_choice => {
+                    superCategoryValues[`${ans_choice}`] = $(`select[name="${disp_section}super_category_create_${ans_choice}"]`).map(function(i,v) {
+                        var super_category_arr = [];
+                        let super_category_val = $(v).val();
+                        if(super_category_val.length > 0){
+                            super_category_arr.push(super_category_val);
+                        }
+                        return super_category_arr;
+                    }).get();
+                });
+                var super_category_values_A = '';
+                if (ans_choices.includes('A')) {
+                    super_category_values_A = superCategoryValues['A'];
+                }
+                
+                var super_category_values_B = '';
+                if (ans_choices.includes('B')) {
+                    super_category_values_B = superCategoryValues['B'];
+                }
+
+                var super_category_values_C = '';
+                if (ans_choices.includes('C')) {
+                    super_category_values_C = superCategoryValues['C'];
+                }
+                var super_category_values_D = '';
+                if (ans_choices.includes('D')) {
+                    super_category_values_D = superCategoryValues['D'];
+                }
+                var super_category_values_E = '';
+                if (ans_choices.includes('E')) {
+                    super_category_values_E = superCategoryValues['E'];
+                }
+
+
+                const getCategoryTypeValues = {};
+                ans_choices.forEach(ans_choice => {
+                    getCategoryTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}add_category_type_${ans_choice}"]`).map(function(i,v) {
+                        var category_type_arr = [];
+                        let category_type_val = $(v).val();
+                        if(category_type_val.length > 0){
+                            category_type_arr.push(category_type_val);
+                        }
+                        return category_type_arr;
+                    }).get();
+                });
+                var get_category_type_values_A = '';
+                if (ans_choices.includes('A')) {
+                    get_category_type_values_A = getCategoryTypeValues['A'];
+                }
+                var get_category_type_values_B = '';
+                if (ans_choices.includes('B')) {
+                    get_category_type_values_B = getCategoryTypeValues['B'];
+                }
+                var get_category_type_values_C = '';
+                if (ans_choices.includes('C')) {
+                    get_category_type_values_C = getCategoryTypeValues['C'];
+                }
+                var get_category_type_values_D = '';
+                if (ans_choices.includes('D')) {
+                    get_category_type_values_D = getCategoryTypeValues['D'];
+                }
+                var get_category_type_values_E = '';
+                if (ans_choices.includes('E')) {
+                    get_category_type_values_E = getCategoryTypeValues['E'];
+                }
+
+                const getQuestionTypeValues = {};
+                ans_choices.forEach(ans_choice => {
+                    getQuestionTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}add_search-input_${ans_choice}"]`).map(function(i,v) {
+                        var question_type_arr = [];
+                        let question_type_val = $(v).val();
+                        if(question_type_val.length > 0){
+                            question_type_arr.push(question_type_val);
+                        }
+                        return question_type_arr;
+                    }).get();
+                });
+                var get_question_type_values_A = '';
+                if (ans_choices.includes('A')) {
+                    get_question_type_values_A = getQuestionTypeValues['A'];
+                }
+                var get_question_type_values_B = '';
+                if (ans_choices.includes('B')) {
+                    get_question_type_values_B = getQuestionTypeValues['B'];
+                }
+                var get_question_type_values_C = '';
+                if (ans_choices.includes('C')) {
+                    get_question_type_values_C = getQuestionTypeValues['C'];
+                }
+                var get_question_type_values_D = '';
+                if (ans_choices.includes('D')) {
+                    get_question_type_values_D = getQuestionTypeValues['D'];
+                }
+                var get_question_type_values_E = '';
+                if (ans_choices.includes('E')) {
+                    get_question_type_values_E = getQuestionTypeValues['E'];
+                }
 
                 // return false;
-                var questionType = $('#questionMultiModal ' + activeAnswerType + ' #questionType').val();
+                
                 // var pass = ''; //CKEDITOR.instances['js-ckeditor-passquestion'].getData();
                 var pass = $('select[name="passagesType"] :selected').text();
                 var passNumber = $('#questionMultiModal .passNumber').val();
@@ -3546,53 +3970,130 @@
                 var passagesTypeTxt = $(".passagesType option:selected").text();
 
                 if($('#passageRequired_1').is(':checked')){
-                    if(question =='' || tags.length ==0 || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || jQuery.type(passNumber) == "null" || passagesType =='' || format =='' || testSectionType ==''){
+                    if(question =='' || tags.length ==0 || jQuery.type(passNumber) == "null" || passagesType =='' || format =='' || testSectionType =='' || super_category_values_A.length == 0 || (ans_choices.includes('B') && super_category_values_B.length == 0 ) || (ans_choices.includes('C') && super_category_values_C.length == 0) || (ans_choices.includes('D') && super_category_values_D.length == 0 ) || get_category_type_values_A.length ==0 || (ans_choices.includes('B') && get_category_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_category_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_category_type_values_D.length ==0 ) || get_question_type_values_A.length ==0 || (ans_choices.includes('B') && get_question_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_question_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_question_type_values_D.length ==0 ) || (ans_choices.includes('E') && super_category_values_E.length == 0) || (ans_choices.includes('E') && get_category_type_values_E.length == 0) || (ans_choices.includes('E') && get_question_type_values_E.length == 0)){
                         $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                         $('#js-ckeditor-addQue').focus();
                         $('#questionMultiModal #tagError').text(tags.length ==0 ? 'Tag is required!' : '');
                         $('#addTag').focus();
-                        $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
+                        // $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
                         // $('#super_category_create').focus();
-                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
-                        $('#category_type_0').focus();
-                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                        $('#search-input_0').focus();
+                        // $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                        // $('#category_type_0').focus();
+                        // $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                        // $('#search-input_0').focus();
                         $('#questionMultiModal #passNumberError').text(jQuery.type(passNumber) == "null" ? 'Passage Number is required!' : '');
                         $('#passage_number').focus();
                         $('#questionMultiModal #passageTypeError').text(passagesType =='' ? 'Passage Type is required!' : '');
                         $('#passagesType').focus();
                         //$('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
                         //$('#super_category_create').focus();
+
+
+                        $(`#questionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
+                        $(`#questionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
+                        $(`#questionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
+
+                        if(ans_choices.includes('B')) {
+                            $(`#questionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
+                        }
+
+                        if(ans_choices.includes('C')) {
+                            $(`#questionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
+                        }
+
+                        if(ans_choices.includes('D')) {
+                            $(`#questionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
+                        }
+                        
+                        if(ans_choices.includes('E')) {
+                            $(`#questionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
+
+                            $(`#questionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
+                        }
+
                         return false;
                     }else{
                         $('#questionMultiModal #questionError').text('');
                         $('#questionMultiModal #tagError').text('');
-                        $('#questionMultiModal #categoryTypeError').text('');
-                        $('#questionMultiModal #questionTypeError').text('');
+                        // $('#questionMultiModal #categoryTypeError').text('');
+                        // $('#questionMultiModal #questionTypeError').text('');
                         $('#questionMultiModal #passNumberError').text('');
                         $('#questionMultiModal #passageTypeError').text('');
-                        $('#questionMultiModal #superCategoryError').text('');
+                        // $('#questionMultiModal #superCategoryError').text('');
                     }
                 } else {
-                    if(question =='' || tags.length ==0 || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType =='' ){
+                    if(question =='' || tags.length ==0 || format =='' || testSectionType =='' || super_category_values_A.length == 0 || super_category_values_B.length == 0 || super_category_values_C.length == 0 || super_category_values_D.length == 0 || get_category_type_values_A.length ==0 || get_category_type_values_B.length ==0 || get_category_type_values_C.length ==0 || get_category_type_values_D.length ==0 || get_question_type_values_A.length ==0 || get_question_type_values_B.length ==0 || get_question_type_values_C.length ==0 || get_question_type_values_D.length ==0){
                         $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                         $('#js-ckeditor-addQue').focus();
                         $('#questionMultiModal #tagError').text(tags.length ==0 ? 'Tag is required!' : '');
                         $('#addTag').focus();
-                        $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                        $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
-                        $('#category_type_0').focus();
-                        $('#questionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
-                        $('#search-input_0').focus();
+                        // $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
+                        // $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                        // $('#category_type_0').focus();
+                        // $('#questionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        // $('#search-input_0').focus();
                         //$('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
                         //$('#super_category_create').focus();
+
+                        $('#questionMultiModal #superCategoryError_A').text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
+                        if(super_category_values_A.length ==0)
+                            $('#super_category_create_A_0').focus();
+                        $('#questionMultiModal #superCategoryError_B').text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
+                        if(super_category_values_B.length ==0)
+                            $('#super_category_create_B_0').focus();
+                        $('#questionMultiModal #superCategoryError_C').text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
+                        if(super_category_values_C.length ==0)
+                            $('#super_category_create_C_0').focus();
+                        $('#questionMultiModal #superCategoryError_D').text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
+                        if(super_category_values_D.length ==0)
+                            $('#super_category_create_D_0').focus();
+
+                        $('#questionMultiModal #categoryTypeError_A').text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
+                        if(get_category_type_values_A.length ==0)
+                            $('#add_category_type_A_0').focus();
+                        $('#questionMultiModal #categoryTypeError_B').text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
+                        if(get_category_type_values_B.length ==0)
+                            $('#add_category_type_B_0').focus();
+                        $('#questionMultiModal #categoryTypeError_C').text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
+                        if(get_category_type_values_C.length ==0)
+                            $('#add_category_type_C_0').focus();
+                        $('#questionMultiModal #categoryTypeError_D').text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
+                        if(get_category_type_values_D.length ==0)
+                            $('#add_category_type_D_0').focus();
+
+                        $('#questionMultiModal #questionTypeError_A').text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
+                        if(get_question_type_values_A.length ==0)
+                            $('#add_search-input_A_0').focus();
+                        $('#questionMultiModal #questionTypeError_B').text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
+                        if(get_question_type_values_B.length ==0)
+                            $('#add_search-input_B_0').focus();
+                        $('#questionMultiModal #questionTypeError_C').text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
+                        if(get_question_type_values_C.length ==0)
+                            $('#add_search-input_C_0').focus();
+                        $('#questionMultiModal #questionTypeError_D').text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
+                        if(get_question_type_values_D.length ==0)
+                            $('#add_search-input_D_0').focus();
                         return false;
                     } else {
                         $('#questionMultiModal #questionError').text('');
                         $('#questionMultiModal #tagError').text('');
-                        $('#questionMultiModal #categoryTypeError').text('');
-                        $('#questionMultiModal #questionTypeError').text('');
-                        $('#questionMultiModal #superCategoryError').text('');
+                        // $('#questionMultiModal #categoryTypeError').text('');
+                        // $('#questionMultiModal #questionTypeError').text('');
+                        // $('#questionMultiModal #superCategoryError').text('');
                     }
                 }   
                 
@@ -3707,11 +4208,28 @@
                         'tags': tags,
                         'section_id': section_id,
                         // 'super_category':super_category,
-                        'ct_checkbox_values':ct_checkbox_values,
-                        'super_category_values':super_category_values,
+                        'ct_checkbox_values_A':ct_checkbox_values_A,
+                        'ct_checkbox_values_B':ct_checkbox_values_B,
+                        'ct_checkbox_values_C':ct_checkbox_values_C,
+                        'ct_checkbox_values_D':ct_checkbox_values_D,
+                        'super_category_values_A':super_category_values_A,
+                        'super_category_values_B':super_category_values_B,
+                        'super_category_values_C':super_category_values_C,
+                        'super_category_values_D':super_category_values_D,
+                        'super_category_values_E':super_category_values_E,
+                        'get_category_type_values_A':get_category_type_values_A,
+                        'get_category_type_values_B':get_category_type_values_B,
+                        'get_category_type_values_C':get_category_type_values_C,
+                        'get_category_type_values_D':get_category_type_values_D,
+                        'get_category_type_values_E':get_category_type_values_E,
+                        'get_question_type_values_A': get_question_type_values_A,
+                        'get_question_type_values_B': get_question_type_values_B,
+                        'get_question_type_values_C': get_question_type_values_C,
+                        'get_question_type_values_D': get_question_type_values_D,
+                        'get_question_type_values_E': get_question_type_values_E,
                         'new_question_type_select': new_question_type_select,
-                        'get_category_type_values': get_category_type_values,
-                        'get_question_type_values': get_question_type_values,
+                        // 'get_category_type_values': get_category_type_values,
+                        // 'get_question_type_values': get_question_type_values,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: '{{ route("addPracticeQuestion") }}',
@@ -3829,13 +4347,47 @@ function practQuestioEdit(id){
                 // console.log(res);
                 // return 0;
                 var result = res.question[0];
-                let categorytypeArr = JSON.parse(result.category_type);
-                let questiontypeArr = JSON.parse(result.question_type_id);
+                // let categorytypeArr = JSON.parse(result.category_type);
+                // let questiontypeArr = JSON.parse(result.question_type_id);
 
-                let super_categoryArr = JSON.parse(result.super_category);
-                let is_category_checkedArr = JSON.parse(result.is_category_checked);
+                let questionType = result.type;
+                let disp_section;
+                if(questionType == 'choiceOneInFive_Odd') {
+                    disp_section = 'oneInFiveOdd_';
+                } else if(questionType == 'choiceOneInFourPass_Odd') {
+                    disp_section = '';
+                } else if(questionType == 'choiceOneInFour_Odd') {
+                    disp_section = 'oneInFourOdd_';
+                } else if(questionType == 'choiceOneInFour_Even') {
+                    disp_section = 'oneInFourEven_';
+                } else if(questionType == 'choiceOneInFive_Even') {
+                    disp_section = 'oneInFiveEven_';
+                } else if(questionType == 'choiceOneInFourPass_Even') {
+                    disp_section = 'oneInFourPassEven_';
+                }  else if (questionType == 'choiceMultInFourFill') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
+                    if(result.multiChoice == '1') {
+                        disp_section = 'cb_choiceMultInFourFill_';
+                    } else if(result.multiChoice == '3') {
+                        disp_section = 'choiceMultInFourFill_';
+                    } else if(result.multiChoice == '2') {
+                        disp_section = 'fc_';
+                    }
+                }
 
-                let checkedValuesArr = is_category_checkedArr.map(item => item.checked);
+                let checkbox_values_Arr = JSON.parse(result.checkbox_values);
+                let super_category_values_Arr = JSON.parse(result.super_category_values);
+                let category_type_values_Arr = JSON.parse(result.category_type_values);
+                let question_type_values_Arr = JSON.parse(result.question_type_values);
+
+                for (let key in super_category_values_Arr) {
+                    if (super_category_values_Arr.hasOwnProperty(key)) {
+                        let values = super_category_values_Arr[key];
+                        for (let index = 1; index < super_category_values_Arr[key].length; index++) {
+                            addNewTypes(key, index,'repet', disp_section);
+                        }
+                    }
+                }
 
                 $('#editQuestionOrder').val(result.question_order);
                 $('#editCurrentModelQueId').val(result.id);
@@ -3855,9 +4407,9 @@ function practQuestioEdit(id){
                 // $('#question_tags_edit').val(result.tags).trigger('change');
                 
                 $(".passNumber").val(result.passage_number).change();
-                for (let index = 1; index < categorytypeArr.length; index++) { 
-                    addNewTypes(index,'repet');
-                }
+                // for (let index = 1; index < categorytypeArr.length; index++) { 
+                //     addNewTypes(index,'repet');
+                // }
 
                 //new
                 if(result.passages_id != null){
@@ -3871,27 +4423,48 @@ function practQuestioEdit(id){
                 }
 
                 // setTimeout(function(){ 
-                    $(categorytypeArr).each((i,v) => {
-                        $(`#edit_category_type_${i}`).val(v);
-                        $(`#edit_category_type_${i}`).trigger('change');
-                    });
-    
-                    $(questiontypeArr).each((i,v) => {
-                        $(`#edit_search-input_${i}`).val(v);
-                        $(`#edit_search-input_${i}`).trigger('change');
-                    });
+                    //For checkbox
+                    for (let key in checkbox_values_Arr) {
+                        if (checkbox_values_Arr.hasOwnProperty(key)) {
+                            $(checkbox_values_Arr[key]).each((i,v) => {
+                                $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
+                            });
+                        }
+                    }
 
-                    $(super_categoryArr).each((i,v) => {
-                        $(`#edit_super_category_${i}`).val(v);
-                        $(`#edit_super_category_${i}`).trigger('change');
-                    });
 
-                    $(checkedValuesArr).each((i,v) => {
-                        $(`#edit_ct_checkbox_${i}`).prop('checked', v == "1");
-                    });
+                    //For super category
+                    for (let key in super_category_values_Arr) {
+                        if (super_category_values_Arr.hasOwnProperty(key)) {
+                            $(super_category_values_Arr[key]).each((i,v) => {
+                                $(`#${disp_section}edit_super_category_${key}_${i}`).val(v);
+                                $(`#${disp_section}edit_super_category_${key}_${i}`).trigger('change');
+                            });
+                        }
+                    }
+
+                    //For Category type
+                    for (let key in category_type_values_Arr) {
+                        if (category_type_values_Arr.hasOwnProperty(key)) {
+                            $(category_type_values_Arr[key]).each((i,v) => {
+                                $(`#${disp_section}edit_category_type_${key}_${i}`).val(v);
+                                $(`#${disp_section}edit_category_type_${key}_${i}`).trigger('change');
+                            });
+                        }
+                    }
+
+                    //For Question Type
+                    for (let key in question_type_values_Arr) {
+                        if (question_type_values_Arr.hasOwnProperty(key)) {
+                            $(question_type_values_Arr[key]).each((i,v) => {
+                                $(`#${disp_section}edit_search-input_${key}_${i}`).val(v);
+                                $(`#${disp_section}edit_search-input_${key}_${i}`).trigger('change');
+                            });
+                        }
+                    }
                 // }, 1000);
 
-                $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
+                // $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
                 
 
                 $.ajax({
@@ -3944,7 +4517,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        		  $('.choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_'+arrIndex+' input ').prop("checked", true);
+        		  $('.choiceOneInFour_Odd ul li.choiceOneInFour_OddAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -3982,7 +4555,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        		  $('.choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_'+arrIndex+' input ').prop("checked", true);
+        		  $('.choiceOneInFour_Even ul li.choiceOneInFour_EvenAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
                 }
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -4019,7 +4592,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFive_Odd ul li.choiceOneInFive_Odd_Answer_'+arrIndex+' input ').prop("checked", true);
+        			$('.choiceOneInFive_Odd ul li.choiceOneInFive_Odd_Answer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -4056,7 +4629,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFive_Even ul li.choiceOneInFive_Even_Answer_'+arrIndex+' input ').prop("checked", true);
+        			$('.choiceOneInFive_Even ul li.choiceOneInFive_Even_Answer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
         		} 
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -4093,7 +4666,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_'+arrIndex+' input').prop("checked", true);
+        			$('.choiceOneInFourPass_Odd ul li.choiceOneInFourPass_OddAnswer_'+arrIndex+' input[type="radio"]').prop("checked", true);
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -4132,7 +4705,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
-        			$('.choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_'+arrIndex+' input').prop("checked", true);
+        			$('.choiceOneInFourPass_Even ul li.choiceOneInFourPass_EvenAnswer_'+arrIndex+' input[type="radio"]').prop("checked", true);
         		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
@@ -4178,7 +4751,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     var editInd = Number(i)+1;
                     if(multiChecked.includes(optObj[arrIndex])){
                         
-                        $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOptAnswer_'+arrIndex+' input').prop("checked", true);
+                        $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOptAnswer_'+arrIndex+' input[type="radio"]').prop("checked", true);
 
                     }
                     if(jsonConvert.length>0){
@@ -4201,7 +4774,7 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     var editInd = Number(i)+1;
                     if(selectedOpt == optObj[arrIndex]){
 
-                        $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoiceAnswer_'+arrIndex+' input').prop("checked", true);
+                        $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoiceAnswer_'+arrIndex+' input[type="radio"]').prop("checked", true);
                     }
                     if(jsonConvert.length>0){
                         var anwserInd = Number(i)-1;
@@ -4264,7 +4837,6 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
 }    
 
     $('.update_question_section').click(function() {
-
         $('.sectionTypesFull').show();
         var test_source = $('#source option:selected').val();
         var currentModelQueId = $('#editCurrentModelQueId').val();
@@ -4277,42 +4849,188 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         // var tags = $('input[name="tags"]').val();
         var tags = $("#question_tags_edit").val();
         var difficulty = $('#diff_rating_edit').val();
-        // var super_category = $('#super_category_edit').val();
+        
+        var activeAnswerType = '.' + $('#editSelectedAnswerType').val();
+        // console.log('activeAnswerType>>'+activeAnswerType);
+        var questionType = $('#editQuestionMultiModal ' + activeAnswerType + ' #editQuestionType').val();
+        // console.log('questionType>>'+questionType);
+        
+        multiChoice = $('.editMultipleChoice option:selected').val();
 
-        var ct_checkbox_values = $('input[name=edit_ct_checkbox]').map(function(i,v) {
-            var ct_checkbox_arr = [];
-            var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
-            ct_checkbox_arr.push(ct_checkbox_val);
-            return ct_checkbox_arr;
-        }).get();
+        let ans_choices;
+        let disp_section = '';
+        if(questionType == 'choiceOneInFive_Odd') {
+            ans_choices = ['A', 'B', 'C', 'D', 'E'];
+            disp_section = 'oneInFiveOdd_';
+        } else if(questionType == 'choiceOneInFourPass_Odd') {
+            ans_choices = ['A', 'B', 'C', 'D'];
+            disp_section = '';
+        } else if(questionType == 'choiceOneInFour_Odd') {
+            ans_choices = ['A', 'B', 'C', 'D'];
+            disp_section = 'oneInFourOdd_';
+        } else if(questionType == 'choiceOneInFour_Even') {
+            ans_choices = ['F', 'G', 'H', 'J'];
+            disp_section = 'oneInFourEven_';
+        } else if (questionType == 'choiceOneInFive_Even') {
+            ans_choices = ['F', 'G', 'H', 'J', 'K'];
+            disp_section = 'oneInFiveEven_';
+        } else if (questionType == 'choiceOneInFourPass_Even') {
+            ans_choices = ['F', 'G', 'H', 'J'];
+            disp_section = 'oneInFourPassEven_';
+        } else if(questionType == 'choiceMultInFourFill') {
+            ans_choices = ['A', 'B', 'C', 'D'];
+            if(multiChoice == '1') {
+                disp_section = 'cb_choiceMultInFourFill_';
+            } else if(multiChoice == '3') {
+                disp_section = 'choiceMultInFourFill_';
+            }
+        } else {
+            ans_choices = ['A', 'B', 'C', 'D'];
+        }
+        // console.log('disp_section>>>'+disp_section);
 
-        var super_category_values = $('select[name=edit_super_category]').map(function(i,v) {
-            var super_category_arr = [];
-            let super_category_val = $(v).val();
-            if(super_category_val.length > 0){
-                super_category_arr.push(super_category_val);
-            }
-            return super_category_arr;
-        }).get();
-                        
-        var testSectionType = $('#edittestSectionTypeRead').val();
-        var get_category_type_values = $('select[name=edit_category_type]').map(function(i,v) {
-            var category_type_arr = [];
-            let category_type_val = $(v).val();
-            if(category_type_val.length > 0){
-                category_type_arr.push(category_type_val);
-            }
-            return category_type_arr;
-        }).get();
+        //For checkbox
+        const checkboxValues = {};
+        ans_choices.forEach(ans_choice => {
+            checkboxValues[`${ans_choice}`] = $(`input[name="${disp_section}edit_ct_checkbox_${ans_choice}"]`).map(function(i,v) {
+                var ct_checkbox_arr = [];
+                var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
+                ct_checkbox_arr.push(ct_checkbox_val);
+                return ct_checkbox_arr;
+            }).get();
+        });
+        var ct_checkbox_values_A = '';
+        if (ans_choices.includes('A')) {
+            ct_checkbox_values_A = checkboxValues['A'];
+        }
+        var ct_checkbox_values_B = '';
+        if (ans_choices.includes('B')) {
+            ct_checkbox_values_B = checkboxValues['B'];
+        }
+        var ct_checkbox_values_C = '';
+        if (ans_choices.includes('C')) {
+            ct_checkbox_values_C = checkboxValues['C'];
+        }
+        var ct_checkbox_values_D = '';
+        if (ans_choices.includes('D')) {
+            ct_checkbox_values_D = checkboxValues['D'];
+        }
+        var ct_checkbox_values_E = '';
+        if (ans_choices.includes('E')) {
+            ct_checkbox_values_E = checkboxValues['E'];
+        }
 
-        var get_question_type_values = $('select[name=edit_search-input]').map(function(i,v) {
-            var question_type_arr = [];
-            let question_type_val = $(v).val();
-            if(question_type_val.length > 0){
-                question_type_arr.push(question_type_val);
-            }
-            return question_type_arr;
-        }).get();
+        // console.log('ct_checkbox_values_A>>'+ct_checkbox_values_A);
+        // console.log('ct_checkbox_values_B>>'+ct_checkbox_values_B);
+
+        //For super category
+        const superCategoryValues = {};
+        ans_choices.forEach(ans_choice => {
+            superCategoryValues[`${ans_choice}`] = $(`select[name="${disp_section}edit_super_category_${ans_choice}"]`).map(function(i,v) {
+                var super_category_arr = [];
+                let super_category_val = $(v).val();
+                if(super_category_val.length > 0){
+                    super_category_arr.push(super_category_val);
+                }
+                return super_category_arr;
+            }).get();
+        });
+        var super_category_values_A = '';
+        if (ans_choices.includes('A')) {
+            super_category_values_A = superCategoryValues['A'];
+        }
+        var super_category_values_B = '';
+        if (ans_choices.includes('B')) {
+            super_category_values_B = superCategoryValues['B'];
+        }
+        var super_category_values_C = '';
+        if (ans_choices.includes('C')) {
+            super_category_values_C = superCategoryValues['C'];
+        }
+        var super_category_values_D = '';
+        if (ans_choices.includes('D')) {
+            super_category_values_D = superCategoryValues['D'];
+        }
+        var super_category_values_E = '';
+        if (ans_choices.includes('E')) {
+            super_category_values_E = superCategoryValues['E'];
+        }
+
+        // console.log('super_category_values_A>>'+super_category_values_A);
+        // console.log('super_category_values_B>>'+super_category_values_B);
+        
+
+        //For category type
+        const getCategoryTypeValues = {};
+        ans_choices.forEach(ans_choice => {
+            getCategoryTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}edit_category_type_${ans_choice}"]`).map(function(i,v) {
+                var category_type_arr = [];
+                let category_type_val = $(v).val();
+                if(category_type_val.length > 0){
+                    category_type_arr.push(category_type_val);
+                }
+                return category_type_arr;
+            }).get();
+        });
+        var get_category_type_values_A = '';
+        if (ans_choices.includes('A')) {
+            get_category_type_values_A = getCategoryTypeValues['A'];
+        }
+        var get_category_type_values_B = '';
+        if (ans_choices.includes('B')) {
+            get_category_type_values_B = getCategoryTypeValues['B'];
+        }
+        var get_category_type_values_C = '';
+        if (ans_choices.includes('C')) {
+            get_category_type_values_C = getCategoryTypeValues['C'];
+        }
+        var get_category_type_values_D = '';
+        if (ans_choices.includes('D')) {
+            get_category_type_values_D = getCategoryTypeValues['D'];
+        }
+        var get_category_type_values_E = '';
+        if (ans_choices.includes('E')) {
+            get_category_type_values_E = getCategoryTypeValues['E'];
+        }
+        // console.log('get_category_type_values_A>>'+get_category_type_values_A);
+        // console.log('get_category_type_values_B>>'+get_category_type_values_B);
+
+        //For question type
+        const getQuestionTypeValues = {};
+        ans_choices.forEach(ans_choice => {
+            getQuestionTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}edit_search-input_${ans_choice}"]`).map(function(i,v) {
+                var question_type_arr = [];
+                let question_type_val = $(v).val();
+                if(question_type_val.length > 0){
+                    question_type_arr.push(question_type_val);
+                }
+                return question_type_arr;
+            }).get();
+        });
+        var get_question_type_values_A = '';
+        if (ans_choices.includes('A')) {
+            get_question_type_values_A = getQuestionTypeValues['A'];
+        }
+        var get_question_type_values_B = '';
+        if (ans_choices.includes('B')) {
+            get_question_type_values_B = getQuestionTypeValues['B'];
+        }
+        var get_question_type_values_C = '';
+        if (ans_choices.includes('C')) {
+            get_question_type_values_C = getQuestionTypeValues['C'];
+        }
+        var get_question_type_values_D = '';
+        if (ans_choices.includes('D')) {
+            get_question_type_values_D = getQuestionTypeValues['D'];
+        }
+        var get_question_type_values_E = '';
+        if (ans_choices.includes('E')) {
+            get_question_type_values_E = getQuestionTypeValues['E'];
+        }
+        // console.log('get_question_type_values_A>>'+get_question_type_values_A);
+        // console.log('get_question_type_values_B>>'+get_question_type_values_B);
+
+
 
         var question = CKEDITOR.instances['js-ckeditor-edit-addQue'].getData();
         var activeAnswerType = '.' + $('#editSelectedAnswerType').val();
@@ -4323,57 +5041,111 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
         var passagesType = $('.editPassagesType').val();
         var passagesTypeTxt = $(".editPassagesType option:selected").text();
 
-            if($('#passageRequired_2').is(':checked')){
-                if(question =='' || tags =='' || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || jQuery.type(passNumber) =='null' || jQuery.type(passagesType) == 'null' || format =='' || testSectionType ==''){
-                    $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
-                    $('#js-ckeditor-edit-addQue').focus();
-                    $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
-                    $('#questionTag').focus();
-                    $('#editQuestionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                    $('#edit_super_category_0').focus();
-                    $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
-                    $('#edit_category_type_0').focus();
-                    $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                    $('#edit_search-input_0').focus();
-                    $('#editQuestionMultiModal #passNumberError').text(jQuery.type(passNumber) =='null' ? 'Passage Number is required!' : '');
-                    $('#edit_passage_number').focus();
-                    $('#editQuestionMultiModal #passageTypeError').text(jQuery.type(passagesType) =='null' ? 'Passage Type is required!' : '');
-                    $('#edit_passage_type').focus();
-                    // $('#editQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
-                    // $('#super_category_edit').focus();
-                    return false;
-                }else{
-                    $('#editQuestionMultiModal #questionError').text('');
-                    $('#editQuestionMultiModal #tagError').text('');
-                    $('#editQuestionMultiModal #categoryTypeError').text('');
-                    $('#editQuestionMultiModal #questionTypeError').text('');
-                    $('#editQuestionMultiModal #passNumberError').text('');
-                    $('#editQuestionMultiModal #passageTypeError').text('');
-                    $('#editQuestionMultiModal #superCategoryError').text('');
+        if($('#passageRequired_2').is(':checked')){
+            // console.log('checked 1');
+            if(question =='' || tags =='' || jQuery.type(passNumber) =='null' || jQuery.type(passagesType) == 'null' || format =='' || testSectionType =='' || super_category_values_A.length == 0 || (ans_choices.includes('B') && super_category_values_B.length == 0 ) || (ans_choices.includes('C') && super_category_values_C.length == 0) || (ans_choices.includes('D') && super_category_values_D.length == 0 ) || get_category_type_values_A.length ==0 || (ans_choices.includes('B') && get_category_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_category_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_category_type_values_D.length ==0 ) || get_question_type_values_A.length ==0 || (ans_choices.includes('B') && get_question_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_question_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_question_type_values_D.length ==0 ) || (ans_choices.includes('E') && super_category_values_E.length == 0) || (ans_choices.includes('E') && get_category_type_values_E.length == 0) || (ans_choices.includes('E') && get_question_type_values_E.length == 0)){
+                $('#editQuestionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
+                $('#js-ckeditor-edit-addQue').focus();
+                $('#editQuestionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
+                $('#questionTag').focus();
+                // $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                // $('#edit_category_type_0').focus();
+                // $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                // $('#edit_search-input_0').focus();
+                $('#editQuestionMultiModal #passNumberError').text(jQuery.type(passNumber) =='null' ? 'Passage Number is required!' : '');
+                $('#edit_passage_number').focus();
+                $('#editQuestionMultiModal #passageTypeError').text(jQuery.type(passagesType) =='null' ? 'Passage Type is required!' : '');
+                $('#edit_passage_type').focus();
+                // $('#editQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
+                // $('#super_category_edit').focus();
+
+                $(`#editQuestionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
+                $(`#editQuestionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
+                $(`#editQuestionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
+
+                if(ans_choices.includes('B')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
                 }
-            } else {
-                if(question =='' || tags =='' || super_category_values.length == 0 || get_category_type_values.length ==0 || get_question_type_values.length ==0 || format =='' || testSectionType ==''){
-                    $('#editQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
-                    $('#js-ckeditor-edit-addQue').focus();
-                    $('#editQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
-                    $('#questionTag').focus();
-                    $('#editQuestionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                    $('#edit_super_category_0').focus();
-                    $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
-                    $('#edit_category_type_0').focus();
-                    $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                    $('#edit_search-input_0').focus();
-                    // $('#editQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
-                    // $('#super_category_edit').focus();
-                    return false;
-                }else{
-                    $('#editQuestionMultiModal #questionError').text('');
-                    $('#editQuestionMultiModal #tagError').text('');
-                    $('#editQuestionMultiModal #categoryTypeError').text('');
-                    $('#editQuestionMultiModal #questionTypeError').text('');
-                    $('#editQuestionMultiModal #superCategoryError').text('');
+
+                if(ans_choices.includes('C')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
                 }
+
+                if(ans_choices.includes('D')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
+                }
+
+                if(ans_choices.includes('E')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
+                }
+
+                return false;
+            }else{
+                $('#editQuestionMultiModal #questionError').text('');
+                $('#editQuestionMultiModal #tagError').text('');
+                $('#editQuestionMultiModal #categoryTypeError').text('');
+                $('#editQuestionMultiModal #questionTypeError').text('');
+                $('#editQuestionMultiModal #passNumberError').text('');
+                $('#editQuestionMultiModal #passageTypeError').text('');
+                $('#editQuestionMultiModal #superCategoryError').text('');
             }
+        } else {
+            if(question =='' || tags =='' || format =='' || testSectionType =='' || super_category_values_A.length == 0 || (ans_choices.includes('B') && super_category_values_B.length == 0 ) || (ans_choices.includes('C') && super_category_values_C.length == 0) || (ans_choices.includes('D') && super_category_values_D.length == 0 ) || get_category_type_values_A.length ==0 || (ans_choices.includes('B') && get_category_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_category_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_category_type_values_D.length ==0 ) || get_question_type_values_A.length ==0 || (ans_choices.includes('B') && get_question_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_question_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_question_type_values_D.length ==0 ) || (ans_choices.includes('E') && super_category_values_E.length == 0) || (ans_choices.includes('E') && get_category_type_values_E.length == 0) || (ans_choices.includes('E') && get_question_type_values_E.length == 0) ){
+                $('#editQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
+                $('#js-ckeditor-edit-addQue').focus();
+                $('#editQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
+                $('#questionTag').focus();
+                // $('#editQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
+                // $('#edit_category_type_0').focus();
+                // $('#editQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
+                // $('#edit_search-input_0').focus();
+                // $('#editQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required!' : '');
+                // $('#super_category_edit').focus();
+
+                $(`#editQuestionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
+                $(`#editQuestionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
+                $(`#editQuestionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
+
+                if(ans_choices.includes('B')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
+                }
+
+                if(ans_choices.includes('C')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
+                }
+
+                if(ans_choices.includes('D')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
+                }
+
+                if(ans_choices.includes('E')) {
+                    $(`#editQuestionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
+                    $(`#editQuestionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
+                }
+                return false;
+            }else{
+                $('#editQuestionMultiModal #questionError').text('');
+                $('#editQuestionMultiModal #tagError').text('');
+                $('#editQuestionMultiModal #categoryTypeError').text('');
+                $('#editQuestionMultiModal #questionTypeError').text('');
+                $('#editQuestionMultiModal #superCategoryError').text('');
+            }
+        }
 
         if($('#passageRequired_2').is(':checked')){
             var pass = $('select[name="editPassagesType"] :selected').text();
@@ -4387,130 +5159,146 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
             var passagesTypeTxt = '';
         }
             
-            if(questionType =='choiceOneInFourPass_Odd'){                
+        if(questionType =='choiceOneInFourPass_Odd'){                
 
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
 
-            } else if(questionType =='choiceOneInFourPass_Even'){
+        } else if(questionType =='choiceOneInFourPass_Even'){
 
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
 
-            } else if(questionType == 'choiceOneInFour_Odd'){
+        } else if(questionType == 'choiceOneInFour_Odd'){
 
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFour"]:checked').val();
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFour"]:checked').val();
 
-            } else if(questionType == 'choiceOneInFour_Even'){
+        } else if(questionType == 'choiceOneInFour_Even'){
 
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFour"]:checked').val();
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFour"]:checked').val();
 
-            } else if(questionType == 'choiceOneInFive_Odd'){
+        } else if(questionType == 'choiceOneInFive_Odd'){
 
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
 
-            } else if(questionType == 'choiceOneInFive_Even'){
+        } else if(questionType == 'choiceOneInFive_Even'){
 
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
 
-            } else if(questionType =='choiceMultInFourFill'){
+        } else if(questionType =='choiceMultInFourFill'){
 
-                fillVals = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
+            fillVals = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
 
-                if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
-                    fill = fillVals.join();    
-                    answerType = fill;
-                }
-                if($('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
-                    fillType = $('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val();
-                    multiChoice = $('.editMultipleChoice option:selected').val();
-                }
-                
-
-                var singleChoM = $('#editQuestionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
-
-                if(typeof singleChoM !== 'undefined' && singleChoM != null){
-                    
-                    answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
-                    multiChoice = $('.editMultipleChoice option:selected').val();;
-
-                } else{
-                    // multiChoice = 'multiChoice';
-                    multiChoice = $('.editMultipleChoice option:selected').val();
-                    var answerMap ='';
-                    var checkIDs = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill[]"]:checked').map(function(){       
-                    answerMap += $(this).val()+', ';  
-                    return $(this).val();
-                    });
-                    if(answerMap !=''){
-                        answerType = answerMap.substring(0, answerMap.length - 2);
-                    }
-                }	                
-                
-            } else if(questionType == 'choiceOneInFive'){
-                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
-
-            } else {
-                answerType = $('#editQuestionMultiModal  '+activeAnswerType+' input[name="'+questionType+'"]:checked').val();
+            if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
+                fill = fillVals.join();    
+                answerType = fill;
             }
-            var answerContentJson = getEditAnswerContent(questionType, fill);
-            var answerExpContentJson = getEditAnswerExpContent(questionType, fill);
+            if($('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
+                fillType = $('#editQuestionMultiModal #EditSelectedLayoutQuestion .choiceMultInFourFill_filltype').val();
+                multiChoice = $('.editMultipleChoice option:selected').val();
+            }
+            
 
-            $('#editQuestionMultiModal').modal('hide');
-            $('#editQuestionMultiModal').modal('hide');
-            var questionOrderUpdated = $('#editQuestionOrder').val();
-            var section_id = $('.sectionAddId').val();  
-            $.ajax({
-                data:{
-                    'id': currentModelQueId,
-                    'format': format,
-                    'test_source':test_source,
-                    'testSectionType': testSectionType,
-                    'question': question,
-                    'question_order': questionOrderUpdated,
-                    'question_type': questionType,
-                    'passages': pass,
-                    'passage_number': passNumber,
-                    'passages_id': passagesType,
-                    'answer': answerType,
-                    'answer_content': answerContentJson,
-                    'answer_exp' : answerExpContentJson,
-                    'fill': fill,
-                    'fillType': fillType,
-                    'diff_rating':difficulty,
-                    'multiChoice':multiChoice,
-                    'section_id':section_id,
-                    'tags':tags,
-                    //'super_category':super_category,
-                    'ct_checkbox_values':ct_checkbox_values,
-                    'super_category_values':super_category_values,
-                    'get_question_type_values':get_question_type_values,
-                    'get_category_type_values':get_category_type_values,
-                    '_token': $('input[name="_token"]').val()
-                },
-                url: '{{route("updatePracticeQuestion")}}',
-                method: 'post',
-                success: (res) => {
-                    var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Question"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
+            var singleChoM = $('#editQuestionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
 
-                    $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
-                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
-                    $('.addQuestion').val('');
-                    $('.validError').text('');
-                    $('.questionaprat_'+currentModelQueId).remove();    
-                    $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" data-section_id="'+section_id+'" style="display:none;">\n' +
-                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                    '</span>\n' +
-                    '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
-                    '</div>');    
-                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
+            if(typeof singleChoM !== 'undefined' && singleChoM != null){
+                
+                answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
+                multiChoice = $('.editMultipleChoice option:selected').val();;
 
-                } 
-            });	
+            } else{
+                // multiChoice = 'multiChoice';
+                multiChoice = $('.editMultipleChoice option:selected').val();
+                var answerMap ='';
+                var checkIDs = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill[]"]:checked').map(function(){       
+                answerMap += $(this).val()+', ';  
+                return $(this).val();
+                });
+                if(answerMap !=''){
+                    answerType = answerMap.substring(0, answerMap.length - 2);
+                }
+            }	                
+            
+        } else if(questionType == 'choiceOneInFive'){
+            answerType = $('#editQuestionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
+
+        } else {
+            answerType = $('#editQuestionMultiModal  '+activeAnswerType+' input[name="'+questionType+'"]:checked').val();
+        }
+        var answerContentJson = getEditAnswerContent(questionType, fill);
+        var answerExpContentJson = getEditAnswerExpContent(questionType, fill);
+
+        $('#editQuestionMultiModal').modal('hide');
+        $('#editQuestionMultiModal').modal('hide');
+        var questionOrderUpdated = $('#editQuestionOrder').val();
+        var section_id = $('.sectionAddId').val();  
+        $.ajax({
+            data:{
+                'id': currentModelQueId,
+                'format': format,
+                'test_source':test_source,
+                'testSectionType': testSectionType,
+                'question': question,
+                'question_order': questionOrderUpdated,
+                'question_type': questionType,
+                'passages': pass,
+                'passage_number': passNumber,
+                'passages_id': passagesType,
+                'answer': answerType,
+                'answer_content': answerContentJson,
+                'answer_exp' : answerExpContentJson,
+                'fill': fill,
+                'fillType': fillType,
+                'diff_rating':difficulty,
+                'multiChoice':multiChoice,
+                'section_id':section_id,
+                'tags':tags,
+                'ct_checkbox_values_A':ct_checkbox_values_A,
+                'ct_checkbox_values_B':ct_checkbox_values_B,
+                'ct_checkbox_values_C':ct_checkbox_values_C,
+                'ct_checkbox_values_D':ct_checkbox_values_D,
+                'ct_checkbox_values_E':ct_checkbox_values_E,
+                'super_category_values_A':super_category_values_A,
+                'super_category_values_B':super_category_values_B,
+                'super_category_values_C':super_category_values_C,
+                'super_category_values_D':super_category_values_D,
+                'super_category_values_E':super_category_values_E,
+                'get_category_type_values_A':get_category_type_values_A,
+                'get_category_type_values_B':get_category_type_values_B,
+                'get_category_type_values_C':get_category_type_values_C,
+                'get_category_type_values_D':get_category_type_values_D,
+                'get_category_type_values_E':get_category_type_values_E,
+                'get_question_type_values_A': get_question_type_values_A,
+                'get_question_type_values_B': get_question_type_values_B,
+                'get_question_type_values_C': get_question_type_values_C,
+                'get_question_type_values_D': get_question_type_values_D,
+                'get_question_type_values_E': get_question_type_values_E,
+                '_token': $('input[name="_token"]').val()
+            },
+            url: '{{route("updatePracticeQuestion")}}',
+            method: 'post',
+            success: (res) => {
+                // console.log(res);
+                var btn = '<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit('+res.question_id+')" ><i class="fa fa-fw fa-pencil-alt"></i>  </button> <button type="button"   class="btn btn-sm btn-alt-secondary delete-section" data-id="'+res.question_id+'" data-bs-toggle="tooltip"  title="Delete Question"  onclick="practQuestioDel('+res.question_id+')" > <i class="fa fa-fw fa-times"></i>  </button>';
+
+                $('.singleQuest_'+currentModelQueId).html('<li>'+question+'</li><li class="answerValUpdate_'+res.question_id+'">'+answerType+'</li><li>'+passagesTypeTxt+'</li><li>'+passNumber+'</li><li>'+fill+'</li><li class="orderValUpdate_'+res.question_id+'">'+res.question_order+'</li><li>'+btn+'</li>');
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
+                $('.addQuestion').val('');
+                $('.validError').text('');
+                $('.questionaprat_'+currentModelQueId).remove();    
+                $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-id="'+currentModelQueId+'" data-section_id="'+section_id+'" style="display:none;">\n' +
+                '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                '</span>\n' +
+                '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
+                '</div>');    
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
+            } 
+        });
 
         setEmptyValue(questionType);
         return false;
-
     });
+    
+    
 
         function getAnswerOption(answerOpt,format) {
             var questionAnsComb = {
@@ -4710,26 +5498,64 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                         $('select[name="edit_category_type"').html('');
                         $('select[name="search-input"').html('');
                         $('select[name="edit_search-input"').html('');
+
+
                         let super_option = ``;
                         $.each(res.super,function(i,v){
                             super_option += `<option value=${v['id']}>${v['title']}</option>`;
                         });
-                        $('select[name="super_category_create"').append(super_option);
-                        $('select[name="edit_super_category"').append(super_option);
+
 
                         let category_option = ``;
                         $.each(res.category,function(i,v){
                             category_option += `<option value=${v['id']}>${v['category_type_title']}</option>`;
                         });
-                        $('select[name="category_type"').append(category_option);
-                        $('select[name="edit_category_type"').append(category_option);
+                        
 
                         let questionType_option = ``;
                         $.each(res.questionType,function(i,v){
                             questionType_option += `<option value=${v['id']}>${v['question_type_title']}</option>`;
                         });
-                        $('select[name="search-input"').append(questionType_option);
-                        $('select[name="edit_search-input"').append(questionType_option);
+                        
+                        const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_', 'oneInFourEven_', 'oneInFourPassEven_', 'choiceMultInFourFill_', 'cb_choiceMultInFourFill_']
+                        const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K' ];
+                        disp_sections.forEach(disp_section => {
+                            ans_choices.forEach(ans_choice => {
+                                $(`select[name="${disp_section}add_category_type_${ans_choice}"`).html('');
+                                $(`select[name="${disp_section}super_category_create_${ans_choice}"`).html('');
+                                $(`select[name="${disp_section}add_search-input_A${ans_choice}"`).html('');
+
+                                $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).html('');
+                                $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).html('');
+                                $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).html('');
+
+
+                                $(`select[name="${disp_section}super_category_create_${ans_choice}"`).append(super_option);
+                                $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).append(super_option);
+
+                                $(`select[name="${disp_section}add_category_type_${ans_choice}"`).append(category_option);
+                                $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).append(category_option);
+
+                                $(`select[name="${disp_section}add_search-input_${ans_choice}"`).append(questionType_option);
+                                $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).append(questionType_option);
+                            });
+                        });
+
+                        $('select[name="fc_super_category_create_A"').html('');
+                        $('select[name="fc_add_category_type_A"').html('');
+                        $('select[name="fc_add_search-input_A"').html('');
+
+                        $('select[name="fc_super_category_create_A"').append(super_option);
+                        $('select[name="fc_add_category_type_A"').append(category_option);
+                        $('select[name="fc_add_search-input_A"').append(questionType_option);
+
+                        $('select[name="fc_edit_super_category_A"').html('');
+                        $('select[name="fc_edit_category_type_A"').html('');
+                        $('select[name="fc_edit_search-input_A"').html('');
+                        
+                        $(`select[name="fc_edit_super_category_A"`).append(super_option);
+                        $(`select[name="fc_edit_category_type_A"`).append(category_option);
+                        $(`select[name="fc_edit_search-input_A"`).append(questionType_option);
                     }
                 });
             } else if (test_title_val == '') {
