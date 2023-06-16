@@ -508,6 +508,7 @@
     })
 
     $(document).on('click', '.show-college-from-list', async function (e) {
+        One.loader('show')
         const response = await hideshowlist(e.target.dataset.id);
         if (response) {
             window.location.reload();
@@ -525,6 +526,7 @@
         reverseButtons: true
         }).then(async (result) => {
         if (result.isConfirmed) {
+            One.loader('show')
             const response = await hideshowlist(e.target.dataset.id);
             if (response) {
                 window.location.reload();
