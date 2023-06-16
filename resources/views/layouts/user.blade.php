@@ -14,5 +14,17 @@
 @endsection
 
 @section('page-script')
+    <script>
+        window.addEventListener('storage', function (event) {
+            if (event.key === 'APP-REFRESHED' && event.newValue !== event.oldValue) {
+                window.location.reload();
+            }
+        });
+        const core = {
+            hidecollegeurl: "{{ route('admin-dashboard.initialCollegeList.changeSearchCollegeAddStatus', [ 'id' => ':id' ]) }}",
+            gethideCollegeUrl: "{{ route('admin-dashboard.initialCollegeList.getHideCollege') }}",
+            collegelustUrl: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}"
+        }
+    </script>
     @yield('user-script')
 @endsection

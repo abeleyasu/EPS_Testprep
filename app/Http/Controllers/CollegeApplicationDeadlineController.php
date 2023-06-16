@@ -13,8 +13,11 @@ class CollegeApplicationDeadlineController extends Controller
 {
     public function index()
     {
-        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->with('college_details')->get();
+        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->whereHas('college_details', function ($q) { 
+            $q->where('is_active', true); 
+        })->with(['college_details'])->get();
         $selectedCollegeId = $college_list_deadline->pluck('college_details.college_id')->toArray();
+        // dd($college_list_deadline->toArray());
         $college_list = CollegeInformation::orderBy('name')->whereNotIn('college_id', $selectedCollegeId)->get();
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),

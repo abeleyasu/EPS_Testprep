@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cost_comparison_other_scholarships', function (Blueprint $table) {
+        Schema::create('college_major_information', function (Blueprint $table) {
             $table->id();
-            $table->integer('cost_comparison_id')->nullable();
-            $table->integer('cost_aid_type_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('amount')->nullable();
+            $table->string('title')->nullable();
+            $table->string('code')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cost_comparison_other_scholarships');
+        Schema::dropIfExists('college_major_information');
     }
 };

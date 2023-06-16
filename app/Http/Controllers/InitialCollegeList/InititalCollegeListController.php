@@ -5,7 +5,6 @@ namespace App\Http\Controllers\InitialCollegeList;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HighSchoolResume\States;
-use Illuminate\Support\Facades\Http;
 use App\Models\CollegeList;
 use App\Models\CollegeSearchAdd;
 use App\Models\CollegeUserStatistics;
@@ -18,6 +17,10 @@ use App\Models\CostTypes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
+use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Facades\Http;
+use App\Models\CollegeMajorInformation;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class InititalCollegeListController extends Controller
 {
@@ -42,16 +45,7 @@ class InititalCollegeListController extends Controller
             return redirect($route);
         }
 
-        $college_major_api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY'). '&fields=programs.cip_4_digit.code,programs.cip_4_digit.title';
-
-        $college_major_response = Http::get($college_major_api);
-        $college_major_data = json_decode($college_major_response->body());
-
-        $data = [];
-        foreach ($college_major_data->results as $key => $value) {
-            $data = array_merge($data, $value->{'latest.programs.cip_4_digit'});
-        }
-        $data = collect($data)->unique('code')->sortBy('title')->all();
+        $data = CollegeMajorInformation::select('title', 'code')->get();
 
         $states = States::select('state_name', 'state_code')->get();
         return view('user.admin-dashboard.initial-college-list.step1', [
@@ -61,89 +55,148 @@ class InititalCollegeListController extends Controller
     }
 
     public function step2(Request $request) {
-        $data = $this->getCollegeData($request->college_lists_id);
+        $pageNo = isset($request->page) ? $request->page : 1;
+        $data = $this->getCollegeData($request->college_lists_id, $pageNo);
         $selectedCollege = CollegeSearchAdd::where('college_lists_id', $request->college_lists_id)->get()->map(function($item) {
             return $item->college_id;
         })->toArray();
 
+        $pagination = new Paginator($data['data'], $data['total'], config('constants.college_list_per_page'), $data['current_page'], [
+            'path' => $request->url(),
+            'query' => $request->query(),
+        ]);
+
         return view('user.admin-dashboard.initial-college-list.step2', [
-            'college_data' => $data,
+            'college_data' => $data['data'],
             'selected_college' => $selectedCollege,
+            'pagination' => $pagination,
+            'total' => $data['total']
         ]);
     }
 
-    function getCollegeData($college_lists_id) {
+    function getCollegeData($college_lists_id, $page_no) {
         $data = [];
         $searchstring = CollegeList::where('id', $college_lists_id)->select('last_search_string')->first();
         $searchstring = json_decode($searchstring->last_search_string);
+        // dd($searchstring);
         if ($searchstring) {
-            $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page=0&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
-            $api = $api . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit';
-            if (isset($searchstring->average_annual_cost) && $searchstring->average_annual_cost) {
-                $api = $api . '&latest.cost.avg_net_price.overall__range=' . $searchstring->average_annual_cost * 1000;
-            }
-
-            if (isset($searchstring->acceptance_rate) && $searchstring->acceptance_rate) {
-                $api = $api . '&latest.admissions.admission_rate.consumer_rate__range=' . ($searchstring->acceptance_rate / 100) . '..1';
-            }   
-
-            if (isset($searchstring->college_size_option) && count($searchstring->college_size_option) > 0) {
-                $api = $api . '&latest.student.size__range=' . Arr::join($searchstring->college_size_option, ',');
-            } else {
-                $api = $api . '&latest.student.size__range=1..';
-            }
-
-            if (isset($searchstring->type_of_school) && count($searchstring->type_of_school) > 0) {
-                $api = $api . '&school.ownership=' . Arr::join($searchstring->type_of_school, ',');
-            }
-            
-            if (isset($searchstring->urbanicity) && count($searchstring->urbanicity) > 0) {
-                $api = $api . '&school.locale=' . Arr::join($searchstring->urbanicity, ',');
-            }
-
-            if (isset($searchstring->degree) && count($searchstring->degree) > 0) {
-                $api = $api . '&latest.programs.cip_4_digit.credential.level=' . Arr::join($searchstring->degree, ',');
-            }
-
-            if (isset($searchstring->college_majors_options)) {
-                $api = $api . '&latest.programs.cip_4_digit.code=' . $searchstring->college_majors_options;
-            }
-
-            if (isset($searchstring->state) && count($searchstring->state) > 0) {
-                foreach ($searchstring->state as $option) {
-                    $api = $api . '&school.state[]=' . $option;
-                }
-            }
-
-            if (isset($searchstring->sat_math) && $searchstring->sat_math) {
-                $api = $api . '&latest.admissions.sat_scores.midpoint.math__range=..' . $searchstring->sat_math;
-            }
-
-            if (isset($searchstring->sat_critical_reading) && $searchstring->sat_critical_reading) {
-                $api = $api . '&latest.admissions.sat_scores.midpoint.critical_reading__range=..' . $searchstring->sat_critical_reading;
-            }
-
-            if (isset($searchstring->act_score) && $searchstring->act_score) {
-                $api = $api . '&latest.admissions.act_scores.midpoint.cumulative__range=..' . $searchstring->act_score;
-            }
+            $perPage = config('constants.college_list_per_page');
+            $page_no = $page_no - 1;
+            $api = env('COLLEGE_RECORD_API') . '?'.'api_key='. env('COLLEGE_RECORD_API_KEY').'&page='.$page_no.'&per_page='.$perPage.'&sort=latest.earnings.6_yrs_after_entry.gt_threshold_suppressed:desc';
+            $api = $api . '&fields=id,school.name,school.city,school.state,latest.student.size,school.branches,school.locale,school.ownership,school.degrees_awarded.predominant,latest.academics.program_reporter.programs_offered,latest.cost.avg_net_price.overall,latest.completion.consumer_rate,latest.earnings.10_yrs_after_entry.median,latest.earnings.6_yrs_after_entry.percent_greater_than_25000,school.under_investigation,latest.completion.outcome_percentage_suppressed.all_students.8yr.award_pooled,latest.completion.rate_suppressed.four_year,latest.completion.rate_suppressed.lt_four_year_150percent,latest.programs.cip_4_digit,latest.admissions.admission_rate.overall';
+            $api = $api . '&school.degrees_awarded.predominant__range=1..3&school.operating=1';
 
             if (isset($searchstring->search_college) && !empty($searchstring->search_college)) {
                 $api = $api . '&school.search=' . $searchstring->search_college;
+            } else {
+                if (isset($searchstring->average_annual_cost) && $searchstring->average_annual_cost && $searchstring->average_annual_cost != '0') {
+                    $api = $api . '&latest.cost.avg_net_price.overall__range=' . $searchstring->average_annual_cost * 1000;
+                }
+    
+                if (isset($searchstring->acceptance_rate) && $searchstring->acceptance_rate && $searchstring->acceptance_rate != '0') {
+                    $api = $api . '&latest.admissions.admission_rate.consumer_rate__range=' . ($searchstring->acceptance_rate / 100) . '..1';
+                }   
+    
+                if (isset($searchstring->college_size_option) && count($searchstring->college_size_option) > 0) {
+                    $api = $api . '&latest.student.size__range=' . Arr::join($searchstring->college_size_option, ',');
+                } else {
+                    $api = $api . '&latest.student.size__range=1..';
+                }
+    
+                if (isset($searchstring->type_of_school) && count($searchstring->type_of_school) > 0) {
+                    $api = $api . '&school.ownership=' . Arr::join($searchstring->type_of_school, ',');
+                }
+                
+                if (isset($searchstring->urbanicity) && count($searchstring->urbanicity) > 0) {
+                    $api = $api . '&school.locale=' . Arr::join($searchstring->urbanicity, ',');
+                }
+    
+                if (isset($searchstring->degree) && count($searchstring->degree) > 0) {
+                    $api = $api . '&latest.programs.cip_4_digit.credential.level=' . Arr::join($searchstring->degree, ',');
+                }
+    
+                if (isset($searchstring->college_majors_options)) {
+                    $api = $api . '&latest.programs.cip_4_digit.code=' . $searchstring->college_majors_options;
+                }
+    
+                if (isset($searchstring->state) && count($searchstring->state) > 0) {
+                    foreach ($searchstring->state as $option) {
+                        $api = $api . '&school.state[]=' . $option;
+                    }
+                }
+    
+                if (isset($searchstring->sat_math) && $searchstring->sat_math && $searchstring->sat_math != '0') {
+                    $api = $api . '&latest.admissions.sat_scores.midpoint.math__range=..' . $searchstring->sat_math;
+                }
+    
+                if (isset($searchstring->sat_critical_reading) && $searchstring->sat_critical_reading && $searchstring->sat_critical_reading != '0') {
+                    $api = $api . '&latest.admissions.sat_scores.midpoint.critical_reading__range=..' . $searchstring->sat_critical_reading;
+                }
+    
+                if (isset($searchstring->act_score) && $searchstring->act_score && $searchstring->act_score != '0') {
+                    $api = $api . '&latest.admissions.act_scores.midpoint.cumulative__range=..' . $searchstring->act_score;
+                }
+    
+                if (isset($searchstring->specialized_mission) && !empty($searchstring->specialized_mission)) {
+                    $api = $api . '&'.$searchstring->specialized_mission.'=1';
+                }
+    
+                if (isset($searchstring->religious_affiliation) && !empty($searchstring->religious_affiliation)) {
+                    $api = $api . '&school.religious_affiliation=' . $searchstring->religious_affiliation;
+                }
+    
+                if (isset($searchstring->graduate_rate) && $searchstring->graduate_rate && $searchstring->graduate_rate != '0') {
+                    $api = $api . '&latest.completion.consumer_rate__range=' . ($searchstring->graduate_rate / 100) . '..';   
+                }
             }
 
-            if (isset($searchstring->specialized_mission) && !empty($searchstring->specialized_mission)) {
-                $api = $api . '&'.$searchstring->specialized_mission.'=1';
-            }
+            // dd($api);
 
-            if (isset($searchstring->religious_affiliation) && !empty($searchstring->religious_affiliation)) {
-                $api = $api . '&school.religious_affiliation=' . $searchstring->religious_affiliation;
-            }
+            $guzzleClient = new GuzzleClient();
+            $response = $guzzleClient->get($api);
+            $data = json_decode($response->getBody()->getContents(), true);
+            $totalRecords = $data['metadata']['total'];
+            $data = $data['results'];
 
-            $response = Http::get($api);
-            $data = json_decode($response->body());
-            $data = $data->results;
+            if (!isset($searchstring->search_college)) {
+                $college_ids = collect($data)->pluck('id')->toArray();
+                $search_college_from_db = CollegeInformation::whereIn('college_id', $college_ids);
+                if (isset($searchstring->average_annual_cost_of_attendance) && !empty($searchstring->average_annual_cost_of_attendance) && $searchstring->average_annual_cost_of_attendance !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('cost_of_attendance', '<=', $searchstring->average_annual_cost_of_attendance);
+                }
+
+                if (isset($searchstring->tution_and_fees) && !empty($searchstring->tution_and_fees) && $searchstring->tution_and_fees !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('tution_and_fess', '<=', $searchstring->tution_and_fees);
+                }
+
+                if (isset($searchstring->average_percent_of_need_met) && !empty($searchstring->average_percent_of_need_met) && $searchstring->average_percent_of_need_met !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('average_percent_of_need_met', '<=', $searchstring->average_percent_of_need_met);
+                }
+
+                if (isset($searchstring->average_gpa) && !empty($searchstring->average_gpa) && $searchstring->average_gpa !== 0) {
+                    $search_college_from_db = $search_college_from_db->where('gpa_average', '<=', $searchstring->average_gpa);
+                }
+
+                if (isset($searchstring->entrance_difficulty) && count($searchstring->entrance_difficulty) > 0) {
+                    $search_college_from_db = $search_college_from_db->whereIn('entrance_difficulty', $searchstring->entrance_difficulty);
+                }
+
+                $search_college_from_db = $search_college_from_db->get()->toArray();
+
+                if (count($search_college_from_db) > 0) {
+                    $college_ids = collect($search_college_from_db)->pluck('college_id')->toArray();
+                    $data = collect($data)->whereIn('id', $college_ids)->all();
+                } else {
+                    $data = [];
+                }
+            }
         }
-        return $data;
+        return [
+            'total' => $totalRecords,
+            'data' => $data,
+            'current_page' => $page_no + 1,
+            'total_page' => ceil($totalRecords / $perPage),
+        ];
     }
 
     public function saveCollege(Request $request) {
@@ -482,7 +535,8 @@ class InititalCollegeListController extends Controller
     }
 
     public function getSelectedCollegeList($college_id) {
-        $college_list = CollegeSearchAdd::where('college_lists_id', $college_id)->orderBy('order_index', 'asc')->get();
+        // dd('called');
+        $college_list = CollegeSearchAdd::where('college_lists_id', $college_id)->where('is_active', true)->with(['collegeInformation'])->orderBy('order_index', 'asc')->get();
         return response()->json([
             'success' => true,
             'data' => $college_list,
@@ -502,13 +556,14 @@ class InititalCollegeListController extends Controller
     }
 
     function collegeList($college_id) {
-        $data = $this->getCollegeData($college_id);
+        $data = $this->getCollegeData($college_id, 1);
+        // dd($data['data']);
         $selectedCollege = CollegeSearchAdd::where('college_lists_id', $college_id)->get()->map(function($item) {
             return $item->college_id;
         })->toArray();
 
-        $data = collect($data)->map(function($item) use ($selectedCollege) {
-            $item->selected = in_array($item->id, $selectedCollege);
+        $data = collect($data['data'])->map(function($item) use ($selectedCollege) {
+            $item['selected'] = in_array($item['id'], $selectedCollege);
             return $item;
         })->all();
 
@@ -534,6 +589,10 @@ class InititalCollegeListController extends Controller
         $data = json_decode($data->body());
         if (count($data->results) > 0) {
             $data = $data->results[0];
+            $college_info = CollegeInformation::where('college_id', $data->id)->first();
+            if ($college_info) {
+                $data->latest->college_info = $college_info;
+            }
         } else {
             $data = null;
         }
@@ -587,8 +646,10 @@ class InititalCollegeListController extends Controller
 
     public function getCostComparisonSummary(Request $request) {
         $userid = Auth::user()->id;
-        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
-            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
+            $q->where('is_active', true); 
+        })->with(['college_list_details' => function ($query) {
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
         }])->first();
 
         $totalCount = 0;
@@ -619,56 +680,35 @@ class InititalCollegeListController extends Controller
 
     public function getCollegeWiseList() {
         $userid = Auth::user()->id;
-        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->with(['college_list_details' => function ($query) {
-            $query->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
-        }])->first();
-
-        if ($costcomparisonsummary) {
-            foreach($costcomparisonsummary['college_list_details'] as $key => $list) {
-                $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetails'] = $this->setCostComparisonDataAccordingToType($list->costcomparison->id);
-            }
-        }
+        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
+            $q->where('is_active', true); 
+        })->with(['college_list_details' => function ($query) {
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
+                $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
+            }]);
+        }])->first()->toArray();
 
         return response()->json([
-            'success' => $costcomparisonsummary ? count($costcomparisonsummary['college_list_details']) > 0 ? true : false : false,
-            'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
-        ]);
-    }
-
-    public function setCostComparisonDataAccordingToType($data) {
-        $types = CostTypes::with(['data' => function ($query) use ($data) {
-            $query->where('cost_comparison_id', $data);
-        }])->get();
-        return $types;
-    }
-
-    public function getSingleCostDetails($id) {
-        $data = CostComparisonOtherScholarship::where('id', $id)->with(['costtype'])->first();
-        return response()->json([
-            'success' => $data ? true : false,
-            'data' => $data,
+            'success' => count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
+            'data' => $costcomparisonsummary['college_list_details'],
         ]);
     }
 
     public function saveCollegeCost(Request $request) {
         $rules = [
-            'cost_comparison_id' => 'required',
-            'cost_aid_type' => 'required',
-            'cost_aid_name' => 'required',
-            'cost_aid_amount' => 'required|numeric',
+            'amount' => 'required|numeric',
         ];
 
-        if (isset($request->id)) {
-            $rules['id'] = 'required';
+        if (!isset($request->id)) {
+            $rules['name'] = 'required';
+            $rules['cost_comparison_id'] = 'required';
         }
 
         $validate = Validator::make($request->all(), $rules,[
             'cost_comparison_id.required' => 'Cost comparison is required',
-            'cost_aid_type.required' => 'Cost type is required',
-            'cost_aid_name.required' => 'Cost name is required',
-            'cost_aid_amount.required' => 'Cost amount is required',
-            'cost_aid_amount.numeric' => 'Cost amount must be numeric',
-            'id.required' => 'Cost id is required',
+            'name.required' => 'Cost name is required',
+            'amount.required' => 'Cost amount is required',
+            'amount.numeric' => 'Cost amount must be numeric',
         ]);
 
         if ($validate->fails()) {
@@ -679,56 +719,90 @@ class InititalCollegeListController extends Controller
         }
 
         $data = [
-            'cost_comparison_id' => $request->cost_comparison_id,
-            'cost_aid_type_id' => $request->cost_aid_type,
-            'name' => $request->cost_aid_name,
-            'amount' => $request->cost_aid_amount,
+            'amount' => $request->amount,
         ];
 
         if (isset($request->id)) {
-            CostComparisonOtherScholarship::where('id', $request->id)->update($data);
+            $details = CostComparisonOtherScholarship::where('id', $request->id)->first();
+            $details->update($data);
+            $request->request->add(['cost_comparison_id' => $details->cost_comparison_id]);
         } else {
+            $data['cost_comparison_id'] = $request->cost_comparison_id;
+            $data['name'] = $request->name;
             CostComparisonOtherScholarship::create($data);
         }
 
-        $this->calculateTotalCostOrAid($request->cost_comparison_id);
+        $values = $this->calculateTotalCostOrAid($request->cost_comparison_id);
         return response()->json([
             'success' => true,
             'message' => 'Cost comparison saved successfully',
+            'data' => $values,
+        ]);
+    }
+
+    public function editCollegeDetails(Request $request, $id) {
+        $isIdExist = CostComparisonDetail::where('cost_comparison_id', $id)->first();
+        if (!$isIdExist) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Trying to access invalid resource',
+            ]);
+        }
+        $isIdExist->update($request->all());
+        $data = $this->calculateTotalCostOrAid($isIdExist->cost_comparison_id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Cost comparison saved successfully',
+            'data' => $data,
         ]);
     }
 
     public function calculateTotalCostOrAid($costcomparisonid) {
-        $types = CostTypes::get();
-        $costcomparison = CostComparisonOtherScholarship::where('cost_comparison_id', $costcomparisonid)->with(['costtype'])->get();
-        $total = $this->calculateIndividulecostandAid($costcomparison, $types);
-        CostComparison::where('id', $costcomparisonid)->update($total);
-    }
+        $data = CostComparisonDetail::where('cost_comparison_id', $costcomparisonid)->first()->toArray();
+        $total_direct_cost = $data['direct_tuition_free_year'] + $data['direct_room_board_year'];
+        $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
+        $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
 
-    public function calculateIndividulecostandAid($data, $types) {
-        $response = array();
-        foreach ($types as $key => $type) {
-            $typedata = $data->filter(function ($value, $key) use ($type) {
-                return $value->cost_aid_type_id == $type->id;
-            });
-            $total = 0;
-            foreach ($typedata as $key => $value) {
-                $total += $value->amount;
-            }
-            $response[$type->total_field_key] = $total;
+        $otherscholarship = CostComparisonOtherScholarship::where('cost_comparison_id', $costcomparisonid)->get();
+        $total_outside_scholarship = 0;
+        foreach ($otherscholarship as $key => $value) {
+            $total_outside_scholarship += $value->amount;
         }
-        $total_cost_attendance = $response['total_direct_cost'] - ($response['total_merit_aid'] + $response['total_need_based_aid'] + $response['total_outside_scholarship']);
-        $response['total_cost_attendance'] = $total_cost_attendance;
-        return $response;
+        $total_cost_attendance = $total_direct_cost - ($total_merit_cost + $total_need_based_aid + $total_outside_scholarship);
+        CostComparison::where('id', $costcomparisonid)->update([
+            'total_direct_cost' => $total_direct_cost,
+            'total_merit_aid' => $total_merit_cost,
+            'total_need_based_aid' => $total_need_based_aid,
+            'total_outside_scholarship' => $total_outside_scholarship,
+            'total_cost_attendance' => $total_cost_attendance,
+        ]);
+        return [
+            'total_direct_cost' => $total_direct_cost,
+            'total_merit_aid' => $total_merit_cost,
+            'total_need_based_aid' => $total_need_based_aid,
+            'total_outside_scholarship' => $total_outside_scholarship,
+            'total_cost_attendance' => $total_cost_attendance,
+        ];
     }
 
     public function collegeSave(Request $request) {
-        $request->validate([
+        $rules = [
             'college' => 'required',
-        ], [
+        ];
+        $customMessage = [
             'college.required' => 'Please select college',
-        ]);
-        // $max_order_index = CollegeSearchAdd::where('college_lists_id', $request->school_lists_id)->max('order_index');
+        ];
+        if ($request->ajax()) {
+            $validate = Validator::make($request->all(), $rules, $customMessage);
+            if ($validate->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validate->errors()->first(),
+                ]);
+            }
+        } else {
+            $request->validate($rules, $customMessage);
+        }
         $college = CollegeInformation::where('college_id', $request->college)->first();
         $collegelist = CollegeList::where('user_id', auth()->user()->id)->first();
         $max_order_index = CollegeSearchAdd::where('college_lists_id', $collegelist->id)->max('order_index');
@@ -739,6 +813,12 @@ class InititalCollegeListController extends Controller
             'order_index' => $max_order_index ? $max_order_index + 1 : 1,
         ]);
         $this->createCollegeListAllData($add_college->id);
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'College added successfully',
+            ]);
+        }
         return redirect()->back()->with('success', 'College added successfully');
     }
 
@@ -746,10 +826,40 @@ class InititalCollegeListController extends Controller
         $data = CostComparisonOtherScholarship::where('id', $id)->first();
         $cid = $data->cost_comparison_id;
         $data->delete();
-        $this->calculateTotalCostOrAid($cid);
+        $values = $this->calculateTotalCostOrAid($cid);
         return response()->json([
             'success' => true,
-            'message' => 'Cost deleted successfully',
+            'message' => 'Aid deleted successfully',
+            'data' => $values,
         ]);
+    }
+
+    public function changeSearchCollegeAddStatus($id) {
+        $data = CollegeSearchAdd::where('id', $id)->first();
+        $data->update([
+            'is_active' => $data->is_active ? false : true,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully',
+        ]);
+    }
+
+    public function getHideCollege() {
+        $data = CollegeList::where('user_id', Auth::user()->id)->select('id')->with(['college_list_details' => function ($query) {
+            $query->where('is_active', false)->select('id', 'college_name', 'college_lists_id');
+        }])->first();
+
+        if ($data) {
+            return response()->json([
+                'success' => true,
+                'data' => $data['college_list_details'],
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No data found',
+            ]);
+        }
     }
 }

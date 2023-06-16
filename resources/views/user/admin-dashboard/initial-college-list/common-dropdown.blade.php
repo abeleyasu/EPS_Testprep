@@ -4,7 +4,7 @@
             <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#{{ $accordion_id }}" aria-expanded="true" aria-controls="collapseOne">
                 <a class=" text-white fw-600 collapsed">{{ $title }} <i class="fa fa-2x fa-angle-down"></i></a>
             </div>
-            <div id="{{ $accordion_id }}" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample1">
+            <div id="{{ $accordion_id }}" class="collapse {{ isset($isshow) ? 'show' : '' }}" aria-labelledby="headingOne" data-parent=".accordionExample1">
                 <div class="college-content-wrapper college-content" id="content-{{ $accordion_id }}">
                     @foreach($options as $key => $option)
                     <div class="mb-2">

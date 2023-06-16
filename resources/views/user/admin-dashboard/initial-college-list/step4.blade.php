@@ -66,6 +66,7 @@
         <div class="block-header block-header-tab">
           <h3 class="block-title text-white fw-500">College List</h3>
           <button type="button" class="btn btn-sm btn-alt-success" id="add-college">Add College</button>
+          <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         </div>
         <div class="block-content block-content-full">
           <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true">
@@ -85,14 +86,44 @@
   </div>
 </main>
 
-<div class="modal fade" id="add-college-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="add_new_college" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="block block-rounded block-transparent mb-0">
+        <div class="block-header colleg-add-header">
+          <h3 class="block-title">Add College</h3>
+          <div class="block-options">
+            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+              <i class="fa fa-fw fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row block-content">
+          <div>
+            <label for="select-college" class="form-label">Select College</label>
+            <select class="js-data-example-ajax form-control" id="select-college" name="college" style="width: 100%;" data-placeholder="Select One.">
+              <option value="">Select One</option>
+            </select>
+          </div>
+        </div>
+        <div class="block-content block-content-full text-end">
+          <button type="button" class="btn btn-alt-secondary me-1" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn submit-btn" id="add-college-detail">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="hide-college-list-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Add College</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">College List</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="modal-body">
+      <div class="modal-body" id="hide-college-modal-body">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -105,6 +136,7 @@
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
 <link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <style>
     .block-content, .block-content-full {
       padding: 10px 15px;
@@ -170,6 +202,15 @@
       background-color: #ff0000;
       color: #fff;
     }
+    .no-data {
+      border: 1px solid;
+      border-style: dashed;
+      border-color: darkgray;
+      padding: 10px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 500;
+    }
 </style>
 @endsection
 
@@ -179,6 +220,8 @@
 <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
   toastr.options = {
     "closeButton": true,
@@ -224,11 +267,14 @@
             }
             const element = `
               <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
-                <div class="block-header block-header-default" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
-                  <div class="d-flex align-items-center gap-3">
+                <div class="block-header block-header-default">
+                  <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                     <i class="fa fa-bars"></i>
                     <span>${data.order_index}</span>
                     <span>${data.college_name}</span>
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
                   </div>
                 </div>
                 <div id="accodion-${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
@@ -246,15 +292,15 @@
                         <tbody>
                           <tr>
                             <th>Average Admitted GPA:</th>
-                            <th>1</th>
+                            <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
                           </tr>  
                           <tr>
                             <th>Average Accepted ACT:</th>
-                            <th>1</th>
+                            <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
                           </tr>  
                           <tr>
                             <th>Average Accepted SAT:</th>
-                            <th>1</th>
+                            <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
                           </tr>  
                         </tbody>
                       </table>
@@ -342,119 +388,25 @@
   });
 
   $('#add-college').on('click', function (e) {
-    One.loader('show')
+    $('#add_new_college').modal('show');
+  })
+
+  $(document).on('click', '#add-college-detail', function (e) {
     $.ajax({
-      url: "{{ route('admin-dashboard.initialCollegeList.step4.collegeList', ['id' => request()->get('college_lists_id')]) }}",
-      method: 'get',
+      url: "{{ route('admin-dashboard.collegeApplicationDeadline.college_save') }}",
+      method: 'POST',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-    }).done(function (response) {
+      data: {college: $('#select-college').val()},
+    }).done((response) => {
       if (response.success) {
-        collegeList = response.data;
-        One.loader('hide')
-        for (let  i = 0; i < response.data.length; i++) {
-          const data = response.data[i];
-          const ownership = data['school.ownership'] === 1 ? 'Public' : 'Private';
-          const profit = data['school.ownership'] === 3 ? 'For-Profit' : data['school.ownership'] === 2 ? 'Non-Profit' : '';
-          const classname = data['school.ownership'] === 1 ? 'fs-3 fw-semibold mt-3 public' : 'fs-3 fw-semibold mt-3';
-          let campus = 'N/A'
-          switch(data['school.locale']) {
-            case 11 || 12 || 13 :
-              campus = 'City'
-            break;
-            case 21 || 22 || 23:
-              campus = 'Suburb'
-            break;
-            case 31 || 32 || 33:
-              campus = 'Town'
-            break;
-            case 41 || 42 || 43:
-              campus = 'Rural'
-            break;
-          }
-          let size = 'Large';
-          if (data['latest.student.size'] < 2000) {
-            size = 'Small'
-          } else if (data['latest.student.size'] > 2000 &&data['latest.student.size'] < 15000) {
-            size = 'Medium'
-          }
-          const element =`
-            <div class="block block-rounded mb-3">
-              <div class="block-header block-header-default block-header-tab">
-                <h3 class="block-title text-white fw-500">${data['school.name']}</h3>
-                <div class="block-options">
-                  ${data['selected'] ? 
-                    '<button type="button" class="btn btn-sm btn-alt-danger remove-list" data-id="'+ data['id'] +'">Remove College From List</button>'
-                    :
-                    '<button type="button" class="btn btn-sm btn-alt-success add-list" data-id="'+ data['id'] +'">Add to My College List</button>'
-                  }
-                </div>
-              </div>
-              <div class="block-content mb-">
-                <div class="college-search-wrapper">
-                  <h5>${data['school.city']}, ${data['school.state']}</h5>
-                  <div class="college-search-box">
-                    <div class="row">
-                      <div class="col-lg-3">
-                        <div class="block block-rounded text-center mb-3">
-                          <div class="block-content py-3 bg-info text-white">
-                            <span class="text-black-50 college-years">4</span>
-                            <div class="fs-3 fw-semibold">Year</div>
-                            <div>College</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="block block-rounded text-center mb-3">
-                          <div class="block-content py-3 bg-danger text-white">
-                            <i class="fa fa-building fa-2x college-years text-black-50"></i>
-                            <div class="${classname}">${ownership}</div>
-                            <div>${profit}</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="block block-rounded text-center mb-3">
-                          <div class="block-content py-3 bg-primary text-white">
-                            <i class="fa fa-city fa-2x college-years text-black-50"></i>
-                            <div class="fs-3 fw-semibold mt-3">Campus</div>
-                            <div>${campus}</div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3">
-                        <div class="block block-rounded text-center mb-3">
-                          <div class="block-content py-3 bg-secondary text-white">
-                            <i class="fa fa-users fa-2x college-years text-black-50"></i>
-                            <div class="fs-3 fw-semibold mt-3">Size</div>
-                            <div>${size}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                    <div class="college-text">
-                      <p>
-                        <b>Acceptance Rate:</b> 
-                        ${ data['latest.completion.consumer_rate'] ? (data['latest.completion.consumer_rate'] * 100).toFixed(2) + '%'  : 'N/A' }
-                      </p>
-                      <p><b>Average Annual Cost:</b> 
-                        ${ data['latest.cost.avg_net_price.overall'] ? (data['latest.cost.avg_net_price.overall'] / 1000).toFixed(2) + 'k'  : 'N/A' }
-                      </p>
-                      <p><b>Median Earnings:</b>
-                        ${ data['latest.earnings.10_yrs_after_entry.median'] ? (data['latest.earnings.10_yrs_after_entry.median'] / 1000).toFixed(2) + 'k'  : 'N/A' }
-                      </p>
-                    </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `
-          $('#modal-body').append(element);
-        }
-        $('#add-college-modal').modal('show');
+        $('#select-college').val('').trigger('change');
+        window.localStorage.setItem('APP-REFRESHED', Date.now());
+        $('#add_new_college').modal('hide')
+        getCollegeList()
+      } else {
+        toastr.error(response.message)
       }
     })
   })
@@ -524,8 +476,26 @@
     })
   })
 
+  $(document).on('click', '.hide-college-from-list', function (e) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to hide this college?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, hide it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const response = hideshowlist(e.target.dataset.id);
+        if (response) {
+          getCollegeList();
+        }
+      }
+    })
+  })
+
   $('.save-close').on('click', function (e) {
-    console.log('e -->', e)
     let url = "{{ route('admin-dashboard.initialCollegeList.saveCollegeList', [ 'id' => request()->get('college_lists_id') ]) }}"
     $.ajax({
       type: "patch",
@@ -539,6 +509,18 @@
         toastr.error(response.message)
       }
     })
+  })
+
+  $('#view-hide-college-btn').on('click', function (e) {
+    getHideCollegeList('hide-college-list-modal')
+  })
+
+  $(document).on('click', '.show-college-from-list', function (e) {
+    const response = hideshowlist(e.target.dataset.id);
+    if (response) {
+      getCollegeList();
+      getHideCollegeList('hide-college-list-modal')
+    }
   })
 </script>
 @endsection

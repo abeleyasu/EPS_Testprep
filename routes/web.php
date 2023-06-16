@@ -59,6 +59,7 @@ use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Cronjob\SendReminder;
 use App\Http\Controllers\Cronjob\FetchCollegeInformation;
+use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,17 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::delete('/delete_course/{id}', 'destroy')->name('deleteCourse');
             });
         });
+
+        Route::group(['prefix' => 'admission-management', 'as' => 'admin.admission-management.'], function () {
+            Route::group(['prefix' => 'college-information', 'as' => 'college-information.'], function () {
+                Route::controller(CollegeInformationController::class)->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/edit/{id}', 'editView')->name('edit');
+                    Route::post('/edit', 'update')->name('update');
+                });
+            });
+        });
+
         Route::group(['prefix' => 'course-management'], function () {
             Route::resource('courses', CoursesController::class);
             Route::post('courses/{course}/courseupdate', [CoursesController::class, 'course_update'])->name('courses.courseupdate');
@@ -346,6 +358,8 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::get('/search-college/step4/get-college/{id}', [InititalCollegeListController::class, 'collegeList'])->name('step4.collegeList');
                 Route::patch('/search-college/step4/store-college-selection/{id}', [InititalCollegeListController::class, 'storeSelection'])->name('step4.storeSelection');
                 Route::patch('search-college/save/{id}', [InititalcollegeListController::class, 'saveCollegeList'])->name('saveCollegeList');
+                Route::patch('search-college/change-status/{id}', [InititalcollegeListController::class, 'changeSearchCollegeAddStatus'])->name('changeSearchCollegeAddStatus');
+                Route::get('get-hide-college', [InititalcollegeListController::class, 'getHideCollege'])->name('getHideCollege');
             });
 
             Route::group(['prefix' => 'cost-comparison'], function () {
@@ -354,6 +368,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                 Route::get('get-college-list', [InititalCollegeListController::class, 'getCollegeWiseList'])->name('cost_comparison.get_college_list_for_cost_comparison');
                 Route::get('get-single-cost-details/{id}', [InititalCollegeListController::class, 'getSingleCostDetails'])->name('cost_comparison.get_single_cost_details');
                 Route::patch('save-cost-details', [InititalCollegeListController::class, 'saveCollegeCost'])->name('cost_comparison.save_cost_comparison_details');
+                Route::patch('edit-college-detail/{id}', [InititalCollegeListController::class, 'editCollegeDetails'])->name('cost_comparison.edit_college_detail');
                 Route::delete('delete-cost-details/{id}', [InititalCollegeListController::class, 'deleteCollegeCost'])->name('cost_comparison.delete_cost_details');
             });
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
@@ -423,6 +438,7 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::post('forget-password', [AuthController::class, 'postForgetPassword'])->name('password.email');
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+    Route::get('/pricing', [PlanController::class, 'getPlanForNonUser'])->name('simple-pricing');
 });
 
 Route::group(['middleware' => ['auth']],function () {
@@ -433,3 +449,4 @@ Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy']
 Route::get('/sendreminder', [SendReminder::class, 'index']);
 Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
+Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);

@@ -1401,6 +1401,13 @@ return [
             '43' => 37,
             '44' => 38,
         ]
-    ]
+    ],
+    'entrance_difficulty' => [
+        'Not Reported',
+        'Noncompetitive',
+        'Moderately Difficult',
+        'Most Difficult'
+    ],
+    'college_list_per_page' => 20,
 ]
 ?>

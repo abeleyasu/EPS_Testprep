@@ -20,11 +20,7 @@ class CollegelistSearch
         if (isset($request->college_lists_id)) {
             $checkissameuser = CollegeList::where('id', $request->college_lists_id)->where('user_id', auth()->user()->id)->first();
             if ($checkissameuser) {
-                if ($checkissameuser->status == 'completed') {
-                    return redirect()->route('admin-dashboard.initialCollegeList.step1')->with('cmessage', 'You already completed your initial College List, Please start again. if you want to submit more.');
-                } else {
-                    return $next($request);
-                }
+                return $next($request);
             }
         }
         abort(404);

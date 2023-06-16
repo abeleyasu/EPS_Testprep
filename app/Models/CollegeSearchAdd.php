@@ -26,9 +26,14 @@ class CollegeSearchAdd extends Model
         'avg_gpa',
         'avg_sat',
         'avg_act',
+        'is_active',
     ];
 
     public function costcomparison() {
         return $this->hasOne(CostComparison::class, 'college_list_id', 'id');
+    }
+
+    public function collegeInformation() {
+        return $this->hasOne(CollegeInformation::class, 'college_id', 'college_id');
     }
 }

@@ -1,22 +1,24 @@
-@extends('layouts.user')
+@extends('layouts.main')
 
-@section('title', 'Plans : CPS')
+@section('title', 'Sign In : CPS')
 
-@section('user-content')
-<main id="main-container">
-  <div class="content">
-    @include('components.plan', [
-      'categories' => $categories,
-    ])
-  </div>
-</main>
+@section('page-content')
+<div id="page-container">
+  <main id="main-container">
+    <div class="content">
+      @include('components.plan', [
+        'categories' => $categories,
+      ])
+    </div>
+  </main>
+</div>
 @endsection
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('css/plan.css') }}">
 @endsection
 
-@section('user-script')
+@section('page-script')
 <script>
   function showByCategoryId(id) {
     $(`.hide-all`).hide();
