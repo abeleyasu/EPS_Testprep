@@ -89,7 +89,7 @@ class AdminController extends Controller
         ]);
 
         if ($user) {
-            $user->sendEmailVerificationNotification();
+            $this->mailgun->sendEmailConfirmationCode($user);
         }
         return redirect(route('admin-user-list'));
     }

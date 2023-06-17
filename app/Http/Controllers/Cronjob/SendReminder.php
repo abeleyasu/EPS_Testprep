@@ -71,16 +71,19 @@ class SendReminder extends Controller
         $date = date("m/d/Y");
         $time = date("h:i a", strtotime($reminder->when_time));
         $to_email = $user->email;
-        //$to_email = 'khan06shahbaz@gmail.com';
-        //$to_email = 'pocholo.hernandez@plumnetworks.com';
         Log::channel('reminder')->info("to_email = $to_email");
         $subject = "Important Reminder: Your Upcoming Deadlines and Activities";
-        $body = "Dear $user->first_name,<br /><br />We hope you're doing well. This is your automated College Prep System Reminder, making sure you stay on top of your important deadlines and activities. Here's your reminder:<br /><br /><b>$reminder->reminder_name - $date at $time ET.</b><br /><br />Staying organized is important in order to achieve your admissions and test goals. We're here to help you stay on track. If you have any questions or need assistance, feel free to contact our support team.<br /><br />Best of luck with your upcoming activities!<br /><br />Sincerely,<br />College Prep System Team";
-        
         try {
-            $sent = Mail::send([], [], function ($message) use ($to_email, $subject, $body) {
-                $message->to($to_email)->subject($subject)->html($body);
-            });
+            $sent = $this->mailgun->sendMail([
+                'to' => $to_email,
+                'subject' => $subject,
+                'html' => view('email-template.reminder', [
+                    'name' => $user->first_name,
+                    'reminder_name' => $reminder->reminder_name,
+                    'date' => $date,
+                    'time' => $time
+                ])->render()
+            ]);
         
             if ($sent) {
                 Log::channel('reminder')->info("Email sent successfully to $to_email");

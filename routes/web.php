@@ -76,9 +76,9 @@ Route::get('/', function () {
     return redirect('login');
 })->name('home');
 
-Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
-    Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['role:super_admin', 'verified'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
         Route::get('/user_list', [AdminController::class, 'userList'])->name('admin-user-list');
         Route::get('/create_user', [AdminController::class, 'showCreateUser'])->name('admin-create-user');
@@ -238,7 +238,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
     });
 
     //User Routes
-    Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], function () {
+    Route::group(['middleware' => ['role:standard_user', 'verified'], 'prefix' => 'user'], function () {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
         Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');

@@ -5,6 +5,9 @@
 @section('page-content')
 <div id="page-container">
     <main id="main-container">
+        <div class="d-flex justify-content-end p-3">
+            <a href="{{ route('signout') }}" class="btn btn-alt-success">logout</a>
+        </div>
         <div class="hero-static d-flex align-items-center">
             <div class="content">
                 <div class="row justify-content-center push">

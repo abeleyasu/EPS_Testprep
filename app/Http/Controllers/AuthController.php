@@ -52,8 +52,8 @@ class AuthController extends Controller
 
         if($user){
             $user->createOrGetStripeCustomer();
-            $user->sendEmailVerificationNotification();
             Auth::login($user);
+            $this->mailgun->sendEmailConfirmationCode();
             if ($user->role === 1) {
                 return redirect()->intended(route('admin-dashboard'));
             } elseif ($user->role === 3) {

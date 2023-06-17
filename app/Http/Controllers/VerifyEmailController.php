@@ -26,7 +26,7 @@ class VerifyEmailController extends Controller
     }
 
     public function resend(Request $request) {
-        $request->user()->sendEmailVerificationNotification();
+        $this->mailgun->sendEmailConfirmationCode();
         return back()->with('resent', 'Verification link sent!');
     }
 
