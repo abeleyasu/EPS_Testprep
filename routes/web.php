@@ -336,11 +336,20 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                     Route::get('/fetch-resume/{id}', 'fetchResume')->name('fetch.resume');
                 });
             });
+
+
+            Route::get('/college-application-deadline/list', [CollegeApplicationDeadlineController::class, 'getApplicationDeadlineData'])->name('getApplicationDeadlineData');
+            Route::get('/college-application-deadline/{id}', [CollegeApplicationDeadlineController::class, 'getSingleApplicationData'])->name('getSingleApplicationData');
+
+
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
             Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
             Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
             Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
+
+
+
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
                 Route::get('/search-college/step1', [InititalCollegeListController::class, 'step1'])->name('step1');
                 Route::group(['middleware' => ['initialcollegestep']], function () {

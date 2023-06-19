@@ -469,13 +469,12 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       data: {college: $('#select-college').val()},
-    }).done((response) => {
+    }).done(async (response) => {
       if (response.success) {
         window.localStorage.setItem('APP-REFRESHED', Date.now());
         $('#add_new_college').modal('hide')
         $('#costcomparison-summary').DataTable().ajax.reload();
-        getCollegeListForCostComparison(url);
-        console.log('response ==>', response)
+        await getCollegeListForCostComparison(url);
       } else {
         toastr.error(response.message)
       }

@@ -84,7 +84,7 @@ class SendReminder extends Controller
                     'time' => $time
                 ])->render()
             ]);
-        
+            
             if ($sent) {
                 Log::channel('reminder')->info("Email sent successfully to $to_email");
             } else {
