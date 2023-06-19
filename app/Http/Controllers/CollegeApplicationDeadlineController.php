@@ -29,6 +29,39 @@ class CollegeApplicationDeadlineController extends Controller
         ]);
     }
 
+    public function getApplicationDeadlineData() {
+        try {
+            $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->whereHas('college_details', function ($q) { 
+                $q->where('is_active', true); 
+            })->with(['college_details'])->get()->toArray();
+
+            return [
+                'success' => true,
+                'data' => $college_list_deadline,
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Oops! Something went wrong',
+            ];
+        }
+    }
+
+    public function getSingleApplicationData($id) {
+        try {
+            $college_list_deadline = CollegeDetails::where('id', '=', $id)->first()->toArray();
+            return [
+                'success' => true,
+                'data' => $college_list_deadline,
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Oops! Something went wrong',
+            ];
+        }
+    }
+
     public function list(Request $request) {
 
         // dd($request->all());
@@ -130,7 +163,10 @@ class CollegeApplicationDeadlineController extends Controller
         } else {
             $this->create($request);
         }
-        return redirect()->back()->with('success', 'College Updated successfully');
+        return [
+            'success' => true,
+            'message' => 'College application deadline saved successfully',
+        ];
     }
 
     public function set_application_completed(Request $request) {

@@ -23,7 +23,9 @@
         const core = {
             hidecollegeurl: "{{ route('admin-dashboard.initialCollegeList.changeSearchCollegeAddStatus', [ 'id' => ':id' ]) }}",
             gethideCollegeUrl: "{{ route('admin-dashboard.initialCollegeList.getHideCollege') }}",
-            collegelustUrl: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}"
+            collegelustUrl: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
+            applicationOrganizer: "{{ route('admin-dashboard.getApplicationDeadlineData') }}",
+            getSingleApplicationOrganizer: "{{ route('admin-dashboard.getSingleApplicationData', [ 'id' => ':id' ]) }}",
         }
     </script>
     @yield('user-script')

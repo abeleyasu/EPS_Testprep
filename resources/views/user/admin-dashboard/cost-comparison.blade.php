@@ -432,10 +432,10 @@
     getHideCollegeList('hide-college-list-modal')
   })
 
-  $(document).on('click', '.show-college-from-list', function (e) {
-    const response = hideshowlist(e.target.dataset.id);
+  $(document).on('click', '.show-college-from-list', async function (e) {
+    const response = await hideshowlist(e.target.dataset.id);
     if (response) {
-      getHideCollegeList('hide-college-list-modal')
+      await getHideCollegeList('hide-college-list-modal')
       $('#costcomparison-summary').DataTable().ajax.reload();
       getCollegeListForCostComparison(url);
     }
@@ -450,9 +450,9 @@
       confirmButtonText: 'Yes, hide it!',
       cancelButtonText: 'No, cancel!',
       reverseButtons: true
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = hideshowlist(e.target.dataset.id);
+        const response = await hideshowlist(e.target.dataset.id);
         if (response) {
           $('#costcomparison-summary').DataTable().ajax.reload();
           getCollegeListForCostComparison(url);
@@ -469,13 +469,12 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       data: {college: $('#select-college').val()},
-    }).done((response) => {
+    }).done(async (response) => {
       if (response.success) {
         window.localStorage.setItem('APP-REFRESHED', Date.now());
         $('#add_new_college').modal('hide')
         $('#costcomparison-summary').DataTable().ajax.reload();
-        getCollegeListForCostComparison(url);
-        console.log('response ==>', response)
+        await getCollegeListForCostComparison(url);
       } else {
         toastr.error(response.message)
       }

@@ -76,9 +76,9 @@ Route::get('/', function () {
     return redirect('login');
 })->name('home');
 
-Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
+Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
-    Route::group(['middleware' => ['role:super_admin'], 'prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['role:super_admin', 'verified'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
         Route::get('/user_list', [AdminController::class, 'userList'])->name('admin-user-list');
         Route::get('/create_user', [AdminController::class, 'showCreateUser'])->name('admin-create-user');
@@ -238,7 +238,7 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
     });
 
     //User Routes
-    Route::group(['middleware' => ['role:standard_user'], 'prefix' => 'user'], function () {
+    Route::group(['middleware' => ['role:standard_user', 'verified'], 'prefix' => 'user'], function () {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
         Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
@@ -336,11 +336,20 @@ Route::group(['middleware' => ['auth', 'cors', 'verified']], function () {
                     Route::get('/fetch-resume/{id}', 'fetchResume')->name('fetch.resume');
                 });
             });
+
+
+            Route::get('/college-application-deadline/list', [CollegeApplicationDeadlineController::class, 'getApplicationDeadlineData'])->name('getApplicationDeadlineData');
+            Route::get('/college-application-deadline/{id}', [CollegeApplicationDeadlineController::class, 'getSingleApplicationData'])->name('getSingleApplicationData');
+
+
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
             Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
             Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
             Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
+
+
+
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
                 Route::get('/search-college/step1', [InititalCollegeListController::class, 'step1'])->name('step1');
                 Route::group(['middleware' => ['initialcollegestep']], function () {
