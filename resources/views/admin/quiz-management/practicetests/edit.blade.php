@@ -3610,138 +3610,54 @@ aria-hidden="true">
                 } else if(multiChoice == '3') {
                     disp_section = 'choiceMultInFourFill_';
                 }
-            } 
+            } else {
+                ans_choices = ['A', 'B', 'C', 'D'];
+                disp_section = '';
+            }
 
             //For checkbox
             const checkboxValues = {};
             ans_choices.forEach(ans_choice => {
-                checkboxValues[`${ans_choice}`] = $(`input[name="${disp_section}edit_ct_checkbox_${ans_choice}"]`).map(function(i,v) {
-                    var ct_checkbox_arr = [];
-                    var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
-                    ct_checkbox_arr.push(ct_checkbox_val);
-                    return ct_checkbox_arr;
-                }).get();
+                checkboxValues[ans_choice] = $(`input[name="${disp_section}edit_ct_checkbox_${ans_choice}"]`)
+                    .map(function(i, v) {
+                        return $(v).is(':checked') ? 1 : 0;
+                    })
+                    .get();
             });
-            var ct_checkbox_values_A = '';
-            if (ans_choices.includes('A')) {
-                ct_checkbox_values_A = checkboxValues['A'];
-            }
-            var ct_checkbox_values_B = '';
-            if (ans_choices.includes('B')) {
-                ct_checkbox_values_B = checkboxValues['B'];
-            }
-            var ct_checkbox_values_C = '';
-            if (ans_choices.includes('C')) {
-                ct_checkbox_values_C = checkboxValues['C'];
-            }
-            var ct_checkbox_values_D = '';
-            if (ans_choices.includes('D')) {
-                ct_checkbox_values_D = checkboxValues['D'];
-            }
-            var ct_checkbox_values_E = '';
-            if (ans_choices.includes('E')) {
-                ct_checkbox_values_E = checkboxValues['E'];
-            }
 
             //For super category
             const superCategoryValues = {};
             ans_choices.forEach(ans_choice => {
-                superCategoryValues[`${ans_choice}`] = $(`select[name="${disp_section}edit_super_category_${ans_choice}"]`).map(function(i,v) {
-                    var super_category_arr = [];
-                    let super_category_val = $(v).val();
-                    if(super_category_val.length > 0){
-                        super_category_arr.push(super_category_val);
-                    }
-                    return super_category_arr;
-                }).get();
+                const selectElements = $(`select[name="${disp_section}edit_super_category_${ans_choice}"]`);
+                const values = selectElements.map(function() {
+                    const super_category_val = $(this).val();
+                    return super_category_val.length > 0 ? super_category_val : null;
+                }).get().filter(value => value !== null);
+                superCategoryValues[ans_choice] = values;
             });
-            var super_category_values_A = '';
-            if (ans_choices.includes('A')) {
-                super_category_values_A = superCategoryValues['A'];
-            }
-            var super_category_values_B = '';
-            if (ans_choices.includes('B')) {
-                super_category_values_B = superCategoryValues['B'];
-            }
-            var super_category_values_C = '';
-            if (ans_choices.includes('C')) {
-                super_category_values_C = superCategoryValues['C'];
-            }
-            var super_category_values_D = '';
-            if (ans_choices.includes('D')) {
-                super_category_values_D = superCategoryValues['D'];
-            }
-            var super_category_values_E = '';
-            if (ans_choices.includes('E')) {
-                super_category_values_E = superCategoryValues['E'];
-            }
-            
+
 
             //For category type
             const getCategoryTypeValues = {};
             ans_choices.forEach(ans_choice => {
-                getCategoryTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}edit_category_type_${ans_choice}"]`).map(function(i,v) {
-                    var category_type_arr = [];
-                    let category_type_val = $(v).val();
-                    if(category_type_val.length > 0){
-                        category_type_arr.push(category_type_val);
-                    }
-                    return category_type_arr;
-                }).get();
+                const selectElements = $(`select[name="${disp_section}edit_category_type_${ans_choice}"]`);
+                const values = selectElements.map(function() {
+                    const category_type_val = $(this).val();
+                    return category_type_val.length > 0 ? category_type_val : null;
+                }).get().filter(value => value !== null);
+                getCategoryTypeValues[ans_choice] = values;
             });
-            var get_category_type_values_A = '';
-            if (ans_choices.includes('A')) {
-                get_category_type_values_A = getCategoryTypeValues['A'];
-            }
-            var get_category_type_values_B = '';
-            if (ans_choices.includes('B')) {
-                get_category_type_values_B = getCategoryTypeValues['B'];
-            }
-            var get_category_type_values_C = '';
-            if (ans_choices.includes('C')) {
-                get_category_type_values_C = getCategoryTypeValues['C'];
-            }
-            var get_category_type_values_D = '';
-            if (ans_choices.includes('D')) {
-                get_category_type_values_D = getCategoryTypeValues['D'];
-            }
-            var get_category_type_values_E = '';
-            if (ans_choices.includes('E')) {
-                get_category_type_values_E = getCategoryTypeValues['E'];
-            }
 
             //For question type
             const getQuestionTypeValues = {};
             ans_choices.forEach(ans_choice => {
-                getQuestionTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}edit_search-input_${ans_choice}"]`).map(function(i,v) {
-                    var question_type_arr = [];
-                    let question_type_val = $(v).val();
-                    if(question_type_val.length > 0){
-                        question_type_arr.push(question_type_val);
-                    }
-                    return question_type_arr;
-                }).get();
+                const selectElements = $(`select[name="${disp_section}edit_search-input_${ans_choice}"]`);
+                const values = selectElements.map(function() {
+                    const question_type_val = $(this).val();
+                    return question_type_val.length > 0 ? question_type_val : null;
+                }).get().filter(value => value !== null);
+                getQuestionTypeValues[ans_choice] = values;
             });
-            var get_question_type_values_A = '';
-            if (ans_choices.includes('A')) {
-                get_question_type_values_A = getQuestionTypeValues['A'];
-            }
-            var get_question_type_values_B = '';
-            if (ans_choices.includes('B')) {
-                get_question_type_values_B = getQuestionTypeValues['B'];
-            }
-            var get_question_type_values_C = '';
-            if (ans_choices.includes('C')) {
-                get_question_type_values_C = getQuestionTypeValues['C'];
-            }
-            var get_question_type_values_D = '';
-            if (ans_choices.includes('D')) {
-                get_question_type_values_D = getQuestionTypeValues['D'];
-            }
-            var get_question_type_values_E = '';
-            if (ans_choices.includes('E')) {
-                get_question_type_values_E = getQuestionTypeValues['E'];
-            }
 
 
             var testSectionType = $('#testSectionTypeRead').val();
@@ -3753,7 +3669,23 @@ aria-hidden="true">
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
             if($('#passageRequired_2').is(':checked')){
-                if(question =='' || tags =='' || passNumber =='' || jQuery.type(passagesType) == 'null' || format =='' || testSectionType =='' || super_category_values_A.length == 0 || (ans_choices.includes('B') && super_category_values_B.length == 0 ) || (ans_choices.includes('C') && super_category_values_C.length == 0) || (ans_choices.includes('D') && super_category_values_D.length == 0 ) || get_category_type_values_A.length ==0 || (ans_choices.includes('B') && get_category_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_category_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_category_type_values_D.length ==0 ) || get_question_type_values_A.length ==0 || (ans_choices.includes('B') && get_question_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_question_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_question_type_values_D.length ==0 ) || (ans_choices.includes('E') && super_category_values_E.length == 0) || (ans_choices.includes('E') && get_category_type_values_E.length == 0) || (ans_choices.includes('E') && get_question_type_values_E.length == 0)){
+                if(question =='' || 
+                    tags.length ==0 || 
+                    jQuery.type(passNumber) == "null" || 
+                    passagesType =='' || 
+                    format =='' || 
+                    testSectionType =='' || 
+                    ans_choices.some(choice => {
+                        const super_category_values = superCategoryValues[choice];
+                        const get_category_type_values = getCategoryTypeValues[choice];
+                        const get_question_type_values = getQuestionTypeValues[choice];
+                        return (
+                            super_category_values.length === 0 ||
+                            get_category_type_values.length === 0 ||
+                            get_question_type_values.length === 0
+                        );
+                    })
+                ) {
                 // if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
                     // $('#questionMultiModal .validError').text('Below fields are required!');
                     $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
@@ -3761,62 +3693,52 @@ aria-hidden="true">
                     $('#questionMultiModal #tagError').text(tags == '' ? 'Tag is required!' : '');
                     $('#editQuestionTag').focus();
 
-                    // $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                    // $('#edit_super_category_0').focus();
-
-                    // $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
-                    // $('#category_type_0').focus();
-                    // $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                    // $('#search-input_0').focus();
                     $('#questionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
                     $('#passage_number').focus();
                     $('#questionMultiModal #passageTypeError').text(jQuery.type(passagesType) =='null' ? 'Passage Type is required!' : '');
                     $('#passagesType').focus();
-                    // $('#questionMultiModal #superCategoryError').text(super_category =='' ? 'Super CAtegory is required' : '');
-                    // $('#super_category_edit').focus();
-
-                    $(`#questionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
-                    $(`#questionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
-
-
-                    if(ans_choices.includes('B')) {
-                        $(`#questionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
-                        $(`#questionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
-                        $(`#questionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
-                    }
-
-                    if(ans_choices.includes('C')) {
-                        $(`#questionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
-                        $(`#questionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
-                        $(`#questionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
-                    }
-
                     
-                    if(ans_choices.includes('D')) {
-                        $(`#questionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
-                        $(`#questionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
-                        $(`#questionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
-                    }
-
-                    if(ans_choices.includes('E')) {
-                        $(`#questionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
-                        $(`#questionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
-                        $(`#questionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
-                    }
+                    ans_choices.forEach(choice => {
+                        const super_category_values = superCategoryValues[choice];
+                        const get_category_type_values = getCategoryTypeValues[choice];
+                        const get_question_type_values = getQuestionTypeValues[choice];
+                        
+                        $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
+                        $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                        $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                    });
+                    
                     return false;
                 }else{
                     // $('#questionMultiModal .validError').text('');
                     $('#questionMultiModal #questionError').text('');
                     $('#questionMultiModal #tagError').text('');
-                    // $('#questionMultiModal #categoryTypeError').text('');
-                    // $('#questionMultiModal #questionTypeError').text('');
                     $('#questionMultiModal #passNumberError').text('');
                     $('#questionMultiModal #passageTypeError').text('');
-                    // $('#questionMultiModal #superCategoryError').text('');
+
+                    ans_choices.forEach(ans_choice => {
+                        $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
+                        $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
+                        $(`#questionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text('');
+                    });
+
                 }
             } else {
-                if(question =='' || tags =='' || format =='' || testSectionType =='' || super_category_values_A.length == 0 || super_category_values_B.length == 0 || super_category_values_C.length == 0 || super_category_values_D.length == 0 || get_category_type_values_A.length ==0 || get_category_type_values_B.length ==0 || get_category_type_values_C.length ==0 || get_category_type_values_D.length ==0 || get_question_type_values_A.length ==0 || get_question_type_values_B.length ==0 || get_question_type_values_C.length ==0 || get_question_type_values_D.length ==0 || (ans_choices.includes('E') && super_category_values_E.length == 0) || (ans_choices.includes('E') && get_category_type_values_E.length == 0) || (ans_choices.includes('E') && get_question_type_values_E.length == 0)){
+                if(question =='' || 
+                    tags ==0 || 
+                    format =='' || 
+                    testSectionType =='' || 
+                    ans_choices.some(choice => {
+                        const super_category_values = eval(`super_category_values_${choice}`);
+                        const get_category_type_values = eval(`get_category_type_values_${choice}`);
+                        const get_question_type_values = eval(`get_question_type_values_${choice}`);
+                        return (
+                            super_category_values.length === 0 ||
+                            get_category_type_values.length === 0 ||
+                            get_question_type_values.length === 0
+                        );
+                    })
+                ){
                 // if(format =='' || testSectionType =='' || question =='' || questionType ==''){
                     // $('#questionMultiModal .validError').text('Below fields are required!');
                     $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
@@ -3824,47 +3746,27 @@ aria-hidden="true">
                     $('#questionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                     $('#editQuestionTag').focus();
 
-                    // $('#questionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                    // $('#edit_super_category_0').focus();
-
-                    // $('#questionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
-                    // $('#category_type_0').focus();
-                    // $('#questionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
-                    // $('#search-input_0').focus();
-                    // $('#questionMultiModal #superCategoryError').text(super_category == '' ? 'Super category is required!' : '');
-                    // $('#super_category_edit').focus();
-
-                    $(`#questionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
-                    $(`#questionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
-                    $(`#questionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
-                    $(`#questionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
-
-                    $(`#questionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
-
-                    $(`#questionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
-                    $(`#questionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
-
-                    if(ans_choices.includes('E')) {
-                        $(`#questionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
-
-                        $(`#questionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
-
-                        $(`#questionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
-                    }
+                    ans_choices.forEach(choice => {
+                        var super_category_values = eval(`super_category_values_${choice}`);
+                        var get_category_type_values = eval(`get_category_type_values_${choice}`);
+                        var get_question_type_values = eval(`get_question_type_values_${choice}`);
+                        
+                        $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
+                        $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                        $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                    });
 
                     return false;
                 }else{
                     // $('#questionMultiModal .validError').text('');
                     $('#questionMultiModal #questionError').text('');
                     $('#questionMultiModal #tagError').text('');
-                    // $('#questionMultiModal #categoryTypeError').text('');
-                    // $('#questionMultiModal #questionTypeError').text('');
-                    // $('#questionMultiModal #superCategoryError').text('');
+                    
+                    ans_choices.forEach(ans_choice => {
+                        $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
+                        $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
+                        $(`#questionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text('');
+                    });
                 }
             }
             
@@ -3973,27 +3875,10 @@ aria-hidden="true">
 						'multiChoice':multiChoice,
                         'section_id':section_id,
                         'tags':tags,
-                        // 'super_category':super_category,
-                        'ct_checkbox_values_A':ct_checkbox_values_A,
-                        'ct_checkbox_values_B':ct_checkbox_values_B,
-                        'ct_checkbox_values_C':ct_checkbox_values_C,
-                        'ct_checkbox_values_D':ct_checkbox_values_D,
-                        'ct_checkbox_values_E':ct_checkbox_values_E,
-                        'super_category_values_A':super_category_values_A,
-                        'super_category_values_B':super_category_values_B,
-                        'super_category_values_C':super_category_values_C,
-                        'super_category_values_D':super_category_values_D,
-                        'super_category_values_E':super_category_values_E,
-                        'get_category_type_values_A':get_category_type_values_A,
-                        'get_category_type_values_B':get_category_type_values_B,
-                        'get_category_type_values_C':get_category_type_values_C,
-                        'get_category_type_values_D':get_category_type_values_D,
-                        'get_category_type_values_E':get_category_type_values_E,
-                        'get_question_type_values_A': get_question_type_values_A,
-                        'get_question_type_values_B': get_question_type_values_B,
-                        'get_question_type_values_C': get_question_type_values_C,
-                        'get_question_type_values_D': get_question_type_values_D,
-                        'get_question_type_values_E': get_question_type_values_E,
+                        'ct_checkbox_values' : checkboxValues,
+                        'super_category_values' : superCategoryValues,
+                        'get_category_type_values' : getCategoryTypeValues,
+                        'get_question_type_values' : getQuestionTypeValues,
 						'_token': $('input[name="_token"]').val()
 					},
 					url: '{{route("updatePracticeQuestion")}}',
@@ -4034,7 +3919,6 @@ aria-hidden="true">
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
 					} 
 				});	
-            
             setEmptyValue(questionType);
             return false;
         
@@ -4261,6 +4145,12 @@ aria-hidden="true">
             $('#scoreModalMulti').modal('hide');
         });
 
+        function emptyError(modal, disp_section, choice) {
+            $(`#${modal} #${disp_section}superCategoryError_${choice}`).text('');
+            $(`#${modal} #${disp_section}categoryTypeError_${choice}`).text('');
+            $(`#${modal} #${disp_section}questionTypeError_${choice}`).text('');
+        };
+
 
         $('.save_section').click(function() {
             var rHour = $('#regular_time_hour').val();
@@ -4410,137 +4300,50 @@ aria-hidden="true">
                         ans_choices = ['A'];
                         disp_section = 'fc_';
                     }
+                } else {
+                    ans_choices = ['A', 'B', 'C', 'D'];
+                    disp_section = '';
                 }
 
                 const checkboxValues = {};
                 ans_choices.forEach(ans_choice => {
-                    checkboxValues[`${ans_choice}`] = $(`input[name="${disp_section}ct_checkbox_${ans_choice}"]`).map(function(i,v) {
-                        var ct_checkbox_arr = [];
-                        var ct_checkbox_val = $(v).is(':checked') ? 1 : 0;
-                        ct_checkbox_arr.push(ct_checkbox_val);
-                        return ct_checkbox_arr;
-                    }).get();
+                checkboxValues[ans_choice] = $(`input[name="${disp_section}ct_checkbox_${ans_choice}"]`)
+                    .map((i, v) => $(v).is(':checked') ? 1 : 0)
+                    .get();
                 });
-
-                var ct_checkbox_values_A = '';
-                if (ans_choices.includes('A')) {
-                    ct_checkbox_values_A = checkboxValues['A'];
-                }
-                var ct_checkbox_values_B = '';
-                if (ans_choices.includes('B')) {
-                    ct_checkbox_values_B = checkboxValues['B'];
-                }
-                var ct_checkbox_values_C = '';
-                if (ans_choices.includes('C')) {
-                    ct_checkbox_values_C = checkboxValues['C'];
-                }
-                var ct_checkbox_values_D = '';
-                if (ans_choices.includes('D')) {
-                    ct_checkbox_values_D = checkboxValues['D'];
-                }
-                var ct_checkbox_values_E = '';
-                if (ans_choices.includes('E')) {
-                    ct_checkbox_values_E = checkboxValues['E'];
-                }
-
 
                 const superCategoryValues = {};
                 ans_choices.forEach(ans_choice => {
-                    superCategoryValues[`${ans_choice}`] = $(`select[name="${disp_section}super_category_create_${ans_choice}"]`).map(function(i,v) {
-                        var super_category_arr = [];
-                        let super_category_val = $(v).val();
-                        if(super_category_val.length > 0){
-                            super_category_arr.push(super_category_val);
-                        }
-                        return super_category_arr;
-                    }).get();
+                superCategoryValues[ans_choice] = $(`select[name="${disp_section}super_category_create_${ans_choice}"]`)
+                    .map((i, v) => {
+                        const super_category_val = $(v).val();
+                        return super_category_val.length > 0 ? super_category_val : null;
+                    })
+                    .get()
+                    .filter(value => value !== null);
                 });
-                var super_category_values_A = '';
-                if (ans_choices.includes('A')) {
-                    super_category_values_A = superCategoryValues['A'];
-                }
-                
-                var super_category_values_B = '';
-                if (ans_choices.includes('B')) {
-                    super_category_values_B = superCategoryValues['B'];
-                }
-
-                var super_category_values_C = '';
-                if (ans_choices.includes('C')) {
-                    super_category_values_C = superCategoryValues['C'];
-                }
-                var super_category_values_D = '';
-                if (ans_choices.includes('D')) {
-                    super_category_values_D = superCategoryValues['D'];
-                }
-                var super_category_values_E = '';
-                if (ans_choices.includes('E')) {
-                    super_category_values_E = superCategoryValues['E'];
-                }
 
                 const getCategoryTypeValues = {};
                 ans_choices.forEach(ans_choice => {
-                    getCategoryTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}add_category_type_${ans_choice}"]`).map(function(i,v) {
-                        var category_type_arr = [];
-                        let category_type_val = $(v).val();
-                        if(category_type_val.length > 0){
-                            category_type_arr.push(category_type_val);
-                        }
-                        return category_type_arr;
-                    }).get();
+                    getCategoryTypeValues[ans_choice] = $(`select[name="${disp_section}add_category_type_${ans_choice}"]`)
+                    .map((i, v) => {
+                        const category_type_val = $(v).val();
+                        return category_type_val.length > 0 ? category_type_val : null;
+                    })
+                    .get()
+                    .filter(value => value !== null);
                 });
-                var get_category_type_values_A = '';
-                if (ans_choices.includes('A')) {
-                    get_category_type_values_A = getCategoryTypeValues['A'];
-                }
-                var get_category_type_values_B = '';
-                if (ans_choices.includes('B')) {
-                    get_category_type_values_B = getCategoryTypeValues['B'];
-                }
-                var get_category_type_values_C = '';
-                if (ans_choices.includes('C')) {
-                    get_category_type_values_C = getCategoryTypeValues['C'];
-                }
-                var get_category_type_values_D = '';
-                if (ans_choices.includes('D')) {
-                    get_category_type_values_D = getCategoryTypeValues['D'];
-                }
-                var get_category_type_values_E = '';
-                if (ans_choices.includes('E')) {
-                    get_category_type_values_E = getCategoryTypeValues['E'];
-                }
 
                 const getQuestionTypeValues = {};
                 ans_choices.forEach(ans_choice => {
-                    getQuestionTypeValues[`${ans_choice}`] = $(`select[name="${disp_section}add_search-input_${ans_choice}"]`).map(function(i,v) {
-                        var question_type_arr = [];
-                        let question_type_val = $(v).val();
-                        if(question_type_val.length > 0){
-                            question_type_arr.push(question_type_val);
-                        }
-                        return question_type_arr;
-                    }).get();
+                    getQuestionTypeValues[ans_choice] = $(`select[name="${disp_section}add_search-input_${ans_choice}"]`)
+                    .map((i, v) => {
+                        const question_type_val = $(v).val();
+                        return question_type_val.length > 0 ? question_type_val : null;
+                    })
+                    .get()
+                    .filter(value => value !== null);
                 });
-                var get_question_type_values_A = '';
-                if (ans_choices.includes('A')) {
-                    get_question_type_values_A = getQuestionTypeValues['A'];
-                }
-                var get_question_type_values_B = '';
-                if (ans_choices.includes('B')) {
-                    get_question_type_values_B = getQuestionTypeValues['B'];
-                }
-                var get_question_type_values_C = '';
-                if (ans_choices.includes('C')) {
-                    get_question_type_values_C = getQuestionTypeValues['C'];
-                }
-                var get_question_type_values_D = '';
-                if (ans_choices.includes('D')) {
-                    get_question_type_values_D = getQuestionTypeValues['D'];
-                }
-                var get_question_type_values_E = '';
-                if (ans_choices.includes('E')) {
-                    get_question_type_values_E = getQuestionTypeValues['E'];
-                }
 
 
                 const labels = ['superCategoryError', 'categoryTypeError', 'questionTypeError'];                
@@ -4555,120 +4358,97 @@ aria-hidden="true">
                 }).get();
 
                 if($('#passageRequired_1').is(':checked')){
-                    if(question =='' || tags ==''|| passNumber =='' || passagesType == "" || format =='' || testSectionType =='' || super_category_values_A.length == 0 || (ans_choices.includes('B') && super_category_values_B.length == 0 ) || (ans_choices.includes('C') && super_category_values_C.length == 0) || (ans_choices.includes('D') && super_category_values_D.length == 0 ) || get_category_type_values_A.length ==0 || (ans_choices.includes('B') && get_category_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_category_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_category_type_values_D.length ==0 ) || get_question_type_values_A.length ==0 || (ans_choices.includes('B') && get_question_type_values_B.length ==0 ) || (ans_choices.includes('C') && get_question_type_values_C.length ==0 ) || (ans_choices.includes('D') && get_question_type_values_D.length ==0 ) || (ans_choices.includes('E') && super_category_values_E.length == 0) || (ans_choices.includes('E') && get_category_type_values_E.length == 0) || (ans_choices.includes('E') && get_question_type_values_E.length == 0)){
-                        // $('#addQuestionMultiModal .validError').text('Below fields are required!');
+                    if(
+                        question =='' || 
+                        tags ==0 || 
+                        passNumber == '' || 
+                        passagesType =='' || 
+                        format =='' || 
+                        testSectionType =='' || 
+                        ans_choices.some(choice => {
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            return (
+                                super_category_values.length === 0 ||
+                                get_category_type_values.length === 0 ||
+                                get_question_type_values.length === 0
+                            );
+                        })
+                    ) {
                             $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                             $('#js-ckeditor-add-addQue').focus();
                             $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                             $('#questionTags').focus();
-                            // $('#addQuestionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
                             $('#super_category_create').focus();
-                            // $('#addQuestionMultiModal #categoryTypeError').text(get_category_type_values.length ==0 ? 'Category type is required!' : '');
                             $('#add_category_type_0').focus();
-                            // $('#addQuestionMultiModal #questionTypeError').text(get_question_type_values.length ==0 ? 'Question type is required!' : '');
                             $('#add_search-input_0').focus();
                             $('#addQuestionMultiModal #passNumberError').text(passNumber =='' ? 'Passage Number is required!' : '');
                             $('#add_passage_number').focus();
                             $('#addQuestionMultiModal #passageTypeError').text(passagesType == '' ? 'Passage Type is required!' : '');
                             $('.addPassagesType').focus();
-                            // $('#addQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required' : '');
-                            // $('#super_category_create').focus();
 
-                            $(`#addQuestionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
-                            $(`#addQuestionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
-                            $(`#addQuestionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
-
-                            if(ans_choices.includes('B')) {
-                                $(`#addQuestionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
-                            }
-
-                            if(ans_choices.includes('C')) {
-                                $(`#addQuestionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
-                            }
-
-                            if(ans_choices.includes('D')) {
-                                $(`#addQuestionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
-                            }
-                            
-                            if(ans_choices.includes('E')) {
-                                $(`#addQuestionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
-
-                                $(`#addQuestionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
-                            }
+                            ans_choices.forEach(choice => {
+                                const super_category_values = superCategoryValues[choice];
+                                const get_category_type_values = getCategoryTypeValues[choice];
+                                const get_question_type_values = getQuestionTypeValues[choice];
+                                
+                                $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
+                                $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                                $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                            });
                         return false;
                     }
                     else{
                         // $('#addQuestionMultiModal .validError').text('');
                         $('#addQuestionMultiModal #questionError').text('');
                         $('#addQuestionMultiModal #tagError').text('');
-                        // $('#addQuestionMultiModal #categoryTypeError').text('');
-                        // $('#addQuestionMultiModal #questionTypeError').text('');
                         $('#addQuestionMultiModal #passNumberError').text('');
                         $('#addQuestionMultiModal #passageTypeError').text('');
-                        // $('#addQuestionMultiModal #superCategoryError').text('');
 
+                        ans_choices.forEach(choice => {
+                            emptyError('addQuestionMultiModal', disp_section, choice);
+                        });
                     }
                 } else {
-                    if(question =='' || tags =='' || format =='' || testSectionType =='' || super_category_values_A.length == 0 || super_category_values_B.length == 0 || super_category_values_C.length == 0 || super_category_values_D.length == 0 || get_category_type_values_A.length ==0 || get_category_type_values_B.length ==0 || get_category_type_values_C.length ==0 || get_category_type_values_D.length ==0 || get_question_type_values_A.length ==0 || get_question_type_values_B.length ==0 || get_question_type_values_C.length ==0 || get_question_type_values_D.length ==0){
+                    if(question =='' || 
+                        tags.length ==0 || 
+                        format =='' || 
+                        testSectionType =='' || 
+                        ans_choices.some(choice => {
+                                const super_category_values = eval(`super_category_values_${choice}`);
+                                const get_category_type_values = eval(`get_category_type_values_${choice}`);
+                                const get_question_type_values = eval(`get_question_type_values_${choice}`);
+                                return (
+                                    super_category_values.length === 0 ||
+                                    get_category_type_values.length === 0 ||
+                                    get_question_type_values.length === 0
+                                );
+                            })
+                    ){
                         // $('#addQuestionMultiModal .validError').text('Below fields are required!');
                         $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
                         $('#js-ckeditor-add-addQue').focus();
                         $('#addQuestionMultiModal #tagError').text(tags =='' ? 'Tag is required!' : '');
                         $('#questionTags').focus();
-                        // $('#addQuestionMultiModal #superCategoryError').text(super_category_values.length ==0 ? 'Super Category is required!' : '');
-                        // $('#super_category_create').focus();
-                        // $('#addQuestionMultiModal #categoryTypeError').text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
-                        // $('#add_category_type_0').focus();
-                        // $('#addQuestionMultiModal #questionTypeError').text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
-                        $('#add_search-input_0').focus();
-                        // $('#addQuestionMultiModal #superCategoryError').text(super_category =='' ? 'Super Category is required' : '');
-                        // $('#super_category_create').focus();
 
-                        $(`#addQuestionMultiModal #${disp_section}superCategoryError_A`).text(super_category_values_A.length ==0 ? 'Super Category is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}superCategoryError_B`).text(super_category_values_B.length ==0 ? 'Super Category is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}superCategoryError_C`).text(super_category_values_C.length ==0 ? 'Super Category is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}superCategoryError_D`).text(super_category_values_D.length ==0 ? 'Super Category is required!' : '');
-
-                        $(`#addQuestionMultiModal #${disp_section}categoryTypeError_A`).text(get_category_type_values_A.length ==0 ? 'Category type is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}categoryTypeError_B`).text(get_category_type_values_B.length ==0 ? 'Category type is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}categoryTypeError_C`).text(get_category_type_values_C.length ==0 ? 'Category type is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}categoryTypeError_D`).text(get_category_type_values_D.length ==0 ? 'Category type is required!' : '');
-                        
-
-                        $(`#addQuestionMultiModal #${disp_section}questionTypeError_A`).text(get_question_type_values_A.length ==0 ? 'Question type is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}questionTypeError_B`).text(get_question_type_values_B.length ==0 ? 'Question type is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}questionTypeError_C`).text(get_question_type_values_C.length ==0 ? 'Question type is required!' : '');
-                        $(`#addQuestionMultiModal #${disp_section}questionTypeError_D`).text(get_question_type_values_D.length ==0 ? 'Question type is required!' : '');
-                        
-                        if(ans_choices.includes('E')) {
-                            $(`#addQuestionMultiModal #${disp_section}superCategoryError_E`).text(super_category_values_E.length ==0 ? 'Super Category is required!' : '');
-
-                            $(`#addQuestionMultiModal #${disp_section}categoryTypeError_E`).text(get_category_type_values_E.length ==0 ? 'Category type is required!' : '');
-
-                            $(`#addQuestionMultiModal #${disp_section}questionTypeError_E`).text(get_question_type_values_E.length ==0 ? 'Question type is required!' : '');
-                        }
+                        ans_choices.forEach(choice => {
+                            var super_category_values = eval(`super_category_values_${choice}`);
+                            var get_category_type_values = eval(`get_category_type_values_${choice}`);
+                            var get_question_type_values = eval(`get_question_type_values_${choice}`);
+                            
+                            $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
+                            $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
+                            $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                        });
                         return false;
                     }else{
-                        // $('#addQuestionMultiModal .validError').text('');
                         $('#addQuestionMultiModal #questionError').text('');
                         $('#addQuestionMultiModal #tagError').text('');
-                        // $('#addQuestionMultiModal #categoryTypeError').text('');
-                        // $('#addQuestionMultiModal #questionTypeError').text('');
-                        // $('#addQuestionMultiModal #superCategoryError').text('');
+                        
+                        ans_choices.forEach(choice => {
+                            emptyError('addQuestionMultiModal', disp_section, choice);
+                        });
                     }
                 }   
                 
@@ -4775,28 +4555,11 @@ aria-hidden="true">
                         'section_id':section_id,
                         'tags':tags,
                         'diff_rating':difficulty,
-                        // 'super_category':super_category,
-                        'ct_checkbox_values_A':ct_checkbox_values_A,
-                        'ct_checkbox_values_B':ct_checkbox_values_B,
-                        'ct_checkbox_values_C':ct_checkbox_values_C,
-                        'ct_checkbox_values_D':ct_checkbox_values_D,
-                        'super_category_values_A':super_category_values_A,
-                        'super_category_values_B':super_category_values_B,
-                        'super_category_values_C':super_category_values_C,
-                        'super_category_values_D':super_category_values_D,
-                        'super_category_values_E':super_category_values_E,
-                        'get_category_type_values_A':get_category_type_values_A,
-                        'get_category_type_values_B':get_category_type_values_B,
-                        'get_category_type_values_C':get_category_type_values_C,
-                        'get_category_type_values_D':get_category_type_values_D,
-                        'get_category_type_values_E':get_category_type_values_E,
-                        'get_question_type_values_A': get_question_type_values_A,
-                        'get_question_type_values_B': get_question_type_values_B,
-                        'get_question_type_values_C': get_question_type_values_C,
-                        'get_question_type_values_D': get_question_type_values_D,
-                        'get_question_type_values_E': get_question_type_values_E,
+                        'ct_checkbox_values' : checkboxValues,
+                        'super_category_values' : superCategoryValues,
+                        'get_category_type_values' : getCategoryTypeValues,
+                        'get_question_type_values' : getQuestionTypeValues,
                         'new_question_type_select':new_question_type_select,
-                        // 'get_question_type_values': get_question_type_values,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: '{{route("addPracticeQuestion")}}',

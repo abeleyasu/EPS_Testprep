@@ -1,8 +1,8 @@
 <div class="input-container" id="{{ $disp_section }}add_New_Types_{{ $ans_choices }}">
     <div class="d-flex input-field align-items-center">
 
-        <div class="col-md-1">
-            <label class="form-label" for="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}">&ensp;</label>
+        <div class="col-md-2">
+            <label class="form-label" for="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}">Concept Correct?</label>
             <input type="checkbox" name="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}" id="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}_0">
         </div>
 
@@ -33,7 +33,7 @@
             <span class="text-danger" id="{{ $disp_section }}questionTypeError_{{ $ans_choices }}"></span>
         </div>
 
-        <div class="col-md-2 add-position">
+        <div class="col-md-1 add-position">
             <button class="plus-button add-plus-button" ans_col='{{ $ans_choices }}' data-id="1" onclick="addNewType(this, '{{ $disp_section }}')"><i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
