@@ -2517,7 +2517,7 @@ aria-hidden="true">
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
 
-                html += `<div class="col-md-1">`;
+                html += `<div class="col-md-2">`;
                 html += `<input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">`;
                 html += `</div>`;
 
@@ -2543,7 +2543,7 @@ aria-hidden="true">
                 html += `</select>`;  
                 html += `</div>`;                
                 html += `</div>`; 
-                html += `<div class="col-md-2 add-minus-icon">`;                
+                html += `<div class="col-md-1 add-minus-icon">`;                
                 html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;               
                 html += `</div>`;
                 html += `</div>`;
@@ -2613,7 +2613,7 @@ aria-hidden="true">
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewType">`;
 
-                html += `<div class="col-md-1">`;
+                html += `<div class="col-md-2">`;
                 html += `<input type="checkbox" name="${disp_option}ct_checkbox_${ans_col}" id="${disp_option}ct_checkbox_${ans_col}_${key}">`;
                 html += `</div>`;
 
@@ -2641,7 +2641,7 @@ aria-hidden="true">
                 html += `</div>`;
                 html += `</div>`;
 
-                html += `<div class="col-md-2 add-minus-icon">`;                
+                html += `<div class="col-md-1 add-minus-icon">`;                
                 html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
                 html += `</div>`;
                 html += `</div>`;         
