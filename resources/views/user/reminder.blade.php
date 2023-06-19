@@ -15,22 +15,38 @@
             </div>
         </div>
 
-        <div class="">{{-- content --}}
-            <div class="block block-rounded reminder-list-table">
-                <div class="block-content">
-                    <div class="table-responsive" style="width: 100%; overflow: auto;">
-                        <table class="table table-bordered table-striped table-vcenter" id="reminderTable">
+        <div class="block-rounded">
+            <div class="block-content">
+                <div class="block-header tbl-header block-header-default">
+                    <div class="block-title">
+                        Reminders
+                    </div>
+                </div>
+                <div class="block-content bg-white pb-4">
+                    <!-- <div class="mb-5">
+                        <h4 class="fw-normal border-bottom pb-2 mb-3">Global Notification</h4>
+                        <div class="mb-2">
+                            <div class="space-x-1">
+                                <input class="form-check-input" type="checkbox" value="" id="example-checkbox-inline1" name="example-checkbox-inline1" checked="">
+                                <label class="form-check-label fw-bold" for="example-checkbox-inline1">Application Deadline Reminders</label>
+                            </div>
+                            <div class="fw-light fs-6 text-muted">Enables or disables all columns deadline reminders</div>
+                        </div>
+                    </div> -->
+                    <div class="mb-3">
+                        <h4 class="fw-normal border-bottom pb-2 mb-3">Custom Notification</h4>
+                        <table class="table table-bordered table-vcenter" id="reminderTable">
                             <thead>
-                                <tr>
-                                    <th class="text-center" style="min-width: 200px;">Reminder Name</th>
-                                    <th class="text-center" style="min-width: 300px;">Type</th>
-                                    <th class="text-center" style="min-width: 170px;">Frequency</th>
-                                    <th class="text-center" style="min-width: 160px;">Method</th>
-                                    <th class="text-center" style="min-width: 130px;">When</th>
-                                    <th class="text-center" style="min-width: 180px;">Starts</th>
-                                    <th class="text-center" style="min-width: 180px;">End</th>
+                                <tr class="tbl-header">
+                                    <th class="text-center" >Reminder Name</th>
+                                    <th class="text-center" >Type</th>
+                                    <th class="text-center" >Frequency</th>
+                                    <th class="text-center" >Method</th>
+                                    <th class="text-center" >When</th>
+                                    <th class="text-center" >Starts</th>
+                                    <th class="text-center" >End</th>
                                     <th class="text-center">Enabled</th>
-                                    <th class="text-center" style="min-width: 180px;">Action</th>
+                                    <th class="text-center" >Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,7 +93,7 @@
                                         <td class="text-center">
                                             <input type="checkbox" name="enabled_{{ $reminder->id }}" id="enabled_{{ $reminder->id }}" value="1" {{ $reminder->enabled == 1 ? 'checked' : '' }}>
                                         </td>
-                                        <td class="justify-content-between">
+                                        <td class="d-flex justify-content-between">
                                             <button type="submit" class="btn btn-sm btn-primary" style="width: 70px;">Save</button>
                                             <a class="btn btn-sm ms-2" data-bs-toggle="tooltip" title="Delete" id="{{$reminder->id}}" onclick="deleteReminder({{$reminder->id}})">
                                                 <i class="fa-solid fa-trash"></i>
@@ -86,7 +102,7 @@
                                     </tr>
                                 </form>
                                 @endforeach
-
+                
                                 {{-- onSubmit="event.preventDefault();" --}}
                                 <form class="js-validation" id="reminder_form" action="{{ route('user.reminders.submit') }}" method="POST" >
                                     @csrf
@@ -208,6 +224,7 @@
                                 </form>
                             </tbody>
                         </table>
+                        
                     </div>
                 </div>
             </div>
@@ -219,17 +236,17 @@
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/college-application-deadline.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/collegeExploration.css') }}">
+
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
     {{-- <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}"> --}}
 
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
 
     <style>
-        .reminder-list-table {
-            background: #fff;
-            box-shadow: 0 0 10px rgb(183 183 183 / 45%);
-            margin: 26px 0;
-            border-radius: 15px !important;
-        }
         .form-control.is-invalid, .was-validated .form-control:invalid {
             border-color: #dc2626 !important;
         }
@@ -336,34 +353,9 @@
             -webkit-user-select: none;
         }
 
-        table,
-        th,
-        td {
-            border: none;
-        }
-
-        ul,
-        li {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        .nav-tabs {
-            border: 0;
-        }
-
-        p {
-            margin-bottom: 0;
-        }
-
-        .table-responsive td,
-        .table-responsive th {
-
-            padding: 10px 30px 10px 30px;
-        }
-        .table tbody tr:nth-child(1) td {
-            padding: 0;
+        .tbl-header {
+            background: #1f2937;
+            color: #fff;
         }
     </style>
 @endsection

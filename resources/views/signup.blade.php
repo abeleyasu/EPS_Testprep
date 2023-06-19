@@ -32,7 +32,7 @@
                                     <!-- Sign Up Form -->
                                     <!-- jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto compiled from _js/pages/op_auth_signup.js) -->
                                     <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                                    <form class="js-validation-signup" action="{{route('post-signup')}}" method="POST">
+                                    <form class="js-validation-signup" id="register" action="{{route('post-signup')}}" method="POST">
                                         @csrf
                                         <div class="py-3">
                                             <div class="mb-4">
@@ -147,7 +147,13 @@
 <!-- END Page Container -->
 @endsection
 
+@section('page-style')
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+@endsection
+
 <!-- Page Script -->
 @section('page-script')
 <script src="{{asset('assets/js/pages/op_auth_signup.min.js')}}"></script>
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+
 @endsection

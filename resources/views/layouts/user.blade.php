@@ -26,6 +26,7 @@
             collegelustUrl: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
             applicationOrganizer: "{{ route('admin-dashboard.getApplicationDeadlineData') }}",
             getSingleApplicationOrganizer: "{{ route('admin-dashboard.getSingleApplicationData', [ 'id' => ':id' ]) }}",
+            intltelinput: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
         }
     </script>
     @yield('user-script')

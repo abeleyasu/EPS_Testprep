@@ -90,7 +90,7 @@ class InititalCollegeListController extends Controller
                 $api = $api . '&school.search=' . $searchstring->search_college;
             } else {
                 if (isset($searchstring->average_annual_cost) && $searchstring->average_annual_cost && $searchstring->average_annual_cost != '0') {
-                    $api = $api . '&latest.cost.avg_net_price.overall__range=' . $searchstring->average_annual_cost * 1000;
+                    $api = $api . '&latest.cost.avg_net_price.overall__range=..' . $searchstring->average_annual_cost * 1000;
                 }
     
                 if (isset($searchstring->acceptance_rate) && $searchstring->acceptance_rate && $searchstring->acceptance_rate != '0') {
@@ -686,11 +686,15 @@ class InititalCollegeListController extends Controller
             $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
                 $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
             }]);
-        }])->first()->toArray();
+        }])->first();
+
+        if ($costcomparisonsummary) {
+            $costcomparisonsummary = $costcomparisonsummary->toArray();
+        }
 
         return response()->json([
-            'success' => count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
-            'data' => $costcomparisonsummary['college_list_details'],
+            'success' => $costcomparisonsummary && count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
+            'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
         ]);
     }
 

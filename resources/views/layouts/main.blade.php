@@ -37,6 +37,10 @@
     <link rel="stylesheet" id="css-main-custom" href="{{asset('assets/css/custom.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
+    <style>
+      .iti { width: 100%; }
+    </style>
 
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css"> -->
@@ -84,6 +88,29 @@
 	<script>window.MathJax = { MathML: { extensions: ["mml3.js", "content-mathml.js"]}};</script>
   <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=MML_HTMLorMML"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+
+  <script>
+    const input = document.querySelector("#phone");
+    let intl = null
+    if (input) {
+      intl = window.intlTelInput(input, {
+        // utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+        initialCountry: "us",
+      });
+    }
+
+    $('#phone').on('change', function(e, countryData) {
+      if (intl) {
+        const countryData = intl.getSelectedCountryData();
+        const number = '+' + countryData.dialCode + $(this).val();
+        intl.setNumber(number);
+      }
+    });
+  </script>
+
+  
     @yield('page-script')
 	<script>
 	 $(document).ready(function(){
