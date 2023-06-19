@@ -81,115 +81,28 @@ class PracticeQuestionController extends Controller
         // } else{
 		// 	$question->tags = $request->tags;
         // }
-		$question_type = $request->question_type;
-		if($question_type == 'choiceOneInFive_Odd') {
-			$ans_choices = ['A', 'B', 'C', 'D', 'E'];
-		} else if($question_type == 'choiceOneInFourPass_Odd' || $question_type == 'choiceOneInFour_Odd'){
-			$ans_choices = ['A', 'B', 'C', 'D'];
-		} else if($question_type == 'choiceOneInFour_Even') {
-			$ans_choices = ['F', 'G', 'H', 'J'];
-		} else if($question_type == 'choiceOneInFive_Even') {
-			$ans_choices = ['F', 'G', 'H', 'J', 'K'];
-		} else if ($question_type == 'choiceMultInFourFill') {
-			if($request->multiChoice == '2') {
-				$ans_choices = ['A'];
-			} else {
-				$ans_choices = ['A', 'B', 'C', 'D'];
-			}
+		$cat_array = $request->get_category_type_values;
+		foreach ($cat_array as $key => $value) {
+			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
+			$cat_array[$key] = $practice_category_id->id;
 		}
 		
-		$checkbox_values = [];
-		foreach ($ans_choices as $choice) {
-			$ctValue = $request->{"ct_checkbox_values_$choice"};
-			$checkbox_values[$choice] = $ctValue;
+		$qt_array = $request->get_question_type_values;
+		foreach ($qt_array as $key => $value) {
+			$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
+			$qt_array[$key] = $practice_question_id->id;
 		}
-		$question->checkbox_values = json_encode($checkbox_values);
-
-
-		$super_category_values = [];
-		foreach ($ans_choices as $choice) {
-			$categoryValue = $request->{"super_category_values_$choice"};
-
-			$super_category_array = $categoryValue;
-			foreach ($super_category_array as $innerKey => $innerValue) {
-				$super_category_id = SuperCategory::where('title', $innerValue)->orWhere('id', $innerValue)->first();
-				$super_category_array[$innerKey] = $super_category_id->id;
-			}
 		
-			$super_category_values[$choice] = $super_category_array;
+		$super_array = $request->super_category;
+		foreach($super_array as $key => $value){
+			$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
 		}
-		$question->super_category_values = json_encode($super_category_values);
+		$question->super_category = $super_id['id'];
 
-
-		$category_type_values = [];
-		foreach ($ans_choices as $choice) {
-			$categoryTypeValue = $request->{"get_category_type_values_$choice"};
-
-			$category_type_array = $categoryTypeValue;
-			foreach ($category_type_array as $innerKey => $innerValue) {
-				$practice_category_id = PracticeCategoryType::where('category_type_title', $innerValue)->orWhere('id', $innerValue)->first();
-				$category_type_array[$innerKey] = $practice_category_id->id;
-			}
-			$category_type_values[$choice] = $category_type_array;
-		}
-		$question->category_type_values = json_encode($category_type_values);
-
-
-		$question_type_values = [];
-		foreach ($ans_choices as $choice) {
-			$questionTypeValue = $request->{"get_question_type_values_$choice"};
-
-			$question_type_array = $questionTypeValue;
-			foreach ($question_type_array as $innerKey => $innerValue) {
-				$practice_question_id = QuestionType::where('question_type_title',$innerValue)->orWhere('id', $innerValue)->first();
-				$question_type_array[$innerKey] = $practice_question_id->id;
-			}
-			$question_type_values[$choice] = $question_type_array;
-		}
-		$question->question_type_values = json_encode($question_type_values);
-
-
-		// $ct_checkbox_values = $request->ct_checkbox_values;
-		// $super_category_array = $request->super_category_values;
-		// foreach ($super_category_array as $key => $value) {
-		// 	$super_category_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-		// 	$super_category_array[$key] = $super_category_id->id;
-		// }
-
-		// $is_category_checked_array = array();
-		// foreach ($super_category_array as $key => $super_category_id) {
-		// 	$checkbox_value = $ct_checkbox_values[$key];
-		// 	$array_value['super_category_id'] = $super_category_id;
-		// 	$array_value['checked'] = $checkbox_value;
-		// 	$is_category_checked_array[] = $array_value;
-		// }
-
-
-		// $cat_array = $request->get_category_type_values;
-		// foreach ($cat_array as $key => $value) {
-		// 	$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
-		// 	$cat_array[$key] = $practice_category_id->id;
-		// }
-		
-		// $qt_array = $request->get_question_type_values;
-		// foreach ($qt_array as $key => $value) {
-		// 	$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
-		// 	$qt_array[$key] = $practice_question_id->id;
-		// }
-		
-		// $super_array = $request->super_category;
-		// foreach($super_array as $key => $value){
-		// 	$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-		// }
-		//$question->super_category = $super_id['id'];
-		// $question->super_category = json_encode($super_category_array);
-		// $question->is_category_checked = json_encode($is_category_checked_array);
-
-		// $question->category_type = json_encode($cat_array);
-		// $question->question_type_id = json_encode($qt_array);
+		$question->category_type = json_encode($cat_array);
+		$question->question_type_id = json_encode($qt_array);
 		$question->test_source = $request->test_source;
 		$question->save();
-
 		$test_id = PracticeTestSection::where('id',$request->section_id)->get('testid');
 		$count = PracticeQuestion::where('practice_test_sections_id',$request->section_id)->count();
 		// Score::create([
@@ -312,110 +225,26 @@ class PracticeQuestionController extends Controller
 		// 	$question->tags = $request->tags;
         // }
 
-		$question_type = $request->question_type;
-		if($question_type == 'choiceOneInFive_Odd') {
-			$ans_choices = ['A', 'B', 'C', 'D', 'E'];
-		} else if($question_type == 'choiceOneInFourPass_Odd' || $question_type == 'choiceOneInFour_Odd'){
-			$ans_choices = ['A', 'B', 'C', 'D'];
-		} else if($question_type == 'choiceOneInFour_Even' || $question_type == 'choiceOneInFourPass_Even') {
-			$ans_choices = ['F', 'G', 'H', 'J'];
-		} else if($question_type == 'choiceOneInFive_Even') {
-			$ans_choices = ['F', 'G', 'H', 'J', 'K'];
-		} else if ($question_type == 'choiceMultInFourFill') {
-			if($request->multiChoice == '2') {
-				$ans_choices = ['A'];
-			} else {
-				$ans_choices = ['A', 'B', 'C', 'D'];
-			}
+		$cat_array = $request->get_category_type_values;
+		foreach ($cat_array as $key => $value) {
+			$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
+			$cat_array[$key] = $practice_category_id->id;
 		}
 		
-		$checkbox_values = [];
-		foreach ($ans_choices as $choice) {
-			$ctValue = $request->{"ct_checkbox_values_$choice"};
-			$checkbox_values[$choice] = $ctValue;
+		$qt_array = $request->get_question_type_values;
+		foreach ($qt_array as $key => $value) {
+			$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
+			$qt_array[$key] = $practice_question_id->id;
 		}
-		$question->checkbox_values = json_encode($checkbox_values);
 
-
-		$super_category_values = [];
-		foreach ($ans_choices as $choice) {
-			$categoryValue = $request->{"super_category_values_$choice"};
-
-			$super_category_array = $categoryValue;
-			foreach ($super_category_array as $innerKey => $innerValue) {
-				$super_category_id = SuperCategory::where('title', $innerValue)->orWhere('id', $innerValue)->first();
-				$super_category_array[$innerKey] = $super_category_id->id;
-			}
+		$super_array = $request->super_category;
+		foreach($super_array as $key => $value){
+			$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
+		}
+		$question->super_category = $super_id['id'];
 		
-			$super_category_values[$choice] = $super_category_array;
-		}
-		$question->super_category_values = json_encode($super_category_values);
-
-
-		$category_type_values = [];
-		foreach ($ans_choices as $choice) {
-			$categoryTypeValue = $request->{"get_category_type_values_$choice"};
-
-			$category_type_array = $categoryTypeValue;
-			foreach ($category_type_array as $innerKey => $innerValue) {
-				$practice_category_id = PracticeCategoryType::where('category_type_title', $innerValue)->orWhere('id', $innerValue)->first();
-				$category_type_array[$innerKey] = $practice_category_id->id;
-			}
-			$category_type_values[$choice] = $category_type_array;
-		}
-		$question->category_type_values = json_encode($category_type_values);
-
-
-		$question_type_values = [];
-		foreach ($ans_choices as $choice) {
-			$questionTypeValue = $request->{"get_question_type_values_$choice"};
-
-			$question_type_array = $questionTypeValue;
-			foreach ($question_type_array as $innerKey => $innerValue) {
-				$practice_question_id = QuestionType::where('question_type_title',$innerValue)->orWhere('id', $innerValue)->first();
-				$question_type_array[$innerKey] = $practice_question_id->id;
-			}
-			$question_type_values[$choice] = $question_type_array;
-		}
-		$question->question_type_values = json_encode($question_type_values);
-
-		// $ct_checkbox_values = $request->ct_checkbox_values;
-		// $super_category_array = $request->super_category_values;
-		// foreach ($super_category_array as $key => $value) {
-		// 	$super_category_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-		// 	$super_category_array[$key] = $super_category_id->id;
-		// }
-
-		// $is_category_checked_array = array();
-		// foreach ($super_category_array as $key => $super_category_id) {
-		// 	$checkbox_value = $ct_checkbox_values[$key];
-		// 	$array_value['super_category_id'] = $super_category_id;
-		// 	$array_value['checked'] = $checkbox_value;
-		// 	$is_category_checked_array[] = $array_value;
-		// }
-
-		// $cat_array = $request->get_category_type_values;
-		// foreach ($cat_array as $key => $value) {
-		// 	$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
-		// 	$cat_array[$key] = $practice_category_id->id;
-		// }
-		
-		// $qt_array = $request->get_question_type_values;
-		// foreach ($qt_array as $key => $value) {
-		// 	$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
-		// 	$qt_array[$key] = $practice_question_id->id;
-		// }
-
-		// $super_array = $request->super_category;
-		// foreach($super_array as $key => $value){
-		// 	$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-		// }
-		// $question->super_category = $super_id['id'];
-		// $question->super_category = json_encode($super_category_array);
-		// $question->is_category_checked = json_encode($is_category_checked_array);
-		
-		// $question->category_type = json_encode($cat_array);
-		// $question->question_type_id = json_encode($qt_array);
+		$question->category_type = json_encode($cat_array);
+		$question->question_type_id = json_encode($qt_array);
 
 		$question->save(); 
 		return response()->json(['question_id' => $question->id, 'question_order' => $question->question_order]);
@@ -739,15 +568,6 @@ class PracticeQuestionController extends Controller
 		return response()->json(['success' => true, 'dropdown_list' => $question_type, 'type' => 'question_type']);
 	}
 
-	public function getSuperCategory(){
-		if(isset($_GET['testType']) && !empty($_GET['testType'])){
-			$super_categories = SuperCategory::where('format',$_GET['testType'])->get();
-		} else {
-			$super_categories = SuperCategory::get();
-		}
-		return response()->json(['success' => true, 'dropdown_list' => $super_categories, 'type' => 'super_categories']);
-	}
-
 	//new start
 	public function indexCategoryType()
 	{
@@ -854,7 +674,7 @@ class PracticeQuestionController extends Controller
 		}
 		Score::where('section_id',$request->sectionId)->delete();
 		PracticeTestSection::where('id',$request->sectionId)->delete();	
-		UserAnswers::where('section_id',$request->sectionId)->delete();
+		UserAnswers::where('section_id',$request->sectionId)->delete();																																													
 		return redirect(url('admin/practicetests/create'));
 	}
 
