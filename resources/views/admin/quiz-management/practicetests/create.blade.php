@@ -2291,7 +2291,7 @@
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
 
-                html += `<div class="col-md-2">`;
+                html += `<div class="col-md-2 align-self-start">`;
                 html += `<input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">`;
                 html += `</div>`;
 
@@ -2354,6 +2354,9 @@
         }
 
         async function addNewType(data, disp_option = '') {
+            let button = $(data);
+            button.attr('disabled', true);
+            
             let key = $(data).attr('data-id');
                 key = parseInt(key);
 
@@ -2366,16 +2369,19 @@
             
             if(super_category == '') {
                 toastr.error('Please select a Super category!');
+                button.attr('disabled', false);
                 return false;
             }
 
             if(category_type == '') {
                 toastr.error('Please select a category type!');
+                button.attr('disabled', false);
                 return false;
             }
 
             if(question_type == '') {
                 toastr.error('Please select a question type!');
+                button.attr('disabled', false);
                 return false;
             }
                 
@@ -2386,7 +2392,7 @@
             let html = ``;
             html += `<div class="d-flex input-field align-items-center removeNewType">`;
 
-            html += `<div class="col-md-2">`;
+            html += `<div class="col-md-2 align-self-start">`;
             html += `<input type="checkbox" name="${disp_option}ct_checkbox_${ans_col}" id="${disp_option}ct_checkbox_${ans_col}_${key}">`;
             html += `</div>`;
 
@@ -2441,6 +2447,8 @@
                 placeholder : "Select Question type",
                 maximumSelectionLength: 1
             });
+
+            button.attr('disabled', false);
 
             $(data).attr('data-id', key + 1);
 

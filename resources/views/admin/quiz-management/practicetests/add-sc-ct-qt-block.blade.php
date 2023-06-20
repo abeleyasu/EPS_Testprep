@@ -1,7 +1,7 @@
 <div class="input-container" id="{{ $disp_section }}add_New_Types_{{ $ans_choices }}">
     <div class="d-flex input-field align-items-center">
 
-        <div class="col-md-2">
+        <div class="col-md-2 align-self-start">
             <label class="form-label" for="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}">Concept Correct?</label>
             <input type="checkbox" name="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}" id="{{ $disp_section }}ct_checkbox_{{ $ans_choices }}_0">
         </div>

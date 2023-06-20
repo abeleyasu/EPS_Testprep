@@ -2517,7 +2517,7 @@ aria-hidden="true">
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
 
-                html += `<div class="col-md-2">`;
+                html += `<div class="col-md-2 align-self-start">`;
                 html += `<input type="checkbox" name="${disp_option}edit_ct_checkbox_${ans_col}" id="${disp_option}edit_ct_checkbox_${ans_col}_${key}">`;
                 html += `</div>`;
 
@@ -2581,6 +2581,9 @@ aria-hidden="true">
 
         //new function for add category and question types
         async function addNewType(data, disp_option = '') {
+            let button = $(data);
+            button.attr('disabled', true);
+
             let key = $(data).attr('data-id');
                 key = parseInt(key);
 
@@ -2593,16 +2596,19 @@ aria-hidden="true">
           
             if(super_category == '') {
                 toastr.error('Please select a Super category!');
+                button.attr('disabled', false);
                 return false;
             }
 
             if(category_type == '') {
                 toastr.error('Please select a category type!');
+                button.attr('disabled', false);
                 return false;
             }
 
             if(question_type == '') {
                 toastr.error('Please select a question type!');
+                button.attr('disabled', false);
                 return false;
             }
 
@@ -2613,7 +2619,7 @@ aria-hidden="true">
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewType">`;
 
-                html += `<div class="col-md-2">`;
+                html += `<div class="col-md-2 align-self-start">`;
                 html += `<input type="checkbox" name="${disp_option}ct_checkbox_${ans_col}" id="${disp_option}ct_checkbox_${ans_col}_${key}">`;
                 html += `</div>`;
 
@@ -2668,6 +2674,7 @@ aria-hidden="true">
                 placeholder : "Select Question type",
                 maximumSelectionLength: 1
             });
+            button.attr('disabled', false);
 
             $(data).attr('data-id', key + 1);
         }
@@ -5026,35 +5033,6 @@ function practQuestioEdit(id){
                             });
                         }
                     }
-
-                    // $(questiontypeArr).each((i,v) => {
-                    //     $(`#search-input_${i}`).val(v);
-                    //     $(`#search-input_${i}`).val(v);
-                    // });
-
-
-
-                    
-
-                    // $(categorytypeArr).each((i,v) => {
-                    //     $(`#category_type_${i}`).val(v);
-                    //     $(`#category_type_${i}`).trigger('change');
-                    // });
-    
-                    // $(questiontypeArr).each((i,v) => {
-                    //     $(`#search-input_${i}`).val(v);
-                    //     $(`#search-input_${i}`).trigger('change');
-                    // });
-
-                    // $(super_categoryArr).each((i,v) => {
-                    //     $(`#edit_super_category_${i}`).val(v);
-                    //     $(`#edit_super_category_${i}`).trigger('change');
-                    // });
-
-                    // $(checkedValuesArr).each((i,v) => {
-                    //     $(`#edit_ct_checkbox_${i}`).prop('checked', v == "1");
-                    // });
-                // }, 500);
 
                 $.ajax({
                     data:{
