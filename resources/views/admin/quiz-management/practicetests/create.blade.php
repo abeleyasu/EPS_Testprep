@@ -2260,7 +2260,7 @@
         }
         
         //start new function for edit
-        async function addNewTypes(ans_col, data, type, disp_option = '') {
+        async function addNewTypes(ans_col, data, type, disp_option = '', super_cat_option = '', cat_type_option = '', question_type_option = '') {
             let key = null;
             if(type != 'null' && type == 'repet') {
                 key = parseInt(data);
@@ -2288,6 +2288,17 @@
                 }
             }
 
+            let testType = $('#format').val();
+            if(super_cat_option == '') {
+                super_cat_option = await dropdown_lists(`/admin/getSuperCategory?testType=${testType}`);
+            }
+            if(cat_type_option == '') {
+                cat_type_option = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${testType}`);
+            }
+            if(question_type_option == '') {
+                question_type_option = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${testType}`);
+            }
+
             let html = ``;
                 html += `<div class="d-flex input-field align-items-center removeNewTypes">`;
 
@@ -2298,7 +2309,8 @@
                 html += `<div class="col-md-3 mb-2 me-2 rating-tag">`;
                 html += `<div class="d-flex align-items-center">`;
                 html += `<select class="js-select2 select superCategory" id="${disp_option}edit_super_category_${ans_col}_${key}" name="${disp_option}edit_super_category_${ans_col}" onchange="insertSuperCategory(this)" multiple>`;
-                html += preGetSuperCategory;
+                // html += preGetSuperCategory;
+                html += super_cat_option;
                 html += `</select>`;
                 html += `</div>`;
                 html += `</div>`;
@@ -2306,14 +2318,16 @@
                 html += `<div class="mb-2 col-md-3 me-2 category-custom">`;                
                 html += `<div class="d-flex align-items-center">`;                
                 html += `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
-                html += preGetPracticeCategoryType;
+                // html += preGetPracticeCategoryType;
+                html += cat_type_option;
                 html += `</select>`;  
                 html += `</div>`;                
                 html += `</div>`;                
                 html += `<div class="mb-2 col-md-3 add_question_type_select">`; 
                 html += `<div class="d-flex align-items-center">`;                
                 html += `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
-                html += preGetPracticeQuestionType;
+                // html += preGetPracticeQuestionType;
+                html += question_type_option;
                 html += `</select>`;  
                 html += `</div>`;                
                 html += `</div>`; 
@@ -4227,164 +4241,204 @@
 function practQuestioEdit(id){
     is_edit = true;
     clearModel();
+
+    var test_format_type_val = jQuery('#format').val();
     $.ajax({
-        data:{
-            'question_id':id,
+        data: {
+            'format': test_format_type_val,
             '_token': $('input[name="_token"]').val()
         },
-        url: '{{route("getPracticeQuestionById")}}',
+        url: "{{ route('addDropdownOption') }}",
         method: 'post',
         success: (res) => {
-            if(res.question.length>0){
-                // console.log(res);
-                // return 0;
-                var result = res.question[0];
-                // let categorytypeArr = JSON.parse(result.category_type);
-                // let questiontypeArr = JSON.parse(result.question_type_id);
+            let super_cat_option = ``;
+            $.each(res.super,function(i,v){
+                super_cat_option += `<option value=${v['id']}>${v['title']}</option>`;
+            });
 
-                let questionType = result.type;
-                let disp_section;
-                if(questionType == 'choiceOneInFive_Odd') {
-                    disp_section = 'oneInFiveOdd_';
-                } else if(questionType == 'choiceOneInFourPass_Odd') {
-                    disp_section = '';
-                } else if(questionType == 'choiceOneInFour_Odd') {
-                    disp_section = 'oneInFourOdd_';
-                } else if(questionType == 'choiceOneInFour_Even') {
-                    disp_section = 'oneInFourEven_';
-                } else if(questionType == 'choiceOneInFive_Even') {
-                    disp_section = 'oneInFiveEven_';
-                } else if(questionType == 'choiceOneInFourPass_Even') {
-                    disp_section = 'oneInFourPassEven_';
-                }  else if (questionType == 'choiceMultInFourFill') {
-                    ans_choices = ['A', 'B', 'C', 'D'];
-                    if(result.multiChoice == '1') {
-                        disp_section = 'cb_choiceMultInFourFill_';
-                    } else if(result.multiChoice == '3') {
-                        disp_section = 'choiceMultInFourFill_';
-                    } else if(result.multiChoice == '2') {
-                        disp_section = 'fc_';
-                    }
-                }
+            let cat_type_option = ``;
+            $.each(res.category,function(i,v){
+                cat_type_option += `<option value=${v['id']}>${v['category_type_title']}</option>`;
+            });
 
-                let checkbox_values_Arr = JSON.parse(result.checkbox_values);
-                let super_category_values_Arr = JSON.parse(result.super_category_values);
-                let category_type_values_Arr = JSON.parse(result.category_type_values);
-                let question_type_values_Arr = JSON.parse(result.question_type_values);
+            let question_type_option = ``;
+            $.each(res.questionType,function(i,v){
+                question_type_option += `<option value=${v['id']}>${v['question_type_title']}</option>`;
+            });
 
-                for (let key in super_category_values_Arr) {
-                    if (super_category_values_Arr.hasOwnProperty(key)) {
-                        let values = super_category_values_Arr[key];
-                        for (let index = 1; index < super_category_values_Arr[key].length; index++) {
-                            addNewTypes(key, index,'repet', disp_section);
-                        }
-                    }
-                }
+            const sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_', 'oneInFourEven_', 'oneInFourPassEven_', 'choiceMultInFourFill_', 'cb_choiceMultInFourFill_']
+            const answers = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K' ];
+            sections.forEach(section => {
+                answers.forEach(answer => {
+                    $(`select[name="${section}edit_category_type_${answer}"`).html('');
+                    $(`select[name="${section}edit_super_category_${answer}"`).html('');
+                    $(`select[name="${section}edit_search-input_${answer}"`).html('');
 
-                $('#editQuestionOrder').val(result.question_order);
-                $('#editCurrentModelQueId').val(result.id);
-                $('#quesFormat').val(result.format);
-                $('.sectionAddId').val(result.practice_test_sections_id);
-                $('#edittestSectionTypeRead').val(result.type);
-                $('#new_question_type_select').val(result.question_type_id);
-                $('#category_type').val(result.category_type);
-                $('#editSelectedAnswerType').val(result.type);
-                $('#diff_rating_edit').val(result.diff_rating).trigger('change');
-                // $('#super_category_edit').val(result.super_category).trigger('change');
-                $('#question_tags_edit').val(result.tags).trigger('change');
-                CKEDITOR.instances['js-ckeditor-edit-addQue'].setData(result.title);
-                let section_type = $(`.selectedSection_${result.practice_test_sections_id}`).val();
-                $('#section_type').val(section_type);
-                
-                // $('#question_tags_edit').val(result.tags).trigger('change');
-                
-                $(".passNumber").val(result.passage_number).change();
-                // for (let index = 1; index < categorytypeArr.length; index++) { 
-                //     addNewTypes(index,'repet');
-                // }
-
-                //new
-                if(result.passages_id != null){
-                    $('input[name="passageRequired_2"]').prop('checked', true);
-                    $('#edit_passage_number').prop("disabled", false);
-                    $('select[name="editPassagesType"]').prop("disabled", false);
-                } else {
-                    $('input[name="passageRequired_2"]').prop('checked', false);
-                    $('#edit_passage_number').prop("disabled", true);
-                    $('select[name="editPassagesType"]').prop("disabled", true);
-                }
-
-                // setTimeout(function(){ 
-                    //For checkbox
-                    for (let key in checkbox_values_Arr) {
-                        if (checkbox_values_Arr.hasOwnProperty(key)) {
-                            $(checkbox_values_Arr[key]).each((i,v) => {
-                                $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
-                            });
-                        }
-                    }
-
-
-                    //For super category
-                    for (let key in super_category_values_Arr) {
-                        if (super_category_values_Arr.hasOwnProperty(key)) {
-                            $(super_category_values_Arr[key]).each((i,v) => {
-                                $(`#${disp_section}edit_super_category_${key}_${i}`).val(v);
-                                $(`#${disp_section}edit_super_category_${key}_${i}`).trigger('change');
-                            });
-                        }
-                    }
-
-                    //For Category type
-                    for (let key in category_type_values_Arr) {
-                        if (category_type_values_Arr.hasOwnProperty(key)) {
-                            $(category_type_values_Arr[key]).each((i,v) => {
-                                $(`#${disp_section}edit_category_type_${key}_${i}`).val(v);
-                                $(`#${disp_section}edit_category_type_${key}_${i}`).trigger('change');
-                            });
-                        }
-                    }
-
-                    //For Question Type
-                    for (let key in question_type_values_Arr) {
-                        if (question_type_values_Arr.hasOwnProperty(key)) {
-                            $(question_type_values_Arr[key]).each((i,v) => {
-                                $(`#${disp_section}edit_search-input_${key}_${i}`).val(v);
-                                $(`#${disp_section}edit_search-input_${key}_${i}`).trigger('change');
-                            });
-                        }
-                    }
-                // }, 1000);
-
-                // $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
-                
-
-                $.ajax({
-                    data:{
-                        'format': result.format,
-                        '_token': $('input[name="_token"]').val()
-                    },
-                    url: '{{route("getPracticePassage")}}',
-                    method: 'post',
-                    success: (passRes) => {
-                        var opt = '';
-                        $.each(passRes, function( key, val){
-                            if(val.id == passRes.passages_id){
-                                opt +='<option value="'+val.id+'" selected="selected">'+val.title+'</option>';
-                            }else{
-                                opt +='<option value="'+val.id+'">'+val.title+'</option>';
-                            }       
-                        });
-                        $('.editPassagesType').html(opt);
-                        $("select[name=editPassagesType]").val(result.passages_id).trigger('change');
-                    }
+                    $(`select[name="${section}edit_super_category_${answer}"`).append(super_cat_option);
+                    $(`select[name="${section}edit_category_type_${answer}"`).append(cat_type_option);
+                    $(`select[name="${section}edit_search-input_${answer}"`).append(question_type_option);
                 });
-                getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format ,result.multiChoice);
-            }
-            $('#editQuestionMultiModal').modal('show');
-            $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
-        } 
-    }); 
+            });
+
+            //
+            $.ajax({
+                data:{
+                    'question_id':id,
+                    '_token': $('input[name="_token"]').val()
+                },
+                url: '{{route("getPracticeQuestionById")}}',
+                method: 'post',
+                success: (res) => {
+                    if(res.question.length>0){
+                        var result = res.question[0];
+
+                        let questionType = result.type;
+                        let disp_section;
+                        if(questionType == 'choiceOneInFive_Odd') {
+                            disp_section = 'oneInFiveOdd_';
+                        } else if(questionType == 'choiceOneInFourPass_Odd') {
+                            disp_section = '';
+                        } else if(questionType == 'choiceOneInFour_Odd') {
+                            disp_section = 'oneInFourOdd_';
+                        } else if(questionType == 'choiceOneInFour_Even') {
+                            disp_section = 'oneInFourEven_';
+                        } else if(questionType == 'choiceOneInFive_Even') {
+                            disp_section = 'oneInFiveEven_';
+                        } else if(questionType == 'choiceOneInFourPass_Even') {
+                            disp_section = 'oneInFourPassEven_';
+                        }  else if (questionType == 'choiceMultInFourFill') {
+                            ans_choices = ['A', 'B', 'C', 'D'];
+                            if(result.multiChoice == '1') {
+                                disp_section = 'cb_choiceMultInFourFill_';
+                            } else if(result.multiChoice == '3') {
+                                disp_section = 'choiceMultInFourFill_';
+                            } else if(result.multiChoice == '2') {
+                                disp_section = 'fc_';
+                            }
+                        }
+
+                        let checkbox_values_Arr = JSON.parse(result.checkbox_values);
+                        let super_category_values_Arr = JSON.parse(result.super_category_values);
+                        let category_type_values_Arr = JSON.parse(result.category_type_values);
+                        let question_type_values_Arr = JSON.parse(result.question_type_values);
+
+                        for (let key in super_category_values_Arr) {
+                            if (super_category_values_Arr.hasOwnProperty(key)) {
+                                let values = super_category_values_Arr[key];
+                                for (let index = 1; index < super_category_values_Arr[key].length; index++) {
+                                    addNewTypes(key, index,'repet', disp_section, super_cat_option, cat_type_option, question_type_option);
+                                }
+                            }
+                        }
+
+                        $('#editQuestionOrder').val(result.question_order);
+                        $('#editCurrentModelQueId').val(result.id);
+                        $('#quesFormat').val(result.format);
+                        $('.sectionAddId').val(result.practice_test_sections_id);
+                        $('#edittestSectionTypeRead').val(result.type);
+                        $('#new_question_type_select').val(result.question_type_id);
+                        $('#category_type').val(result.category_type);
+                        $('#editSelectedAnswerType').val(result.type);
+                        $('#diff_rating_edit').val(result.diff_rating).trigger('change');
+                        // $('#super_category_edit').val(result.super_category).trigger('change');
+                        $('#question_tags_edit').val(result.tags).trigger('change');
+                        CKEDITOR.instances['js-ckeditor-edit-addQue'].setData(result.title);
+                        let section_type = $(`.selectedSection_${result.practice_test_sections_id}`).val();
+                        $('#section_type').val(section_type);
+                        
+                        // $('#question_tags_edit').val(result.tags).trigger('change');
+                        
+                        $(".passNumber").val(result.passage_number).change();
+                        // for (let index = 1; index < categorytypeArr.length; index++) { 
+                        //     addNewTypes(index,'repet');
+                        // }
+
+                        //new
+                        if(result.passages_id != null){
+                            $('input[name="passageRequired_2"]').prop('checked', true);
+                            $('#edit_passage_number').prop("disabled", false);
+                            $('select[name="editPassagesType"]').prop("disabled", false);
+                        } else {
+                            $('input[name="passageRequired_2"]').prop('checked', false);
+                            $('#edit_passage_number').prop("disabled", true);
+                            $('select[name="editPassagesType"]').prop("disabled", true);
+                        }
+
+                        // setTimeout(function(){ 
+                            //For checkbox
+                            for (let key in checkbox_values_Arr) {
+                                if (checkbox_values_Arr.hasOwnProperty(key)) {
+                                    $(checkbox_values_Arr[key]).each((i,v) => {
+                                        $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
+                                    });
+                                }
+                            }
+
+
+                            //For super category
+                            for (let key in super_category_values_Arr) {
+                                if (super_category_values_Arr.hasOwnProperty(key)) {
+                                    $(super_category_values_Arr[key]).each((i,v) => {
+                                        $(`#${disp_section}edit_super_category_${key}_${i}`).val(v);
+                                        $(`#${disp_section}edit_super_category_${key}_${i}`).trigger('change');
+                                    });
+                                }
+                            }
+
+                            //For Category type
+                            for (let key in category_type_values_Arr) {
+                                if (category_type_values_Arr.hasOwnProperty(key)) {
+                                    $(category_type_values_Arr[key]).each((i,v) => {
+                                        $(`#${disp_section}edit_category_type_${key}_${i}`).val(v);
+                                        $(`#${disp_section}edit_category_type_${key}_${i}`).trigger('change');
+                                    });
+                                }
+                            }
+
+                            //For Question Type
+                            for (let key in question_type_values_Arr) {
+                                if (question_type_values_Arr.hasOwnProperty(key)) {
+                                    $(question_type_values_Arr[key]).each((i,v) => {
+                                        $(`#${disp_section}edit_search-input_${key}_${i}`).val(v);
+                                        $(`#${disp_section}edit_search-input_${key}_${i}`).trigger('change');
+                                    });
+                                }
+                            }
+                        // }, 1000);
+
+                        // $('.edit-plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
+                        
+
+                        $.ajax({
+                            data:{
+                                'format': result.format,
+                                '_token': $('input[name="_token"]').val()
+                            },
+                            url: '{{route("getPracticePassage")}}',
+                            method: 'post',
+                            success: (passRes) => {
+                                var opt = '';
+                                $.each(passRes, function( key, val){
+                                    if(val.id == passRes.passages_id){
+                                        opt +='<option value="'+val.id+'" selected="selected">'+val.title+'</option>';
+                                    }else{
+                                        opt +='<option value="'+val.id+'">'+val.title+'</option>';
+                                    }       
+                                });
+                                $('.editPassagesType').html(opt);
+                                $("select[name=editPassagesType]").val(result.passages_id).trigger('change');
+                            }
+                        });
+                        getAnswerOptions(result.type, result.answer, result.fill, result.fillType, result.answer_content, result.answer_exp , result.format ,result.multiChoice);
+                    }
+                    $('#editQuestionMultiModal').modal('show');
+                    $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
+                } 
+            }); 
+            //
+        }
+    });
+    
 }
 
 
@@ -5259,12 +5313,12 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                     url: "{{ route('addDropdownOption') }}",
                     method: 'post',
                     success: (res) => {
-                        $('select[name="super_category_create"').html('');
-                        $('select[name="edit_super_category"').html('');
-                        $('select[name="category_type"').html('');
-                        $('select[name="edit_category_type"').html('');
-                        $('select[name="search-input"').html('');
-                        $('select[name="edit_search-input"').html('');
+                        // $('select[name="super_category_create"').html('');
+                        // $('select[name="edit_super_category"').html('');
+                        // $('select[name="category_type"').html('');
+                        // $('select[name="edit_category_type"').html('');
+                        // $('select[name="search-input"').html('');
+                        // $('select[name="edit_search-input"').html('');
 
 
                         let super_option = ``;
@@ -5292,19 +5346,19 @@ function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content
                                 $(`select[name="${disp_section}super_category_create_${ans_choice}"`).html('');
                                 $(`select[name="${disp_section}add_search-input_A${ans_choice}"`).html('');
 
-                                $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).html('');
-                                $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).html('');
-                                $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).html('');
+                                // $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).html('');
+                                // $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).html('');
+                                // $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).html('');
 
 
                                 $(`select[name="${disp_section}super_category_create_${ans_choice}"`).append(super_option);
-                                $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).append(super_option);
+                                // $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).append(super_option);
 
                                 $(`select[name="${disp_section}add_category_type_${ans_choice}"`).append(category_option);
-                                $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).append(category_option);
+                                // $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).append(category_option);
 
                                 $(`select[name="${disp_section}add_search-input_${ans_choice}"`).append(questionType_option);
-                                $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).append(questionType_option);
+                                // $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).append(questionType_option);
                             });
                         });
 

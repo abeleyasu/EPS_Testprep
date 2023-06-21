@@ -86,7 +86,7 @@ class PracticeQuestionController extends Controller
 			$ans_choices = ['A', 'B', 'C', 'D', 'E'];
 		} else if($question_type == 'choiceOneInFourPass_Odd' || $question_type == 'choiceOneInFour_Odd'){
 			$ans_choices = ['A', 'B', 'C', 'D'];
-		} else if($question_type == 'choiceOneInFour_Even') {
+		} else if($question_type == 'choiceOneInFour_Even' || $question_type == 'choiceOneInFourPass_Even') {
 			$ans_choices = ['F', 'G', 'H', 'J'];
 		} else if($question_type == 'choiceOneInFive_Even') {
 			$ans_choices = ['F', 'G', 'H', 'J', 'K'];
