@@ -52,10 +52,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\InitialCollegeList\InititalCollegeListController;
 
-// Remove
-// use App\Http\Controllers\InitialCollegeList\AcademicStatisticsController;
-// use App\Http\Controllers\InitialCollegeList\CollegeSearchResultsController;
-// use App\Http\Controllers\InitialCollegeList\SelectingSearchParamsController;
+use App\Http\Controllers\UserSettingsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Cronjob\SendReminder;
 use App\Http\Controllers\Cronjob\FetchCollegeInformation;
@@ -260,6 +257,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/practice-tests/{testId}/{id}', [TestPrepController::class, 'resetSection'])->name('reset_section');
         Route::get('/practice-tests-reset/{id}/review-page', [TestPrepController::class, 'resetTest'])->name('reset_test');
 
+        Route::patch('setting/update', [UserSettingsController::class, 'updateUserSettings'])->name('update-user-settings');
+
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
         Route::any('/reminders', [UserController::class, 'reminders'])->name('user.reminders');
         Route::any('/reminders-submit', [UserController::class, 'store'])->name('user.reminders.submit');
@@ -340,14 +339,11 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
             Route::get('/college-application-deadline/list', [CollegeApplicationDeadlineController::class, 'getApplicationDeadlineData'])->name('getApplicationDeadlineData');
             Route::get('/college-application-deadline/{id}', [CollegeApplicationDeadlineController::class, 'getSingleApplicationData'])->name('getSingleApplicationData');
-
-
             Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
             Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
             Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
             Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
-
 
 
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {

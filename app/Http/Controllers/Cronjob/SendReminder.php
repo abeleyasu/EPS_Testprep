@@ -12,57 +12,91 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Twilio\Rest\Client;
+use App\Models\UserSettings;
+use App\Models\CollegeSearchAdd;
 
 class SendReminder extends Controller
 {
     public function index(Request $request)
     {
-        $reminders = Reminder::where('enabled', 1)
-                    ->where('end_date', '>=', Carbon::now())
-                    ->get();
-        foreach ($reminders as $reminder) {
-            Log::channel('reminder')->info("reminder = $reminder");
-
-            $frequency = strtolower($reminder->frequency);
-            $method = strtolower($reminder->method);
-            $user_id = $reminder->user_id;
-            $user = User::find($user_id);
-
-            $startDate = Carbon::parse($reminder->start_date);
-            $endDate = Carbon::parse($reminder->end_date);
-            
-            $currentDate = $startDate->copy();
-            $currentTime = Carbon::createFromFormat('H:i:s', $reminder->when_time);
-
-            while ($currentDate <= $endDate) {
-
-                $currentDateTime = $currentDate->copy()->setTime($currentTime->hour, $currentTime->minute, 0);
-                Log::channel('reminder')->info("currentDateTime = ".$currentDateTime->format('Y-m-d H:i'));
-                Log::channel('reminder')->info("Carbon now = ".Carbon::now()->format('Y-m-d H:i'));
-                //echo "currentDateTime = ".$currentDateTime->format('Y-m-d H:i')."<br />";
-                //echo "Carbon now = ".Carbon::now()->format('Y-m-d H:i')."<br /><br />";
-
-                if (Carbon::now()->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
-                    if($method == 'text' || $method == 'both') {
-                        $this->sendSmsReminder($reminder, $user);
+        try {
+            $reminders = Reminder::where('enabled', 1)->where('end_date', '>=', Carbon::now()->format('Y-m-d'))->get();
+            foreach ($reminders as $reminder) {
+                $user_settings = UserSettings::where('user_id', $reminder->user_id)->first();
+                if ($user_settings->application_deadline_notification == 1 && $reminder->type == 'application_deadline' && $reminder->is_send == 0) {
+                    $college = CollegeSearchAdd::where('id', $reminder->college_id)->first();
+                    if ($college->is_active == 1) {
+                        Log::channel('reminder')->info("Application deadline notification");
+                        if ($reminder->start_date == Carbon::now()->format('Y-m-d')) { 
+                            $this->sendOneTimeNotification($reminder);
+                        }
                     }
-
-                    if($method == 'email' || $method == 'both') {
-                        $this->sendEmailReminder($reminder, $user);
-                    }
-                    break;
+                } else if ($reminder->type == 'custom') {
+                    $this->createReminder($reminder);
                 }
-
-                if ($frequency == 'daily') {
-                    $currentDate->addDay();
-                } elseif ($frequency == 'weekly') {
-                    $currentDate->addWeek();
-                } elseif ($frequency == 'monthly') {
-                    $currentDate->addMonth();
-                }
-                #echo "<br/>";
             }
+        } catch (\Exception $e) {
+            Log::channel('reminder')->error("Error: " . $e->getMessage());
         }
+    }
+
+    public function createReminder($reminder) {
+        Log::channel('reminder')->info("reminder = $reminder");
+
+        $frequency = strtolower($reminder->frequency);
+        $method = strtolower($reminder->method);
+        $user_id = $reminder->user_id;
+        $user = User::find($user_id);
+
+        $startDate = Carbon::parse($reminder->start_date);
+        $endDate = Carbon::parse($reminder->end_date);
+        
+        $currentDate = $startDate->copy();
+        $currentTime = Carbon::createFromFormat('H:i:s', $reminder->when_time);
+
+        while ($currentDate <= $endDate) {
+
+            $currentDateTime = $currentDate->copy()->setTime($currentTime->hour, $currentTime->minute, 0);
+            Log::channel('reminder')->info("currentDateTime = ".$currentDateTime->format('Y-m-d H:i'));
+            Log::channel('reminder')->info("Carbon now = ".Carbon::now()->format('Y-m-d H:i'));
+            //echo "currentDateTime = ".$currentDateTime->format('Y-m-d H:i')."<br />";
+            //echo "Carbon now = ".Carbon::now()->format('Y-m-d H:i')."<br /><br />";
+
+            if (Carbon::now()->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
+                if($method == 'text' || $method == 'both') {
+                    $this->sendSmsReminder($reminder, $user);
+                }
+
+                if($method == 'email' || $method == 'both') {
+                    $this->sendEmailReminder($reminder, $user);
+                }
+                break;
+            }
+
+            if ($frequency == 'daily') {
+                $currentDate->addDay();
+            } elseif ($frequency == 'weekly') {
+                $currentDate->addWeek();
+            } elseif ($frequency == 'monthly') {
+                $currentDate->addMonth();
+            }
+            #echo "<br/>";
+        }
+    }
+
+    public function sendOneTimeNotification($reminder) {
+        Log::channel('reminder')->info("reminder = $reminder");
+        $user = User::find( $reminder->user_id);
+        $method = strtolower($reminder->method);
+        if($method == 'text' || $method == 'both') {
+            $this->sendSmsReminder($reminder, $user);
+        }
+
+        if($method == 'email' || $method == 'both') {
+            $this->sendEmailReminder($reminder, $user);
+        }
+        $reminder->is_send = 1;
+        $reminder->save();
     }
 
     private function sendEmailReminder($reminder, $user)

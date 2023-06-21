@@ -288,7 +288,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             `
             $('#' + elementid).append(content)
             $('.date-own').datepicker({
-                format: 'mm-dd-yyyy',
+                format: 'yyyy-mm-dd',
                 startDate: '-3d',
                 autoclose: true
             });

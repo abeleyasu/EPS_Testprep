@@ -8,7 +8,6 @@
             <div class="bg-black-10">
                 <div class="content content-full text-center">
                     <br>
-                    {{-- text-white --}}
                     <h1 class="h2 mb-0">Reminders</h1>
                     <br>
                 </div>
@@ -23,16 +22,16 @@
                     </div>
                 </div>
                 <div class="block-content bg-white pb-4">
-                    <!-- <div class="mb-5">
+                    <div class="mb-5">
                         <h4 class="fw-normal border-bottom pb-2 mb-3">Global Notification</h4>
                         <div class="mb-2">
                             <div class="space-x-1">
-                                <input class="form-check-input" type="checkbox" value="" id="example-checkbox-inline1" name="example-checkbox-inline1" checked="">
-                                <label class="form-check-label fw-bold" for="example-checkbox-inline1">Application Deadline Reminders</label>
+                                <input class="form-check-input user-settings" type="checkbox" value="" id="application_deadline_notification" name="application_deadline_notification" @if($user_settings->application_deadline_notification) checked @endif>
+                                <label class="form-check-label fw-bold" for="application_deadline_notification">Application Deadline Reminders</label>
                             </div>
                             <div class="fw-light fs-6 text-muted">Enables or disables all columns deadline reminders</div>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="mb-3">
                         <h4 class="fw-normal border-bottom pb-2 mb-3">Custom Notification</h4>
                         <table class="table table-bordered table-vcenter" id="reminderTable">
@@ -42,6 +41,7 @@
                                     <th class="text-center" >Type</th>
                                     <th class="text-center" >Frequency</th>
                                     <th class="text-center" >Method</th>
+                                    <th class="text-center">Location</th>
                                     <th class="text-center" >When</th>
                                     <th class="text-center" >Starts</th>
                                     <th class="text-center" >End</th>
@@ -82,6 +82,14 @@
                                             </select>
                                         </td>
                                         <td>
+                                            <input type="text" class="form-control @error('location') is-invalid error @enderror" id="location_{{ $reminder->id }}" name="location_{{ $reminder->id }}" placeholder="location" value="{{ $reminder->location }}">
+                                            @error('location')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
                                             <input type="text" class="js-flatpickr form-control" id="when_time_{{ $reminder->id }}" name="when_time_{{ $reminder->id }}"  data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ $reminder->when_time }}" >
                                         </td>
                                         <td>
@@ -108,103 +116,83 @@
                                     @csrf
                                     <tr>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <input type="text" class="form-control @error('reminder_name') is-invalid error @enderror" id="reminder_name" name="reminder_name" placeholder="Name of Reminder" autocomplete="_off" value="{{ old('reminder_name') ? old('reminder_name') : '' }}" >
-                                                    @error('reminder_name')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <input type="text" class="form-control @error('reminder_name') is-invalid error @enderror" id="reminder_name" name="reminder_name" placeholder="Name of Reminder" autocomplete="_off" value="{{ old('reminder_name') ? old('reminder_name') : '' }}" >
+                                            @error('reminder_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <select class="js-select2 form-select single-select2-class @error('reminder_type_id') is-invalid error @enderror" name="reminder_type_id" id="reminder_type_id" style="width: 100%;" data-placeholder="Select Type" multiple="multiple"  >
-                                                        <option value="">Select Type</option>
-                                                        @foreach($reminderTypes as $reminderType)
-                                                            <option value="{{ $reminderType->id}}" {{ old('reminder_type_id') == $reminderType->id ? 'selected' : '' }}>{{$reminderType->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('reminder_type_id')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <select class="js-select2 form-select single-select2-class @error('reminder_type_id') is-invalid error @enderror" name="reminder_type_id" id="reminder_type_id" style="width: 100%;" data-placeholder="Select Type" multiple="multiple"  >
+                                                <option value="">Select Type</option>
+                                                @foreach($reminderTypes as $reminderType)
+                                                    <option value="{{ $reminderType->id}}" {{ old('reminder_type_id') == $reminderType->id ? 'selected' : '' }}>{{$reminderType->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('reminder_type_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <select class="js-select2 form-select @error('frequency') is-invalid error @enderror" name="frequency" id="frequency" style="width: 100%;" data-placeholder="Select frequency"  >
-                                                        <option value="">Select</option>
-                                                        @foreach($reminders_frequency as $key => $frequency)
-                                                            <option value="{{ $frequency }}" @if(old('frequency') == $frequency) selected @endif> {{ $frequency }} </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('frequency')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <select class="js-select2 form-select @error('frequency') is-invalid error @enderror" name="frequency" id="frequency" style="width: 100%;" data-placeholder="Select frequency"  >
+                                                <option value="">Select</option>
+                                                @foreach($reminders_frequency as $key => $frequency)
+                                                    <option value="{{ $frequency }}" @if(old('frequency') == $frequency) selected @endif> {{ $frequency }} </option>
+                                                @endforeach
+                                            </select>
+                                            @error('frequency')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <select class="js-select2 form-select @error('method') is-invalid error @enderror" name="method" id="method" style="width: 100%;" data-placeholder="Select method"  >
-                                                        <option value="">Select</option>
-                                                        @foreach ($methods as $method)
-                                                            <option value="{{ $method }}" @if(old('method') == $method) selected @endif>{{ $method }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('method')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <select class="js-select2 form-select @error('method') is-invalid error @enderror" name="method" id="method" style="width: 100%;" data-placeholder="Select method"  >
+                                                <option value="">Select</option>
+                                                @foreach ($methods as $method)
+                                                    <option value="{{ $method }}" @if(old('method') == $method) selected @endif>{{ $method }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('method')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <input type="text" class="js-flatpickr form-control @error('when_time') is-invalid error @enderror" id="when_time" name="when_time" placeholder="When Time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ old('when_time') ? old('when_time') : '' }}">
-                                                    @error('when_time')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <input type="text" class="form-control @error('location') is-invalid error @enderror" id="location" name="location" placeholder="location" value="{{ old('location') ? old('location') : '' }}">
+                                            @error('location')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <input type="text" class="js-flatpickr form-control error @error('start_date') is-invalid @enderror" id="start_date" name="start_date" placeholder="Start Date" value="{{ old('start_date') ? old('start_date') : '' }}">
-                                                    @error('start_date')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <input type="text" class="js-flatpickr form-control @error('when_time') is-invalid error @enderror" id="when_time" name="when_time" placeholder="When Time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ old('when_time') ? old('when_time') : '' }}">
+                                            @error('when_time')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <input type="text" class="js-flatpickr form-control @error('end_date') is-invalid error @enderror" id="end_date" name="end_date" placeholder="End Date" value="{{ old('end_date') ? old('end_date') : '' }}">
-                                                    @error('end_date')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <input type="text" class="js-flatpickr form-control error @error('start_date') is-invalid @enderror" id="start_date" name="start_date" placeholder="Start Date" value="{{ old('start_date') ? old('start_date') : '' }}">
+                                            @error('start_date')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="js-flatpickr form-control @error('end_date') is-invalid error @enderror" id="end_date" name="end_date" placeholder="End Date" value="{{ old('end_date') ? old('end_date') : '' }}">
+                                            @error('end_date')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
                                         </td>
                                         <td class="text-center">
                                             <div class="row">
@@ -437,5 +425,25 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+
+        $('.user-settings').on('change', function (e) {
+            $.ajax({
+                url: "{{ route('update-user-settings') }}",
+                method: "PATCH",
+                data: {
+                    [e.target.name]: e.target.checked ? 1 : 0
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done((response) => {
+                if (response.success) {
+                    toastr.success(response.message);
+                } else {
+                    $('#' + e.target.id).prop('checked', e.target.checked ? false : true);
+                    toastr.error(response.message);
+                }
+            })
+        })
     </script>
 @endsection

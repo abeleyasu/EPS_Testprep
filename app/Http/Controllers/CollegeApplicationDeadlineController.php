@@ -8,6 +8,11 @@ use App\Models\CollegeInformation;
 use App\Models\CollegeDetails;
 use App\Models\CollegeList;
 use App\Models\CollegeSearchAdd;
+use App\Models\Reminder;
+use App\Models\ReminderType;
+use App\Models\CalendarEvent;
+use App\Models\UserCalendar;
+use Carbon\Carbon;
 
 class CollegeApplicationDeadlineController extends Controller
 {
@@ -108,6 +113,7 @@ class CollegeApplicationDeadlineController extends Controller
         $data = $request->all();
         $data['user_id'] = Auth::id();
         $college = CollegeDetails::create($data);
+        $this->setReminderAndAddIntoCalendor($data);
     }
 
     public function edit($request) {
@@ -154,6 +160,8 @@ class CollegeApplicationDeadlineController extends Controller
 
         // dd($data);
         $college = CollegeDetails::where('id', $request->college_detail_id)->update($data);
+
+        $this->setReminderAndAddIntoCalendor($request->college_detail_id);
     }
 
     public function college_application_save(Request $request)
@@ -186,8 +194,73 @@ class CollegeApplicationDeadlineController extends Controller
         return "success";
     }
 
-    public function destroy($id)
-    {
-        //
+    public function modify($str) {
+        return ucwords(str_replace("_", " ", $str));
+    }
+
+    public function setReminderAndAddIntoCalendor($collegeAddId) {
+        $college = CollegeDetails::where('id', $collegeAddId)->with(['college_details'])->first();
+        $fields = ['admissions_deadline', 'competitive_scholarship_deadline', 'departmental_scholarship_deadline', 'honors_college_deadline', 'fafsa_deadline', 'css_profile_deadline'];
+        if ($college) {
+            $college = $college->toArray();
+            foreach ($fields as $key => $field) {
+                if ($college[$field] && !empty($college[$field])) {
+                    $reminder = Reminder::where('college_id', $college['college_details']['id'])->where('field', $field)->first();
+                    $date = Carbon::parse($college[$field]);
+                    $time = $date->format('H:i:s');
+                    $type= ucwords(str_replace("_", " ", $field));
+                    $data = [
+                        'user_id' => Auth::id(),
+                        'reminder_name' => $type. ' - ' .$college['college_details']['college_name'],
+                        'frequency' => 'Once',
+                        'method' => 'both',
+                        'when_time' => $time,
+                        'start_date' => $date,
+                        'end_date' => $date,
+                        'enabled' => 1,
+                        'type' => 'application_deadline'
+                    ];
+                    if ($reminder) {
+                        $reminder->update($data);
+                        $this->setCalendarEvent($reminder, $date);
+                    } else {
+                        $data['field'] = $field;
+                        $data['college_id'] = $college['college_details']['id'];
+                        $reminder = Reminder::create($data);
+                        $this->setCalendarEvent($reminder, $date);
+                    }
+                }
+            } 
+        }
+    }
+
+    public function setCalendarEvent($reminder, $date) {
+        $event = CalendarEvent::where('reminders_id', $reminder->id)->first();
+        if ($event) {
+            $event->update([
+                'title' => $reminder->reminder_name,
+                'event_time' => $reminder->when_time
+            ]);
+            $userCalendar = UserCalendar::where('event_id', $event->id)->first();
+            $userCalendar->update([
+                "start_date" => $date,
+                "end_date" => $date,
+            ]);
+        } else {
+            $calendarEvent = CalendarEvent::create([
+				"user_id" => Auth::id(),
+				"reminders_id" => $reminder->id,
+				"title" => $reminder->reminder_name,
+				"description" => '',
+				"color" => 'info',
+				"is_assigned" => 1,
+				'event_time' => $reminder->when_time
+			]);
+            UserCalendar::create([
+                "event_id" => $calendarEvent->id,
+                "start_date" => $date,
+                "end_date" => $date,
+            ]);
+        }
     }
 }
