@@ -153,7 +153,9 @@ class InititalCollegeListController extends Controller
             // dd($api);
 
             $guzzleClient = new GuzzleClient();
-            $response = $guzzleClient->get($api);
+            $response = $guzzleClient->get($api, [
+                'timeout' => 0,
+            ]);
             $data = json_decode($response->getBody()->getContents(), true);
             $totalRecords = $data['metadata']['total'];
             $data = $data['results'];

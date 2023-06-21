@@ -162,7 +162,10 @@ class PlanController extends Controller
     }
 
     public function getUserPlan() {
-        // dd(Auth::user()->subscriptions()->active()->first()->stripe_price);
+        $user = Auth::user();
+        if ($user->subscribed('default')) {
+            return redirect()->route('mysubscriptions.index');
+        }
         $categories = $this->getPlanDataCategorywise();
         return view("user.plan", compact("categories"));
     }
@@ -181,9 +184,9 @@ class PlanController extends Controller
     public function showPlan(Plan $plan, Request $request)
     {
         $user = Auth::user();
-        // if ($user->subscribed('default')) {
-        //     return redirect()->route('mysubscriptions.index');
-        // }
+        if ($user->subscribed('default')) {
+            return redirect()->route('mysubscriptions.index');
+        }
         $product_name = Product::find($plan->product_id);
         $plan['name'] = $product_name['title'];
 

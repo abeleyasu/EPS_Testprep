@@ -22,7 +22,7 @@
 
         <!-- Right Section -->
         <div class="d-flex align-items-center">
-            @if(Auth::user()->subscribed('default'))
+            @if(!Auth::user()->subscribed('default'))
                 <a href="{{route('plan.index')}}" class="btn btn-alt-success">Upgrade</a>
             @endif
             <!-- User Dropdown -->
