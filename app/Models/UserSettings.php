@@ -14,6 +14,7 @@ class UserSettings extends Model
     protected $fillable = [
         'user_id',
         'application_deadline_notification',
+        'is_receive_sms',
     ];
 
     protected $hidden = [

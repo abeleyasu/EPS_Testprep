@@ -24,7 +24,7 @@
                             </div>
                             <div class="block-content">
                                 <div class="p-sm-3 px-lg-4 px-xxl-5 py-lg-5">
-                                    <h1 class="h2 mb-1">OneUI</h1>
+                                    <h1 class="h2 mb-1">College Prep System</h1>
                                     <p class="fw-medium text-muted">
                                         Please fill the following details to create a new account.
                                     </p>
@@ -88,6 +88,12 @@
                                                 @error('terms')
                                                 <div class="invalid-feedback">{{$message}}</div>
                                                 @enderror
+                                            </div>
+                                            <div class="mb-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="is_verifed" name="is_verifed">
+                                                    <label class="form-check-label" for="is_verifed">By providing your number you consent to receive marketing/promotional/notification messages from College Prep System. To opt-out reply STOP on any message, or un-check the consent checkbox and save your profile. Message & Data rates may apply.</label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">

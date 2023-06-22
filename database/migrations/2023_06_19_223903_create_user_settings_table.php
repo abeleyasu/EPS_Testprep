@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->boolean('application_deadline_notification')->default(1); // 0 = off, 1 = on
+            $table->boolean('is_receive_sms')->default(0); // 0 = off, 1 = on
             $table->timestamps();
         });
     }

@@ -23,6 +23,7 @@ class UserSetings extends Seeder
         foreach ($users as $user) {
             UserSettings::create([
                 'user_id' => $user->id,
+                'is_receive_sms' => 1,
             ]);
         }
     }

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use App\Models\UserSettings;
 
 class AuthController extends Controller
 {
@@ -49,6 +50,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
+
+        $data = [
+            'user_id' => $user->id,
+        ];
+        if (isset($request->is_verifed)) {
+            $data['is_receive_sms'] = 1; 
+        }
+        UserSettings::create($data);
 
         if($user){
             $user->createOrGetStripeCustomer();

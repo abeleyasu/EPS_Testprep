@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\CollegeList;
+use Illuminate\Support\Facades\Auth;
 
 class CollegelistSearch
 {
@@ -17,12 +18,15 @@ class CollegelistSearch
      */
     public function handle(Request $request, Closure $next)
     {
-        if (isset($request->college_lists_id)) {
-            $checkissameuser = CollegeList::where('id', $request->college_lists_id)->where('user_id', auth()->user()->id)->first();
-            if ($checkissameuser) {
+        if (Auth::check()) {
+            $collegelist = CollegeList::where('user_id', auth()->user()->id)->first();
+            if ($collegelist) {
                 return $next($request);
+            } else {
+                abort(404);
             }
+        } else {
+            abort(404);
         }
-        abort(404);
     }
 }

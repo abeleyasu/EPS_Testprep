@@ -27,21 +27,19 @@ class InititalCollegeListController extends Controller
     public $search = [];
     public function step1(Request $request)
     {
+        $createSearchList = CollegeList::where('user_id', auth()->user()->id)->first();
+        if (!$createSearchList) {
+            $createSearchList = CollegeList::create([
+                'user_id' => auth()->user()->id,
+                'active_step' => 1,
+            ]);
+        }
         if (count($request->all()) > 0) {
-            $createSearchList = CollegeList::where('user_id', auth()->user()->id)->first();
-            if (!$createSearchList) {
-                $createSearchList = CollegeList::create([
-                    'user_id' => auth()->user()->id,
-                    'last_search_string' => json_encode($request->all()),
-                    'active_step' => 2,
-                ]);
-            } else {
-                $createSearchList->update([
-                    'last_search_string' => json_encode($request->all()),
-                    'active_step' => 2,
-                ]);
-            }
-            $route = route('admin-dashboard.initialCollegeList.step2', ['college_lists_id' => $createSearchList->id]);
+            $createSearchList->update([
+                'last_search_string' => json_encode($request->all()),
+                'active_step' => 2,
+            ]);
+            $route = route('admin-dashboard.initialCollegeList.step2');
             return redirect($route);
         }
 
@@ -56,7 +54,8 @@ class InititalCollegeListController extends Controller
 
     public function step2(Request $request) {
         $pageNo = isset($request->page) ? $request->page : 1;
-        $data = $this->getCollegeData($request->college_lists_id, $pageNo);
+        $college = CollegeList::where('user_id', Auth::id())->first();
+        $data = $this->getCollegeData($college->id, $pageNo);
         $selectedCollege = CollegeSearchAdd::where('college_lists_id', $request->college_lists_id)->get()->map(function($item) {
             return $item->college_id;
         })->toArray();
@@ -67,6 +66,7 @@ class InititalCollegeListController extends Controller
         ]);
 
         return view('user.admin-dashboard.initial-college-list.step2', [
+            'college_id' => $college->id,
             'college_data' => $data['data'],
             'selected_college' => $selectedCollege,
             'pagination' => $pagination,
@@ -231,31 +231,36 @@ class InititalCollegeListController extends Controller
 
     public function removeCollge($id, $college_id) {
         $remove_college = CollegeSearchAdd::where('college_lists_id', $id)->where('college_id', $college_id)->first();
-        $this->deleteCollegeFromAllTable($remove_college->id);
-        $remove_college->delete();
         if ($remove_college) {
-            return response()->json([
-                'success' => true,
-                'message' => 'College removed successfully',
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Something went wrong',
-            ]);
+            $this->deleteCollegeFromAllTable($remove_college->id);
+            $remove_college->delete();
+            if ($remove_college) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'College removed successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Something went wrong',
+                ]);
+            }
         }
     }
 
     public function step3(Request $request) {
-        CollegeList::where('id', $request->college_lists_id)->update([
-            'active_step' => 3,
-        ]);
-        $college_list_date = CollegeList::where('id', $request->college_lists_id)->first();
-        $test_type = config('constants.test_type');
-        return view('user.admin-dashboard.initial-college-list.step3', [
-            'test_type' => $test_type,
-            'college_list_date' => $college_list_date,
-        ]);
+        $college = CollegeList::where('user_id', Auth::id())->first();
+        if ($college) {
+            CollegeList::where('id', $college->id)->update([
+                'active_step' => 3,
+            ]);
+            $college_list_date = CollegeList::where('id', $college->id)->first();
+            $test_type = config('constants.test_type');
+            return view('user.admin-dashboard.initial-college-list.step3', [
+                'test_type' => $test_type,
+                'college_list_date' => $college_list_date,
+            ]);
+        }
     }
 
     public function saveAcademicStatistics(Request $request, $id) {
@@ -267,62 +272,54 @@ class InititalCollegeListController extends Controller
 
     public function submitForm(Request $request) {
 
-        $writeScoreMinAndMaxValidationForSat = '|numeric|min:1|max:44';
-        $readingScoreMinAndMaxValidationForSat = '|numeric|min:1|max:52';
-        $mathWithCalculator = '|numeric|min:1|max:38';
-        $mathWithNoCalculator = '|numeric|min:1|max:20';
+        $writeScoreMinAndMaxValidationForSat = 'numeric|min:1|max:44';
+        $readingScoreMinAndMaxValidationForSat = 'numeric|min:1|max:52';
+        $mathWithCalculator = 'numeric|min:1|max:38';
+        $mathWithNoCalculator = 'numeric|min:1max:20';
 
-        $writeScoreMinAndMaxValidationForPSAT = '|numeric|min:1|max:44';
-        $readingScoreMinAndMaxValidationForPSAT = '|numeric|min:1|max:47';
-        $mathWithCalculatorPSAT = '|numeric|min:1|max:31';
-        $mathWithNoCalculatorPSAT = '|numeric|min:1|max:17';
+        $writeScoreMinAndMaxValidationForPSAT = 'numeric|min:1|max:44';
+        $readingScoreMinAndMaxValidationForPSAT = 'numeric|min:1|max:47';
+        $mathWithCalculatorPSAT = 'numeric|min:1|max:31';
+        $mathWithNoCalculatorPSAT = 'numeric|min:1|max:17';
 
-        $readingScoreForACT = '|min:1|max:40';
-        $readingScoreForSAT = '|min:1|max:52';
-        $readingScoreForPSAT = '|min:1|max:52';
+        $readingScoreForACT = 'min:1|max:40';
+        $readingScoreForSAT = 'min:1|max:52';
+        $readingScoreForPSAT = 'min:1|max:52';
 
         $rules = [
             // high school
-            'high_school_test_type' => 'required',
-            'high_school_test_date' => 'required',
-            'high_school_english_score' => 'required_if:high_school_test_type,ACT'. ($request->high_school_test_type == 'ACT' ? '|min:1|max:75|numeric' : ''),
-            'high_school_math_score' => 'required_if:high_school_test_type,ACT'. ($request->high_school_test_type == 'ACT' ? '|min:1|max:60|numeric' : ''),
-            'high_school_science_score' => 'required_if:high_school_test_type,ACT'. ($request->high_school_test_type == 'ACT' ? '|min:1|max:40|numeric' : ''),
-            'high_school_reading_score' => 'required|numeric'. ($request->high_school_test_type == 'ACT' ? $readingScoreForACT : ($request->high_school_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)) ,
-            'high_school_write_score' => 'required_if:high_school_test_type,SAT,PSAT'. ($request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT)),
-            'high_school_math_with_no_calculator_score' => 'required_if:high_school_test_type,SAT,PSAT'. ($request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT)),
-            'high_school_math_with_calculator_score' => 'required_if:high_school_test_type,SAT,PSAT'. ($request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT)),
+            'high_school_english_score' => $request->high_school_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
+            'high_school_math_score' => $request->high_school_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
+            'high_school_science_score' => $request->high_school_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
+            'high_school_reading_score' => 'numeric|'. ($request->high_school_test_type == 'ACT' ? $readingScoreForACT : ($request->high_school_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)) ,
+            'high_school_write_score' => $request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
+            'high_school_math_with_no_calculator_score' => $request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
+            'high_school_math_with_calculator_score' => $request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
 
             // past current
-            'past_current_test_type' => 'required',
-            'past_current_test_date' => 'required',
-            'past_current_english_score' => 'required_if:past_current_test_type,ACT'. ($request->past_current_test_type == 'ACT' ? '|min:1|max:75|numeric' : ''),
-            'past_current_math_score' => 'required_if:past_current_test_type,ACT'. ($request->past_current_test_type == 'ACT' ? '|min:1|max:60|numeric' : ''),
-            'past_current_science_score' => 'required_if:past_current_test_type,ACT'. ($request->past_current_test_type == 'ACT' ? '|min:1|max:40|numeric' : ''),
-            'past_current_reading_score' => 'required|numeric'. ($request->past_current_test_type == 'ACT' ? $readingScoreForACT : ($request->past_current_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
-            'past_current_write_score' => 'required_if:high_schopast_current_test_typeol_test_type,SAT,PSAT'. ($request->past_current_test_type == 'ACT' ? '' : ($request->past_current_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT)),
-            'past_current_math_with_no_calculator_score' => 'required_if:past_current_test_type,SAT,PSAT'. ($request->past_current_test_type == 'ACT' ? '' : ($request->past_current_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT)),
-            'past_current_math_with_calculator_score' => 'required_if:past_current_test_type,SAT,PSAT'. ($request->past_current_test_type == 'ACT' ? '' :  ($request->past_current_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT)),
+            'past_current_english_score' => $request->past_current_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
+            'past_current_math_score' => $request->past_current_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
+            'past_current_science_score' => $request->past_current_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
+            'past_current_reading_score' => 'numeric|'. ($request->past_current_test_type == 'ACT' ? $readingScoreForACT : ($request->past_current_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
+            'past_current_write_score' => $request->past_current_test_type == 'ACT' ? '' : ($request->past_current_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
+            'past_current_math_with_no_calculator_score' => $request->past_current_test_type == 'ACT' ? '' : ($request->past_current_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
+            'past_current_math_with_calculator_score' => $request->past_current_test_type == 'ACT' ? '' :  ($request->past_current_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
             // goal
-            'goal_test_type' => 'required',
-            'goal_test_date' => 'required',
-            'goal_english_score' => 'required_if:goal_test_type,ACT'. ($request->goal_test_type == 'ACT' ? '|min:1|max:75|numeric' : ''),
-            'goal_math_score' => 'required_if:goal_test_type,ACT'. ($request->goal_test_type == 'ACT' ? '|min:1|max:60|numeric' : ''),
-            'goal_science_score' => 'required_if:goal_test_type,ACT'. ($request->goal_test_type == 'ACT' ? '|min:1|max:40|numeric' : ''),
-            'goal_reading_score' => 'required|numeric'. ($request->goal_test_type == 'ACT' ? $readingScoreForACT : ($request->goal_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
-            'goal_write_score' => 'required_if:goal_test_type,SAT,PSAT'. ($request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT)),
-            'goal_math_with_no_calculator_score' => 'required_if:goal_test_type,SAT,PSAT'. ($request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT)),
-            'goal_math_with_calculator_score' => 'required_if:goal_test_type,SAT,PSAT'. ($request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT)),
+            'goal_english_score' => $request->goal_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
+            'goal_math_score' => $request->goal_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
+            'goal_science_score' => $request->goal_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
+            'goal_reading_score' => 'numeric|'. ($request->goal_test_type == 'ACT' ? $readingScoreForACT : ($request->goal_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
+            'goal_write_score' => $request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
+            'goal_math_with_no_calculator_score' => $request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
+            'goal_math_with_calculator_score' => $request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
             // final
-            'final_test_type' => 'required',
-            'final_test_date' => 'required',
-            'final_english_score' => 'required_if:final_test_type,ACT'. ($request->final_test_type == 'ACT' ? '|min:1|max:75|numeric' : ''),
-            'final_math_score' => 'required_if:final_test_type,ACT'. ($request->final_test_type == 'ACT' ? '|min:1|max:60|numeric' : ''),
-            'final_science_score' => 'required_if:final_test_type,ACT'. ($request->final_test_type == 'ACT' ? '|min:1|max:40|numeric' : ''),
-            'final_reading_score' => 'required|numeric'. ($request->final_test_type == 'ACT' ? $readingScoreForACT : ($request->final_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
-            'final_write_score' => 'required_if:final_test_type,SAT,PSAT'. ($request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT)),
-            'final_math_with_no_calculator_score' => 'required_if:final_test_type,SAT,PSAT'. ($request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT)),
-            'final_math_with_calculator_score' => 'required_if:final_test_type,SAT,PSAT'. ($request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT)),
+            'final_english_score' => $request->final_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
+            'final_math_score' => $request->final_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
+            'final_science_score' => $request->final_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
+            'final_reading_score' => 'numeric|'. ($request->final_test_type == 'ACT' ? $readingScoreForACT : ($request->final_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
+            'final_write_score' => $request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
+            'final_math_with_no_calculator_score' => $request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
+            'final_math_with_calculator_score' => $request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
         ];
         $request->validate($rules, [
             'high_school_test_type.required' => 'High School Test Type is required',
@@ -430,7 +427,7 @@ class InititalCollegeListController extends Controller
         }
         $this->calculateScoreForGoalField($request, $findStatistisc->id);
         $this->calculateScoreForFinalField($request, $findStatistisc->id);
-        return redirect(route('admin-dashboard.initialCollegeList.step4', ['college_lists_id' => $request->college_lists_id]));
+        return redirect(route('admin-dashboard.initialCollegeList.step4'));
     }
 
     public function calculateScoreForGoalField($data, $db_field_id) {
@@ -526,14 +523,16 @@ class InititalCollegeListController extends Controller
     }
 
     public function step4(Request $request) {
-        CollegeList::where('id', $request->college_lists_id)->update([
-            'active_step' => 4,
-        ]);
-
-        $score = CollegeUserStatistics::where('college_lists_id', $request->college_lists_id)->first();
-        return view('user.admin-dashboard.initial-college-list.step4', [
-            'score' => $score
-        ]);
+        $college = CollegeList::where('user_id', Auth::id())->first();
+        if ($college) { 
+            CollegeList::where('id', $college->id)->update([
+                'active_step' => 4,
+            ]);
+            $score = CollegeUserStatistics::where('college_lists_id', $college->id)->first();
+            return view('user.admin-dashboard.initial-college-list.step4', [
+                'score' => $score
+            ]);
+        }
     }
 
     public function getSelectedCollegeList($college_id) {

@@ -22,6 +22,15 @@
         ])
       </div>
 
+      <div class="d-flex justify-content-between mt-3 mb-3">
+        <div class="prev-btn">
+          <a href="{{ route('admin-dashboard.initialCollegeList.step3') }}" class="btn btn-alt-success prev-step"> Previous Step </a>
+        </div>
+        <div class="">
+          <button class="btn  btn-alt-success save-close">Save & Submit</a>
+        </div>
+      </div>
+
       <div class="block block-rounded">
         <div class="block-header block-header-tab">
           <h3 class="block-title text-white fw-500">Your Statistics</h3>
@@ -31,31 +40,31 @@
             <thead>
               <tr>
                 <th>Unweight GPA</th>
-                <th>{{ $score->unweighted_gpa ? $score->unweighted_gpa : '-' }}</th>
+                <th>{{ $score && $score->unweighted_gpa ? $score->unweighted_gpa : '-' }}</th>
               </tr>  
               <tr>
                 <th>Weight GPA</th>
-                <th>{{ $score->weighted_gpa ? $score->weighted_gpa : '-' }}</th>
+                <th>{{ $score && $score->weighted_gpa ? $score->weighted_gpa : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal PSAT Score</th>
-                <th>{{ $score->goal_psat_score ? $score->goal_psat_score : '-' }}</th>
+                <th>{{ $score && $score->goal_psat_score ? $score->goal_psat_score : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal ACT Score</th>
-                <th>{{ $score->goal_act_score ? $score->goal_act_score : '-' }}</th>
+                <th>{{ $score && $score->goal_act_score ? $score->goal_act_score : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal SAT Score</th>
-                <th>{{ $score->goal_sat_score ? $score->goal_sat_score : '-' }}</th>
+                <th>{{ $score && $score->goal_sat_score ? $score->goal_sat_score : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Final ACT Score</th>
-                <th>{{ $score->final_act_score ? $score->final_act_score : '-' }}</th>
+                <th>{{ $score && $score->final_act_score ? $score->final_act_score : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Final SAT Score</th>
-                <th>{{ $score->final_sat_score ? $score->final_sat_score : '-' }}</th>
+                <th>{{ $score && $score->final_sat_score ? $score->final_sat_score : '-' }}</th>
               </tr>  
             </thead>
           </table>
@@ -76,7 +85,7 @@
 
       <div class="d-flex justify-content-between mt-3">
         <div class="prev-btn">
-          <a href="{{ route('admin-dashboard.initialCollegeList.step3', ['college_lists_id' => request()->get('college_lists_id')]) }}" class="btn btn-alt-success prev-step"> Previous Step </a>
+          <a href="{{ route('admin-dashboard.initialCollegeList.step3') }}" class="btn btn-alt-success prev-step"> Previous Step </a>
         </div>
         <div class="">
           <button class="btn  btn-alt-success save-close">Save & Submit</a>
@@ -239,6 +248,9 @@
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
   }
+
+  const collegeid = @json($score).college_lists_id;
+
   let collegeList = []
   $(document).ready(function() {
     // $('#add-college-modal').modal('show');
@@ -247,7 +259,7 @@
 
   function getCollegeList() {
     $.ajax({
-      url: "{{ route('admin-dashboard.initialCollegeList.step4.getSelectedCollegeList', ['id' => request()->get('college_lists_id')]) }}",
+      url: "{{ route('admin-dashboard.initialCollegeList.step4.getSelectedCollegeList', ['id' => ':id' ]) }}".replace(':id', collegeid),
       method: 'get',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -370,7 +382,7 @@
         })
       }
       $.ajax({
-        url: "{{ route('admin-dashboard.initialCollegeList.step4.updateOrder', ['id' => request()->get('college_lists_id')]) }}",
+        url: "{{ route('admin-dashboard.initialCollegeList.step4.updateOrder', ['id' => ':id']) }}".replace(':id', collegeid),
         method: 'patch',
         data: {
           data: payload
@@ -455,7 +467,7 @@
     }).then((result) => {
       if (result.isConfirmed) {
         const school_id = e.target.dataset.id
-        let url = "{{ route('admin-dashboard.initialCollegeList.step2.removeCollge', [ 'id' => request()->get('college_lists_id'), 'sid' => 'school_id' ]) }}"
+        let url = "{{ route('admin-dashboard.initialCollegeList.step2.removeCollge', [ 'id' => ':id', 'sid' => 'school_id' ]) }}".replace(':id', collegeid)
         url = url.replace('school_id', school_id)
         $.ajax({
           type: "DELETE",
@@ -496,10 +508,9 @@
   })
 
   $('.save-close').on('click', function (e) {
-    let url = "{{ route('admin-dashboard.initialCollegeList.saveCollegeList', [ 'id' => request()->get('college_lists_id') ]) }}"
     $.ajax({
       type: "patch",
-      url: "{{ route('admin-dashboard.initialCollegeList.saveCollegeList', [ 'id' => request()->get('college_lists_id') ]) }}",
+      url: "{{ route('admin-dashboard.initialCollegeList.saveCollegeList', [ 'id' => ':id' ]) }}".replace(':id', collegeid),
       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     }).done((response) => {
       if (response.success) {

@@ -22,6 +22,10 @@
                     ])
                 </div>
                 <p class="mb-4">Here are your college search results from the Search Parameters you chose.</p>
+                <div class="d-flex justify-content-between mt-3 mb-3">
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step2', ['college_lists_id' => request()->get('college_lists_id')]) }}" class="btn btn-alt-success prev-step"> Previous Step </a>
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step4', ['college_lists_id' => request()->get('college_lists_id')]) }}" class="btn btn-alt-success next-step"> Next Step </a>
+                </div>
                 <form action="{{ route('admin-dashboard.initialCollegeList.step3.submitForm') }}" method="POST">
                     @csrf
                     <input type="hidden" name="college_lists_id" value="{{ request()->get('college_lists_id') }}">
@@ -373,7 +377,8 @@
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <a href="{{ route('admin-dashboard.initialCollegeList.step2', ['college_lists_id' => request()->get('college_lists_id')]) }}" class="btn btn-alt-success prev-step"> Previous Step </a>
-                        <button type="submit" class="btn  btn-alt-success next-step">Next Step</button>
+                        <!-- <button type="submit" class="btn  btn-alt-success next-step">Next Step</button> -->
+                        <a href="{{ route('admin-dashboard.initialCollegeList.step4') }}" class="btn btn-alt-success next-step"> Next Step </a>
                     </div>
                 </form>
             </div>
@@ -402,6 +407,8 @@
         $('.goal-test-name').text($('#goal_test_type').val());
         $('.final-test-name').text($('#final_test_type').val());
     })
+
+    const collegeData = @json($college_list_date)
 
     $('.date-own').datepicker({
         format: 'dd-mm-yyyy',
@@ -498,7 +505,7 @@
 
     function autosave(data) {
         $.ajax({
-            url: "{{ route('admin-dashboard.initialCollegeList.step3.saveAcademicStatistics', [ 'id' => request()->get('college_lists_id') ]) }}",
+            url: "{{ route('admin-dashboard.initialCollegeList.step3.saveAcademicStatistics', [ 'id' => ':id' ]) }}".replace(':id', collegeData.id),
             type: "put",
             data: data,
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}

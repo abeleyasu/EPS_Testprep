@@ -30,7 +30,7 @@
           </div>
           <div class="mb-4">
             <label class="from-label">Average GPA:</label>
-            <input type="text" class="js-range-slider {{$errors->has('gpa_average') ? 'is-invalid' : ''}}" name="gpa_average" data-min="0" data-max="100" data-from="{{ $info->gpa_average ? $info->gpa_average : 0 }}" data-grid="true"/>
+            <input type="text" class="js-range-slider {{$errors->has('gpa_average') ? 'is-invalid' : ''}}" name="gpa_average" data-step="0.1" data-min="0.00" data-max="8.00" data-from="{{ $info->gpa_average ? $info->gpa_average : 0.00 }}" data-grid="true"/>
             @error('gpa_average')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror

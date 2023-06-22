@@ -286,7 +286,7 @@
 
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label" for="average_gpa"> Average GPA </label>
-                                                                    <input type="text" class="js-range-slider form-control" id="average_gpa" name="average_gpa" data-min="0" data-max="100" data-from="0" data-grid="true">
+                                                                    <input type="text" class="js-range-slider form-control" id="average_gpa" name="average_gpa" data-step="0.1" data-min="0.00" data-max="8.00" data-from="0.00" data-grid="true">
                                                                 </div>
 
                                                                 <div class="mb-2">

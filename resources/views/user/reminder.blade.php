@@ -26,6 +26,13 @@
                         <h4 class="fw-normal border-bottom pb-2 mb-3">Global Notification</h4>
                         <div class="mb-2">
                             <div class="space-x-1">
+                                <input class="form-check-input user-settings" type="checkbox" value="" id="is_receive_sms" name="is_receive_sms" @if($user_settings->is_receive_sms) checked @endif>
+                                <label class="form-check-label fw-bold" for="is_receive_sms">Received SMS</label>
+                            </div>
+                            <div class="fw-light fs-6 text-muted">Enables or disables all columns Received SMS</div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="space-x-1">
                                 <input class="form-check-input user-settings" type="checkbox" value="" id="application_deadline_notification" name="application_deadline_notification" @if($user_settings->application_deadline_notification) checked @endif>
                                 <label class="form-check-label fw-bold" for="application_deadline_notification">Application Deadline Reminders</label>
                             </div>

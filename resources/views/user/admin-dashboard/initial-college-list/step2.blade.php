@@ -30,9 +30,15 @@
                     </div>
                 </div>
             @else
-                {{-- <div class="d-flex justify-content-end mb-3">
-                    {{ $pagination->links('user.admin-dashboard.initial-college-list.pagination') }}
-                </div> --}}
+                <div class="d-flex justify-content-between mt-3 mb-3">
+                    <div class="prev-btn">
+                        <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-alt-success prev-step"> Previous Step
+                        </a>
+                    </div>
+                    <div class="">
+                        <a href="{{ route('admin-dashboard.initialCollegeList.step3') }}" class="btn  btn-alt-success next-step">Next Step</a>
+                    </div>
+                </div>
                 <div class="mb-3 total-count">
                     {{ $total }} Results
                 </div>
@@ -171,7 +177,7 @@
                     </a>
                 </div>
                 <div class="">
-                    <a href="{{ route('admin-dashboard.initialCollegeList.step3', ['college_lists_id' => request()->get('college_lists_id')]) }}" class="btn  btn-alt-success next-step">Next Step</a>
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step3') }}" class="btn  btn-alt-success next-step">Next Step</a>
                 </div>
             </div>
         </div>
@@ -682,15 +688,17 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    const college_id = @json($college_id)
+
     $(document).on('click', '.add-list', function (e) {
         const schools = @json($college_data);
-        const college_list_id = "{{ request()->get('college_lists_id') }}"
         const school = schools.find(college => college.id == e.target.dataset.id)
         $.ajax({
             type: "POST",
             url: "{{ route('admin-dashboard.initialCollegeList.step2.saveCollege') }}",
             data: {
-                school_lists_id: college_list_id,
+                school_lists_id: college_id,
                 school_id: e.target.dataset.id,
                 school_name: school['school.name'],
                 size: school['latest.student.size'],
@@ -726,7 +734,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const school_id = e.target.dataset.id
-                let url = "{{ route('admin-dashboard.initialCollegeList.step2.removeCollge', [ 'id' => request()->get('college_lists_id'), 'sid' => 'school_id' ]) }}"
+                let url = "{{ route('admin-dashboard.initialCollegeList.step2.removeCollge', [ 'id' => ':id', 'sid' => 'school_id' ]) }}".replace(':id', college_id)
                 url = url.replace('school_id', school_id)
                 $.ajax({
                     type: "DELETE",
