@@ -60,6 +60,12 @@
                                                 @enderror
                                             </div>
                                             <div class="mb-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="is_verifed" name="is_verifed">
+                                                    <label class="form-check-label" for="is_verifed">By providing your number you consent to receive marketing/promotional/notification messages from College Prep System. To opt-out reply STOP on any message, or un-check the consent checkbox and save your profile. Message & Data rates may apply.</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-4">
                                                 <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
                                                 @error('password')
                                                 <div class="invalid-feedback">{{$message}}</div>
@@ -88,12 +94,6 @@
                                                 @error('terms')
                                                 <div class="invalid-feedback">{{$message}}</div>
                                                 @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="is_verifed" name="is_verifed">
-                                                    <label class="form-check-label" for="is_verifed">By providing your number you consent to receive marketing/promotional/notification messages from College Prep System. To opt-out reply STOP on any message, or un-check the consent checkbox and save your profile. Message & Data rates may apply.</label>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
