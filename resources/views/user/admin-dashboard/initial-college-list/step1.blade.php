@@ -32,6 +32,10 @@
             </div>
             <p class="mb-5">Input the aspects of colleges that matter to you the most -OR- directly search for colleges</p>
 
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-alt-success" id="view-college-list">View College List</button>
+            </div>
+
             @if(session('cmessage'))
             <div class="alert alert-success">
                 {{ session('cmessage') }}
@@ -39,19 +43,13 @@
             @endif
 
             <form>
-                <div class="block block-rounded tab-container ">
+                <div class="block block-rounded tab-container">
                     <ul class="nav nav-tabs nav-tabs-block" role="tablist">
                         <li class="nav-item">
                             <div class="nav-link college_tablinks active" id="btabs-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-static-home" role="tab" aria-controls="btabs-static-home" aria-selected="true">Search By College Wants</div>
                         </li>
                         <li class="nav-item">
                             <div class="nav-link college_tablinks" id="btabs-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-static-profile" role="tab" aria-controls="btabs-static-profile" aria-selected="false">Search By College Name</div>
-                        </li>
-                        <li class="nav-item ms-auto">
-                            <div class="nav-link college_tablinks" id="btabs-static-settings-tab" data-bs-toggle="tab" data-bs-target="#btabs-static-settings" role="tab" aria-controls="btabs-static-settings" aria-selected="false">
-                                <i class="si si-settings"></i>
-                                <span class="visually-hidden">Settings</span>
-                            </div>
                         </li>
                     </ul>
 
@@ -285,7 +283,7 @@
                                                                 </div>
 
                                                                 <div class="mb-2">
-                                                                    <label class="form-check-label" for="average_gpa"> Average GPA </label>
+                                                                    <label class="form-check-label bold-label mb-2" for="average_gpa"> Average GPA </label>
                                                                     <input type="text" class="js-range-slider form-control" id="average_gpa" name="average_gpa" data-step="0.1" data-min="0.00" data-max="8.00" data-from="0.00" data-grid="true">
                                                                 </div>
 
@@ -340,16 +338,25 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="tab-pane" id="btabs-static-settings" role="tabpanel" aria-labelledby="btabs-static-settings-tab">
-                            <h4 class="fw-normal">Information Button Content</h4>
-                            <p>...</p>
-                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </main>
+
+<div class="modal fade" id="college-list" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">My College List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="user-college-list">
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('page-style')
@@ -357,6 +364,17 @@
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
+<style>
+    .no-data {
+        border: 1px solid;
+        border-style: dashed;
+        border-color: darkgray;
+        padding: 10px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 500;
+    }
+</style>
 @endsection
 
 
@@ -459,5 +477,42 @@
     function hideshow(elementid, isshow) {
         $('#' + elementid).attr("style", `display: ${isshow ? 'block' : 'none'} !important`);
     }
+
+    $(document).ready(function () {
+        // $('#college-list').modal('show')
+    })
+
+    $('#view-college-list').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('admin-dashboard.initialCollegeList.getUserCollegeList') }}",
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+        }).done((response) => {
+            if (response.success) {
+                $('#user-college-list').html('')
+                if (response.data.length > 0) {
+                    response.data.forEach((data, index) => {
+                        const element = `
+                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                <div class="block-header block-header-default">
+                                    <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                                        <span>${index + 1}</span>
+                                        <span>${data.college_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                        $('#user-college-list').append(element)
+                    })
+                    $('#college-list').modal('show')
+                } else {
+                    $('#user-college-list').html('<h5 class="no-data">No College Found</h5>')
+                }
+            }
+        })
+    })
 </script>
 @endsection

@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Http;
 use App\Models\CollegeMajorInformation;
+use App\Models\UserCollgeScore;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class InititalCollegeListController extends Controller
@@ -263,257 +264,136 @@ class InititalCollegeListController extends Controller
         }
     }
 
-    public function saveAcademicStatistics(Request $request, $id) {
-        $college_list = CollegeList::where('id', $id)->first();
-        $college_list->fill($request->all());
-        $college_list->save();
-        return "success";
-    }
+    public function saveAcademicStatistics(Request $request, $score, $id) {
 
-    public function submitForm(Request $request) {
+        try {
+            $rules = [];
+            $customMessage = [];
+    
+            $commonrules = 'nullable|numeric|min:1|max:36';
+            $actSactRules = 'nullable|numeric|min:200|max:800';
+    
+            switch ($score) {
+                case 'highschool':
+                    if ($request->high_school_test_type == 'ACT') {
+                        $rules['high_school_english_score'] = $commonrules;
+                        $rules['high_school_science_score'] = $commonrules;
+                    }
+                    $rules['high_school_reading_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules;
+                    $rules['high_school_math_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules ;
+                    $rules['high_school_test_date'] = 'nullable|date';
+                    $rules['unweighted_gpa'] = 'nullable|numeric|min:1|max:4';
+                    $rules['weighted_gpa'] = 'nullable|numeric|min:1|max:8';
+                break;
 
-        $writeScoreMinAndMaxValidationForSat = 'numeric|min:1|max:44';
-        $readingScoreMinAndMaxValidationForSat = 'numeric|min:1|max:52';
-        $mathWithCalculator = 'numeric|min:1|max:38';
-        $mathWithNoCalculator = 'numeric|min:1max:20';
+                case 'goalscore';
+                    if ($request->goal_test_type == 'ACT') {
+                        $rules['goal_english_score'] = $commonrules;
+                        $rules['goal_science_score'] = $commonrules;
+                    }
+                    $rules['goal_reading_score'] = $request->goal_test_type == 'ACT' ? $commonrules: $actSactRules;
+                    $rules['goal_math_score'] = $request->goal_test_type == 'ACT' ? $commonrules: $actSactRules ;
+                    $rules['goal_test_date'] = 'nullable|date';
+                break;
 
-        $writeScoreMinAndMaxValidationForPSAT = 'numeric|min:1|max:44';
-        $readingScoreMinAndMaxValidationForPSAT = 'numeric|min:1|max:47';
-        $mathWithCalculatorPSAT = 'numeric|min:1|max:31';
-        $mathWithNoCalculatorPSAT = 'numeric|min:1|max:17';
+                case 'finalscore':
+                    if ($request->final_test_type == 'ACT') {
+                        $rules['final_english_score'] = $commonrules;
+                        $rules['final_science_score'] = $commonrules;
+                    }
+                    $rules['final_reading_score'] = $request->final_test_type == 'ACT' ? $commonrules: $actSactRules;
+                    $rules['final_math_score'] = $request->final_test_type == 'ACT' ? $commonrules: $actSactRules ;
+                    $rules['final_test_date'] = 'nullable|date';
+                break;
 
-        $readingScoreForACT = 'min:1|max:40';
-        $readingScoreForSAT = 'min:1|max:52';
-        $readingScoreForPSAT = 'min:1|max:52';
+                default:
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Something went wrong',
+                    ]);
+                break;
+            }
+            $validate = Validator::make($request->all(), $rules, $customMessage);
+            if ($validate->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validate->errors()->first(),
+                ]);
+            }
 
-        $rules = [
-            // high school
-            'high_school_english_score' => $request->high_school_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
-            'high_school_math_score' => $request->high_school_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
-            'high_school_science_score' => $request->high_school_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
-            'high_school_reading_score' => 'numeric|'. ($request->high_school_test_type == 'ACT' ? $readingScoreForACT : ($request->high_school_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)) ,
-            'high_school_write_score' => $request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
-            'high_school_math_with_no_calculator_score' => $request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
-            'high_school_math_with_calculator_score' => $request->high_school_test_type == 'ACT' ? '' : ($request->high_school_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
+            $college_list = CollegeList::where('id', $id)->first();
+            $college_list->fill($request->all());
+            $college_list->save();
+            $findStatistisc = CollegeUserStatistics::where('college_lists_id', $id)->first();
+            if (!$findStatistisc) {
+                $findStatistisc = CollegeUserStatistics::create([
+                    'college_lists_id' => $id
+                ]);
+            }
 
-            // past current
-            'past_current_english_score' => $request->past_current_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
-            'past_current_math_score' => $request->past_current_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
-            'past_current_science_score' => $request->past_current_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
-            'past_current_reading_score' => 'numeric|'. ($request->past_current_test_type == 'ACT' ? $readingScoreForACT : ($request->past_current_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
-            'past_current_write_score' => $request->past_current_test_type == 'ACT' ? '' : ($request->past_current_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
-            'past_current_math_with_no_calculator_score' => $request->past_current_test_type == 'ACT' ? '' : ($request->past_current_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
-            'past_current_math_with_calculator_score' => $request->past_current_test_type == 'ACT' ? '' :  ($request->past_current_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
-            // goal
-            'goal_english_score' => $request->goal_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
-            'goal_math_score' => $request->goal_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
-            'goal_science_score' => $request->goal_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
-            'goal_reading_score' => 'numeric|'. ($request->goal_test_type == 'ACT' ? $readingScoreForACT : ($request->goal_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
-            'goal_write_score' => $request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
-            'goal_math_with_no_calculator_score' => $request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
-            'goal_math_with_calculator_score' => $request->goal_test_type == 'ACT' ? '' : ($request->goal_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
-            // final
-            'final_english_score' => $request->final_test_type == 'ACT' ? 'min:1|max:75|numeric' : '',
-            'final_math_score' => $request->final_test_type == 'ACT' ? 'min:1|max:60|numeric' : '',
-            'final_science_score' => $request->final_test_type == 'ACT' ? 'min:1|max:40|numeric' : '',
-            'final_reading_score' => 'numeric|'. ($request->final_test_type == 'ACT' ? $readingScoreForACT : ($request->final_test_type == 'SAT' ? $readingScoreForSAT : $readingScoreForPSAT)),
-            'final_write_score' => $request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $writeScoreMinAndMaxValidationForSat : $writeScoreMinAndMaxValidationForPSAT),
-            'final_math_with_no_calculator_score' => $request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $mathWithNoCalculator : $mathWithNoCalculatorPSAT),
-            'final_math_with_calculator_score' => $request->final_test_type == 'ACT' ? '' : ($request->final_test_type == 'SAT' ? $mathWithCalculator : $mathWithCalculatorPSAT),
-        ];
-        $request->validate($rules, [
-            'high_school_test_type.required' => 'High School Test Type is required',
-            'high_school_test_date.required' => 'High School Test Date is required',
-            'high_school_english_score.required_if' => 'High School English Score is required',
-            'high_school_math_score.required_if' => 'High School Math Score is required',
-            'high_school_science_score.required_if' => 'High School Science Score is required',
-            'high_school_reading_score.required' => 'High School Reading Score is required',
-            'high_school_write_score.required_if' => 'High School Write Score is required',
-            'high_school_math_with_no_calculator_score.required_if' => 'High School Math With No Calculator Score is required',
-            'high_school_math_with_calculator_score.required_if' => 'High School Math With Calculator Score is required',
-            'high_school_math_with_no_calculator_score.min' => 'High School Math With No Calculator Score must be at least 1',
-            'high_school_math_with_no_calculator_score.max' => 'High School Math With No Calculator Score may not be greater than '. ($request->high_school_test_type == 'SAT' ? 20 : 17),
-            'high_school_math_with_calculator_score.min' => 'High School Math With Calculator Score must be at least 1',
-            'high_school_math_with_calculator_score.max' => 'High School Math With Calculator Score may not be greater than '. ($request->high_school_test_type == 'SAT' ? 38 : 31),
-            'high_school_write_score.min' => 'High School Write Score must be at least 1',
-            'high_school_write_score.max' => 'High School Write Score may not be greater than'. ($request->high_school_test_type == 'SAT' ? 44 : 44),
-            'high_school_reading_score.min' => 'High School Reading Score must be at least 1',
-            'high_school_reading_score.max' => 'High School Reading Score may not be greater than '. ($request->high_school_test_type == 'SAT' ? 52 : ($request->high_school_test_type == 'ACT' ? 40 : 47)),
-            'high_school_english_score.min' => 'High School English Score must be at least 1',
-            'high_school_english_score.max' => 'High School English Score may not be greater than 75',
-            'high_school_math_score.min' => 'High School Math Score must be at least 1',
-            'high_school_math_score.max' => 'High School Math Score may not be greater than 60',
-            'high_school_science_score.min' => 'High School Science Score must be at least 1',
-            'high_school_science_score.max' => 'High School Science Score may not be greater than 40',
-            
-
-            'past_current_test_type.required' => 'Past Current Test Type is required',
-            'past_current_test_date.required' => 'Past Current Test Date is required',
-            'past_current_english_score.required_if' => 'Past Current English Score is required',
-            'past_current_math_score.required_if' => 'Past Current Math Score is required',
-            'past_current_science_score.required_if' => 'Past Current Science Score is required',
-            'past_current_reading_score.required' => 'Past Current Reading Score is required',
-            'past_current_write_score.required_if' => 'Past Current Write Score is required',
-            'past_current_math_with_no_calculator_score.required_if' => 'Past Current Math With No Calculator Score is required',
-            'past_current_math_with_calculator_score.required_if' => 'Past Current Math With Calculator Score is required',
-            'past_current_math_with_no_calculator_score.min' => 'Past Current Math With No Calculator Score must be at least 1',
-            'past_current_math_with_no_calculator_score.max' => 'Past Current Math With No Calculator Score may not be greater than '. ($request->past_current_test_type == 'SAT' ? 20 : 17),
-            'past_current_math_with_calculator_score.min' => 'Past Current Math With Calculator Score must be at least 1',
-            'past_current_math_with_calculator_score.max' => 'Past Current Math With Calculator Score may not be greater than '. ($request->past_current_test_type == 'SAT' ? 38 : 31),
-            'past_current_write_score.min' => 'Past Current Write Score must be at least 1',
-            'past_current_write_score.max' => 'Past Current Write Score may not be greater than '. ($request->past_current_test_type == 'SAT' ? 44 : 44),
-            'past_current_reading_score.min' => 'Past Current Reading Score must be at least 1',
-            'past_current_reading_score.max' => 'Past Current Reading Score may not be greater than '. ($request->past_current_test_type == 'SAT' ? 52 : ($request->past_current_test_type == 'ACT' ? 40 : 47)),
-            'past_current_english_score.min' => 'Past Current English Score must be at least 1',
-            'past_current_english_score.max' => 'Past Current English Score may not be greater than 75',
-            'past_current_math_score.min' => 'Past Current Math Score must be at least 1',
-            'past_current_math_score.max' => 'Past Current Math Score may not be greater than 60',
-            'past_current_science_score.min' => 'Past Current Science Score must be at least 1',
-            'past_current_science_score.max' => 'Past Current Science Score may not be greater than 40',
-
-            'goal_test_type.required' => 'Goal Test Type is required',
-            'goal_test_date.required' => 'Goal Test Date is required',
-            'goal_english_score.required_if' => 'Goal English Score is required',
-            'goal_math_score.required_if' => 'Goal Math Score is required',
-            'goal_science_score.required_if' => 'Goal Science Score is required',
-            'goal_reading_score.required' => 'Goal Reading Score is required',
-            'goal_write_score.required_if' => 'Goal Write Score is required',
-            'goal_math_with_no_calculator_score.required_if' => 'Goal Math With No Calculator Score is required',
-            'goal_math_with_calculator_score.required_if' => 'Goal Math With Calculator Score is required',
-            'goal_math_with_no_calculator_score.min' => 'Goal Math With No Calculator Score must be at least 1',
-            'goal_math_with_no_calculator_score.max' => 'Goal Math With No Calculator Score may not be greater than '. ($request->goal_test_type == 'SAT' ? 20 : 17),
-            'goal_math_with_calculator_score.min' => 'Goal Math With Calculator Score must be at least 1',
-            'goal_math_with_calculator_score.max' => 'Goal Math With Calculator Score may not be greater than '. ($request->goal_test_type == 'SAT' ? 38 : 31),
-            'goal_write_score.min' => 'Goal Write Score must be at least 1',
-            'goal_write_score.max' => 'Goal Write Score may not be greater than '. ($request->goal_test_type == 'SAT' ? 44 : 44),
-            'goal_reading_score.min' => 'Goal Reading Score must be at least 1',
-            'goal_reading_score.max' => 'Goal Reading Score may not be greater than '. ($request->goal_test_type == 'SAT' ? 52 : ($request->goal_test_type == 'ACT' ? 40 : 47)),
-            'goal_english_score.min' => 'Goal English Score must be at least 1',
-            'goal_english_score.max' => 'Goal English Score may not be greater than 75',
-            'goal_math_score.min' => 'Goal Math Score must be at least 1',
-            'goal_math_score.max' => 'Goal Math Score may not be greater than 60',
-            'goal_science_score.min' => 'Goal Science Score must be at least 1',
-            'goal_science_score.max' => 'Goal Science Score may not be greater than 40',
-
-            'final_test_type.required' => 'Final Test Type is required',
-            'final_test_date.required' => 'Final Test Date is required',
-            'final_english_score.required_if' => 'Final English Score is required',
-            'final_math_score.required_if' => 'Final Math Score is required',
-            'final_science_score.required_if' => 'Final Science Score is required',
-            'final_reading_score.required' => 'Final Reading Score is required',
-            'final_write_score.required_if' => 'Final Write Score is required',
-            'final_math_with_no_calculator_score.required_if' => 'Final Math With No Calculator Score is required',
-            'final_math_with_calculator_score.required_if' => 'Final Math With Calculator Score is required',
-            'final_math_with_no_calculator_score.min' => 'Final Math With No Calculator Score must be at least 1',
-            'final_math_with_no_calculator_score.max' => 'Final Math With No Calculator Score may not be greater than '. ($request->final_test_type == 'SAT' ? 20 : 17),
-            'final_math_with_calculator_score.min' => 'Final Math With Calculator Score must be at least 1',
-            'final_math_with_calculator_score.max' => 'Final Math With Calculator Score may not be greater than '. ($request->final_test_type == 'SAT' ? 38 : 31),
-            'final_write_score.min' => 'Final Write Score must be at least 1',
-            'final_write_score.max' => 'Final Write Score may not be greater than '. ($request->final_test_type == 'SAT' ? 44 : 44),
-            'final_reading_score.min' => 'Final Reading Score must be at least 1',
-            'final_reading_score.max' => 'Final Reading Score may not be greater than '. ($request->final_test_type == 'SAT' ? 52 : ($request->final_test_type == 'ACT' ? 40 : 47)),
-            'final_english_score.min' => 'Final English Score must be at least 1',
-            'final_english_score.max' => 'Final English Score may not be greater than 75',
-            'final_math_score.min' => 'Final Math Score must be at least 1',
-            'final_math_score.max' => 'Final Math Score may not be greater than 60',
-            'final_science_score.min' => 'Final Science Score must be at least 1',
-            'final_science_score.max' => 'Final Science Score may not be greater than 40',
-        ]);
-        $findStatistisc = CollegeUserStatistics::where('college_lists_id', $request->college_lists_id)->first();
-        if (!$findStatistisc) {
-            $findStatistisc = CollegeUserStatistics::create([
-                'college_lists_id' => $request->college_lists_id
+            if ($score == 'highschool') {
+                if ($request->unweighted_gpa && !empty($request->unweighted_gpa)) {
+                    $this->storeScore($request->unweighted_gpa, 'unweighted_gpa', $findStatistisc->id);
+                }
+                if ($request->weighted_gpa && !empty($request->weighted_gpa)) {
+                    $this->storeScore($request->weighted_gpa, 'weighted_gpa', $findStatistisc->id);
+                }
+            }
+            if ($score == 'goalscore' || $score == 'finalscore') {
+                $this->storeFinalOrGoalScore($score, $college_list, $findStatistisc->id);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Academic Statistics saved successfully',
+                'data' => $college_list
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
             ]);
         }
-        $this->calculateScoreForGoalField($request, $findStatistisc->id);
-        $this->calculateScoreForFinalField($request, $findStatistisc->id);
-        return redirect(route('admin-dashboard.initialCollegeList.step4'));
+
     }
 
-    public function calculateScoreForGoalField($data, $db_field_id) {
-        switch ($data->goal_test_type) {
-            case 'ACT': 
-                $data = [
-                    'english' => $data->goal_english_score,
-                    'math' => $data->goal_math_score,
-                    'reading' => $data->goal_reading_score,
-                    'science' => $data->goal_science_score, 
-                ];
-                $score = $this->calculateACTScore($data);
-                $this->storeScore($score, 'goal_act_score', $db_field_id);
+    public function storeFinalOrGoalScore($score_type, $data, $db_field_id) {
+        $field = '';
+        $test_type = $score_type == 'goalscore' ? 'goal_test_type' : 'final_test_type';
+        if ($score_type == 'goalscore') {
+            CollegeUserStatistics::find($db_field_id)->update([
+                'goal_act_score' => null,
+                'goal_sat_score' => null,
+                'goal_psat_score' => null,
+            ]);
+        } else {
+            CollegeUserStatistics::find($db_field_id)->update([
+                'final_act_score' => null,
+                'final_sat_score' => null,
+                'final_psat_score' => null,
+            ]);
+        }
+        switch ($data[$test_type]) {
+            case 'ACT':
+                $field = $score_type == 'goalscore' ? 'goal_act_score' : 'final_act_score';
             break;
 
             case 'SAT': 
-                $data = [
-                    'reading' => $data->goal_reading_score,
-                    'writing' => $data->goal_write_score,
-                    'math_with_cal' => $data->goal_math_with_calculator_score,
-                    'math_without_cal' => $data->goal_math_with_no_calculator_score,
-                ];
-                $score = $this->calculateSATScore($data);
-                $this->storeScore($score, 'goal_sat_score', $db_field_id);
+                $field = $score_type == 'goalscore' ? 'goal_sat_score' : 'final_sat_score';
             break;
 
             case 'PSAT':
-                $data = [
-                    'reading' => $data->goal_reading_score,
-                    'writing' => $data->goal_write_score,
-                    'math_with_cal' => $data->goal_math_with_calculator_score,
-                    'math_without_cal' => $data->goal_math_with_no_calculator_score,
-                ];
-                $score = $this->calculateSATScore($data);
-                $this->storeScore($score, 'goal_psat_score', $db_field_id);
+                $field = $score_type == 'goalscore' ? 'goal_psat_score' : 'final_psat_score';
             break;
         }
-    }
-
-    public function calculateScoreForFinalField($data, $db_field_id) {
-        switch ($data->final_test_type) {
-            case 'ACT': 
-                $data = [
-                    'english' => $data->final_english_score,
-                    'math' => $data->final_math_score,
-                    'reading' => $data->final_reading_score,
-                    'science' => $data->final_science_score, 
-                ];
-                $score = $this->calculateACTScore($data);
-                $this->storeScore($score, 'final_act_score', $db_field_id);
-            break;
-
-            case 'SAT':
-                $data = [
-                    'reading' => $data->final_reading_score,
-                    'writing' => $data->final_write_score,
-                    'math_with_cal' => $data->final_math_with_calculator_score,
-                    'math_without_cal' => $data->final_math_with_no_calculator_score,
-                ];
-                $score = $this->calculateSATScore($data);
-                $this->storeScore($score, 'final_sat_score', $db_field_id);
-            break;
-
-            case 'PSAT':
-                // pending
-            break;
+        if ($field != '') {
+            $score = 0;
+            if ($score_type == 'goalscore') {
+                $score = $data->goal_composite_score;
+            } else {
+                $score = $data->final_composite_score;
+            }
+            $this->storeScore($score, $field, $db_field_id);
         }
-    }
-
-    public function calculateSATScore($data) {
-        $math = $data['math_with_cal'] + $data['math_without_cal'];
-        $read_write_score = (config('constants.SAT_Score_table.reading'. $data['reading']) + config('constants.SAT_Score_table.reading.'. $data['writing'])) * 10;
-        $math_score = config('constants.SAT_Score_table.math.'. $math);
-        return $math_score + $read_write_score;
-    }
-
-    public function calculatePSATScore($data) {
-        $math = $data['math_with_cal'] + $data['math_without_cal'];
-        $read_write_score = (config('constants.PSAT_Score_table.reading'. $data['reading']) + config('constants.PSAT_Score_table.reading.'. $data['writing'])) * 10;
-        $math_score = config('constants.PSAT_Score_table.math.'. $math);
-        return $math_score + $read_write_score;
-    }
-
-    public function calculateACTScore($data) {
-        $score = $data['english'] + $data['math'] + $data['reading'] + $data['science'];
-        return number_format($score / 4, 0);
     }
 
     public function storeScore($score, $field, $id) {
@@ -864,6 +744,171 @@ class InititalCollegeListController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'No data found',
+            ]);
+        }
+    }
+
+    public function getUserCollegeList() {
+        try {
+            $collegelist = CollegeList::where('user_id', Auth::id())->with(['college_list_details' => function ($query) {
+                $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id');
+            }])->first();
+
+            if ($collegelist) {
+                $collegelist = $collegelist->toArray();
+                return response()->json([
+                    'success' => true,
+                    'data' => $collegelist['college_list_details']
+                ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'data' => []
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ]);
+        } 
+    }
+
+    public function getPastCurrentScore($id) {
+        try {
+            $data = UserCollgeScore::where('college_list_id', $id)->get();
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ]);
+        }
+    }
+
+    public function getSinglePastCurrentScore($id) {
+        try {
+            $score = UserCollgeScore::where('id', $id)->first();
+            if ($score) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $score,
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Score not found',
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ]);
+        }
+    }
+
+    public function storePastCurrentScore(Request $request) {
+
+        $scorerules = 'required_if:test_type,ACT|numeric|min:1|max:36';
+        $otherules = 'required|numeric|min:1|max:36';
+
+        if (isset($request->id)) { 
+            $score = UserCollgeScore::where('id', $request->id)->first();
+            if (!$score) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Score not found',
+                ]);
+            }
+        }
+
+        if ($request->test_type != 'ACT') {
+            $scorerules = 'required_if:test_type,ACT';
+            $otherules = 'required|numeric|min:200|max:800';
+        }
+
+        $rules = [
+            'test_type' => 'required|in:ACT,SAT,PSAT',
+            'test_date' => 'required|date',
+            'english_score' => $scorerules,
+            'reading_score' => $otherules,
+            'math_score' => $otherules,
+            'science_score' => $scorerules,
+        ];
+
+        $validate = Validator::make($request->all(), $rules, [
+            'test_date.required' => 'Test date is required',
+            'test_date.date' => 'Test date is invalid',
+            'test_type.required' => 'Test type is required',
+            'test_type.in' => 'Test type is invalid',
+            'english_score.required_if' => 'English score is required',
+            'english_score.numeric' => 'English score must be numeric',
+            'english_score.min' => 'English score must be greater than 0',
+            'english_score.max' => 'English score must be less than 36',
+            'reading_score.required' => 'Reading score is required',
+            'reading_score.numeric' => 'Reading score must be numeric',
+            'reading_score.min' => 'Reading score must be greater than 0',
+            'reading_score.max' => 'Reading score must be less than 36',
+            'math_score.required' => 'Math score is required',
+            'math_score.numeric' => 'Math score must be numeric',
+            'math_score.min' => 'Math score must be greater than 0',
+            'math_score.max' => 'Math score must be less than 36',
+            'science_score.required_if' => 'Science score is required',
+            'science_score.numeric' => 'Science score must be numeric',
+            'science_score.min' => 'Science score must be greater than 0',
+            'science_score.max' => 'Science score must be less than 36',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validate->errors()->first(),
+            ]);
+        }
+        $data = [
+            'test_type' => $request->test_type,
+            'test_date' => $request->test_date,
+            'english_score' => $request->test_type = 'ACT' ? $request->english_score : null,
+            'reading_score' => $request->reading_score,
+            'math_score' => $request->math_score,
+            'science_score' => $request->test_type = 'ACT' ? $request->science_score : null,
+            'composite_score' => $request->composite_score,
+        ];
+        if (isset($request->id)) {
+            UserCollgeScore::find($request->id)->update($data);
+        } else {
+            $data['college_list_id'] = $request->college_list_id;
+            UserCollgeScore::create($data);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Score saved successfully',
+        ]);
+    }
+
+    public function deletePastCurrentScore($id) {
+        try {
+            $score = UserCollgeScore::where('id', $id)->first();
+            if ($score) {
+                $score->delete();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Score deleted successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Score not found',
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
             ]);
         }
     }

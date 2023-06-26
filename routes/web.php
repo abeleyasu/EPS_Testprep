@@ -356,8 +356,6 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/step2/save-college', [InititalCollegeListController::class, 'saveCollege'])->name('step2.saveCollege');
                 Route::get('/step2/get-college/{id}', [InititalCollegeListController::class, 'getSingleCollege'])->name('step2.getSingleCollege');
                 Route::delete('step2/remove-college/{id}/{sid}', [InititalCollegeListController::class, 'removeCollge'])->name('step2.removeCollge');
-                Route::put('/step3/save-academic-statistics/{id}', [InititalCollegeListController::class, 'saveAcademicStatistics'])->name('step3.saveAcademicStatistics');
-                Route::post('/step3/submit-form', [InititalCollegeListController::class, 'submitForm'])->name('step3.submitForm');
                 Route::get('/search-college/step4/get-college-list/{id}', [InititalCollegeListController::class, 'getSelectedCollegeList'])->name('step4.getSelectedCollegeList');
                 Route::patch('/search-college/step4/update-order/{id}', [InititalCollegeListController::class, 'updateOrder'])->name('step4.updateOrder');
                 Route::get('/search-college/step4/get-college/{id}', [InititalCollegeListController::class, 'collegeList'])->name('step4.collegeList');
@@ -365,6 +363,13 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::patch('search-college/save/{id}', [InititalcollegeListController::class, 'saveCollegeList'])->name('saveCollegeList');
                 Route::patch('search-college/change-status/{id}', [InititalcollegeListController::class, 'changeSearchCollegeAddStatus'])->name('changeSearchCollegeAddStatus');
                 Route::get('get-hide-college', [InititalcollegeListController::class, 'getHideCollege'])->name('getHideCollege');
+                Route::get('user/get-college-list', [InititalcollegeListController::class, 'getUserCollegeList'])->name('getUserCollegeList');
+                
+                Route::put('/step3/save-academic-statistics/{score}/{id}', [InititalCollegeListController::class, 'saveAcademicStatistics'])->name('step3.saveAcademicStatistics');
+                Route::post('/store/past-current-score', [InititalcollegeListController::class, 'storePastCurrentScore'])->name('storePastCurrentScore');
+                Route::get('/past-current-score/{id}', [InititalcollegeListController::class, 'getPastCurrentScore'])->name('getPastCurrentScore');
+                Route::get('/get/past-current-score/{id}', [InititalcollegeListController::class, 'getSinglePastCurrentScore'])->name('getSinglePastCurrentScore');
+                Route::delete('/past-current-score/{id}', [InititalcollegeListController::class, 'deletePastCurrentScore'])->name('deletePastCurrentScore');
             });
 
             Route::group(['prefix' => 'cost-comparison'], function () {

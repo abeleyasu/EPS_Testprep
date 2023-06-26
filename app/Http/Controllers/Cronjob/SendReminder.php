@@ -14,6 +14,7 @@ use Exception;
 use Twilio\Rest\Client;
 use App\Models\UserSettings;
 use App\Models\CollegeSearchAdd;
+use App\Service\TwilioService;
 
 class SendReminder extends Controller
 {
@@ -132,14 +133,6 @@ class SendReminder extends Controller
     private function sendSmsReminder($reminder, $user)
     {
         Log::channel('reminder')->info("sendSmsReminder function called");
-        $accountSid = env('TWILIO_ACCOUNT_SID');
-        $authToken = env('TWILIO_AUTH_TOKEN');
-        $twilioPhoneNumber = env('TWILIO_PHONE_NUMBER');
-
-        Log::channel('reminder')->info("accountSid = $accountSid");
-        Log::channel('reminder')->info("authToken = $authToken");
-        Log::channel('reminder')->info("twilioPhoneNumber = $twilioPhoneNumber");
-
         $date = date("m/d/Y");
         $time = date("h:i a", strtotime($reminder->when_time));
 
@@ -147,18 +140,14 @@ class SendReminder extends Controller
         //$toPhoneNumber = '+919099542060';
         //$toPhoneNumber = '+639088753486';
         Log::channel('reminder')->info("toPhoneNumber = $toPhoneNumber");
-        $text = "College Prep System Reminder: $reminder->reminder_name - $date at $time https://rb.gy/s139r";
+        $text = "College Prep System Reminder: $reminder->reminder_name - $date at $time Reply STOP to unsubscribe";
         Log::channel('reminder')->info("text = $text");
 
         try {
-            $twilio = new Client($accountSid, $authToken);
-            $message = $twilio->messages
-                        ->create($toPhoneNumber,
-                        array(
-                            "from" => $twilioPhoneNumber,
-                            "body" => $text
-                        )
-                    );
+            $twilio = new TwilioService();
+            $message = $twilio->sendSMSMessage($toPhoneNumber, [
+                'body' => $text
+            ]);
             Log::channel('reminder')->info("message->sid = $message->sid");
             Log::channel('reminder')->info("Twilio Response:\n" . json_encode($message, JSON_PRETTY_PRINT));
             Log::channel('reminder')->info("SMS sent successfully to $toPhoneNumber");

@@ -197,6 +197,7 @@
         })
         $('#' + id).attr('checked', e.target.checked);
         $('#' + id).val(e.target.checked ? 1 : 0);
+        saveform(currentIndex);
     })
 
     $(document).on('change', '.status', function (e) {
@@ -226,6 +227,9 @@
             $('#is_application_checklist-' + elementIndex).attr('checked', true);
             $('#is_application_checklist-' + elementIndex).val(1);
         })
+        setTimeout(() => {
+            saveform(elementIndex);
+        }, 500);
     })
 
     $('#view-hide-college-btn').on('click', async function (e) {
@@ -261,20 +265,33 @@
 
     $(document).on('click', '.save-detail', function (e) {
         e.preventDefault();
+    })
+
+    function saveform(formid) {
         $.ajax({
             url: "{{route('admin-dashboard.college_application_save')}}",
             type: 'POST',
-            data: $('#form-' + e.target.dataset.id).serialize(),
+            data: $('#form-' + formid).serialize(),
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
         }).done(async (response) => {
             if (response.success) {
-                toastr.success(response.message);
+                if ($('#is_application_checklist-' + formid).val() == 1) {
+                    $('#block-header-' + formid).addClass('bg-success');
+                } else {
+                    $('#block-header-' + formid).removeClass('bg-success');
+                }
+                // toastr.success(response.message);
             } else {
                 toastr.error(response.message);
             }
         })
+    }
+
+
+    $(document).on('change', '.update-form', function (e) {
+        saveform(e.target.dataset.index);
     })
 
     $(document).on('click', '#add-college', function (e) {

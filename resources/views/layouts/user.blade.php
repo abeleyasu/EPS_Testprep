@@ -26,7 +26,11 @@
             collegelustUrl: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
             applicationOrganizer: "{{ route('admin-dashboard.getApplicationDeadlineData') }}",
             getSingleApplicationOrganizer: "{{ route('admin-dashboard.getSingleApplicationData', [ 'id' => ':id' ]) }}",
-            intltelinput: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
+            pastCurrentScore: "{{ route('admin-dashboard.initialCollegeList.getPastCurrentScore', [ 'id' => ':id' ]) }}",
+            getSinglePastCurentScore: "{{ route('admin-dashboard.initialCollegeList.getSinglePastCurrentScore', [ 'id' => ':id' ]) }}",
+            deletepastCurrentScore: "{{ route('admin-dashboard.initialCollegeList.deletePastCurrentScore', [ 'id' => ':id' ]) }}",
+            updateScoreDetails: "{{ route('admin-dashboard.initialCollegeList.step3.saveAcademicStatistics', ['score' => ':score', 'id' => ':id']) }}",
+            intltelinput: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
         }
     </script>
     @yield('user-script')

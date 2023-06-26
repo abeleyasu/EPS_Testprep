@@ -25,7 +25,7 @@ function setApplicationHTML(records) {
                 <input type="hidden" name="college_detail_id" value="${data.id}">
 
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                    <div class="block-header block-header-tab row ${data.is_application_checklist == 1 ? 'bg-success' : ''}">
+                    <div class="block-header block-header-tab row ${data.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
                         <div class="col-10" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
                             <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i>${data.college_details.college_name}</a> 
                         </div>
@@ -72,7 +72,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                     <div class="row mb-3 list-content">
                         <label class="form-label" for="type_of_application-${dataset.id}">Type of Application</label>
                         <div class="col-10">
-                            <select class="form-select" id="type_of_application-${dataset.id}" name="type_of_application">
+                            <select class="form-select update-form" id="type_of_application-${dataset.id}" name="type_of_application" data-index="${dataset.id}">
                                 ${getStatsOption(staticdata.applications, data.type_of_application)}
                             </select>
                         </div>
@@ -82,7 +82,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                     <div class="row mb-3 list-content">
                         <label class="form-label" for="admission_option-${dataset.id}">Admission Open</label>
                         <div class="col-10">
-                            <select class="form-select" id="admission_option-${dataset.id}" name="admission_option">
+                            <select class="form-select update-form" id="admission_option-${dataset.id}" name="admission_option" data-index="${dataset.id}">
                                 ${getStatsOption(staticdata.admision_option, data.admission_option)}
                             </select>
                         </div>
@@ -92,7 +92,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                     <div class="row mb-3 list-content">
                         <label class="form-label" for="number_of_essaya-${dataset.id}">Number of Essays</label>
                         <div class="col-10">
-                            <select class="form-select" id="number_of_essaya-${dataset.id}" name="number_of_essaya">
+                            <select class="form-select update-form" id="number_of_essaya-${dataset.id}" name="number_of_essaya" data-index="${dataset.id}">
                                 ${getStatsOption([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], data.number_of_essaya)}
                             </select>
                         </div>
@@ -104,11 +104,11 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="admissions_deadline-${dataset.id}">Admissions Deadline</label>
-                                    <input type="text" class="date-own form-control" id="admissions_deadline-${dataset.id}" name="admissions_deadline" value="${data.admissions_deadline ? data.admissions_deadline : ''}" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" name="admissions_deadline" value="${data.admissions_deadline ? data.admissions_deadline : ''}" placeholder="mm/dd/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="ad_status">Status</label>
-                                    <select class="form-select" id="ad_status" name="ad_status">
+                                    <select class="form-select update-form" id="ad_status" name="ad_status" data-index="${dataset.id}">
                                         ${getStatsOption(staticdata.college_list_status, data.ad_status)}
                                     </select>
                                 </div>
@@ -122,11 +122,11 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="competitive_scholarship_deadline-${dataset.id}">Competitive Scholarship Deadline</label>
-                                    <input type="text" class="date-own form-control" id="competitive_scholarship_deadline-${dataset.id}" value="${data.competitive_scholarship_deadline ? data.competitive_scholarship_deadline : ''}" name="competitive_scholarship_deadline" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="competitive_scholarship_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.competitive_scholarship_deadline ? data.competitive_scholarship_deadline : ''}" name="competitive_scholarship_deadline" placeholder="mm/dd/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="csd_status">Status</label>
-                                    <select class="form-select" id="csd_status" name="csd_status">
+                                    <select class="form-select update-form" id="csd_status" name="csd_status" data-index="${dataset.id}">
                                         ${getStatsOption(staticdata.college_list_status, data.csd_status)}
                                     </select>
                                 </div>
@@ -140,11 +140,11 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="departmental_scholarship_deadline-${dataset.id}">Departmental/STEM Scholarship Deadline</label>
-                                    <input type="text" class="date-own form-control" id="departmental_scholarship_deadline-${dataset.id}" value="${data.departmental_scholarship_deadline ? data.departmental_scholarship_deadline : ''}" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="departmental_scholarship_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.departmental_scholarship_deadline ? data.departmental_scholarship_deadline : ''}" name="departmental_scholarship_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="dsd_status">Status</label>
-                                    <select class="form-select" id="dsd_status" name="dsd_status">
+                                    <select class="form-select update-form" id="dsd_status" name="dsd_status" data-index="${dataset.id}">
                                         ${getStatsOption(staticdata.college_list_status, data.dsd_status)}
                                     </select>
                                 </div>
@@ -158,11 +158,11 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="honors_college_deadline-${dataset.id}">Honors College Deadline</label>
-                                    <input type="text" class="date-own form-control" id="honors_college_deadline-${dataset.id}" value="${data.honors_college_deadline ? data.honors_college_deadline : ''}" name="honors_college_deadline" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="honors_college_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.honors_college_deadline ? data.honors_college_deadline : ''}" name="honors_college_deadline" placeholder="mm/dd/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="hcd_status">Status</label>
-                                    <select class="form-select" id="hcd_status" name="hcd_status">
+                                    <select class="form-select update-form" id="hcd_status" name="hcd_status" data-index="${dataset.id}">
                                         ${getStatsOption(staticdata.college_list_status, data.hcd_status)}
                                     </select>
                                 </div>
@@ -176,11 +176,11 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="fafsa_deadline-${dataset.id}">FAFSA Deadline</label>
-                                    <input type="text" class="date-own form-control" id="fafsa_deadline-${dataset.id}" value="${data.fafsa_deadline ? data.fafsa_deadline : ''}" name="fafsa_deadline" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="fafsa_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.fafsa_deadline ? data.fafsa_deadline : ''}" name="fafsa_deadline" placeholder="mm/dd/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="fafsa_status">Status</label>
-                                    <select class="form-select" id="fafsa_status" name="fafsa_status">
+                                    <select class="form-select update-form" id="fafsa_status" name="fafsa_status" data-index="${dataset.id}">
                                         ${getStatsOption(staticdata.college_list_status, data.fafsa_status)}
                                     </select>
                                 </div>
@@ -194,11 +194,11 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="css_profile_deadline-${dataset.id}">CSS Profile Deadline</label>
-                                    <input type="text" class="date-own form-control" id="css_profile_deadline-${dataset.id}" value="${data.css_profile_deadline ? data.css_profile_deadline : ''}" name="css_profile_deadline" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" id="css_profile_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.css_profile_deadline ? data.css_profile_deadline : ''}" name="css_profile_deadline" placeholder="mm/dd/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="css_status">Status</label>
-                                    <select class="form-select" id="css_status" name="css_status">
+                                    <select class="form-select update-form" id="css_status" name="css_status" data-index="${dataset.id}">
                                         ${getStatsOption(staticdata.college_list_status, data.css_status)}
                                     </select>
                                 </div>
@@ -280,9 +280,6 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             After you submit your application, set up your student portal to confirm that the college has received your application and required documentation <br>
                             (Usually the college will send you an email with directions on how to set up your student portal once they've received your application)
                         </div>
-                    </div>
-                    <div class="mb-3 d-flex justify-content-end">
-                        <button class="btn btn-alt-success save-detail" type="button" data-id="${dataset.id}" data-college="${data.id}">Save</button>
                     </div>
                 </div>
             `

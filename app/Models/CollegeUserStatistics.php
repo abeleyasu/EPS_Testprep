@@ -20,5 +20,6 @@ class CollegeUserStatistics extends Model
         'goal_sat_score',
         'final_act_score',
         'final_sat_score',
+        'final_psat_score',
     ];
 }

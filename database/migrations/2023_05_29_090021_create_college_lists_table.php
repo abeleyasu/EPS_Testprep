@@ -24,19 +24,6 @@ return new class extends Migration
             $table->string('high_school_math_score')->nullable();
             $table->string('high_school_reading_score')->nullable();
             $table->string('high_school_science_score')->nullable();
-            $table->string('high_school_write_score')->nullable();
-            $table->string('high_school_math_with_no_calculator_score')->nullable();
-            $table->string('high_school_math_with_calculator_score')->nullable();
-            // for past and current test scores field
-            $table->string('past_current_test_type')->nullable()->default('ACT');
-            $table->string('past_current_test_date')->nullable();
-            $table->string('past_current_english_score')->nullable();
-            $table->string('past_current_math_score')->nullable();
-            $table->string('past_current_reading_score')->nullable();
-            $table->string('past_current_science_score')->nullable();
-            $table->string('past_current_write_score')->nullable();
-            $table->string('past_current_math_with_no_calculator_score')->nullable();
-            $table->string('past_current_math_with_calculator_score')->nullable();
             // for Goal score
             $table->string('goal_test_type')->nullable()->default('ACT');
             $table->string('goal_test_date')->nullable();
@@ -44,9 +31,6 @@ return new class extends Migration
             $table->string('goal_math_score')->nullable();
             $table->string('goal_reading_score')->nullable();
             $table->string('goal_science_score')->nullable();
-            $table->string('goal_write_score')->nullable();
-            $table->string('goal_math_with_no_calculator_score')->nullable();
-            $table->string('goal_math_with_calculator_score')->nullable();
             // final score
             $table->string('final_test_type')->nullable()->default('ACT');
             $table->string('final_test_date')->nullable();
@@ -54,9 +38,6 @@ return new class extends Migration
             $table->string('final_math_score')->nullable();
             $table->string('final_reading_score')->nullable();
             $table->string('final_science_score')->nullable();
-            $table->string('final_write_score')->nullable();
-            $table->string('final_math_with_no_calculator_score')->nullable();
-            $table->string('final_math_with_calculator_score')->nullable();
             // end
             $table->integer('active_step')->nullable()->default(1);
             $table->string('status')->nullable()->default('not_completed');

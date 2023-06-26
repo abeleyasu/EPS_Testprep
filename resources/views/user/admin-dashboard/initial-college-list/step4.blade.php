@@ -65,7 +65,11 @@
               <tr>
                 <th>Your Final SAT Score</th>
                 <th>{{ $score && $score->final_sat_score ? $score->final_sat_score : '-' }}</th>
-              </tr>  
+              </tr>
+              <tr>
+                <th>Your Final PSAT Score</th>
+                <th>{{ $score && $score->final_psat_score ? $score->final_psat_score : '-' }}</th>
+              </tr>
             </thead>
           </table>
         </div>
