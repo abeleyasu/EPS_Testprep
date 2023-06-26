@@ -282,8 +282,8 @@ class InititalCollegeListController extends Controller
                     $rules['high_school_reading_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules;
                     $rules['high_school_math_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules ;
                     $rules['high_school_test_date'] = 'nullable|date';
-                    $rules['unweighted_gpa'] = 'nullable|numeric|min:1|max:4';
-                    $rules['weighted_gpa'] = 'nullable|numeric|min:1|max:8';
+                    $rules['unweighted_gpa'] = 'nullable|numeric|min:0|max:4';
+                    $rules['weighted_gpa'] = 'nullable|numeric|min:0|max:8';
                 break;
 
                 case 'goalscore';
@@ -313,6 +313,15 @@ class InititalCollegeListController extends Controller
                     ]);
                 break;
             }
+
+            $customMessage = [
+                'required' => 'The :attribute field is required.',
+                'numeric' => 'The :attribute field must be numeric.',
+                'min' => 'The :attribute field must be at least :min.',
+                'max' => 'The :attribute field may not be greater than :max.',
+                'date' => 'The :attribute field must be a date.',
+            ];
+
             $validate = Validator::make($request->all(), $rules, $customMessage);
             if ($validate->fails()) {
                 return response()->json([
