@@ -332,7 +332,7 @@ $(document).on('click', '.delete-past-current-score', function (e) {
             }).done(async (response) => {
                 if (response.success) {
                     toastr.success(response.message);
-                    await getPastCurrentScore($(this).data('college_id'));
+                    await getPastCurrentScore(otherScoreDetails);
                 } else {
                     toastr.error(response.message);
                 }
