@@ -311,7 +311,7 @@
 
     $('.date-own').datepicker({
         format: 'dd-mm-yyyy',
-        startDate: '-3d',
+        // startDate: '-3d',
         autoclose: true,
     });
 
@@ -342,7 +342,7 @@
                 if (response.success) {
                     $('#add-past-current-score').modal('hide');
                     resetModal();
-                    await getPastCurrentScore(collegeData.id)
+                    await getPastCurrentScore(collegeData)
                     toastr.success(response.message);
                 } else {
                     toastr.error(response.message);
