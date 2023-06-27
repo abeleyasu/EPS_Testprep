@@ -334,7 +334,30 @@
     }
   })
 
+  function checkNumber(value) {
+    let number = value;
+    const regexNumberWithDeciaml = /^\d+(\.\d{1,2})?$/;
+    if (!regexNumberWithDeciaml.test(value)) {
+      toastr.error('Please enter valid number')
+      return;
+    }
+    if (value.includes('.')) {
+      const decimal = +(value.split('.')[1]);
+      if (decimal === 0) {
+        number = value.split('.')[0];
+      } else {
+        number = (+value).toFixed(2);
+      }
+    }
+    return number;
+  }
+
   $(document).on('change', '.edit-value', function (e) {
+    const value = checkNumber(e.target.value);
+    if (!value) {
+      return;
+    }
+    e.target.value = value;
     const data = {
       [e.target.name] : e.target.value,
     }
@@ -356,6 +379,11 @@
   })
 
   $(document).on('change', '.edit-outside-aid', function (e) {
+    const value = checkNumber(e.target.value);
+    if (!value) {
+      return;
+    }
+    e.target.value = value;
     const data = {
       amount: e.target.value,
       id: e.target.dataset.id,
