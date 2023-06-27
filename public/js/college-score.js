@@ -377,7 +377,9 @@ $(document).on('click', '.edit-past-current-score', async function (e) {
 // For Highschool scores
 
 $('.gpa-value').on('change', function (e) {
-    $('#' + e.target.id).val((+e.target.value).toFixed(2))
+    if (+e.target.value > 0) {
+        $('#' + e.target.id).val((+e.target.value).toFixed(2))
+    }
 })
 
 $('#high_school_test_type').on('change', function (e) {
