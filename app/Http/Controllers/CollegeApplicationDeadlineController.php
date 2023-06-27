@@ -22,8 +22,8 @@ class CollegeApplicationDeadlineController extends Controller
             $q->where('is_active', true); 
         })->with(['college_details'])->get();
         $selectedCollegeId = $college_list_deadline->pluck('college_details.college_id')->toArray();
-        // dd($college_list_deadline->toArray());
         $college_list = CollegeInformation::orderBy('name')->whereNotIn('college_id', $selectedCollegeId)->get();
+        $college = CollegeList::where('user_id', Auth::id())->first();
         return view('user.admin-dashboard.college-application-deadline', [
             'applications' => config('constants.types_of_application'),
             'admision_option' => config('constants.admission_options'),
@@ -31,20 +31,22 @@ class CollegeApplicationDeadlineController extends Controller
             'college_list_deadline' => $college_list_deadline,
             'college_list' => $college_list,
             'selected_college_id' => $selectedCollegeId,
+            'college' => $college
         ]);
     }
 
     public function getApplicationDeadlineData() {
         try {
-            $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->whereHas('college_details', function ($q) { 
-                $q->where('is_active', true); 
-            })->with(['college_details'])->get()->toArray();
+            $college_list_deadline = CollegeList::where('user_id', Auth::id())->with(['college_list_details' => function ($detail) {
+                $detail->where('is_active', true)->orderBy('order_index')->with(['collegeDeadline']);
+            }])->first();
 
             return [
                 'success' => true,
-                'data' => $college_list_deadline,
+                'data' => $college_list_deadline ? $college_list_deadline->college_list_details->toArray() : [],
             ];
         } catch (\Exception $e) {
+            dd($e);
             return [
                 'success' => false,
                 'message' => 'Oops! Something went wrong',
@@ -68,16 +70,19 @@ class CollegeApplicationDeadlineController extends Controller
     }
 
     public function list(Request $request) {
-
-        // dd($request->all());
-
         $page = isset($request->page) ? $request->page : 1;
         $search = isset($request->search) ? $request->search : null;
         $limit = $page * 25;
 
-        $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->with('college_details')->get();
-        $selectedCollegeId = $college_list_deadline->pluck('college_details.college_id')->toArray();
-        $college_list = CollegeInformation::whereNotIn('college_id', $selectedCollegeId);
+        $college_list = CollegeInformation::orderBy('name');
+
+        if (!isset($request->all)) {
+            $college_list_deadline = CollegeList::where('user_id', Auth::id())->with(['college_list_details'])->first();
+            if ($college_list_deadline) {
+                $selectedCollegeId = $college_list_deadline->college_list_details->pluck('college_id')->toArray();
+                $college_list = $college_list->whereNotIn('college_id', $selectedCollegeId);       
+            }
+        }
 
         if (!empty($search)) {
             $college_list = $college_list->where(function ($list) use ($search) {
@@ -85,7 +90,7 @@ class CollegeApplicationDeadlineController extends Controller
             });
         }
 
-        $college_list = $college_list->orderBy('name')->paginate($limit);
+        $college_list = $college_list->paginate($limit);
 
         $college_list = $college_list->toArray();
 

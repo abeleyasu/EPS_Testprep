@@ -57,7 +57,7 @@ class InititalCollegeListController extends Controller
         $pageNo = isset($request->page) ? $request->page : 1;
         $college = CollegeList::where('user_id', Auth::id())->first();
         $data = $this->getCollegeData($college->id, $pageNo);
-        $selectedCollege = CollegeSearchAdd::where('college_lists_id', $request->college_lists_id)->get()->map(function($item) {
+        $selectedCollege = CollegeSearchAdd::where('college_lists_id', $college->id)->get()->map(function($item) {
             return $item->college_id;
         })->toArray();
 
@@ -341,12 +341,8 @@ class InititalCollegeListController extends Controller
             }
 
             if ($score == 'highschool') {
-                if ($request->unweighted_gpa && !empty($request->unweighted_gpa)) {
-                    $this->storeScore($request->unweighted_gpa, 'unweighted_gpa', $findStatistisc->id);
-                }
-                if ($request->weighted_gpa && !empty($request->weighted_gpa)) {
-                    $this->storeScore($request->weighted_gpa, 'weighted_gpa', $findStatistisc->id);
-                }
+                $this->storeScore($request->unweighted_gpa, 'unweighted_gpa', $findStatistisc->id);
+                $this->storeScore($request->weighted_gpa, 'weighted_gpa', $findStatistisc->id);
             }
             if ($score == 'goalscore' || $score == 'finalscore') {
                 $this->storeFinalOrGoalScore($score, $college_list, $findStatistisc->id);
@@ -414,12 +410,13 @@ class InititalCollegeListController extends Controller
     public function step4(Request $request) {
         $college = CollegeList::where('user_id', Auth::id())->first();
         if ($college) { 
-            CollegeList::where('id', $college->id)->update([
+            $college->update([
                 'active_step' => 4,
             ]);
             $score = CollegeUserStatistics::where('college_lists_id', $college->id)->first();
             return view('user.admin-dashboard.initial-college-list.step4', [
-                'score' => $score
+                'score' => $score,
+                'college' => $college->id,
             ]);
         }
     }
@@ -529,8 +526,10 @@ class InititalCollegeListController extends Controller
 
     public function viewCostComparisonPage() {
         $types = CostTypes::get();
+        $college = CollegeList::where('user_id', Auth::id())->first();
         return view('user.admin-dashboard.cost-comparison', [
             'types' => $types,
+            'college' => $college
         ]);
     }
 
@@ -575,7 +574,7 @@ class InititalCollegeListController extends Controller
         })->with(['college_list_details' => function ($query) {
             $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
                 $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
-            }]);
+            }])->orderBy('order_index', 'asc');
         }])->first();
 
         if ($costcomparisonsummary) {
@@ -699,6 +698,12 @@ class InititalCollegeListController extends Controller
         }
         $college = CollegeInformation::where('college_id', $request->college)->first();
         $collegelist = CollegeList::where('user_id', auth()->user()->id)->first();
+        if (!$collegelist) {
+            $collegelist = CollegeList::create([
+                'user_id' => auth()->user()->id,
+                'active_step' => 1,
+            ]);
+        }
         $max_order_index = CollegeSearchAdd::where('college_lists_id', $collegelist->id)->max('order_index');
         $add_college = CollegeSearchAdd:: create([
             'college_lists_id' => $collegelist->id,

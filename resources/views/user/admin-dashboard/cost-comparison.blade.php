@@ -113,7 +113,7 @@
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
           <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
-            <div class="accordion accordionExample1" id="college-details-cost-comparison"></div>
+            <div class="accordion accordionExample1" id="userSelectedCollegeList" data-type="cost-comparison" @if($college) data-collegeid="{{ $college->id }}" @endif></div>
           </div>
         </div>
       </div>
@@ -206,12 +206,12 @@
 <script src="{{asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js')}}"></script>
 <script src="{{asset('assets/js/pages/be_tables_datatables.min.js')}}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
-  const url = "{{route('admin-dashboard.cost_comparison.get_college_list_for_cost_comparison')}}"
   toastr.options = {
     "closeButton": true,
     "newestOnTop": false,
@@ -257,7 +257,7 @@
   });
 
   $(document).ready(function () {
-    getCollegeListForCostComparison(url);
+    getCollegeListForCostComparison();
   })
 
   $('#myTabContent').on('show.bs.collapse', function (e) {
@@ -323,7 +323,7 @@
       }).done(function (response) {
         if (response.success) {
           $('#add-college-cost-modal').modal('hide')
-          getCollegeListForCostComparison(url, $('#cost-id').val());
+          getCollegeListForCostComparison($('#cost-id').val());
           $('#cost-form')[0].reset()
           $('#costcomparison-summary').DataTable().ajax.reload();
           toastr.success(response.message)
@@ -437,7 +437,7 @@
     if (response) {
       await getHideCollegeList('hide-college-list-modal')
       $('#costcomparison-summary').DataTable().ajax.reload();
-      getCollegeListForCostComparison(url);
+      getCollegeListForCostComparison();
     }
   })
 
@@ -455,7 +455,7 @@
         const response = await hideshowlist(e.target.dataset.id);
         if (response) {
           $('#costcomparison-summary').DataTable().ajax.reload();
-          getCollegeListForCostComparison(url);
+          getCollegeListForCostComparison();
         }
       }
     })
@@ -474,7 +474,7 @@
         window.localStorage.setItem('APP-REFRESHED', Date.now());
         $('#add_new_college').modal('hide')
         $('#costcomparison-summary').DataTable().ajax.reload();
-        await getCollegeListForCostComparison(url);
+        await getCollegeListForCostComparison();
       } else {
         toastr.error(response.message)
       }

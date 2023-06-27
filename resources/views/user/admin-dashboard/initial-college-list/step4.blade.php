@@ -40,11 +40,11 @@
             <thead>
               <tr>
                 <th>Unweight GPA</th>
-                <th>{{ $score && $score->unweighted_gpa ? $score->unweighted_gpa : '-' }}</th>
+                <th>{{ $score ? $score->unweighted_gpa : '-' }}</th>
               </tr>  
               <tr>
                 <th>Weight GPA</th>
-                <th>{{ $score && $score->weighted_gpa ? $score->weighted_gpa : '-' }}</th>
+                <th>{{ $score ? $score->weighted_gpa : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal PSAT Score</th>
@@ -82,7 +82,7 @@
           <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         </div>
         <div class="block-content block-content-full">
-          <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true">
+          <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true" data-type="search-list" @if($score) data-collegeid="{{ $score->id  }}" @endif>
           </div>
         </div>
       </div>
@@ -253,7 +253,7 @@
     "hideMethod": "fadeOut"
   }
 
-  const collegeid = @json($score).college_lists_id;
+  const collegeid = @json($college);
 
   let collegeList = []
   $(document).ready(function() {
@@ -270,6 +270,7 @@
       },
       success: function(response) {
         if (response.success) {
+          console.log(response)
           $('#userSelectedCollegeList').html('');
           const options = ['Smart', 'Match', 'Reach'];
           response.data.forEach((data, index) => {
@@ -371,37 +372,6 @@
       }
     })
   })
-
-  Sortable.create(userSelectedCollegeList, {
-    animation: 150,
-    ghostClass: 'blue-background-class',
-    onEnd: function (evt) {
-      const payload = []
-      for (let  i = 0; i < evt.from.children.length; i++) {
-        const data = evt.from.children[i];
-        payload.push({
-          id: +data.dataset.id,
-          order_index: i + 1,
-          college_id: +data.dataset.collegeid
-        })
-      }
-      $.ajax({
-        url: "{{ route('admin-dashboard.initialCollegeList.step4.updateOrder', ['id' => ':id']) }}".replace(':id', collegeid),
-        method: 'patch',
-        data: {
-          data: payload
-        },
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-          if (response.success) {
-            getCollegeList();
-          }
-        }
-      })
-    }
-  });
 
   $('#add-college').on('click', function (e) {
     $('#add_new_college').modal('show');

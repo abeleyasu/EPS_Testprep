@@ -19,10 +19,8 @@
             <h3 class="block-title">COLLEGE LIST & APPLICATION DEADLINES</h3>
         </div>
         <div class="block-content">
-            @if(count($college_list_deadline) > 0)
-                <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
-                <button type="button" class="btn btn-sm btn-alt-success mb-3 ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
-            @endif
+            <button type="reset" class="btn btn-sm btn btn-alt-success mb-3" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
+            <button type="button" class="btn btn-sm btn-alt-success mb-3 ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
             <p>
                 <span class="note-text">Note:</span> Adding or removing a college from this list will also add it to or remove it from all tools on your profile, including the My College List tool.
             </p>
@@ -36,7 +34,7 @@
 
             <div class="tab-content" id="myTabContent">
                 <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
-                    <div class="accordion accordionExample accordionExample2" id="application-organizer-list">
+                    <div class="accordion accordionExample accordionExample2" id="userSelectedCollegeList" data-type="college-application-deadline" @if($college) data-collegeid="{{ $college->id }}" @endif>
 
                         @if(count($college_list_deadline) === 0)
                             <div class="no-data">No data found</div>
@@ -137,6 +135,7 @@
 <script src="{{ asset('assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{asset('js/college-application-organizer.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
@@ -150,8 +149,6 @@
     }
 
     $('#myTabContent').on('show.bs.collapse', async function (e) {
-        console.log(e)
-        console.log('called')
         if (e.target.tagName != 'INPUT') {
             await getSingleApplicationData(e.target.dataset, staticdata, e.target.id)
         }

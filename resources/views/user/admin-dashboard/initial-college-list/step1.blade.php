@@ -404,7 +404,8 @@
             data: function (params) {
                 var query = {
                     search: params.term,
-                    page: params.page || 1
+                    page: params.page || 1,
+                    all: true
                 }
                 return query;
             },

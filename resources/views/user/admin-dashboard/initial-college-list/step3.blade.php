@@ -78,11 +78,11 @@
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label" for="unweighted_gpa"> Unweighted GPA</label>
-                                                        <input type="text" class="form-control store-value hss-value" id="unweighted_gpa" name="unweighted_gpa" value="{{ $college_list_date['unweighted_gpa'] }}" placeholder="Please enter unweighted gpa">
+                                                        <input type="text" class="form-control gpa-value store-value hss-value" id="unweighted_gpa" name="unweighted_gpa" value="{{ $college_list_date['unweighted_gpa'] }}" placeholder="Please enter unweighted gpa">
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label" for="weighted_gpa"> Weighted GPA</label>
-                                                        <input type="text" class="form-control store-value hss-value" id="weighted_gpa" name="weighted_gpa" value="{{ $college_list_date['weighted_gpa'] }}" placeholder="Please enter weighted gpa">
+                                                        <input type="text" class="form-control gpa-value store-value hss-value" id="weighted_gpa" name="weighted_gpa" value="{{ $college_list_date['weighted_gpa'] }}" placeholder="Please enter weighted gpa">
                                                     </div>
                                                 </form>
                                             </div>

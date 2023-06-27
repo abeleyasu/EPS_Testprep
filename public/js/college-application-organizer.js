@@ -7,39 +7,43 @@ function getApplicationDeadlineOrganizerData() {
         }
     }).done(function(data){
         if (data.success) {
-            setApplicationHTML(data.data)
+            if (data.data.length > 0) {
+                setApplicationHTML(data.data)
+            } else{
+                $('#userSelectedCollegeList').html('<div class="no-data">No record found.</div>')
+            }
         }
     })
 }
 
 function setApplicationHTML(records) {
-    $('#application-organizer-list').html('')
+    $('#userSelectedCollegeList').html('')
     const csrf = $('meta[name="csrf-token"]').attr('content')
     for (let i = 0; i < records.length; i++) {
         const data = records[i]
         let content = ''
 
         content += `
-            <form id="form-${i}" method="POST">
+            <form id="form-${i}" method="POST" data-id="${data.id}">
                 <input type="hidden" name="_token" value="${csrf}">
-                <input type="hidden" name="college_detail_id" value="${data.id}">
+                <input type="hidden" name="college_detail_id" value="${data.college_deadline.id}">
 
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                    <div class="block-header block-header-tab row ${data.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
+                    <div class="block-header block-header-tab row ${data.college_deadline.is_application_checklist == 1 ? 'bg-success' : ''}" id="block-header-${i}">
                         <div class="col-10" type="button" data-toggle="collapse" data-target="#collapse${i}" aria-expanded="true">
-                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i>${data.college_details.college_name}</a> 
+                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i>${data.college_name}</a> 
                         </div>
                         <div class="col-2">
-                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.college_id}">Hide</button>
-                            ${data.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : '' }
+                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
+                            ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : '' }
                         </div>
                     </div>
-                    <div id="collapse${i}" class="collapse" aria-labelledby="headingOne" data-id="${i}" data-college="${data.id}" data-parent=".accordionExample">
+                    <div id="collapse${i}" class="collapse" aria-labelledby="headingOne" data-id="${i}" data-college="${data.college_deadline.id}" data-parent=".accordionExample">
                     </div>
                 </div>
             </form>
         `
-        $('#application-organizer-list').append(content)
+        $('#userSelectedCollegeList').append(content)
     }
 }
 

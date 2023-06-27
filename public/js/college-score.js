@@ -303,6 +303,7 @@ function hideShowScoreFields(value) {
 
 $('.score').on('change', function (e) {
     let score = 0
+    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#test_type').val() == 'ACT') { 
         score = parseInt($('#english_score').val() ? $('#english_score').val() : 0) + parseInt($('#math_score').val() ? $('#math_score').val() : 0) + parseInt($('#science_score').val() ? $('#science_score').val() : 0) + parseInt($('#science_score').val() ? $('#science_score').val() : 0)
         $('#composite_score').val(score / 4);
@@ -375,6 +376,10 @@ $(document).on('click', '.edit-past-current-score', async function (e) {
 
 // For Highschool scores
 
+$('.gpa-value').on('change', function (e) {
+    $('#' + e.target.id).val((+e.target.value).toFixed(2))
+})
+
 $('#high_school_test_type').on('change', function (e) {
     hideShowHighSchoolScoreFields(e.target.value);
     if (otherScoreDetails && otherScoreDetails.high_school_test_type == e.target.value) {
@@ -406,6 +411,7 @@ function hideShowHighSchoolScoreFields(value) {
 
 $('.high-school-score').on('change', function (e) {
     let score = 0;
+    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#high_school_test_type').val() == 'ACT') {
         score = parseInt($('#high_school_english_score').val() ? $('#high_school_english_score').val() : 0) + parseInt($('#high_school_math_score').val() ? $('#high_school_math_score').val() : 0) + parseInt($('#high_school_science_score').val() ? $('#high_school_science_score').val() : 0) + parseInt($('#high_school_reading_score').val() ? $('#high_school_reading_score').val() : 0)
         $('#high_school_composite_score').val(score / 4);
@@ -455,6 +461,7 @@ function hideShowGoalSchoolScoreFields(value) {
 
 $('.goal-school-score').on('change', function (e) {
     let score = 0;
+    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#goal_test_type').val() == 'ACT') {
         score = parseInt($('#goal_english_score').val() ? $('#goal_english_score').val() : 0) + parseInt($('#goal_math_score').val() ? $('#goal_math_score').val() : 0) + parseInt($('#goal_science_score').val() ? $('#goal_science_score').val() : 0) + parseInt($('#goal_reading_score').val() ? $('#goal_reading_score').val() : 0)
         $('#goal_composite_score').val(score / 4);
@@ -504,6 +511,7 @@ function hideShowFinalSchoolScoreFields(value) {
 
 $('.final-school-score').on('change', function (e) {
     let score = 0;
+    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#final_test_type').val() == 'ACT') {
         score = parseInt($('#final_english_score').val() ? $('#final_english_score').val() : 0) + parseInt($('#final_math_score').val() ? $('#final_math_score').val() : 0) + parseInt($('#final_science_score').val() ? $('#final_science_score').val() : 0) + parseInt($('#final_reading_score').val() ? $('#final_reading_score').val() : 0)
         $('#final_composite_score').val(score / 4);

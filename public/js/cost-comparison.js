@@ -1,12 +1,12 @@
-function getCollegeListForCostComparison(url, active_accordion = null) {
+function getCollegeListForCostComparison(active_accordion = null) {
   $.ajax({
-    url: url,
+    url: core.costComparisonDetail,
     method: 'GET',
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   }).done(function (response) {
-    $('#college-details-cost-comparison').html('')
+    $('#userSelectedCollegeList').html('')
     if (response.success) {
       const data = response.data;
       for (let i = 0;i < data.length;i++) { 
@@ -15,7 +15,7 @@ function getCollegeListForCostComparison(url, active_accordion = null) {
         const detail = costcomparison.costcomparisondetail;
         const otherscholership = costcomparison.costcomparisonotherscholarship
         let html = `
-          <div class="block block-rounded block-bordered overflow-hidden mb-1">
+          <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${costComparisonData.id}">
             <div class="block-header block-header-tab">
               <a class="text-white fw-600 collapsed w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" data-index="${i}" aria-expanded="true">
                 <i class="fa fa-2x ${active_accordion && active_accordion == costcomparison.id ? 'fa-angle-down' : 'fa-angle-right'}" id="toggle${i}"></i>
@@ -194,10 +194,10 @@ function getCollegeListForCostComparison(url, active_accordion = null) {
             </div>
           </div>
         `
-        $('#college-details-cost-comparison').append(html)
+        $('#userSelectedCollegeList').append(html)
       }
     } else {
-      $('#college-details-cost-comparison').html('<div class="no-data">No data found</div>')
+      $('#userSelectedCollegeList').html('<div class="no-data">No data found</div>')
     }
   })
 }

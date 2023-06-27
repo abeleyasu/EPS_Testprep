@@ -76,3 +76,41 @@ $('.js-data-example-ajax').select2({
     }
   }
 });
+
+Sortable.create(userSelectedCollegeList, {
+  animation: 150,
+  ghostClass: 'blue-background-class',
+  onEnd: function (evt) {
+    const payload = []
+    for (let  i = 0; i < evt.from.children.length; i++) {
+      const data = evt.from.children[i];
+      payload.push({
+        id: +data.dataset.id,
+        order_index: i + 1,
+        college_id: +evt.to.dataset.collegeid
+      })
+    }
+    if (!evt.to.dataset.collegeid) return;
+    $.ajax({
+      url: core.updateCollegeOrder.replace(':id', +evt.to.dataset.collegeid),
+      method: 'patch',
+      data: {
+        data: payload
+      },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(response) {
+        if (response.success) {
+          if (evt.to.dataset.type === 'search-list') {
+            getCollegeList();
+          } else if (evt.to.dataset.type === 'cost-comparison') {
+            getCollegeListForCostComparison();
+          } else if (evt.to.dataset.type === 'college-application-deadline') {
+            getApplicationDeadlineOrganizerData();
+          }
+        }
+      }
+    })
+  }
+});

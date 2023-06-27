@@ -36,4 +36,8 @@ class CollegeSearchAdd extends Model
     public function collegeInformation() {
         return $this->hasOne(CollegeInformation::class, 'college_id', 'college_id');
     }
+
+    public function collegeDeadline() {
+        return $this->hasOne(CollegeDetails::class, 'college_id', 'id');
+    }
 }
