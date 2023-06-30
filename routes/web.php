@@ -57,6 +57,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Cronjob\SendReminder;
 use App\Http\Controllers\Cronjob\FetchCollegeInformation;
 use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,10 +69,7 @@ use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    Session::flush();
-    return redirect('login');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes

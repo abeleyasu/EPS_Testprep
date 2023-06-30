@@ -21,6 +21,7 @@ class SendReminder extends Controller
     public function index(Request $request)
     {
         try {
+            Log::channel('reminder')->info("Carbon now = ".Carbon::now()->format('Y-m-d H:i'));
             $reminders = Reminder::where('enabled', 1)->where('end_date', '>=', Carbon::now()->format('Y-m-d'))->get();
             foreach ($reminders as $reminder) {
                 $user_settings = UserSettings::where('user_id', $reminder->user_id)->first();
@@ -104,7 +105,7 @@ class SendReminder extends Controller
     {
         Log::channel('reminder')->info("sendEmailReminder function called");
         $date = date("m/d/Y");
-        $time = date("h:i a", strtotime($reminder->when_time));
+        $time = date("h:i A", strtotime($reminder->when_time));
         $to_email = $user->email;
         Log::channel('reminder')->info("to_email = $to_email");
         $subject = "Important Reminder: Your Upcoming Deadlines and Activities";
@@ -134,7 +135,7 @@ class SendReminder extends Controller
     {
         Log::channel('reminder')->info("sendSmsReminder function called");
         $date = date("m/d/Y");
-        $time = date("h:i a", strtotime($reminder->when_time));
+        $time = date("h:i A", strtotime($reminder->when_time));
 
         $toPhoneNumber = $user->phone;
         //$toPhoneNumber = '+919099542060';

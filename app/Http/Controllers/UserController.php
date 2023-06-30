@@ -485,10 +485,10 @@ class UserController extends Controller
 					}
 				} else {
 					$event->update([
-						'title' => $input['reminder_name']
+						'title' => $input['reminder_name'],
 					]);
 		
-					if($reminder_frequency != $input['frequency']) {
+					// if($reminder_frequency != $input['frequency']) {
 						UserCalendar::where('event_id', $event->id)->delete();
 		
 						$startDate = Carbon::parse($input['start_date'])->startOfDay();;
@@ -512,7 +512,7 @@ class UserController extends Controller
 								$date->addMonth();
 							}
 						}
-					}
+					// }
 				}//END if($reminder_frequency != $input['frequency'])
 			}
 		} else {

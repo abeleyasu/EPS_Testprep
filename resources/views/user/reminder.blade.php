@@ -178,7 +178,7 @@
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="text" class="js-flatpickr form-control @error('when_time') is-invalid error @enderror" id="when_time" name="when_time" placeholder="When Time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ old('when_time') ? old('when_time') : '' }}">
+                                            <input type="text" class="custom-flatpickr-time form-control @error('when_time') is-invalid error @enderror" id="when_time" name="when_time" placeholder="When Time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ old('when_time') ? old('when_time') : '' }}">
                                             @error('when_time')
                                                 <span class="invalid-feedback" role="alert">
                                                     {{ $message }}
@@ -366,6 +366,23 @@
     <script>One.helpersOnLoad(['js-flatpickr', 'jq-datepicker']);</script>
 
     <script>
+        $(".custom-flatpickr-time").flatpickr({
+            enableTime: true,
+            dateFormat: "h:i",
+            minuteIncrement: 15,
+            onChange: function (selectedDates, dateStr, instance) {
+                // if time is less than 15 then set 00 minutes in time field, if time is greater than 15 then set 30 minutes in time field
+                if (selectedDates[0].getMinutes() < 15) {
+                    instance.setDate(selectedDates[0].setMinutes(0));
+                } else if (selectedDates[0].getMinutes() > 15 && selectedDates[0].getMinutes() < 30) {
+                    instance.setDate(selectedDates[0].setMinutes(15));
+                } else if (selectedDates[0].getMinutes() > 30 && selectedDates[0].getMinutes() < 45) {
+                    instance.setDate(selectedDates[0].setMinutes(30));
+                } else if (selectedDates[0].getMinutes() > 45) {
+                    instance.setDate(selectedDates[0].setMinutes(45));
+                }
+            }
+        });
         function deleteReminder(id) {
             Swal.fire({
                 title: 'Are you sure?',
