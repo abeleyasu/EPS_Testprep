@@ -256,7 +256,7 @@ class UserController extends Controller
 		if ($user) 
 		{
 			$user_settings = UserSettings::where('user_id', $id)->first();
-			$reminders = Reminder::where('user_id', $id)->where('type', 'custom')->get();
+			$reminders = Reminder::where('user_id', $id)->where('type', 'custom')->orderBy('created_at', 'desc')->get();
 			$reminderTypes = ReminderType::all();
 			$reminders_frequency = Config::get('constants.reminders_frequency');
 			$methods = ["Text", "Email", "Both"];
@@ -271,7 +271,8 @@ class UserController extends Controller
 	public function store(Request $request)
 	{
 		$data = $request->all();
-
+		$currentTime = Carbon::createFromFormat('H:i A', $data['when_time']);
+		$data['when_time'] = $currentTime->format('H:i:s');
 		$rules = [
 			'reminder_name' => 'required',
 			'reminder_type_id' => 'required',
@@ -357,6 +358,7 @@ class UserController extends Controller
 
 		$input = $request->all();
 
+
 		foreach($input as $key => $value) {
 			if($key != '_token') {
 				$keyParts = explode('_', $key);
@@ -364,6 +366,9 @@ class UserController extends Controller
 				break;
 			}
 		}
+
+		$currentTime = Carbon::createFromFormat('H:i A', $input['when_time_'.$lastKeyPart]);
+		$input['when_time_'.$lastKeyPart] = $currentTime->format('H:i:s');
 
 		$rules = [
 			'reminder_name_'.$lastKeyPart => 'required',
