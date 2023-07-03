@@ -123,4 +123,12 @@ $(document).ready(function () {
       }
     })
   }
+
+  $('.about-content').on('click', function (e) {
+    e.preventDefault();
+    const target = $('#about');
+    $('html, body').animate({
+      scrollTop: target.offset().top
+    }, 100);
+  });
 })

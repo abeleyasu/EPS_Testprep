@@ -7,7 +7,7 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#">Prep System</a>
+            <a class="nav-link about-content" href="#" >Prep System</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Tutoring</a>
@@ -16,8 +16,13 @@
             <a class="nav-link" href="#">Admissions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link" href="{{ route('simple-pricing') }}">Pricing</a>
           </li>
+          @if(!Auth::user())
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('signin')}}">Sign in</a>
+          </li>
+          @endif
         </ul>
       </div>
     </div>

@@ -48,7 +48,9 @@
     <div class="heading-title mb-4">
       <h2>Every Student Has a Dream <span class="defaultcolor"><br><br>Let's Achieve Yours</span></h2>
       <p class="darkcolor bottom35">Start Your Journey Now</p>
+      @if(!Auth::user())
       <a class="btn btn-alt-success" href="{{ route('signin') }}">Sign Up Free</a>
+      @endif
     </div>
   </div>
 </section>

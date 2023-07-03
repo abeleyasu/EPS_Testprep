@@ -5,11 +5,13 @@
     <div class="bg-black bg-overlay opacity-3 z-index-1"></div>
     <div class="home-content">
       <div class="d-flex flex-column align-items-center justify-content-center gap-2">
-        <div class="play-icon">
-          <i class="fas fa-play"></i>
-        </div>
+        <a data-fancybox="" href="http://www.answerstutoring.com/trax/bootstrap-v5/video/video.mp4">
+          <div class="play-icon">
+            <i class="fas fa-play"></i>
+          </div>
+        </a>
         <h2 class="font-xlight home-content-title text-center wow fadeInUp" data-wow-delay="200ms">What is College Prep System?</h2>
-        <div class="d-flex flex-column align-items-center justify-content-center home-content-block wow fadeInUp" data-wow-delay="200ms">
+        <div class="d-flex flex-column align-items-center justify-content-center home-content-block wow fadeInUp about-content" data-wow-delay="200ms">
           <span>Learn More</span>
           <i class="fa fa-2x fa-arrow-down home-content-icon hover-default"></i>
         </div>
