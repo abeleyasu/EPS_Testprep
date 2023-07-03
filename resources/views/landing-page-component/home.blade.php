@@ -5,7 +5,7 @@
     <div class="bg-black bg-overlay opacity-3 z-index-1"></div>
     <div class="home-content">
       <div class="d-flex flex-column align-items-center justify-content-center gap-2">
-        <a data-fancybox="" href="http://www.answerstutoring.com/trax/bootstrap-v5/video/video.mp4">
+        <a data-fancybox="" href="{{ asset('static-video/video.mp4') }}">
           <div class="play-icon">
             <i class="fas fa-play"></i>
           </div>
