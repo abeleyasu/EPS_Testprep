@@ -24,7 +24,7 @@
                             </div>
                             <div class="block-content">
                                 <div class="p-sm-3 px-lg-4 px-xxl-5 py-lg-5">
-                                    <h1 class="h2 mb-1">OneUI</h1>
+                                    <h1 class="h2 mb-1">College Prep System</h1>
                                     <p class="fw-medium text-muted">
                                         Please fill the following details to create a new account.
                                     </p>
@@ -32,7 +32,7 @@
                                     <!-- Sign Up Form -->
                                     <!-- jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto compiled from _js/pages/op_auth_signup.js) -->
                                     <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                                    <form class="js-validation-signup" action="{{route('post-signup')}}" method="POST">
+                                    <form class="js-validation-signup" id="register" action="{{route('post-signup')}}" method="POST">
                                         @csrf
                                         <div class="py-3">
                                             <div class="mb-4">
@@ -58,6 +58,12 @@
                                                 @error('phone')
                                                 <div class="invalid-feedback">{{$message}}</div>
                                                 @enderror
+                                            </div>
+                                            <div class="mb-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="is_verifed" name="is_verifed">
+                                                    <label class="form-check-label" for="is_verifed">By providing your number you consent to receive marketing/promotional/notification messages from College Prep System. To opt-out reply STOP on any message, or un-check the consent checkbox and save your profile. Message & Data rates may apply.</label>
+                                                </div>
                                             </div>
                                             <div class="mb-4">
                                                 <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
@@ -147,7 +153,13 @@
 <!-- END Page Container -->
 @endsection
 
+@section('page-style')
+<link rel="stylesheet" href="{{asset('assets/css/toastr/toastr.min.css')}}">
+@endsection
+
 <!-- Page Script -->
 @section('page-script')
 <script src="{{asset('assets/js/pages/op_auth_signup.min.js')}}"></script>
+<script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+
 @endsection

@@ -71,5 +71,5 @@ class VerifyEmailNotification extends Notification
                 'hash' => sha1($notifiable->getEmailForVerification()),
               ]     
          ); 
-   }
+    }
 }

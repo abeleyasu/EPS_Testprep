@@ -18,6 +18,7 @@ use App\Models\HighSchoolResume\Cities;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use App\Models\UserSettings;
 
 class UserController extends Controller
 {
@@ -254,12 +255,13 @@ class UserController extends Controller
 		$user = User::where('role', '!=', 1)->find($id);
 		if ($user) 
 		{
-			$reminders = Reminder::where('user_id', $id)->get();
+			$user_settings = UserSettings::where('user_id', $id)->first();
+			$reminders = Reminder::where('user_id', $id)->where('type', 'custom')->get();
 			$reminderTypes = ReminderType::all();
 			$reminders_frequency = Config::get('constants.reminders_frequency');
 			$methods = ["Text", "Email", "Both"];
 
-			return view('user.reminder', compact('reminders', 'reminderTypes', 'reminders_frequency', 'methods'));
+			return view('user.reminder', compact('reminders', 'reminderTypes', 'reminders_frequency', 'methods', 'user_settings'));
 		} 
 		else {
 			return redirect(route('admin-user-list'));

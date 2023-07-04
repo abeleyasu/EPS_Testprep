@@ -9,6 +9,12 @@ class CollegeDetails extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'user_id',
+    ];
+
     protected $fillable = [
         'user_id',
         'college_id',
@@ -83,4 +89,8 @@ class CollegeDetails extends Model
         'is_completed_final_admissions_decision' => 'boolean',
         'is_completed_all_process' => 'boolean'
     ];
+
+    public function college_details() {
+        return $this->hasOne(CollegeSearchAdd::class, 'id', 'college_id');
+    }
 }

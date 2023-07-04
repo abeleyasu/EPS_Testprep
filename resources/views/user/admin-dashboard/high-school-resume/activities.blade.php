@@ -17,23 +17,24 @@
             <div class="custom-tab-container">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li role="presentation">
-                        <a class="nav-link" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')}}"
-                            id="step1-tab">
+                        {{-- <a class="nav-link" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo')}}" id="step1-tab"> --}}
+                        <a class="nav-link" href="#" id="step1-tab" onclick="redirectFunction('{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}')">
                             <p class="d-none">1</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
                             <h6>Personal Info</h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')  }}"
-                            id="step2-tab">
+                        {{-- <a class="nav-link " href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')  }}" id="step2-tab"> --}}
+                        <a class="nav-link" href="#" id="step2-tab" onclick="redirectFunction('{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo') }}')">
                             <p class="d-none">2</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
                             <h6>Education </h6>
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link " href="{{isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.honors')}}" id="step3-tab">
+                        {{-- <a class="nav-link " href="{{isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) :route('admin-dashboard.highSchoolResume.honors')}}" id="step3-tab"> --}}
+                        <a class="nav-link" href="#" id="step3-tab" onclick="redirectFunction('{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors') }}')">
                             <p class="d-none">3</p>
                             <i class="fa-solid fa-check fa-check-block "></i>
                             <h6>Honors </h6>
@@ -48,23 +49,24 @@
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($activity) && $activity != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}"
-                            id="step5-tab">
+                        {{-- <a class="nav-link" href="{{ isset($activity) && $activity != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab"> --}}
+                        <a class="nav-link" href="#" id="step5-tab" onclick="redirectFunction('{{ isset($activity) && $activity != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification')) : route('admin-dashboard.highSchoolResume.activities')}}')">
                             <p>5</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}"
-                            id="step6-tab">
+                        {{-- <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id): route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab"> --}}
+                        <a class="nav-link" href="#" id="step6-tab" onclick="redirectFunction('{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes')) : route('admin-dashboard.highSchoolResume.employmentCertification')}}')">
                             <p>6</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($activity) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
+                        {{-- <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? (isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id):route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab"> --}}
+                        <a class="nav-link" href="#" id="step7-tab" onclick="redirectFunction('{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.preview')) : route('admin-dashboard.highSchoolResume.featuresAttributes')}}')">
                             <p >7</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Preview</h6>
@@ -263,6 +265,7 @@
                                                             <td width='20%'>
                                                                 <label class="form-label" for="leadership_grade">
                                                                     Grade(s)
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td width='5%'>
@@ -311,12 +314,14 @@
                                                                             placeholder="Ex: DRHS">
                                                                     </td>
                                                                     <td>
-                                                                        <select class="js-select2 select" id="leadership_select_{{ $index }}"
-                                                                            name="leadership_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
-                                                                                <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array($grade->id ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                            @endforeach
-                                                                        </select>
+                                                                        <div class="select2-container_main">
+                                                                            <select class="js-select2 select" id="leadership_select_{{ $index }}"
+                                                                                name="leadership_data[{{ $index }}][grade][]" multiple="multiple">
+                                                                                @foreach ($grades as $grade)
+                                                                                    <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array($grade->id ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -363,12 +368,14 @@
                                                                         placeholder="Ex: DRHS">
                                                                 </td>
                                                                 <td>
-                                                                    <select class="js-select2 select" id="leadership_select_0"
-                                                                        name="leadership_data[0][grade][]" multiple="multiple">
-                                                                        @foreach ($grades as $grade)
-                                                                            <option value="{{ $grade->id }}">{{ $grade->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
+                                                                    <div class="select2-container_main">
+                                                                        <select class="js-select2 select" id="leadership_select_0"
+                                                                            name="leadership_data[0][grade][]" multiple="multiple">
+                                                                            @foreach ($grades as $grade)
+                                                                                <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
@@ -839,6 +846,7 @@
                             <input type="submit" class="btn btn-alt-success next-step" value="Next Step"> 
                         </div>
                     </div>
+                    <input type="hidden" id="redirect_link" name="redirect_link" value="">
                 </form>
             </div>
         </div>
@@ -875,7 +883,7 @@
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
-    <script src="{{ asset('js/no-browser-back.js') }}"></script>
+    {{-- <script src="{{ asset('js/no-browser-back.js') }}"></script> --}}
     <script>
         // Disable autocomplete for all input fields on a page
         var inputs = document.getElementsByTagName("input");
@@ -991,7 +999,7 @@
             let validations_messages = @json($validations_messages);
         });
 
-        function errorMsg()
+        function errorMsgOld()
         {
             Swal.fire({
                 title: 'Complete Current Step',
@@ -1006,6 +1014,24 @@
                     // form.submit();
                 }
             });
+        }
+
+        function errorMsg() {
+            var form = $('#activities_form');
+            if (form.valid()) {
+                form.submit();
+            }
+        }
+
+        function redirectFunction(link)
+        {
+            if (link.trim() !== '') {
+                var form = $('#activities_form');
+                if (form.valid()) {
+                    $('#redirect_link').val(link);
+                    form.submit();
+                }
+            }
         }
 
         toastr.options = {
@@ -1063,6 +1089,14 @@
             });
 
             $('select[name^="demonstrated_data"]').filter('select[name$="[grade][]"]').each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "Grade field is required"
+                    }
+                });
+            });
+            $('select[name^="leadership_data"]').filter('select[name$="[grade][]"]').each(function() {
                 $(this).rules("add", {
                     required: true,
                     messages: {

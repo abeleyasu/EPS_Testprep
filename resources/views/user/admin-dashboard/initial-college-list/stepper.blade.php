@@ -7,7 +7,7 @@
         ],
         [
             'title' => 'College Search Results',
-            'route' => route('admin-dashboard.initialCollegeList.step2'),
+            'route' => null,
             'number' => 2,
         ],
         [
@@ -34,7 +34,7 @@
         @foreach($stepper as $key => $step)
             <div class="col">
                 <li class="m-0" role="presentation">
-                    <a class="nav-link {{ $active_stepper === $step['number'] ? 'active' : '' }}">
+                    <a class="nav-link {{ $active_stepper === $step['number'] ? 'active' : '' }}" @if($step['route']) href="{{ $step['route'] }}"  @endif >
                         <p class="{{ in_array($step['number'], $completed_step) ? 'd-none' : '' }}">{{ $step['number'] }}</p>
                         <i class="fa-solid fa-check {{ in_array($step['number'], $completed_step) ? 'd-block' : '' }} "></i>
                         <h6>{{ $step['title'] }}</h6>

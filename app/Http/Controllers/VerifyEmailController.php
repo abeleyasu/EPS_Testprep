@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CourseManagement\UserTaskStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UserSettings;
 
 class VerifyEmailController extends Controller
 {
@@ -26,7 +27,7 @@ class VerifyEmailController extends Controller
     }
 
     public function resend(Request $request) {
-        $request->user()->sendEmailVerificationNotification();
+        $this->mailgun->sendEmailConfirmationCode();
         return back()->with('resent', 'Verification link sent!');
     }
 
@@ -34,6 +35,7 @@ class VerifyEmailController extends Controller
         $user = User::where('id', $request->id)->first();
         $user->email_verified_at = now();
         $user->save();
+        UserSettings::create([ 'user_id' => $user->id ]);
         Auth::logout();
         return redirect()->route('signin')->with('email_verified_success', 'Your Email Verified Successfully. Please Login.');
     }

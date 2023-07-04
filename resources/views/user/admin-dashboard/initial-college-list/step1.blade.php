@@ -32,6 +32,10 @@
             </div>
             <p class="mb-5">Input the aspects of colleges that matter to you the most -OR- directly search for colleges</p>
 
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-alt-success" id="view-college-list">View College List</button>
+            </div>
+
             @if(session('cmessage'))
             <div class="alert alert-success">
                 {{ session('cmessage') }}
@@ -39,19 +43,13 @@
             @endif
 
             <form>
-                <div class="block block-rounded tab-container ">
+                <div class="block block-rounded tab-container">
                     <ul class="nav nav-tabs nav-tabs-block" role="tablist">
                         <li class="nav-item">
                             <div class="nav-link college_tablinks active" id="btabs-static-home-tab" data-bs-toggle="tab" data-bs-target="#btabs-static-home" role="tab" aria-controls="btabs-static-home" aria-selected="true">Search By College Wants</div>
                         </li>
                         <li class="nav-item">
                             <div class="nav-link college_tablinks" id="btabs-static-profile-tab" data-bs-toggle="tab" data-bs-target="#btabs-static-profile" role="tab" aria-controls="btabs-static-profile" aria-selected="false">Search By College Name</div>
-                        </li>
-                        <li class="nav-item ms-auto">
-                            <div class="nav-link college_tablinks" id="btabs-static-settings-tab" data-bs-toggle="tab" data-bs-target="#btabs-static-settings" role="tab" aria-controls="btabs-static-settings" aria-selected="false">
-                                <i class="si si-settings"></i>
-                                <span class="visually-hidden">Settings</span>
-                            </div>
                         </li>
                     </ul>
 
@@ -66,7 +64,7 @@
                                     <div class="college_wants_list">
                                         <div class="tab-content" id="myTabContent">
                                             <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
-                                                <div class="accordion accordionExample">
+                                                <div class="accordion accordionExample accordionExample2">
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                             <a class=" text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
@@ -229,14 +227,25 @@
                                                                     <label class="form-check-label bold-label mb-2" for="average_annual_cost">
                                                                         Average Annual Cost
                                                                     </label>
-                                                                    <input type="number" min="0" class=" form-control" id="average_annual_cost" name="average_annual_cost">
+                                                                    <input type="text" class="js-range-slider form-control" id="average_annual_cost" name="average_annual_cost" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="k">
                                                                 </div>
-    
                                                                 <div class="mb-2">
-                                                                    <label class="form-check-label bold-label mb-2" for="acceptance_rate">
-                                                                        Acceptance rate
+                                                                    <label class="form-check-label bold-label mb-2" for="average_annual_cost_of_attendance">
+                                                                        Average Annual Cost of Attendance
                                                                     </label>
-                                                                    <input type="number" min="0" class=" form-control" id="acceptance_rate" name="acceptance_rate">
+                                                                    <input type="text" class="js-range-slider form-control" id="average_annual_cost_of_attendance" name="average_annual_cost_of_attendance" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="k">
+                                                                </div>
+                                                                <div class="mb-2">
+                                                                    <label class="form-check-label bold-label mb-2" for="tution_and_fees">
+                                                                        Tution and Fees
+                                                                    </label>
+                                                                    <input type="text" class="js-range-slider form-control" id="tution_and_fees" name="tution_and_fees" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="k">
+                                                                </div>
+                                                                <div class="mb-2">
+                                                                    <label class="form-check-label bold-label mb-2" for="average_percent_of_need_met">
+                                                                        Average Percent of Need Met
+                                                                    </label>
+                                                                    <input type="text" class="js-range-slider form-control" id="average_percent_of_need_met" name="average_percent_of_need_met" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="%">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -248,39 +257,53 @@
                                                         </div>
                                                         <div id="collapseSix" class="collapse" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
-                                                                <!-- <div class="mb-2">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="Competitiveness" name="Competitiveness">
-                                                                        <label class="form-check-label" for="Competitiveness">
-                                                                            Competitiveness / Entrance Difficulty
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
                                                                 <div class="mb-2">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="GPA" name="GPA">
-                                                                        <label class="form-check-label" for="GPA">
-                                                                            GPA
-                                                                        </label>
-                                                                    </div>
-                                                                </div> -->
+                                                                    @include('user.admin-dashboard.initial-college-list.common-dropdown', [
+                                                                        'title' => 'Entrance Difficulty',
+                                                                        'name' => 'entrance_difficulty[]',
+                                                                        'id' => 'entrance_difficulty_step',
+                                                                        'accordion_id' => 'entrance_difficulty_accordion',
+                                                                        'options' => config('constants.entrance_difficulty'),
+                                                                        'ishide' => false,
+                                                                    ])
+                                                                </div>
+
+                                                                <div class="mb-2">
+                                                                    <label class="form-check-label bold-label mb-2" for="graduate_rate">
+                                                                        Graduate Rate
+                                                                    </label>
+                                                                    <input type="text" class="js-range-slider form-control" id="graduate_rate" name="graduate_rate" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="%">
+                                                                </div>
+    
+                                                                <div class="mb-2">
+                                                                    <label class="form-check-label bold-label mb-2" for="acceptance_rate">
+                                                                        Acceptance rate
+                                                                    </label>
+                                                                    <input type="text" class="js-range-slider form-control" id="acceptance_rate" name="acceptance_rate" data-min="0" data-max="100" data-from="0" data-grid="true" data-postfix="%">
+                                                                </div>
+
+                                                                <div class="mb-2">
+                                                                    <label class="form-check-label bold-label mb-2" for="average_gpa"> Average GPA </label>
+                                                                    <input type="text" class="js-range-slider form-control" id="average_gpa" name="average_gpa" data-step="0.1" data-min="0.00" data-max="8.00" data-from="0.00" data-grid="true">
+                                                                </div>
+
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="Math_Score">
                                                                         SAT Math
                                                                     </label>
-                                                                    <input type="number" min="0" class=" form-control" id="sat_math" name="sat_math">
+                                                                    <input type="text" class="js-range-slider form-control" id="sat_math" name="sat_math" data-min="0" data-max="800" data-from="0" data-grid="true">
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <label class="form-check-label bold-label mb-2" for="Sat_Score">
                                                                         SAT Critical Reading
                                                                     </label>
-                                                                    <input type="number" min="0" class=" form-control" id="sat_critical_reading" name="sat_critical_reading">
+                                                                    <input type="text" class="js-range-slider form-control" id="sat_critical_reading" name="sat_critical_reading" data-min="0" data-max="800" data-from="0" data-grid="true">
                                                                 </div>
                                                                 <div class="mb-4">
                                                                     <label class="form-check-label bold-label mb-2" for="Act_Score">
                                                                         ACT Score
                                                                     </label>
-                                                                    <input type="number" min="0" class=" form-control" id="act_score" name="act_score">
+                                                                    <input type="text" class="js-range-slider form-control" id="act_score" name="act_score" data-min="0" data-max="36" data-from="0" data-grid="true">
                                                                 </div>
                                                                 <h6><span>Note:</span> Be aware that we include schools that
                                                                     don’t provide us with test data even if they’re outside
@@ -304,10 +327,10 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Start Typing College Name..." id="search_college" name="search_college">
-                                                <span class="input-group-text">
-                                                    <i class="fa fa-fw fa-search"></i>
-                                                </span>
+                                                <label for="search_college" class="form-label">Select College</label>
+                                                <select class="js-data-example-ajax form-control" id="search_college" name="search_college" style="width: 100%;" data-placeholder="Start Typing College Name...">
+                                                    <option value="">Start Typing College Name...</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -315,22 +338,43 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="tab-pane" id="btabs-static-settings" role="tabpanel" aria-labelledby="btabs-static-settings-tab">
-                            <h4 class="fw-normal">Information Button Content</h4>
-                            <p>...</p>
-                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </main>
+
+<div class="modal fade" id="college-list" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">My College List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="user-college-list">
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
+<style>
+    .no-data {
+        border: 1px solid;
+        border-style: dashed;
+        border-color: darkgray;
+        padding: 10px;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 500;
+    }
+</style>
 @endsection
 
 
@@ -339,11 +383,43 @@
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/selecting-search-params.js') }}"></script>
+<script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
 <script>
+
+    $(".js-range-slider").ionRangeSlider({
+        skin: 'round',
+    });
 
     $('.js-example-basic-single').select2({
         placeholder: 'Select an option',
         allowClear: true
+    });
+
+    $('.js-data-example-ajax').select2({
+        allowClear: true,
+        ajax: {
+            delay: 500,
+            url: "{{ route('admin-dashboard.collegeApplicationDeadline.collegeList') }}",
+            dataType: 'json',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    page: params.page || 1,
+                    all: true
+                }
+                return query;
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+                const result = data.data.map((item) => { return { id: item.name, text: item.name } });
+                return {
+                    results: result,
+                    pagination: {
+                        more: (params.page * 30) < data.total
+                    }
+                };
+            }
+        }
     });
 
     $('#is_select_college_size').on('change', function(e) {
@@ -356,6 +432,10 @@
 
     $('#is_urbanicity').on('change', function(e) {
         hideshow('urbanicity_step', this.checked);
+    });
+
+    $('#is_entrance_difficulty').on('change', function(e) {
+        hideshow('entrance_difficulty_step', this.checked);
     });
 
     $('#search_state').on('keyup', function(e) {
@@ -392,10 +472,48 @@
         } else {
             document.getElementById('content-browse_colloege').innerHTML = '<h6 class="text-center">No Result</h6>';
         }
+        $('#browse_colloege').attr('class', 'show')
     }
 
     function hideshow(elementid, isshow) {
         $('#' + elementid).attr("style", `display: ${isshow ? 'block' : 'none'} !important`);
     }
+
+    $(document).ready(function () {
+        // $('#college-list').modal('show')
+    })
+
+    $('#view-college-list').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: "{{ route('admin-dashboard.initialCollegeList.getUserCollegeList') }}",
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+        }).done((response) => {
+            if (response.success) {
+                $('#user-college-list').html('')
+                if (response.data.length > 0) {
+                    response.data.forEach((data, index) => {
+                        const element = `
+                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                                <div class="block-header block-header-default">
+                                    <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                                        <span>${index + 1}</span>
+                                        <span>${data.college_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                        $('#user-college-list').append(element)
+                    })
+                    $('#college-list').modal('show')
+                } else {
+                    $('#user-college-list').html('<h5 class="no-data">No College Found</h5>')
+                }
+            }
+        })
+    })
 </script>
 @endsection

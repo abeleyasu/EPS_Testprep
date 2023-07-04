@@ -271,7 +271,7 @@
 														if (in_array($college, $course_data['search_college_name'])) {
 															College:
 															if (isset($course_data['course_name'])) {
-																echo $course_data['course_name'];
+																echo " ".$course_data['course_name'];
 																if ($key !== $count - 1)
 																	echo ";";
 															}

@@ -1247,6 +1247,10 @@
             </div>
         </div>
     </main>
+	
+    <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+		<img src="{{ asset('image/Spinner.gif') }}" alt="Loading...">
+    </div>
 
     <!-- End Main Container -->
 @endsection
@@ -1386,6 +1390,18 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
 
     <style>
+		.loading-indicator {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			z-index: 9999;
+		}
         .fc-toolbar-title {
             font-size: 120% !important;
         }

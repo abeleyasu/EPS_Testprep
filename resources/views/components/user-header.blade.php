@@ -22,6 +22,9 @@
 
         <!-- Right Section -->
         <div class="d-flex align-items-center">
+            @if(!Auth::user()->subscribed('default'))
+                <a href="{{route('plan.index')}}" class="btn btn-alt-success">Upgrade</a>
+            @endif
             <!-- User Dropdown -->
             <div class="dropdown d-inline-block ms-2">
                 <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

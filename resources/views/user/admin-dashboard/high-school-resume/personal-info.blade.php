@@ -34,42 +34,49 @@
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($personal_info) && $personal_info != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step2-tab">
+                        {{-- <a class="nav-link" href="{{ isset($personal_info) && $personal_info != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}" id="step2-tab"> --}}
+                        <a class="nav-link" href="#" id="step2-tab" onclick="redirectFunction('{{ isset($personal_info) && $personal_info != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/education-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.educationInfo')) : ''}}')">
                             <p>2</p>
                             <i class="fa-solid fa-check  "></i>
                             <h6>Education</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($education) && $education != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab">
+                        {{-- <a class="nav-link" href="{{ isset($education) && $education != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : ''}}" id="step3-tab"> --}}
+                        <a class="nav-link" href="#" id="step3-tab" onclick="redirectFunction('{{ isset($education) && $education != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors')) : route('admin-dashboard.highSchoolResume.educationInfo')}}')">
                             <p>3</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Honors</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab">
+                        {{-- <a class="nav-link" href="{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : ''}}" id="step4-tab"> --}}
+                        <a class="nav-link" href="#" id="step4-tab" onclick="redirectFunction('{{ isset($honor) && $honor != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/activities?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.activities')) : route('admin-dashboard.highSchoolResume.honors')}}')">
                             <p>4</p>
                             <i class="fa-solid fa-check "></i>
                             <h6>Activities</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($activity) && $activity != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab">
+                        {{-- <a class="nav-link" href="{{ isset($activity) && $activity != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification')) : ''}}" id="step5-tab"> --}}
+                        <a class="nav-link" href="#" id="step5-tab" onclick="redirectFunction('{{ isset($activity) && $activity != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification')) : route('admin-dashboard.highSchoolResume.activities')}}')">
                             <p>5</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Employment & <br> Certifications</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab">
+                        {{-- <a class="nav-link" href="{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes')) : ''}}" id="step6-tab"> --}}
+                        <a class="nav-link" href="#" id="step6-tab" onclick="redirectFunction('{{ isset($employmentCertification) && $employmentCertification != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/features-attributes?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.featuresAttributes')) : route('admin-dashboard.highSchoolResume.employmentCertification')}}')">
                             <p>6</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Featured <br> Attributes</h6>
                         </a>
                     </li>
                     <li role="presentation" onclick="{{ !isset($personal_info) ? 'errorMsg(); return false;' : 'javascript:void(0)' }}">
-                        <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab">
+                        {{-- <a class="nav-link" href="{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.preview')) : ''}}" id="step7-tab"> --}}
+
+                        <a class="nav-link" href="#" id="step7-tab" onclick="redirectFunction('{{ isset($featuredAttribute) && $featuredAttribute != null ? ( isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/preview?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.preview')) : route('admin-dashboard.highSchoolResume.featuresAttributes')}}')">
                             <p>7</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Preview</h6>
@@ -361,6 +368,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" id="redirect_link" name="redirect_link" value="">
                 </form>
             </div>
         </div>
@@ -392,7 +401,7 @@
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('js/high-school-resume.js') }}"></script>
-    <script src="{{ asset('js/no-browser-back.js') }}"></script>
+    {{-- <script src="{{ asset('js/no-browser-back.js') }}"></script> --}}
     <script>
 
         var inputs = document.getElementsByTagName("input");
@@ -400,7 +409,7 @@
             inputs[i].setAttribute("autocomplete", "__away");
         }
         
-        function errorMsg()
+        function errorMsgOld()
         {
             Swal.fire({
                 title: 'Complete Current Step',
@@ -415,6 +424,31 @@
                     // form.submit();
                 }
             });
+        }
+
+        function errorMsg()
+        {
+            var form = $('#personal_info_form');
+            if (form.valid()) {
+                form.submit();
+            }
+        }
+
+        function redirectFunction(link)
+        {
+            if (link.trim() !== '') {
+                var form = $('#personal_info_form');
+                if (form.valid()) {
+                    $('#redirect_link').val(link);
+                    form.submit();
+                }
+            }
+        }
+
+        function submitFormAndRedirect(url) {
+            alert('asd');
+            document.getElementById('personal_info_form').submit();
+            window.location.href = url;
         }
 
         const cell_phone = document.getElementById("cell_phone");

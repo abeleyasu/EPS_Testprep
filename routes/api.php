@@ -8,6 +8,7 @@ use App\Http\Controllers\CourseManagement\TaskController;
 use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SMSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,5 @@ Route::group(['middleware' =>'api'],function() {
 	Route::post('tasks/{id}/reorder',[TaskController::class,'reorder']);
 
 });
+
+Route::post('custom/send-sms', [SMSController::class, 'sendSMS']);

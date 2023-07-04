@@ -18,6 +18,7 @@ class CalendarEvent extends Model
         'description',
         'is_assigned',
         'color',
-        'event_time'
+        'event_time',
+        'google_calendar_event_id'
     ];
 }
