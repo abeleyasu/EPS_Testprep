@@ -56,7 +56,8 @@
                                                             <div class="accordion-item">
                                                                 <div class="border mb-2">
                                                                     <h2 class="accordion-header" id="flush-headingOne">
-                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                        <button
+                                                                            class="accordion-button collapsed border-0 fw-bold"
                                                                             type="button" data-bs-toggle="collapse"
                                                                             data-bs-target="#tabChileOne"
                                                                             aria-expanded="false"
@@ -69,15 +70,20 @@
                                                                         aria-labelledby="flush-headingOne"
                                                                         data-bs-parent="#accordionFlushExample">
                                                                         <div class="accordion-body">
-                                                                            @if(!($getOfficialPracticeTests['ACT']->isEmpty()))
-                                                                                @foreach($getOfficialPracticeTests['ACT'] as $getOfficialPracticeTest)
+                                                                            @if (!$getOfficialPracticeTests['ACT']->isEmpty())
+                                                                                @foreach ($getOfficialPracticeTests['ACT'] as $getOfficialPracticeTest)
                                                                                     @if ($getOfficialPracticeTest->format == 'ACT')
-                                                                                        <a href="{{route('single_test', ['id' => $getOfficialPracticeTest->id])}}"><button class="btn btn-success d-block mb-2">Official Released {{ $getOfficialPracticeTest->title }}</button></a>            
+                                                                                        <a
+                                                                                            href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">Official
+                                                                                                Released
+                                                                                                {{ $getOfficialPracticeTest->title }}</button></a>
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <span class="text-danger">No any pending test!</span>
-                                                                            @endif        
+                                                                                <span class="text-danger">No any pending
+                                                                                    test!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -85,7 +91,8 @@
                                                             <div class="accordion-item">
                                                                 <div class="border mb-2">
                                                                     <h2 class="accordion-header" id="flush-headingTwo">
-                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                        <button
+                                                                            class="accordion-button collapsed border-0 fw-bold"
                                                                             type="button" data-bs-toggle="collapse"
                                                                             data-bs-target="#tabChiledTwo"
                                                                             aria-expanded="false"
@@ -98,15 +105,20 @@
                                                                         aria-labelledby="flush-headingTwo"
                                                                         data-bs-parent="#accordionFlushExample">
                                                                         <div class="accordion-body">
-                                                                            @if(!$getOfficialPracticeTests['SAT']->isEmpty())
-                                                                                @foreach($getOfficialPracticeTests['SAT'] as $getOfficialPracticeTest)
+                                                                            @if (!$getOfficialPracticeTests['SAT']->isEmpty())
+                                                                                @foreach ($getOfficialPracticeTests['SAT'] as $getOfficialPracticeTest)
                                                                                     @if ($getOfficialPracticeTest->format == 'SAT')
-                                                                                        <a href="{{route('single_test', ['id' => $getOfficialPracticeTest->id])}}"><button class="btn btn-success d-block mb-2">Official Released {{ $getOfficialPracticeTest->title }}</button></a>            
+                                                                                        <a
+                                                                                            href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">Official
+                                                                                                Released
+                                                                                                {{ $getOfficialPracticeTest->title }}</button></a>
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <span class="text-danger">No any pending test!</span>
-                                                                            @endif     
+                                                                                <span class="text-danger">No any pending
+                                                                                    test!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -114,7 +126,8 @@
                                                             <div class="accordion-item">
                                                                 <div class="border mb-2">
                                                                     <h2 class="accordion-header" id="flush-headingThree">
-                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                        <button
+                                                                            class="accordion-button collapsed border-0 fw-bold"
                                                                             type="button" data-bs-toggle="collapse"
                                                                             data-bs-target="#tabChiledThree"
                                                                             aria-expanded="false"
@@ -128,14 +141,19 @@
                                                                         data-bs-parent="#accordionFlushExample">
                                                                         <div class="accordion-body">
                                                                             @if (!$getOfficialPracticeTests['PSAT']->isEmpty())
-                                                                                @foreach($getOfficialPracticeTests['PSAT'] as $getOfficialPracticeTest)
+                                                                                @foreach ($getOfficialPracticeTests['PSAT'] as $getOfficialPracticeTest)
                                                                                     @if ($getOfficialPracticeTest->format == 'PSAT')
-                                                                                        <a href="{{route('single_test', ['id' => $getOfficialPracticeTest->id])}}"><button class="btn btn-success d-block mb-2">Official Released {{ $getOfficialPracticeTest->title }}</button></a>            
+                                                                                        <a
+                                                                                            href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">Official
+                                                                                                Released
+                                                                                                {{ $getOfficialPracticeTest->title }}</button></a>
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <span class="text-danger">No any pending test!</span>
-                                                                            @endif     
+                                                                                <span class="text-danger">No any pending
+                                                                                    test!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -165,7 +183,8 @@
                                                             <div class="accordion-item">
                                                                 <div class="border mb-2">
                                                                     <h2 class="accordion-header" id="flush-headingOne">
-                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                        <button
+                                                                            class="accordion-button collapsed border-0 fw-bold"
                                                                             type="button" data-bs-toggle="collapse"
                                                                             data-bs-target="#collapsTabOne"
                                                                             aria-expanded="false"
@@ -178,15 +197,20 @@
                                                                         aria-labelledby="flush-headingOne"
                                                                         data-bs-parent="#accordionFlushExampleTwo">
                                                                         <div class="accordion-body">
-                                                                            @if(!$getAllPracticeTests['ACT']->isEmpty())
+                                                                            @if (!$getAllPracticeTests['ACT']->isEmpty())
                                                                                 @foreach ($getAllPracticeTests['ACT'] as $test)
                                                                                     @if ($test->format == 'ACT')
-                                                                                        <a href="{{route('single_test', ['id' => $test->id])}}"><button class="btn btn-success d-block mb-2">College Prep {{ $test->title }}</button></a>            
+                                                                                        <a
+                                                                                            href="{{ route('single_test', ['id' => $test->id]) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">College
+                                                                                                Prep
+                                                                                                {{ $test->title }}</button></a>
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <span class="text-danger">No any pending test!</span>
-                                                                            @endif    
+                                                                                <span class="text-danger">No any pending
+                                                                                    test!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -194,7 +218,8 @@
                                                             <div class="accordion-item">
                                                                 <div class="border mb-2">
                                                                     <h2 class="accordion-header" id="flush-headingTwo">
-                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                        <button
+                                                                            class="accordion-button collapsed border-0 fw-bold"
                                                                             type="button" data-bs-toggle="collapse"
                                                                             data-bs-target="#collapsTabTwo"
                                                                             aria-expanded="false"
@@ -210,12 +235,17 @@
                                                                             @if (!$getAllPracticeTests['SAT']->isEmpty())
                                                                                 @foreach ($getAllPracticeTests['SAT'] as $test)
                                                                                     @if ($test->format == 'SAT')
-                                                                                        <a href="{{route('single_test', ['id' => $test->id])}}"><button class="btn btn-success d-block mb-2">College Prep {{ $test->title }}</button></a>            
+                                                                                        <a
+                                                                                            href="{{ route('single_test', ['id' => $test->id]) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">College
+                                                                                                Prep
+                                                                                                {{ $test->title }}</button></a>
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <span class="text-danger">No any pending test!</span>
-                                                                            @endif    
+                                                                                <span class="text-danger">No any pending
+                                                                                    test!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -223,7 +253,8 @@
                                                             <div class="accordion-item">
                                                                 <div class="border mb-2">
                                                                     <h2 class="accordion-header" id="flush-headingThree">
-                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                        <button
+                                                                            class="accordion-button collapsed border-0 fw-bold"
                                                                             type="button" data-bs-toggle="collapse"
                                                                             data-bs-target="#collapsTabThree"
                                                                             aria-expanded="false"
@@ -236,15 +267,20 @@
                                                                         aria-labelledby="flush-headingThree"
                                                                         data-bs-parent="#accordionFlushExampleTwo">
                                                                         <div class="accordion-body">
-                                                                            @if(!$getAllPracticeTests['PSAT']->isEmpty())
+                                                                            @if (!$getAllPracticeTests['PSAT']->isEmpty())
                                                                                 @foreach ($getAllPracticeTests['PSAT'] as $test)
                                                                                     @if ($test->format == 'PSAT')
-                                                                                        <a href="{{route('single_test', ['id' => $test->id])}}"><button class="btn btn-success d-block mb-2">College Prep {{ $test->title }}</button></a>            
+                                                                                        <a
+                                                                                            href="{{ route('single_test', ['id' => $test->id]) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">College
+                                                                                                Prep
+                                                                                                {{ $test->title }}</button></a>
                                                                                     @endif
                                                                                 @endforeach
                                                                             @else
-                                                                                <span class="text-danger">No any pending test!</span>
-                                                                            @endif    
+                                                                                <span class="text-danger">No any pending
+                                                                                    test!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -283,11 +319,13 @@
                                                         <div class="block block-rounded border">
                                                             <div class="block-header block-header-default">
                                                                 <h3 class="block-title fw-bold ">ACT TEST HISTORY</h3>
-                                                                <button class="btn btn-success" id="sortable_act_1">Sort <i class="fa-solid fa-angle-down"></i></button>  
+                                                                <button class="btn btn-success" id="sortable_act_1">Sort
+                                                                    <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content py-0">
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="act_table_1">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="act_table_1">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -313,69 +351,84 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($act_details_array as $act_test)
-                                                                            @if($act_test['date_taken'] !== '-')
+                                                                            @if ($act_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
-                                                                                        <a href="{{ url("user/practice-test-sections/".$act_test['test_id']) }}"><button class="btn btn-success d-block mb-2" >{{ isset($act_test['test_name']) ? $act_test['test_name'] : '0' }}</button></a>
+                                                                                        <a
+                                                                                            href="{{ url('user/practice-test-sections/' . $act_test['test_id']) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">{{ isset($act_test['test_name']) ? $act_test['test_name'] : '0' }}</button></a>
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['English']) ? $act_test['English'] : '0'}}
+                                                                                        {{ isset($act_test['English']) ? $act_test['English'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['Math']) ? $act_test['Math'] : '0'}}
+                                                                                        {{ isset($act_test['Math']) ? $act_test['Math'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['Reading']) ? $act_test['Reading'] : '0'}}
+                                                                                        {{ isset($act_test['Reading']) ? $act_test['Reading'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['Science']) ? $act_test['Science'] : '0'}}
+                                                                                        {{ isset($act_test['Science']) ? $act_test['Science'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         @php
                                                                                             $total_score = (isset($act_test['English']) ? $act_test['English'] : '0') + (isset($act_test['Math']) ? $act_test['Math'] : '0') + (isset($act_test['Reading']) ? $act_test['Reading'] : '0') + (isset($act_test['Science']) ? $act_test['Science'] : '0');
                                                                                         @endphp
-                                                                                        {{ number_format($total_score/ ($act_test['section_count'] == 0 ? 1 : $act_test['section_count']), 0) }}
+                                                                                        {{ number_format($total_score / ($act_test['section_count'] == 0 ? 1 : $act_test['section_count']), 0) }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ isset($act_test['date_taken']) ? $act_test['date_taken'] : '-'}}
+                                                                                        {{ isset($act_test['date_taken']) ? $act_test['date_taken'] : '-' }}
                                                                                     </td>
                                                                                 </tr>
-                                                                            @endif    
+                                                                            @endif
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
                                                                 <div class="block-header block-header-default px-0">
-                                                                    <h3 class="block-title fw-bold ">ACT CUSTOM QUIZ HISTORY</h3>
-                                                                    <button class="btn btn-success" id="sortable_act_2">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                    <h3 class="block-title fw-bold ">ACT CUSTOM QUIZ
+                                                                        HISTORY</h3>
+                                                                    <button class="btn btn-success"
+                                                                        id="sortable_act_2">Sort <i
+                                                                            class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="act_table_2">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="act_table_2">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
                                                                                 Test Form(Click “Button” below to Review)
                                                                             </th>
-                                                                            <th class="text-center" style="width: 100px;">Correct/Total</th>
-                                                                            <th class="text-center" style="width: 100px;">Section</th>
-                                                                            <th class="text-center" style="width: 100px;">Categories</th>
-                                                                            <th class="text-center" style="width: 100px;">Question Types</th>
-                                                                            <th class="text-center" style="width: 100px;">Date Taken</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Correct/Total</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Section</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Categories</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Question Types</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Date Taken</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($act_custom_details as $getTest)
                                                                             <tr>
-                                                                                <?php $url = url("user/practice-test-sections/".$getTest['id'])  ?>
+                                                                                <?php $url = url('user/practice-test-sections/' . $getTest['id']); ?>
                                                                                 <td class="text-center">
-                                                                                    <button onclick="openTestSection(this)" class="btn btn-success d-block mb-2 hover-btn button-text" data-id="{{ $getTest['id'] }}" data-url="<?php echo $url ?>"> {{$getTest['test_name']}}  
-                                                                                        
+                                                                                    <button onclick="openTestSection(this)"
+                                                                                        class="btn btn-success d-block mb-2 hover-btn button-text"
+                                                                                        data-id="{{ $getTest['id'] }}"
+                                                                                        data-url="<?php echo $url; ?>">
+                                                                                        {{ $getTest['test_name'] }}
+
                                                                                     </button>
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{ $getTest['right_question'] }}/{{  $getTest['total_question']}}
+                                                                                    {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{  $getTest['section_type']}}
+                                                                                    {{ $getTest['section_type'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     -
@@ -387,15 +440,19 @@
                                                                                     {{ $getTest['date_taken'] }}
                                                                                 </td>
                                                                             </tr>
-                                                                        @endforeach    
+                                                                        @endforeach
                                                                     </tbody>
                                                                 </table>
                                                                 <div class="block-header block-header-default px-0">
-                                                                    <h3 class="block-title fw-bold ">ALL ACT TEST & QUIZ HISTORY</h3>
-                                                                    <button class="btn btn-success" id="sortable_act_3">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                    <h3 class="block-title fw-bold ">ALL ACT TEST & QUIZ
+                                                                        HISTORY</h3>
+                                                                    <button class="btn btn-success"
+                                                                        id="sortable_act_3">Sort <i
+                                                                            class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="act_table_3">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="act_table_3">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -421,31 +478,33 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($act_details_array as $act_test)
-                                                                            @if($act_test['date_taken'] !== '-')
+                                                                            @if ($act_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
-                                                                                        <a href="{{ url("user/practice-test-sections/".$act_test['test_id']) }}"><button class="btn btn-success d-block mb-2">{{$act_test['test_name']}}</button></a>
+                                                                                        <a
+                                                                                            href="{{ url('user/practice-test-sections/' . $act_test['test_id']) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">{{ $act_test['test_name'] }}</button></a>
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['English']) ? $act_test['English'] : '0'}}
+                                                                                        {{ isset($act_test['English']) ? $act_test['English'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['Math']) ? $act_test['Math'] : '0'}}
+                                                                                        {{ isset($act_test['Math']) ? $act_test['Math'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['Reading']) ? $act_test['Reading'] : '0'}}
+                                                                                        {{ isset($act_test['Reading']) ? $act_test['Reading'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($act_test['Science']) ? $act_test['Science'] : '0'}}
+                                                                                        {{ isset($act_test['Science']) ? $act_test['Science'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ number_format(((isset($act_test['English']) ? $act_test['English'] : '0') + (isset($act_test['Math']) ? $act_test['Math'] : '0') + (isset($act_test['Reading']) ? $act_test['Reading'] : '0') + (isset($act_test['Science']) ? $act_test['Science'] : '0'))/ ($act_test['section_count'] == 0 ? 1 : $act_test['section_count']), 0) }}
+                                                                                        {{ number_format(((isset($act_test['English']) ? $act_test['English'] : '0') + (isset($act_test['Math']) ? $act_test['Math'] : '0') + (isset($act_test['Reading']) ? $act_test['Reading'] : '0') + (isset($act_test['Science']) ? $act_test['Science'] : '0')) / ($act_test['section_count'] == 0 ? 1 : $act_test['section_count']), 0) }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ isset($act_test['date_taken']) ? $act_test['date_taken'] : '-'}}      
+                                                                                        {{ isset($act_test['date_taken']) ? $act_test['date_taken'] : '-' }}
                                                                                     </td>
                                                                                 </tr>
-                                                                            @endif    
+                                                                            @endif
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
@@ -472,11 +531,13 @@
                                                         <div class="block block-rounded border">
                                                             <div class="block-header block-header-default py-2">
                                                                 <h3 class="block-title fw-bold">SAT TEST HISTORY</h3>
-                                                                <button class="btn btn-success" id="sortable_sat_1">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                <button class="btn btn-success" id="sortable_sat_1">Sort
+                                                                    <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content pt-0">
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="sat_table_1">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="sat_table_1">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -499,16 +560,18 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($sat_details_array as $sat_test)
-                                                                            @if($sat_test['date_taken'] !== '-')
+                                                                            @if ($sat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
-                                                                                        <a href="{{ url("user/practice-test-sections/".$sat_test['test_id']) }}" ><button class="btn btn-success d-block mb-2" >{{$sat_test['test_name']}}</button></a>
+                                                                                        <a
+                                                                                            href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($sat_test['Reading']) ? $sat_test['Reading'] : '0'}}
+                                                                                        {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($sat_test['Writing']) ? $sat_test['Writing'] : '0'}}
+                                                                                        {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{(isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0')}} --}}
@@ -516,22 +579,26 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                        {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : ((isset($sat_test['Math_with_calculator'])) ? $sat_test['Math_with_calculator'] : 0))}}
+                                                                                        {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-'}}
+                                                                                        {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-' }}
                                                                                     </td>
                                                                                 </tr>
-                                                                            @endif    
+                                                                            @endif
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
                                                                 <div class="block-header block-header-default px-0">
-                                                                    <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY</h3>
-                                                                    <button class="btn btn-success" id="sortable_sat_2">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                    <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
+                                                                    </h3>
+                                                                    <button class="btn btn-success"
+                                                                        id="sortable_sat_2">Sort <i
+                                                                            class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="sat_table_2">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="sat_table_2">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -551,24 +618,39 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($sat_custom_details as $getTest)
-                                                                            <tr> 
-                                                                                <?php $url = url("user/practice-test-sections/".$getTest['id'])  ?>
+                                                                            <tr>
+                                                                                <?php $url = url('user/practice-test-sections/' . $getTest['id']); ?>
                                                                                 <td class="text-center">
-                                                                                    <button onclick="openTestSection(this)" class="btn btn-success d-block mb-2 hover-btn button-text" data-id="{{ $getTest['id'] }}" data-url="<?php echo $url ?>"> {{$getTest['test_name']}}  
-                                                                                        
+                                                                                    <button onclick="openTestSection(this)"
+                                                                                        class="btn btn-success d-block btn_{{ $getTest['id'] }} mb-2 hover-btn button-text"
+                                                                                        data-id="{{ $getTest['id'] }}"
+                                                                                        data-url="<?php echo $url; ?>">
+                                                                                        {{ $getTest['test_name'] }}
+
+                                                                                    </button>
+                                                                                    <input type="text"
+                                                                                        class="form-control input_{{ $getTest['id'] }}"
+                                                                                        style="display: none"
+                                                                                        value="{{ $getTest['test_name'] }}"
+                                                                                        onblur="changeSectionName(this,{{ $getTest['id'] }})" />
+                                                                                    <button
+                                                                                        class="btn btn-transparent transparent-btn"
+                                                                                        data-id="{{ $getTest['id'] }}"
+                                                                                        onclick="editQuizName({{ $getTest['id'] }})">
+                                                                                        <i class="fa fa-pencil"></i>
                                                                                     </button>
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{ $getTest['right_question'] }}/{{  $getTest['total_question']}}
+                                                                                    {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    - 
+                                                                                    -
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    - 
+                                                                                    -
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['date_taken'] }}
@@ -578,11 +660,15 @@
                                                                     </tbody>
                                                                 </table>
                                                                 <div class="block-header block-header-default px-0">
-                                                                    <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ HISTORY</h3>
-                                                                    <button class="btn btn-success" id="sortable_sat_3">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                    <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
+                                                                        HISTORY</h3>
+                                                                    <button class="btn btn-success"
+                                                                        id="sortable_sat_3">Sort <i
+                                                                            class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="sat_table_3">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="sat_table_3">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -603,10 +689,12 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($sat_details_array as $sat_test)
-                                                                            @if($sat_test['date_taken'] !== '-')
+                                                                            @if ($sat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
-                                                                                        <a href="{{ url("user/practice-test-sections/".$sat_test['test_id']) }}" ><button class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                        <a
+                                                                                            href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
@@ -620,14 +708,14 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                        {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : ((isset($sat_test['Math_with_calculator'])) ? $sat_test['Math_with_calculator'] : 0))}}
+                                                                                        {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-'}}
+                                                                                        {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-' }}
                                                                                     </td>
                                                                                 </tr>
                                                                             @endif
-                                                                        @endforeach    
+                                                                        @endforeach
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -654,11 +742,13 @@
                                                         <div class="block block-rounded border">
                                                             <div class="block-header block-header-default">
                                                                 <h3 class="block-title fw-bold ">PSAT TEST HISTORY</h3>
-                                                                <button class="btn btn-success" id="sortable_psat_1">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                <button class="btn btn-success" id="sortable_psat_1">Sort
+                                                                    <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content py-0">
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="psat_table_1">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="psat_table_1">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -681,16 +771,18 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($psat_details_array as $psat_test)
-                                                                            @if($psat_test['date_taken'] !== '-')
+                                                                            @if ($psat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
-                                                                                        <a href="{{ url("user/practice-test-sections/".$psat_test['test_id']) }}"><button class="btn btn-success d-block mb-2" >{{$psat_test['test_name']}}</button></a>
+                                                                                        <a
+                                                                                            href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($psat_test['Reading']) ? $psat_test['Reading'] : '0'}}
+                                                                                        {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($psat_test['Writing']) ? $psat_test['Writing'] : '0'}}
+                                                                                        {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{(isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') +  (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0')}} --}}
@@ -698,31 +790,39 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                        {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : ((isset($psat_test['Math_with_calculator'])) ? $psat_test['Math_with_calculator'] : 0))}}
+                                                                                        {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-'}}
+                                                                                        {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
                                                                                     </td>
                                                                                 </tr>
-                                                                            @endif    
+                                                                            @endif
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
                                                                 <div class="block-header block-header-default px-0">
-                                                                    <h3 class="block-title fw-bold ">PSAT CUSTOM QUIZ HISTORY</h3>
-                                                                    <button class="btn btn-success" id="sortable_psat_2">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                    <h3 class="block-title fw-bold ">PSAT CUSTOM QUIZ
+                                                                        HISTORY</h3>
+                                                                    <button class="btn btn-success"
+                                                                        id="sortable_psat_2">Sort <i
+                                                                            class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="psat_table_2">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="psat_table_2">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
                                                                                 Test Form(Click “Button” below to Review)
                                                                             </th>
-                                                                            <th class="text-center" style="width: 100px;">Correct/Total</th>
-                                                                            <th class="text-center" style="width: 100px;">Section</th>
-                                                                            <th class="text-center" style="width: 100px;">Categories</th>
-                                                                            <th class="text-center" style="width: 100px;">Question Types</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Correct/Total</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Section</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Categories</th>
+                                                                            <th class="text-center" style="width: 100px;">
+                                                                                Question Types</th>
                                                                             <th class="text-center" style="width: 100px;">
                                                                                 Date Taken</th>
                                                                         </tr>
@@ -730,37 +830,45 @@
                                                                     <tbody>
                                                                         @foreach ($psat_custom_details as $getTest)
                                                                             <tr>
-                                                                                <?php $url = url("user/practice-test-sections/".$getTest['id'])  ?>
+                                                                                <?php $url = url('user/practice-test-sections/' . $getTest['id']); ?>
                                                                                 <td class="text-center">
-                                                                                    <button onclick="openTestSection(this)" class="btn btn-success d-block mb-2 hover-btn button-text" data-id="{{ $getTest['id'] }}" data-url="<?php echo $url ?>"> {{$getTest['test_name']}}  
-                                                                                        
+                                                                                    <button onclick="openTestSection(this)"
+                                                                                        class="btn btn-success d-block mb-2 hover-btn button-text"
+                                                                                        data-id="{{ $getTest['id'] }}"
+                                                                                        data-url="<?php echo $url; ?>">
+                                                                                        {{ $getTest['test_name'] }}
+
                                                                                     </button>
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }} 
+                                                                                    {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    - 
+                                                                                    -
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    - 
+                                                                                    -
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    {{ $getTest['date_taken'] }} 
+                                                                                    {{ $getTest['date_taken'] }}
                                                                                 </td>
                                                                             </tr>
-                                                                        @endforeach    
+                                                                        @endforeach
                                                                     </tbody>
                                                                 </table>
                                                                 <div class="block-header block-header-default px-0">
-                                                                    <h3 class="block-title fw-bold ">ALL PSAT TEST & QUIZ HISTORY</h3>
-                                                                    <button class="btn btn-success" id="sortable_psat_3">Sort <i class="fa-solid fa-angle-down"></i></button>
+                                                                    <h3 class="block-title fw-bold ">ALL PSAT TEST & QUIZ
+                                                                        HISTORY</h3>
+                                                                    <button class="btn btn-success"
+                                                                        id="sortable_psat_3">Sort <i
+                                                                            class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
                                                                 <table
-                                                                    class="table table-bordered table-striped table-vcenter" id="psat_table_3">
+                                                                    class="table table-bordered table-striped table-vcenter"
+                                                                    id="psat_table_3">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center" style="width: 100px;">
@@ -783,16 +891,18 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         @foreach ($psat_details_array as $psat_test)
-                                                                            @if($psat_test['date_taken'] !== '-')
+                                                                            @if ($psat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
-                                                                                        <a href="{{ url("user/practice-test-sections/".$psat_test['test_id']) }}"><button class="btn btn-success d-block mb-2">{{ isset($psat_test['test_name']) ? $psat_test['test_name'] : '-' }}</button></a>
+                                                                                        <a
+                                                                                            href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
+                                                                                                class="btn btn-success d-block mb-2">{{ isset($psat_test['test_name']) ? $psat_test['test_name'] : '-' }}</button></a>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{isset($psat_test['Writing']) ? $psat_test['Writing'] : '0'}}
+                                                                                        {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
@@ -800,13 +910,13 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
-                                                                                        {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : ((isset($psat_test['Math_with_calculator'])) ? $psat_test['Math_with_calculator'] : 0))}}
+                                                                                        {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) }}
                                                                                     </td>
                                                                                     <td class="text-center">
-                                                                                        {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-'}}
+                                                                                        {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
                                                                                     </td>
                                                                                 </tr>
-                                                                            @endif    
+                                                                            @endif
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
@@ -830,269 +940,344 @@
 @endsection
 
 @section('page-script')
-<script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#act_table_1').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[6, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4,5] }
-            ]
+    <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#act_table_1').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [6, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4, 5]
+                }]
+            });
+            $('#act_table_2').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
+            $('#act_table_3').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [6, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4, 5]
+                }]
+            });
+            $('#sat_table_1').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
+            $('#sat_table_2').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
+            $('#sat_table_3').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
+            $('#psat_table_1').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
+            $('#psat_table_2').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
+            $('#psat_table_3').DataTable({
+                "initComplete": function() {
+                    $('.sorting, .sorting_asc, .sorting_desc').removeClass(
+                        'sorting sorting_asc sorting_desc');
+                },
+                bInfo: false,
+                paging: false,
+                searching: false,
+                "order": [
+                    [5, "desc"]
+                ],
+                columnDefs: [{
+                    orderable: false,
+                    targets: [0, 1, 2, 3, 4]
+                }]
+            });
         });
-        $('#act_table_2').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-        $('#act_table_3').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[6, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4,5] }
-            ]
-        });
-        $('#sat_table_1').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-        $('#sat_table_2').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-        $('#sat_table_3').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-        $('#psat_table_1').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-        $('#psat_table_2').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-        $('#psat_table_3').DataTable({
-            "initComplete": function () {
-                $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-            },
-            bInfo: false,
-            paging: false,
-            searching: false,
-            "order": [[5, "desc"]],
-            columnDefs: [
-                { orderable: false, targets: [0,1,2,3,4] }
-            ]
-        });
-    });
-    
-    $('#sortable_act_1').on('click',function(){
-        var table = $('#act_table_1').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[6, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_act_2').on('click',function(){
-        var table = $('#act_table_2').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[6, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_act_3').on('click',function(){
-        var table = $('#act_table_3').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[6, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_sat_1').on('click',function(){
-        var table = $('#sat_table_1').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[5, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_sat_2').on('click',function(){
-        var table = $('#sat_table_2').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[5, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_sat_3').on('click',function(){
-        var table = $('#sat_table_3').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[5, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_psat_1').on('click',function(){
-        var table = $('#psat_table_1').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[5, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_psat_2').on('click',function(){
-        var table = $('#psat_table_2').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[5, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
-    $('#sortable_psat_3').on('click',function(){
-        var table = $('#psat_table_3').DataTable();
-        var currentOrder = table.order()[0]; 
-        var column = currentOrder[0]; 
-        var direction = currentOrder[1]; 
-        table.order([[5, direction === 'asc' ? 'desc' : 'asc']]).draw();
-        $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
-        $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
-    });
 
-    var DELAY = 700, clicks = 0, timer = null;
+        $('#sortable_act_1').on('click', function() {
+            var table = $('#act_table_1').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [6, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_act_2').on('click', function() {
+            var table = $('#act_table_2').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [6, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_act_3').on('click', function() {
+            var table = $('#act_table_3').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [6, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_sat_1').on('click', function() {
+            var table = $('#sat_table_1').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [5, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_sat_2').on('click', function() {
+            var table = $('#sat_table_2').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [5, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_sat_3').on('click', function() {
+            var table = $('#sat_table_3').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [5, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_psat_1').on('click', function() {
+            var table = $('#psat_table_1').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [5, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_psat_2').on('click', function() {
+            var table = $('#psat_table_2').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [5, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
+        $('#sortable_psat_3').on('click', function() {
+            var table = $('#psat_table_3').DataTable();
+            var currentOrder = table.order()[0];
+            var column = currentOrder[0];
+            var direction = currentOrder[1];
+            table.order([
+                [5, direction === 'asc' ? 'desc' : 'asc']
+            ]).draw();
+            $('.sorting, .sorting_asc, .sorting_desc').removeClass('sorting sorting_asc sorting_desc');
+            $(this).find("i").toggleClass('fa-angle-down fa-angle-up');
+        });
 
-    function openTestSection(data){
-        clicks++;
-        if(clicks === 1) {
-            timer = setTimeout(function() {
-                clicks = 0;     
-                let url = $(data).attr('data-url');        
-                window.location.href = url;
-            }, DELAY);
-        } else {
-            console.log(data);
-            clearTimeout(timer);    
-            clicks = 0;   
-            var test_id = $(data).attr('data-id');
-            let url = $(data).attr('data-url');        
-            var text = $(data).text().trim();
-            var input = document.createElement("input");
-            input.classList.add('input_test_name');
-            input.value = text;
+        var DELAY = 700,
+            clicks = 0,
+            timer = null;
 
-            input.addEventListener("keydown", function(event) {
-                if (event.key === "Enter") {
-                    var updatedText = input.value.trim();
-                    if (updatedText !== "") {
-                        var newButton = document.createElement("button");
-                        newButton.classList.add("btn", "btn-success", "d-block", "mb-2", "hover-btn","button-text");
-                        newButton.textContent = updatedText;
-                        newButton.setAttribute("onclick", `openTestSection(this)`);
-                        newButton.setAttribute("data-id", `${test_id}`);
-                        newButton.setAttribute("data-url", `${url}`);
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 100);
-                        // var jsArray = @json($sat_custom_details);
-                        // jsArray[test_id]['test_name']=updatedText;
-                        // console.log("hh", jsArray);
-                        // @php
-                        //     $sat_custom_details = "<script>document.write(JSON.stringify(jsArray))</script>";                            
-                        // @endphp
+        function editQuizName(quizId) {
+            $(`button.btn_${quizId}`).hide();
+            $(`.input_${quizId}`).show();
 
-                        // var jsArray1 = @json($sat_custom_details);
-                        // console.log("jsArray1", jsArray1);
-                        $('.input_test_name').replaceWith(newButton);
-                    }
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ route("changeTitleSelfMade") }}',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            'test_name': updatedText,
-                            'test_id': test_id
-                        },
-                        success: function(res) {
-                            
-                        }
-                    });
+        }
+
+        function changeSectionName(data, rowId) {
+            $.ajax({
+                type: 'post',
+                url: '{{ route('changeTitleSelfMade') }}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'test_name': data.value.trim(),
+                    'test_id': rowId
+                },
+                success: function(res) {
+                    toastr.success("Name updated successfully.");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000)
                 }
             });
-            $(data).replaceWith(input);
-            input.focus();         
-        }      
-                    
-    }
+        }
 
-</script>
+        function openTestSection(data) {
+            clicks++;
+            if (clicks === 1) {
+                timer = setTimeout(function() {
+                    clicks = 0;
+                    let url = $(data).attr('data-url');
+                    window.location.href = url;
+                }, DELAY);
+            } else {
+                console.log(data);
+                clearTimeout(timer);
+                clicks = 0;
+                var test_id = $(data).attr('data-id');
+                let url = $(data).attr('data-url');
+                var text = $(data).text().trim();
+                var input = document.createElement("input");
+                input.classList.add('input_test_name');
+                input.value = text;
+
+                input.addEventListener("keydown", function(event) {
+                    if (event.key === "Enter") {
+                        var updatedText = input.value.trim();
+                        if (updatedText !== "") {
+                            var newButton = document.createElement("button");
+                            newButton.classList.add("btn", "btn-success", "d-block", "mb-2", "hover-btn",
+                                "button-text");
+                            newButton.textContent = updatedText;
+                            newButton.setAttribute("onclick", `openTestSection(this)`);
+                            newButton.setAttribute("data-id", `${test_id}`);
+                            newButton.setAttribute("data-url", `${url}`);
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 100);
+
+                            $('.input_test_name').replaceWith(newButton);
+                        }
+                        $.ajax({
+                            type: 'post',
+                            url: '{{ route('changeTitleSelfMade') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                'test_name': updatedText,
+                                'test_id': test_id
+                            },
+                            success: function(res) {
+
+                            }
+                        });
+                    }
+                });
+                $(data).replaceWith(input);
+                input.focus();
+            }
+
+        }
+    </script>
 
 @endsection
 
@@ -1140,6 +1325,7 @@
         .table {
             border-color: gray;
         }
+
         .table thead tr th {
             background-color: rgba(0, 0, 0, .1) !important;
         }
@@ -1147,30 +1333,31 @@
         .table thead tr th span {
             display: block;
         }
-        @media(max-width: 768px){
+
+        @media(max-width: 768px) {
             .table {
-            border-color: gray;
-            display: block;
-            overflow-x: scroll;
+                border-color: gray;
+                display: block;
+                overflow-x: scroll;
+            }
         }
-        }
+
         /* .edit-icon{
-            display: none;
-        }
-        .hover-btn:hover .edit-icon{
-            display: block;
-            position: absolute;
-            bottom: 6px;
-            right: 7px
-        }
-        .hover-btn {
-            transition: all 0.5s;
-            width: auto;
-            position: relative;
-        } */
-        .input_test_name{
+                                                                                                                                                                                        display: none;
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .hover-btn:hover .edit-icon{
+                                                                                                                                                                                        display: block;
+                                                                                                                                                                                        position: absolute;
+                                                                                                                                                                                        bottom: 6px;
+                                                                                                                                                                                        right: 7px
+                                                                                                                                                                                    }
+                                                                                                                                                                                    .hover-btn {
+                                                                                                                                                                                        transition: all 0.5s;
+                                                                                                                                                                                        width: auto;
+                                                                                                                                                                                        position: relative;
+                                                                                                                                                                                    } */
+        .input_test_name {
             max-width: 110px !important;
         }
-        
     </style>
 @endsection
