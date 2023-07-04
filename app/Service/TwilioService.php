@@ -30,7 +30,7 @@ class TwilioService
         return new Client($this->accountSid(), $this->authToken());
     }
 
-    public function sendSMSMessage($to_number, $otherdata) {;
+    public function sendSMSMessage($to_number, $otherdata) {
         $message = $this->twilio->messages->create($to_number, $this->makeData($otherdata)); 
         return $message;
     }

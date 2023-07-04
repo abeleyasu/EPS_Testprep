@@ -336,10 +336,9 @@
 
   function checkNumber(value) {
     let number = value;
-    const regexNumberWithDeciaml = /^\d+(\.\d{1,2})?$/;
-    if (!regexNumberWithDeciaml.test(value)) {
-      toastr.error('Please enter valid number')
-      return;
+    if (!number) {
+      console.log('condition called')
+      number = '0'
     }
     if (value.includes('.')) {
       const decimal = +(value.split('.')[1]);
@@ -351,6 +350,34 @@
     }
     return number;
   }
+
+  function validNumber(e) {
+    const charCode = (e.which) ? e.which : e.keyCode;
+    if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+      e.preventDefault();
+    } else {
+      const value = e.target.value;
+      const dot = value.indexOf('.');
+      if (dot > -1 && charCode === 46) {
+        e.preventDefault();
+      }
+      return true;
+    }
+  }
+
+  $(document).on('keypress', '.edit-value', function (e) {
+    const validate = validNumber(e);
+    if (!validate) {
+      return;
+    }
+  })
+
+  $(document).on('keypress', '.edit-outside-aid', function (e) {
+    const validate = validNumber(e);
+    if (!validate) {
+      return;
+    }
+  })
 
   $(document).on('change', '.edit-value', function (e) {
     const value = checkNumber(e.target.value);

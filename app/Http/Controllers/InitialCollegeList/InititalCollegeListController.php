@@ -538,7 +538,7 @@ class InititalCollegeListController extends Controller
         $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
             $q->where('is_active', true); 
         })->with(['college_list_details' => function ($query) {
-            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison']);
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->orderBy('order_index')->with(['costcomparison']);
         }])->first();
 
         $totalCount = 0;
@@ -548,11 +548,11 @@ class InititalCollegeListController extends Controller
                 $data[] = [
                     'id' => $college_data['id'],
                     'college_name' => $college_data['college_name'],
-                    'total_direct_cost' => '$'.number_format($college_data['costcomparison']['total_direct_cost']),
-                    'total_merit_cost' => '$'.number_format($college_data['costcomparison']['total_merit_aid']),
-                    'total_need_based_aid' => '$'.number_format($college_data['costcomparison']['total_need_based_aid']),
-                    'total_outside_scholarship' => '$'.number_format($college_data['costcomparison']['total_outside_scholarship']),
-                    'total_cost_attendance' => '$'.number_format($college_data['costcomparison']['total_cost_attendance']),
+                    'total_direct_cost' => '$'.$college_data['costcomparison']['total_direct_cost'],
+                    'total_merit_cost' => '$'.$college_data['costcomparison']['total_merit_aid'],
+                    'total_need_based_aid' => '$'.$college_data['costcomparison']['total_need_based_aid'],
+                    'total_outside_scholarship' => '$'.$college_data['costcomparison']['total_outside_scholarship'],
+                    'total_cost_attendance' => '$'.$college_data['costcomparison']['total_cost_attendance'],
                 ];
     
                 $totalCount = $totalCount + count($costcomparisonsummary['college_list_details']);

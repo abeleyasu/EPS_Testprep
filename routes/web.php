@@ -58,6 +58,7 @@ use App\Http\Controllers\Cronjob\SendReminder;
 use App\Http\Controllers\Cronjob\FetchCollegeInformation;
 use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
 use App\Http\Controllers\SelfMadeTest\SelfMadeTestController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,7 @@ Route::get('/', function () {
     Session::flush();
     return redirect('login');
 })->name('home');
+
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes

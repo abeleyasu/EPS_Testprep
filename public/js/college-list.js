@@ -106,6 +106,7 @@ Sortable.create(userSelectedCollegeList, {
             getCollegeList();
           } else if (evt.to.dataset.type === 'cost-comparison') {
             getCollegeListForCostComparison();
+            $('#costcomparison-summary').DataTable().ajax.reload();
           } else if (evt.to.dataset.type === 'college-application-deadline') {
             getApplicationDeadlineOrganizerData();
           }
