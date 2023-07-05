@@ -1747,6 +1747,7 @@ class TestPrepController extends Controller
                 });
             }
 
+
             if (!empty($category_value)) {
                 $query->orWhere(function ($query) use ($category_value) {
                     foreach ($category_value as $type) {
