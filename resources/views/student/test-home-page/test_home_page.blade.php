@@ -1200,6 +1200,7 @@
 
         }
 
+
         function changeSectionName(data, rowId) {
             $.ajax({
                 type: 'post',
@@ -1343,19 +1344,19 @@
         }
 
         /* .edit-icon{
-                                                                                                                                                                                        display: none;
-                                                                                                                                                                                    }
-                                                                                                                                                                                    .hover-btn:hover .edit-icon{
-                                                                                                                                                                                        display: block;
-                                                                                                                                                                                        position: absolute;
-                                                                                                                                                                                        bottom: 6px;
-                                                                                                                                                                                        right: 7px
-                                                                                                                                                                                    }
-                                                                                                                                                                                    .hover-btn {
-                                                                                                                                                                                        transition: all 0.5s;
-                                                                                                                                                                                        width: auto;
-                                                                                                                                                                                        position: relative;
-                                                                                                                                                                                    } */
+                                                                                                                                                                                            display: none;
+                                                                                                                                                                                        }
+                                                                                                                                                                                        .hover-btn:hover .edit-icon{
+                                                                                                                                                                                            display: block;
+                                                                                                                                                                                            position: absolute;
+                                                                                                                                                                                            bottom: 6px;
+                                                                                                                                                                                            right: 7px
+                                                                                                                                                                                        }
+                                                                                                                                                                                        .hover-btn {
+                                                                                                                                                                                            transition: all 0.5s;
+                                                                                                                                                                                            width: auto;
+                                                                                                                                                                                            position: relative;
+                                                                                                                                                                                        } */
         .input_test_name {
             max-width: 110px !important;
         }

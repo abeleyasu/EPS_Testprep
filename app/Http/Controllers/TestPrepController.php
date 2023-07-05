@@ -1712,14 +1712,14 @@ class TestPrepController extends Controller
         $superCategory = $request['super_category'] ?? [];
 
         if (!empty($subCategory)) {
-            $category_value = array_values(array_map('intval', $subCategory));
+            $category_value = array_values($subCategory);
         }
         if (!empty($questionTypeData)) {
-            $question_type_value = array_values(array_map('intval', $questionTypeData));
+            $question_type_value = array_values($questionTypeData);
         }
 
         if (!empty($superCategory)) {
-            $super_category_value = array_values(array_map('intval', $subCategory));
+            $super_category_value = array_values($subCategory);
         }
 
         $countQuestion = [];
@@ -1738,30 +1738,30 @@ class TestPrepController extends Controller
             };
 
             if (!empty($super_category_value)) {
-                $query->where(function ($query) use ($super_category_value) {
+                $query->orWhere(function ($query) use ($super_category_value) {
                     foreach ($super_category_value as $type) {
                         $query->orWhere(function ($q) use ($type) {
-                            $q->orWhereJsonContains('super_category', [$type]);
+                            $q->orWhere('super_category', 'like', $type);
                         });
                     }
                 });
             }
 
             if (!empty($category_value)) {
-                $query->where(function ($query) use ($category_value) {
+                $query->orWhere(function ($query) use ($category_value) {
                     foreach ($category_value as $type) {
                         $query->orWhere(function ($q) use ($type) {
-                            $q->orWhereJsonContains('category_type', [$type]);
+                            $q->orWhere('category_type', 'like', $type);
                         });
                     }
                 });
             }
 
             if (isset($question_type_value) && !empty($question_type_value)) {
-                $query->where(function ($query) use ($question_type_value) {
+                $query->orWhere(function ($query) use ($question_type_value) {
                     foreach ($question_type_value as $type) {
                         $query->orWhere(function ($q) use ($type) {
-                            $q->orWhereJsonContains('question_type_id', [$type]);
+                            $q->orWhere('question_type_id', 'like', $type);
                         });
                     }
                 });
