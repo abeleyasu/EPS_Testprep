@@ -1738,7 +1738,7 @@ class TestPrepController extends Controller
             };
 
             if (!empty($super_category_value)) {
-                $query->where(function ($query) use ($super_category_value) {
+                $query->orWhere(function ($query) use ($super_category_value) {
                     foreach ($super_category_value as $type) {
                         $query->orWhere(function ($q) use ($type) {
                             $q->orWhereJsonContains('super_category', [$type]);
@@ -1748,7 +1748,7 @@ class TestPrepController extends Controller
             }
 
             if (!empty($category_value)) {
-                $query->where(function ($query) use ($category_value) {
+                $query->orWhere(function ($query) use ($category_value) {
                     foreach ($category_value as $type) {
                         $query->orWhere(function ($q) use ($type) {
                             $q->orWhereJsonContains('category_type', [$type]);
@@ -1758,7 +1758,7 @@ class TestPrepController extends Controller
             }
 
             if (isset($question_type_value) && !empty($question_type_value)) {
-                $query->where(function ($query) use ($question_type_value) {
+                $query->orWhere(function ($query) use ($question_type_value) {
                     foreach ($question_type_value as $type) {
                         $query->orWhere(function ($q) use ($type) {
                             $q->orWhereJsonContains('question_type_id', [$type]);
