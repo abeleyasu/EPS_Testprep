@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Models\Plan;
 use Illuminate\Validation\Rule;
 use App\Models\Product;
+use Spatie\Permission\Models\Role;
 
 class PlanController extends Controller
 {
@@ -204,7 +205,7 @@ class PlanController extends Controller
 
     public function subscription(Request $request)
     {
-        $plan = Plan::where('stripe_plan_id', $request->plan)->first();
+        $plan = Plan::where('stripe_plan_id', $request->plan)->with('product')->first();
 
         // Get the Payment Method ID from the Stripe Elements card input form
         $paymentMethodId = $request->payment_method;
@@ -272,12 +273,21 @@ class PlanController extends Controller
             'collection_method' => 'charge_automatically',
             'cancel_at' => now()->addMonth($plan->interval_count)->timestamp,
         ]);
+        $this->setUserRole($plan, $user);
         return true;
     }
 
     public function changeUserSubscription($plan, $paymentMethodId) {
         $user = Auth::user();
         $user->subscription('default')->swap($plan->stripe_plan_id);
+        $this->setUserRole($plan, $user);
         return true;
+    }
+
+    public function setUserRole($plan, $user) {
+        $role = Role::where('name', $plan->product->stripe_product_id)->first();
+        if ($role) {
+            $user->assignRole([$role->id]);
+        }
     }
 }

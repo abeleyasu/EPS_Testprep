@@ -6,6 +6,10 @@ use App\Models\ProductInclusion;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\PermissionModule;
+use App\Models\Permission;
+use Spatie\Permission\Models\Role;
+use DB;
 
 class ProductController extends Controller
 {
@@ -51,6 +55,9 @@ class ProductController extends Controller
                 'product_key' => $product['stripe_product_id'],
                 'order_index' => $product['order_index'] + 1,
                 'action' => '<div class="btn-group">
+                                <a href="' . route('admin.product.productPermission', ['id' => $product['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Attach Permission">
+                                    <i class="fa fa-fw fa-file-lines"></i>
+                                </a>
                                 <a href="' . route('admin.product.edit', ['id' => $product['id']]) . '" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Edit Product">
                                     <i class="fa fa-fw fa-pencil-alt"></i>
                                 </a>
@@ -98,6 +105,10 @@ class ProductController extends Controller
             'product_category_id' => $request->product_category_id,
             'stripe_product_id' => $product['id'],
             'order_index' => $lastOrderIndex + 1
+        ]);
+        Role::create([
+            'name' => $product['id'],
+            'guard_name' => 'web'
         ]);
         $inclusions = array_map(function ($item) use ($create) {
             return ['product_id' => $create->id, 'inclusion' => $item];
@@ -172,6 +183,8 @@ class ProductController extends Controller
     public function deleteProduct(Request $request)
     {
         $product = Product::find($request->id);
+        Role::where('name', $product->stripe_product_id)->delete();
+        $product->inclusions()->delete();
         $this->stripe->products->delete($product->stripe_product_id, []);
         $product->delete();
         return "success";
@@ -183,5 +196,46 @@ class ProductController extends Controller
             $category = Product::find($value['id'])->update(['order_index' => $value['order_index']]);
         }
         return "success";
+    }
+
+    public function permissions() {
+        $permissions = Permission::with('modules')->get()->toArray();
+
+        return view('admin.plan.permissions.list', [
+            'permissions' => $permissions
+        ]);
+    }
+
+    public function productPermission($productId) {
+        $product = Product::where('id', $productId)->first();
+        if (!$product) {
+            return redirect()->intended(route('admin.product.list'))->with('error', 'Product not found');
+        }
+        $role = Role::where('name', $product->stripe_product_id)->first();
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$role->id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all();
+        $permissions_module = PermissionModule::with('permission')->get()->toArray();
+        return view('admin.plan.product.attach-permission', [
+            'product' => $product,
+            'permissions_module' => $permissions_module,
+            'attach_permission' => $rolePermissions
+        ]);
+    }
+
+    public function attachPermission(Request $request) {
+        if (!$request->permission || count($request->permission) == 0) {
+            return back()->with('error', 'Please select at least one permission');
+        }
+        $product = Product::where('id', $request->product_id)->first();
+        if (!$product) {
+            return redirect()->intended(route('admin.product.list'))->with('error', 'Product not found');
+        }
+        $role = Role::where('name', $product->stripe_product_id)->first();
+        if (count($request->permission) > 0) {
+            $role->revokePermissionTo($role->permissions);
+            $role->syncPermissions($request->permission);
+        }
+        return redirect()->intended(route('admin.product.list'))->with('success', 'Permission attached successfully');
     }
 }

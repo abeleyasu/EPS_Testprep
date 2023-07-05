@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Cashier;
 use Stripe\Customer;
 use DB;
+use Spatie\Permission\Models\Role;
 
 class SubscriptionController extends Controller
 {
@@ -36,6 +37,13 @@ class SubscriptionController extends Controller
     public function cancelsubscriptions(Request $request)
     {
         $user = Auth::user();
+        $active_subscription = $user->subscriptions->first();
+        $plan = Plan::where('stripe_plan_id', $active_subscription->stripe_price)->with('product')->first();
+        $product_id = $plan->product->stripe_product_id;
+        $role = Role::where('name', $plan->product->stripe_product_id)->first();
+        if ($role) {
+            $user->removeRole($role->id);
+        }
         $user->subscription('default')->cancelNow();
         return "success";
     }

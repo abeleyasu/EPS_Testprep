@@ -265,6 +265,11 @@
                                 <span class="nav-main-link-name">Plan Management</span>
                             </a>
                         </li>
+                        <li class="nav-main-item {{ Route::is(['admin.product.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link {{Route::is('admin.product.permission') ? 'active' : ''}}" href="{{route('admin.product.permission')}}">
+                                <span class="nav-main-link-name">Product Permissions</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

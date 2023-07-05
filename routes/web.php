@@ -222,6 +222,11 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
                 Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
                 Route::post('/change-order', [ProductController::class, 'changeOrder'])->name('product_change_order');
+
+                Route::get('/permission/{id}', [ProductController::class, 'productPermission'])->name('productPermission');
+                Route::post('/permission/attach', [ProductController::class, 'attachPermission'])->name('attachPermission');
+
+                Route::get('/permission-list', [ProductController::class, 'permissions'])->name('permission');
             });
 
             Route::group(['prefix' => 'plan', 'as' => 'plan.'], function () {
