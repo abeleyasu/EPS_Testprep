@@ -38,6 +38,23 @@
                             </div>
                             <div class="fw-light fs-6 text-muted">Enables or disables all columns deadline reminders</div>
                         </div>
+                        <div class="mb-2">
+                            <div class="space-x-1">
+                                <!-- <input class="form-check-input user-settings" type="checkbox" value="" id="application_deadline_notification" name="application_deadline_notification" @if($user_settings->application_deadline_notification) checked @endif> -->
+                                <label class="form-check-label fw-bold" for="timezone">Timezone</label>
+                                <div class="row m-0">
+                                    <div class="col-12 col-md-3 p-0">
+                                        <select class="js-example-basic-single form-control user-settings" id="timezone" name="timezone" data-placeholder="Select One.">
+                                            <option></option>
+                                            @foreach(config('timezone') as $option) 
+                                                <option value="{{ $option['tzCode'] }}" @if($user_settings->timezone == $option['tzCode']) selected @endif >{{ $option['label'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fw-light fs-6 text-muted">To get reminders at the right time in your timezone</div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <h4 class="fw-normal border-bottom pb-2 mb-3">Custom Notification</h4>
@@ -237,6 +254,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}"> --}}
 
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
@@ -365,8 +383,14 @@
     <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
     <script src="{{asset('assets/js/moment/moment.min.js')}}"></script>
     <script>One.helpersOnLoad(['js-flatpickr', 'jq-datepicker']);</script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 
     <script>
+        $('.js-example-basic-single').select2({
+            placeholder: 'Select an option',
+            // allowClear: true
+        });
+
         $(".custom-flatpickr-time").flatpickr({
             enableTime: true,
             dateFormat: "h:i",
@@ -461,12 +485,16 @@
         }
 
         $('.user-settings').on('change', function (e) {
+            const data = {};
+            if (e.target.type == 'checkbox') {
+                data[e.target.name] = e.target.checked ? 1 : 0;
+            } else {
+                data[e.target.name] = e.target.value;
+            }
             $.ajax({
                 url: "{{ route('update-user-settings') }}",
                 method: "PATCH",
-                data: {
-                    [e.target.name]: e.target.checked ? 1 : 0
-                },
+                data: data,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },

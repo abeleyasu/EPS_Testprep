@@ -58,36 +58,6 @@
                     </a>
                 </li>
 
-                @can('Access Practice Tests')
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}"
-                        href="{{ route('test_prep_dashboard') }}">
-                        <i class="nav-main-link-icon si si-book-open"></i>
-                        <span class="nav-main-link-name">Test Prep</span>
-                    </a>
-                </li>
-                @endcan
-
-                @can('Access Test Home Page')
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['test_home_page']) ? 'active' : '' }}"
-                        href="{{ route('test_home_page') }}">
-                        <i class="nav-main-link-icon si si-book-open"></i>
-                        <span class="nav-main-link-name">Test Home Page</span>
-                    </a>
-                </li>
-                @endcan
-
-                @can('Access Self Made Tests')
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['self-made-test']) ? 'active' : '' }}"
-                        href="{{ route('self-made-test.index') }}">
-                        <i class="nav-main-link-icon si si-graduation"></i>
-                        <span class="nav-main-link-name">Self Made Test</span>
-                    </a>
-                </li>
-                @endcan
-
                 
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}"
@@ -95,6 +65,47 @@
                         <i class="nav-main-link-icon si si-book-open"></i>
                         <span class="nav-main-link-name">Test Review</span>
                     </a>
+                </li>
+
+                <li
+                    class="nav-main-item {{ Route::is(['self-made-test.*', 'test_home_page', 'test_prep_dashboard']) ? 'open' : '' }}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                        aria-expanded="false" href="#">
+                        <i class="nav-main-link-icon si si-book-open"></i>
+                        <span class="nav-main-link-name">Test Prep</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        @can('Access Practice Tests')
+                            <li class="nav-main-item">
+                                <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}"
+                                    href="{{ route('test_prep_dashboard') }}">
+                                    <i class="nav-main-link-icon si si-speedometer"></i>
+                                    <span class="nav-main-link-name">Dashboard</span>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('Access Test Home Page')
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::is(['test_home_page']) ? 'active' : '' }}"
+                                href="{{ route('test_home_page') }}">
+                                <i class="nav-main-link-icon si si-book-open"></i>
+                                <span class="nav-main-link-name">Test Home Page</span>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('Access Self Made Tests')
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::is(['self-made-test.*']) ? 'active' : '' }}"
+                                href="{{ route('self-made-test.index') }}">
+                                <i class="nav-main-link-icon si si-graduation"></i>
+                                <span class="nav-main-link-name">Self Made Test</span>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+
                 </li>
 
                 <!-- <li class="nav-main-item">
@@ -109,9 +120,17 @@
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                         aria-expanded="false" href="#">
                         <i class="nav-main-link-icon si si-briefcase"></i>
-                        <span class="nav-main-link-name">Admissions dashboard</span>
+                        <span class="nav-main-link-name">Admissions</span>
                     </a>
                     <ul class="nav-main-submenu">
+
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="#">
+                                <i class="nav-main-link-icon si si-speedometer"></i>
+                                <span class="nav-main-link-name">Dashboard</span>
+                            </a>
+                        </li>
+
                         @can('Access High School Resume')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') || Route::is('admin-dashboard.highSchoolResume.personalInfo') || Route::is('admin-dashboard.highSchoolResume.educationInfo') || Route::is('admin-dashboard.highSchoolResume.honors') || Route::is('admin-dashboard.highSchoolResume.activities') || Route::is('admin-dashboard.highSchoolResume.employmentCertification') || Route::is('admin-dashboard.highSchoolResume.featuresAttributes') || Route::is('admin-dashboard.highSchoolResume.preview') ? 'active' : '' }}"

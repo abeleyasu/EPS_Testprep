@@ -71,10 +71,11 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    Session::flush();
-    return redirect('login');
-})->name('home');
+// Route::get('/', function () {
+//     Session::flush();
+//     return redirect('login');
+// })->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
