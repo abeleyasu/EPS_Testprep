@@ -718,8 +718,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        @elseif
-                                                                                                        ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Even')
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Even')
                                                                                                         <div
                                                                                                             class="block block-rounded">
                                                                                                             <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -854,8 +853,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        @elseif
-                                                                                                        ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Odd')
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Odd')
                                                                                                         <div
                                                                                                             class="block block-rounded">
                                                                                                             <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -966,8 +964,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        @elseif
-                                                                                                        ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Even')
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFour_Even')
                                                                                                         <div
                                                                                                             class="block block-rounded">
                                                                                                             <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -1078,8 +1075,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        @elseif
-                                                                                                        ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Odd')
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Odd')
                                                                                                         <div
                                                                                                             class="block block-rounded">
                                                                                                             <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -1190,8 +1186,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        @elseif
-                                                                                                        ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Even')
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFourPass_Even')
                                                                                                         <div
                                                                                                             class="block block-rounded">
                                                                                                             <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -1302,8 +1297,7 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        @elseif
-                                                                                                        ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceMultInFourFill')
+                                                                                                    @elseif($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceMultInFourFill')
                                                                                                         {{-- {{dd($single_user_selected_answers['get_question_details'][0]->is_multiple_choice)}} --}}
                                                                                                         @if ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 1)
                                                                                                             <div
@@ -1416,8 +1410,7 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            @elseif
-                                                                                                            ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 3)
+                                                                                                        @elseif($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 3)
                                                                                                             <div
                                                                                                                 class="block block-rounded">
                                                                                                                 <ul class="nav nav-tabs nav-tabs-alt-{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
@@ -3078,8 +3071,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                    display: none;
-                } */
+                                            display: none;
+                                        } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
