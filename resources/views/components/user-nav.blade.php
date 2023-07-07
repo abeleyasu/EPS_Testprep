@@ -51,24 +51,8 @@
                 </li>
                 @endcan
 
-                <li class="nav-main-item">
-                    <a class="nav-main-link" href="#">
-                        <i class="nav-main-link-icon si si-speedometer"></i>
-                        <span class="nav-main-link-name">Dashboard</span>
-                    </a>
-                </li>
-
-                
-                <li class="nav-main-item">
-                    <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}"
-                        href="{{ route('test-review.review') }}">
-                        <i class="nav-main-link-icon si si-book-open"></i>
-                        <span class="nav-main-link-name">Test Review</span>
-                    </a>
-                </li>
-
                 <li
-                    class="nav-main-item {{ Route::is(['self-made-test.*', 'test_home_page', 'test_prep_dashboard']) ? 'open' : '' }}">
+                    class="nav-main-item {{ Route::is(['self-made-test.*', 'test_home_page', 'test_prep_dashboard', 'test-review.review']) ? 'open' : '' }}">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                         aria-expanded="false" href="#">
                         <i class="nav-main-link-icon si si-book-open"></i>
@@ -104,6 +88,14 @@
                             </a>
                         </li>
                         @endcan
+
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}"
+                                href="{{ route('test-review.review') }}">
+                                <i class="nav-main-link-icon si si-book-open"></i>
+                                <span class="nav-main-link-name">Test Review</span>
+                            </a>
+                        </li>
                     </ul>
 
                 </li>
