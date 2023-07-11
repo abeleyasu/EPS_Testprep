@@ -115,7 +115,8 @@
                                                                     <div class="mb-2">
                                                                         <input type="checkbox" name="item"
                                                                             id="item-{{ $loop->iteration }}"
-                                                                            value="{{ $rating['id'] }}">
+                                                                            value="{{ $rating['id'] }}"
+                                                                            class="selected-item">
                                                                         <label for="item-{{ $loop->iteration }}"
                                                                             class="ms-2">{{ $rating['title'] }}</label><span
                                                                             class="ms-2 diff_{{ $rating['id'] }}"></span>
@@ -127,14 +128,14 @@
                                                                     id="all_unanswered" value="all_unanswered"
                                                                     class="questions_type">
                                                                 <label for="all_unanswered" class="ms-2">All
-                                                                    Unanswered</label>
+                                                                    Unanswered <span class="ms-2 diff_5"></label>
                                                             </div>
                                                             <div class="mb-2">
                                                                 <input type="radio" name="questions_type"
                                                                     id="all_questions" value="all_questions"
                                                                     class="questions_type" checked>
                                                                 <label for="all_questions" class="ms-2">All
-                                                                    Questions</label>
+                                                                    Questions <span class="ms-2 diff_6"></label>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -212,6 +213,13 @@
                 }
             });
 
+            let diff_rating = [];
+            $('.selected-item').each(function() {
+                if ($(this).prop('checked')) {
+                    diff_rating.push($(this).val());
+                }
+            });
+
             $.ajax({
                 type: 'post',
                 url: '{{ route('gettypes') }}',
@@ -224,18 +232,66 @@
                     super_category: checkValue1,
                     question_category: checkValue2,
                     question_type: checkValue3,
+                    diff_rating: diff_rating,
                 },
                 success: function(res) {
                     callback(res);
                 }
             });
         };
+
+        $(".selected-item").change(function() {
+            console.log($(this).val());
+            getTypeFunctionality((res) => {
+                count_data = res.count;
+                $.each(res.count, function(i, v) {
+                    $(`.diff_${i}`).html(`(${v.count})`);
+                });
+                $('.test-category').html('');
+                let super_category = ``;
+                $.each(res.super_category, function(i, v) {
+                    const super_category_id = v['id'];
+                    super_category += `<div class="mb-2 criteria">`;
+                    super_category +=
+                        `<input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
+                    super_category +=
+                        `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label>`;
+                    // check_temp[super_category_id] = [];
+                    let temp = {};
+                    temp['super_category_id'] = v['id'];
+                    $.each(res.category[v['id']], function(i, v) {
+                        temp['category_id'] = v['id'];
+
+                        super_category +=
+                            `<div class="ms-4 mt-2 question_category_div">`;
+                        super_category +=
+                            `<input type="checkbox" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
+                        super_category +=
+                            `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label>`;
+                        $.each(res.questionType[v['id']], function(i, v) {
+                            temp['question_type_id'] = v['id'];
+                            super_category += `<div class="ms-5 mt-2">`;
+                            super_category +=
+                                `<input type="checkbox" id="${v['question_type_title']}" value="${v['id']}" class="question_type">`;
+                            super_category +=
+                                `<label for="${v['question_type_title']}" class="fw-bold ms-2">${v['question_type_title']}</label>`;
+                            super_category += `</div>`;
+                        });
+                        super_category += `</div>`;
+                    });
+                    check_temp.push(temp);
+                    super_category += `</div>`;
+                });
+
+                $('.test-category').append(super_category);
+            });
+        })
         $(document).on('change', '.section_type', function() {
             if ($(this).find('input[type="radio"]:checked').length > 0) {
                 getTypeFunctionality((res) => {
                     count_data = res.count;
                     $.each(res.count, function(i, v) {
-                        $(`.diff_${i}`).html(`(${v})`);
+                        $(`.diff_${i}`).html(`(${v.count})`);
                     });
                     $('.test-category').html('');
                     let super_category = ``;
@@ -359,6 +415,10 @@
                 }
                 i++;
             });
+
+            if ($("#all_questions").is(":checked")) {
+                question_ids = count_data[5]?.questions;
+            }
 
             let checkValue5 = [];
             $('.section_type :radio:checked').each(function() {

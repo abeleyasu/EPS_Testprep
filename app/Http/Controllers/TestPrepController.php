@@ -1710,65 +1710,82 @@ class TestPrepController extends Controller
         $questionTypeData = $request['question_type'] ?? [];
         $subCategory = $request['question_category'] ?? [];
         $superCategory = $request['super_category'] ?? [];
-
+        $diff_rating_input = $request['diff_rating'] ?? [];
+        $user_id = Auth::user()->id;
+        $category_value = [];
         if (!empty($subCategory)) {
             $category_value = array_values($subCategory);
         }
+        $question_type_value = [];
         if (!empty($questionTypeData)) {
             $question_type_value = array_values($questionTypeData);
         }
-
+        $super_category_value = [];
         if (!empty($superCategory)) {
-            $super_category_value = array_values($subCategory);
+            $super_category_value = array_values($superCategory);
+        }
+
+        $diff_rating_value = [];
+        if (!empty($diff_rating_input)) {
+            $diff_rating_value = array_values($diff_rating_input);
         }
 
         $countQuestion = [];
         $diff_ratings = DiffRating::all();
+        $all = 0;
+        $allUnaswered = 0;
+        $allUnasweredArray = [];
         foreach ($diff_ratings as $diff_rating) {
             $query = PracticeQuestion::query()->select('practice_questions.*');
             $query->where('practice_questions.format', $format)
                 ->where('practice_questions.diff_rating', $diff_rating->id)
-                ->where('practice_questions.test_source', '2')
                 ->where('practice_questions.selfMade', '0');
 
+            if (!empty($diff_rating_value)) {
+                $query->whereIn("diff_rating", $diff_rating_value);
+            }
             $query->leftJoin('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id');
+            $query->leftJoin('question_details', 'question_details.question_id', '=', 'practice_questions.id');
 
             if (isset($request['section_type']) && !empty($request['section_type'])) {
                 $query->where('practice_test_sections.practice_test_type', $request['section_type']);
             };
 
-            if (!empty($super_category_value)) {
-                $query->orWhere(function ($query) use ($super_category_value) {
-                    foreach ($super_category_value as $type) {
-                        $query->orWhere(function ($q) use ($type) {
-                            $q->orWhere('super_category', 'like', $type);
-                        });
-                    }
-                });
-            }
+            $query->where(function ($query) use ($super_category_value, $category_value, $question_type_value) {
+                if (!empty($super_category_value)) {
+                    $query->orWhereIn("question_details.super_category", $super_category_value);
+                }
 
+                if (!empty($category_value)) {
+                    $query->orWhereIn("question_details.category_type", $category_value);
+                }
 
-            if (!empty($category_value)) {
-                $query->orWhere(function ($query) use ($category_value) {
-                    foreach ($category_value as $type) {
-                        $query->orWhere(function ($q) use ($type) {
-                            $q->orWhere('category_type', 'like', $type);
-                        });
-                    }
-                });
-            }
+                if (!empty($question_type_value)) {
+                    $query->orWhereIn("question_details.question_type", $question_type_value);
+                }
+            });
+            $all = $all + $query->count();
 
-            if (isset($question_type_value) && !empty($question_type_value)) {
-                $query->orWhere(function ($query) use ($question_type_value) {
-                    foreach ($question_type_value as $type) {
-                        $query->orWhere(function ($q) use ($type) {
-                            $q->orWhere('question_type_id', 'like', $type);
-                        });
-                    }
-                });
+            $userAnswers = UserAnswers::where("user_id", $user_id)->get();
+            $allQuestionsAnswered = [];
+            foreach ($userAnswers as $answers) {
+                if (!empty($answers->answer)) {
+                    $answer = json_decode($answers->answer, 1);
+                    $keys = array_keys($answer);
+                    array_push($allQuestionsAnswered, ...$keys);
+                }
             }
-            $countQuestion[$diff_rating->id] = ['count' => $query->count(), 'questions' => $query->pluck('id')];
+            $questions = $query->pluck('id');
+            foreach ($questions as $que) {
+                if (!in_array($que, $allQuestionsAnswered)) {
+                    $allUnaswered = $allUnaswered + 1;
+                    array_push($allUnasweredArray, $que);
+                }
+            }
+            $countQuestion[$diff_rating->id] = ['count' => $query->count(), 'questions' => $questions];
         }
+        $countQuestion[] = ['count' => $allUnaswered, 'questions' => $allUnasweredArray];
+        $countQuestion[] = ['count' => $all, 'questions' => ''];
         $super_category = SuperCategory::where('format', $format)->where('section_type', $section_type)->where('selfMade', 1)->get();
         $category = [];
         $questionType = [];

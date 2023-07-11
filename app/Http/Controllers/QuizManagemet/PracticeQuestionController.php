@@ -13,6 +13,7 @@ use App\Models\PracticeCategoryType;
 use App\Models\QuestionType;
 use App\Models\Passage;
 use App\Models\PracticeTest;
+use App\Models\QuestionDetails;
 use App\Models\QuestionTag;
 use App\Models\Score;
 use App\Models\SuperCategory;
@@ -109,14 +110,16 @@ class PracticeQuestionController extends Controller
 
 
         $super_category_values = [];
-        foreach ($ans_choices as $choice) {
+
+        $insertValues = [];
+        foreach ($ans_choices as $key => $choice) {
             // $categoryValue = $request->{"super_category_values_$choice"};
             $categoryValue = $request->input('super_category_values')[$choice];
-
             $super_category_array = $categoryValue;
             foreach ($super_category_array as $innerKey => $innerValue) {
                 $super_category_id = SuperCategory::where('title', $innerValue)->orWhere('id', $innerValue)->first();
                 $super_category_array[$innerKey] = $super_category_id->id;
+                // $insertValues['super_category_values'][$key][$innerKey] = $super_category_id->id;
             }
 
             $super_category_values[$choice] = $super_category_array;
@@ -133,9 +136,11 @@ class PracticeQuestionController extends Controller
             foreach ($category_type_array as $innerKey => $innerValue) {
                 $practice_category_id = PracticeCategoryType::where('category_type_title', $innerValue)->orWhere('id', $innerValue)->first();
                 $category_type_array[$innerKey] = $practice_category_id->id;
+                // $insertValues['category_type_title'][$key][$innerKey] = $practice_category_id->id;
             }
             $category_type_values[$choice] = $category_type_array;
         }
+        // dd($category_type_values);
         $question->category_type_values = json_encode($category_type_values);
 
 
@@ -148,52 +153,26 @@ class PracticeQuestionController extends Controller
             foreach ($question_type_array as $innerKey => $innerValue) {
                 $practice_question_id = QuestionType::where('question_type_title', $innerValue)->orWhere('id', $innerValue)->first();
                 $question_type_array[$innerKey] = $practice_question_id->id;
+                // $insertValues['question_type_title'][$key][$innerKey] = $practice_question_id->id;
             }
             $question_type_values[$choice] = $question_type_array;
         }
         $question->question_type_values = json_encode($question_type_values);
-
-
-        // $ct_checkbox_values = $request->ct_checkbox_values;
-        // $super_category_array = $request->super_category_values;
-        // foreach ($super_category_array as $key => $value) {
-        // 	$super_category_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-        // 	$super_category_array[$key] = $super_category_id->id;
-        // }
-
-        // $is_category_checked_array = array();
-        // foreach ($super_category_array as $key => $super_category_id) {
-        // 	$checkbox_value = $ct_checkbox_values[$key];
-        // 	$array_value['super_category_id'] = $super_category_id;
-        // 	$array_value['checked'] = $checkbox_value;
-        // 	$is_category_checked_array[] = $array_value;
-        // }
-
-
-        // $cat_array = $request->get_category_type_values;
-        // foreach ($cat_array as $key => $value) {
-        // 	$practice_category_id = PracticeCategoryType::where('category_type_title',$value)->orWhere('id',$value)->first();
-        // 	$cat_array[$key] = $practice_category_id->id;
-        // }
-
-        // $qt_array = $request->get_question_type_values;
-        // foreach ($qt_array as $key => $value) {
-        // 	$practice_question_id = QuestionType::where('question_type_title',$value)->orWhere('id', $value)->first();
-        // 	$qt_array[$key] = $practice_question_id->id;
-        // }
-
-        // $super_array = $request->super_category;
-        // foreach($super_array as $key => $value){
-        // 	$super_id = SuperCategory::where('title',$value)->orWhere('id',$value)->first();
-        // }
-        //$question->super_category = $super_id['id'];
-        // $question->super_category = json_encode($super_category_array);
-        // $question->is_category_checked = json_encode($is_category_checked_array);
-
-        // $question->category_type = json_encode($cat_array);
-        // $question->question_type_id = json_encode($qt_array);
         $question->test_source = $request->test_source;
         $question->save();
+
+        $i = 0;
+        foreach ($super_category_values as $key => $val) {
+            $insertValues[] = [
+                'question_id' => $question->id,
+                'super_category' => $val[0],
+                'category_type' => $category_type_values[$ans_choices[$i]][0] ?? '',
+                'question_type' => $question_type_values[$ans_choices[$i]][0] ?? ''
+            ];
+            $i++;
+        }
+
+        QuestionDetails::insert($insertValues);
 
         $test_id = PracticeTestSection::where('id', $request->section_id)->get('testid');
         $count = PracticeQuestion::where('practice_test_sections_id', $request->section_id)->count();
@@ -393,6 +372,25 @@ class PracticeQuestionController extends Controller
         $question->question_type_values = json_encode($question_type_values);
 
         $question->save();
+
+        $insertValues = [];
+        $i = 0;
+        foreach ($super_category_values as $key => $val) {
+            $insertValues[] = [
+                'question_id' => $question->id,
+                'super_category' => $val[0],
+                'category_type' => $category_type_values[$ans_choices[$i]][0] ?? '',
+                'question_type' => $question_type_values[$ans_choices[$i]][0] ?? ''
+            ];
+            $i++;
+        }
+
+        $question_details = QuestionDetails::where('question_id', $question)->get();
+        if (!empty($question_details)) {
+            $question_details->delete();
+        }
+        QuestionDetails::insert($insertValues);
+
         return response()->json(['question_id' => $question->id, 'question_order' => $question->question_order]);
     }
 
