@@ -64,6 +64,47 @@ height: 270px
     height: 500px !important;
 }
 
+.question-button {
+    pointer-events: none; 
+    font-size: 17px !important;
+    padding: 10px 20px !important;
+    border-radius: 0 !important;
+}
+
+.btn-blue {
+    background-color: #0d6efd !important;
+}
+
+.btn-yellow {
+    background-color: #ffc107 !important;
+}
+
+.btn-orange {
+    background-color: rgb(234, 88, 12) !important;
+}
+
+.btn-red {
+    background-color: #dc3545 !important;
+}
+
+.btn-nocolor {
+    background-color: #f6f7f9 !important;
+    color: #000 !important;
+    border-color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+.blue-button {
+    /* 0d6efd */
+    /* 395aa6 */
+    background-color: #0d6efd !important;
+  /* display: inline-block; */
+  /* width: 20px;
+  height: 20px;
+  background-color: blue;
+  margin-right: 5px; */
+}
+
 </style>
 
 <!-- Main Container -->
@@ -565,9 +606,34 @@ height: 270px
                 }
                 else
                 {
+                    var questionBoxes = "";
+                    for (let index = 0; index < question_ids.length; index++) {
+                        var num = index + 1;
+
+                        // console.log('num>>'+num);
+                        // console.log('selected_answer>>'+selected_answer[question_ids[index]]);
+                        // console.log('selected_flag_details>>'+selected_flag_details[question_ids[index]]);
+                        // console.log('selected_gusess_details>>'+selected_gusess_details[question_ids[index]]);
+                        // console.log('selected_skip_details>>'+selected_skip_details[question_ids[index]]);
+
+                        var btn_color = 'btn-nocolor';
+                        if (selected_answer[question_ids[index]]) {
+                            btn_color = 'btn-blue';
+                        } else if(selected_flag_details[question_ids[index]] == 'yes') {
+                            btn_color = 'btn-red';
+                        } else if(selected_gusess_details[question_ids[index]] == 'yes') {
+                            btn_color = 'btn-orange';
+                        } 
+                        // else if(selected_skip_details[question_ids[index]] != 'no') {
+                        //     btn_color = 'btn-yellow';
+                        // }
+                        questionBoxes += '<button type="button" class="question-button ' + btn_color + ' btn">'+num+'</button>';
+                    }
+                    
                     var alert_data={
                         title: "Review Details",
-                        text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
+                        // text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
+                        text: "<div class='d-flex flex-wrap'>" + questionBoxes + "</div>",
                         type: "success",
                         showCancelButton: false,
                         confirmButtonColor: "#DD6B55",
@@ -576,14 +642,15 @@ height: 270px
                         closeOnConfirm: true,
                         closeOnCancel: false,
                         index:false,
-                    };                
+                    };
                 }
-                sweet_alert(alert_data,reviewCount);
+                sweet_alert(alert_data,reviewCount,question_ids);
             });
-            function sweet_alert(data,review){
+            function sweet_alert(data,review,question_ids){
                 swal({
                         title: data.title,
                         text: data.text,
+                        html: true,
                         type: data.type,
                         showCancelButton: data.showCancelButton,
                         confirmButtonColor:data.confirmButtonColor,
@@ -593,9 +660,35 @@ height: 270px
                         closeOnCancel: data.closeOnCancel
                     },(resp) => {
                         if(data.index && resp){
+                            var questionBoxes = "";
+                            for (let index = 0; index < question_ids.length; index++) {
+                                var num = index + 1;
+
+                                // console.log('num>>'+num);
+                                // console.log('selected_answer>>'+selected_answer[question_ids[index]]);
+                                // console.log('selected_flag_details>>'+selected_flag_details[question_ids[index]]);
+                                // console.log('selected_gusess_details>>'+selected_gusess_details[question_ids[index]]);
+                                // console.log('selected_skip_details>>'+selected_skip_details[question_ids[index]]);
+
+                                var btn_color = 'btn-nocolor';
+                                if (selected_answer[question_ids[index]]) {
+                                    btn_color = 'btn-blue';
+                                } else if(selected_flag_details[question_ids[index]] == 'yes') {
+                                    btn_color = 'btn-red';
+                                } else if(selected_gusess_details[question_ids[index]] == 'yes') {
+                                    btn_color = 'btn-orange';
+                                } 
+                                // else if(selected_skip_details[question_ids[index]] != 'no') {
+                                //     btn_color = 'btn-yellow';
+                                // }
+                                questionBoxes += '<button type="button" class="question-button ' + btn_color + ' btn">'+num+'</button>';
+                            }
+
                             swal({
                                 title: "Review Details",
-                                text: "Flag :- "+review.flag+","+"Skip :- "+review.skip+","+"Guess :- "+review.guess,
+                                // text: "Flag :- "+review.flag+","+"Skip :- "+review.skip+","+"Guess :- "+review.guess,
+                                text: "<div class='d-flex flex-wrap'>" + questionBoxes + "</div>",
+                                html: true,
                                 type: "success",
                                 showCancelButton: false,
                                 confirmButtonColor: "#DD6B55",
@@ -606,8 +699,8 @@ height: 270px
                                 index:false,
                             })
                         }
-                    });
-                    
+                    }
+                );
             }
          
             
