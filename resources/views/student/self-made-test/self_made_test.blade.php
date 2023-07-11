@@ -241,49 +241,8 @@
         };
 
         $(".selected-item").change(function() {
-            console.log($(this).val());
             getTypeFunctionality((res) => {
                 count_data = res.count;
-                $.each(res.count, function(i, v) {
-                    $(`.diff_${i}`).html(`(${v.count})`);
-                });
-                $('.test-category').html('');
-                let super_category = ``;
-                $.each(res.super_category, function(i, v) {
-                    const super_category_id = v['id'];
-                    super_category += `<div class="mb-2 criteria">`;
-                    super_category +=
-                        `<input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
-                    super_category +=
-                        `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label>`;
-                    // check_temp[super_category_id] = [];
-                    let temp = {};
-                    temp['super_category_id'] = v['id'];
-                    $.each(res.category[v['id']], function(i, v) {
-                        temp['category_id'] = v['id'];
-
-                        super_category +=
-                            `<div class="ms-4 mt-2 question_category_div">`;
-                        super_category +=
-                            `<input type="checkbox" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
-                        super_category +=
-                            `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label>`;
-                        $.each(res.questionType[v['id']], function(i, v) {
-                            temp['question_type_id'] = v['id'];
-                            super_category += `<div class="ms-5 mt-2">`;
-                            super_category +=
-                                `<input type="checkbox" id="${v['question_type_title']}" value="${v['id']}" class="question_type">`;
-                            super_category +=
-                                `<label for="${v['question_type_title']}" class="fw-bold ms-2">${v['question_type_title']}</label>`;
-                            super_category += `</div>`;
-                        });
-                        super_category += `</div>`;
-                    });
-                    check_temp.push(temp);
-                    super_category += `</div>`;
-                });
-
-                $('.test-category').append(super_category);
             });
         })
         $(document).on('change', '.section_type', function() {

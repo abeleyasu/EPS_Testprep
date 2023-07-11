@@ -1767,14 +1767,20 @@ class TestPrepController extends Controller
             $all = $all + $query->count();
 
             $userAnswers = UserAnswers::where("user_id", $user_id)->get();
+
             $allQuestionsAnswered = [];
+
             foreach ($userAnswers as $answers) {
                 if (!empty($answers->answer)) {
                     $answer = json_decode($answers->answer, 1);
+                    $answer = array_filter($answer, function ($val) {
+                        return $val != "-";
+                    });
                     $keys = array_keys($answer);
                     array_push($allQuestionsAnswered, ...$keys);
                 }
             }
+
             $questions = $query->pluck('id');
             foreach ($questions as $que) {
                 if (!in_array($que, $allQuestionsAnswered)) {
@@ -1784,8 +1790,8 @@ class TestPrepController extends Controller
             }
             $countQuestion[$diff_rating->id] = ['count' => $query->count(), 'questions' => $questions];
         }
-        $countQuestion[] = ['count' => $allUnaswered, 'questions' => $allUnasweredArray];
-        $countQuestion[] = ['count' => $all, 'questions' => ''];
+        $countQuestion[] = ['count' => $allUnaswered, 'questions' => $allUnasweredArray, 'type' => 'unanswered'];
+        $countQuestion[] = ['count' => $all, 'questions' => '', 'type' => 'all'];
         $super_category = SuperCategory::where('format', $format)->where('section_type', $section_type)->where('selfMade', 1)->get();
         $category = [];
         $questionType = [];
