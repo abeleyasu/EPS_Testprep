@@ -1804,6 +1804,9 @@ class TestPrepController extends Controller
     {
         $question_ids = $request['question_ids'] ?? [];
 
+        if (empty($question_ids)) {
+            return response()->json(['questions' => '', 'message' => 'No Questions Available', 'status' => false]);
+        }
         $query = PracticeQuestion::query()->select('practice_questions.*');
 
         $query->leftJoin('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id');
