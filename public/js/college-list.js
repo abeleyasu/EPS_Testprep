@@ -27,8 +27,8 @@ function getHideCollegeList(showModal) {
         response.data.forEach((data, index) => {
           const element = `
             <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
-              <div class="block-header block-header-default">
-                <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+              <div class="block-header block-header-tab">
+                <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                   <span>${index + 1}</span>
                   <span>${data.college_name}</span>
                 </div>
@@ -77,6 +77,19 @@ $('.js-data-example-ajax').select2({
   }
 });
 
+function refreshResults(type) {
+  if (type === 'search-list') {
+    getCollegeList();
+  } else if (type === 'cost-comparison') {
+    getCollegeListForCostComparison();
+    $('#costcomparison-summary').DataTable().ajax.reload();
+  } else if (type === 'college-application-deadline') {
+    getApplicationDeadlineOrganizerData();
+  } else if (type === 'search-step-1') {
+    getStep1CollegeList();
+  }
+}
+
 Sortable.create(userSelectedCollegeList, {
   animation: 150,
   ghostClass: 'blue-background-class',
@@ -102,16 +115,40 @@ Sortable.create(userSelectedCollegeList, {
       },
       success: function(response) {
         if (response.success) {
-          if (evt.to.dataset.type === 'search-list') {
-            getCollegeList();
-          } else if (evt.to.dataset.type === 'cost-comparison') {
-            getCollegeListForCostComparison();
-            $('#costcomparison-summary').DataTable().ajax.reload();
-          } else if (evt.to.dataset.type === 'college-application-deadline') {
-            getApplicationDeadlineOrganizerData();
-          }
+          refreshResults(evt.to.dataset.type);
         }
       }
     })
   }
 });
+
+$('#remove-all-college').on('click', function (e) {
+  e.preventDefault();
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You want to remove all college from list",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#23BF08',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, remove it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log('confirm')
+      $.ajax({
+        url: core.removeAllCollege,
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      }).done((response) => {
+        if (response.success) {
+          toastr.success(response.message)
+          refreshResults(e.to.dataset.type);
+        } else {
+          toastr.error(response.message)
+        }
+      })
+    }
+  })
+})

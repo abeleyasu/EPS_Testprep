@@ -89,10 +89,10 @@ const rules = {
 }
 
 const high_school_score_rules = {
-    high_school_english_score: otherScoreRules(false),
-    high_school_reading_score: actSatRules('high_school_test_type', false),
-    high_school_math_score: actSatRules('high_school_test_type', false),
-    high_school_science_score: otherScoreRules(false),
+    // high_school_english_score: otherScoreRules(false),
+    // high_school_reading_score: actSatRules('high_school_test_type', false),
+    // high_school_math_score: actSatRules('high_school_test_type', false),
+    // high_school_science_score: otherScoreRules(false),
     unweighted_gpa: {
         min: 0,
         max: 4
@@ -161,10 +161,10 @@ $(document).ready(function () {
     $('#high-school-form').validate({
         rules: high_school_score_rules,
         messages: {
-            high_school_english_score: common_error_message.english_score,
-            high_school_reading_score: common_error_message.reading_score,
-            high_school_math_score: common_error_message.math_score,
-            high_school_science_score: common_error_message.science_score,
+            // high_school_english_score: common_error_message.english_score,
+            // high_school_reading_score: common_error_message.reading_score,
+            // high_school_math_score: common_error_message.math_score,
+            // high_school_science_score: common_error_message.science_score,
             unweighted_gpa: common_error_function.unweighted_gpa,
             weighted_gpa: common_error_function.weighted_gpa
         },
@@ -303,7 +303,6 @@ function hideShowScoreFields(value) {
 
 $('.score').on('change', function (e) {
     let score = 0
-    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#test_type').val() == 'ACT') { 
         score = parseInt($('#english_score').val() ? $('#english_score').val() : 0) + parseInt($('#math_score').val() ? $('#math_score').val() : 0) + parseInt($('#science_score').val() ? $('#science_score').val() : 0) + parseInt($('#science_score').val() ? $('#science_score').val() : 0)
         $('#composite_score').val(score / 4);
@@ -413,7 +412,6 @@ function hideShowHighSchoolScoreFields(value) {
 
 $('.high-school-score').on('change', function (e) {
     let score = 0;
-    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#high_school_test_type').val() == 'ACT') {
         score = parseInt($('#high_school_english_score').val() ? $('#high_school_english_score').val() : 0) + parseInt($('#high_school_math_score').val() ? $('#high_school_math_score').val() : 0) + parseInt($('#high_school_science_score').val() ? $('#high_school_science_score').val() : 0) + parseInt($('#high_school_reading_score').val() ? $('#high_school_reading_score').val() : 0)
         $('#high_school_composite_score').val(score / 4);
@@ -463,7 +461,6 @@ function hideShowGoalSchoolScoreFields(value) {
 
 $('.goal-school-score').on('change', function (e) {
     let score = 0;
-    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#goal_test_type').val() == 'ACT') {
         score = parseInt($('#goal_english_score').val() ? $('#goal_english_score').val() : 0) + parseInt($('#goal_math_score').val() ? $('#goal_math_score').val() : 0) + parseInt($('#goal_science_score').val() ? $('#goal_science_score').val() : 0) + parseInt($('#goal_reading_score').val() ? $('#goal_reading_score').val() : 0)
         $('#goal_composite_score').val(score / 4);
@@ -513,7 +510,6 @@ function hideShowFinalSchoolScoreFields(value) {
 
 $('.final-school-score').on('change', function (e) {
     let score = 0;
-    $('#' + e.target.id).val((+e.target.value).toFixed(2))
     if ($('#final_test_type').val() == 'ACT') {
         score = parseInt($('#final_english_score').val() ? $('#final_english_score').val() : 0) + parseInt($('#final_math_score').val() ? $('#final_math_score').val() : 0) + parseInt($('#final_science_score').val() ? $('#final_science_score').val() : 0) + parseInt($('#final_reading_score').val() ? $('#final_reading_score').val() : 0)
         $('#final_composite_score').val(score / 4);
@@ -527,6 +523,27 @@ $('.fss-value').on('change', function (e) {
     e.preventDefault();
     if ($('#final-school-form').valid()) {
         storeScoreDetails('finalscore', $('#final-school-form').serialize())
+    }
+})
+
+$(document).on('keypress', '.form-control', function (e) {
+    if (e.target.tagName.toLocaleLowerCase() == 'input' && !e.target.className.includes('date-own')) {
+        const charCode = (e.which) ? e.which : e.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+            e.preventDefault();
+        } else {
+            const name = e.target.name;
+            if (name == 'unweighted_gpa' || name == 'weighted_gpa') {
+                const value = e.target.value;
+                const dot = value.indexOf('.');
+                if (dot > -1 && charCode === 46) {
+                    e.preventDefault();
+                }
+            } else if (charCode === 46) {
+                e.preventDefault();
+            }
+            return true;
+        }
     }
 })
 

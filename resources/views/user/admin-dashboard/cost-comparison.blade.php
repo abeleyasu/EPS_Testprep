@@ -115,6 +115,9 @@
           <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
             <div class="accordion accordionExample1" id="userSelectedCollegeList" data-type="cost-comparison" @if($college) data-collegeid="{{ $college->id }}" @endif></div>
           </div>
+          <div class="text-end mt-2">
+            <button type="button" class="btn btn-sm btn-alt-danger" data-type="cost-comparison" id="remove-all-college">Remove All College</button>
+          </div>
         </div>
       </div>
     </div>
@@ -209,8 +212,8 @@
 <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-<script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
   toastr.options = {
     "closeButton": true,
@@ -337,7 +340,6 @@
   function checkNumber(value) {
     let number = value;
     if (!number) {
-      console.log('condition called')
       number = '0'
     }
     if (value.includes('.')) {
@@ -353,14 +355,10 @@
 
   function validNumber(e) {
     const charCode = (e.which) ? e.which : e.keyCode;
-    if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+    console.log(charCode);
+    if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
       e.preventDefault();
     } else {
-      const value = e.target.value;
-      const dot = value.indexOf('.');
-      if (dot > -1 && charCode === 46) {
-        e.preventDefault();
-      }
       return true;
     }
   }

@@ -40,6 +40,9 @@
                             <div class="no-data">No data found</div>
                         @endif  
                     </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-sm btn-alt-danger" data-type="college-application-deadline" id="remove-all-college">Remove All College</button>
+                    </div>
                 </div>
             </div>
         </div>

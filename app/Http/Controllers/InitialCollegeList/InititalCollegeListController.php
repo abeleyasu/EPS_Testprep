@@ -50,6 +50,7 @@ class InititalCollegeListController extends Controller
         return view('user.admin-dashboard.initial-college-list.step1', [
             'states' => $states,
             'college_major_data' => $data,
+            'college_id' => $createSearchList ? $createSearchList->id : null
         ]);
     }
 
@@ -275,13 +276,13 @@ class InititalCollegeListController extends Controller
     
             switch ($score) {
                 case 'highschool':
-                    if ($request->high_school_test_type == 'ACT') {
-                        $rules['high_school_english_score'] = $commonrules;
-                        $rules['high_school_science_score'] = $commonrules;
-                    }
-                    $rules['high_school_reading_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules;
-                    $rules['high_school_math_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules ;
-                    $rules['high_school_test_date'] = 'nullable|date';
+                    // if ($request->high_school_test_type == 'ACT') {
+                    //     $rules['high_school_english_score'] = $commonrules;
+                    //     $rules['high_school_science_score'] = $commonrules;
+                    // }
+                    // $rules['high_school_reading_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules;
+                    // $rules['high_school_math_score'] = $request->high_school_test_type == 'ACT' ? $commonrules: $actSactRules ;
+                    // $rules['high_school_test_date'] = 'nullable|date';
                     $rules['unweighted_gpa'] = 'nullable|numeric|min:0|max:4';
                     $rules['weighted_gpa'] = 'nullable|numeric|min:0|max:8';
                 break;
@@ -408,15 +409,24 @@ class InititalCollegeListController extends Controller
     }
 
     public function step4(Request $request) {
-        $college = CollegeList::where('user_id', Auth::id())->first();
+        $college = CollegeList::where('user_id', Auth::id())->with(['userPastCurrentScore'])->first();
         if ($college) { 
             $college->update([
                 'active_step' => 4,
             ]);
-            $score = CollegeUserStatistics::where('college_lists_id', $college->id)->first();
+            $college = $college->toArray();
+            $actScore = collect($college['user_past_current_score'])->where('test_type', 'ACT')->sum('composite_score');
+            $satScore = collect($college['user_past_current_score'])->where('test_type', 'SAT')->sum('composite_score');
+            $psatScore = collect($college['user_past_current_score'])->where('test_type', 'PSAT')->sum('composite_score');
+            $college['past_current_act_score'] = $actScore;
+            $college['past_current_sat_score'] = $satScore;
+            $college['past_current_psat_score'] = $psatScore;
+            unset($college['user_past_current_score']);
+            // dd($college);
+            // $score = CollegeUserStatistics::where('college_lists_id', $college->id)->first();
             return view('user.admin-dashboard.initial-college-list.step4', [
-                'score' => $score,
-                'college' => $college->id,
+                'score' => $college,
+                'college' => $college['id'],
             ]);
         }
     }
@@ -765,7 +775,7 @@ class InititalCollegeListController extends Controller
     public function getUserCollegeList() {
         try {
             $collegelist = CollegeList::where('user_id', Auth::id())->with(['college_list_details' => function ($query) {
-                $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id');
+                $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->orderBy('order_index');
             }])->first();
 
             if ($collegelist) {
@@ -919,6 +929,39 @@ class InititalCollegeListController extends Controller
                     'message' => 'Score not found',
                 ]);
             }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ]);
+        }
+    }
+
+    public function deleteAllCollege() {
+        try {
+            $user = Auth::user();
+            $colleges = CollegeList::where('user_id', $user->id)->with('college_list_details')->first();
+            if ($colleges && $colleges->user_id != $user->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'College not found',
+                ]);
+            }
+            $colleges = $colleges->toArray();
+            if (count($colleges['college_list_details']) == 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'College not found',
+                ]);
+            }
+            foreach ($colleges['college_list_details'] as $college) {
+                $this->deleteCollegeFromAllTable($college['id']);
+                CollegeSearchAdd::where('id', $college['id'])->delete();
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'College deleted successfully',
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

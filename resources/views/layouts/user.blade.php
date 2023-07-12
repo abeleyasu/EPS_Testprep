@@ -33,6 +33,7 @@
             intltelinput: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
             updateCollegeOrder: "{{ route('admin-dashboard.initialCollegeList.step4.updateOrder', ['id' => ':id']) }}",
             costComparisonDetail: "{{route('admin-dashboard.cost_comparison.get_college_list_for_cost_comparison')}}",
+            removeAllCollege: "{{ route('admin-dashboard.initialCollegeList.deleteAllCollege') }}"
         }
     </script>
     @yield('user-script')

@@ -11,6 +11,9 @@
         font-weight: 600;
         color: #61656a
     }
+    .curson-drag {
+        cursor: move;
+    }
 </style>
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
@@ -67,7 +70,7 @@
                                                 <div class="accordion accordionExample accordionExample2">
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                            <a class=" text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
+                                                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
                                                         </div>
                                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
@@ -352,7 +355,7 @@
         <h5 class="modal-title" id="staticBackdropLabel">My College List</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="user-college-list">
+      <div class="modal-body" id="userSelectedCollegeList" data-type="search-step-1" @if($college_id) data-collegeid="{{ $college_id }}" @endif>
       </div>
     </div>
   </div>
@@ -384,6 +387,8 @@
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/selecting-search-params.js') }}"></script>
 <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
 
     $(".js-range-slider").ionRangeSlider({
@@ -485,6 +490,9 @@
 
     $('#view-college-list').on('click', function (e) {
         e.preventDefault();
+        getStep1CollegeList();
+    })
+    function getStep1CollegeList() {
         $.ajax({
             url: "{{ route('admin-dashboard.initialCollegeList.getUserCollegeList') }}",
             method: 'GET',
@@ -493,27 +501,28 @@
             },
         }).done((response) => {
             if (response.success) {
-                $('#user-college-list').html('')
+                $('#userSelectedCollegeList').html('')
                 if (response.data.length > 0) {
                     response.data.forEach((data, index) => {
                         const element = `
-                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                <div class="block-header block-header-default">
-                                    <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                            <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
+                                <div class="block-header block-header-tab">
+                                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600 curson-drag" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                                        <i class="fa fa-bars"></i>
                                         <span>${index + 1}</span>
                                         <span>${data.college_name}</span>
                                     </div>
                                 </div>
                             </div>
                         `
-                        $('#user-college-list').append(element)
+                        $('#userSelectedCollegeList').append(element)
                     })
                     $('#college-list').modal('show')
                 } else {
-                    $('#user-college-list').html('<h5 class="no-data">No College Found</h5>')
+                    $('#userSelectedCollegeList').html('<h5 class="no-data">No College Found</h5>')
                 }
             }
         })
-    })
+    }
 </script>
 @endsection

@@ -106,17 +106,22 @@ class ProductController extends Controller
             'stripe_product_id' => $product['id'],
             'order_index' => $lastOrderIndex + 1
         ]);
-        Role::create([
-            'name' => $product['id'],
-            'guard_name' => 'web'
-        ]);
-        $inclusions = array_map(function ($item) use ($create) {
-            return ['product_id' => $create->id, 'inclusion' => $item];
-        }, $request->inclusion);
-        ProductInclusion::insert($inclusions);
-        if ($create) {
-            return redirect()->intended(route('admin.product.list'));
+        if ($create ) {
+            $role = Role::create([
+                'name' => $product['id'],
+                'guard_name' => 'web'
+            ]);
+            if ($role) {
+                $permissions = Permission::get();
+                $role->syncPermissions($permissions);
+            }
+            $inclusions = array_map(function ($item) use ($create) {
+                return ['product_id' => $create->id, 'inclusion' => $item];
+            }, $request->inclusion);
+            ProductInclusion::insert($inclusions);
+            return redirect()->intended(route('admin.product.list'))->with('success', 'Product created successfully');
         }
+        return redirect()->intended(route('admin.product.list'))->with('error', 'Product creation failed');
     }
 
     public function editshow($id)

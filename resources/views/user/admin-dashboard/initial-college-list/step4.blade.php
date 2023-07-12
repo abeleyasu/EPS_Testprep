@@ -40,35 +40,47 @@
             <thead>
               <tr>
                 <th>Unweight GPA</th>
-                <th>{{ $score ? $score->unweighted_gpa : '-' }}</th>
+                <th>{{ $score ? $score['unweighted_gpa'] : '-' }}</th>
               </tr>  
               <tr>
                 <th>Weight GPA</th>
-                <th>{{ $score ? $score->weighted_gpa : '-' }}</th>
+                <th>{{ $score ? $score['weighted_gpa'] : '-' }}</th>
+              </tr>  
+              <tr>
+                <th>Your Past/Current PSAT Score</th>
+                <th>{{ $score && $score['past_current_psat_score'] != 0 ? $score['past_current_psat_score'] : '-' }}</th>
+              </tr>  
+              <tr>
+                <th>Your Past/Current ACT Score</th>
+                <th>{{ $score && $score['past_current_act_score'] != 0 ? $score['past_current_act_score'] : '-' }}</th>
+              </tr>  
+              <tr>
+                <th>Your Past/Current SAT Score</th>
+                <th>{{ $score && $score['past_current_sat_score'] != 0 ? $score['past_current_sat_score'] : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal PSAT Score</th>
-                <th>{{ $score && $score->goal_psat_score ? $score->goal_psat_score : '-' }}</th>
+                <th>{{ $score && $score['goal_test_type'] == 'PSAT' && $score['goal_composite_score'] ? $score['goal_composite_score'] : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal ACT Score</th>
-                <th>{{ $score && $score->goal_act_score ? $score->goal_act_score : '-' }}</th>
+                <th>{{ $score && $score['goal_test_type'] == 'ACT' && $score['goal_composite_score'] ? $score['goal_composite_score'] : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Goal SAT Score</th>
-                <th>{{ $score && $score->goal_sat_score ? $score->goal_sat_score : '-' }}</th>
+                <th>{{ $score && $score['goal_test_type'] == 'SAT' && $score['goal_composite_score'] ? $score['goal_composite_score'] : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Final ACT Score</th>
-                <th>{{ $score && $score->final_act_score ? $score->final_act_score : '-' }}</th>
+                <th>{{ $score && $score['final_test_type'] == 'ACT' && $score['final_composite_score'] ? $score['final_composite_score'] : '-' }}</th>
               </tr>  
               <tr>
                 <th>Your Final SAT Score</th>
-                <th>{{ $score && $score->final_sat_score ? $score->final_sat_score : '-' }}</th>
+                <th>{{ $score && $score['final_test_type'] == 'SAT' && $score['final_composite_score'] ? $score['final_composite_score'] : '-' }}</th>
               </tr>
               <tr>
                 <th>Your Final PSAT Score</th>
-                <th>{{ $score && $score->final_psat_score ? $score->final_psat_score : '-' }}</th>
+                <th>{{ $score && $score['final_test_type'] == 'PSAT' && $score['final_composite_score'] ? $score['final_composite_score'] : '-' }}</th>
               </tr>
             </thead>
           </table>
@@ -82,7 +94,10 @@
           <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         </div>
         <div class="block-content block-content-full">
-          <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true" data-type="search-list" @if($score) data-collegeid="{{ $score->id  }}" @endif>
+          <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true" data-type="search-list" @if($score) data-collegeid="{{ $score['id']  }}" @endif>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
           </div>
         </div>
       </div>
@@ -103,8 +118,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="block block-rounded block-transparent mb-0">
-        <div class="block-header colleg-add-header">
-          <h3 class="block-title">Add College</h3>
+        <div class="block-header block-header-tab">
+          <h3 class="block-title text-white">Add College</h3>
           <div class="block-options">
             <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
               <i class="fa fa-fw fa-times"></i>
@@ -187,22 +202,22 @@
     }
 
     .bg-smart {
-      background-color: #0070c0;
+      background-color: #00b050;
       color: #fff;
     }
 
     .bg-smart:focus {
-      background-color: #0070c0;
+      background-color: #00b050;
       color: #fff;
     }
 
     .bg-match {
-      background-color: #00b050;
+      background-color: #0070c0;
       color: #fff;
     }
 
     .bg-match:focus {
-      background-color: #00b050;
+      background-color: #0070c0;
       color: #fff;
     }
 
@@ -273,61 +288,65 @@
           console.log(response)
           $('#userSelectedCollegeList').html('');
           const options = ['Smart', 'Match', 'Reach'];
-          response.data.forEach((data, index) => {
-            let optionCLass= '';
-            if (data.option && data.option === 'Smart') {
-              optionCLass = 'bg-smart'
-            } else if (data.option && data.option === 'Match') {
-              optionCLass = 'bg-match'
-            } else if (data.option && data.option === 'Reach') {
-              optionCLass = 'bg-reach'
-            }
-            const element = `
-              <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
-                <div class="block-header block-header-default">
-                  <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
-                    <i class="fa fa-bars"></i>
-                    <span>${data.order_index}</span>
-                    <span>${data.college_name}</span>
+          if (response.data.length > 0) {
+            response.data.forEach((data, index) => {
+              let optionCLass= '';
+              if (data.option && data.option === 'Smart') {
+                optionCLass = 'bg-smart'
+              } else if (data.option && data.option === 'Match') {
+                optionCLass = 'bg-match'
+              } else if (data.option && data.option === 'Reach') {
+                optionCLass = 'bg-reach'
+              }
+              const element = `
+                <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
+                  <div class="block-header block-header-tab">
+                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                      <i class="fa fa-bars"></i>
+                      <span>${data.order_index}</span>
+                      <span>${data.college_name}</span>
+                    </div>
+                    <div>
+                      <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
+                    </div>
                   </div>
-                  <div>
-                    <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
-                  </div>
-                </div>
-                <div id="accodion-${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
-                  <div class="block-content">
-                    <div class="block block-rounded">
-                      <div class="mb-3">
-                        <select class="form-control selection-type ${optionCLass}" data-id="${data.id}">
-                          <option value="">Select Type</option>
-                          ${options.map((option, index) => {
-                            return `<option value="${option}" ${data.option === option ? 'selected' : ''}>${option}</option>`
-                          })}
-                        </select>
+                  <div id="accodion-${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
+                    <div class="block-content">
+                      <div class="block block-rounded">
+                        <div class="mb-3">
+                          <select class="form-control selection-type ${optionCLass}" data-id="${data.id}">
+                            <option value="">Select Type</option>
+                            ${options.map((option, index) => {
+                              return `<option value="${option}" ${data.option === option ? 'selected' : ''}>${option}</option>`
+                            })}
+                          </select>
+                        </div>
+                        <table class="table table-bordered table-sm table-hover">
+                          <tbody>
+                            <tr>
+                              <th>Average Admitted GPA:</th>
+                              <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
+                            </tr>  
+                            <tr>
+                              <th>Average Accepted ACT:</th>
+                              <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
+                            </tr>  
+                            <tr>
+                              <th>Average Accepted SAT:</th>
+                              <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
+                            </tr>  
+                          </tbody>
+                        </table>
                       </div>
-                      <table class="table table-bordered table-sm table-hover">
-                        <tbody>
-                          <tr>
-                            <th>Average Admitted GPA:</th>
-                            <th>${data.college_information.gpa_average ? data.college_information.gpa_average : '-'}</th>
-                          </tr>  
-                          <tr>
-                            <th>Average Accepted ACT:</th>
-                            <th>${data.college_information.avg_act_score ? data.college_information.avg_act_score : '-'}</th>
-                          </tr>  
-                          <tr>
-                            <th>Average Accepted SAT:</th>
-                            <th>${data.college_information.avg_sat_score ? data.college_information.avg_sat_score : '-'}</th>
-                          </tr>  
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
-              </div>
-            `
-            $('#userSelectedCollegeList').append(element);
-          })
+              `
+              $('#userSelectedCollegeList').append(element);
+            })
+          } else {
+            $('#userSelectedCollegeList').html(`<div class="no-data">No College Found</div>`);
+          }
         }
       }
     })
@@ -338,11 +357,11 @@
     switch (e.target.value) {
       case 'Smart':
         // set background color blue
-        $(this).css('background', '#0070c0');
+        $(this).css('background', '#00b050');
         $(this).css('color', '#fff');
         break;
       case 'Match':
-        $(this).css('background', '#00b050');
+        $(this).css('background', '#0070c0');
         $(this).css('color', '#fff');
         break;
       case 'Reach':

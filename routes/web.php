@@ -374,6 +374,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::patch('search-college/change-status/{id}', [InititalcollegeListController::class, 'changeSearchCollegeAddStatus'])->name('changeSearchCollegeAddStatus');
                 Route::get('get-hide-college', [InititalcollegeListController::class, 'getHideCollege'])->name('getHideCollege');
                 Route::get('user/get-college-list', [InititalcollegeListController::class, 'getUserCollegeList'])->name('getUserCollegeList');
+                Route::delete('user/delete-college-list', [InititalcollegeListController::class, 'deleteAllCollege'])->name('deleteAllCollege');
 
                 Route::put('/step3/save-academic-statistics/{score}/{id}', [InititalCollegeListController::class, 'saveAcademicStatistics'])->name('step3.saveAcademicStatistics');
                 Route::post('/store/past-current-score', [InititalcollegeListController::class, 'storePastCurrentScore'])->name('storePastCurrentScore');
@@ -468,3 +469,5 @@ Route::get('/sendreminder', [SendReminder::class, 'index']);
 Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
 Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);
+
+Route::stripeWebhooks('stripe-webhook');

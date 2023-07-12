@@ -56,7 +56,10 @@
                     </div>
                     <div class="mb-4" id="in-count-ele">
                         <label for="description" class="form-label">Interval Count (In Month):</label>
-                        <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}" id="interval_count" name="interval_count" placeholder="Interval Count" value="{{old('interval_count')}}">
+                        <select id="interval_count" name="interval_count"  class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}">
+                            <option value="">Select Interval Type</option>
+                        </select>
+                        {{-- <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}" id="interval_count" name="interval_count" placeholder="Interval Count" value="{{old('interval_count')}}"> --}}
                         @error('interval_count')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -79,6 +82,20 @@
 @section('admin-script')
 <script>
     $(document).ready(function() {
+
+        $('#interval').on('change', function (e) {
+            const interval = $(this).val();
+            let intervalcount = 12;
+            if (interval == 'hour') {
+                intervalcount = 24;
+            }
+            $('#interval_count').html('');
+            $('#interval_count').append(`<option value="">Select Interval Type</option>`);
+            for (let i = 1; i <= intervalcount; i++) {
+                $('#interval_count').append(`<option value="${i}">${i}</option>`);
+            }
+        })
+
         $('#product_category').change(function() {
             var product_category_id = $(this).val();
             if(product_category_id) {

@@ -11,6 +11,9 @@ use App\Models\Plan;
 use Illuminate\Validation\Rule;
 use App\Models\Product;
 use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
+use App\Models\Subscription;
+use App\Models\SubscriptionItem;
 
 class PlanController extends Controller
 {
@@ -88,6 +91,10 @@ class PlanController extends Controller
                 'option' => 'Year',
                 'value' => 'year'
             ],
+            [
+                'option' => 'Hourly',
+                'value' => 'hour'
+            ]
         ];
         return json_decode(json_encode($data));
     }
@@ -117,17 +124,27 @@ class PlanController extends Controller
         $request->validate($rules, $customMessages);
         $lastOderIndex = Plan::max('order_index');
         $product = Product::find($request->product_id);
-        $plan = $this->stripe->plans->create([
-            'amount' => $request->amount * 100,
-            'currency' => config('stripe.api_keys.currency'),
-            'interval' => $request->interval,
-            'product' => $product->stripe_product_id,
-            'interval_count' => $request->interval === 'month' ? $request->interval_count : 1
-        ]);
+        $planid = null;
+        if ($request->interval == 'hour') {
+            $price = $this->stripe->prices->create([
+                'unit_amount' => $request->amount * 100,
+                'currency' => 'usd',
+                'product' => $product->stripe_product_id,
+            ]);
+            $planid = $price['id'];
+        } else {
+            $plan = $this->stripe->plans->create([
+                'amount' => $request->amount * 100,
+                'currency' => config('stripe.api_keys.currency'),
+                'interval' => $request->interval,
+                'product' => $product->stripe_product_id,
+            ]);
+            $planid = $plan['id'];
+        }
         $create = Plan::create([
             'product_id' => $request->product_id,
-            'stripe_plan_id' => $plan['id'],
-            'interval_count' => $request->interval === 'month' ? $request->interval_count : 1,
+            'stripe_plan_id' => $planid,
+            'interval_count' => $request->interval === 'month' || $request->interval === 'hour' ? $request->interval_count :  1,
             'interval' => $request->interval,
             'amount' => number_format($request->amount, 2, ".", ""),
             'display_amount' => number_format($request->amount, 2, ".", ""),
@@ -189,12 +206,11 @@ class PlanController extends Controller
             return redirect()->route('mysubscriptions.index');
         }
         $product_name = Product::find($plan->product_id);
-        $plan['name'] = $product_name['title'];
-
         $intent = auth()->user()->createSetupIntent([
             'payment_method_types' => ['card'],
             'usage' => 'off_session',
         ]);
+        $plan['name'] = $product_name['title'];
         if ($user->stripe_id) {
             $cards = $this->stripe->customers->allPaymentMethods($user->stripe_id);
             $customer = $user->defaultPaymentMethod();
@@ -212,12 +228,18 @@ class PlanController extends Controller
         $customer = $request->user()->createOrGetStripeCustomer();
         try {
             $user = Auth::user();
-            if ($user->subscribed('default')) {
-                $this->changeUserSubscription($plan, $paymentMethodId);
+            // $user->addPaymentMethod($paymentMethodId);
+            if ($plan->interval == 'hour') {
+                $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
-                $this->createSubscription($plan, $paymentMethodId);
-                return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+                if ($user->subscribed('default')) {
+                    $this->changeUserSubscription($plan, $paymentMethodId);
+                    return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
+                } else {
+                    $this->createSubscription($plan, $paymentMethodId);
+                    return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+                }
             }
         } catch (\Stripe\Exception\CardException $e) {
             // Handle Setup Intent confirmation error, which may include a 3D Secure authentication flow
@@ -240,12 +262,17 @@ class PlanController extends Controller
         $paymentMethodId = $request->user_card;
         try {
             $user = Auth::user();
-            if ($user->subscribed('default')) {
-                $this->changeUserSubscription($plan, $paymentMethodId);
+            if ($plan->interval == 'hour') {
+                $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
-                $this->createSubscription($plan, $paymentMethodId);
-                return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+                if ($user->subscribed('default')) {
+                    $this->changeUserSubscription($plan, $paymentMethodId);
+                    return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
+                } else {
+                    $this->createSubscription($plan, $paymentMethodId);
+                    return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
+                }
             }
             return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
         } catch (\Stripe\Exception\CardException $e) {
@@ -264,22 +291,97 @@ class PlanController extends Controller
         }
     }
 
+    public function subscribeUserToHourlyPlan($plan, $paymentMethodId) {
+        $user = Auth::user();
+        $paymentMethod = $user->paymentMethods();
+        $checkPaymentMethodsIsExistOrNot = $paymentMethod->where('id', $paymentMethodId)->first();
+        if (!$checkPaymentMethodsIsExistOrNot) {
+            $user->addPaymentMethod($paymentMethodId);
+        }
+        $user->updateDefaultPaymentMethod($paymentMethodId);
+        $end_date = Carbon::now()->addHour($plan->interval_count);
+        $get_end_date_minutes = $end_date->format('i');
+        $get_end_date_hours = $end_date->format('H');
+        if ($get_end_date_minutes % 15 !== 0) {
+            $get_end_date_minutes = round($get_end_date_minutes / 15) * 15;
+        }
+        $end_date->setTime($get_end_date_hours, $get_end_date_minutes, 0);
+        $intent = $user->payWith(
+            ($plan->amount * 100), ['card'], [
+                'currency' => 'usd',
+                'payment_method' => $paymentMethodId,
+                'confirm' => true,
+                'metadata' => [
+                    'expires' => $end_date->format('Y-m-d H:i:s'),
+                ]
+            ]
+        );
+        if ($intent) {
+            $subscription = Subscription::create([
+                'user_id' => $user->id,
+                'name' => 'default',
+                'stripe_id' => $intent->id,
+                'stripe_status' => $intent->status == 'succeeded' ? 'active' : 'failed',
+                'stripe_price' => $plan->stripe_plan_id,
+                'quantity' => 1,
+                'trial_ends_at' => null,
+                'ends_at' => null,
+                'plan_type' => 'one-time',
+                'plan_end_date' => $end_date->format('Y-m-d H:i:s'),
+            ]);
+            if ($subscription) {
+                SubscriptionItem::create([
+                    'subscription_id' => $subscription->id,
+                    'stripe_id' => $intent->latest_charge,
+                    'stripe_product' => $plan->product->stripe_product_id,
+                    'stripe_price' => $plan->stripe_plan_id,
+                    'quantity' => 1,
+                ]);
+            }
+            $this->setUserRole($plan, $user);
+        }
+        return true;
+    }
+
     public function createSubscription($plan, $paymentMethodId) {
         $user = Auth::user();
-        $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [
-            'setup_future_usage' => 'off_session',
+        $payload = [
             'default_payment_method' => $paymentMethodId,
-            'default_source' => $paymentMethodId,
             'collection_method' => 'charge_automatically',
-            'cancel_at' => now()->addMonth($plan->interval_count)->timestamp,
-        ]);
+        ];
+        if ($plan->interval_count > 1) {
+            $enddate = Carbon::now()->addMonth($plan->interval_count);
+            $payload['cancel_at'] = $enddate->timestamp;
+            $payload['metadata'] = [
+                'start_date' => Carbon::now()->format('Y-m-d'),
+                'pending_interval_period' => $plan->interval_count - 1,
+                'total_interval_count' => $plan->interval_count,
+                'end_date' => $enddate->format('Y-m-d'),
+            ];
+        } else {
+            $payload['cancel_at_period_end'] = true;
+        }
+        $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [],$payload);
         $this->setUserRole($plan, $user);
         return true;
     }
 
     public function changeUserSubscription($plan, $paymentMethodId) {
         $user = Auth::user();
-        $user->subscription('default')->swap($plan->stripe_plan_id);
+        $payload = [];
+        if ($plan->interval_count > 1) {
+            $enddate = Carbon::now()->addMonth($plan->interval_count);
+            $payload['cancel_at'] = $enddate->timestamp;
+            $payload['metadata'] = [
+                'start_date' => Carbon::now()->format('Y-m-d'),
+                'pending_interval_period' => $plan->interval_count - 1,
+                'total_interval_count' => $plan->interval_count,
+                'end_date' => $enddate->format('Y-m-d'),
+            ];
+        } else {
+            $payload['cancel_at_period_end'] = true;
+        }
+        $user->subscription('default')->swap($plan->stripe_plan_id, $payload);
         $this->setUserRole($plan, $user);
         return true;
     }
