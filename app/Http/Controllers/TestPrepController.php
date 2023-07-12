@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalendarEvent;
 use App\Helpers\Helper;
+use App\Models\Category;
 use App\Models\DiffRating;
 use App\Models\UserCalendar;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use App\Models\PracticeQuestion;
 use App\Models\UserAnswers;
 use App\Models\Passage;
 use App\Models\PracticeCategoryType;
+use App\Models\QuestionDetails;
 use App\Models\QuestionType;
 use App\Models\Score;
 use App\Models\SuperCategory;
@@ -102,7 +104,9 @@ class TestPrepController extends Controller
         $get_test_name = $test;
         $set_get_question_category = array();
         $test_category_type = array();
-
+        $category_data = array();
+        $categoryTypeData = [];
+        $questionTypeData = [];
         if (isset($_GET['test_id']) && !empty($_GET['test_id'])) {
             $test_id = $_GET['test_id'];
             $test_category_type = DB::table('practice_questions')
@@ -127,6 +131,29 @@ class TestPrepController extends Controller
                     ->get();
 
                 $get_all_cat_type = DB::table('practice_category_types')->get();
+
+                foreach ($get_test_questions as $question) {
+                    $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
+                    $categoryTypeData[$question->test_question_id] = [];
+                    $tempData1 = [];
+                    $tempData2 = [];
+                    foreach ($questionDetails as $value) {
+                        # code...
+                        $superCategory = SuperCategory::find($value->super_category);
+                        $categoryType = PracticeCategoryType::find($value->category_type);
+                        $questionType = QuestionType::find($value->question_type);
+                        $category_data[$question->test_question_id]['superCategory'] = [
+                            'superCategory' => $superCategory,
+                            'categoryType' => $categoryType,
+                            'questionType' => $questionType
+                        ];
+
+                        array_push($tempData1, $value->category_type);
+                        array_push($tempData2, $value->question_type);
+                    }
+                    $questionTypeData[$question->test_question_id] = $tempData2;
+                    $categoryTypeData[$question->test_question_id] = $tempData1;
+                }
 
                 $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->get();
                 $answer_arr = [];
@@ -216,6 +243,27 @@ class TestPrepController extends Controller
                     ->get();
 
                 $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->get();
+                foreach ($get_test_questions as $question) {
+                    $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
+                    $tempData1 = [];
+                    $tempData2 = [];
+                    foreach ($questionDetails as $value) {
+                        # code...
+                        $superCategory = SuperCategory::find($value->super_category);
+                        $categoryType = PracticeCategoryType::find($value->category_type);
+                        $questionType = QuestionType::find($value->question_type);
+                        $category_data[$question->test_question_id][] = [
+                            'superCategory' => $superCategory,
+                            'categoryType' => $categoryType,
+                            'questionType' => $questionType
+                        ];
+
+                        array_push($tempData1, $value->category_type);
+                        array_push($tempData2, $value->question_type);
+                    }
+                    $questionTypeData[$question->test_question_id] = $tempData2;
+                    $categoryTypeData[$question->test_question_id] = $tempData1;
+                }
                 $answer_arr = [];
                 foreach ($user_answers_data as $user_answer) {
                     $answers = json_decode($user_answer->answer, true);
@@ -245,7 +293,6 @@ class TestPrepController extends Controller
 
                         if (isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type)) {
                             $mergedArray = [];
-
                             for ($i = 0; $i < count($array_ques_type); $i++) {
                                 $mergedArray[$i] = [
                                     'category_type' => $array_cat_type[$i],
@@ -309,6 +356,7 @@ class TestPrepController extends Controller
                             $decoded_answers = [];
                             $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
                             $question_order = PracticeQuestion::where('practice_test_sections_id', $get_single_section->id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
+
                             if (isset($question_order) && !empty($question_order)) {
                                 foreach ($question_order as $order) {
                                     if (isset($json_decoded_answers->{$order})) {
@@ -341,6 +389,7 @@ class TestPrepController extends Controller
                     $decoded_answers = [];
                     $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
                     $question_order = PracticeQuestion::where('practice_test_sections_id', $id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
+
                     if (isset($question_order) && !empty($question_order)) {
                         foreach ($question_order as $order) {
                             if (isset($json_decoded_answers->{$order})) {
@@ -355,7 +404,20 @@ class TestPrepController extends Controller
                     foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
                         $get_question_details = DB::table('practice_questions')
                             // ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                            ->select('practice_questions.id as question_id', 'practice_questions.practice_test_sections_id as section_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id', 'practice_questions.answer_exp as answer_exp')
+                            ->select(
+                                'practice_questions.id as question_id',
+                                'practice_questions.practice_test_sections_id as section_id',
+                                'practice_questions.title as question_title',
+                                'practice_questions.type as practice_type',
+                                'practice_questions.answer as question_answer',
+                                'practice_questions.answer_content as question_answer_options',
+                                'practice_questions.multiChoice as is_multiple_choice',
+                                'practice_questions.question_order',
+                                'practice_questions.tags',
+                                'practice_questions.category_type as category_type',
+                                'practice_questions.question_type_id as question_type_id',
+                                'practice_questions.answer_exp as answer_exp'
+                            )
                             ->where('practice_questions.id', $question_id)
                             ->orderBy('practice_questions.question_order', 'ASC')
                             ->get();
@@ -550,6 +612,23 @@ class TestPrepController extends Controller
                     if (isset($sections[0]->id)) {
                         $section_id = $sections[0]->id;
                         $questions = PracticeQuestion::where('practice_test_sections_id', $section_id)->get();
+
+                        foreach ($questions as $question) {
+                            $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
+
+                            foreach ($questionDetails as $value) {
+                                # code...
+                                $superCategory = SuperCategory::find($value->super_category);
+                                $categoryType = PracticeCategoryType::find($value->category_type);
+                                $questionType = QuestionType::find($value->question_type);
+                                $category_data[$question->id][] = [
+                                    'superCategory' => $superCategory,
+                                    'categoryType' => $categoryType,
+                                    'questionType' => $questionType
+                                ];
+                            }
+                        }
+
                         $question_count = $questions->count();
                         $answer_data = UserAnswers::where('section_id', $section_id)->where('user_id', $current_user_id)->get();
                         $count_right_answer[$section_id][$sections[0]->practice_test_type] = [];
@@ -710,8 +789,24 @@ class TestPrepController extends Controller
             $high_score = $high_score;
             $low_score = $low_score;
         }
-
-        return view('user.test-review.question_concepts_review',  ['test_details' => $test_details, 'section_id' => $id, 'user_selected_answers' => $store_sections_details, 'get_test_name' => $get_test_name, 'store_all_data' => $store_all_data, 'store_question_type_data' => $store_question_type_data, 'question_tags' => $question_tags, 'percentage_arr_all' => $percentage_arr_all, 'right_answers' => $right_answers, 'total_questions' => $total_questions, 'scaled_score' => $scaled_score, 'high_score' => $high_score, 'low_score' => $low_score]);
+        return view('user.test-review.question_concepts_review',  [
+            'category_data' => $category_data,
+            'questionTypeData' => $questionTypeData,
+            'categoryTypeData' => $categoryTypeData,
+            'test_details' => $test_details,
+            'section_id' => $id,
+            'user_selected_answers' => $store_sections_details,
+            'get_test_name' => $get_test_name,
+            'store_all_data' => $store_all_data,
+            'store_question_type_data' => $store_question_type_data,
+            'question_tags' => $question_tags,
+            'percentage_arr_all' => $percentage_arr_all,
+            'right_answers' => $right_answers,
+            'total_questions' => $total_questions,
+            'scaled_score' => $scaled_score,
+            'high_score' => $high_score,
+            'low_score' => $low_score
+        ]);
     }
 
     public function set_answers(Request $request)
@@ -1764,7 +1859,6 @@ class TestPrepController extends Controller
                     $query->orWhereIn("question_details.question_type", $question_type_value);
                 }
             });
-            $all = $all + $query->count();
 
             $userAnswers = UserAnswers::where("user_id", $user_id)->get();
 
@@ -1781,14 +1875,17 @@ class TestPrepController extends Controller
                 }
             }
 
-            $questions = $query->pluck('id');
+            $questions = array_unique($query->pluck('id')->toArray() ?? []);
             foreach ($questions as $que) {
                 if (!in_array($que, $allQuestionsAnswered)) {
                     $allUnaswered = $allUnaswered + 1;
                     array_push($allUnasweredArray, $que);
                 }
             }
-            $countQuestion[$diff_rating->id] = ['count' => $query->count(), 'questions' => $questions];
+            $questionsCount = count($questions);
+            $all = $all + $questionsCount;
+
+            $countQuestion[$diff_rating->id] = ['count' => $questionsCount, 'questions' => $questions];
         }
         $countQuestion[] = ['count' => $allUnaswered, 'questions' => $allUnasweredArray, 'type' => 'unanswered'];
         $countQuestion[] = ['count' => $all, 'questions' => '', 'type' => 'all'];
@@ -1836,9 +1933,31 @@ class TestPrepController extends Controller
                 'section_title' => $request['section_type'][0]
             ]);
 
+            $super = [];
             foreach ($questions as $index => $question) {
+                $super_category_values = [];
+                if (!empty($question['super_category_values'])) {
+                    $super_category_values = json_decode($question['super_category_values'], 1);
+                    $super_category_values = array_values($super_category_values);
+                    $super_category_values = array_merge(...$super_category_values);
+                }
+                $category_type_values = [];
+                if (!empty($question['category_type_values'])) {
+                    $category_type_values = json_decode($question['category_type_values'], 1);
+                    $category_type_values = array_values($category_type_values);
+                    $category_type_values = array_merge(...$category_type_values);
+                }
+
+                $question_type_values = [];
+                if (!empty($question['question_type_values'])) {
+                    $question_type_values = json_decode($question['question_type_values'], 1);
+                    $question_type_values = array_values($question_type_values);
+                    $question_type_values = array_merge(...$question_type_values);
+                }
+
                 $questionOrder = $index + 1;
-                PracticeQuestion::create([
+
+                $practiceQuestion = PracticeQuestion::create([
                     'title' => $question['title'],
                     'format' => $request['test_type'],
                     'practice_test_sections_id' => $new_section['id'],
@@ -1860,7 +1979,19 @@ class TestPrepController extends Controller
                     'question_order' => $questionOrder,
                     'selfMade' => 1
                 ]);
+
+                foreach ($super_category_values as $key => $val) {
+                    $temp = [
+                        'question_id' => $practiceQuestion->id,
+                        'super_category' => $val,
+                        'category_type' => $category_type_values[$key],
+                        'question_type' => $question_type_values[$key]
+                    ];
+
+                    array_push($super, $temp);
+                }
             }
+            QuestionDetails::insert($super);
         } else {
             $message = "No questions available for the given criteria.";
 
