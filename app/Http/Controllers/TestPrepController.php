@@ -740,6 +740,7 @@ class TestPrepController extends Controller
         $filtered_answers = array_filter($request->selected_answer);
         $filtered_guess = isset($request->selected_gusess_details) ? array_filter($request->selected_gusess_details) : [];
         $filtered_flag = isset($request->selected_flag_details) ? array_filter($request->selected_flag_details) : [];
+        $filtered_skip = isset($request->selected_skip_details) ? array_filter($request->selected_skip_details) : [];
 
         if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'single') {
             if (isset($filtered_answers) && !empty($filtered_answers)) {
@@ -758,6 +759,7 @@ class TestPrepController extends Controller
                 $userAnswers->answer = json_encode($filtered_answers);
                 $userAnswers->guess = json_encode($filtered_guess);
                 $userAnswers->flag = json_encode($filtered_flag);
+                $userAnswers->skip = json_encode($filtered_skip);
                 $userAnswers->test_id = $get_practice_id;
                 $userAnswers->save();
             }
@@ -797,6 +799,24 @@ class TestPrepController extends Controller
                     }
                 }
             }
+
+            if(isset($get_question_title) && !empty($get_question_title))
+            {
+                foreach($get_question_title as $single_get_questions_title)
+                {
+                    if(isset($filtered_skip) && !empty($filtered_skip))
+                    {
+                        foreach($filtered_skip as $user_question_id => $single_filtered_skip)
+                        {
+                            if($single_get_questions_title->test_question_id == $user_question_id )
+                            {
+                                $store_querstion_answer_details[$single_get_questions_title->test_section_id]['skip'][$single_get_questions_title->test_question_id] = $single_filtered_skip;
+                            }
+                        }
+                    }
+                }
+            }
+
             if (isset($store_querstion_answer_details) && !empty($store_querstion_answer_details)) {
                 foreach ($store_querstion_answer_details as $key => $values) {
                     $get_question_ids_array = array_keys($values['answers']);
@@ -812,6 +832,7 @@ class TestPrepController extends Controller
                         $userAnswers->answer = json_encode($values['answers']);
                         $userAnswers->guess = json_encode($values['guess']);
                         $userAnswers->flag = json_encode($values['flag']);
+                        $userAnswers->skip = json_encode($values['skip']);
                         $userAnswers->test_id = $get_practice_id;
                         $userAnswers->save();
                     }
