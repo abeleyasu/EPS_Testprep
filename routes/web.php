@@ -469,5 +469,3 @@ Route::get('/sendreminder', [SendReminder::class, 'index']);
 Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
 Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);
-
-Route::stripeWebhooks('stripe-webhook');

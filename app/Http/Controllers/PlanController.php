@@ -327,7 +327,7 @@ class PlanController extends Controller
                 'trial_ends_at' => null,
                 'ends_at' => null,
                 'plan_type' => 'one-time',
-                'plan_end_date' => $end_date->format('Y-m-d H:i:s'),
+                'plan_end_date' => NULL,
             ]);
             if ($subscription) {
                 SubscriptionItem::create([
