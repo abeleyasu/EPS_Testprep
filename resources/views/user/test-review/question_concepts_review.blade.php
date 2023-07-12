@@ -1640,10 +1640,12 @@
                                                                                             rowspan="1" colspan="1"
                                                                                             aria-label="Name: activate to sort column ascending">
                                                                                             Question Type</th>
-                                                                                        <th style="width: 15%;" class="sorting" tabindex="0"
-                                                                                            aria-controls="DataTables_Table_4" rowspan="1"
-                                                                                            colspan="1"
-                                                                                            aria-label="Name: activate to sort column ascending">Add to
+                                                                                        <th style="width: 15%;"
+                                                                                            class="sorting" tabindex="0"
+                                                                                            aria-controls="DataTables_Table_4"
+                                                                                            rowspan="1" colspan="1"
+                                                                                            aria-label="Name: activate to sort column ascending">
+                                                                                            Add to
                                                                                             Custom Quiz</th>
                                                                                     </tr>
                                                                                 </thead>
@@ -1653,6 +1655,7 @@
                                                                                         $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
                                                                                         // $question_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->question_type_id, true) ?? [];
                                                                                     @endphp
+
                                                                                     @for ($i = 0; $i < count($category_type_arr); $i++)
                                                                                         <tr class="odd">
                                                                                             <td>
@@ -2240,9 +2243,12 @@
                                                                                                 </div> --}}
                                                                                             </td>
                                                                                             <td>
-                                                                                                <div class="block-content block-content-full text-center">
-                                                                                                    <input class="form-check-input" type="checkbox"
-                                                                                                        value="" 
+                                                                                                <div
+                                                                                                    class="block-content block-content-full text-center">
+                                                                                                    <input
+                                                                                                        class="form-check-input"
+                                                                                                        type="checkbox"
+                                                                                                        value=""
                                                                                                         name="add_to_custom_quiz">
                                                                                                 </div>
                                                                                             </td>
@@ -2295,7 +2301,7 @@
                                                             foreach ($single_question_data as $question_type_val => $single_question_details_item) {
                                                                 $store_correct_answer = 0;
                                                                 $store_wrong_answer = 0;
-
+                                                            
                                                                 foreach ($single_question_details_item as $get_single_ques_data) {
                                                                     foreach ($user_selected_answers as $single_answer_user_selected) {
                                                                         if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
@@ -2311,7 +2317,7 @@
                                                                     }
                                                                 }
                                                             }
-
+                                                            
                                                             ?>
                                                             <div
                                                                 class="block block-rounded block-bordered overflow-hidden mb-1">
@@ -2587,7 +2593,7 @@
                                                                                 <div>
                                                                                     @foreach ($single_question_data as $question_type_val => $single_question_details_item)
                                                                                         <?php
-
+                                                                                        
                                                                                         ?>
                                                                                         <?php $new_test = $new_count++; ?>
                                                                                         <div class="odd p-3 ps-4">
@@ -2851,11 +2857,11 @@
                                                         <?php
                                                         $test = $count++;
                                                         $store_total_wrong_answer = 0;
-
+                                                        
                                                         foreach ($single_question_data as $single_question_details_item) {
                                                             $store_correct_answer = 0;
                                                             $store_wrong_answer = 0;
-
+                                                        
                                                             foreach ($user_selected_answers as $single_answer_user_selected) {
                                                                 if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
                                                                     if ($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {
@@ -3097,8 +3103,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                                                    display: none;
-                                                                } */
+                                                                        display: none;
+                                                                    } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
