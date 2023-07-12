@@ -115,7 +115,8 @@
                                                                     <div class="mb-2">
                                                                         <input type="checkbox" name="item"
                                                                             id="item-{{ $loop->iteration }}"
-                                                                            value="{{ $rating['id'] }}">
+                                                                            value="{{ $rating['id'] }}"
+                                                                            class="selected-item">
                                                                         <label for="item-{{ $loop->iteration }}"
                                                                             class="ms-2">{{ $rating['title'] }}</label><span
                                                                             class="ms-2 diff_{{ $rating['id'] }}"></span>
@@ -127,14 +128,14 @@
                                                                     id="all_unanswered" value="all_unanswered"
                                                                     class="questions_type">
                                                                 <label for="all_unanswered" class="ms-2">All
-                                                                    Unanswered</label>
+                                                                    Unanswered <span class="ms-2 diff_5"></label>
                                                             </div>
                                                             <div class="mb-2">
                                                                 <input type="radio" name="questions_type"
                                                                     id="all_questions" value="all_questions"
                                                                     class="questions_type" checked>
                                                                 <label for="all_questions" class="ms-2">All
-                                                                    Questions</label>
+                                                                    Questions <span class="ms-2 diff_6"></label>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -212,6 +213,13 @@
                 }
             });
 
+            let diff_rating = [];
+            $('.selected-item').each(function() {
+                if ($(this).prop('checked')) {
+                    diff_rating.push($(this).val());
+                }
+            });
+
             $.ajax({
                 type: 'post',
                 url: '{{ route('gettypes') }}',
@@ -224,18 +232,25 @@
                     super_category: checkValue1,
                     question_category: checkValue2,
                     question_type: checkValue3,
+                    diff_rating: diff_rating,
                 },
                 success: function(res) {
                     callback(res);
                 }
             });
         };
+
+        $(".selected-item").change(function() {
+            getTypeFunctionality((res) => {
+                count_data = res.count;
+            });
+        })
         $(document).on('change', '.section_type', function() {
             if ($(this).find('input[type="radio"]:checked').length > 0) {
                 getTypeFunctionality((res) => {
                     count_data = res.count;
                     $.each(res.count, function(i, v) {
-                        $(`.diff_${i}`).html(`(${v})`);
+                        $(`.diff_${i}`).html(`(${v.count})`);
                     });
                     $('.test-category').html('');
                     let super_category = ``;
@@ -359,6 +374,10 @@
                 }
                 i++;
             });
+
+            if ($("#all_questions").is(":checked")) {
+                question_ids = count_data[5]?.questions;
+            }
 
             let checkValue5 = [];
             $('.section_type :radio:checked').each(function() {
