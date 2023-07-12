@@ -13,8 +13,8 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('url');
-            $table->json('headers')->nullable();
-            $table->json('payload')->nullable();
+            $table->text('headers')->nullable();
+            $table->text('payload')->nullable();
             $table->text('exception')->nullable();
 
             $table->timestamps();
