@@ -213,6 +213,19 @@
                                         <label class="form-check-label fs-sm" for="mega-settings-status">Show Incorrect
                                             Questions Only</label>
                                     </div>
+                                    <div class="container position-fixed">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                            </div>
+                                            <div class="col-md-6 text-end">
+                                                <div class="text-end">
+                                                    <button type="button" class="btn btn-primary fs-xs fw-semibold"
+                                                        data-bs-trigger="click">Generate
+                                                        Custom Quiz</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {{-- header --}}
                                     <table class="js-table-sections table table-hover table-vcenter">
                                         <thead>
@@ -1621,19 +1634,28 @@
                                                                                             rowspan="1" colspan="1"
                                                                                             aria-label="Name: activate to sort column ascending">
                                                                                             Category</th>
-                                                                                        <th style="width: 70%;"
+                                                                                        <th style="width: 55%;"
                                                                                             class="sorting" tabindex="0"
                                                                                             aria-controls="DataTables_Table_4"
                                                                                             rowspan="1" colspan="1"
                                                                                             aria-label="Name: activate to sort column ascending">
                                                                                             Question Type</th>
+                                                                                        <th style="width: 15%;"
+                                                                                            class="sorting" tabindex="0"
+                                                                                            aria-controls="DataTables_Table_4"
+                                                                                            rowspan="1" colspan="1"
+                                                                                            aria-label="Name: activate to sort column ascending">
+                                                                                            Add to
+                                                                                            Custom Quiz</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
                                                                                     @php
-                                                                                        $category_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->category_type, true) ?? [];
-                                                                                        $question_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->question_type_id, true) ?? [];
+                                                                                        $category_type_arr = $categoryTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
+                                                                                        $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
+                                                                                        // $question_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->question_type_id, true) ?? [];
                                                                                     @endphp
+
                                                                                     @for ($i = 0; $i < count($category_type_arr); $i++)
                                                                                         <tr class="odd">
                                                                                             <td>
@@ -2219,6 +2241,16 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div> --}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <div
+                                                                                                    class="block-content block-content-full text-center">
+                                                                                                    <input
+                                                                                                        class="form-check-input"
+                                                                                                        type="checkbox"
+                                                                                                        value=""
+                                                                                                        name="add_to_custom_quiz">
+                                                                                                </div>
                                                                                             </td>
                                                                                         </tr>
                                                                                     @endfor
@@ -3071,8 +3103,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                            display: none;
-                                        } */
+                                                                        display: none;
+                                                                    } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
