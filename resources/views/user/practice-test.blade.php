@@ -65,7 +65,7 @@ height: 270px
 }
 
 .question-button {
-    pointer-events: none; 
+    cursor: pointer !important;
     font-size: 17px !important;
     padding: 10px 20px !important;
     border-radius: 0 !important;
@@ -263,6 +263,8 @@ height: 270px
                 // $('.skip').css("background-color", "white");
                 // selected_skip_details[get_question_id] = 'no';
             });
+
+
             jQuery(".prev").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
@@ -589,6 +591,8 @@ height: 270px
                 }
             });
 
+
+
             jQuery(".review").click(function(){
             //     selected_flag_details = selected_flag_details.filter(function( element ) {
             //         return element.value !== "undefined";
@@ -655,12 +659,6 @@ height: 270px
                     for (let index = 0; index < question_ids.length; index++) {
                         var num = index + 1;
 
-                        // console.log('num>>'+num);
-                        // console.log('selected_answer>>'+selected_answer[question_ids[index]]);
-                        // console.log('selected_flag_details>>'+selected_flag_details[question_ids[index]]);
-                        // console.log('selected_gusess_details>>'+selected_gusess_details[question_ids[index]]);
-                        // console.log('selected_skip_details>>'+selected_skip_details[question_ids[index]]);
-
                         var btn_color = 'btn-nocolor';
                         if(selected_flag_details[question_ids[index]] == 'yes') {
                             btn_color = 'btn-red';
@@ -671,7 +669,7 @@ height: 270px
                         } else if (selected_answer[question_ids[index]]) {
                             btn_color = 'btn-blue';
                         }
-                        questionBoxes += '<button type="button" class="question-button ' + btn_color + ' btn">'+num+'</button>';
+                        questionBoxes += '<button type="button" value="'+num+'" class="question-button ' + btn_color + ' btn qtbutton" data-count="'+index+'">'+num+'</button>';
                     }
                     
                     var alert_data={
@@ -690,6 +688,8 @@ height: 270px
                 }
                 sweet_alert(alert_data,reviewCount,question_ids);
             });
+
+
             function sweet_alert(data,review,question_ids){
                 swal({
                         title: data.title,
@@ -708,12 +708,6 @@ height: 270px
                             for (let index = 0; index < question_ids.length; index++) {
                                 var num = index + 1;
 
-                                // console.log('num>>'+num);
-                                // console.log('selected_answer>>'+selected_answer[question_ids[index]]);
-                                // console.log('selected_flag_details>>'+selected_flag_details[question_ids[index]]);
-                                // console.log('selected_gusess_details>>'+selected_gusess_details[question_ids[index]]);
-                                // console.log('selected_skip_details>>'+selected_skip_details[question_ids[index]]);
-
                                 var btn_color = 'btn-nocolor';
                                 if(selected_flag_details[question_ids[index]] == 'yes') {
                                     btn_color = 'btn-red';
@@ -724,7 +718,7 @@ height: 270px
                                 } else if (selected_answer[question_ids[index]]) {
                                     btn_color = 'btn-blue';
                                 }
-                                questionBoxes += '<button type="button" class="question-button ' + btn_color + ' btn">'+num+'</button>';
+                                questionBoxes += '<button type="button" value="'+num+'" class="question-button ' + btn_color + ' btn qtbutton" data-count="'+index+'">'+num+'</button>';
                             }
 
                             swal({
@@ -1308,6 +1302,69 @@ height: 270px
                         jQuery('.prev').val(result.set_prev_offset);
                 }});
             }
+
+            $(document).on('click', '.question-button', function(){ 
+                var get_question_id = jQuery('.get_question_id').val();
+                let data_count = jQuery(this).attr('data-count');
+                data_count = parseInt(data_count);
+                var get_offset = data_count;
+
+                jQuery('.next').attr('data-count', data_count);
+                jQuery('.prev').attr('data-count', data_count);
+
+                let arr_index = data_count;
+                $('#onload_question_id').val(question_id_arr[arr_index]);
+                
+
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
+                } else if($("input[name='example-textbox-default']")){
+                    store_multi = $("input[name='example-textbox-default']").val();
+                    selected_answer[get_question_id] = store_multi;
+                } 
+
+                if(!$(".guess").is(':checked')) {
+                    selected_gusess_details[get_question_id] = 'no';
+                }
+
+                if(!$(".flag").is(':checked')) {
+                    selected_flag_details[get_question_id] = 'no';
+                }
+
+                if(!$(".skip").is(':checked')) {
+                    selected_skip_details[get_question_id] = 'no';
+                }
+
+                get_first_question(get_offset);
+
+                var scroll_position = $('#passage_description').scrollTop();
+    
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+
+                jQuery.ajax({
+                    url: "{{ url('/user/set_scroll_position/post') }}",
+                    method: 'post',
+                    data: {
+                        get_question_id:get_question_id,
+                        scroll_position:scroll_position
+                    },
+                    success: function(result){
+                    }
+                });
+                swal.close();
+            });
         });
 
         function get_time(){
