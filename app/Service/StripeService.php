@@ -30,8 +30,8 @@ class StripeService
             case 'payment_intent.succeeded':
                 $this->handlePaymentIntentSucceeded();
             break;
-            case 'customer.subscription.updated':
-                $this->hanldeCustomerSubscriptionUpdated();
+            case 'customer.subscription.deleted':
+                $this->hanldeCustomerSubscriptionDeleted();
             break;
             default:
             break;
@@ -44,10 +44,11 @@ class StripeService
             $subscription->stripe_status = $this->data['status'] == 'succeeded' ? 'active' : 'failed';
             $subscription->plan_end_date = $this->data['metadata']['expires'];
             $subscription->save();
+            Log::channel('stripewebhook')->info('Payment Intent Succeeded');
         }
     }
 
-    public function hanldeCustomerSubscriptionUpdated() {
+    public function hanldeCustomerSubscriptionDeleted() {
         $customer = $this->data['customer'];
         $user = User::where('stripe_id', $customer)->first();
         if ($user) {
@@ -60,6 +61,7 @@ class StripeService
                 }
                 $subscription->stripe_status = $this->data['status'];
                 $subscription->save();
+                Log::channel('stripewebhook')->info('Subscription deleted successfully');
             }
         }
     }
