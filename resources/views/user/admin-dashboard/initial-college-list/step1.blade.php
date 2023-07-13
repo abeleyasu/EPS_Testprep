@@ -15,6 +15,7 @@
         cursor: move;
     }
 </style>
+@can('Access Initial College List')
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
         <div class="bg-black-10">
@@ -347,7 +348,6 @@
         </div>
     </div>
 </main>
-
 <div class="modal fade" id="college-list" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -360,12 +360,17 @@
     </div>
   </div>
 </div>
+@endcan
+
+@cannot('Access Initial College List')
+    @include('components.subscription-warning')
+@endcan
 @endsection
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
 <style>
     .no-data {
@@ -380,7 +385,7 @@
 </style>
 @endsection
 
-
+@can('Access Initial College List')
 @section('user-script')
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
@@ -526,3 +531,4 @@
     }
 </script>
 @endsection
+@endcan

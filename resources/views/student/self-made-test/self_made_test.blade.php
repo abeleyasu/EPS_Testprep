@@ -3,6 +3,7 @@
 @section('title', 'Self Made Test: CPS')
 
 @section('user-content')
+@can('Access Self Made Tests')
     <main id="main-container">
         <div class="bg-image"
             style="background-image: url('assets/cpsmedia/BlackboardImage.jpg'); position: sticky;
@@ -151,9 +152,15 @@
             </div>
         </div>
     </main>
+@endcan
+
+@cannot('Access Self Made Tests')
+    @include('components.subscription-warning')
+@endcan
 
 @endsection
 
+@can('Access Self Made Tests')
 @section('page-script')
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
@@ -432,6 +439,7 @@
         }
     </script>
 @endsection
+@endcan
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">

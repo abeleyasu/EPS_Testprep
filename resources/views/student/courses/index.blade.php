@@ -101,6 +101,7 @@
 
 @section('user-content')
 <!-- Main Container -->
+@can('Access Courses')
 <main id="main-container">
 <div class="block-header block-header-default">
                 <h3 class="block-title">
@@ -230,8 +231,16 @@
    
 </main>
 <!-- END Main Container -->
+@endcan
+
+@cannot('Access Courses')
+    @include('components.subscription-warning')
+@endcan
+
+
 @endsection
 
+@can('Access Courses')
 @section('user-script')
 
 <script>
@@ -275,3 +284,4 @@
         }
     </script>
 @endsection
+@endcan

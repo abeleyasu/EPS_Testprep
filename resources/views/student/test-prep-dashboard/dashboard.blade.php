@@ -3,6 +3,7 @@
 @section('title', 'Student View Dashboard : CPS')
 
 @section('user-content')
+@can('Access Practice Tests')
     <!-- Main Container -->
 
     <main id="main-container">
@@ -1253,8 +1254,15 @@
     </div>
 
     <!-- End Main Container -->
+@endcan
+
+@cannot('Access Practice Tests')
+    @include('components.subscription-warning')
+@endcan
+
 @endsection
 
+@can('Access Practice Tests')
 @section('page-script')
     <script src="{{ asset('assets/js/plugins/fullcalendar/main.min.js') }}"></script>
     <script src="{{ asset('assets/js/moment/moment.min.js') }}"></script>
@@ -1375,6 +1383,7 @@
         }
     </script>
 @endsection
+@endcan
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">

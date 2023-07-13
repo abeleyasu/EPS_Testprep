@@ -3,6 +3,7 @@
 @section('title', 'HSR | List : CPS')
 
 @section('user-content')
+@can('Access Reminders')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             <div class="bg-black-10">
@@ -242,6 +243,12 @@
             </div>
         </div>
     </main>
+@endcan
+
+@cannot('Access Reminders')
+    @include('components.subscription-warning')
+@endcan
+
 @endsection
 
 @section('page-style')
@@ -373,6 +380,7 @@
     </style>
 @endsection
 
+@can('Access Reminders')
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
@@ -509,3 +517,4 @@
         })
     </script>
 @endsection
+@endcan

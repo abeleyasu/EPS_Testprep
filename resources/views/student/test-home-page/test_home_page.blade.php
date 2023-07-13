@@ -3,7 +3,7 @@
 @section('title', 'Student View Dashboard : CPS')
 
 @section('user-content')
-
+@can('Access Test Home Page')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             <div class="bg-black-10">
@@ -936,9 +936,15 @@
                 </div>
             </div>
     </main>
+@endcan
+
+@cannot('Access Test Home Page')
+    @include('components.subscription-warning')
+@endcan
 
 @endsection
 
+@can('Access Test Home Page')
 @section('page-script')
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
@@ -1281,6 +1287,7 @@
     </script>
 
 @endsection
+@endcan
 
 @section('page-style')
     <style>

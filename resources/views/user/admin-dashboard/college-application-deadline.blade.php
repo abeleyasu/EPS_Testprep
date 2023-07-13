@@ -3,6 +3,7 @@
 @section('title', 'College Application DeadLine : CPS')
 
 @section('user-content')
+@can('Access College Application Deadline Organizer')
 <main id="main-container">
     <div class="bg-body-light">
         <div class="content content-full">
@@ -93,6 +94,11 @@
     </div>
   </div>
 </div>
+@endcan
+
+@cannot('Access College Application Deadline Organizer')
+    @include('components.subscription-warning')
+@endcan
 @endsection
 
 @section('page-style')
@@ -132,6 +138,7 @@
 </style>
 @endsection
 
+@can('Access College Application Deadline Organizer')
 @section('user-script')
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
@@ -317,3 +324,4 @@
     })
 </script>
 @endsection
+@endcan

@@ -47,6 +47,7 @@
 @endsection
 
 @section('user-content')
+@can('Access Cost Comparison Tool')
 <main id="main-container">
   <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">  
     <div class="bg-black-10">
@@ -198,8 +199,14 @@
     </div>
   </div>
 </div>
+@endcan
+
+@cannot('Access Cost Comparison Tool')
+  @include('components.subscription-warning')
+@endcan
 @endsection
 
+@can('Access Cost Comparison Tool')
 @section('user-script')
 <script src="{{asset('assets/js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
@@ -536,3 +543,4 @@
 </script>
 
 @endsection
+@endcan

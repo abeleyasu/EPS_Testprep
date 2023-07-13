@@ -41,7 +41,6 @@
                         <span class="nav-main-link-name">Dashboard</span>
                     </a>
                 </li> -->
-                @can('Access Courses')
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ Route::is(['courses.index', 'courses.detail']) ? 'active' : '' }}"
                         href="{{ route('courses.index') }}">
@@ -49,7 +48,6 @@
                         <span class="nav-main-link-name">Courses</span>
                     </a>
                 </li>
-                @endcan
 
                 <li
                     class="nav-main-item {{ Route::is(['self-made-test.*', 'test_home_page', 'test_prep_dashboard', 'test-review.review']) ? 'open' : '' }}">
@@ -59,17 +57,14 @@
                         <span class="nav-main-link-name">Test Prep</span>
                     </a>
                     <ul class="nav-main-submenu">
-                        @can('Access Practice Tests')
-                            <li class="nav-main-item">
-                                <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}"
-                                    href="{{ route('test_prep_dashboard') }}">
-                                    <i class="nav-main-link-icon si si-speedometer"></i>
-                                    <span class="nav-main-link-name">Dashboard</span>
-                                </a>
-                            </li>
-                        @endcan
+                        <li class="nav-main-item">
+                            <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}"
+                                href="{{ route('test_prep_dashboard') }}">
+                                <i class="nav-main-link-icon si si-speedometer"></i>
+                                <span class="nav-main-link-name">Dashboard</span>
+                            </a>
+                        </li>
 
-                        @can('Access Test Home Page')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is(['test_home_page']) ? 'active' : '' }}"
                                 href="{{ route('test_home_page') }}">
@@ -77,9 +72,7 @@
                                 <span class="nav-main-link-name">Test Home Page</span>
                             </a>
                         </li>
-                        @endcan
 
-                        @can('Access Self Made Tests')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is(['self-made-test.*']) ? 'active' : '' }}"
                                 href="{{ route('self-made-test.index') }}">
@@ -87,7 +80,6 @@
                                 <span class="nav-main-link-name">Self Made Test</span>
                             </a>
                         </li>
-                        @endcan
 
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is(['test-review.review']) ? 'active' : '' }}"
@@ -123,7 +115,6 @@
                             </a>
                         </li>
 
-                        @can('Access High School Resume')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.highSchoolResume.list') || Route::is('admin-dashboard.highSchoolResume.personalInfo') || Route::is('admin-dashboard.highSchoolResume.educationInfo') || Route::is('admin-dashboard.highSchoolResume.honors') || Route::is('admin-dashboard.highSchoolResume.activities') || Route::is('admin-dashboard.highSchoolResume.employmentCertification') || Route::is('admin-dashboard.highSchoolResume.featuresAttributes') || Route::is('admin-dashboard.highSchoolResume.preview') ? 'active' : '' }}"
                                 href="{{ route('admin-dashboard.highSchoolResume.list') }}">
@@ -131,9 +122,7 @@
                                 <span class="nav-main-link-name">High school resume</span>
                             </a>
                         </li>
-                        @endcan
 
-                        @can('Access College Application Deadline Organizer')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.collegeApplicationDeadline') ? 'active' : '' }}"
                                 href="{{ route('admin-dashboard.collegeApplicationDeadline') }}">
@@ -141,9 +130,7 @@
                                 <span class="nav-main-link-name">College Application Deadline Organizer</span>
                             </a>
                         </li>
-                        @endcan
 
-                        @can('Access Initial College List')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.initialCollegeList.*') ? 'active' : '' }}"
                                 href="{{ route('admin-dashboard.initialCollegeList.step1') }}">
@@ -151,9 +138,7 @@
                                 <span class="nav-main-link-name">Initial College List</span>
                             </a>
                         </li>
-                        @endcan
 
-                        @can('Access Cost Comparison Tool')
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.cost_comparison') ? 'active' : '' }}"
                                 href="{{ route('admin-dashboard.cost_comparison') }}">
@@ -161,7 +146,6 @@
                                 <span class="nav-main-link-name">Cost Comparison tool</span>
                             </a>
                         </li>
-                        @endcan
 
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.careerExploration.*') ? 'active' : '' }}"

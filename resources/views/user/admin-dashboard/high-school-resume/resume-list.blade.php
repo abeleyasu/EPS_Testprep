@@ -3,6 +3,7 @@
 @section('title', 'HSR | List : CPS')
 
 @section('user-content')
+@can('Access High School Resume')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             <div class="bg-black-10">
@@ -78,6 +79,12 @@
     <div class="modal fade bd-example-modal-lg showResumePreviewModal" role="dialog"
         aria-labelledby="modal-block-extra-large" aria-hidden="true"></div>
     <!-- Resume-list Modal -->
+@endcan
+
+@cannot('Access High School Resume')
+    @include('components.subscription-warning')
+@endcan
+
 @endsection
 
 @section('page-style')
