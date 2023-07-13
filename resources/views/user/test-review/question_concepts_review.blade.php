@@ -1653,607 +1653,442 @@
                                                                                     @php
                                                                                         $category_type_arr = $categoryTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
                                                                                         $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                        // $question_type_arr = json_decode($single_user_selected_answers['get_question_details'][0]->question_type_id, true) ?? [];
+                                                                                        $checkbox_arr = $checkboxData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
+                                                                                        // dd($checkbox_arr);
                                                                                     @endphp
+                                                                                    @foreach ($category_type_arr as $key => $category_type)
+                                                                                        @for ($i = 0; $i < count($category_type); $i++)
+                                                                                            <tr class="odd">
+                                                                                                <td>
+                                                                                                    <?php
+                                                                                                    $modal_count = 1;
+                                                                                                    $category_arr = Helper::getCategoryNameByID($category_type[$i]);
+                                                                                                    $modal_count = $modal_count++;
+                                                                                                    ?>
+                                                                                                    <button type="button"
+                                                                                                        data-bs-toggle="modal"
+                                                                                                        data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                        class="btn @if ($checkbox_arr[$key][0] == '1') btn-success
+                                                                                                        @elseif ($checkbox_arr[$key][0] == '0')
+                                                                                                        btn-danger
+                                                                                                    @else
+                                                                                                    btn-dark @endif fs-xs fw-semibold me-1 category_description"
+                                                                                                        data-category_title="{{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}"
+                                                                                                        data-category_description="{{ isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' }}"
+                                                                                                        data-category_lesson="{{ isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' }}"
+                                                                                                        data-category_strategies="{{ isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' }}"
+                                                                                                        data-category_identification_methods="{{ isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' }}"
+                                                                                                        data-category_identification_activity="{{ isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' }}">
+                                                                                                        {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}</button>
 
-                                                                                    @for ($i = 0; $i < count($category_type_arr); $i++)
-                                                                                        <tr class="odd">
-                                                                                            <td>
-                                                                                                <?php
-                                                                                                $modal_count = 1;
-                                                                                                $category_arr = Helper::getCategoryNameByID($category_type_arr[$i]);
-                                                                                                $modal_count = $modal_count++;
-                                                                                                ?>
-                                                                                                <button type="button"
-                                                                                                    data-bs-toggle="modal"
-                                                                                                    data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 category_description"
-                                                                                                    data-category_title="{{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}"
-                                                                                                    data-category_description="{{ isset($category_arr->category_type_description) ? $category_arr->category_type_description : '' }}"
-                                                                                                    data-category_lesson="{{ isset($category_arr->category_type_lesson) ? $category_arr->category_type_lesson : '' }}"
-                                                                                                    data-category_strategies="{{ isset($category_arr->category_type_strategies) ? $category_arr->category_type_strategies : '' }}"
-                                                                                                    data-category_identification_methods="{{ isset($category_arr->category_type_identification_methods) ? $category_arr->category_type_identification_methods : '' }}"
-                                                                                                    data-category_identification_activity="{{ isset($category_arr->category_type_identification_activity) ? $category_arr->category_type_identification_activity : '' }}">
-                                                                                                    {{ isset($category_arr->category_type_title) ? $category_arr->category_type_title : '' }}</button>
-
-                                                                                                {{-- start model  --}}
-                                                                                                <div class="modal"
-                                                                                                    id="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    tabindex="-1"
-                                                                                                    aria-labelledby="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    style="display: none;"
-                                                                                                    aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg"
-                                                                                                        role="document">
-                                                                                                        <div
-                                                                                                            class="modal-content">
+                                                                                                    {{-- start model  --}}
+                                                                                                    <div class="modal"
+                                                                                                        id="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                        tabindex="-1"
+                                                                                                        aria-labelledby="modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                        style="display: none;"
+                                                                                                        aria-hidden="true">
+                                                                                                        <div class="modal-dialog modal-lg"
+                                                                                                            role="document">
                                                                                                             <div
-                                                                                                                class="block block-rounded">
+                                                                                                                class="modal-content">
                                                                                                                 <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title set_category_title">
-                                                                                                                    </h3>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="fs-sm mb-0">
-                                                                                                                    </p>
-
+                                                                                                                    class="block block-rounded">
                                                                                                                     <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Description
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-
-                                                                                                                            <div
-                                                                                                                                class="block-content set_category_description">
-                                                                                                                                <p>other
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- start new  --}}
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Lesson
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_category_type_lesson">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
+                                                                                                                        class="block-header block-header-default">
+                                                                                                                        <h3
+                                                                                                                            class="block-title set_category_title">
+                                                                                                                        </h3>
                                                                                                                     </div>
                                                                                                                     <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Strategies
-                                                                                                                                </h3>
+                                                                                                                        class="block-content">
+                                                                                                                        <p
+                                                                                                                            class="fs-sm mb-0">
+                                                                                                                        </p>
+
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
                                                                                                                                 <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Description
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
                                                                                                                                 </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_category_type_strategies">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Methods
-                                                                                                                                </h3>
+
                                                                                                                                 <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_category_type_identification_methods">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Activity
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_category_type_identification_activity">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-
-                                                                                                                <div
-                                                                                                                    class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button
-                                                                                                                        type="button"
-                                                                                                                        class="btn btn-sm block-header-default text-white"
-                                                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                {{-- end modal  --}}
-
-                                                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1ct1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
-                                                                                                    <i class="fa fa-lg fa-circle-xmark me-1"></i>
-                                                                                                    Probability
-                                                                                                </button> --}}
-
-                                                                                                {{-- <div class="modal" id="modal-block-large-q1ct1" tabindex="-1" aria-labelledby="modal-block-large-q1ct1" style="display: none;" aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                                        <div class="modal-content">
-
-                                                                                                            <div class="block block-rounded">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Category: Probability</h3>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <div id="q1ct1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="category-probability-description">
-                                                                                                                                <a class="text-white collapsed" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#category-probability-des" aria-expanded="false" aria-controls="category-probability-des">Description</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="category-probability-des" class="collapse" role="tabpanel" aria-labelledby="category-probability-description" data-bs-parent="#faq_q1" style="">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="block-content block-content-full text-end bg-body">
-                                                                                                                        <button type="button" class="btn btn-sm block-header-default  text-white" data-bs-dismiss="modal">Close</button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div> --}}
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <?php
-                                                                                                $question_arr = Helper::getQuestionNameByID($question_type_arr[$i]);
-                                                                                                ?>
-                                                                                                <button type="button"
-                                                                                                    data-bs-toggle="modal"
-                                                                                                    data-question_desc="{{ isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' }}"
-                                                                                                    data-question_title="{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}"
-                                                                                                    data-question_lesson="{{ isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' }}"
-                                                                                                    data-question_strategies="{{ isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' }}"
-                                                                                                    data-question_identification_methods="{{ isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' }}"
-                                                                                                    data-question_identification_activity="{{ isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' }}"
-                                                                                                    data-bs-target="#modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    class="btn btn-dark fs-xs fw-semibold me-1 mb-3 cat_type_desc_btn">{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}</button>
-                                                                                                {{-- start question type modal  --}}
-                                                                                                <div class="modal"
-                                                                                                    id="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    tabindex="-1"
-                                                                                                    aria-labelledby="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                    style="display: none;"
-                                                                                                    aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg"
-                                                                                                        role="document">
-                                                                                                        <div
-                                                                                                            class="modal-content">
-                                                                                                            <div
-                                                                                                                class="block block-rounded">
-                                                                                                                <div
-                                                                                                                    class="block-header block-header-default">
-                                                                                                                    <h3
-                                                                                                                        class="block-title set_question_type_title">
-                                                                                                                        Arithmetic
-                                                                                                                        Operations
-                                                                                                                    </h3>
-                                                                                                                </div>
-                                                                                                                <div
-                                                                                                                    class="block-content">
-                                                                                                                    <p
-                                                                                                                        class="fs-sm mb-0">
-                                                                                                                    </p>
-
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Description
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_desc">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- start  --}}
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Lesson
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_lesson">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Strategies
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_strategies">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Methods
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_identification_methods">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div
-                                                                                                                        class="row items-push">
-                                                                                                                        <div id="my-block"
-                                                                                                                            class="block block-rounded block-bordered p-0">
-                                                                                                                            <div
-                                                                                                                                class="block-header block-header-default">
-                                                                                                                                <h3
-                                                                                                                                    class="block-title">
-                                                                                                                                    Identification
-                                                                                                                                    Activity
-                                                                                                                                </h3>
-                                                                                                                                <div
-                                                                                                                                    class="block-options">
-                                                                                                                                    <button
-                                                                                                                                        type="button"
-                                                                                                                                        class="btn-block-option"
-                                                                                                                                        data-toggle="block-option"
-                                                                                                                                        data-action="content_toggle"><i
-                                                                                                                                            class="si si-arrow-up"></i></button>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div
-                                                                                                                                class="block-content">
-                                                                                                                                <p
-                                                                                                                                    class="set_question_type_identification_activity">
-                                                                                                                                    words
-                                                                                                                                </p>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    {{-- end  --}}
-                                                                                                                </div>
-
-                                                                                                                <div
-                                                                                                                    class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button
-                                                                                                                        type="button"
-                                                                                                                        class="btn btn-sm block-header-default text-white"
-                                                                                                                        data-bs-dismiss="modal">Close</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                {{-- end modal  --}}
-
-                                                                                                {{-- <button type="button" data-bs-toggle="modal" data-bs-target="#modal-block-large-q1qt1" class="btn btn-danger fs-xs fw-semibold me-1 bg-danger text-white">
-                                                                                                    <i class="fa fa-lg fa-circle-xmark me-1"></i>
-                                                                                                    Simple Probability
-                                                                                                </button>
-
-                                                                                                <div class="modal" id="modal-block-large-q1qt1" tabindex="-1" aria-labelledby="modal-block-large-q1qt1" style="display: none;" aria-hidden="true">
-                                                                                                    <div class="modal-dialog modal-lg" role="document">
-                                                                                                        <div class="modal-content">
-                                                                                                            <div class="block block-rounded">
-                                                                                                                <div class="block-header block-header-default">
-                                                                                                                    <h3 class="block-title">Question Type: Punctuation Between Multiple Adjectives</h3>
-                                                                                                                </div>
-                                                                                                                <div class="block-content">
-                                                                                                                    <div id="faq_q1" class="mb-5" role="tablist" aria-multiselectable="true">
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_description_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_description" aria-expanded="true" aria-controls="faq_q1_qt1_description">Description</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_description" class="collapse show" role="tabpanel" aria-labelledby="faq_q1_qt1_description_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>Simple Probability questions have you calculate the probability of events that can be expressed as a single fraction: the number of successful outcomes divided by the number of potential outcomes.</p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_lesson_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q1" href="#faq_q1_qt1_lesson" aria-expanded="true" aria-controls="faq_q1_qt1_lesson">Lesson</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_lesson" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_lesson_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>The simple probability of an event is the number of favorable outcomes divided by the number of potential outcomes.
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    Probability = # of favorable outcomes / total # of potential outcomes
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    Another way to think about probability = Part / Whole OR Part / Total
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    <b>Example 1</b>
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    What’s the probability of a flipped coin landing on heads?
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    There are a total of 2 potential outcomes: heads or tails.
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    There is only 1 favorable outcome: heads.
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    probability = # of favorable outcomes / total # of potential outcomes = <b>1/2</b>
-
-                                                                                                                                    <br/>
-                                                                                                                                    <br/>
-                                                                                                                                    So the probability of flipping a coin and landing on heads is <b>1/2</b>.
-                                                                                                                                    <br/></p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_strategies_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_strategies" aria-expanded="true" aria-controls="faq_q1_qt1_strategies">Strategies</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_strategies" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_strategies_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p>
-                                                                                                                                        <b>Strategy 1: Identify each part of the probability formula </b>
+                                                                                                                                    class="block-content set_category_description">
+                                                                                                                                    <p>other
+                                                                                                                                        words
                                                                                                                                     </p>
-                                                                                                                                    <p>Identify the total # of possibilties first and write it as your denominator. Then identify how many favorable outcomes align with the situation and write it as your numerator.</p>
-
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                         </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idmethods_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idmethods" aria-expanded="true" aria-controls="faq_q1_qt1_idmethods">Identification Methods</a>
-                                                                                                                            </div>
-                                                                                                                            <div id="faq_q1_qt1_idmethods" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idmethods_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p><b>Identification Method 1</b></p>
-                                                                                                                                    <p>The question is a word problem, using the words/phrases "probability" or "what fraction" or "what are the chances" and the answer choices are usually single fractions.</p>
-                                                                                                                                    <p><b>Example 1</b></p>
-                                                                                                                                    <p>Question: A bag has 20 total marbles - 3 blue, 8 red, and 9 green. Which of the following is the probability of picking a blue marble?</p>
-                                                                                                                                    A. 3/20<br />
-                                                                                                                                    B. 3/8<br />
-                                                                                                                                    C. 8/8<br />
-                                                                                                                                    D. 8/20<br />
-                                                                                                                                    E. 9/20</p>
+                                                                                                                        {{-- start new  --}}
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Lesson
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_category_type_lesson">
+                                                                                                                                        words
+                                                                                                                                    </p>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                         </div>
-                                                                                                                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                                                                                                            <div class="block-header block-header-default" role="tab" id="faq_q1_qt1_idactivity_aria-label">
-                                                                                                                                <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#faq_q4" href="#faq_q1_qt1_idactivity" aria-expanded="true" aria-controls="faq_q1_qt1_idactivity">Identification Activity</a>
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Strategies
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_category_type_strategies">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
                                                                                                                             </div>
-                                                                                                                            <div id="faq_q1_qt1_idactivity" class="collapse" role="tabpanel" aria-labelledby="faq_q1_qt1_idactivity_aria-label" data-bs-parent="#faq_q1">
-                                                                                                                                <div class="block-content">
-                                                                                                                                    <p><b>Identification Activity 1</b></p>
-                                                                                                                                    <p>Which of the following questions test Punctuation Between Multiple Adjectives?</p>
-
-                                                                                                                                    <p>Question 1</p>
-                                                                                                                                    <p>Question 2</p>
-
-                                                                                                                                    <p>1. Part of his success is attributed to his ability to <u>plead</u> to a wide range of audiences.</p>
-
-                                                                                                                                    <p>A. NO CHANGE</p>
-                                                                                                                                    <p>B. appeal</p>                                                                                        <p>C. attract </p>
-                                                                                                                                    <p>D. remark</p>
-
-                                                                                                                                    <p>A. NO CHANGE</p>
-                                                                                                                                    <p>B. appeal</p>
-                                                                                                                                    <p>C. attract </p>
-                                                                                                                                    <p>D. remark</p>
-
-                                                                                                                                    <p>2. The Dahlia flower is famous <u>to</u> its unique pattern of petals.</p>
-
-                                                                                                                                    <p>A. NO CHANGE</p>
-                                                                                                                                    <p>B. by</p>
-                                                                                                                                    <p>C. for</p>
-                                                                                                                                    <p>D. with</p>
-
-                                                                                                                                    <p>Key: </p>
-                                                                                                                                    <p>#1: No, this example tests Vocabulary in Context.</p>
-                                                                                                                                    <p>#2: No, even though this question tests different word choices, it does NOT test Keyword Goal. It tests Idioms and Prepositions.</p>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Identification
+                                                                                                                                        Methods
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_category_type_identification_methods">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Identification
+                                                                                                                                        Activity
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_category_type_identification_activity">
+                                                                                                                                        words
+                                                                                                                                    </p>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
-                                                                                                                <div class="block-content block-content-full text-end bg-body">
-                                                                                                                    <button type="button" class="btn btn-sm block-header-default  text-white  " data-bs-dismiss="modal">Close</button>
+
+                                                                                                                    <div
+                                                                                                                        class="block-content block-content-full text-end bg-body">
+                                                                                                                        <button
+                                                                                                                            type="button"
+                                                                                                                            class="btn btn-sm block-header-default text-white"
+                                                                                                                            data-bs-dismiss="modal">Close</button>
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </div> --}}
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <div
-                                                                                                    class="block-content block-content-full text-center">
-                                                                                                    <input
-                                                                                                        class="form-check-input"
-                                                                                                        type="checkbox"
-                                                                                                        value=""
-                                                                                                        name="add_to_custom_quiz">
-                                                                                                </div>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    @endfor
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <?php
+                                                                                                    $question_arr = Helper::getQuestionNameByID($question_type_arr[$key][$i]);
+                                                                                                    ?>
+                                                                                                    <button type="button"
+                                                                                                        data-bs-toggle="modal"
+                                                                                                        data-question_desc="{{ isset($question_arr->question_type_description) ? $question_arr->question_type_description : '' }}"
+                                                                                                        data-question_title="{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}"
+                                                                                                        data-question_lesson="{{ isset($question_arr->question_type_lesson) ? $question_arr->question_type_lesson : '' }}"
+                                                                                                        data-question_strategies="{{ isset($question_arr->question_type_strategies) ? $question_arr->question_type_strategies : '' }}"
+                                                                                                        data-question_identification_methods="{{ isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' }}"
+                                                                                                        data-question_identification_activity="{{ isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' }}"
+                                                                                                        data-bs-target="#modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                        class="btn @if ($checkbox_arr[$key][0] == '1') btn-success
+                                                                                                            @elseif ($checkbox_arr[$key][0] == '0')
+                                                                                                            btn-danger
+                                                                                                        @else
+                                                                                                        btn-dark @endif  fs-xs fw-semibold me-1 cat_type_desc_btn">{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}</button>
+                                                                                                    {{-- start question type modal  --}}
+                                                                                                    <div class="modal"
+                                                                                                        id="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                        tabindex="-1"
+                                                                                                        aria-labelledby="modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
+                                                                                                        style="display: none;"
+                                                                                                        aria-hidden="true">
+                                                                                                        <div class="modal-dialog modal-lg"
+                                                                                                            role="document">
+                                                                                                            <div
+                                                                                                                class="modal-content">
+                                                                                                                <div
+                                                                                                                    class="block block-rounded">
+                                                                                                                    <div
+                                                                                                                        class="block-header block-header-default">
+                                                                                                                        <h3
+                                                                                                                            class="block-title set_question_type_title">
+                                                                                                                            Arithmetic
+                                                                                                                            Operations
+                                                                                                                        </h3>
+                                                                                                                    </div>
+                                                                                                                    <div
+                                                                                                                        class="block-content">
+                                                                                                                        <p
+                                                                                                                            class="fs-sm mb-0">
+                                                                                                                        </p>
+
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Description
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_question_type_desc">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        {{-- start  --}}
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Lesson
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_question_type_lesson">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Strategies
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_question_type_strategies">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Identification
+                                                                                                                                        Methods
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_question_type_identification_methods">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div
+                                                                                                                            class="row items-push">
+                                                                                                                            <div id="my-block"
+                                                                                                                                class="block block-rounded block-bordered p-0">
+                                                                                                                                <div
+                                                                                                                                    class="block-header block-header-default">
+                                                                                                                                    <h3
+                                                                                                                                        class="block-title">
+                                                                                                                                        Identification
+                                                                                                                                        Activity
+                                                                                                                                    </h3>
+                                                                                                                                    <div
+                                                                                                                                        class="block-options">
+                                                                                                                                        <button
+                                                                                                                                            type="button"
+                                                                                                                                            class="btn-block-option"
+                                                                                                                                            data-toggle="block-option"
+                                                                                                                                            data-action="content_toggle"><i
+                                                                                                                                                class="si si-arrow-up"></i></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div
+                                                                                                                                    class="block-content">
+                                                                                                                                    <p
+                                                                                                                                        class="set_question_type_identification_activity">
+                                                                                                                                        words
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        {{-- end  --}}
+                                                                                                                    </div>
+
+                                                                                                                    <div
+                                                                                                                        class="block-content block-content-full text-end bg-body">
+                                                                                                                        <button
+                                                                                                                            type="button"
+                                                                                                                            class="btn btn-sm block-header-default text-white"
+                                                                                                                            data-bs-dismiss="modal">Close</button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    <div
+                                                                                                        class="block-content block-content-full text-center">
+                                                                                                        <input
+                                                                                                            class="form-check-input"
+                                                                                                            type="checkbox"
+                                                                                                            value=""
+                                                                                                            name="add_to_custom_quiz">
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endfor
+                                                                                    @endforeach
                                                                                 </tbody>
                                                                             </table>
                                                                         </div>
@@ -3103,8 +2938,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                                                        display: none;
-                                                                    } */
+                                                                                                                                                display: none;
+                                                                                                                                            } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
