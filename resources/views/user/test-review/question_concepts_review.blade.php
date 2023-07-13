@@ -1668,8 +1668,8 @@
                                                                                                     <button type="button"
                                                                                                         data-bs-toggle="modal"
                                                                                                         data-bs-target="#modal-block-category-ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                        class="btn @if ($checkbox_arr[$key][0] == '1') btn-success
-                                                                                                        @elseif ($checkbox_arr[$key][0] == '0')
+                                                                                                        class="btn @if ($checkbox_arr[$key][$i] == '1') btn-success
+                                                                                                        @elseif ($checkbox_arr[$key][$i] == '0')
                                                                                                         btn-danger
                                                                                                     @else
                                                                                                     btn-dark @endif fs-xs fw-semibold me-1 category_description"
@@ -1881,8 +1881,8 @@
                                                                                                         data-question_identification_methods="{{ isset($question_arr->question_type_identification_methods) ? $question_arr->question_type_identification_methods : '' }}"
                                                                                                         data-question_identification_activity="{{ isset($question_arr->question_type_identification_activity) ? $question_arr->question_type_identification_activity : '' }}"
                                                                                                         data-bs-target="#modal-block-question-cg1ct2_{{ $modal_count }}_{{ $acc_id }}"
-                                                                                                        class="btn @if ($checkbox_arr[$key][0] == '1') btn-success
-                                                                                                            @elseif ($checkbox_arr[$key][0] == '0')
+                                                                                                        class="btn @if ($checkbox_arr[$key][$i] == '1') btn-success
+                                                                                                            @elseif ($checkbox_arr[$key][$i] == '0')
                                                                                                             btn-danger
                                                                                                         @else
                                                                                                         btn-dark @endif  fs-xs fw-semibold me-1 cat_type_desc_btn">{{ isset($question_arr->question_type_title) ? $question_arr->question_type_title : '' }}</button>
@@ -2938,8 +2938,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                                                                                                                                display: none;
-                                                                                                                                            } */
+                                                                                                                                                    display: none;
+                                                                                                                                                } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
