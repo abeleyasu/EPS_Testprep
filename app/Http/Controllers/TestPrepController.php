@@ -777,7 +777,7 @@ class TestPrepController extends Controller
             $high_score = $high_score;
             $low_score = $low_score;
         }
-        // dd($questionTypeData);
+
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
@@ -1787,6 +1787,79 @@ class TestPrepController extends Controller
         return view('student.test-home-page.test_home_page', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'act_details_array', 'sat_details_array', 'psat_details_array', 'sat_custom_details', 'psat_custom_details', 'act_custom_details'));
     }
 
+    public function generateCustomQuiz(Request $request)
+    {
+        $selectedCategories = $request->input("selectedCategories") ?? [];
+        $test_type = $request->input("test_type") ?? '';
+        $test_id = $request->input("test_id") ?? '';
+
+        if (!empty($selectedCategories)) {
+
+            $query = PracticeQuestion::query()->select('practice_questions.*');
+
+            $query->leftJoin('question_details', 'question_details.question_id', '=', 'practice_questions.id');
+
+            $query->whereIn("question_details.category_type", $selectedCategories);
+
+            $questions = $query->get();
+
+            if (isset($questions) && !$questions->isEmpty()) {
+                $new_test = PracticeTest::create([
+                    'title' => $test_type . ' ' . Carbon::now()->format('m-d-y') . ' ' . Carbon::now()->format('H-i-s'),
+                    'format' => $test_type,
+                    'user_id' => Auth::id(),
+                    'test_source' => 2
+                ]);
+
+                $section_type = PracticeTestSection::where("testid", $test_id)->first();
+
+                $new_section = PracticeTestSection::create([
+                    'format' => $test_type,
+                    'practice_test_type' => $section_type->practice_test_type ?? '',
+                    'testid' => $new_test['id'],
+                    'section_title' => $section_type->section_title ?? ''
+                ]);
+
+                foreach ($questions as $index => $question) {
+                    $questionOrder = $index + 1;
+
+                    PracticeQuestion::create([
+                        'title' => $question['title'],
+                        'format' => $test_type,
+                        'practice_test_sections_id' => $new_section['id'],
+                        'type' => $question['type'],
+                        'passages_id' => $question['passages_id'],
+                        'passages' => $request['passages'],
+                        'passage_number' => $question['passage_number'],
+                        'answer' => $question['answer'],
+                        'answer_content' => $question['answer_content'],
+                        'answer_exp' => $question['answer_exp'],
+                        'fill' => $question['fill'],
+                        'fillType' => $question['fillType'],
+                        'multiChoice' => $question['multiChoice'],
+                        'tags' => $question['tags'],
+                        'question_type_id' => $question['question_type_id'],
+                        'category_type' => $question['category_type'],
+                        'diff_rating' => $question['diff_rating'],
+                        'super_category' => $question['super_category'],
+                        'category_type_values' => $question['category_type_values'],
+                        'super_category_values' => $question['super_category_values'],
+                        'checkbox_values' => $question['checkbox_values'],
+                        'question_type_values' => $question['question_type_values'],
+                        'question_order' => $questionOrder,
+                        'selfMade' => 1
+                    ]);
+                }
+            } else {
+                $message = "No questions available for the given criteria.";
+
+                return response()->json(['message' => $message, 'status' => false]);
+            }
+
+            return response()->json(['questions' => $questions, 'test_id' => $new_test->id, 'status' => true]);
+        }
+        // dd($request->input("selectedCategories"))
+    }
     //new
     public function gettypes(Request $request)
     {
