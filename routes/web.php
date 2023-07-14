@@ -248,16 +248,21 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
     Route::group(['middleware' => ['role:standard_user', 'verified'], 'prefix' => 'user'], function () {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
-        Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
-        Route::get('/courses/{course}/detail', [CoursesController::class, 'show'])->name('courses.detail');
-        Route::get('/courses/{course}/milestone', [CoursesController::class, 'UserCourseDetail'])->name('courses.milestone');
-        Route::get('/milestone/{milestone}/detail', [MilestoneController::class, 'show'])->name('milestone.detail');
-        Route::get('/modules/{module}/detail', [ModuleController::class, 'show'])->name('modules.detail');
-        Route::get('/sections/{section}/detail', [SectionController::class, 'show'])->name('sections.detail');
-        Route::get('/sections/{section}/show-detail', [SectionController::class, 'showDetail'])->name('sections.show-detail');
-        Route::get('/tasks/{task}/detail', [TaskController::class, 'show'])->name('tasks.detail');
-        Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
-        Route::post('/task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
+
+        Route::group(['middleware' => ['subscription_valid:access-courses']], function () {
+            Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
+            Route::get('/courses/{course}/detail', [CoursesController::class, 'show'])->name('courses.detail');
+            Route::get('/courses/{course}/milestone', [CoursesController::class, 'UserCourseDetail'])->name('courses.milestone');
+            Route::get('/milestone/{milestone}/detail', [MilestoneController::class, 'show'])->name('milestone.detail');
+            Route::get('/modules/{module}/detail', [ModuleController::class, 'show'])->name('modules.detail');
+            Route::get('/sections/{section}/detail', [SectionController::class, 'show'])->name('sections.detail');
+            Route::get('/sections/{section}/show-detail', [SectionController::class, 'showDetail'])->name('sections.show-detail');
+            Route::get('/tasks/{task}/detail', [TaskController::class, 'show'])->name('tasks.detail');
+            Route::get('/tasks/{task}/show-detail', [TaskController::class, 'showDetail'])->name('tasks.show-detail');
+            Route::post('/task/{task}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.change_status');
+        });
+
+
         Route::get('/clearCache', [UserController::class, 'clearCache']);
         Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
 
@@ -270,23 +275,12 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::patch('setting/update', [UserSettingsController::class, 'updateUserSettings'])->name('update-user-settings');
 
         Route::any('/profile', [UserController::class, 'profile'])->name('user.edit-profile');
-        Route::any('/reminders', [UserController::class, 'reminders'])->name('user.reminders');
-        Route::any('/reminders-submit', [UserController::class, 'store'])->name('user.reminders.submit');
-        Route::any('/reminders-update/{id}', [UserController::class, 'update'])->name('user.reminders.update');
-        Route::delete('/reminders-delete/{id}', [UserController::class, 'delete'])->name('user.reminders.delete');
-        Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
-        Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
         Route::any('/compare', [UserController::class, 'compare'])->name('user.compare');
 
         Route::get('/get-cities/{state_id}', [UserController::class, 'getCity'])->name('user.get-city');
         Route::get('/billing-detail', [UserController::class, 'billing_details'])->name('user.get-billing-detail');
         Route::post('/basic_billing-detail', [UserController::class, 'save_basic_details'])->name('user.save-billing-detail');
         Route::post('/billing-detail', [UserController::class, 'studentBillingDetails'])->name('user.billing-detail');
-
-        Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
-
-        Route::view('/practice-test-sections', 'user.practice-test-sections');
-        Route::view('/practice-test', 'user.practice-test')->name('practicetest');
 
         Route::group(['prefix' => 'calendar', 'as' => 'calendar'], function () {
             Route::get('/', [CalendarEventController::class, 'index']);
@@ -300,8 +294,17 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('.getEventById');
         });
 
+        Route::group(['middleware' => ['subscription_valid:access-reminders']], function () {
+            Route::any('/reminders', [UserController::class, 'reminders'])->name('user.reminders');
+            Route::any('/reminders-submit', [UserController::class, 'store'])->name('user.reminders.submit');
+            Route::any('/reminders-update/{id}', [UserController::class, 'update'])->name('user.reminders.update');
+            Route::delete('/reminders-delete/{id}', [UserController::class, 'delete'])->name('user.reminders.delete');
+            Route::any('/settings', [UserController::class, 'settings'])->name('user.settings');
+            Route::any('/settings_updatepass', [UserController::class, 'settings_update'])->name('user.settings_update');
+        });
+
         Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
-            Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.'], function () {
+            Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.', 'middleware' => ['subscription_valid:access-high-school-resume']], function () {
                 Route::get('/list', [PreviewController::class, 'list'])->name('list');
                 Route::controller(PersonalInfoController::class)->group(function () {
                     Route::get('/personal-info', 'index')->name('personalInfo');
@@ -347,16 +350,19 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             });
 
 
-            Route::get('/college-application-deadline/list', [CollegeApplicationDeadlineController::class, 'getApplicationDeadlineData'])->name('getApplicationDeadlineData');
-            Route::get('/college-application-deadline/{id}', [CollegeApplicationDeadlineController::class, 'getSingleApplicationData'])->name('getSingleApplicationData');
-            Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
-            Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
-            Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
-            Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
-            Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
+            Route::group(['middleware' => ['subscription_valid:access-college-application-deadline-organizer']], function () {
+                Route::get('/college-application-deadline/list', [CollegeApplicationDeadlineController::class, 'getApplicationDeadlineData'])->name('getApplicationDeadlineData');
+                Route::get('/college-application-deadline/{id}', [CollegeApplicationDeadlineController::class, 'getSingleApplicationData'])->name('getSingleApplicationData');
+                Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
+                Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
+                Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
+                
+                Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
+                Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
+            });
 
 
-            Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.'], function () {
+            Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.', 'middleware' => ['subscription_valid:access-initial-college-list']], function () {
                 Route::get('/search-college/step1', [InititalCollegeListController::class, 'step1'])->name('step1');
                 Route::group(['middleware' => ['initialcollegestep']], function () {
                     Route::get('/search-college/step2', [InititalCollegeListController::class, 'step2'])->name('step2');
@@ -370,6 +376,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::patch('/search-college/step4/update-order/{id}', [InititalCollegeListController::class, 'updateOrder'])->name('step4.updateOrder');
                 Route::get('/search-college/step4/get-college/{id}', [InititalCollegeListController::class, 'collegeList'])->name('step4.collegeList');
                 Route::patch('/search-college/step4/store-college-selection/{id}', [InititalCollegeListController::class, 'storeSelection'])->name('step4.storeSelection');
+
+
                 Route::patch('search-college/save/{id}', [InititalcollegeListController::class, 'saveCollegeList'])->name('saveCollegeList');
                 Route::patch('search-college/change-status/{id}', [InititalcollegeListController::class, 'changeSearchCollegeAddStatus'])->name('changeSearchCollegeAddStatus');
                 Route::get('get-hide-college', [InititalcollegeListController::class, 'getHideCollege'])->name('getHideCollege');
@@ -383,7 +391,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::delete('/past-current-score/{id}', [InititalcollegeListController::class, 'deletePastCurrentScore'])->name('deletePastCurrentScore');
             });
 
-            Route::group(['prefix' => 'cost-comparison'], function () {
+            Route::group(['prefix' => 'cost-comparison', 'middleware' => ['subscription_valid:access-cost-comparison-tool']], function () {
                 Route::any('/', [InititalCollegeListController::class, 'viewCostComparisonPage'])->name('cost_comparison');
                 Route::get('get', [InititalCollegeListController::class, 'getCostComparisonSummary'])->name('cost_comparison.get_cost_comparison_summary');
                 Route::get('get-college-list', [InititalCollegeListController::class, 'getCollegeWiseList'])->name('cost_comparison.get_college_list_for_cost_comparison');
@@ -412,9 +420,19 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/position/list', [PositionController::class, 'getPositionsList'])->name('positionsList');
         Route::get('/athletic/position/list', [AthleticPositionController::class, 'getAthleticPositionsList'])->name('positionsList');
 
-        Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
+        Route::group(['middleware' => ['subscription_valid:access-test-home-page']], function () {
+            Route::get('/test-home-page', [TestPrepController::class, 'testHomePage'])->name('test_home_page');
+            Route::get('/practice-test-sections/{id}', [TestPrepController::class, 'singleTest'])->name('single_test');
 
-        Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
+            Route::view('/practice-test', 'user.practice-test')->name('practicetest');
+            Route::get('/practice-test/{id}', [TestPrepController::class, 'singleSection'])->name('single_section');
+            Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
+        });
+        Route::view('/practice-test-sections', 'user.practice-test-sections');
+        
+        Route::group(['middleware' => ['subscription_valid:access-self-made-tests']], function () {
+            Route::resource('self-made-test', SelfMadeTestController::class);
+        });
 
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
@@ -425,8 +443,6 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
 
-        Route::get('/test-home-page', [TestPrepController::class, 'testHomePage'])->name('test_home_page');
-        Route::resource('self-made-test', SelfMadeTestController::class);
         Route::post('/gettypes', [TestPrepController::class, 'gettypes'])->name('gettypes');
         Route::post('/generate-custom-quiz', [TestPrepController::class, 'generateCustomQuiz'])->name('generateCustomQuiz');
         Route::post('/getSelfMadeTestQuestion', [TestPrepController::class, 'getSelfMadeTestQuestion'])->name('getSelfMadeTestQuestion');
