@@ -428,6 +428,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/test-home-page', [TestPrepController::class, 'testHomePage'])->name('test_home_page');
         Route::resource('self-made-test', SelfMadeTestController::class);
         Route::post('/gettypes', [TestPrepController::class, 'gettypes'])->name('gettypes');
+        Route::post('/generate-custom-quiz', [TestPrepController::class, 'generateCustomQuiz'])->name('generateCustomQuiz');
         Route::post('/getSelfMadeTestQuestion', [TestPrepController::class, 'getSelfMadeTestQuestion'])->name('getSelfMadeTestQuestion');
         Route::post('/changeTitleSelfMade', [TestPrepController::class, 'changeTitleSelfMade'])->name('changeTitleSelfMade');
         Route::post('/get_time', [TestPrepController::class, 'get_time'])->name('get_time');
