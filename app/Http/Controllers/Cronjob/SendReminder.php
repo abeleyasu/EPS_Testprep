@@ -28,7 +28,7 @@ class SendReminder extends Controller
                     $college = CollegeSearchAdd::where('id', $reminder->college_id)->first();
                     if ($college->is_active == 1) {
                         Log::channel('reminder')->info("Application deadline notification");
-                        $this->sendOneTimeNotification($reminder);
+                        $this->sendOneTimeNotification($reminder, $user_settings);
                     }
                 } else if ($reminder->type == 'custom') {
                     $this->createReminder($reminder, $user_settings);
@@ -80,12 +80,7 @@ class SendReminder extends Controller
             Log::channel('reminder')->info("Carbon now = ".$currentTimeInUserTimezone->format('Y-m-d H:i'));
             
             if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
-                if($method == 'text' || $method == 'both') {
-                    $this->sendSmsReminder($reminder, $user);
-                }
-                if($method == 'email' || $method == 'both') {
-                    $this->sendEmailReminder($reminder, $user);
-                }
+                $this->sendNotfiction($method, $reminder, $user);
                 break;
             }
 
@@ -97,49 +92,47 @@ class SendReminder extends Controller
                 $currentDate->addMonth();
             }
         }
-        
-        // if ($currentTimeInUserTimezone->format('Y-m-d H:i') >= $startDate->format('Y-m-d H:i') && $currentTimeInUserTimezone->format('Y-m-d H:i') <= $endDate->format('Y-m-d H:i')) {
-        //     if (!$reminder->next_cron_job_run_date_time) {
-        //         $reminder->next_cron_job_run_date_time = $currentTimeInUserTimezone->format('Y-m-d H:i');
-        //         $reminder->save();
-        //     }
-        //     $nextCronJob = Carbon::parse($reminder->next_cron_job_run_date_time);
-        //     if ($currentTimeInUserTimezone->format('Y-m-d H:i') == $nextCronJob->format('Y-m-d H:i')) {
-        //         if ($method == 'text' || $method == 'both') {
-        //             $this->sendSmsReminder($reminder, $user);
-        //         }
-        //         if ($method == 'email' || $method == 'both') {
-        //             $this->sendEmailReminder($reminder, $user);
-        //         }
-        //         if ($frequency == 'daily') {
-        //             $currentTimeInUserTimezone->addDay();
-        //         } elseif ($frequency == 'weekly') {
-        //             $currentTimeInUserTimezone->addWeek();
-        //         } elseif ($frequency == 'monthly') {
-        //             $currentTimeInUserTimezone->addMonth();
-        //         }
-        //         $reminder->next_cron_job_run_date_time = $currentTimeInUserTimezone->format('Y-m-d H:i');
-        //         $reminder->save();
-        //     }
-        // }
     }
 
     public function sendOneTimeNotification($reminder, $user_settings) {
         Log::channel('reminder')->info("reminder = $reminder");
-        $user = User::find( $reminder->user_id);
+        $user = User::where('id', $reminder->user_id)->with('deadlineReminderSettings')->first();
+
+        // dd($user->deadlineReminderSettings);
+        // dd($user->toArray());
+
         $method = strtolower($reminder->method);
         $currentTimeInUserTimezone = $this->getUserTimeZoneTime($user_settings);
         $startDate = $this->getReminderStartDateWithTime($reminder, $user_settings);
         if ($startDate->format('Y-m-d') == $currentTimeInUserTimezone->format('Y-m-d')) {  
-            if($method == 'text' || $method == 'both') {
-                $this->sendSmsReminder($reminder, $user);
-            }
-    
-            if($method == 'email' || $method == 'both') {
-                $this->sendEmailReminder($reminder, $user);
-            }
+            $this->sendNotfiction($method, $reminder, $user);
             $reminder->is_send = 1;
             $reminder->save();
+        } else {
+            foreach ($user->deadlineReminderSettings as $key => $notification) {
+                $copy_start_date = $startDate->copy();
+                if ($notification->frequency == 'day') {
+                    $copy_start_date->subDay();
+                } elseif ($notification->frequency == 'week') {
+                    $copy_start_date->subWeek();
+                } elseif ($notification->frequency == 'month') {
+                    $copy_start_date->subMonth();
+                }
+
+                if ($copy_start_date->format('Y-m-d H:i') == $currentTimeInUserTimezone->format('Y-m-d H:i')) {
+                    $this->sendNotfiction($method, $reminder, $user);
+                }
+            }
+        }
+    }
+
+    public function sendNotfiction($method, $reminder, $user) {
+        if($method == 'text' || $method == 'both') {
+            $this->sendSmsReminder($reminder, $user);
+        }
+
+        if($method == 'email' || $method == 'both') {
+            $this->sendEmailReminder($reminder, $user);
         }
     }
 

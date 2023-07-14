@@ -55,4 +55,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isUser(){
         return (int) $this->role !== 1;
     }
+
+    public function deadlineReminderSettings() {
+        return $this->hasMany(UserDeadlineNotificationSettings::class, 'user_id', 'id');
+    }
 }

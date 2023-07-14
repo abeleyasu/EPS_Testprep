@@ -1,3 +1,29 @@
+const common_error_function = {
+  errorElement: "em",
+  errorPlacement: function(error, element) {
+    error.addClass("invalid-feedback");
+    if (element.prop("type") === "checkbox") {
+      error.insertAfter(element.parent("label"));
+    } else {
+      error.insertAfter(element);
+    }
+  },
+  highlight: function(element, errorClass, validClass) {
+    if (errorClass) {
+      $(element).closest('.form-control').addClass("is-invalid");
+    } else {
+      $(element).removeClass("is-valid");
+    }
+  },
+  unhighlight: function(element, errorClass, validClass) {
+    if (validClass) {
+      $(element).closest('.form-control').removeClass("is-invalid");
+    } else {
+      $(element).removeClass("is-invalid");
+    }
+  }
+}
+
 function hideshowlist(id) {
   return $.ajax({
     type: "PATCH",

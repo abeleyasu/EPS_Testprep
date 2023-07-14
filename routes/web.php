@@ -59,6 +59,7 @@ use App\Http\Controllers\Cronjob\FetchCollegeInformation;
 use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
 use App\Http\Controllers\SelfMadeTest\SelfMadeTestController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserDeadlineNotificationSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -360,6 +361,11 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
                 Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             });
+
+            Route::post('college-application-notification', [UserDeadlineNotificationSettingsController::class, 'create'])->name('college-application-notification');
+            Route::get('college-application-notification', [UserDeadlineNotificationSettingsController::class, 'index'])->name('college-application-notification-list');
+            Route::get('college-application-notification/{id}', [UserDeadlineNotificationSettingsController::class, 'get'])->name('college-application-notification-get');
+            Route::delete('college-application-notification', [UserDeadlineNotificationSettingsController::class, 'delete'])->name('college-application-notification-delete');
 
 
             Route::group(['prefix' => 'initial-college-list', 'as' => 'initialCollegeList.', 'middleware' => ['subscription_valid:access-initial-college-list']], function () {
