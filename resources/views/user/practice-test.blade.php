@@ -58,6 +58,7 @@ height: 270px
     display: inline-flex;
     align-items: center;
     padding-left: 11px;
+    pointer-events: none;
 }
 .dcg-wrapper{
     width: 100% !important;
@@ -127,6 +128,7 @@ height: 270px
             </nav>
         </div>
     </div>
+    <input type="hidden" id="timeisover" name="timeisover" value=0>
     <input type="hidden" id="section_id" value="{{$section_id}}">
     <input type="hidden" id="get_offset" value="{{$set_offset}}">
     <input type="hidden" id="get_question_type" value="{{$question_type}}">
@@ -175,7 +177,7 @@ height: 270px
                     <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev" data-count="0"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
                     <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next" data-count="0">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
-                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i><span id="timer">00:00:00</span></button>
+                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i><span id="timer">{{ isset($testSection[0]->regular_time) ? $testSection[0]->regular_time : '00:00:00' }}</span></button>
                 </div>
                 <div class="col-xl-5">
                     <label class="btn btn-sm btn-outline-danger fs-xs fw-semibold me-1 mb-3 checkbox-button main_flag_section">
@@ -742,9 +744,12 @@ height: 270px
          
             
             jQuery(".submit_section_btn").click(function(){
-
                 if(jQuery('.next').prop('disabled') == false){
-                    swal({
+                    var timeisover = jQuery('#timeisover').val();
+                    if(timeisover == 1) {
+                        confirm();
+                    } else {
+                        swal({
                             title: "Warning",
                             text: "Are you sure you want to submit this test? Make sure you have answered every question using the Review button.",
                             type: "warning",
@@ -758,7 +763,8 @@ height: 270px
                             if (isConfirm) {   
                                 confirm();
                             } 
-                        });  
+                        }); 
+                    }
                 } else {
                     confirm();
                 }
@@ -795,16 +801,16 @@ height: 270px
                 var get_test_id = '';
                 let question_ids = @json($total_questions);
 
-                if (window.location.href.indexOf("all") > -1)
-                {
-                    var url = window.location.href,
-                    parts = url.split("/"),
-                    last_part = parts[parts.length-1];
-                    get_test_id = last_part;
-                } else {
+                //if (window.location.href.indexOf("all") > -1)
+                //{
+                //    var url = window.location.href,
+                //    parts = url.split("/"),
+                //    last_part = parts[parts.length-1];
+                //    get_test_id = last_part;
+                //} else {
                     const urlParams = new URLSearchParams(window.location.search);
                     get_test_id = urlParams.get('test_id');
-                }
+                //}
                 
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
@@ -932,7 +938,33 @@ height: 270px
                         if(count < result.total_question){
                             window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
                         }
-                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+                        // var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+
+                        if (window.location.href.indexOf("all") > -1) {
+                            var url = window.location.href,
+                            parts = url.split("=");
+                            var sectionArrayJson = parts[parts.length-1];
+                            var sectionArray = JSON.parse(sectionArrayJson);
+                            
+                            if (sectionArray.length > 0) {
+                                var next_section_id = sectionArray[0];
+                                if(next_section_id != '') {
+                                    sectionArray.shift();
+                                    let remainingSectionArrayJson = JSON.stringify(sectionArray);
+
+                                    let option = new URLSearchParams(window.location.search);
+                                    let OptionValue = option.get('time');
+
+                                    var url = "{{url('')}}"+'/user/practice-test/'+next_section_id+'?test_id='+get_test_id+'&time='+OptionValue+'&section=all&sections='+remainingSectionArrayJson;
+                                } else {
+                                    var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                                }
+                            } else {
+                                var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                            }
+                        } else {
+                            var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                        }
                         window.location.href = url;  
                     }
                 });
@@ -1387,7 +1419,7 @@ height: 270px
                         question_type: question_type,
                     },
                     success: function(result){
-                        console.log(result);
+                        //console.log(result.time);
                         if(OptionValue == 'regular'){
                             $('#time_selected').val(result.time.regular_time);
                         } else if(OptionValue == '50per'){
@@ -1445,7 +1477,7 @@ height: 270px
                                         text: 'You have 5 minutes remaining.',
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: 'OK'
-                                    },2000);
+                                    });
                                 }
 
                                 if (hours === 0 && minutes === 0 && seconds === 0) {
@@ -1457,6 +1489,7 @@ height: 270px
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: 'Continue'
                                     },function(isConfirm){
+                                        $('#timeisover').val(1);
                                         if(isConfirm){
                                             $('.submit_section_btn').trigger('click');
                                         }

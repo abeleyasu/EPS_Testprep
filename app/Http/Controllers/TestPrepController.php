@@ -107,6 +107,7 @@ class TestPrepController extends Controller
         $category_data = array();
         $categoryTypeData = [];
         $questionTypeData = [];
+		$count = 0;
         $checkboxData = [];
         if (isset($_GET['test_id']) && !empty($_GET['test_id'])) {
             $test_id = $_GET['test_id'];
@@ -822,11 +823,13 @@ class TestPrepController extends Controller
 
         $get_test_name = $get_question_title[0]->title;
 
-        $filtered_answers = array_filter($request->selected_answer);
+        //$filtered_answers = array_filter($request->selected_answer);
+		$filtered_answers = isset($request->selected_answer) ? array_filter($request->selected_answer) : [];
         $filtered_guess = isset($request->selected_gusess_details) ? array_filter($request->selected_gusess_details) : [];
         $filtered_flag = isset($request->selected_flag_details) ? array_filter($request->selected_flag_details) : [];
         $filtered_skip = isset($request->selected_skip_details) ? array_filter($request->selected_skip_details) : [];
 
+        $get_question_ids_array = [];
         if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'single') {
             if (isset($filtered_answers) && !empty($filtered_answers)) {
                 $get_question_ids_array = array_keys($filtered_answers);

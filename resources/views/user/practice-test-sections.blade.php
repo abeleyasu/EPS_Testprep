@@ -22,10 +22,26 @@
   });
 
   $(document).on('click','.start_all_section',function(){
-    let test_id = $(this).attr('data-test_id');
-    let option = $('#timingOption').val();
-    let url = $('#site_url').val();
-    $('.start_all_section').attr('href',`${url}/user/practice-test/all/${test_id}?time=${option}`);
+
+    let sectionArrayJson = $('#sectionArrayJsonId').val();
+    var sectionArray = JSON.parse(sectionArrayJson);
+    
+    if (sectionArray.length > 0) {
+      var section_id = sectionArray[0];
+      var next_section_id = (sectionArray.length > 1) ? sectionArray[1] : '';
+      
+      // Remove the first value
+      sectionArray.shift();
+      let remainingSectionArrayJson = JSON.stringify(sectionArray);
+
+      let test_id = $(this).attr('data-test_id');
+      let option = $('#timingOption').val();
+      let url = $('#site_url').val();
+      // $('.start_all_section').attr('href',`${url}/user/practice-test/all/${test_id}?time=${option}`);
+      $('.start_all_section').attr('href',`${url}/user/practice-test/${section_id}?test_id=${test_id}&time=${option}&section=all&sections=${remainingSectionArrayJson}`);
+      // $('.start_all_section').attr('href',`${url}/user/practice-test/all/${section_id}?time=${option}`);
+    }
+    
   });
 </script>
 @endsection
@@ -150,7 +166,9 @@
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
           
-        
+            @php
+                $sectionArray = [];
+            @endphp
           @foreach($testSectionsDetails as $singletestSections)
         
             <!-- START SECTION -->
@@ -216,6 +234,9 @@
                           {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
                           <i class="fa-solid fa-circle-check" style='margin-right:5px'></i> Start Section
                         </a>
+                        @php
+                            array_push($sectionArray, $singletestSections['Sections'][0]['id']);
+                        @endphp
 
                         @endif
                       @elseif(!isset($singletestSections['Sections_question']))
@@ -233,6 +254,9 @@
             <!-- END SECTION -->
 
             @endforeach
+
+            <input type="hidden" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo json_encode($sectionArray);?>">
+
             <li class="timeline-event">
               {{-- <div class="timeline-event-icon bg-success"> --}}
                 {{-- <i class="fa-solid fa-{{++$count}}"></i> --}}
