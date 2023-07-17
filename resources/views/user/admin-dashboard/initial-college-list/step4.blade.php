@@ -94,10 +94,12 @@
           <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
         </div>
         <div class="block-content block-content-full">
-          <div id="userSelectedCollegeList" class="mb-3" role="tablist" aria-multiselectable="true" data-type="search-list" @if($score) data-collegeid="{{ $score['id']  }}" @endif>
-          </div>
-          <div class="text-end">
-            <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
+          <div class="tab-content" id="user-college-list">
+            <div class="setup-content" role="tabpanel" id="deadline-reminder-content-accordian" aria-labeledby="deadline-reminders">
+              <div class="accordion" id="userSelectedCollegeList">
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -155,6 +157,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
       </div>
     </div>
   </div>
@@ -268,11 +271,18 @@
     "hideMethod": "fadeOut"
   }
 
+  $('#user-college-list').on('show.bs.collapse', async function (e) {
+    $('#toggle' + e.target.dataset.id).removeClass('fa-angle-right').addClass('fa-angle-down');
+  })
+
+  $('#user-college-list').on('hidden.bs.collapse', function (e) {
+    $('#toggle' + e.target.dataset.id).removeClass('fa-angle-down').addClass('fa-angle-right');
+  })
+
   const collegeid = @json($college);
 
   let collegeList = []
   $(document).ready(function() {
-    // $('#add-college-modal').modal('show');
     getCollegeList();
   })
 
@@ -302,6 +312,7 @@
                 <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
                   <div class="block-header block-header-tab">
                     <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                      <i class="fa fa-2x fa-angle-right" id="toggle${index}"></i>
                       <i class="fa fa-bars"></i>
                       <span>${data.order_index}</span>
                       <span>${data.college_name}</span>
@@ -310,7 +321,7 @@
                       <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
                     </div>
                   </div>
-                  <div id="accodion-${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
+                  <div id="accodion-${index}" data-id="${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
                     <div class="block-content">
                       <div class="block block-rounded">
                         <div class="mb-3">

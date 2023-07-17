@@ -279,6 +279,16 @@ function resetModal() {
     editScoreDetails = null
 }
 
+function setIncrementalScore(e, type) {
+    if ($('#' + type).val() == 'SAT' || $('#' + type).val() == 'PSAT') {
+        const number = e.target.value;
+        if (number > 200 && number < 800) {
+            const increment = Math.ceil(number / 10) * 10;
+            $('#' + e.target.id).val(increment);
+        }
+    }
+}
+
 $('#test_type').on('change', function (e) {
     hideShowScoreFields(e.target.value);
     $('#test_date').val(editScoreDetails && editScoreDetails.test_type == e.target.value ? editScoreDetails.test_date : '');
@@ -303,6 +313,7 @@ function hideShowScoreFields(value) {
 
 $('.score').on('change', function (e) {
     let score = 0
+    setIncrementalScore(e, 'test_type');
     if ($('#test_type').val() == 'ACT') { 
         score = parseInt($('#english_score').val() ? $('#english_score').val() : 0) + parseInt($('#math_score').val() ? $('#math_score').val() : 0) + parseInt($('#science_score').val() ? $('#science_score').val() : 0) + parseInt($('#science_score').val() ? $('#science_score').val() : 0)
         $('#composite_score').val(score / 4);
@@ -461,6 +472,7 @@ function hideShowGoalSchoolScoreFields(value) {
 
 $('.goal-school-score').on('change', function (e) {
     let score = 0;
+    setIncrementalScore(e, 'goal_test_type');
     if ($('#goal_test_type').val() == 'ACT') {
         score = parseInt($('#goal_english_score').val() ? $('#goal_english_score').val() : 0) + parseInt($('#goal_math_score').val() ? $('#goal_math_score').val() : 0) + parseInt($('#goal_science_score').val() ? $('#goal_science_score').val() : 0) + parseInt($('#goal_reading_score').val() ? $('#goal_reading_score').val() : 0)
         $('#goal_composite_score').val(score / 4);
@@ -510,6 +522,7 @@ function hideShowFinalSchoolScoreFields(value) {
 
 $('.final-school-score').on('change', function (e) {
     let score = 0;
+    setIncrementalScore(e, 'final_test_type');
     if ($('#final_test_type').val() == 'ACT') {
         score = parseInt($('#final_english_score').val() ? $('#final_english_score').val() : 0) + parseInt($('#final_math_score').val() ? $('#final_math_score').val() : 0) + parseInt($('#final_science_score').val() ? $('#final_science_score').val() : 0) + parseInt($('#final_reading_score').val() ? $('#final_reading_score').val() : 0)
         $('#final_composite_score').val(score / 4);

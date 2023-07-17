@@ -34,6 +34,37 @@
                 </div>
             @endif
 
+            <div class="tab-content" id="deadline-reminder-tab-content">
+                <div class="setup-content" role="tabpanel" id="deadline-reminder-content-accordian" aria-labeledby="deadline-reminders">
+                    <div class="accordion deadline-reminder-settings">
+                        <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                            <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#settingsd" aria-expanded="true" aria-controls="settingsd">
+                                <a class="text-white fw-600 collapsed d-flex align-items-center">
+                                    <i class="fa fa-2x fa-angle-right" id="deadline-organizer-icon"></i>
+                                    <i class="si si-settings fa-2x"></i>
+                                    Deadline Reminder Settings
+                                </a>
+                            </div>
+                            <div id="settingsd" class="collapse" aria-labelledby="headingOne" data-parent=".deadline-reminder-settings">
+                                <div class="college-content-wrapper college-content">
+                                    <table class="table table-bordered table-striped table-vcenter mt-2 w-100" id="deadline-notification">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Frequncy</th>
+                                                <th>When</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
             <div class="tab-content" id="myTabContent">
                 <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                     <div class="accordion accordionExample accordionExample2" id="userSelectedCollegeList" data-type="college-application-deadline" @if($college) data-collegeid="{{ $college->id }}" @endif>
@@ -42,24 +73,7 @@
                             <div class="no-data">No data found</div>
                         @endif  
                     </div>
-                    <div class="text-end mt-2">
-                        <button type="button" class="btn btn-sm btn-alt-danger" data-type="college-application-deadline" id="remove-all-college">Remove All College</button>
-                    </div>
                 </div>
-            </div>
-
-            <div id="settings" class="mt-5">
-                <div class="block-title fs-4">Notification Setting</div>
-                <table class="table table-bordered table-striped table-vcenter mt-2" id="deadline-notification">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Frequncy</th>
-                            <th>When</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                </table>
             </div>
         </div>
     </div>
@@ -105,6 +119,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-alt-danger" data-type="college-application-deadline" id="remove-all-college">Remove All College</button>
       </div>
     </div>
   </div>
@@ -230,6 +245,14 @@
         const id = e.target.dataset.id;
         $('#toggle' + id).removeClass('fa-angle-down').addClass('fa-angle-right');
         $('#' + e.target.id).html('')
+    })
+
+    $('#deadline-reminder-tab-content').on('show.bs.collapse', async function (e) {
+        $('#deadline-organizer-icon').removeClass('fa-angle-right').addClass('fa-angle-down');
+    })
+
+    $('#deadline-reminder-tab-content').on('hidden.bs.collapse', function (e) {
+        $('#deadline-organizer-icon').removeClass('fa-angle-down').addClass('fa-angle-right');
     })
 
     $('.chagecollagecheckbox').on('change', function (e) {
@@ -410,6 +433,7 @@
         aaSorting: [],
         searchDelay: 600,
         retrieve: true,
+        bFilter: false,
     });
 
     notificationDatatable.on('draw.dt', function () {

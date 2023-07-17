@@ -160,7 +160,6 @@ $('#remove-all-college').on('click', function (e) {
     confirmButtonText: 'Yes, remove it!'
   }).then((result) => {
     if (result.isConfirmed) {
-      console.log('confirm')
       $.ajax({
         url: core.removeAllCollege,
         method: 'DELETE',
@@ -170,7 +169,7 @@ $('#remove-all-college').on('click', function (e) {
       }).done((response) => {
         if (response.success) {
           toastr.success(response.message)
-          refreshResults(e.to.dataset.type);
+          refreshResults(e.target.dataset.type);
         } else {
           toastr.error(response.message)
         }
