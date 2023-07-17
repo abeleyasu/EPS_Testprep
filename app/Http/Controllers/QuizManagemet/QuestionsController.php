@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\View;
 class QuestionsController extends Controller
 {
     use CRUD;
-    public $format = ['MC'=>'Multiple Choice','TR'=>'Short Text Response'];
+    public $format = ['MC' => 'Multiple Choice', 'TR' => 'Short Text Response'];
 
     public function __construct()
     {
@@ -50,7 +50,7 @@ class QuestionsController extends Controller
     public function store(Request $request)
     {
         $this->createFromRequest(app('App\Models\PracticeQuestion'), $request);
-        return redirect()->route('questions.index')->with('message','Question created successfully');
+        return redirect()->route('questions.index')->with('message', 'Question created successfully');
     }
 
     /**
@@ -63,7 +63,7 @@ class QuestionsController extends Controller
     {
         $passages = Passage::where('type', $format)->get();
 
-        if(!empty($passages)) {
+        if (!empty($passages)) {
             return response()->json(['success' => true, 'passages' => $passages]);
         } else {
             return response()->json(['error' => true, 'message' => "Passages not found"]);
@@ -92,7 +92,7 @@ class QuestionsController extends Controller
     public function update(Request $request, PracticeQuestion $question)
     {
         $this->updateFromRequest($question, $request);
-        return redirect()->route('questions.index')->with('message','Question updated successfully');
+        return redirect()->route('questions.index')->with('message', 'Question updated successfully');
     }
 
     /**
@@ -104,6 +104,6 @@ class QuestionsController extends Controller
     public function destroy(PracticeQuestion $question)
     {
         $question->delete();
-        return redirect()->route('questions.index')->with('message','Question deleted successfully');
+        return redirect()->route('questions.index')->with('message', 'Question deleted successfully');
     }
 }

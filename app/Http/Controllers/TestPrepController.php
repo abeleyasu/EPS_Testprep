@@ -1874,7 +1874,7 @@ class TestPrepController extends Controller
                         'checkbox_values' => $question['checkbox_values'],
                         'question_type_values' => $question['question_type_values'],
                         'question_order' => $questionOrder,
-                        'selfMade' => 1
+                        'selfMade' => "1"
                     ]);
                 }
             } else {
@@ -1983,15 +1983,24 @@ class TestPrepController extends Controller
         }
         $countQuestion[] = ['count' => $no_section ? 0 : $allUnaswered, 'questions' => $no_section ? [] : $allUnasweredArray, 'type' => 'unanswered'];
         $countQuestion[] = ['count' => $no_section ? 0 : $all, 'questions' => '', 'type' => 'all'];
-        $super_category = SuperCategory::where('format', $format)->where('section_type', $section_type)->where('selfMade', 1)->get();
+        $super_category = SuperCategory::where('format', $format)
+            ->where('section_type', $section_type)
+            ->where('selfMade', 1)
+            ->get();
         $category = [];
         $questionType = [];
         foreach ($super_category as $super) {
             $superId = array($super->id);
-            $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)->where('section_type', $section_type)->where('selfMade', 1)->get(['id', 'category_type_title']);
+            $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
+                ->where('section_type', $section_type)
+                ->where('selfMade', 1)
+                ->get(['id', 'category_type_title']);
             foreach ($category[$super->id] as $categories) {
                 $categoryId = array($categories['id']);
-                $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)->where('selfMade', 1)->whereIn('category_id', $categoryId)->get(['id', 'question_type_title']);
+                $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
+                    ->where('selfMade', 1)
+                    ->whereIn('category_id', $categoryId)
+                    ->get(['id', 'question_type_title']);
             }
         }
         return response()->json(['super_category' => $super_category, 'category' => $category, 'questionType' => $questionType, 'count' => $countQuestion]);
@@ -2075,7 +2084,7 @@ class TestPrepController extends Controller
                     'checkbox_values' => $question['checkbox_values'],
                     'question_type_values' => $question['question_type_values'],
                     'question_order' => $questionOrder,
-                    'selfMade' => 1
+                    'selfMade' => "1"
                 ]);
 
                 foreach ($super_category_values as $key => $val) {
