@@ -36,12 +36,12 @@
         }
 
         /* #addNewTypes .select2-container--default,.add_question_type_select .select2-container--default,.removeNewTypes .select2-container--default,.add_question_type_select .select2-container--default {
-                                                                        width: 305px !important;
-                                                                    }
-                                                                    .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
-                                                                        height: 22px;
-                                                                        margin: 6px 10px 0;
-                                                                    } */
+                                                                            width: 305px !important;
+                                                                        }
+                                                                        .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
+                                                                            height: 22px;
+                                                                            margin: 6px 10px 0;
+                                                                        } */
         button {
             background-color: #4CAF50;
             color: #ffffff;
@@ -287,8 +287,8 @@
         }
 
         /* .input-container {
-                                                                        margin-bottom: 10px;
-                                                                    } */
+                                                                            margin-bottom: 10px;
+                                                                        } */
 
 
 
@@ -433,8 +433,8 @@
         }
 
         /* .rating-tag .select2-container--default .select2-selection--multiple{
-                                                                        padding: 5px !important;
-                                                                    } */
+                                                                            padding: 5px !important;
+                                                                        } */
         .type-check[type="checkbox"] {
             width: 30px;
             height: 30px;
@@ -2311,9 +2311,9 @@
                                         <option value="2">Fill Choice</option>
                                     </select>
                                     <!--<a href="javascript:;" onClick="editMultiChoice(1);" class="switchMulti">Multi Choice</a>
-                                                                                            </label>
-                                                                                            <label class="form-label" style="font-size: 13px;">
-                                                                                                <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
+                                                                                                </label>
+                                                                                                <label class="form-label" style="font-size: 13px;">
+                                                                                                    <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
                                 </label>
 
                                 <div class="multi_field withOutFillOpt" style="display: none">
@@ -2724,15 +2724,6 @@
             let id = $(data).attr('data-id');
             let super_category = '';
             let category = '';
-            // if(is_edit == true){
-            //     // super_category = $('#editQuestionMultiModal select[name="super_category_edit"]').val();
-            //     super_category = $(`#editQuestionMultiModal #edit_super_category_${id}`).val();
-            //     category = $(`#editQuestionMultiModal #edit_category_type_${id}`).val();
-            // } else {
-            //     // super_category = $('#questionMultiModal select[name="super_category_create"]').val();
-            //     super_category = $(`#questionMultiModal #super_category_create_${id}`).val();
-            //     category = $(`#questionMultiModal #category_type_${id}`).val();
-            // }
             super_category = $(data).closest('.add_question_type_select').siblings('.rating-tag').find(
                 'select.superCategory').first().val();
             category = $(data).closest('.add_question_type_select').siblings('.category-custom').find('select.categoryType')
