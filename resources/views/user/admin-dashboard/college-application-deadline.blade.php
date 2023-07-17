@@ -469,24 +469,26 @@
         });
     });
 
-    $('#notification-form').validate({
-        rules: {
-            frequency: {
-                required: true,
+    $(document).ready(function () {
+        $('#notification-form').validate({
+            rules: {
+                frequency: {
+                    required: true,
+                },
+                when: {
+                    required: true,
+                },
             },
-            when: {
-                required: true,
+            messages: {
+                frequency: {
+                    required: "Please select frequency",
+                },
+                when: {
+                    required: "Please select when",
+                },
             },
-        },
-        messages: {
-            frequency: {
-                required: "Please select frequency",
-            },
-            when: {
-                required: "Please select when",
-            },
-        },
-        ...common_error_function,
+            ...common_error_function,
+        })
     })
 
     $('#save-notification-settings').on('click', function (e) {
