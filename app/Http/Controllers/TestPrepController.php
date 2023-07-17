@@ -1811,6 +1811,7 @@ class TestPrepController extends Controller
     public function generateCustomQuiz(Request $request)
     {
         $selectedCategories = $request->input("selectedCategories") ?? [];
+        $selectedQuestionTypes = $request->input("selectedQuestionTypes") ?? [];
         $test_type = $request->input("test_type") ?? '';
         $test_id = $request->input("test_id") ?? '';
 
@@ -1821,6 +1822,8 @@ class TestPrepController extends Controller
             $query->leftJoin('question_details', 'question_details.question_id', '=', 'practice_questions.id');
 
             $query->whereIn("question_details.category_type", $selectedCategories);
+            $query->whereIn("question_details.question_type", $selectedQuestionTypes);
+            $query->where("practice_questions.selfMade", "0");
 
             $questions = $query->get();
 
