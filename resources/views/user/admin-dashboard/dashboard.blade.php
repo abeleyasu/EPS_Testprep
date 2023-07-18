@@ -32,7 +32,7 @@
               <img class="college-image" src="{{ asset('static-image/no-image.jpg') }}" alt="">
             @endif
             <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{$key + 1}}</div>
-            <a class="text-dark">{{ $deadline['college_name'] }}</a>
+            <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
             @if($deadline['college_deadline']['admissions_deadline'])
               <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
               <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline'] }}</a>
