@@ -298,9 +298,6 @@ class UserController extends Controller
 		];
 		$validator = Validator::make($request->all(), $rules, $messages);
 		if ($validator->fails()) {
-			$errors = $validator->errors();
-			dd($errors);
-			dd('called');
 			return redirect()->back()
 				->withErrors($validator)
 				->withInput();
@@ -404,6 +401,8 @@ class UserController extends Controller
 
 		$validator = Validator::make($request->all(), $rules, $messages);
 		if ($validator->fails()) {
+			$errors = $validator->errors();
+			dd($errors);
 			return redirect()->back()
 				->withErrors($validator)
 				->withInput();

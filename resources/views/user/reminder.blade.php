@@ -239,7 +239,7 @@
                                             <input type="text" class="custom-flatpickr-time form-control" id="when_time_{{ $reminder->id }}" name="when_time_{{ $reminder->id }}"  data-enable-time="true" data-no-calendar="true" value="{{ $reminder->when_time }}" >
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control @error('before_time') is-invalid error @enderror" id="before_time" name="before_time" placeholder="Before Time" value="{{ $reminder->before_time }}">
+                                            <input type="text" class="form-control @error('before_time') is-invalid error @enderror" id="before_time_{{ $reminder->id }}" name="before_time_{{ $reminder->id }}" placeholder="Before Time" value="{{ $reminder->before_time }}">
                                             @error('before_time')
                                                 <span class="invalid-feedback" role="alert">
                                                     {{ $message }}
@@ -247,7 +247,7 @@
                                             @enderror
                                         </td>
                                         <td>
-                                            <select class="form-select @error('before_frequncy') is-invalid error @enderror" name="before_frequncy" id="before_frequncy" style="width: 100%;" data-placeholder="Select Before frequency">
+                                            <select class="form-select @error('before_frequncy') is-invalid error @enderror" name="before_frequncy_{{ $reminder->id }}" id="before_frequncy_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select Before frequency">
                                                 <option value="">Select</option>
                                                 @foreach(config('constants.reminder_brefore_frequncy') as $key => $frequency)
                                                     <option value="{{ $frequency }}" @if($reminder->before_frequncy == $frequency) selected @endif> {{ $frequency }} </option>
