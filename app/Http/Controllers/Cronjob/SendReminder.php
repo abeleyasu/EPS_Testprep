@@ -78,8 +78,23 @@ class SendReminder extends Controller
             $currentDateTime = $currentDate->copy();
             Log::channel('reminder')->info("currentDateTime = ".$currentDateTime->format('Y-m-d H:i'));
             Log::channel('reminder')->info("Carbon now = ".$currentTimeInUserTimezone->format('Y-m-d H:i'));
-            
-            if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
+
+            if ($reminder->before_time && $reminder->before_frequncy || $reminder->before_time != '' && $reminder->before_frequncy != '') {
+                if ($reminder->before_frequncy == 'hour') {
+                    $currentDateTime->subHours($reminder->before_time);
+                } else if ($reminder->before_frequncy == 'day') {
+                    $currentDateTime->subDays($reminder->before_time);
+                } else if ($reminder->before_frequncy == 'week') {
+                    $currentDateTime->subWeeks($reminder->before_time);
+                } else if ($reminder->before_frequncy == 'month') {
+                    $currentDateTime->subMonths($reminder->before_time);
+                }
+
+                if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) { 
+                    $this->sendNotfiction($method, $reminder, $user);
+                    break;
+                }
+            }  else if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) {
                 $this->sendNotfiction($method, $reminder, $user);
                 break;
             }
@@ -97,9 +112,6 @@ class SendReminder extends Controller
     public function sendOneTimeNotification($reminder, $user_settings) {
         Log::channel('reminder')->info("reminder = $reminder");
         $user = User::where('id', $reminder->user_id)->with('deadlineReminderSettings')->first();
-
-        // dd($user->deadlineReminderSettings);
-        // dd($user->toArray());
 
         $method = strtolower($reminder->method);
         $currentTimeInUserTimezone = $this->getUserTimeZoneTime($user_settings);

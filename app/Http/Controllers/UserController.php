@@ -280,7 +280,9 @@ class UserController extends Controller
 			'method' => 'required',
 			'when_time' => 'required',
 			'start_date' => 'required',
-			'end_date' => 'required'
+			'end_date' => 'required',
+			'before_time' => 'required|numeric',
+			'before_frequncy' => 'required',
 		];
 
 		$messages = [
@@ -291,9 +293,14 @@ class UserController extends Controller
 			"when_time.required" => "When Time is required",
 			"start_date.required" => "Start Date is required",
 			"end_date.required" => "End Date is required",
+			"before_time.required" => "Before Time is required",
+			"before_frequncy.required" => "Before Frequency is required",
 		];
 		$validator = Validator::make($request->all(), $rules, $messages);
 		if ($validator->fails()) {
+			$errors = $validator->errors();
+			dd($errors);
+			dd('called');
 			return redirect()->back()
 				->withErrors($validator)
 				->withInput();
@@ -377,7 +384,9 @@ class UserController extends Controller
 			'method_'.$lastKeyPart => 'required',
 			'when_time_'.$lastKeyPart => 'required',
 			'start_date_'.$lastKeyPart => 'required',
-			'end_date_'.$lastKeyPart => 'required'
+			'end_date_'.$lastKeyPart => 'required',
+			'before_time_'.$lastKeyPart => 'required|numeric',
+			'before_frequncy_'.$lastKeyPart => 'required',
 		];
 
 		$messages = [
@@ -388,6 +397,8 @@ class UserController extends Controller
 			"when_time_$lastKeyPart.required" => "When Time is required",
 			"start_date_$lastKeyPart.required" => "Start Date is required",
 			"end_date_$lastKeyPart.required" => "End Date is required",
+			"before_time_$lastKeyPart.required" => "Before Time is required",
+			"before_frequncy_$lastKeyPart.required" => "Before Frequency is required",
 		];
 		$reminder_frequency = $reminder->frequency;
 

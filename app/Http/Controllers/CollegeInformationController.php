@@ -120,6 +120,13 @@ class CollegeInformationController extends Controller
 
         $request->validate($rules, $customMessages);
         $data = collect($request->all())->except(['_token', 'id'])->toArray();
+        if (isset($data['college_icon'])) {
+            $image = time().'.'.$data['college_icon']->extension();
+            $request->college_icon->move(public_path('college_icon'), $image);
+            $data['college_icon'] = $image;
+        } else {
+            unset($data['college_icon']);
+        }
         $college_detail = CollegeInformation::where('id', $request->id)->update($data);
         return redirect()->route('admin.admission-management.college-information.index')->with('success', 'College information updated successfully.');
     }

@@ -1413,6 +1413,12 @@ return [
         'day',
         'week',
         'month'
+    ],
+    'reminder_brefore_frequncy' => [
+        'hour',
+        'day',
+        'week',
+        'month'
     ]
 ]
 ?>

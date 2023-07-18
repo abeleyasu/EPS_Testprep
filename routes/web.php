@@ -60,6 +60,7 @@ use App\Http\Controllers\Cronjob\CollegeMajorInformationc;
 use App\Http\Controllers\SelfMadeTest\SelfMadeTestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserDeadlineNotificationSettingsController;
+use App\Http\Controllers\AdmissionDashBoard;
 
 /*
 |--------------------------------------------------------------------------
@@ -305,6 +306,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         });
 
         Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
+
+            Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+
             Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.', 'middleware' => ['subscription_valid:access-high-school-resume']], function () {
                 Route::get('/list', [PreviewController::class, 'list'])->name('list');
                 Route::controller(PersonalInfoController::class)->group(function () {

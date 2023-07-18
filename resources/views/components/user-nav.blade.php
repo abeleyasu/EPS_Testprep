@@ -109,7 +109,7 @@
                     <ul class="nav-main-submenu">
 
                         <li class="nav-main-item">
-                            <a class="nav-main-link" href="#">
+                            <a class="nav-main-link {{ Route::is('admin-dashboard.dashboard') ? 'active' : '' }}" href="{{ route('admin-dashboard.dashboard') }}">
                                 <i class="nav-main-link-icon si si-speedometer"></i>
                                 <span class="nav-main-link-name">Dashboard</span>
                             </a>
