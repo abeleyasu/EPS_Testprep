@@ -7,6 +7,7 @@ use App\Models\CollegeDetails;
 use App\Models\CollegeList;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\Worksheet;
 
 class AdmissionDashBoard extends Controller
 {
@@ -28,10 +29,10 @@ class AdmissionDashBoard extends Controller
         } else {
             $college_list_deadline = [];
         }
-        // dd($college_list_deadline);
+        $worksheet_data = Worksheet::all();
         return view('user.admin-dashboard.dashboard', [
             'college_list_deadline' => $college_list_deadline,
-            'count' => count($college_list_deadline),
+            'worksheet_data' => $worksheet_data,
         ]);
     }
 }

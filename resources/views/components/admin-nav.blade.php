@@ -272,6 +272,19 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-main-item {{ Route::is(['admin.worksheet-management.*']) ? 'open' : ''}}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon fas fa-cogs"></i>
+                        <span class="nav-main-link-name">Worksheet Management</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item {{ Route::is(['admin.worksheet-management.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link {{Route::is('admin.worksheet-management.index') ? 'active' : ''}}" href="{{route('admin.worksheet-management.index')}}">
+                                <span class="nav-main-link-name">Worksheet List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

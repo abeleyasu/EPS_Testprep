@@ -61,6 +61,7 @@ use App\Http\Controllers\SelfMadeTest\SelfMadeTestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserDeadlineNotificationSettingsController;
 use App\Http\Controllers\AdmissionDashBoard;
+use App\Http\Controllers\WorksheetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +78,6 @@ use App\Http\Controllers\AdmissionDashBoard;
 //     Session::flush();
 //     return redirect('login');
 // })->name('home');
-Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
@@ -110,6 +110,17 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                     Route::get('/edit/{id}', 'editView')->name('edit');
                     Route::post('/edit', 'update')->name('update');
                 });
+            });
+        });
+
+        Route::group(['prefix' => 'college-information', 'as' => 'admin.worksheet-management.'], function () {
+            Route::controller(WorksheetController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/edit', 'update')->name('update');
+                Route::delete('/{id}', 'delete')->name('delete');
             });
         });
 
@@ -485,6 +496,7 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
     Route::get('/pricing', [PlanController::class, 'getPlanForNonUser'])->name('simple-pricing');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 });
 
 Route::group(['middleware' => ['auth']], function () {

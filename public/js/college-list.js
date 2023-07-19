@@ -105,7 +105,7 @@ $('.js-data-example-ajax').select2({
 
 function refreshResults(type) {
   if (type === 'search-list') {
-    getCollegeList();
+    getHideCollegeList();
   } else if (type === 'cost-comparison') {
     getCollegeListForCostComparison();
     $('#costcomparison-summary').DataTable().ajax.reload();

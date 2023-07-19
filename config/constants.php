@@ -1415,6 +1415,7 @@ return [
         'month'
     ],
     'reminder_brefore_frequncy' => [
+        'minute',
         'hour',
         'day',
         'week',

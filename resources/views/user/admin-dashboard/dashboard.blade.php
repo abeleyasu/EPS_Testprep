@@ -66,14 +66,14 @@
                 <div class="block-header block-header-tab" role="tab" id="faq12_h1">
                   <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-1" href="#college-application-resume" aria-expanded="true" aria-controls="college-application-resume">
                     <i class="nav-main-link-icon fa fa-file"></i> 
-                    College Application Resume
+                    High School Resume
                   </a>
                 </div>
                 <div id="college-application-resume" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-1">
                   <div class="block-content">
                     <div>Your College Application Resume is an important step in crafting your profile for college admissions committees. Get started by clicking the link below.</div>
                     <div>Click to begin or edit your College Application Resume</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Application Resume</button>
+                    <a href="{{ route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>High School Resume</a>
                   </div>
                 </div>
               </div>
@@ -88,7 +88,7 @@
                   <div class="block-content">
                     <div>Start a list of colleges that you're interested in attending. Fill out your high school statistics (GPA & test scores) and compare them with the college's typical accepted statistics. Rank the colleges based on your research and preferences. Apply Smart, Match, or Reach labels to each of them to make sure you have a good mix of schools.</div> 
                     <div>Click to begin or edit your list</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Initial College List</button>
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Initial College List</a>
                   </div>
                 </div>
               </div>
@@ -103,7 +103,7 @@
                   <div class="block-content">
                     <div>Input deadlines for the colleges you're interested in attending. Set reminders for these deadlines to stay on track with your applications.</div>
                     <div>Click to start inputting application deadlines</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Application Deadline Organizer</button>
+                    <a href="{{ route('admin-dashboard.collegeApplicationDeadline') }}" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Application Deadline Organizer</a>
                   </div>
                 </div>
               </div>
@@ -118,7 +118,7 @@
                   <div class="block-content">
                     <div>Input various costs of each college you're considering to compare the difference in final cost. This tool provides a more realistic look at the costs because you can input tuition, fees, scholarships, and more that are unique to each college.</div>
                     <div>Click to start comparing college costs</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Cost Comparison</button>
+                    <a href="{{ route('admin-dashboard.cost_comparison') }}" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Cost Comparison</a>
                   </div>
                 </div>
               </div>
@@ -133,7 +133,7 @@
                   <div class="block-content">
                     <div>Your High School Resume is an important step in crafting your profile for college admissions committees. Get started by clicking the link below.</div>
                     <div>Click to begin your career search</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Career Exploration</button>
+                    <a href="{{ route('admin-dashboard.careerExploration') }}" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Career Exploration</a>
                   </div>
                 </div>
               </div>
@@ -148,7 +148,7 @@
                   <div class="block-content">
                     <div>Your College Application Resume is an important step in crafting your profile for college admissions committees. Get started by clicking the link below.</div>
                     <div>Click to begin your College Search</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Search</button>
+                    <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Search</a>
                   </div>
                 </div>
               </div>
@@ -163,51 +163,29 @@
           </div>
           <div class="block-content">
             <div id="section-2" class="mb-5" role="tablist" aria-multiselectable="true">
-              <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                <div class="block-header block-header-tab" role="tab" id="faq12_h1">
-                  <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#tips-for-college-fairs" aria-expanded="true" aria-controls="tips-for-college-fairs">
-                    <i class="nav-main-link-icon fa fa-file"></i> 
-                    Tips for College Fairs
-                  </a>
-                </div>
-                <div id="tips-for-college-fairs" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-2">
-                  <div class="block-content">
-                    <div>Your College Application Resume is an important step in crafting your profile for college admissions committees. Get started by clicking the link below.</div>
-                    <div>Click to begin or edit your College Application Resume</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Application Resume</button>
+              @if(count($worksheet_data) > 0)
+                @foreach($worksheet_data as $worksheet)
+                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                  <div class="block-header block-header-tab" role="tab" id="faq12_h1">
+                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#tips-for-college-fairs" aria-expanded="true" aria-controls="tips-for-college-fairs">
+                      <i class="nav-main-link-icon fa fa-file"></i> 
+                      {{ $worksheet->name }}
+                    </a>
+                  </div>
+                  <div id="tips-for-college-fairs" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-2">
+                    <div class="block-content">
+                      <div>{{ $worksheet->description }}</div>
+                      <div>Click the below to download the worksheet</div>
+                      <a href="{{ asset('uploads/worksheet/' . $worksheet->sheet_name) }}" download="sheet.csv" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray download-worksheet"></i>Download Worksheet</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                <div class="block-header block-header-tab" role="tab" id="faq5_h2">
-                  <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#tips-for-college-visits" aria-expanded="true" aria-controls="tips-for-college-visits">
-                    <i class="nav-main-link-icon fa fa-list-check"></i> 
-                    Tips for College Visits
-                  </a>
+                @endforeach
+              @else
+                <div class="no-data mb-4">
+                  No worksheet found
                 </div>
-                <div id="tips-for-college-visits" class="collapse" role="tabpanel" aria-labelledby="faq5_h2" data-bs-parent="#section-2">
-                  <div class="block-content">
-                    <div>Start a list of colleges that you're interested in attending. Fill out your high school statistics (GPA & test scores) and compare them with the college's typical accepted statistics. Rank the colleges based on your research and preferences. Apply Smart, Match, or Reach labels to each of them to make sure you have a good mix of schools. </div>
-                    <div>Click to begin or edit your list</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>Initial College List</button>
-                  </div>
-                </div>
-              </div>
-              <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                <div class="block-header block-header-tab" role="tab" id="faq3_h2">
-                  <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#college-visit-evaluations" aria-expanded="true" aria-controls="college-visit-evaluations">
-                    <i class="nav-main-link-icon fa fa-timeline"></i> 
-                    College Visit Evaluations
-                  </a>
-                </div>
-                <div id="college-visit-evaluations" class="collapse" role="tabpanel" aria-labelledby="faq3_h2" data-bs-parent="#section-2">
-                  <div class="block-content">
-                    <div>Input deadlines for the colleges you're interested in attending. Set reminders for these deadlines to stay on track with your applications.</div>
-                    <div>Click to start inputting application deadlines</div>
-                    <button type="button"class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray"></i>College Application Deadline Organizer</button>
-                  </div>
-                </div>
-              </div>
+              @endif
             </div>
           </div>
         </div>
@@ -319,6 +297,40 @@
     font-size: 15px;
     font-weight: 500;
   }
+
+  .owl-carousel .owl-nav button.owl-prev {
+    background: #d9e8c3;
+    color: #000;
+    border: 1px solid #d9e8c3;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .owl-carousel .owl-nav button.owl-next {
+    background: #d9e8c3;
+    color: #000;
+    border: 1px solid #d9e8c3;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    transform: translateY(-50%);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+  }
 </style>
 @endsection
 
@@ -331,6 +343,8 @@
     items: 3,
     animateIn: "fadeIn",
     animateOut: "fadeOut",
+    dots: false,
+    nav: true,
     responsive: {
       980: {
         items: 3,

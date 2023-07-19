@@ -940,7 +940,9 @@ class InititalCollegeListController extends Controller
     public function deleteAllCollege() {
         try {
             $user = Auth::user();
-            $colleges = CollegeList::where('user_id', $user->id)->with('college_list_details')->first();
+            $colleges = CollegeList::where('user_id', $user->id)->with(['college_list_details' => function ($q) {
+                $q->where('is_active', false);
+            }])->first();
             if ($colleges && $colleges->user_id != $user->id) {
                 return response()->json([
                     'success' => false,

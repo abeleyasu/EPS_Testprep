@@ -162,7 +162,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-sm btn-alt-danger" data-type="cost-comparison" id="remove-all-college">Remove All College</button>
+        <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
       </div>
     </div>
   </div>

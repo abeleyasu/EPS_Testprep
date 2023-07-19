@@ -88,6 +88,8 @@ class SendReminder extends Controller
                     $currentDateTime->subWeeks($reminder->before_time);
                 } else if ($reminder->before_frequncy == 'month') {
                     $currentDateTime->subMonths($reminder->before_time);
+                } else if ($reminder->before_frequncy == 'minute') {
+                    $currentDateTime->subMinutes($reminder->before_time);
                 }
 
                 if ($currentTimeInUserTimezone->format('Y-m-d H:i') === $currentDateTime->format('Y-m-d H:i')) { 
