@@ -278,12 +278,6 @@ class PracticeQuestionController extends Controller
             $tag_id = QuestionTag::where('title', $value)->orWhere('id', $value)->first();
         }
         $question->tags = $tag_id['id'];
-        // if(isset($request->tags)){
-        // 	$tags = Arr::flatten(json_decode($request->tags, true));
-        // 	$question->tags = implode(",", $tags);
-        // } else{
-        // 	$question->tags = $request->tags;
-        // }
 
         $question_type = $request->question_type;
         if ($question_type == 'choiceOneInFive_Odd') {
@@ -304,7 +298,6 @@ class PracticeQuestionController extends Controller
 
         $checkbox_values = [];
         foreach ($ans_choices as $choice) {
-            // $ctValue = $request->{"ct_checkbox_values_$choice"};
             $ctValue = $request->input('ct_checkbox_values')[$choice];
             $checkbox_values[$choice] = $ctValue;
         }
@@ -370,8 +363,8 @@ class PracticeQuestionController extends Controller
             $i++;
         }
 
-        $question_details = QuestionDetails::where('question_id', $question)->get();
-        if (!empty($question_details)) {
+        $question_details = QuestionDetails::where('question_id', $question->id);
+        if ($question_details->count()) {
             $question_details->delete();
         }
         QuestionDetails::insert($insertValues);
