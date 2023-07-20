@@ -21,13 +21,9 @@ $(function () {
     };
     let selectedCategories = [];
     let selectedQuestionTypes = [];
+    var count_data = {};
     $(".generate_custom_quiz_two").hide();
     $(".add_to_custom_quiz").change(function () {
-        console.log(
-            $(this).val(),
-            $(this).attr("data-category-id"),
-            $(this).is(":checked")
-        );
         const element = $(this);
         const dataId = element.attr("data-category-id");
         const questionType = element.attr("data-question-type");
@@ -35,6 +31,7 @@ $(function () {
             //add
             selectedCategories.push(dataId);
             selectedQuestionTypes.push(questionType);
+            getTypeFunctionality();
         } else {
             //remove
             selectedCategories = selectedCategories.filter(
@@ -57,32 +54,102 @@ $(function () {
         }
     });
 
-    $("#generate_custom_quiz").on("click", function (e) {
+    $("#generate-quiz").on("click", function (e) {
         e.preventDefault();
-        const test_type = $("#test_type").val();
-        const test_id = $("#test_id").val();
-        if (selectedCategories.length > 0) {
-            $.ajax({
-                type: "post",
-                url: "/user/generate-custom-quiz",
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
-                data: {
-                    selectedCategories,
-                    selectedQuestionTypes,
-                    test_type,
-                    test_id,
-                },
-                success: function (res) {
-                    window.location.href = `/user/practice-test-sections/${res.test_id}`;
-                },
-            });
+
+        let question_ids = [];
+
+        let no_of_questions = $("#no_of_questions").val();
+
+        let checkValue4 = [];
+
+        let i = 1;
+
+        $(".diff_rating :checkbox:checked").each(function () {
+            if ($(this).prop("checked")) {
+                checkValue4.push($(this).val());
+                question_ids = question_ids.concat(count_data[i]?.questions);
+            }
+            i++;
+        });
+
+        if ($("#all_questions").is(":checked")) {
+            question_ids = count_data[5]?.questions;
         } else {
-            toastr.error("Please select atleast 1 option to continue.");
+            no_of_questions = "";
         }
-        console.log(selectedCategories);
+
+        toastr.options = {
+            progressBar: true,
+            closeButton: true,
+            timeOut: 4000,
+        };
+        if (checkValue4.length == 0) {
+            toastr.error("Please choose the difficulty rating!");
+            return false;
+        }
+        let questions_type = $(".questions_type").val();
+
+        $.ajax({
+            type: "POST",
+            url: GETSELFMADEQUESTION_ROUTE,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                _token: $('meta[name="csrf-token"]').attr("content"),
+                questions_type,
+                questions_type,
+                question_ids,
+                test_type: $("#test_type").val(),
+                section_type: $("#practice_test_type").val(),
+                no_of_questions,
+            },
+            success: function (res) {
+                if (res.status) {
+                    let url = $("#site_url").val();
+                    window.location.href = `${url}/user/practice-test-sections/${res.test_id}`;
+                } else {
+                    toastr.options = {
+                        progressBar: true,
+                        closeButton: true,
+                        timeOut: 4000,
+                    };
+                    toastr.error("No questions for this difficulty rating!");
+                    return false;
+                }
+            },
+        });
     });
+
+    function getTypeFunctionality() {
+        let diff_rating = [];
+        $(".selected-item").each(function () {
+            if ($(this).prop("checked")) {
+                diff_rating.push($(this).val());
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: GETTYPES_ROUTE,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                test_type: $("#test_type").val(),
+                section_type: $("#practice_test_type").val(),
+                super_category: [],
+                question_category: selectedCategories,
+                question_type: selectedQuestionTypes,
+                diff_rating: diff_rating,
+            },
+            success: function (res) {
+                count_data = res.count;
+                $.each(res.count, function (i, v) {
+                    $(`.diff_${i}`).html(`(${v.count})`);
+                });
+            },
+        });
+    }
 });

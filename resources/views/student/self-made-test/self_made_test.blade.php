@@ -137,6 +137,10 @@
                                                                     class="questions_type" checked>
                                                                 <label for="all_questions" class="ms-2">All
                                                                     Questions <span class="ms-2 diff_6"></label>
+                                                                <input type="number" name="no_of_questions"
+                                                                    id="no_of_questions"
+                                                                    placeholder="Enter number of questions"
+                                                                    class="no_of_questions" checked>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -351,6 +355,7 @@
 
             let question_ids = [];
 
+            let no_of_questions = $("#no_of_questions").val();
 
             $('.test-category .super_category').each(function() {
                 if ($(this).prop('checked')) {
@@ -384,6 +389,8 @@
 
             if ($("#all_questions").is(":checked")) {
                 question_ids = count_data[5]?.questions;
+            } else {
+                no_of_questions = '';
             }
 
             let checkValue5 = [];
@@ -419,7 +426,8 @@
                     section_type: checkValue5,
                     test_type: val,
                     questions_type,
-                    question_ids
+                    question_ids,
+                    no_of_questions
                 },
                 success: function(res) {
                     if (res.status) {
