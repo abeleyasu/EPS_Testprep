@@ -839,6 +839,7 @@ class TestPrepController extends Controller
                 $userAnswers = new UserAnswers();
                 $userAnswers->user_id = $current_user_id;
                 $userAnswers->section_id = $get_section_id;
+                $userAnswers->skip = '';
                 $userAnswers->question_id = json_encode($get_question_ids_array);
                 $userAnswers->answer = json_encode($filtered_answers);
                 $userAnswers->guess = json_encode($filtered_guess);
@@ -1985,6 +1986,7 @@ class TestPrepController extends Controller
     public function getSelfMadeTestQuestion(Request $request)
     {
         $question_ids = $request['question_ids'] ?? [];
+        $no_of_questions = $request['no_of_questions'] ?? [];
 
         if (empty($question_ids)) {
             return response()->json(['questions' => '', 'message' => 'No Questions Available', 'status' => false]);
@@ -1995,6 +1997,9 @@ class TestPrepController extends Controller
 
         $query->whereIn("practice_questions.id", $question_ids);
 
+        if (!empty($no_of_questions)) {
+            $query->limit($no_of_questions);
+        }
         $questions = $query->get();
 
         if (isset($questions) && !$questions->isEmpty()) {
