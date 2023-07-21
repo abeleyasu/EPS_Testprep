@@ -279,3 +279,7 @@
 		padding-left: 0px;
 	}
 }
+.super-category-div, .category-div{
+    display: inline-block;
+    padding: 3px;
+}
