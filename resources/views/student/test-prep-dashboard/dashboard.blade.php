@@ -28,18 +28,39 @@
             <div class="content content-boxed">
                 <div class="row text-center">
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow" style="background: #000;">
+                            <a class="btn-block-option editPrimaryTest" href="javascript:void(0)" style="float: right">
+                                <i class="fas fa-edit" style="color: #0099ff;"></i>
+                            </a>
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Primary Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">ACT</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase selectedPrimaryTest">
+                                {!! optional($getTestScores)->primary_test_type ?? '<span style="font-size: 10px;">Please input your primary test by clicking on <i class="fas fa-edit" style="color: #0099ff;"></i> button</span>' !!}
+                            </div>
+                            <div id="editDropdownContainer" style="display: none;">
+                                <select id="testTypeDropdown">
+                                    <option value="">Select</option>
+                                    <option value="ACT" {{ optional($getTestScores)->primary_test_type === 'ACT' ? 'selected' : '' }}>ACT</option>
+                                    <option value="SAT" {{ optional($getTestScores)->primary_test_type === 'SAT' ? 'selected' : '' }}>SAT</option>
+                                    <option value="PSAT" {{ optional($getTestScores)->primary_test_type === 'PSAT' ? 'selected' : '' }}>PSAT</option>
+                                </select>
+                            </div>
                             <br>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="block block-bordered shadow" style="background: #000">
+                            <a class="btn-block-option editInitialScore" href="javascript:void(0)" style="float: right">
+                                <i class="fas fa-edit" style="color: #0099ff;"></i>
+                            </a>
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Initial Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">27</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase initialScoreCls">
+                                {{ optional($getTestScores)->initial_score ?? '0' }}
+                            </div>
+                            <div id="editInitialScoreContainer" style="display: none;">
+                                <input style="width: 50px; text-align: center;" type="text" name="txtinitialScore" id="txtinitialScore" value="{{ optional($getTestScores)->initial_score ?? '0' }}" autocomplete="off">
+                            </div>
                             <br>
                         </div>
                     </div>
@@ -47,15 +68,25 @@
                         <div class="block block-bordered shadow" style="background: #000">
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Last Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">31</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase lastTestCls">
+                                {{ optional($getTestScores)->last_test_score ?? '0' }}
+                            </div>
                             <br>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
                         <div class="block block-bordered shadow" style="background: #000">
+                            <a class="btn-block-option editGoalScore" href="javascript:void(0)" style="float: right">
+                                <i class="fas fa-edit" style="color: #0099ff;"></i>
+                            </a>
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Goal Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">34</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase goalScoreCls">
+                                {{ optional($getTestScores)->goal_score ?? '0' }}
+                            </div>
+                            <div id="editGoalScoreContainer" style="display: none;">
+                                <input style="width: 50px; text-align: center;" type="text" name="txtgoleScore" id="txtgoalScore" value="{{ optional($getTestScores)->goal_score ?? '0' }}" autocomplete="off">
+                            </div>
                             <br>
                         </div>
                     </div>
