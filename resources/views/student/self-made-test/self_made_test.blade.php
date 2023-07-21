@@ -267,11 +267,12 @@
                     let super_category = ``;
                     $.each(res.super_category, function(i, v) {
                         const super_category_id = v['id'];
-                        super_category += `<div class="mb-2 criteria">`;
+                        super_category += `<div class="mb-2 criteria pb-3">`;
                         super_category +=
-                            `<input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
+                            `<div class="mb-2 super-category-div">
+                                <input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
                         super_category +=
-                            `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label>`;
+                            `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label></div>`;
                         // check_temp[super_category_id] = [];
                         let temp = {};
                         temp['super_category_id'] = v['id'];
@@ -281,9 +282,9 @@
                             super_category +=
                                 `<div class="ms-4 mt-2 question_category_div">`;
                             super_category +=
-                                `<input type="checkbox" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
+                                `<div class="category-div"><input type="checkbox" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
                             super_category +=
-                                `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label>`;
+                                `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label></div>`;
                             $.each(res.questionType[v['id']], function(i, v) {
                                 temp['question_type_id'] = v['id'];
                                 super_category += `<div class="ms-5 mt-2">`;
@@ -327,18 +328,22 @@
 
         $(document).on('change', '.question_category', function() {
             if ($(this).is(':checked')) {
-                $(this).closest('.mb-2').find('.super_category').prop('checked', true);
+                $(this).closest('.mb-2').find('.question_type').prop('checked', true);
             } else {
-                $(this).closest('.mb-2').find('.super_category').prop('checked', false);
+                $(this).closest('.mb-2').find('.question_type').prop('checked', false);
             }
             getCountData();
         });
 
         $(document).on('change', '.question_type', function() {
             if ($(this).is(':checked')) {
-                $(this).closest('.mb-2').find('.super_category').prop('checked', true);
-                $(this).closest('.question_category_div').find('.question_category').prop("checked", true);
+                $(this).closest('.mb-2').find('.super-category-div').addClass('btn-alt-success text-success');
+                $(this).closest('.question_category_div').find('.category-div').addClass(
+                    "btn-alt-success text-success");
             } else {
+                $(this).closest('.mb-2').find('.super-category-div').removeClass('btn-alt-success text-success');
+                $(this).closest('.question_category_div').find('.category-div').removeClass(
+                    "btn-alt-success text-success");
                 if ($(this).parent().siblings().find('.question_type').prop('checked')) {
                     $(this).closest('.mb-2').find('.super_category .question_category').prop('checked', true);
                 } else {
