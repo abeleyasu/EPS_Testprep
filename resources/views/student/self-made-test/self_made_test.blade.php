@@ -269,7 +269,7 @@
                         const super_category_id = v['id'];
                         super_category += `<div class="mb-2 criteria pb-3">`;
                         super_category +=
-                            `<div class="mb-2 super-category-div">
+                            `<div class="super-category-div">
                                 <input type="checkbox" id="${v['title']}" value="${v['id']}" class="super_category">`;
                         super_category +=
                             `<label for="${v['title']}" class="fw-bold ms-2">${v['title']}</label></div>`;
@@ -287,7 +287,8 @@
                                 `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label></div>`;
                             $.each(res.questionType[v['id']], function(i, v) {
                                 temp['question_type_id'] = v['id'];
-                                super_category += `<div class="ms-5 mt-2">`;
+                                super_category +=
+                                    `<div class="ms-5 mt-2 question_type_div">`;
                                 super_category +=
                                     `<input type="checkbox" id="${v['question_type_title']}" value="${v['id']}" class="question_type">`;
                                 super_category +=
@@ -318,19 +319,22 @@
         };
 
         $(document).on('change', '.super_category', function() {
-            if ($(this).is(':checked')) {
-                $(this).closest('.mb-2').find('.question_category, .question_type').prop('checked', true);
-            } else {
-                $(this).closest('.mb-2').find('.question_category, .question_type').prop('checked', false);
-            }
+            $(this).closest('.mb-2').find('.category-div .question_category')
+                .prop("checked", $(this).is(':checked'))
+
+            $(this).closest('.mb-2').find('.question_type_div .question_type')
+                .prop("checked", $(this).is(':checked'))
+
             getCountData();
         });
 
         $(document).on('change', '.question_category', function() {
             if ($(this).is(':checked')) {
                 $(this).closest('.mb-2').find('.question_type').prop('checked', true);
+                $(this).closest('.mb-2').find('.super-category-div').addClass('btn-alt-success text-success');
             } else {
                 $(this).closest('.mb-2').find('.question_type').prop('checked', false);
+                $(this).closest('.mb-2').find('.super-category-div').removeClass('btn-alt-success text-success');
             }
             getCountData();
         });
