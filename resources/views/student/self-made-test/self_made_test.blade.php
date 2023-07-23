@@ -320,11 +320,17 @@
 
         $(document).on('change', '.super_category', function() {
             $(this).closest('.mb-2').find('.category-div .question_category')
-                .prop("checked", $(this).is(':checked'))
+                .prop("checked", $(this).is(':checked'));
 
             $(this).closest('.mb-2').find('.question_type_div .question_type')
-                .prop("checked", $(this).is(':checked'))
+                .prop("checked", $(this).is(':checked'));
 
+            if (!$(this).is(':checked')) {
+                $(this).closest('.mb-2').find('.super-category-div').removeClass(
+                    'btn-alt-success text-success');
+                $(this).closest('.mb-2').find('.category-div')
+                    .removeClass('btn-alt-success text-success');
+            }
             getCountData();
         });
 
@@ -333,6 +339,8 @@
                 $(this).closest('.mb-2').find('.question_type').prop('checked', true);
                 $(this).closest('.mb-2').find('.super-category-div').addClass('btn-alt-success text-success');
             } else {
+                $(this).closest('.mb-2').find('.category-div')
+                    .removeClass('btn-alt-success text-success');
                 $(this).closest('.mb-2').find('.question_type').prop('checked', false);
                 $(this).closest('.mb-2').find('.super-category-div').removeClass('btn-alt-success text-success');
             }
