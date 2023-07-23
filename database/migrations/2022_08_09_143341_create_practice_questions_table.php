@@ -16,9 +16,12 @@ return new class extends Migration
         if (!Schema::hasTable('practice_questions')) {
             Schema::create('practice_questions', function (Blueprint $table) {
                 $table->id();
-                $table->enum('format',['ACT','SAT','PSAT'])->comment('ACT=ACT Question,SAT=SAT Question,PSAT=PSAT Question')->default('ACT');
+                $table->enum('format', ['ACT', 'SAT', 'PSAT'])->comment('ACT=ACT Question,SAT=SAT Question,PSAT=PSAT Question')->default('ACT');
                 $table->string('testid');
+                $table->integer('question_type_id')->nullable();
+                $table->string('category_type')->nullable();
                 $table->text('description')->nullable();
+                $table->integer('diff_rating')->nullable()->comment('0 => Easy, 1 => Medium, 2 => Hard, 3 =>Yikes, 4 => AllUnanswered, 5 =>AllQuestions');
                 $table->timestamps();
             });
         }

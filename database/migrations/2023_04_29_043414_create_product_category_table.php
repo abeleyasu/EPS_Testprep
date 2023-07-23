@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
             $table->boolean('status')->default(1);
+            $table->integer('order_index')->default(0);
             $table->timestamps();
         });
     }

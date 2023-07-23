@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->text('question_type_lesson')->nullable();
                 $table->text('question_type_strategies')->nullable();
                 $table->text('question_type_identification_methods')->nullable();
-                $table->text('question_type_identification_activity')->nullable();
+                $table->timestamp('deleted_at')->default(DB::raw('CURRENT_TIMESTAMP'));
                 $table->timestamps();
             });
         }

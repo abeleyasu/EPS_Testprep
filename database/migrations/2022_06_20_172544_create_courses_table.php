@@ -18,18 +18,24 @@ return new class extends Migration
                 $table->id();
                 $table->string('title');
                 $table->text('description')->nullable();
+                $table->integer('published');
+                $table->string('content')->nullable();
+                $table->string('user_type');
+                $table->string('status');
+                $table->integer('duration');
+                $table->integer('order');
+                $table->string('coverimage');
                 $table->timestamps();
                 $table->softDeletes();
             });
         }
-        
+
         Schema::table('milestones', function (Blueprint $table) {
             $table->unsignedBigInteger('course_id')->nullable();
 
             $table->foreign('course_id')
                 ->references('id')->on('courses')->onDelete('cascade');
         });
-        
     }
 
     /**

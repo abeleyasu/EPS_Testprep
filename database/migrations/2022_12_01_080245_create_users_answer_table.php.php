@@ -14,14 +14,17 @@ return new class extends Migration
     public function up()
     {
         if (!Schema::hasTable('user_answers')) {
-        Schema::create('user_answers', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
-            $table->integer('section_id');
-            $table->integer('question_id');
-            $table->text('answer');
-            $table->timestamps();
-        });
+            Schema::create('user_answers', function (Blueprint $table) {
+                $table->id();
+                $table->integer('user_id');
+                $table->integer('section_id');
+                $table->integer('question_id');
+                $table->text('answer');
+                $table->text('guess');
+                $table->text('flag');
+                $table->integer('test_id');
+                $table->timestamps();
+            });
         }
     }
 

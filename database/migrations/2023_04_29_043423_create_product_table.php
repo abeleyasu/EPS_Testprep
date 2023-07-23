@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('discount')->nullable();
             $table->boolean('sale')->default(0);
             $table->boolean('status')->default(1);
+            $table->integer('order_index')->default(0);
             $table->timestamps();
         });
     }

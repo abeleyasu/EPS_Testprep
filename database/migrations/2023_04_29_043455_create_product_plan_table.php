@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('amount')->nullable();
             $table->string('display_amount')->nullable();
             $table->boolean('status')->default(1);
+            $table->integer('order_index')->default(0);
             $table->timestamps();
         });
     }

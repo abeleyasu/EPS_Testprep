@@ -22,6 +22,8 @@ return new class extends Migration
                 $table->tinyInteger('order')->default(0);
                 $table->unsignedBigInteger('milestone_id');
                 $table->unsignedBigInteger('added_by');
+                $table->string('coverimage');
+                $table->boolean('published')->default(false);
                 $table->timestamps();
                 $table->softDeletes();
 

@@ -17,9 +17,22 @@ return new class extends Migration
             Schema::create('users', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
+                $table->string('first_name')->nullable();
+                $table->string('last_name')->nullable();
+                $table->string('phone', 25)->nullable();
+                $table->string('role')->default('user');
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
+                $table->string('stripe_id')->nullable();
+                $table->string('pm_type')->nullable();
+                $table->string('pm_last_four')->nullable();
+                $table->string('trial_ends_at')->nullable();
+                $table->integer('state_id')->nullable();
+                $table->integer('city_id')->nullable();
+                $table->string('address_line_1')->nullable();
+                $table->string('address_line_2')->nullable();
+                $table->string('postal_code')->nullable();
                 $table->rememberToken();
                 $table->timestamps();
             });
