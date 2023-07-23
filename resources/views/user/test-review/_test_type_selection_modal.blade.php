@@ -38,7 +38,8 @@
                                     <label for="all_questions" class="ms-2">All
                                         Questions <span class="ms-2 diff_6"></label>
                                     <input type="number" name="no_of_questions" id="no_of_questions"
-                                        placeholder="Enter number of questions" class="no_of_questions" checked>
+                                        placeholder="Please input number of questions to be generated"
+                                        class="no_of_questions" checked>
                                 </div>
                             @endif
                         </div>
