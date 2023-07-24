@@ -20,10 +20,13 @@ return new class extends Migration
                 $table->integer('section_id');
                 $table->integer('question_id');
                 $table->text('answer');
+				$table->timestamp('deleted_at')->nullable()->onUpdate(CURRENT_TIMESTAMP);
+				$table->timestamps();
                 $table->text('guess');
                 $table->text('flag');
+				$table->text('skip')->nullable();
                 $table->integer('test_id');
-                $table->timestamps();
+                
             });
         }
     }
