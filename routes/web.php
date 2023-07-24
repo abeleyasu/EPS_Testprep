@@ -460,6 +460,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
         // Please make any changes you think it's necessary to routing
         Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+		Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
