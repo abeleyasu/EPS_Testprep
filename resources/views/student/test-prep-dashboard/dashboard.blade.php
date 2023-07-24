@@ -1565,6 +1565,9 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
 
     <style>
+		.toast-success {
+            background-color: #51A351 !important;
+        }
 		.loading-indicator {
 			display: flex;
 			justify-content: center;
