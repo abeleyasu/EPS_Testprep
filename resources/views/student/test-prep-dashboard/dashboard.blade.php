@@ -1323,6 +1323,141 @@
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
             });
+			
+			$(".editPrimaryTest").click(function() {
+                $('#editDropdownContainer').toggle();
+                $('.selectedPrimaryTest').toggle();
+            });
+
+            $("#testTypeDropdown").change(function() {
+                // var testTypeValue = $('.selectedPrimaryTest').text().trim();
+                var newTestType = this.value;
+
+                if(newTestType != '') {
+                    $.ajax({
+                        url: "{{ route('update_test_type') }}",
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            updtvalue: 'primary_test_type',
+                            field_value: newTestType
+                        },
+                        success: function(response) {
+                            // console.log(response.scaled_score);
+
+                            $('.selectedPrimaryTest').text(newTestType);
+                            $('.lastTestCls').text(response.scaled_score);
+                            
+                            $('#editDropdownContainer').toggle();
+                            $('.selectedPrimaryTest').toggle();
+
+                            toastr.options = {
+                                "progressBar": true,
+                                "closeButton": true,
+                                "timeOut": 4000,
+                            };
+                            toastr.success("PRIMARY TEST UPDATED!");
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+
+            $(".editInitialScore").click(function() {
+                $('.initialScoreCls').toggle();
+                $('#editInitialScoreContainer').toggle();
+                $('#txtinitialScore').focus().select();
+            });
+
+            $('#txtinitialScore').on('keypress', function(event) {
+                // Allow backspace, delete, and arrow keys
+                if (event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39) {
+                    return true;
+                }
+                // Ensure only numeric characters are allowed (ASCII codes 48 to 57)
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+                if (event.which === 13) {
+                    var old_initialScore = $('.initialScoreCls').text().trim();
+                    var new_initialScore = this.value;
+                    if(new_initialScore != '' && new_initialScore != old_initialScore) {
+                        $.ajax({
+                            url: "{{ route('update_test_type') }}",
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                updtvalue: 'initial_score',
+                                field_value: new_initialScore
+                            },
+                            success: function(response) {
+                                $('.initialScoreCls').text(new_initialScore);
+                                $('.initialScoreCls').toggle();
+                                $('#editInitialScoreContainer').toggle();
+
+                                toastr.options = {
+                                    "progressBar": true,
+                                    "closeButton": true,
+                                    "timeOut": 4000,
+                                };
+                                toastr.success("INITIAL SCORE UPDATED!");
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                }
+            });
+
+            $(".editGoalScore").click(function() {
+                $('.goalScoreCls').toggle();
+                $('#editGoalScoreContainer').toggle();
+                $('#txtgoalScore').focus().select();
+            });
+
+            $('#txtgoalScore').on('keypress', function(event) {
+                // Allow backspace, delete, and arrow keys
+                if (event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39) {
+                    return true;
+                }
+                // Ensure only numeric characters are allowed (ASCII codes 48 to 57)
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+                if (event.which === 13) {
+                    var old_goalScore = $('.goalScoreCls').text().trim();
+                    var new_goalScore = this.value;
+                    if(new_goalScore != '' && new_goalScore != old_goalScore) {
+                        $.ajax({
+                            url: "{{ route('update_test_type') }}",
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                updtvalue: 'goal_score',
+                                field_value: new_goalScore
+                            },
+                            success: function(response) {
+                                $('.goalScoreCls').text(new_goalScore);
+                                $('.goalScoreCls').toggle();
+                                $('#editGoalScoreContainer').toggle();
+                                toastr.options = {
+                                    "progressBar": true,
+                                    "closeButton": true,
+                                    "timeOut": 4000,
+                                };
+                                toastr.success("GOAL SCORE UPDATED!");
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                }
+            });
         });
 
         $('input[type="checkbox"]').click(function(e) {
