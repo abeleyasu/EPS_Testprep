@@ -113,6 +113,8 @@ function refreshResults(type) {
     getApplicationDeadlineOrganizerData();
   } else if (type === 'search-step-1') {
     getStep1CollegeList();
+  } else if (type === 'step-4') {
+    getCollegeList();
   }
 }
 

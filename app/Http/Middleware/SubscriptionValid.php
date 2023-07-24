@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\Permission;
 use Illuminate\Support\Str;
+use App\Models\UserRole;
 
 
 class SubscriptionValid
@@ -19,6 +20,16 @@ class SubscriptionValid
      */
     public function handle(Request $request, Closure $next, String $permission_name)
     {
+        // first check User role and permission is valid or not;
+
+        $role = UserRole::where('slug','!=' ,'super_admin')->where('id', auth()->user()->role)->first();
+        if ($role) {
+            $permissions = $role->permissions->where('guard_name', 'user')->pluck('slug')->toArray();
+            if (!in_array($permission_name, $permissions)) {
+                return redirect()->route('plan.index');
+            }
+        }
+        // check subscription is valid or not
         $permission = Permission::where('permission_slug', $permission_name)->first();
         if ($permission) {
             $splitString = explode("|", $permission->protected_routes);

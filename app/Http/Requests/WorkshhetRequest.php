@@ -23,16 +23,17 @@ class WorkshhetRequest extends FormRequest
      */
     public function rules()
     {
+        $fileRule = 'mimes:txt,csv,pdf,docx,doc,xlsx,xls|mime-types:text/plain,text/csv,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         $rules = [
             'name' => 'required',
             'description' => 'required',
         ];
         if (isset($this->id)) {
             if (gettype($this->file) == 'object') {
-                $rules['file'] = 'nullable|mimes:txt,csv|mimetypes:text/plain,text/csv';
+                $rules['file'] = 'nullable|' . $fileRule;
             }
         } else {
-            $rules['file'] = 'required|mimes:txt,csv|mimetypes:text/plain,text/csv';
+            $rules['file'] = 'required|' . $fileRule;
         }
         return $rules;
     }
@@ -47,8 +48,7 @@ class WorkshhetRequest extends FormRequest
             'name.required' => 'Name is required',
             'description.required' => 'Description is required',
             'file.required' => 'File is required',
-            'file.mimes' => 'File must be a file of type: csv.',
-            'file.mime-types' => 'File must be a file of type: csv.',
+            'file.mimes' => 'File must be a file of type: csv, pdf, docx, doc, xlsx, xls.',
         ];
     }
 }

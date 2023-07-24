@@ -18,6 +18,7 @@
       </div>
     </div>
   </div>
+  @if(Auth::user()->isUserHasValidPermission('Access College Application Deadline Organizer')) 
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
       
@@ -25,7 +26,7 @@
       <div class="row @if(count($college_list_deadline) > 3) owl-carousel owl-theme @endif">
         @foreach($college_list_deadline as $key => $deadline)
         <div class="@if(count($college_list_deadline) > 3) col-12 @else col-6 col-md-4 @endif">
-          <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center">
+          <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center @if(!$deadline['college_deadline']['admissions_deadline']) box-height @endif">
             @if($deadline['college_information']['college_icon'])
               <img class="college-image" src="{{ asset('college_icon/' . $deadline['college_information']['college_icon']) }}" alt="">
             @else
@@ -51,6 +52,7 @@
       @endif
     </div>
   </div>
+  @endif
   <div class="content content-boxed">
     <div class="row">
       <div class="col-md-6 col-xl-6">
@@ -164,19 +166,19 @@
           <div class="block-content">
             <div id="section-2" class="mb-5" role="tablist" aria-multiselectable="true">
               @if(count($worksheet_data) > 0)
-                @foreach($worksheet_data as $worksheet)
+                @foreach($worksheet_data as $key => $worksheet)
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                   <div class="block-header block-header-tab" role="tab" id="faq12_h1">
-                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#tips-for-college-fairs" aria-expanded="true" aria-controls="tips-for-college-fairs">
+                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#item-{{$key}}" aria-expanded="true" aria-controls="item-{{$key}}">
                       <i class="nav-main-link-icon fa fa-file"></i> 
                       {{ $worksheet->name }}
                     </a>
                   </div>
-                  <div id="tips-for-college-fairs" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-2">
+                  <div id="item-{{$key}}" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-2">
                     <div class="block-content">
                       <div>{{ $worksheet->description }}</div>
                       <div>Click the below to download the worksheet</div>
-                      <a href="{{ asset('uploads/worksheet/' . $worksheet->sheet_name) }}" download="sheet.csv" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray download-worksheet"></i>Download Worksheet</a>
+                      <a href="{{ asset('uploads/worksheet/' . $worksheet->sheet_name) }}" target="_black" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray download-worksheet"></i>Download Worksheet</a>
                     </div>
                   </div>
                 </div>
@@ -330,6 +332,10 @@
     transform: translateY(-50%);
     outline: none;
     transition: all 0.3s ease-in-out;
+  }
+
+  .box-height {
+    height: 232px;
   }
 </style>
 @endsection

@@ -62,6 +62,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserDeadlineNotificationSettingsController;
 use App\Http\Controllers\AdmissionDashBoard;
 use App\Http\Controllers\WorksheetController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\PermissionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -253,6 +255,20 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/delete', [PlanController::class, 'deletePlan'])->name('plan_delete');
                 Route::post('/change-order', [PlanController::class, 'changeOrder'])->name('plan_change_order');
                 Route::get('/get-product/{id}', [PlanController::class, 'getProduct'])->name('get_product');
+            });
+        });
+
+        Route::group(['prefix' => 'roles', 'as' => 'admin.roles.'], function () {
+            Route::controller(RolesController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/attach-permission/{id}', 'permissionList')->name('permission-list');
+                Route::post('/attach-permission', 'attachPermission')->name('attach-permission');
+            });
+        });
+
+        Route::group(['prefix' => 'permissions', 'as' => 'admin.permissions.'], function () {
+            Route::controller(PermissionsController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
             });
         });
     });

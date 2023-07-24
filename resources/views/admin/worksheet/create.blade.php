@@ -32,7 +32,7 @@
 
                     <div class="mb-4">
                         <label for="image">Worksheet File:</label>
-                        <input type="file" class="form-control {{$errors->has('file') ? 'is-invalid' : ''}}" id="file" name="file" placeholder="Worksheet File" accept=".csv">
+                        <input type="file" class="form-control {{$errors->has('file') ? 'is-invalid' : ''}}" id="file" name="file" placeholder="Worksheet File" accept=".csv, .pdf, .docx, .doc, .xlsx, .xls">
                         @error('file')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
