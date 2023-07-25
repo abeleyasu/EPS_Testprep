@@ -262,7 +262,7 @@
                   echo "</pre>";
             @endphp
 
-            <input type="text" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo json_encode($sectionArray);?>">
+            <input type="text" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo htmlspecialchars(json_encode($sectionArray));?>">
 
             <li class="timeline-event">
               {{-- <div class="timeline-event-icon bg-success"> --}}
