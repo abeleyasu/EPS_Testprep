@@ -256,6 +256,10 @@
             <!-- END SECTION -->
 
             @endforeach
+            @php
+                echo "json_encode = ".htmlspecialchars(json_encode($sectionArray), JSON_NUMERIC_CHECK)."<br />";
+            @endphp
+
 
             <input type="hidden" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo htmlspecialchars(json_encode($sectionArray), JSON_NUMERIC_CHECK);?>">
 
