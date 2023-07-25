@@ -26,7 +26,11 @@ class WorksheetController extends Controller
         ];
 
         if (isset($request->file)) {
-            $name = time() . '.csv';
+            $extension = $request->file->extension();
+            if ($extension == 'txt') {
+                $extension = 'csv';
+            }
+            $name = time() . '.' . $extension;
             $request->file->move(public_path('uploads/worksheet'), $name);
             $data['sheet_name'] = $name;
         }
@@ -57,7 +61,11 @@ class WorksheetController extends Controller
         ];
         if (gettype($request->file) == 'object') {
             unlink(public_path('uploads/worksheet/' . $worksheet->sheet_name));
-            $name = time() . '.csv';
+            $extension = $request->file->extension();
+            if ($extension == 'txt') {
+                $extension = 'csv';
+            }
+            $name = time() . '.' . $extension;
             $request->file->move(public_path('uploads/worksheet'), $name);
             $data['sheet_name'] = $name;
         } else {

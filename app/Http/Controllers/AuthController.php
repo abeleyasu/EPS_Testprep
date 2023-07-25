@@ -27,6 +27,7 @@ class AuthController extends Controller
             'email' => ['required', 'email', 'unique:users'],
             'phone' => ['required', 'numeric'],
             'password' => ['required', 'confirmed', 'min:6'],
+            'role' => ['required'],
             'terms' => ['accepted'],
         ],
 		[
@@ -39,6 +40,7 @@ class AuthController extends Controller
 			'password.min' => 'The password must be at least 6 characters',
 			'phone.required' => 'Phone is required',
 			'phone.numeric' => 'Phone must be numeric',
+            'role.required' => 'Please select a role',
 		]);
 
         $user = User::create([

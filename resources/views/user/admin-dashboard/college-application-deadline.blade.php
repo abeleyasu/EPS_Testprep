@@ -255,31 +255,8 @@
         $('#deadline-organizer-icon').removeClass('fa-angle-down').addClass('fa-angle-right');
     })
 
-    $('.chagecollagecheckbox').on('change', function (e) {
-        const id = e.target.id
-        $('#is_complete_application_type-' + id).attr('checked', e.target.checked);
-        $('#is_complete_admission_open-' + id).attr('checked', e.target.checked);
-        $('#is_completed_css_profile_deadlineon_open-' + id).attr('checked', e.target.checked);
-        $('#is_complete_number_of_essays-' + id).attr('checked', e.target.checked);
-        $('#is_complete_admission_deadline-' + id).attr('checked', e.target.checked);
-        $('#is_complete_competitive_scholarship_deadline-' + id).attr('checked', e.target.checked);
-        $('#is_complete_scholarship_deadline-' + id).attr('checked', e.target.checked);
-        $('#is_completed_honors_college_deadline-' + id).attr('checked', e.target.checked);
-        $('#is_completed_fafsa_deadline-' + id).attr('checked', e.target.checked);
-        $.ajax({
-            url: "{{ route('admin-dashboard.set_application_completed') }}",
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                is_completed_all_process: e.target.checked ? 1 : 0,
-                ...e.target.dataset
-            }
-        }).done(function(data){
-            // window.location.reload();
-        });
-    })
-
     $(document).on('change', '.application_checklist', function (e) {
+        console.log('called one more change event', e);
         const id = e.target.id;
         const currentIndex = id.split('-')[1];
         const applications = document.querySelectorAll('.application-' + currentIndex);
@@ -310,13 +287,12 @@
         const elementIndex = $(this).data('index');
         // console.log('elementIndex -->', elementIndex)
         $.each($('.application-' + elementIndex), function (index, value) {
-            // console.log('checked -->', value.checked)
             if (!value.checked) {
-                $('#is_application_checklist-' + elementIndex).attr('checked', false);
+                $('#is_application_checklist-' + elementIndex).prop('checked', false);
                 $('#is_application_checklist-' + elementIndex).val(0);
                 return false;
             }
-            $('#is_application_checklist-' + elementIndex).attr('checked', true);
+            $('#is_application_checklist-' + elementIndex).prop('checked', true);
             $('#is_application_checklist-' + elementIndex).val(1);
         })
         setTimeout(() => {
