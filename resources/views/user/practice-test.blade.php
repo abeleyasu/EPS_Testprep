@@ -747,7 +747,7 @@ height: 270px
                 if(jQuery('.next').prop('disabled') == false){
                     var timeisover = jQuery('#timeisover').val();
                     if(timeisover == 1) {
-                        confirm();
+                        confirm(true);
                     } else {
                         swal({
                             title: "Warning",
@@ -760,18 +760,23 @@ height: 270px
                             closeOnConfirm: true,
                             closeOnCancel: true,
                         },function (isConfirm){
-                            if (isConfirm) {   
-                                confirm();
+                            if (isConfirm) {
+                                confirm(false);
                             } 
                         }); 
                     }
                 } else {
-                    confirm();
+                    var timeisover = jQuery('#timeisover').val();
+                    if(timeisover == 1) {
+                        confirm(true);
+                    } else {
+                        confirm(false);
+                    }
                 }
 
             });
 
-            function confirm(){
+            function confirm(flagTimeOut){
 
                 var get_question_id = jQuery('#onload_question_id').val();
                 if($(".flag").is(':checked'))
@@ -938,14 +943,14 @@ height: 270px
                         if(count < result.total_question){
                             window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
                         }
-                        // var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
 
+                        // var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+                        
                         if (window.location.href.indexOf("all") > -1) {
                             var url = window.location.href,
                             parts = url.split("=");
                             var sectionArrayJson = parts[parts.length-1];
                             var sectionArray = JSON.parse(sectionArrayJson);
-                            
                             if (sectionArray.length > 0) {
                                 var next_section_id = sectionArray[0];
                                 if(next_section_id != '') {
@@ -955,15 +960,42 @@ height: 270px
                                     let option = new URLSearchParams(window.location.search);
                                     let OptionValue = option.get('time');
 
-                                    var url = "{{url('')}}"+'/user/practice-test/'+next_section_id+'?test_id='+get_test_id+'&time='+OptionValue+'&section=all&sections='+remainingSectionArrayJson;
+                                    if(flagTimeOut) {
+                                        swal({
+                                            title: "Confirm",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "Submit",
+                                            cancelButtonText: "Proceed to Next section",
+                                            closeOnConfirm: true,
+                                            closeOnCancel: true,
+                                        },function (isConfirm){
+                                            if (isConfirm) {
+                                                var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+                                                window.location.href = url;
+                                            } else {
+                                                var url = "{{url('')}}"+'/user/practice-test/'+next_section_id+'?test_id='+get_test_id+'&time='+OptionValue+'&section=all&sections='+remainingSectionArrayJson;
+                                                window.location.href = url;
+                                            }
+                                        });
+                                        return false;
+                                    } else {
+                                        var url = "{{url('')}}"+'/user/practice-test/'+next_section_id+'?test_id='+get_test_id+'&time='+OptionValue+'&section=all&sections='+remainingSectionArrayJson;
+                                    }
                                 } else {
-                                    var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                                    // var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                                    var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+get_test_id+'/review-page?test_id='+get_test_id+'&type=all';
                                 }
+                            } else {
+                                var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+get_test_id+'/review-page?test_id='+get_test_id+'&type=all';
+                            }
+                        } else {
+                            if(flagTimeOut) {
+                                var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
                             } else {
                                 var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
                             }
-                        } else {
-                            var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
                         }
                         window.location.href = url;  
                     }
