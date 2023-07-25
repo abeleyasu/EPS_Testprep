@@ -35,7 +35,7 @@
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Primary Test</div>
                             <div class="fs-lg fw-semibold text-white text-uppercase selectedPrimaryTest">
-                                {!! optional($getTestScores)->primary_test_type ?? '<span style="font-size: 10px;">Please input your primary test by clicking on <i class="fas fa-edit" style="color: #0099ff;"></i> button</span>' !!}
+                                {!! optional($getTestScores)->primary_test_type ?? '<span style="font-size: 5.5px;">Please input your primary test by clicking on <i class="fas fa-edit" style="color: #0099ff;"></i> button</span>' !!}
                             </div>
                             <div id="editDropdownContainer" style="display: none;">
                                 <select id="testTypeDropdown">
@@ -1565,6 +1565,9 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
 
     <style>
+		.block {
+            height: 105px;
+        }
 		.toast-success {
             background-color: #51A351 !important;
         }

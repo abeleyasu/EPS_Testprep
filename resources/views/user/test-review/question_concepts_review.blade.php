@@ -19,13 +19,20 @@
                             </h1>
                             <input type="hidden" id="test_type" name="test_type" value="{{ $test_details->format }}" />
                             <input type="hidden" id="test_id" name="test_id" value="{{ $test_details->id }}" />
+                            @php
+                                // echo "<pre>";print_r($user_selected_answers);echo "</pre>";exit;
+                            @endphp
                             @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
-                                <input type="hidden" id="practice_test_type" name="practice_test_type"
-                                    value="{{ $user_selected_answers[0]['all_sections'][0]['practice_test_type'] }}" />
+                                {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['all_sections'][0]['practice_test_type'] }}" /> --}}
+                                <input type="hidden" id="practice_test_type" name="practice_test_type" value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
+
                             @endif
                             @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
-                                <input type="hidden" id="practice_test_type" name="practice_test_type"
-                                    value="{{ $user_selected_answers[0]['sections'][0]['practice_test_type'] }}" />
+                                {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['sections'][0]['practice_test_type'] }}" /> --}}
+                                <input type="hidden" id="practice_test_type" name="practice_test_type" value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
+
                             @endif
                             <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
                                 <div class="description-test"
