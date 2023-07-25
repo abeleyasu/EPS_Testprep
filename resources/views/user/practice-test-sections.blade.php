@@ -237,7 +237,7 @@
                           <i class="fa-solid fa-circle-check" style='margin-right:5px'></i> Start Section
                         </a>
                         @php
-                            array_push($sectionArray, $singletestSections['Sections'][0]['id']);
+                            array_push($sectionArray, (int)$singletestSections['Sections'][0]['id']);
                         @endphp
 
                         @endif
