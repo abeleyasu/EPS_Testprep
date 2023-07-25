@@ -256,13 +256,8 @@
             <!-- END SECTION -->
 
             @endforeach
-            @php
-                echo "<pre>";
-                  print_r($sectionArray);
-                  echo "</pre>";
-            @endphp
 
-            <input type="text" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo htmlspecialchars(json_encode($sectionArray));?>">
+            <input type="hidden" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo htmlspecialchars(json_encode($sectionArray), JSON_NUMERIC_CHECK);?>">
 
             <li class="timeline-event">
               {{-- <div class="timeline-event-icon bg-success"> --}}
