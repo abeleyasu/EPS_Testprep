@@ -22,10 +22,10 @@
   });
 
   $(document).on('click','.start_all_section',function(){
-    console.log('start_all_sectionclicked');
-
     let sectionArrayJson = $('#sectionArrayJsonId').val();
+    console.log('sectionArrayJson>>'+sectionArrayJson);
     var sectionArray = JSON.parse(sectionArrayJson);
+    console.log('sectionArray>>'+sectionArray);
     
     if (sectionArray.length > 0) {
       var section_id = sectionArray[0];
