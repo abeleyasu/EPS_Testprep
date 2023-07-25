@@ -2228,13 +2228,13 @@ class TestPrepController extends Controller
             $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
                 ->where('section_type', $section_type)
                 ->where('selfMade', 1)
-                ->get(['id', 'category_type_title']);
+                ->get();
             foreach ($category[$super->id] as $categories) {
                 $categoryId = array($categories['id']);
                 $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
                     ->where('selfMade', 1)
                     ->whereIn('category_id', $categoryId)
-                    ->get(['id', 'question_type_title']);
+                    ->get();
             }
         }
         return response()->json(['super_category' => $super_category, 'category' => $category, 'questionType' => $questionType, 'count' => $countQuestion]);
