@@ -26,6 +26,7 @@
     console.log('sectionArrayJson>>'+sectionArrayJson);
     var sectionArray = JSON.parse(sectionArrayJson);
     console.log('sectionArray>>'+sectionArray);
+    return;
     
     if (sectionArray.length > 0) {
       var section_id = sectionArray[0];
@@ -255,8 +256,13 @@
             <!-- END SECTION -->
 
             @endforeach
+            @php
+                echo "<pre>";
+                  print_r($sectionArray);
+                  echo "</pre>";
+            @endphp
 
-            <input type="hidden" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo json_encode($sectionArray);?>">
+            <input type="text" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo json_encode($sectionArray);?>">
 
             <li class="timeline-event">
               {{-- <div class="timeline-event-icon bg-success"> --}}
