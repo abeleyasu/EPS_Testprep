@@ -23,10 +23,7 @@
 
   $(document).on('click','.start_all_section',function(){
     let sectionArrayJson = $('#sectionArrayJsonId').val();
-    console.log('sectionArrayJson>>'+sectionArrayJson);
     var sectionArray = JSON.parse(sectionArrayJson);
-    console.log('sectionArray>>'+sectionArray);
-    return;
     
     if (sectionArray.length > 0) {
       var section_id = sectionArray[0];
@@ -256,10 +253,6 @@
             <!-- END SECTION -->
 
             @endforeach
-            @php
-                echo "json_encode = ".htmlspecialchars(json_encode($sectionArray), JSON_NUMERIC_CHECK)."<br />";
-            @endphp
-
 
             <input type="hidden" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo htmlspecialchars(json_encode($sectionArray), JSON_NUMERIC_CHECK);?>">
 
