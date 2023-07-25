@@ -22,6 +22,7 @@
   });
 
   $(document).on('click','.start_all_section',function(){
+    console.log('start_all_sectionclicked');
 
     let sectionArrayJson = $('#sectionArrayJsonId').val();
     var sectionArray = JSON.parse(sectionArrayJson);
