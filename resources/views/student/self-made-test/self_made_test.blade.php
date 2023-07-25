@@ -166,6 +166,8 @@
     <script>
         var check_temp = [];
         var count_data = {};
+        var category_data = {};
+        var question_types = [];
         $(document).on('click', '.test_type', function() {
             let value = $(this).attr('data-value');
             $(".test_type").removeClass("active-tab");
@@ -258,6 +260,10 @@
                     $.each(res.count, function(i, v) {
                         $(`.diff_${i}`).html(`(${v.count})`);
                     });
+                    category_data = res?.category;
+                    question_types = res?.questionType;
+                    super_category_data = res?.super_category;
+
                     $('.test-category').html('');
                     let super_category = ``;
                     $.each(res.super_category, function(i, v) {
@@ -277,15 +283,16 @@
                             super_category +=
                                 `<div class="ms-4 mt-2 question_category_div">`;
                             super_category +=
-                                `<div class="category-div"><input type="checkbox" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
+                                `<div class="category-div"><input type="checkbox" data-super_category_id="${v['super_category_id']}" id="${v['category_type_title']}" value="${v['id']}" class="question_category">`;
                             super_category +=
                                 `<label for="${v['category_type_title']}" class="fw-bold ms-2">${v['category_type_title']}</label></div>`;
+                            let super_category_id = v['super_category_id'];
                             $.each(res.questionType[v['id']], function(i, v) {
                                 temp['question_type_id'] = v['id'];
                                 super_category +=
                                     `<div class="ms-5 mt-2 question_type_div">`;
                                 super_category +=
-                                    `<input type="checkbox" id="${v['question_type_title']}" value="${v['id']}" class="question_type">`;
+                                    `<input type="checkbox" id="${v['question_type_title']}" data-super_category_id="${super_category_id}" data-category_id="${v['category_id']}" value="${v['id']}" class="question_type">`;
                                 super_category +=
                                     `<label for="${v['question_type_title']}" class="fw-bold ms-2">${v['question_type_title']}</label>`;
                                 super_category += `</div>`;
@@ -330,24 +337,111 @@
         });
 
         $(document).on('change', '.question_category', function() {
-            if ($(this).is(':checked')) {
-                $(this).closest('.mb-2').find('.question_type').prop('checked', true);
+            let qt_id = $(this).val();
+            let qt_checked = $(this).is(":checked");
+            let ct_id = $(this).attr("data-super_category_id")
+            let qt_array_data = category_data[ct_id] ?? [];
+
+            if (qt_array_data) {
+                qt_array_data = qt_array_data?.map((item) => {
+                    if (item?.id == qt_id) {
+                        item.checked = qt_checked;
+                    } else {
+                        item.checked = item.checked ?? false;
+                    }
+                    return item;
+                });
+            }
+
+            category_data[ct_id] = qt_array_data;
+
+            if (qt_checked) {
+                let checkArray = qt_array_data?.map((item) => item?.checked);
+
+                if (!checkArray?.includes(false)) {
+                    $(this).closest('.mb-2').find('.super-category-div .super_category').prop(
+                        "checked", true);
+                }
+                $(this).closest('.mt-2').find('.question_type').prop('checked', true);
                 $(this).closest('.mb-2').find('.super-category-div').addClass('btn-alt-success text-success');
             } else {
+                $(this).closest('.mb-2').find('.super-category-div .super_category').prop(
+                    "checked", false);
                 $(this).closest('.mb-2').find('.category-div')
                     .removeClass('btn-alt-success text-success');
-                $(this).closest('.mb-2').find('.question_type').prop('checked', false);
+                $(this).closest('.mt-2').find('.question_type').prop('checked', false);
                 $(this).closest('.mb-2').find('.super-category-div').removeClass('btn-alt-success text-success');
             }
             getCountData();
         });
-
+        var qt_array = {};
+        var ct_array = {};
         $(document).on('change', '.question_type', function() {
+            // for categories
+            let qt_id = $(this).val();
+            let qt_checked = $(this).is(":checked");
+            let ct_id = $(this).attr("data-category_id")
+            let sct_id = $(this).attr("data-super_category_id")
+            let qt_array_data = question_types[ct_id] ?? [];
+            if (qt_array_data) {
+                qt_array_data = qt_array_data?.map((item) => {
+                    if (item?.id == qt_id) {
+                        item.checked = qt_checked;
+                    } else {
+                        item.checked = item.checked ?? false;
+                    }
+                    return item;
+                });
+            }
+
+            qt_array[ct_id] = qt_array_data;
+
+            let ct_array_data = category_data[sct_id] ?? [];
+
             if ($(this).is(':checked')) {
+                let checkArray = qt_array_data?.map((item) => item?.checked);
+
+                if (!checkArray?.includes(false)) {
+                    $(this).closest('.question_category_div').find('.question_category').prop(
+                        "checked", true);
+
+                    if (ct_array_data) {
+                        ct_array_data = ct_array_data?.map((item) => {
+                            if (item?.id == ct_id) {
+                                item.checked = true;
+                            } else {
+                                item.checked = item.checked ?? false;
+                            }
+                            return item;
+                        });
+                    }
+
+                    category_data[sct_id] = ct_array_data;
+
+                    let all_cts = ct_array_data?.map((item) => item?.checked);
+
+                    if (!all_cts.includes(false)) {
+                        $(this).closest('.mb-2').find('.super-category-div .super_category').attr("checked", true);
+                    }
+                }
                 $(this).closest('.mb-2').find('.super-category-div').addClass('btn-alt-success text-success');
-                $(this).closest('.question_category_div').find('.category-div').addClass(
-                    "btn-alt-success text-success");
+                $(this).closest('.ms-4').find('.category-div').addClass('btn-alt-success text-success');
             } else {
+                $(this).closest('.mb-2').find('.super-category-div .super_category').attr("checked", false);
+                if (ct_array_data) {
+                    ct_array_data = ct_array_data?.map((item) => {
+                        if (item?.id == ct_id) {
+                            item.checked = false;
+                        } else {
+                            item.checked = item.checked ?? false;
+                        }
+                        return item;
+                    });
+                }
+                category_data[ct_id] = ct_array_data;
+
+                $(this).closest('.question_category_div').find('.question_category').prop(
+                    "checked", false);
                 $(this).closest('.mb-2').find('.super-category-div').removeClass('btn-alt-success text-success');
                 $(this).closest('.question_category_div').find('.category-div').removeClass(
                     "btn-alt-success text-success");
