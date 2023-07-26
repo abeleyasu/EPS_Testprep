@@ -2950,8 +2950,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                                                                                                                                                                                                                                                                    display: none;
-                                                                                                                                                                                                                                                                                } */
+                                                                                                                                                                                                                                                                                        display: none;
+                                                                                                                                                                                                                                                                                    } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
@@ -2974,11 +2974,7 @@
         }
     </style>
 @endsection
-
-@section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
-@endsection
-
+<link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
 @section('page-script')
     <script>
         const GETTYPES_ROUTE = "{{ route('gettypes') }}";
@@ -2988,4 +2984,26 @@
     <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('js/test-review.js') }}"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+@endsection
+<link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
+@section('page-style')
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
 @endsection

@@ -13,12 +13,13 @@ $(function () {
         showDuration: "300",
         hideDuration: "1000",
         timeOut: "5000",
-        extendedTimeOut: "10000",
+        extendedTimeOut: "1000",
         showEasing: "swing",
         hideEasing: "linear",
         showMethod: "fadeIn",
         hideMethod: "fadeOut",
     };
+
     let selectedCategories = [];
     let selectedQuestionTypes = [];
     var count_data = {};
@@ -40,6 +41,16 @@ $(function () {
             selectedQuestionTypes = selectedQuestionTypes.filter(
                 (item) => item !== questionType
             );
+        }
+
+        if (
+            selectedQuestionTypes.length == 0 &&
+            selectedCategories.length == 0
+        ) {
+            $.each([1, 2, 3, 4, 5, 6], function (i, v) {
+                $(`.diff_${v}`).html(`(${0})`);
+                $(`#item-${v}`).prop("checked", false);
+            });
         }
     });
 
@@ -86,40 +97,49 @@ $(function () {
         };
         if (checkValue4.length == 0) {
             toastr.error("Please choose the difficulty rating!");
-            return false;
-        }
-        let questions_type = $(".questions_type").val();
+        } else if (
+            selectedQuestionTypes.length == 0 &&
+            selectedCategories.length == 0
+        ) {
+            toastr.error("Please choose the difficulty rating!");
+        } else {
+            let questions_type = $(".questions_type").val();
 
-        $.ajax({
-            type: "POST",
-            url: GETSELFMADEQUESTION_ROUTE,
-            headers: {
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-            },
-            data: {
-                _token: $('meta[name="csrf-token"]').attr("content"),
-                questions_type,
-                questions_type,
-                question_ids,
-                test_type: $("#test_type").val(),
-                section_type: $("#practice_test_type").val(),
-                no_of_questions,
-            },
-            success: function (res) {
-                if (res.status) {
-                    let url = $("#site_url").val();
-                    window.location.href = `${url}/user/practice-test-sections/${res.test_id}`;
-                } else {
-                    toastr.options = {
-                        progressBar: true,
-                        closeButton: true,
-                        timeOut: 4000,
-                    };
-                    toastr.error("No questions for this difficulty rating!");
-                    return false;
-                }
-            },
-        });
+            $.ajax({
+                type: "POST",
+                url: GETSELFMADEQUESTION_ROUTE,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr("content"),
+                    questions_type,
+                    questions_type,
+                    question_ids,
+                    test_type: $("#test_type").val(),
+                    section_type: $("#practice_test_type").val(),
+                    no_of_questions,
+                },
+                success: function (res) {
+                    if (res.status) {
+                        let url = $("#site_url").val();
+                        window.location.href = `${url}/user/practice-test-sections/${res.test_id}`;
+                    } else {
+                        toastr.options = {
+                            progressBar: true,
+                            closeButton: true,
+                            timeOut: 4000,
+                        };
+                        toastr.error(
+                            "No questions for this difficulty rating!"
+                        );
+                        return false;
+                    }
+                },
+            });
+        }
     });
 
     function getTypeFunctionality() {
