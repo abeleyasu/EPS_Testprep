@@ -28,7 +28,7 @@
             <div class="content content-boxed">
                 <div class="row text-center">
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000;">
+                        <div class="block block-bordered shadow test-block" style="background: #000;">
                             <a class="btn-block-option editPrimaryTest" href="javascript:void(0)" style="float: right">
                                 <i class="fas fa-edit" style="color: #0099ff;"></i>
                             </a>
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000">
                             <a class="btn-block-option editInitialScore" href="javascript:void(0)" style="float: right">
                                 <i class="fas fa-edit" style="color: #0099ff;"></i>
                             </a>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000">
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Last Test</div>
                             <div class="fs-lg fw-semibold text-white text-uppercase lastTestCls">
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000">
                             <a class="btn-block-option editGoalScore" href="javascript:void(0)" style="float: right">
                                 <i class="fas fa-edit" style="color: #0099ff;"></i>
                             </a>
@@ -1565,7 +1565,7 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
 
     <style>
-		.block {
+		.test-block {
             height: 105px;
         }
 		.toast-success {
