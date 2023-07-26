@@ -177,7 +177,17 @@ height: 270px
                     <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev" data-count="0"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
                     <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next" data-count="0">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
-                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i><span id="timer">{{ isset($testSection[0]->regular_time) ? $testSection[0]->regular_time : '00:00:00' }}</span></button>
+                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i>
+                        <span id="timer">
+                            @php
+                                $optionValue = $_GET['time'] ?? null;
+                                $regularTime = optional($testSection[0])->regular_time ?? '00:00:00';
+                                $fiftyPerExtended = optional($testSection[0])->fifty_per_extended ?? '00:00:00';
+                                $hundredPerExtended = optional($testSection[0])->hundred_per_extended ?? '00:00:00';
+                            @endphp
+                            {{ $optionValue == 'regular' ? $regularTime : ($optionValue == '50per' ? $fiftyPerExtended : ($optionValue == '100per' ? $hundredPerExtended : '00:00:00')) }}
+                        </span>
+                    </button>
                 </div>
                 <div class="col-xl-5">
                     <label class="btn btn-sm btn-outline-danger fs-xs fw-semibold me-1 mb-3 checkbox-button main_flag_section">
