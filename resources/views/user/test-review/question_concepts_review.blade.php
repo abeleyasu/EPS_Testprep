@@ -29,8 +29,6 @@
                                     value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
                             @endif
                             @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
-                                {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
-                                    value="{{ $user_selected_answers[0]['sections'][0]['practice_test_type'] }}" /> --}}
                                 <input type="hidden" id="practice_test_type" name="practice_test_type"
                                     value="{{ $user_selected_answers[0]['sections'][0]->practice_test_type }}" />
                             @endif
@@ -2952,8 +2950,6 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                                                                                                                                                                                                                                                                                            display: none;
-                                                                                                                                                                                                                                                                                                        } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
