@@ -18,7 +18,7 @@ class RolesController extends Controller
     public function permissionList($id) {
         $permissions_module = PermissionModule::with(['userPermission' => function ($q) {
             $q->where('guard_name', 'user');
-        }])->get();
+        }])->get()->toArray();
         $role = UserRole::where('id', $id)->first();
         $attach_permission = [];
         if ($role) {

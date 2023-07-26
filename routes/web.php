@@ -334,7 +334,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
 
-            Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+            Route::group(['middleware' => ['subscription_valid:access-admission-dashboard']], function () {
+                Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+            });
 
             Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.', 'middleware' => ['subscription_valid:access-high-school-resume']], function () {
                 Route::get('/list', [PreviewController::class, 'list'])->name('list');
@@ -475,7 +477,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
         // Please make any changes you think it's necessary to routing
-        Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+        Route::group(['middleware' => ['subscription_valid:access-test-prep-dashboard']], function () {
+            Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+        });
 		Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);

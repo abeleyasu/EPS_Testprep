@@ -59,7 +59,7 @@
                         <span class="nav-main-link-name">Test Prep</span>
                     </a>
                     <ul class="nav-main-submenu">
-                        @if(Auth::user()->isUserHasValidPermission('Access Practice Tests')) 
+                        @if(Auth::user()->isUserHasValidPermission('Access Test Prep Dashboard')) 
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is(['test_prep_dashboard']) ? 'active' : '' }}"
                                 href="{{ route('test_prep_dashboard') }}">
@@ -116,12 +116,14 @@
                     </a>
                     <ul class="nav-main-submenu">
 
+                        @if(Auth::user()->isUserHasValidPermission('Access Admission Dashboard')) 
                         <li class="nav-main-item">
                             <a class="nav-main-link {{ Route::is('admin-dashboard.dashboard') ? 'active' : '' }}" href="{{ route('admin-dashboard.dashboard') }}">
                                 <i class="nav-main-link-icon si si-speedometer"></i>
                                 <span class="nav-main-link-name">Dashboard</span>
                             </a>
                         </li>
+                        @endif
 
                         @if(Auth::user()->isUserHasValidPermission('Access High School Resume')) 
                         <li class="nav-main-item">
