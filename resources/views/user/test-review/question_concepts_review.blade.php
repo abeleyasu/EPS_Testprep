@@ -25,14 +25,12 @@
                             @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
                                 {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
                                     value="{{ $user_selected_answers[0]['all_sections'][0]['practice_test_type'] }}" /> --}}
-                                <input type="hidden" id="practice_test_type" name="practice_test_type" value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
-
+                                <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
                             @endif
                             @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
-                                {{-- <input type="hidden" id="practice_test_type" name="practice_test_type"
-                                    value="{{ $user_selected_answers[0]['sections'][0]['practice_test_type'] }}" /> --}}
-                                <input type="hidden" id="practice_test_type" name="practice_test_type" value="{{ $user_selected_answers[0]['all_sections'][0]->practice_test_type }}" />
-
+                                <input type="hidden" id="practice_test_type" name="practice_test_type"
+                                    value="{{ $user_selected_answers[0]['sections'][0]->practice_test_type }}" />
                             @endif
                             <div class="d-flex align-items-center" style="overflow-wrap: break-word;">
                                 <div class="description-test"
@@ -2149,7 +2147,7 @@
                                                             foreach ($single_question_data as $question_type_val => $single_question_details_item) {
                                                                 $store_correct_answer = 0;
                                                                 $store_wrong_answer = 0;
-
+                                                            
                                                                 foreach ($single_question_details_item as $get_single_ques_data) {
                                                                     foreach ($user_selected_answers as $single_answer_user_selected) {
                                                                         if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
@@ -2165,7 +2163,7 @@
                                                                     }
                                                                 }
                                                             }
-
+                                                            
                                                             ?>
                                                             <div
                                                                 class="block block-rounded block-bordered overflow-hidden mb-1">
@@ -2441,7 +2439,7 @@
                                                                                 <div>
                                                                                     @foreach ($single_question_data as $question_type_val => $single_question_details_item)
                                                                                         <?php
-
+                                                                                        
                                                                                         ?>
                                                                                         <?php $new_test = $new_count++; ?>
                                                                                         <div class="odd p-3 ps-4">
@@ -2705,11 +2703,11 @@
                                                         <?php
                                                         $test = $count++;
                                                         $store_total_wrong_answer = 0;
-
+                                                        
                                                         foreach ($single_question_data as $single_question_details_item) {
                                                             $store_correct_answer = 0;
                                                             $store_wrong_answer = 0;
-
+                                                        
                                                             foreach ($user_selected_answers as $single_answer_user_selected) {
                                                                 if (isset($single_answer_user_selected['get_question_details'][0]->question_id) && !empty($single_answer_user_selected['get_question_details'][0]->question_id)) {
                                                                     if ($single_question_details_item[0] == $single_answer_user_selected['get_question_details'][0]->question_id) {
@@ -2952,8 +2950,8 @@
         }
 
         /* .description-test-review p:nth-child(2){
-                                                                                                                                                                                                                                                                            display: none;
-                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                    display: none;
+                                                                                                                                                                                                                                                                                } */
         .content-full {
             max-width: 1195px !important;
             overflow: hidden !important;
