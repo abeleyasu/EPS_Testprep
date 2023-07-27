@@ -209,6 +209,7 @@ height: 270px
                     <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
                 </div>
                 <div class="col-xl-3">
+                    <input type="hidden" id="actual_time" name="actual_time" value="00:00:00">
                     <button type="button" disabled class="btn btn-sm btn-outline-success fs-xs fw-semibold me-1 mb-3 submit_section_btn"><i class="fa fa-fw fa-circle-check me-1"></i>Submit Section</button>
                 </div>
             </div>
@@ -815,6 +816,7 @@ height: 270px
                 var get_practice_id = jQuery(this).attr('data-practice_test_id');
                 var get_test_id = '';
                 let question_ids = @json($total_questions);
+                var actual_time = jQuery('#actual_time').val();
 
                 //if (window.location.href.indexOf("all") > -1)
                 //{
@@ -947,7 +949,8 @@ height: 270px
                         selected_skip_details:skip_detail,
                         get_section_id:get_section_id,
                         get_practice_id:get_test_id,
-                        get_question_type:get_question_type
+                        get_question_type:get_question_type,
+                        actual_time:actual_time
                     },
                     success: function(result){
                         if(count < result.total_question){
@@ -1484,8 +1487,16 @@ height: 270px
                         var seconds = targetSeconds;
                         var elapsedMilliseconds = 0;
 
+                        var actual_hours = 0;
+                        var actual_minutes = 0;
+                        var actual_seconds = 0;
+
                         var timerInterval = setInterval(function() {
                             elapsedMilliseconds += 1000;
+
+                            actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
+                            actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                            actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
 
                             if (elapsedMilliseconds < targetMilliseconds && OptionValue != 'untimed' ) {
                                 var remainingMilliseconds = targetMilliseconds - elapsedMilliseconds;
@@ -1509,7 +1520,12 @@ height: 270px
                             var formattedMinutes = minutes.toString().padStart(2, '0');
                             var formattedSeconds = seconds.toString().padStart(2, '0');
 
+                            var formattedActualHours = actual_hours.toString().padStart(2, '0');
+                            var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
+                            var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
+
                             $('#timer').text(formattedHours + ':' + formattedMinutes + ':' + formattedSeconds);
+                            $('#actual_time').val(formattedActualHours + ':' + formattedActualMinutes + ':' + formattedActualSeconds);
                             
                             if(OptionValue != 'untimed'){
                                 if (hours === 0 && minutes === 5 && seconds === 0) {
