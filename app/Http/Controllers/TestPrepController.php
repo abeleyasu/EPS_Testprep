@@ -2199,13 +2199,16 @@ class TestPrepController extends Controller
             $questionsData = $query->inRandomOrder()->pluck('id');
             $questionsData = $questionsData->toArray() ?? [];
             $questions = array_unique($questionsData);
-            // dump($questions);
+
             foreach ($questions as $que) {
                 if (!in_array($que, $allQuestionsAnswered)) {
                     $allUnaswered = $allUnaswered + 1;
                     array_push($allUnasweredArray, $que);
                 }
             }
+
+            $questions = array_values($questions);
+
             $questionsCount = count($questions);
             $all = $all + $questionsCount;
 
