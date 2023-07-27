@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users');
             $table->boolean('application_deadline_notification')->default(1); // 0 = off, 1 = on
             $table->boolean('is_receive_sms')->default(0); // 0 = off, 1 = on
-            $table->dateTime('next_cron_job_run_date_time')->nullable();
             $table->string('timezone')->default('America/Los_Angeles');
             $table->timestamps();
         });
