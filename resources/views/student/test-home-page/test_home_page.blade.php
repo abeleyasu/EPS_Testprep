@@ -1016,7 +1016,14 @@
                 </div>
             </div>
     </main>
-	@php
+@endcan
+
+@cannot('Access Test Home Page')
+    @include('components.subscription-warning')
+@endcan
+
+@endsection
+@php
     // Function to convert time string to seconds
     function timeToSeconds($time) {
         list($hours, $minutes, $seconds) = explode(':', $time);
@@ -1047,13 +1054,6 @@
         return $totalTime;
     }
     @endphp
-@endcan
-
-@cannot('Access Test Home Page')
-    @include('components.subscription-warning')
-@endcan
-
-@endsection
 
 @can('Access Test Home Page')
 @section('page-script')
