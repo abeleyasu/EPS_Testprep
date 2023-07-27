@@ -74,17 +74,16 @@ $(function () {
 
         let checkValue4 = [];
 
-        let i = 1;
-
-        $(".diff_rating :checkbox:checked").each(function () {
+        $(".diff_rating :checkbox").each(function (i) {
             if ($(this).prop("checked")) {
                 checkValue4.push($(this).val());
-                question_ids = question_ids.concat(count_data[i]?.questions);
+                question_ids = question_ids.concat(
+                    count_data[i + 1]?.questions
+                );
             }
-            i++;
         });
 
-        if ($("#all_questions").is(":checked")) {
+        if ($("#all_unanswered").is(":checked")) {
             question_ids = count_data[5]?.questions;
         } else {
             no_of_questions = "";
@@ -95,12 +94,16 @@ $(function () {
             closeButton: true,
             timeOut: 4000,
         };
-        if (checkValue4.length == 0) {
-            toastr.error("Please choose the difficulty rating!");
-        } else if (
+        if (
             selectedQuestionTypes.length == 0 &&
             selectedCategories.length == 0
         ) {
+            toastr.error(
+                "Please choose the category and question type from the review section!"
+            );
+        } else if (!question_ids || question_ids.length == 0) {
+            toastr.error("No questions for this difficulty rating!");
+        } else if (checkValue4.length == 0) {
             toastr.error("Please choose the difficulty rating!");
         } else {
             let questions_type = $(".questions_type").val();
