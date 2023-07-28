@@ -124,9 +124,13 @@
                 
             </div>
     <!-- Page Content -->
-    <div class="row grid-view px-2">
+    <div class="grid-view px-2">
         <div class="content content-boxed">
-
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{session('error')}}
+                    </div>
+                @endif
                 <div class="row items-push py-4">
                     @php
 						

@@ -16,8 +16,15 @@
 @section('page-script')
     <script>
         window.addEventListener('storage', function (event) {
+            const urls = [
+                "{{ route('admin-dashboard.collegeApplicationDeadline') }}",
+                "{{ route('admin-dashboard.initialCollegeList.step4') }}",
+                "{{ route('admin-dashboard.cost_comparison') }}"
+            ]
             if (event.key === 'APP-REFRESHED' && event.newValue !== event.oldValue) {
-                window.location.reload();
+                if (urls.includes(event.srcElement.location.href)) {
+                    window.location.reload();
+                }
             }
         });
         const core = {

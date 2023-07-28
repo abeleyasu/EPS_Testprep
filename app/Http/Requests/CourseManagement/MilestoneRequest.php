@@ -25,7 +25,21 @@ class MilestoneRequest extends FormRequest
     {
         return [
             'name' => 'required|max:220',
+            'user_type' => 'required|array',
 //            'description' => 'required'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, mixed>
+     */
+    public function messages() {
+        return [
+            'name.required' => 'Milestone name is required',
+            'user_type.required' => 'User type is required',
+            'user_type.array' => 'User type is required',
         ];
     }
 }

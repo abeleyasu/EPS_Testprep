@@ -56,6 +56,11 @@
         <!-- END Navigation -->
     <!-- Page Content -->
     <div class="content content-boxed">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row coursedesc">
             {!! $course->description !!}
 		</div>

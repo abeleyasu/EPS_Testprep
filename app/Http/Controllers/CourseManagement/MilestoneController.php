@@ -40,7 +40,14 @@ class MilestoneController extends Controller
 
     public function studentIndex()
     {
-        $courses = Courses::where('published', true)->orderBy('order')->get();
+        // dd('for user');
+        $user = auth()->user();
+        $courses = Courses::where('published', true)->orderBy('order')->whereHas('user_course_roles', function($query) use ($user) {
+            $query->where('user_roles.id', $user->role);
+        })->get();
+
+        // $courses = Courses::where('published', true)->orderBy('order')->get();
+
 		$totalmilestone = [];
         foreach($courses as $course){
             $courseid = $course->id;
@@ -48,38 +55,39 @@ class MilestoneController extends Controller
             if($courseid){
                 // $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->get();
                 // $totalmilestone[$courseid] = count($coursemilestones);
-                $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->where('published',1)->get();
+                $coursemilestones = Milestone::getUserTypeWiseMilestones($course->id)->orderBy('updated_at')->get();
+                // $coursemilestones = Milestone::orderBy('updated_at')->where('course_id','=',$courseid)->where('published',1)->get();
                 $totalmilestone[$courseid]['total_milestone'] = count($coursemilestones);
                 
                 $totalmilestone[$courseid]['completed_task'] = 0;
-				$totalmilestone[$courseid]['total_module'] = 0;
-				$total_milestone_completion_percent = 0;
-				$completed_task_per = 0;
-				foreach($coursemilestones as $mkey=>$milestone){
-					$completedmodule=0;
-					$totalmodules=0;
-					$modules =  $milestone->modules();
-					$totalmodules = $modules->count();
-					foreach($milestone->modules as $mmkey=>$module){
-						 $mtotaltasks = $module->tasks()->count();
-						 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
-						 if($mtotaltasks == $mtotalcompletetasks){
-							$completedmodule++;
-						 }elseif($mtotalcompletetasks > 0){
-						     $completedmodule = $mtotalcompletetasks / $mtotaltasks;
-						 }
-					 }
-					 if($completedmodule > 0){
-						$modulepercentage = floor(($completedmodule/$totalmodules)*100);
-						$total_milestone_completion_percent = $total_milestone_completion_percent + $modulepercentage;
-					 }
-				}			
-				if($total_milestone_completion_percent > 0){
-					$completed_task_per = $total_milestone_completion_percent / count($coursemilestones);
-					$totalmilestone[$courseid]['completed_task'] = round($completed_task_per);
-				}else {
-					$totalmilestone[$courseid]['completed_task'] = 0;					
-				}
+                $totalmilestone[$courseid]['total_module'] = 0;
+                $total_milestone_completion_percent = 0;
+                $completed_task_per = 0;
+                foreach($coursemilestones as $mkey=>$milestone){
+                    $completedmodule=0;
+                    $totalmodules=0;
+                    $modules =  $milestone->modules();
+                    $totalmodules = $modules->count();
+                    foreach($milestone->modules as $mmkey=>$module){
+                         $mtotaltasks = $module->tasks()->count();
+                         $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+                         if($mtotaltasks == $mtotalcompletetasks){
+                            $completedmodule++;
+                         }elseif($mtotalcompletetasks > 0){
+                             $completedmodule = $mtotalcompletetasks / $mtotaltasks;
+                         }
+                     }
+                     if($completedmodule > 0){
+                        $modulepercentage = floor(($completedmodule/$totalmodules)*100);
+                        $total_milestone_completion_percent = $total_milestone_completion_percent + $modulepercentage;
+                     }
+                }			
+                if($total_milestone_completion_percent > 0){
+                    $completed_task_per = $total_milestone_completion_percent / count($coursemilestones);
+                    $totalmilestone[$courseid]['completed_task'] = round($completed_task_per);
+                }else {
+                    $totalmilestone[$courseid]['completed_task'] = 0;					
+                }
                
             }
         }
@@ -111,6 +119,7 @@ class MilestoneController extends Controller
      */
     public function store(MilestoneRequest $request)
     {
+        // dd($request->all());
         $duration = (int)($request->hour ? $request->hour * 60 : 0)+ (int) ($request->minute ? $request->minute : 0);
 		$filename= '';
         $order = $request->order;
@@ -131,7 +140,7 @@ class MilestoneController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'content' => $request->get('content'),
-            'user_type' => $request->get('user_type'),
+            // 'user_type' => $request->get('user_type'),
             'duration' => $duration,
             'order' => $request->get('order'),
             'status' => $request->get('status'),
@@ -140,6 +149,10 @@ class MilestoneController extends Controller
             'coverimage'=>$filename,
             'published' => $request->get('published') ? true : false
         ]);
+
+        if ($milestone) {
+            $milestone->user_milestone_roles()->attach($request->user_type);
+        }
 		/**********Order reset**********/
 		/*$milestones = Milestone::orderBy('order')->get();
 		$currentId = $milestone->id;
@@ -172,7 +185,15 @@ class MilestoneController extends Controller
      */
     public function show(Milestone $milestone)
     {
-        //echo $milestone->id;
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
+        $user = auth()->user();
+        $mileston_permission = $milestone->user_milestone_roles->pluck('id')->toArray();
+        if (!in_array($user->role, $mileston_permission)) {
+            return redirect()->back()->with('error', 'You are not authorized to access this milestone');
+        }
 		if($milestone->status == 'paid'){
 			return redirect(route('home'));
 		}
@@ -208,10 +229,10 @@ class MilestoneController extends Controller
         $contentCategories = ContentCategory::all();
         $courses = Courses::all();
 		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
+        $mileston_user_roles = $milestone->user_milestone_roles()->pluck('user_roles.id')->toArray();
         
-  
         return view('admin.courses.milestones.edit',
-            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','courses','usersRoles'));
+            compact('milestone','tags', 'milestone_tags', 'sections', 'contentCategories','courses','usersRoles', 'mileston_user_roles'));
     }
 
     /**
@@ -240,7 +261,7 @@ class MilestoneController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'content' => $request->get('content'),
-            'user_type' => $request->get('user_type'),
+            // 'user_type' => $request->get('user_type'),
             'duration' => $duration,
             'order' => $request->get('order'),
             'status' => $request->get('status'),
@@ -249,6 +270,15 @@ class MilestoneController extends Controller
             'coverimage' => $filename,
             'published' => $request->get('published') ? true : false
         ]);
+
+
+        $mileston_user_roles = $milestone->user_milestone_roles()->pluck('user_role_id')->toArray();
+        if (count($mileston_user_roles) > 0) {
+            $milestone->user_milestone_roles()->detach($mileston_user_roles);
+        }
+        $milestone->user_milestone_roles()->attach($request->user_type);
+
+
 		/**********Order reset**********/
 		/*$milestones = Milestone::orderBy('order')->get();
 		$currentId = $milestone->id;

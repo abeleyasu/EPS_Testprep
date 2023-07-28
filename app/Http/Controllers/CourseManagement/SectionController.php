@@ -91,6 +91,10 @@ class SectionController extends Controller
     public function show($id)
     {
         $section = Section::findOrFail($id);
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($section->module->milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
 		if($section->status == 'paid'){
 			return redirect(route('home'));
 		}

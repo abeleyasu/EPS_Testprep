@@ -167,7 +167,7 @@
                             </div>
                             <div class="mb-2">
                                 <label for="type" class="form-label">User Type:</label>
-                                <select name="user_type" class="form-control">
+                                <select name="user_type[]" class="form-control user-type-selection {{$errors->has('user_type') ? 'is-invalid' : ''}}" multiple="multiple">
 									@foreach($usersRoles as $usersRole)
 										<option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
 									@endforeach
@@ -392,6 +392,13 @@
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 
     <script>
+
+        $('.user-type-selection').select2({
+            tags: true,
+            placeholder: 'Select an option',
+            theme: "classic"
+        });
+
         $(document).ready(()=>{
 		    $('#course_cover_image').change(function(){
 				const file = this.files[0];

@@ -141,8 +141,9 @@ Sortable.create(userSelectedCollegeList, {
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
-      success: function(response) {
+      success: async function(response) {
         if (response.success) {
+          window.localStorage.setItem('APP-REFRESHED', Date.now());
           refreshResults(evt.to.dataset.type);
         }
       }

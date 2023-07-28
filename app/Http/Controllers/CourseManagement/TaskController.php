@@ -81,6 +81,10 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($task->section->module->milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
 		if($task->status == 'paid'){
 			return redirect(route('home'));
 		}
