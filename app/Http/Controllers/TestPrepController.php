@@ -1692,7 +1692,7 @@ class TestPrepController extends Controller
             foreach ($sections as $section) {
                 $sat_custom_details[$value['id']]['section_type'] = $section['practice_test_type'];
                 $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
-                $answer_detail = UserAnswers::where('section_id', $section['id'])->get();
+                $answer_detail = UserAnswers::where('section_id', $section['id'])->where('user_id', $user_id)->get();
                 if (isset($answer_detail[0]['answer'])) {
                     $sat_custom_details[$value['id']]['date_taken'] = $answer_detail[0]['created_at']->format('m/d/y');
                     $answer_data = json_decode($answer_detail[0]['answer'], true);
@@ -1715,6 +1715,12 @@ class TestPrepController extends Controller
                     $sat_custom_details[$value['id']]['total_question'] = 0;
                     $sat_custom_details[$value['id']]['date_taken'] = '-';
                 }
+				if (isset($answer_detail[0]['actual_time'])) {
+                    $actual_time = $answer_detail[0]['actual_time'] ?? '';
+                } else {
+                    $actual_time = '';
+                }
+                $sat_custom_details[$value['id']][$section['practice_test_type']."_actual_time"] = $actual_time;
             }
         }
 
@@ -1727,7 +1733,7 @@ class TestPrepController extends Controller
             foreach ($sections as $section) {
                 $psat_custom_details[$value['id']]['section_type'] = $section['practice_test_type'];
                 $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
-                $answer_detail = UserAnswers::where('section_id', $section['id'])->get();
+                $answer_detail = UserAnswers::where('section_id', $section['id'])->where('user_id', $user_id)->get();
                 if (isset($answer_detail[0]['answer'])) {
                     $psat_custom_details[$value['id']]['date_taken'] = $answer_detail[0]['created_at']->format('m/d/y');
                     $answer_data = json_decode($answer_detail[0]['answer'], true);
@@ -1750,6 +1756,12 @@ class TestPrepController extends Controller
                     $psat_custom_details[$value['id']]['total_question'] = 0;
                     $psat_custom_details[$value['id']]['date_taken'] = '-';
                 }
+				if (isset($answer_detail[0]['actual_time'])) {
+                    $actual_time = $answer_detail[0]['actual_time'] ?? '';
+                } else {
+                    $actual_time = '';
+                }
+                $psat_custom_details[$value['id']][$section['practice_test_type']."_actual_time"] = $actual_time;
             }
         }
 
@@ -1762,7 +1774,7 @@ class TestPrepController extends Controller
             foreach ($sections as $section) {
                 $act_custom_details[$value['id']]['section_type'] = $section['practice_test_type'];
                 $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
-                $answer_detail = UserAnswers::where('section_id', $section['id'])->get();
+                $answer_detail = UserAnswers::where('section_id', $section['id'])->where('user_id', $user_id)->get();
                 if (isset($answer_detail[0]['answer'])) {
                     $act_custom_details[$value['id']]['date_taken'] = $answer_detail[0]['created_at']->format('m/d/y');
                     $answer_data = json_decode($answer_detail[0]['answer'], true);
@@ -1785,12 +1797,18 @@ class TestPrepController extends Controller
                     $act_custom_details[$value['id']]['total_question'] = 0;
                     $act_custom_details[$value['id']]['date_taken'] = '-';
                 }
+				if (isset($answer_detail[0]['actual_time'])) {
+                    $actual_time = $answer_detail[0]['actual_time'] ?? '';
+                } else {
+                    $actual_time = '';
+                }
+                $act_custom_details[$value['id']][$section['practice_test_type']."_actual_time"] = $actual_time;
             }
         }
 
 
         //ACT
-        $act_test = PracticeTest::where('format', 'ACT')->get();
+        $act_test = PracticeTest::where('format', 'ACT')->whereNotIn('test_source', [2])->get();
         $act_details_array = [];
         foreach ($act_test as $test) {
             $act_details_array[$test->id]['test_id'] = $test->id;
@@ -1908,7 +1926,7 @@ class TestPrepController extends Controller
         $helper = new Helper();
         //PSAT
 
-        $psat_test = PracticeTest::where('format', 'PSAT')->get();
+        $psat_test = PracticeTest::where('format', 'PSAT')->whereNotIn('test_source', [2])->get();
         $psat_details_array = [];
         foreach ($psat_test as $test) {
             $psat_details_array[$test->id]['test_id'] = $test->id;
@@ -1990,7 +2008,7 @@ class TestPrepController extends Controller
         }
 
         //SAT
-        $sat_test = PracticeTest::where('format', 'SAT')->get();
+        $sat_test = PracticeTest::where('format', 'SAT')->whereNotIn('test_source', [2])->get();
         $sat_details_array = [];
         foreach ($sat_test as $test) {
             $sat_details_array[$test->id]['test_id'] = $test->id;

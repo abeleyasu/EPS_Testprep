@@ -458,6 +458,15 @@
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
+																					@php
+                                                                                        $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                    @endphp
+                                                                                    <br>
+                                                                                    <span class="custom-actual-time">
+                                                                                        @if ($sectionTypeActualTime !== '')
+                                                                                            ({{ $sectionTypeActualTime }})
+                                                                                        @endif
+                                                                                    </span>
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
@@ -734,6 +743,15 @@
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
+																					@php
+                                                                                        $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                    @endphp
+                                                                                    <br>
+                                                                                    <span class="custom-actual-time">
+                                                                                        @if ($sectionTypeActualTime !== '')
+                                                                                            ({{ $sectionTypeActualTime }})
+                                                                                        @endif
+                                                                                    </span>
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
@@ -990,6 +1008,15 @@
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
+																					@php
+                                                                                    $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                    @endphp
+                                                                                    <br>
+                                                                                    <span class="custom-actual-time">
+                                                                                        @if ($sectionTypeActualTime !== '')
+                                                                                        ({{ $sectionTypeActualTime }})
+                                                                                        @endif
+                                                                                    </span>
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
