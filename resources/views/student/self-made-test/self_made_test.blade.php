@@ -502,7 +502,6 @@
 
                 if ($("#all_unanswered").is(":checked")) {
                     question_ids = count_data[5]?.questions;
-                } else {
                     no_of_questions = '';
                 }
 

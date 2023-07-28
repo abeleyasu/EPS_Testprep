@@ -32,7 +32,12 @@ $(function () {
             //add
             selectedCategories.push(dataId);
             selectedQuestionTypes.push(questionType);
-            getTypeFunctionality();
+            getTypeFunctionality((res) => {
+                count_data = res.count;
+                $.each(res.count, function (i, v) {
+                    $(`.diff_${i}`).html(`(${v.count})`);
+                });
+            });
         } else {
             //remove
             selectedCategories = selectedCategories.filter(
@@ -144,8 +149,13 @@ $(function () {
             });
         }
     });
+    $(".selected-item").change(function () {
+        getTypeFunctionality((res) => {
+            count_data = res.count;
+        });
+    });
 
-    function getTypeFunctionality() {
+    function getTypeFunctionality(callback) {
         let diff_rating = [];
         $(".selected-item").each(function () {
             if ($(this).prop("checked")) {
@@ -168,10 +178,7 @@ $(function () {
                 diff_rating: diff_rating,
             },
             success: function (res) {
-                count_data = res.count;
-                $.each(res.count, function (i, v) {
-                    $(`.diff_${i}`).html(`(${v.count})`);
-                });
+                callback(res);
             },
         });
     }
