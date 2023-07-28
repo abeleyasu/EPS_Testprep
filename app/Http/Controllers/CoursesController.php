@@ -262,11 +262,11 @@ class CoursesController extends Controller
         $user = auth()->user();
         $course = Courses::orderBy('order')->where('id','=',$course)->first();
         if (!$course) {
-            return redirect()->back()->with('error', 'Course not found');
+            return redirect()->route('courses.index')->with('error', 'Course not found');
         }
         $couser_user_type = $course->user_course_roles()->pluck('user_role_id')->toArray();
         if (!in_array($user->role, $couser_user_type)) {
-            return redirect()->back()->with('error', 'You don\'t have permission to access this course');
+            return redirect()->route('courses.index')->with('error', 'You don\'t have permission to access this course');
         }
         // $milestones = Milestone::orderBy('order')->where('course_id','=',$course->id)->where('published',1)->get();
         $milestones = Milestone::getUserTypeWiseMilestones($course->id)->orderBy('order')->get();
