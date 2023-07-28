@@ -518,7 +518,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($act_details_array as $act_test)
+                                                                        @foreach ($all_act_details_array as $act_test)
                                                                             @if ($act_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
@@ -798,7 +798,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($sat_details_array as $sat_test)
+                                                                        @foreach ($all_sat_details_array as $sat_test)
                                                                             @if ($sat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
@@ -1065,7 +1065,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($psat_details_array as $psat_test)
+                                                                        @foreach ($all_psat_details_array as $psat_test)
                                                                             @if ($psat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
