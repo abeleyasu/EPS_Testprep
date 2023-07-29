@@ -343,7 +343,7 @@
         $(document).ready(()=>{
 
         $('.user-type-selection').select2({
-            tags: true,
+            multiple: true,
             placeholder: 'Select an option',
             theme: "classic"
         });
