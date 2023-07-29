@@ -44,12 +44,14 @@
                         <p class="currency">${{ $plan->display_amount }}
                           @if($plan->interval === 'month')
                             <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
-                          @else
+                          @elseif($plan->interval === 'year')
                             <span class="text-muted interval"><span class="text-capitalize">/year</span></span>
                           @endif
                         </p>
                         @if($plan->interval === 'month')
                           <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
+                        @elseif($plan->interval === 'hour')
+                          <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Hour Plan</span></p>
                         @endif
                       </div>
                       @if(auth()->user())
@@ -71,7 +73,7 @@
                   <div class="block-content">
                     <div class="fs-sm py-2">
                         @foreach($product->inclusions as $inc)
-                            <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
+                          <p class="text-start d-flex align-items-center inclusion"><i class="fa fa-fw fa-check me-1 inclusion-check-icon"></i> {!! $inc->inclusion !!}</p>
                         @endforeach
                     </div>
                   </div>

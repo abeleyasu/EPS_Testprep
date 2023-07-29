@@ -35,21 +35,6 @@ class PracticeQuestionController extends Controller
         $cat_array = [];
         $qt_array = [];
 
-        // if(!$getTestSectionData->isEmpty())
-        // {
-        // 	foreach($getTestSectionData as $singleTestSectionData)
-        // 	{
-        // 		if ($setQuestionOrder === null || $singleTestSectionData->question_order > $setQuestionOrder) {
-        // 			$setQuestionOrder = $singleTestSectionData->question_order;
-        // 		}
-        // 	}
-        // 	$setQuestionOrder = $setQuestionOrder + 1;
-        // }
-        // else
-        // {
-        // 	$setQuestionOrder = 1;
-        // }
-
         $question = new PracticeQuestion();
         $question->format = $request->format;
         $question->title = $request->question;
@@ -67,6 +52,11 @@ class PracticeQuestionController extends Controller
         $question->multiChoice = $request->multiChoice;
         $question->question_order = $request->question_order;
         $rating_array = $request->diff_rating ?? ['2'];
+
+        if (in_array($request->testSectionType, ['Reading', 'Writing'])) {
+            $question->multiChoice = "0";
+        }
+
         foreach ($rating_array as $key => $value) {
             $rating_id = DiffRating::where('title', $value)->orWhere('id', $value)->first();
         }
@@ -77,12 +67,7 @@ class PracticeQuestionController extends Controller
             $tag_id = QuestionTag::where('title', $value)->orWhere('id', $value)->first();
         }
         $question->tags = $tag_id['id'];
-        // if(isset($request->tags)){
-        // 	$tags = Arr::flatten(json_decode($request->tags, true));
-        // 	$question->tags = implode(",", $tags);
-        // } else{
-        // 	$question->tags = $request->tags;
-        // }
+
         $question_type = $request->question_type;
         if ($question_type == 'choiceOneInFive_Odd') {
             $ans_choices = ['A', 'B', 'C', 'D', 'E'];
@@ -293,12 +278,6 @@ class PracticeQuestionController extends Controller
             $tag_id = QuestionTag::where('title', $value)->orWhere('id', $value)->first();
         }
         $question->tags = $tag_id['id'];
-        // if(isset($request->tags)){
-        // 	$tags = Arr::flatten(json_decode($request->tags, true));
-        // 	$question->tags = implode(",", $tags);
-        // } else{
-        // 	$question->tags = $request->tags;
-        // }
 
         $question_type = $request->question_type;
         if ($question_type == 'choiceOneInFive_Odd') {
@@ -319,7 +298,6 @@ class PracticeQuestionController extends Controller
 
         $checkbox_values = [];
         foreach ($ans_choices as $choice) {
-            // $ctValue = $request->{"ct_checkbox_values_$choice"};
             $ctValue = $request->input('ct_checkbox_values')[$choice];
             $checkbox_values[$choice] = $ctValue;
         }
@@ -385,8 +363,8 @@ class PracticeQuestionController extends Controller
             $i++;
         }
 
-        $question_details = QuestionDetails::where('question_id', $question)->get();
-        if (!empty($question_details)) {
+        $question_details = QuestionDetails::where('question_id', $question->id);
+        if ($question_details->count()) {
             $question_details->delete();
         }
         QuestionDetails::insert($insertValues);

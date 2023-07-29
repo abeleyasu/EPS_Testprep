@@ -101,6 +101,7 @@
 
 @section('user-content')
 <!-- Main Container -->
+@can('Access Courses')
 <main id="main-container">
 <div class="block-header block-header-default">
                 <h3 class="block-title">
@@ -123,9 +124,13 @@
                 
             </div>
     <!-- Page Content -->
-    <div class="row grid-view px-2">
+    <div class="grid-view px-2">
         <div class="content content-boxed">
-
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{session('error')}}
+                    </div>
+                @endif
                 <div class="row items-push py-4">
                     @php
 						
@@ -230,8 +235,16 @@
    
 </main>
 <!-- END Main Container -->
+@endcan
+
+@cannot('Access Courses')
+    @include('components.subscription-warning')
+@endcan
+
+
 @endsection
 
+@can('Access Courses')
 @section('user-script')
 
 <script>
@@ -275,3 +288,4 @@
         }
     </script>
 @endsection
+@endcan

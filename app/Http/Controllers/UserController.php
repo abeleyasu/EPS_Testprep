@@ -256,7 +256,7 @@ class UserController extends Controller
 		if ($user) 
 		{
 			$user_settings = UserSettings::where('user_id', $id)->first();
-			$reminders = Reminder::where('user_id', $id)->where('type', 'custom')->get();
+			$reminders = Reminder::where('user_id', $id)->where('type', 'custom')->orderBy('created_at', 'desc')->get();
 			$reminderTypes = ReminderType::all();
 			$reminders_frequency = Config::get('constants.reminders_frequency');
 			$methods = ["Text", "Email", "Both"];
@@ -271,7 +271,8 @@ class UserController extends Controller
 	public function store(Request $request)
 	{
 		$data = $request->all();
-
+		$currentTime = Carbon::createFromFormat('H:i A', $data['when_time']);
+		$data['when_time'] = $currentTime->format('H:i:s');
 		$rules = [
 			'reminder_name' => 'required',
 			'reminder_type_id' => 'required',
@@ -279,7 +280,9 @@ class UserController extends Controller
 			'method' => 'required',
 			'when_time' => 'required',
 			'start_date' => 'required',
-			'end_date' => 'required'
+			'end_date' => 'required',
+			'before_time' => 'required|numeric',
+			'before_frequncy' => 'required',
 		];
 
 		$messages = [
@@ -290,6 +293,8 @@ class UserController extends Controller
 			"when_time.required" => "When Time is required",
 			"start_date.required" => "Start Date is required",
 			"end_date.required" => "End Date is required",
+			"before_time.required" => "Before Time is required",
+			"before_frequncy.required" => "Before Frequency is required",
 		];
 		$validator = Validator::make($request->all(), $rules, $messages);
 		if ($validator->fails()) {
@@ -357,6 +362,7 @@ class UserController extends Controller
 
 		$input = $request->all();
 
+
 		foreach($input as $key => $value) {
 			if($key != '_token') {
 				$keyParts = explode('_', $key);
@@ -365,6 +371,9 @@ class UserController extends Controller
 			}
 		}
 
+		$currentTime = Carbon::createFromFormat('H:i A', $input['when_time_'.$lastKeyPart]);
+		$input['when_time_'.$lastKeyPart] = $currentTime->format('H:i:s');
+
 		$rules = [
 			'reminder_name_'.$lastKeyPart => 'required',
 			'reminder_type_id_'.$lastKeyPart => 'required',
@@ -372,7 +381,9 @@ class UserController extends Controller
 			'method_'.$lastKeyPart => 'required',
 			'when_time_'.$lastKeyPart => 'required',
 			'start_date_'.$lastKeyPart => 'required',
-			'end_date_'.$lastKeyPart => 'required'
+			'end_date_'.$lastKeyPart => 'required',
+			'before_time_'.$lastKeyPart => 'required|numeric',
+			'before_frequncy_'.$lastKeyPart => 'required',
 		];
 
 		$messages = [
@@ -383,6 +394,8 @@ class UserController extends Controller
 			"when_time_$lastKeyPart.required" => "When Time is required",
 			"start_date_$lastKeyPart.required" => "Start Date is required",
 			"end_date_$lastKeyPart.required" => "End Date is required",
+			"before_time_$lastKeyPart.required" => "Before Time is required",
+			"before_frequncy_$lastKeyPart.required" => "Before Frequency is required",
 		];
 		$reminder_frequency = $reminder->frequency;
 
@@ -485,10 +498,10 @@ class UserController extends Controller
 					}
 				} else {
 					$event->update([
-						'title' => $input['reminder_name']
+						'title' => $input['reminder_name'],
 					]);
 		
-					if($reminder_frequency != $input['frequency']) {
+					// if($reminder_frequency != $input['frequency']) {
 						UserCalendar::where('event_id', $event->id)->delete();
 		
 						$startDate = Carbon::parse($input['start_date'])->startOfDay();;
@@ -512,7 +525,7 @@ class UserController extends Controller
 								$date->addMonth();
 							}
 						}
-					}
+					// }
 				}//END if($reminder_frequency != $input['frequency'])
 			}
 		} else {

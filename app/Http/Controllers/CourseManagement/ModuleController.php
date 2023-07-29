@@ -90,6 +90,10 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($module->milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
 		if($module->status == 'paid'){
 			return redirect(route('home'));
 		}

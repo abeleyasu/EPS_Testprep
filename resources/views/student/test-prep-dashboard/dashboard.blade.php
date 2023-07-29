@@ -3,6 +3,7 @@
 @section('title', 'Student View Dashboard : CPS')
 
 @section('user-content')
+@can('Access Test Prep Dashboard')
     <!-- Main Container -->
 
     <main id="main-container">
@@ -27,34 +28,65 @@
             <div class="content content-boxed">
                 <div class="row text-center">
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000;">
+                            <a class="btn-block-option editPrimaryTest" href="javascript:void(0)" style="float: right">
+                                <i class="fas fa-edit" style="color: #0099ff;"></i>
+                            </a>
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Primary Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">ACT</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase selectedPrimaryTest">
+                                {!! optional($getTestScores)->primary_test_type ?? '<span style="font-size: 5.5px;">Please input your primary test by clicking on <i class="fas fa-edit" style="color: #0099ff;"></i> button</span>' !!}
+                            </div>
+                            <div id="editDropdownContainer" style="display: none;">
+                                <select id="testTypeDropdown">
+                                    <option value="">Select</option>
+                                    <option value="ACT" {{ optional($getTestScores)->primary_test_type === 'ACT' ? 'selected' : '' }}>ACT</option>
+                                    <option value="SAT" {{ optional($getTestScores)->primary_test_type === 'SAT' ? 'selected' : '' }}>SAT</option>
+                                    <option value="PSAT" {{ optional($getTestScores)->primary_test_type === 'PSAT' ? 'selected' : '' }}>PSAT</option>
+                                </select>
+                            </div>
                             <br>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000">
+                            <a class="btn-block-option editInitialScore" href="javascript:void(0)" style="float: right">
+                                <i class="fas fa-edit" style="color: #0099ff;"></i>
+                            </a>
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Initial Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">27</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase initialScoreCls">
+                                {{ optional($getTestScores)->initial_score ?? '0' }}
+                            </div>
+                            <div id="editInitialScoreContainer" style="display: none;">
+                                <input style="width: 50px; text-align: center;" type="text" name="txtinitialScore" id="txtinitialScore" value="{{ optional($getTestScores)->initial_score ?? '0' }}" autocomplete="off">
+                            </div>
                             <br>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000">
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Last Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">31</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase lastTestCls">
+                                {{ optional($getTestScores)->last_test_score ?? '0' }}
+                            </div>
                             <br>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow" style="background: #000">
+                        <div class="block block-bordered shadow test-block" style="background: #000">
+                            <a class="btn-block-option editGoalScore" href="javascript:void(0)" style="float: right">
+                                <i class="fas fa-edit" style="color: #0099ff;"></i>
+                            </a>
                             <br>
                             <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Goal Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase">34</div>
+                            <div class="fs-lg fw-semibold text-white text-uppercase goalScoreCls">
+                                {{ optional($getTestScores)->goal_score ?? '0' }}
+                            </div>
+                            <div id="editGoalScoreContainer" style="display: none;">
+                                <input style="width: 50px; text-align: center;" type="text" name="txtgoleScore" id="txtgoalScore" value="{{ optional($getTestScores)->goal_score ?? '0' }}" autocomplete="off">
+                            </div>
                             <br>
                         </div>
                     </div>
@@ -1253,8 +1285,15 @@
     </div>
 
     <!-- End Main Container -->
+@endcan
+
+@cannot('Access Test Prep Dashboard')
+    @include('components.subscription-warning')
+@endcan
+
 @endsection
 
+@can('Access Test Prep Dashboard')
 @section('page-script')
     <script src="{{ asset('assets/js/plugins/fullcalendar/main.min.js') }}"></script>
     <script src="{{ asset('assets/js/moment/moment.min.js') }}"></script>
@@ -1283,6 +1322,141 @@
         $(document).ready(function() {
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
+            });
+			
+			$(".editPrimaryTest").click(function() {
+                $('#editDropdownContainer').toggle();
+                $('.selectedPrimaryTest').toggle();
+            });
+
+            $("#testTypeDropdown").change(function() {
+                // var testTypeValue = $('.selectedPrimaryTest').text().trim();
+                var newTestType = this.value;
+
+                if(newTestType != '') {
+                    $.ajax({
+                        url: "{{ route('update_test_type') }}",
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            updtvalue: 'primary_test_type',
+                            field_value: newTestType
+                        },
+                        success: function(response) {
+                            // console.log(response.scaled_score);
+
+                            $('.selectedPrimaryTest').text(newTestType);
+                            $('.lastTestCls').text(response.scaled_score);
+                            
+                            $('#editDropdownContainer').toggle();
+                            $('.selectedPrimaryTest').toggle();
+
+                            toastr.options = {
+                                "progressBar": true,
+                                "closeButton": true,
+                                "timeOut": 4000,
+                            };
+                            toastr.success("PRIMARY TEST UPDATED!");
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+
+            $(".editInitialScore").click(function() {
+                $('.initialScoreCls').toggle();
+                $('#editInitialScoreContainer').toggle();
+                $('#txtinitialScore').focus().select();
+            });
+
+            $('#txtinitialScore').on('keypress', function(event) {
+                // Allow backspace, delete, and arrow keys
+                if (event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39) {
+                    return true;
+                }
+                // Ensure only numeric characters are allowed (ASCII codes 48 to 57)
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+                if (event.which === 13) {
+                    var old_initialScore = $('.initialScoreCls').text().trim();
+                    var new_initialScore = this.value;
+                    if(new_initialScore != '' && new_initialScore != old_initialScore) {
+                        $.ajax({
+                            url: "{{ route('update_test_type') }}",
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                updtvalue: 'initial_score',
+                                field_value: new_initialScore
+                            },
+                            success: function(response) {
+                                $('.initialScoreCls').text(new_initialScore);
+                                $('.initialScoreCls').toggle();
+                                $('#editInitialScoreContainer').toggle();
+
+                                toastr.options = {
+                                    "progressBar": true,
+                                    "closeButton": true,
+                                    "timeOut": 4000,
+                                };
+                                toastr.success("INITIAL SCORE UPDATED!");
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                }
+            });
+
+            $(".editGoalScore").click(function() {
+                $('.goalScoreCls').toggle();
+                $('#editGoalScoreContainer').toggle();
+                $('#txtgoalScore').focus().select();
+            });
+
+            $('#txtgoalScore').on('keypress', function(event) {
+                // Allow backspace, delete, and arrow keys
+                if (event.keyCode === 8 || event.keyCode === 37 || event.keyCode === 39) {
+                    return true;
+                }
+                // Ensure only numeric characters are allowed (ASCII codes 48 to 57)
+                if (event.keyCode < 48 || event.keyCode > 57) {
+                    event.preventDefault();
+                }
+                if (event.which === 13) {
+                    var old_goalScore = $('.goalScoreCls').text().trim();
+                    var new_goalScore = this.value;
+                    if(new_goalScore != '' && new_goalScore != old_goalScore) {
+                        $.ajax({
+                            url: "{{ route('update_test_type') }}",
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                updtvalue: 'goal_score',
+                                field_value: new_goalScore
+                            },
+                            success: function(response) {
+                                $('.goalScoreCls').text(new_goalScore);
+                                $('.goalScoreCls').toggle();
+                                $('#editGoalScoreContainer').toggle();
+                                toastr.options = {
+                                    "progressBar": true,
+                                    "closeButton": true,
+                                    "timeOut": 4000,
+                                };
+                                toastr.success("GOAL SCORE UPDATED!");
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    }
+                }
             });
         });
 
@@ -1375,6 +1549,7 @@
         }
     </script>
 @endsection
+@endcan
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
@@ -1390,6 +1565,12 @@
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
 
     <style>
+		.test-block {
+            height: 105px;
+        }
+		.toast-success {
+            background-color: #51A351 !important;
+        }
 		.loading-indicator {
 			display: flex;
 			justify-content: center;

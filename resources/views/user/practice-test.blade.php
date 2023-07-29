@@ -58,10 +58,52 @@ height: 270px
     display: inline-flex;
     align-items: center;
     padding-left: 11px;
+    pointer-events: none;
 }
 .dcg-wrapper{
     width: 100% !important;
     height: 500px !important;
+}
+
+.question-button {
+    cursor: pointer !important;
+    font-size: 17px !important;
+    padding: 10px 20px !important;
+    border-radius: 0 !important;
+}
+
+.btn-blue {
+    background-color: #0d6efd !important;
+}
+
+.btn-yellow {
+    background-color: #ffc107 !important;
+}
+
+.btn-orange {
+    background-color: rgb(234, 88, 12) !important;
+}
+
+.btn-red {
+    background-color: #dc3545 !important;
+}
+
+.btn-nocolor {
+    background-color: #f6f7f9 !important;
+    color: #000 !important;
+    border-color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+.blue-button {
+    /* 0d6efd */
+    /* 395aa6 */
+    background-color: #0d6efd !important;
+  /* display: inline-block; */
+  /* width: 20px;
+  height: 20px;
+  background-color: blue;
+  margin-right: 5px; */
 }
 
 </style>
@@ -86,6 +128,7 @@ height: 270px
             </nav>
         </div>
     </div>
+    <input type="hidden" id="timeisover" name="timeisover" value=0>
     <input type="hidden" id="section_id" value="{{$section_id}}">
     <input type="hidden" id="get_offset" value="{{$set_offset}}">
     <input type="hidden" id="get_question_type" value="{{$question_type}}">
@@ -134,15 +177,29 @@ height: 270px
                     <button type="button" id="get_previous_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 prev" data-count="0"><i class="fa fa-fw fa-arrow-left me-1"></i>Previous</button>
                     <button type="button" id="get_next_question_btn" value="" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 next" data-count="0">Next<i class="fa fa-fw fa-arrow-right me-1"></i></button>
                     <button type="button" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 review"><i class="fa fa-fw fa-list-check me-1"></i>Review</button>
-                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i><span id="timer">00:00:00</span></button>
+                    <button type="button" class="btn btn-sm btn-dark fs-xs fw-semibold me-1 mb-3 clock-button"><i class="fa fa-fw fa-clock me-1"></i>
+                        <span id="timer">
+                            @php
+                                $optionValue = $_GET['time'] ?? null;
+                                $regularTime = optional($testSection[0])->regular_time ?? '00:00:00';
+                                $fiftyPerExtended = optional($testSection[0])->fifty_per_extended ?? '00:00:00';
+                                $hundredPerExtended = optional($testSection[0])->hundred_per_extended ?? '00:00:00';
+                            @endphp
+                            {{ $optionValue == 'regular' ? $regularTime : ($optionValue == '50per' ? $fiftyPerExtended : ($optionValue == '100per' ? $hundredPerExtended : '00:00:00')) }}
+                        </span>
+                    </button>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-5">
                     <label class="btn btn-sm btn-outline-danger fs-xs fw-semibold me-1 mb-3 checkbox-button main_flag_section">
                         <input type="checkbox" class="flag" />
                         <span><i class="fa fa-fw fa-flag me-1" style="color:red"></i>Flag</span>
                     </label>
 
-                    <button type="button" id="get_skip_question_btn" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 skip" data-count="0"><i class="fa fa-fw fa-forward me-1"></i>Skip</button>
+                    {{-- <button type="button" id="get_skip_question_btn" class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 skip" data-count="0"><i class="fa fa-fw fa-forward me-1"></i>Skip</button> --}}
+                    <label class="btn btn-sm btn-outline-info fs-xs fw-semibold me-1 mb-3 checkbox-button main_skip_section">
+                        <input type="checkbox" class="skip" />
+                        <span><i class="fa fa-fw fa-forward me-1"></i>Skip</span>
+                    </label>
 
                     <label class="btn btn-sm btn-outline-warning fs-xs fw-semibold me-1 mb-3 checkbox-button main_guess_section">
                         <input type="checkbox" class="guess" />
@@ -151,7 +208,8 @@ height: 270px
 
                     <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
                 </div>
-                <div class="col-xl-4">
+                <div class="col-xl-3">
+                    <input type="hidden" id="actual_time" name="actual_time" value="00:00:00">
                     <button type="button" disabled class="btn btn-sm btn-outline-success fs-xs fw-semibold me-1 mb-3 submit_section_btn"><i class="fa fa-fw fa-circle-check me-1"></i>Submit Section</button>
                 </div>
             </div>
@@ -214,17 +272,19 @@ height: 270px
 
             $('.content').on('click', 'input[name=example-radios-default]:radio', function() {
                 var get_question_id = jQuery('.get_question_id').val();
-                $('.skip').css("color", "#0891b2");
-                $('.skip').css("background-color", "white");
-                selected_skip_details[get_question_id] = 'no';
+                // $('.skip').css("color", "#0891b2");
+                // $('.skip').css("background-color", "white");
+                // selected_skip_details[get_question_id] = 'no';
             });
+
+
             jQuery(".prev").click(function(){
                 var get_offset = jQuery(this).val();
                 var get_question_id = jQuery('.get_question_id').val();
                 let data_count = jQuery(this).attr('data-count');
                     data_count = parseInt(data_count);
                 jQuery(this).attr('data-count', data_count - 1);
-                jQuery('.skip').attr('data-count', data_count - 1);
+                // jQuery('.skip').attr('data-count', data_count - 1);
                 jQuery('.next').attr('data-count', data_count - 1);
                 var set_scroll_position=0;
 
@@ -234,7 +294,7 @@ height: 270px
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
-                    selected_skip_details[get_question_id] = 'no';
+                    // selected_skip_details[get_question_id] = 'no';
                 } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     var store_multi = '';
                     $('input[name="example-checkbox-default"]:checked').each(function() {
@@ -242,14 +302,14 @@ height: 270px
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
+                    // selected_skip_details[get_question_id] = 'no';
                 } else if($("input[name='example-textbox-default']")){
                     store_multi = $("input[name='example-textbox-default']").val();
                     selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
+                    // selected_skip_details[get_question_id] = 'no';
                 } else {
                     selected_answer[get_question_id] = '-';
-                    selected_skip_details[get_question_id] = 'yes';
+                    // selected_skip_details[get_question_id] = 'yes';
                 }
 
                 if(!$(".guess").is(':checked'))
@@ -260,6 +320,11 @@ height: 270px
                 if(!$(".flag").is(':checked'))
                 {
                     selected_flag_details[get_question_id] = 'no';
+                }
+
+                if(!$(".skip").is(':checked'))
+                {
+                    selected_skip_details[get_question_id] = 'no';
                 }
                 
                 var check_click_type = 'prev';
@@ -291,61 +356,67 @@ height: 270px
 
             });
             
-            jQuery(".skip").click(function(){
-                var get_offset = jQuery(this).val();
-                var get_question_id = jQuery('.get_question_id').val();
-                let data_count = jQuery(this).attr('data-count');
-                    data_count = parseInt(data_count);
-                jQuery(this).attr('data-count', data_count + 1);
-                jQuery('.prev').attr('data-count', data_count + 1);
-                jQuery('.next').attr('data-count', data_count + 1);
+            // jQuery(".skip").click(function(){
+            //     var get_offset = jQuery(this).val();
+            //     var get_question_id = jQuery('.get_question_id').val();
+            //     let data_count = jQuery(this).attr('data-count');
+            //         data_count = parseInt(data_count);
+            //     jQuery(this).attr('data-count', data_count + 1);
+            //     jQuery('.prev').attr('data-count', data_count + 1);
+            //     jQuery('.next').attr('data-count', data_count + 1);
 
-                let arr_index = jQuery('.skip').attr('data-count');
-                $('#onload_question_id').val(question_id_arr[arr_index]);
+            //     let arr_index = jQuery('.skip').attr('data-count');
+            //     $('#onload_question_id').val(question_id_arr[arr_index]);
 
-                if ( $('input:radio[name=example-radios-default]').length ) {
-                    $('input:radio[name=example-radios-default]').prop('checked', false);
-                    selected_skip_details[get_question_id] = 'no';
-                } else {
-                    $('input[type=checkbox]').prop('checked', false);
-                    selected_skip_details[get_question_id] = 'no';
-                }
+            //     if ( $('input:radio[name=example-radios-default]').length ) {
+            //         $('input:radio[name=example-radios-default]').prop('checked', false);
+            //         selected_skip_details[get_question_id] = 'no';
+            //     } else {
+            //         $('input[type=checkbox]').prop('checked', false);
+            //         selected_skip_details[get_question_id] = 'no';
+            //     }
 
-                $('.skip').css("color", "white");
-                $('.skip').css("background-color", "#0891b2");
-                if($("input[name='example-radios-default']").is(':checked')) { 
-                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-                    selected_answer[get_question_id] = getSelectedAnswer;
-                    selected_skip_details[get_question_id] = 'no';
-                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
-                    var store_multi = '';
-                    $('input[name="example-checkbox-default"]:checked').each(function() {
-                        console.log(this.value);
-                        store_multi += this.value+','; 
-                    });
-                    store_multi = store_multi.replace(/,\s*$/, "");
-                    selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
-                }  else if($("input[name='example-textbox-default']")){
-                    store_multi = $("input[name='example-textbox-default']").val();
-                    selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
-                } else {
-                    selected_answer[get_question_id] = '-';
-                    selected_skip_details[get_question_id] = 'yes';
-                }
+            //     $('.skip').css("color", "white");
+            //     $('.skip').css("background-color", "#0891b2");
+            //     if($("input[name='example-radios-default']").is(':checked')) { 
+            //         var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+            //         selected_answer[get_question_id] = getSelectedAnswer;
+            //         selected_skip_details[get_question_id] = 'no';
+            //     } else if($("input[name='example-checkbox-default']").is(':checked')) { 
+            //         var store_multi = '';
+            //         $('input[name="example-checkbox-default"]:checked').each(function() {
+            //             console.log(this.value);
+            //             store_multi += this.value+','; 
+            //         });
+            //         store_multi = store_multi.replace(/,\s*$/, "");
+            //         selected_answer[get_question_id] = store_multi;
+            //         selected_skip_details[get_question_id] = 'no';
+            //     }  else if($("input[name='example-textbox-default']")){
+            //         store_multi = $("input[name='example-textbox-default']").val();
+            //         selected_answer[get_question_id] = store_multi;
+            //         selected_skip_details[get_question_id] = 'no';
+            //     } else {
+            //         selected_answer[get_question_id] = '-';
+            //         selected_skip_details[get_question_id] = 'yes';
+            //     }
 
-                if(!$(".guess").is(':checked'))
-                {
-                    selected_gusess_details[get_question_id] = 'no';
-                }
+            //     if(!$(".guess").is(':checked'))
+            //     {
+            //         selected_gusess_details[get_question_id] = 'no';
+            //     }
 
-                if(!$(".flag").is(':checked'))
-                {
-                    selected_flag_details[get_question_id] = 'no';
-                }
-                get_first_question(get_offset);
-            });
+            //     if(!$(".flag").is(':checked'))
+            //     {
+            //         selected_flag_details[get_question_id] = 'no';
+            //     }
+
+            //     if(!$(".skip").is(':checked'))
+            //     {
+            //         selected_skip_details[get_question_id] = 'no';
+            //     }
+            //     get_first_question(get_offset);
+            // });
+
             
             var count = 1;
             jQuery(".next").click(function(){
@@ -353,7 +424,7 @@ height: 270px
                 let data_count = jQuery(this).attr('data-count');
                     data_count = parseInt(data_count);
                 jQuery(this).attr('data-count', data_count + 1);
-                jQuery('.skip').attr('data-count', data_count + 1);
+                // jQuery('.skip').attr('data-count', data_count + 1);
                 jQuery('.prev').attr('data-count', data_count + 1);
                 var get_question_id = jQuery('.get_question_id').val();
 
@@ -364,7 +435,7 @@ height: 270px
                     count ++;
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
                     selected_answer[get_question_id] = getSelectedAnswer;
-                    selected_skip_details[get_question_id] = 'no';
+                    // selected_skip_details[get_question_id] = 'no';
                 } else if($("input[name='example-checkbox-default']").is(':checked')) { 
                     count ++;
                     var store_multi = '';
@@ -373,11 +444,11 @@ height: 270px
                     });
                     store_multi = store_multi.replace(/,\s*$/, "");
                     selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
+                    // selected_skip_details[get_question_id] = 'no';
                 } else if($("input[name='example-textbox-default']")){
                     store_multi = $("input[name='example-textbox-default']").val();
                     selected_answer[get_question_id] = store_multi;
-                    selected_skip_details[get_question_id] = 'no';
+                    // selected_skip_details[get_question_id] = 'no';
                 } 
 
                 if(!$(".guess").is(':checked'))
@@ -389,6 +460,12 @@ height: 270px
                 {
                     selected_flag_details[get_question_id] = 'no';
                 }
+
+                if(!$(".skip").is(':checked'))
+                {
+                    selected_skip_details[get_question_id] = 'no';
+                }
+
                 get_first_question(get_offset);
 
                 var scroll_position = $('#passage_description').scrollTop();
@@ -456,6 +533,30 @@ height: 270px
             //     }
             // });
 
+            //skip function
+            jQuery(".skip").click(function(){
+                var get_question_id = jQuery('.get_question_id').val();
+                if( $(this).is(':checked') ){
+                    $('.main_skip_section').css("color", "white");
+                    $('.main_skip_section').css("background-color", "#ea580c");
+                    selected_skip_details[get_question_id] = 'yes';
+                } else{
+                    $('.main_skip_section').css("color", "#ea580c");
+                    $('.main_skip_section').css("background-color", "white");
+                    selected_skip_details[get_question_id] = 'no';
+                }
+
+                if(!$(".flag").is(':checked'))
+                {
+                    selected_flag_details[get_question_id] = 'no';
+                }
+
+                if(!$(".guess").is(':checked'))
+                {
+                    selected_gusess_details[get_question_id] = 'no';
+                }
+            });
+
             //guess function
             jQuery(".guess").click(function(){
                 var get_question_id = jQuery('.get_question_id').val();
@@ -502,6 +603,8 @@ height: 270px
                     selected_skip_details[get_question_id] = 'no';
                 }
             });
+
+
 
             jQuery(".review").click(function(){
             //     selected_flag_details = selected_flag_details.filter(function( element ) {
@@ -565,9 +668,27 @@ height: 270px
                 }
                 else
                 {
+                    var questionBoxes = "";
+                    for (let index = 0; index < question_ids.length; index++) {
+                        var num = index + 1;
+
+                        var btn_color = 'btn-nocolor';
+                        if(selected_flag_details[question_ids[index]] == 'yes') {
+                            btn_color = 'btn-red';
+                        } else if(selected_gusess_details[question_ids[index]] == 'yes') {
+                            btn_color = 'btn-orange';
+                        } else if(selected_skip_details[question_ids[index]] == 'yes') {
+                            btn_color = 'btn-yellow';
+                        } else if (selected_answer[question_ids[index]]) {
+                            btn_color = 'btn-blue';
+                        }
+                        questionBoxes += '<button type="button" value="'+num+'" class="question-button ' + btn_color + ' btn qtbutton" data-count="'+index+'">'+num+'</button>';
+                    }
+                    
                     var alert_data={
                         title: "Review Details",
-                        text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
+                        // text: "Flag :- "+totalFlag+","+"Skip :- "+totalSkip+","+"Guess :- "+totalGuess,
+                        text: "<div class='d-flex flex-wrap'>" + questionBoxes + "</div>",
                         type: "success",
                         showCancelButton: false,
                         confirmButtonColor: "#DD6B55",
@@ -576,14 +697,17 @@ height: 270px
                         closeOnConfirm: true,
                         closeOnCancel: false,
                         index:false,
-                    };                
+                    };
                 }
-                sweet_alert(alert_data,reviewCount);
+                sweet_alert(alert_data,reviewCount,question_ids);
             });
-            function sweet_alert(data,review){
+
+
+            function sweet_alert(data,review,question_ids){
                 swal({
                         title: data.title,
                         text: data.text,
+                        html: true,
                         type: data.type,
                         showCancelButton: data.showCancelButton,
                         confirmButtonColor:data.confirmButtonColor,
@@ -593,9 +717,28 @@ height: 270px
                         closeOnCancel: data.closeOnCancel
                     },(resp) => {
                         if(data.index && resp){
+                            var questionBoxes = "";
+                            for (let index = 0; index < question_ids.length; index++) {
+                                var num = index + 1;
+
+                                var btn_color = 'btn-nocolor';
+                                if(selected_flag_details[question_ids[index]] == 'yes') {
+                                    btn_color = 'btn-red';
+                                } else if(selected_gusess_details[question_ids[index]] == 'yes') {
+                                    btn_color = 'btn-orange';
+                                } else if(selected_skip_details[question_ids[index]] == 'yes') {
+                                    btn_color = 'btn-yellow';
+                                } else if (selected_answer[question_ids[index]]) {
+                                    btn_color = 'btn-blue';
+                                }
+                                questionBoxes += '<button type="button" value="'+num+'" class="question-button ' + btn_color + ' btn qtbutton" data-count="'+index+'">'+num+'</button>';
+                            }
+
                             swal({
                                 title: "Review Details",
-                                text: "Flag :- "+review.flag+","+"Skip :- "+review.skip+","+"Guess :- "+review.guess,
+                                // text: "Flag :- "+review.flag+","+"Skip :- "+review.skip+","+"Guess :- "+review.guess,
+                                text: "<div class='d-flex flex-wrap'>" + questionBoxes + "</div>",
+                                html: true,
                                 type: "success",
                                 showCancelButton: false,
                                 confirmButtonColor: "#DD6B55",
@@ -606,15 +749,18 @@ height: 270px
                                 index:false,
                             })
                         }
-                    });
-                    
+                    }
+                );
             }
          
             
             jQuery(".submit_section_btn").click(function(){
-
                 if(jQuery('.next').prop('disabled') == false){
-                    swal({
+                    var timeisover = jQuery('#timeisover').val();
+                    if(timeisover == 1) {
+                        confirm(true);
+                    } else {
+                        swal({
                             title: "Warning",
                             text: "Are you sure you want to submit this test? Make sure you have answered every question using the Review button.",
                             type: "warning",
@@ -625,17 +771,23 @@ height: 270px
                             closeOnConfirm: true,
                             closeOnCancel: true,
                         },function (isConfirm){
-                            if (isConfirm) {   
-                                confirm();
+                            if (isConfirm) {
+                                confirm(false);
                             } 
-                        });  
+                        }); 
+                    }
                 } else {
-                    confirm();
+                    var timeisover = jQuery('#timeisover').val();
+                    if(timeisover == 1) {
+                        confirm(true);
+                    } else {
+                        confirm(false);
+                    }
                 }
 
             });
 
-            function confirm(){
+            function confirm(flagTimeOut){
 
                 var get_question_id = jQuery('#onload_question_id').val();
                 if($(".flag").is(':checked'))
@@ -643,6 +795,13 @@ height: 270px
                     selected_flag_details[get_question_id] = 'yes';
                 } else{
                     selected_flag_details[get_question_id] = 'no';
+                }
+
+                if($(".skip").is(':checked'))
+                {
+                    selected_skip_details[get_question_id] = 'yes';
+                } else{
+                    selected_skip_details[get_question_id] = 'no';
                 }
 
                 if($(".guess").is(':checked'))
@@ -657,17 +816,18 @@ height: 270px
                 var get_practice_id = jQuery(this).attr('data-practice_test_id');
                 var get_test_id = '';
                 let question_ids = @json($total_questions);
+                var actual_time = jQuery('#actual_time').val();
 
-                if (window.location.href.indexOf("all") > -1)
-                {
-                    var url = window.location.href,
-                    parts = url.split("/"),
-                    last_part = parts[parts.length-1];
-                    get_test_id = last_part;
-                } else {
+                //if (window.location.href.indexOf("all") > -1)
+                //{
+                //    var url = window.location.href,
+                //    parts = url.split("/"),
+                //    last_part = parts[parts.length-1];
+                //    get_test_id = last_part;
+                //} else {
                     const urlParams = new URLSearchParams(window.location.search);
                     get_test_id = urlParams.get('test_id');
-                }
+                //}
                 
                 if($("input[name='example-radios-default']").is(':checked')) { 
                     var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
@@ -713,6 +873,18 @@ height: 270px
                     }
                 }
                 //end
+
+                //skip
+                let skip_detail = [];
+                for (let index = 0; index < question_ids.length; index++) {
+                    if(selected_skip_details.hasOwnProperty(question_ids[index])) {
+                        skip_detail[question_ids[index]] = selected_skip_details[question_ids[index]];
+                    } else {
+                        skip_detail[question_ids[index]] = 'no';
+                    }
+                }
+                //end
+
                 Array.prototype.associate = function (keys) {
                     var result = {};
 
@@ -753,6 +925,11 @@ height: 270px
                 });
                 guess_detail = guess_detail.associate(question_ids);
 
+                skip_detail = skip_detail.filter(function(element, key){
+                    return element !== 'undefined';
+                });
+                skip_detail = skip_detail.associate(question_ids);
+
                 // let flag_details = selected_flag_details.associate(question_ids);
                 // let gusess_details = selected_gusess_details.associate(question_ids);
 
@@ -769,15 +946,70 @@ height: 270px
                         selected_answer:answer_details,
                         selected_gusess_details:guess_detail,
                         selected_flag_details:flag_detail,
+                        selected_skip_details:skip_detail,
                         get_section_id:get_section_id,
                         get_practice_id:get_test_id,
-                        get_question_type:get_question_type
+                        get_question_type:get_question_type,
+                        actual_time:actual_time
                     },
                     success: function(result){
                         if(count < result.total_question){
                             window.alert("Are you sure you want to submit this test? Make sure you have answered every question using the Review button.");
                         }
-                        var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+
+                        // var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+                        
+                        if (window.location.href.indexOf("all") > -1) {
+                            var url = window.location.href,
+                            parts = url.split("=");
+                            var sectionArrayJson = parts[parts.length-1];
+                            var sectionArray = JSON.parse(sectionArrayJson);
+                            if (sectionArray.length > 0) {
+                                var next_section_id = sectionArray[0];
+                                if(next_section_id != '') {
+                                    sectionArray.shift();
+                                    let remainingSectionArrayJson = JSON.stringify(sectionArray);
+
+                                    let option = new URLSearchParams(window.location.search);
+                                    let OptionValue = option.get('time');
+
+                                    if(flagTimeOut) {
+                                        swal({
+                                            title: "Confirm",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "Submit",
+                                            cancelButtonText: "Proceed to Next section",
+                                            closeOnConfirm: true,
+                                            closeOnCancel: true,
+                                        },function (isConfirm){
+                                            if (isConfirm) {
+                                                var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+                                                window.location.href = url;
+                                            } else {
+                                                var url = "{{url('')}}"+'/user/practice-test/'+next_section_id+'?test_id='+get_test_id+'&time='+OptionValue+'&section=all&sections='+remainingSectionArrayJson;
+                                                window.location.href = url;
+                                            }
+                                        });
+                                        return false;
+                                    } else {
+                                        var url = "{{url('')}}"+'/user/practice-test/'+next_section_id+'?test_id='+get_test_id+'&time='+OptionValue+'&section=all&sections='+remainingSectionArrayJson;
+                                    }
+                                } else {
+                                    // var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                                    var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+get_test_id+'/review-page?test_id='+get_test_id+'&type=all';
+                                }
+                            } else {
+                                var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+get_test_id+'/review-page?test_id='+get_test_id+'&type=all';
+                            }
+                        } else {
+                            if(flagTimeOut) {
+                                var url = "{{url('')}}"+'/user/practice-tests/'+result.get_test_name+'/'+result.section_id+'/review-page?test_id='+get_test_id+'&type='+result.get_test_type;
+                            } else {
+                                var url = "{{url('')}}"+'/user/practice-test-sections/'+get_test_id;
+                            }
+                        }
                         window.location.href = url;  
                     }
                 });
@@ -1074,13 +1306,24 @@ height: 270px
                             $('.main_guess_section').css("background-color", "#ea580c");
                         }
 
+                        // if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
+                        // {
+                        //     $('.skip').css("color", "#0891b2");
+                        //     $('.skip').css("background-color", "white");
+                        // }else{
+                        //     $('.skip').css("color", "white");
+                        //     $('.skip').css("background-color", "#0891b2");
+                        // }
+
                         if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
                         {
-                            $('.skip').css("color", "#0891b2");
-                            $('.skip').css("background-color", "white");
+                            $('.skip').prop('checked', false);
+                            $('.main_skip_section').css("color", "#ea580c");
+                            $('.main_skip_section').css("background-color", "white");
                         }else{
-                            $('.skip').css("color", "white");
-                            $('.skip').css("background-color", "#0891b2");
+                            $('.skip').prop('checked', true);
+                            $('.main_skip_section').css("color", "white");
+                            $('.main_skip_section').css("background-color", "#ea580c");
                         }
 
                         jQuery('#set_question_data').html(set_questions_options);
@@ -1112,16 +1355,16 @@ height: 270px
                         if(result.set_next_offset >= result.total_question )
                         {
                             jQuery('#get_next_question_btn').prop('disabled', true);
-                            jQuery('#get_skip_question_btn').prop('disabled', true);
+                            // jQuery('#get_skip_question_btn').prop('disabled', true);
                             
                             jQuery('.next').prop('disabled', true);
                             jQuery('.submit_section_btn').prop('disabled', false);
-                            jQuery('.skip').prop('disabled', true);
+                            // jQuery('.skip').prop('disabled', true);
                         }
                         else
                         {
                             jQuery('#get_next_question_btn').prop('disabled', false);
-                            jQuery('#get_skip_question_btn').prop('disabled', false);
+                            // jQuery('#get_skip_question_btn').prop('disabled', false);
 
                             jQuery('.next').prop('disabled', false);
                             jQuery('.submit_section_btn').prop('disabled', false);
@@ -1130,12 +1373,75 @@ height: 270px
                         
                         jQuery('#get_next_question_btn').val(result.set_next_offset);
                         jQuery('.next').val(result.set_next_offset);
-                        jQuery('.skip').val(result.set_next_offset);
+                        // jQuery('.skip').val(result.set_next_offset);
 
                         jQuery('#get_previous_question_btn').val(result.set_prev_offset);
                         jQuery('.prev').val(result.set_prev_offset);
                 }});
             }
+
+            $(document).on('click', '.question-button', function(){ 
+                var get_question_id = jQuery('.get_question_id').val();
+                let data_count = jQuery(this).attr('data-count');
+                data_count = parseInt(data_count);
+                var get_offset = data_count;
+
+                jQuery('.next').attr('data-count', data_count);
+                jQuery('.prev').attr('data-count', data_count);
+
+                let arr_index = data_count;
+                $('#onload_question_id').val(question_id_arr[arr_index]);
+                
+
+                if($("input[name='example-radios-default']").is(':checked')) { 
+                    var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                    selected_answer[get_question_id] = getSelectedAnswer;
+                } else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                    var store_multi = '';
+                    $('input[name="example-checkbox-default"]:checked').each(function() {
+                        store_multi += this.value+','; 
+                    });
+                    store_multi = store_multi.replace(/,\s*$/, "");
+                    selected_answer[get_question_id] = store_multi;
+                } else if($("input[name='example-textbox-default']")){
+                    store_multi = $("input[name='example-textbox-default']").val();
+                    selected_answer[get_question_id] = store_multi;
+                } 
+
+                if(!$(".guess").is(':checked')) {
+                    selected_gusess_details[get_question_id] = 'no';
+                }
+
+                if(!$(".flag").is(':checked')) {
+                    selected_flag_details[get_question_id] = 'no';
+                }
+
+                if(!$(".skip").is(':checked')) {
+                    selected_skip_details[get_question_id] = 'no';
+                }
+
+                get_first_question(get_offset);
+
+                var scroll_position = $('#passage_description').scrollTop();
+    
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+
+                jQuery.ajax({
+                    url: "{{ url('/user/set_scroll_position/post') }}",
+                    method: 'post',
+                    data: {
+                        get_question_id:get_question_id,
+                        scroll_position:scroll_position
+                    },
+                    success: function(result){
+                    }
+                });
+                swal.close();
+            });
         });
 
         function get_time(){
@@ -1158,7 +1464,7 @@ height: 270px
                         question_type: question_type,
                     },
                     success: function(result){
-                        console.log(result);
+                        //console.log(result.time);
                         if(OptionValue == 'regular'){
                             $('#time_selected').val(result.time.regular_time);
                         } else if(OptionValue == '50per'){
@@ -1181,8 +1487,16 @@ height: 270px
                         var seconds = targetSeconds;
                         var elapsedMilliseconds = 0;
 
+                        var actual_hours = 0;
+                        var actual_minutes = 0;
+                        var actual_seconds = 0;
+
                         var timerInterval = setInterval(function() {
                             elapsedMilliseconds += 1000;
+
+                            actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
+                            actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                            actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
 
                             if (elapsedMilliseconds < targetMilliseconds && OptionValue != 'untimed' ) {
                                 var remainingMilliseconds = targetMilliseconds - elapsedMilliseconds;
@@ -1206,7 +1520,12 @@ height: 270px
                             var formattedMinutes = minutes.toString().padStart(2, '0');
                             var formattedSeconds = seconds.toString().padStart(2, '0');
 
+                            var formattedActualHours = actual_hours.toString().padStart(2, '0');
+                            var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
+                            var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
+
                             $('#timer').text(formattedHours + ':' + formattedMinutes + ':' + formattedSeconds);
+                            $('#actual_time').val(formattedActualHours + ':' + formattedActualMinutes + ':' + formattedActualSeconds);
                             
                             if(OptionValue != 'untimed'){
                                 if (hours === 0 && minutes === 5 && seconds === 0) {
@@ -1216,7 +1535,7 @@ height: 270px
                                         text: 'You have 5 minutes remaining.',
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: 'OK'
-                                    },2000);
+                                    });
                                 }
 
                                 if (hours === 0 && minutes === 0 && seconds === 0) {
@@ -1228,6 +1547,7 @@ height: 270px
                                         confirmButtonColor: '#3085d6',
                                         confirmButtonText: 'Continue'
                                     },function(isConfirm){
+                                        $('#timeisover').val(1);
                                         if(isConfirm){
                                             $('.submit_section_btn').trigger('click');
                                         }

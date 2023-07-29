@@ -16,8 +16,15 @@
 @section('page-script')
     <script>
         window.addEventListener('storage', function (event) {
+            const urls = [
+                "{{ route('admin-dashboard.collegeApplicationDeadline') }}",
+                "{{ route('admin-dashboard.initialCollegeList.step4') }}",
+                "{{ route('admin-dashboard.cost_comparison') }}"
+            ]
             if (event.key === 'APP-REFRESHED' && event.newValue !== event.oldValue) {
-                window.location.reload();
+                if (urls.includes(event.srcElement.location.href)) {
+                    window.location.reload();
+                }
             }
         });
         const core = {
@@ -33,6 +40,7 @@
             intltelinput: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
             updateCollegeOrder: "{{ route('admin-dashboard.initialCollegeList.step4.updateOrder', ['id' => ':id']) }}",
             costComparisonDetail: "{{route('admin-dashboard.cost_comparison.get_college_list_for_cost_comparison')}}",
+            removeAllCollege: "{{ route('admin-dashboard.initialCollegeList.deleteAllCollege') }}"
         }
     </script>
     @yield('user-script')

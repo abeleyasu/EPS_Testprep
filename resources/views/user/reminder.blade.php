@@ -3,6 +3,7 @@
 @section('title', 'HSR | List : CPS')
 
 @section('user-content')
+@can('Access Reminders')
     <main id="main-container">
         <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
             <div class="bg-black-10">
@@ -38,6 +39,23 @@
                             </div>
                             <div class="fw-light fs-6 text-muted">Enables or disables all columns deadline reminders</div>
                         </div>
+                        <div class="mb-2">
+                            <div class="space-x-1">
+                                <!-- <input class="form-check-input user-settings" type="checkbox" value="" id="application_deadline_notification" name="application_deadline_notification" @if($user_settings->application_deadline_notification) checked @endif> -->
+                                <label class="form-check-label fw-bold" for="timezone">Timezone</label>
+                                <div class="row m-0">
+                                    <div class="col-12 col-md-3 p-0">
+                                        <select class="js-example-basic-single form-control user-settings" id="timezone" name="timezone" data-placeholder="Select One.">
+                                            <option></option>
+                                            @foreach(config('timezone') as $option) 
+                                                <option value="{{ $option['tzCode'] }}" @if($user_settings->timezone == $option['tzCode']) selected @endif >{{ $option['label'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fw-light fs-6 text-muted">To get reminders at the right time in your timezone</div>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <h4 class="fw-normal border-bottom pb-2 mb-3">Custom Notification</h4>
@@ -50,6 +68,8 @@
                                     <th class="text-center" >Method</th>
                                     <th class="text-center">Location</th>
                                     <th class="text-center" >When</th>
+                                    <th class="text-center">Before Time</th>
+                                    <th class="text-center">Before Frequency</th>
                                     <th class="text-center" >Starts</th>
                                     <th class="text-center" >End</th>
                                     <th class="text-center">Enabled</th>
@@ -57,68 +77,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reminders as $reminder)
-                                <form class="js-validation" id="reminder_form_{{ $reminder->id }}" action="{{ route('user.reminders.update', ['id' => $reminder->id]) }}" method="PUT" >
-                                    @csrf
-                                    <tr class="reminder_remove_{{ $reminder->id }}">
-                                        <td>
-                                            <input type="text" class="form-control" id="reminder_name_{{ $reminder->id }}" name="reminder_name_{{ $reminder->id }}" placeholder="Name of Reminder" value="{{ $reminder->reminder_name }}" autocomplete="_off" >
-                                        </td>
-                                        <td>
-                                            <select class="js-select2 form-select single-select2-class" name="reminder_type_id_{{ $reminder->id }}" id="reminder_type_id_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select Type" multiple="multiple" >
-                                                <option value="">Select Type</option>
-                                                @foreach($reminderTypes as $reminderType)
-                                                    <option value="{{ $reminderType->id}}" @if($reminderType->id == $reminder->reminder_type_id) selected @endif>{{$reminderType->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="js-select2 form-select" name="frequency_{{ $reminder->id }}" id="frequency_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select frequency" >
-                                                <option value="">Select</option>
-                                                @foreach($reminders_frequency as $key => $frequency)
-                                                    <option value="{{ $frequency }}" @if($frequency == $reminder->frequency) selected @endif> {{ $frequency }} </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="js-select2 form-select" name="method_{{ $reminder->id }}" id="method_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select method" >
-                                                <option value="">Select</option>
-                                                @foreach ($methods as $method)
-                                                    <option value="{{ $method }}" @if($method == $reminder->method) selected @endif>{{ $method }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control @error('location') is-invalid error @enderror" id="location_{{ $reminder->id }}" name="location_{{ $reminder->id }}" placeholder="location" value="{{ $reminder->location }}">
-                                            @error('location')
-                                                <span class="invalid-feedback" role="alert">
-                                                    {{ $message }}
-                                                </span>
-                                            @enderror
-                                        </td>
-                                        <td>
-                                            <input type="text" class="js-flatpickr form-control" id="when_time_{{ $reminder->id }}" name="when_time_{{ $reminder->id }}"  data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ $reminder->when_time }}" >
-                                        </td>
-                                        <td>
-                                            <input type="text" class="js-flatpickr form-control" id="start_date_{{ $reminder->id }}" name="start_date_{{ $reminder->id }}" value="{{ $reminder->start_date }}" >
-                                        </td>
-                                        <td>
-                                            <input type="text" class="js-flatpickr form-control" id="end_date_{{ $reminder->id }}" name="end_date_{{ $reminder->id }}" value="{{ $reminder->end_date }}" >
-                                        </td>
-                                        <td class="text-center">
-                                            <input type="checkbox" name="enabled_{{ $reminder->id }}" id="enabled_{{ $reminder->id }}" value="1" {{ $reminder->enabled == 1 ? 'checked' : '' }}>
-                                        </td>
-                                        <td class="d-flex justify-content-between">
-                                            <button type="submit" class="btn btn-sm btn-primary" style="width: 70px;">Save</button>
-                                            <a class="btn btn-sm ms-2" data-bs-toggle="tooltip" title="Delete" id="{{$reminder->id}}" onclick="deleteReminder({{$reminder->id}})">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </form>
-                                @endforeach
-                
-                                {{-- onSubmit="event.preventDefault();" --}}
                                 <form class="js-validation" id="reminder_form" action="{{ route('user.reminders.submit') }}" method="POST" >
                                     @csrf
                                     <tr>
@@ -178,8 +136,29 @@
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="text" class="js-flatpickr form-control @error('when_time') is-invalid error @enderror" id="when_time" name="when_time" placeholder="When Time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ old('when_time') ? old('when_time') : '' }}">
+                                            <input type="text" class="custom-flatpickr-time form-control @error('when_time') is-invalid error @enderror" id="when_time" name="when_time" placeholder="When Time" data-enable-time="true" data-no-calendar="true" data-date-format="H:i" value="{{ old('when_time') ? old('when_time') : '' }}">
                                             @error('when_time')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control @error('before_time') is-invalid error @enderror" id="before_time" name="before_time" placeholder="Before Time" value="{{ old('before_time') ? old('before_time') : '' }}">
+                                            @error('before_time')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <select class="form-select @error('before_frequncy') is-invalid error @enderror" name="before_frequncy" id="before_frequncy" style="width: 100%;" data-placeholder="Select Before frequency">
+                                                <option value="">Select</option>
+                                                @foreach(config('constants.reminder_brefore_frequncy') as $key => $frequency)
+                                                    <option value="{{ $frequency }}" @if(old('before_frequncy') == $frequency) selected @endif> {{ $frequency }} </option>
+                                                @endforeach
+                                            </select>
+                                            @error('before_frequncy')
                                                 <span class="invalid-feedback" role="alert">
                                                     {{ $message }}
                                                 </span>
@@ -217,6 +196,89 @@
                                         </td>
                                     </tr>
                                 </form>
+                                @foreach ($reminders as $reminder)
+                                <form class="js-validation" id="reminder_form_{{ $reminder->id }}" action="{{ route('user.reminders.update', ['id' => $reminder->id]) }}" method="PUT" >
+                                    @csrf
+                                    <tr class="reminder_remove_{{ $reminder->id }}">
+                                        <td>
+                                            <input type="text" class="form-control" id="reminder_name_{{ $reminder->id }}" name="reminder_name_{{ $reminder->id }}" placeholder="Name of Reminder" value="{{ $reminder->reminder_name }}" autocomplete="_off" >
+                                        </td>
+                                        <td>
+                                            <select class="js-select2 form-select single-select2-class" name="reminder_type_id_{{ $reminder->id }}" id="reminder_type_id_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select Type" multiple="multiple" >
+                                                <option value="">Select Type</option>
+                                                @foreach($reminderTypes as $reminderType)
+                                                    <option value="{{ $reminderType->id}}" @if($reminderType->id == $reminder->reminder_type_id) selected @endif>{{$reminderType->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="js-select2 form-select" name="frequency_{{ $reminder->id }}" id="frequency_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select frequency" >
+                                                <option value="">Select</option>
+                                                @foreach($reminders_frequency as $key => $frequency)
+                                                    <option value="{{ $frequency }}" @if($frequency == $reminder->frequency) selected @endif> {{ $frequency }} </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="js-select2 form-select" name="method_{{ $reminder->id }}" id="method_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select method" >
+                                                <option value="">Select</option>
+                                                @foreach ($methods as $method)
+                                                    <option value="{{ $method }}" @if($method == $reminder->method) selected @endif>{{ $method }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control @error('location') is-invalid error @enderror" id="location_{{ $reminder->id }}" name="location_{{ $reminder->id }}" placeholder="location" value="{{ $reminder->location }}">
+                                            @error('location')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="custom-flatpickr-time form-control" id="when_time_{{ $reminder->id }}" name="when_time_{{ $reminder->id }}"  data-enable-time="true" data-no-calendar="true" value="{{ $reminder->when_time }}" >
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control @error('before_time') is-invalid error @enderror" id="before_time_{{ $reminder->id }}" name="before_time_{{ $reminder->id }}" placeholder="Before Time" value="{{ $reminder->before_time }}">
+                                            @error('before_time')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <select class="form-select @error('before_frequncy') is-invalid error @enderror" name="before_frequncy_{{ $reminder->id }}" id="before_frequncy_{{ $reminder->id }}" style="width: 100%;" data-placeholder="Select Before frequency">
+                                                <option value="">Select</option>
+                                                @foreach(config('constants.reminder_brefore_frequncy') as $key => $frequency)
+                                                    <option value="{{ $frequency }}" @if($reminder->before_frequncy == $frequency) selected @endif> {{ $frequency }} </option>
+                                                @endforeach
+                                            </select>
+                                            @error('before_frequncy')
+                                                <span class="invalid-feedback" role="alert">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="js-flatpickr form-control" id="start_date_{{ $reminder->id }}" name="start_date_{{ $reminder->id }}" value="{{ $reminder->start_date }}" >
+                                        </td>
+                                        <td>
+                                            <input type="text" class="js-flatpickr form-control" id="end_date_{{ $reminder->id }}" name="end_date_{{ $reminder->id }}" value="{{ $reminder->end_date }}" >
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="checkbox" name="enabled_{{ $reminder->id }}" id="enabled_{{ $reminder->id }}" value="1" {{ $reminder->enabled == 1 ? 'checked' : '' }}>
+                                        </td>
+                                        <td class="d-flex justify-content-between">
+                                            <button type="submit" class="btn btn-sm btn-primary" style="width: 70px;">Save</button>
+                                            <a class="btn btn-sm ms-2" data-bs-toggle="tooltip" title="Delete" id="{{$reminder->id}}" onclick="deleteReminder({{$reminder->id}})">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </form>
+                                @endforeach
+                
+                                {{-- onSubmit="event.preventDefault();" --}}
                             </tbody>
                         </table>
                         
@@ -225,6 +287,12 @@
             </div>
         </div>
     </main>
+@endcan
+
+@cannot('Access Reminders')
+    @include('components.subscription-warning')
+@endcan
+
 @endsection
 
 @section('page-style')
@@ -237,6 +305,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/high-school-resume.css') }}"> --}}
 
     <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
@@ -355,6 +424,7 @@
     </style>
 @endsection
 
+@can('Access Reminders')
 @section('user-script')
     <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
@@ -363,9 +433,42 @@
     <script src="{{ asset('assets/js/plugins/jquery-validation/additional-methods.js') }}"></script>
 
     <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
+    <script src="{{asset('assets/js/moment/moment.min.js')}}"></script>
     <script>One.helpersOnLoad(['js-flatpickr', 'jq-datepicker']);</script>
+    <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 
     <script>
+        $('.js-example-basic-single').select2({
+            placeholder: 'Select an option',
+            // allowClear: true
+        });
+
+        $(".custom-flatpickr-time").flatpickr({
+            enableTime: true,
+            dateFormat: "h:i",
+            minuteIncrement: 15,
+            onReady: function (selectedDates, dateStr, instance) {
+                if (dateStr) {
+                    const time = moment(selectedDates[0]).format('hh:mm A');
+                    instance.element.value = time;
+                }
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                let minutes = selectedDates[0].getMinutes();
+                let hours = selectedDates[0].getHours();
+                if (minutes % 15 !== 0) {
+                    minutes = Math.round(minutes / 15) * 15;
+                    if (minutes == 60) {
+                        hours = hours + 1;
+                    }
+                    selectedDates[0].setMinutes(minutes);
+                    selectedDates[0].setHours(hours);
+                    instance.setDate(selectedDates[0]);
+                }
+                const time = moment(selectedDates[0]).format('hh:mm A');
+                instance.element.value = time;
+            }
+        });
         function deleteReminder(id) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -434,12 +537,16 @@
         }
 
         $('.user-settings').on('change', function (e) {
+            const data = {};
+            if (e.target.type == 'checkbox') {
+                data[e.target.name] = e.target.checked ? 1 : 0;
+            } else {
+                data[e.target.name] = e.target.value;
+            }
             $.ajax({
                 url: "{{ route('update-user-settings') }}",
                 method: "PATCH",
-                data: {
-                    [e.target.name]: e.target.checked ? 1 : 0
-                },
+                data: data,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -454,3 +561,4 @@
         })
     </script>
 @endsection
+@endcan

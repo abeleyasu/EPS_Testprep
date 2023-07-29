@@ -47,6 +47,7 @@
 @endsection
 
 @section('user-content')
+@can('Access Cost Comparison Tool')
 <main id="main-container">
   <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">  
     <div class="bg-black-10">
@@ -161,6 +162,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-alt-danger" data-type="search-list" id="remove-all-college">Remove All College</button>
       </div>
     </div>
   </div>
@@ -195,8 +197,14 @@
     </div>
   </div>
 </div>
+@endcan
+
+@cannot('Access Cost Comparison Tool')
+  @include('components.subscription-warning')
+@endcan
 @endsection
 
+@can('Access Cost Comparison Tool')
 @section('user-script')
 <script src="{{asset('assets/js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
@@ -209,8 +217,8 @@
 <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
 <script src="{{asset('js/cost-comparison.js')}}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
-<script src="{{asset('js/college-list.js')}}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
   toastr.options = {
     "closeButton": true,
@@ -336,10 +344,8 @@
 
   function checkNumber(value) {
     let number = value;
-    const regexNumberWithDeciaml = /^\d+(\.\d{1,2})?$/;
-    if (!regexNumberWithDeciaml.test(value)) {
-      toastr.error('Please enter valid number')
-      return;
+    if (!number) {
+      number = '0'
     }
     if (value.includes('.')) {
       const decimal = +(value.split('.')[1]);
@@ -351,6 +357,30 @@
     }
     return number;
   }
+
+  function validNumber(e) {
+    const charCode = (e.which) ? e.which : e.keyCode;
+    console.log(charCode);
+    if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+      e.preventDefault();
+    } else {
+      return true;
+    }
+  }
+
+  $(document).on('keypress', '.edit-value', function (e) {
+    const validate = validNumber(e);
+    if (!validate) {
+      return;
+    }
+  })
+
+  $(document).on('keypress', '.edit-outside-aid', function (e) {
+    const validate = validNumber(e);
+    if (!validate) {
+      return;
+    }
+  })
 
   $(document).on('change', '.edit-value', function (e) {
     const value = checkNumber(e.target.value);
@@ -511,3 +541,4 @@
 </script>
 
 @endsection
+@endcan

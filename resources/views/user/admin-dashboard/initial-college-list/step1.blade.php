@@ -11,7 +11,11 @@
         font-weight: 600;
         color: #61656a
     }
+    .curson-drag {
+        cursor: move;
+    }
 </style>
+@can('Access Initial College List')
 <main id="main-container">
     <div class="bg-image" style="background-image: url('assets/cpsmedia/BlackboardImage.jpg');">
         <div class="bg-black-10">
@@ -67,7 +71,7 @@
                                                 <div class="accordion accordionExample accordionExample2">
                                                     <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                                         <div class="block-header block-header-tab" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                            <a class=" text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
+                                                            <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-calendar"></i> College Major & Degree Type</a>
                                                         </div>
                                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent=".accordionExample">
                                                             <div class="college-content-wrapper college-content">
@@ -344,7 +348,6 @@
         </div>
     </div>
 </main>
-
 <div class="modal fade" id="college-list" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -352,17 +355,22 @@
         <h5 class="modal-title" id="staticBackdropLabel">My College List</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="user-college-list">
+      <div class="modal-body" id="userSelectedCollegeList" data-type="search-step-1" @if($college_id) data-collegeid="{{ $college_id }}" @endif>
       </div>
     </div>
   </div>
 </div>
+@endcan
+
+@cannot('Access Initial College List')
+    @include('components.subscription-warning')
+@endcan
 @endsection
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/initial-college-list.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet"> -->
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css') }}">
 <style>
     .no-data {
@@ -377,13 +385,15 @@
 </style>
 @endsection
 
-
+@can('Access Initial College List')
 @section('user-script')
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/lib/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/select2/select2.min.js') }}"></script>
 <script src="{{ asset('js/selecting-search-params.js') }}"></script>
 <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+<script src="{{asset('js/college-list.js')}}"></script>
 <script>
 
     $(".js-range-slider").ionRangeSlider({
@@ -485,6 +495,9 @@
 
     $('#view-college-list').on('click', function (e) {
         e.preventDefault();
+        getStep1CollegeList();
+    })
+    function getStep1CollegeList() {
         $.ajax({
             url: "{{ route('admin-dashboard.initialCollegeList.getUserCollegeList') }}",
             method: 'GET',
@@ -493,27 +506,29 @@
             },
         }).done((response) => {
             if (response.success) {
-                $('#user-college-list').html('')
+                $('#userSelectedCollegeList').html('')
                 if (response.data.length > 0) {
                     response.data.forEach((data, index) => {
                         const element = `
-                            <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                <div class="block-header block-header-default">
-                                    <div class="d-flex align-items-center w-100 gap-3" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                            <div class="block block-rounded block-bordered overflow-hidden mb-1" data-id="${data.id}">
+                                <div class="block-header block-header-tab">
+                                    <div class="d-flex align-items-center w-100 gap-3 text-white fw-600 curson-drag" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
+                                        <i class="fa fa-bars"></i>
                                         <span>${index + 1}</span>
                                         <span>${data.college_name}</span>
                                     </div>
                                 </div>
                             </div>
                         `
-                        $('#user-college-list').append(element)
+                        $('#userSelectedCollegeList').append(element)
                     })
                     $('#college-list').modal('show')
                 } else {
-                    $('#user-college-list').html('<h5 class="no-data">No College Found</h5>')
+                    $('#userSelectedCollegeList').html('<h5 class="no-data">No College Found</h5>')
                 }
             }
         })
-    })
+    }
 </script>
 @endsection
+@endcan

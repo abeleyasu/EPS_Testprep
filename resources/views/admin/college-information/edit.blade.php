@@ -11,10 +11,20 @@
         <h3 class="block-title">Edit College Information</h3>
       </div>
       <div class="block-content block-content-full">
-        <form action="{{ route('admin.admission-management.college-information.update') }}" method="POST">
+        <form action="{{ route('admin.admission-management.college-information.update') }}" method="POST" enctype="multipart/form-data">
           @csrf
-
           <input type="hidden" name="id" value="{{ $info->id }}">
+
+          <div class="d-flex mb-4">
+            <div class="form-group col-md-5">
+              <label for="image">Profile Picture:</label>
+              <input type="file" class="form-control" id="college_icon" name="college_icon">
+              <img id="preview" src="" alt="" style="max-width: 100px; margin-top: 10px;">
+            </div>
+            <div class="form-group" style="margin-left: 2rem;">
+              <img class="profile_pic" id="preview" src="{{ $info->college_icon ? asset('college_icon/' . $info->college_icon) : asset('images/no_image.png') }}" alt="No Image" height="100">
+            </div>
+          </div>
 
           <div class="mb-4">
             <label class="from-label">Select Entrance Difficulty:</label>
@@ -192,5 +202,10 @@
     startDate: '-3d',
     autoclose: true
   });
+
+  $('#college_icon').on('change', function (e) {
+    const preview = document.getElementById('preview');
+    preview.src = URL.createObjectURL(event.target.files[0]);
+  })
 </script>
 @endsection

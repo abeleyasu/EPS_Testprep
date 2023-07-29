@@ -8,10 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
+use Spatie\Permission\Traits\HasRoles;
+use App\Models\UserRole;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, Billable;
+    use HasApiTokens, HasFactory, Notifiable, Billable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -53,5 +55,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isUser(){
         return (int) $this->role !== 1;
+    }
+
+    public function deadlineReminderSettings() {
+        return $this->hasMany(UserDeadlineNotificationSettings::class, 'user_id', 'id');
+    }
+
+    public function isUserHasValidPermission($permission, $guardName = null) {
+        $gaurd = $guardName ? $guardName : 'user';
+        $role = UserRole::where('id', $this->role)->first();
+        $permissions = $role->permissions->where('guard_name', $gaurd)->pluck('name')->toArray();
+        return in_array($permission, $permissions);
     }
 }

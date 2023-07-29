@@ -39,7 +39,9 @@
                         <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
                     </div>
                     <div class="p-2" style="display:grid">
+                        @if(Auth::user()->isUserHasValidPermission('Access Reminders')) 
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.reminders')}}">Reminders</a></span>
+                        @endif
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.edit-profile')}}">Edit Profile</a></span>
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.get-billing-detail')}}">Billing Detail</a></span>
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.settings')}}">Settings</a></span>

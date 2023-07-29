@@ -265,6 +265,42 @@
                                 <span class="nav-main-link-name">Plan Management</span>
                             </a>
                         </li>
+                        <li class="nav-main-item {{ Route::is(['admin.product.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link {{Route::is('admin.product.permission') ? 'active' : ''}}" href="{{route('admin.product.permission')}}">
+                                <span class="nav-main-link-name">Product Permissions</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-main-item {{ Route::is(['admin.worksheet-management.*']) ? 'open' : ''}}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon fas fa-cogs"></i>
+                        <span class="nav-main-link-name">Worksheet Management</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item {{ Route::is(['admin.worksheet-management.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link {{Route::is('admin.worksheet-management.index') ? 'active' : ''}}" href="{{route('admin.worksheet-management.index')}}">
+                                <span class="nav-main-link-name">Worksheet List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-main-item {{ Route::is(['admin.roles.*', 'admin.permissions.*']) ? 'open' : ''}}">
+                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="true" href="#">
+                        <i class="nav-main-link-icon fas fa-cogs"></i>
+                        <span class="nav-main-link-name">Role Permission</span>
+                    </a>
+                    <ul class="nav-main-submenu">
+                        <li class="nav-main-item {{ Route::is(['admin.roles.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link {{Route::is('admin.roles.index') ? 'active' : ''}}" href="{{route('admin.roles.index')}}">
+                                <span class="nav-main-link-name">Roles</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item {{ Route::is(['admin.permissions.*']) ? 'open' : ''}}">
+                            <a class="nav-main-link {{Route::is('admin.permissions.index') ? 'active' : ''}}" href="{{route('admin.permissions.index')}}">
+                                <span class="nav-main-link-name">Permissions</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

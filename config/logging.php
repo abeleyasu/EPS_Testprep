@@ -127,6 +127,11 @@ return [
             'path' => storage_path('logs/fetchcollegeinformation_cronjob.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'stripewebhook' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/stripe_webhook.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

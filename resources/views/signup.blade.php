@@ -78,12 +78,15 @@
                                                 @enderror
                                             </div>
 											<div class="mb-4">
-                                                <select name="role" class="form-control form-control-lg form-control-alt">
-													<option>Select User Role</option>
+                                                <select name="role" class="form-control form-control-lg form-control-alt {{$errors->has('role') ? 'is-invalid' : ''}}">
+													<option value="">Select User Role</option>
 													@foreach($usersRoles as $usersRole)
 														<option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
 													@endforeach
 												</select>
+                                                @error('role')
+                                                <div class="invalid-feedback">{{$message}}</div>
+                                                @enderror
                                             </div>
 											
                                             <div class="mb-4">

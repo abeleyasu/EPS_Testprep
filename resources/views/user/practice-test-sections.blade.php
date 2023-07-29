@@ -22,10 +22,25 @@
   });
 
   $(document).on('click','.start_all_section',function(){
-    let test_id = $(this).attr('data-test_id');
-    let option = $('#timingOption').val();
-    let url = $('#site_url').val();
-    $('.start_all_section').attr('href',`${url}/user/practice-test/all/${test_id}?time=${option}`);
+    let sectionArrayJson = $('#sectionArrayJsonId').val();
+    var sectionArray = JSON.parse(sectionArrayJson);
+    
+    if (sectionArray.length > 0) {
+      var section_id = sectionArray[0];
+      var next_section_id = (sectionArray.length > 1) ? sectionArray[1] : '';
+      
+      // Remove the first value
+      sectionArray.shift();
+      let remainingSectionArrayJson = JSON.stringify(sectionArray);
+
+      let test_id = $(this).attr('data-test_id');
+      let option = $('#timingOption').val();
+      let url = $('#site_url').val();
+      // $('.start_all_section').attr('href',`${url}/user/practice-test/all/${test_id}?time=${option}`);
+      $('.start_all_section').attr('href',`${url}/user/practice-test/${section_id}?test_id=${test_id}&time=${option}&section=all&sections=${remainingSectionArrayJson}`);
+      // $('.start_all_section').attr('href',`${url}/user/practice-test/all/${section_id}?time=${option}`);
+    }
+    
   });
 </script>
 @endsection
@@ -91,7 +106,7 @@
                     </a>
                   @endif
                 @elseif($check_test_completed == 'Yes')
-                  <a  href="{{route('all_section', ['id' => $selected_test_id]).'?time=regular'}}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}" class="btn btn-alt-primary fs-8  ms-2 start_all_section" >
+                  <a  href="#" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}" class="btn btn-alt-primary fs-8  ms-2 start_all_section" >
                     <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                   </a>
                   <a  href="{{route('reset_test', ['id' => $testSections[0]->id ]) . '?test_id=' . $testSections[0]->testid.'&type=all' }}" style="white-space: nowrap" class="btn btn-alt-primary fs-8 mx-2">
@@ -150,7 +165,9 @@
           <ul class="timeline timeline-alt" style='padding: 0'>
           <?php  $count = 0; ?>
           
-        
+            @php
+                $sectionArray = [];
+            @endphp
           @foreach($testSectionsDetails as $singletestSections)
         
             <!-- START SECTION -->
@@ -216,6 +233,9 @@
                           {{-- Start {{str_replace(['_'],[' '], $singletestSections['Sections'][0]['practice_test_type'])}} Section --}}
                           <i class="fa-solid fa-circle-check" style='margin-right:5px'></i> Start Section
                         </a>
+                        @php
+                            array_push($sectionArray, (int)$singletestSections['Sections'][0]['id']);
+                        @endphp
 
                         @endif
                       @elseif(!isset($singletestSections['Sections_question']))
@@ -233,6 +253,9 @@
             <!-- END SECTION -->
 
             @endforeach
+
+            <input type="hidden" name="sectionArrayJson" id="sectionArrayJsonId" value="<?php echo htmlspecialchars(json_encode($sectionArray), JSON_NUMERIC_CHECK);?>">
+
             <li class="timeline-event">
               {{-- <div class="timeline-event-icon bg-success"> --}}
                 {{-- <i class="fa-solid fa-{{++$count}}"></i> --}}

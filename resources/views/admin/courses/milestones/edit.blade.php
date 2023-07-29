@@ -165,13 +165,9 @@
 
                             <div class="mb-2">
                                 <label for="type" class="form-label">User Type:</label>
-                                <select name="user_type" class="form-control">
+                                <select name="user_type[]" class="form-control user-type-selection {{$errors->has('user_type') ? 'is-invalid' : ''}}" multiple="multiple">
 									@foreach($usersRoles as $usersRole)
-										<option value="{{$usersRole->id}}"
-										
-                                        @if($milestone->user_type ==$usersRole->id)
-                                        selected
-                                        @endif >{{$usersRole->name}}</option>
+										<option value="{{$usersRole->id}}" @if (in_array($usersRole->id, $mileston_user_roles)) selected @endif>{{$usersRole->name}}</option>
 									@endforeach
                                 </select>
                                 @error('user_type')
@@ -377,6 +373,11 @@
     <script>
 		var currentMileId = '<?php echo $milestone->id; ?>';
          $(document).ready(()=>{
+            $('.user-type-selection').select2({
+                multiple: true,
+                placeholder: 'Select an option',
+                theme: "classic"
+            });
 		  $('#course_cover_image').change(function(){
 			const file = this.files[0];
 			console.log(file);

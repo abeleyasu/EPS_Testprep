@@ -44,13 +44,14 @@
                 ${{ $currentPlan->amount }} Per {{ $currentPlan->interval }}
               </div>
             </div>
+            @if($subscription->plan_type == 'subscription')
             <div class="row subscription-item">
               <div class="col-4">
                 <h3 class="block-title">Billing Cycle</h3>
               </div>
               <div class="col-8">
                 <div>
-                  You will be charged $50 on Aug 20, 2023
+                  You will be charged ${{ $currentPlan->amount }} on {{ $subscription->next_billing_date }}
                 </div>
                 <div>
                   <input type="checkbox" class="form-check-input" name="renewval" id="renewval">
@@ -58,22 +59,29 @@
                 </div>
               </div>
             </div>
+            @elseif($subscription->plan_type == 'one-time')
+            <div class="row subscription-item">
+              <div class="col-4">
+                <h3 class="block-title">Billing Cycle</h3>
+              </div>
+              <div class="col-8">
+                Your plan will expire in {{ $subscription->plan_end_date }}
+              </div>
+            </div>
+            @endif
             <div class="row subscription-item">
               <div class="col-4">
                 <h3 class="block-title">Payment Information</h3>
               </div>
               <div class="col-8">
                 <div class="d-flex justify-content-between">
-                  <span>Visa ending with {{ $card->card->last4 }}</span>
+                  <span><span class="text-capitalize">{{ $card->card->brand }}</span> ending with {{ $card->card->last4 }} ({{ $card->card->exp_month }}/{{ $card->card->exp_year }}) </span>
                   <!-- <span><a href="" class="text-uppercase">Change Method</a></span> -->
                 </div>
               </div>
             </div>
-            <div class="row subscription-item">
-              <div class="col-4">
-                <h3 class="block-title">Cancel</h3>
-              </div>
-              <div class="col-8">
+            <div class="row subscription-item text-center">
+              <div>
                 <button class="btn btn-secondary px-4" id="cancel-subscription">Cancel Subscription</button>
               </div>
             </div>

@@ -20,6 +20,18 @@
         <div class="alert alert-warning">
             To order the products, please drag and drop "<b>Title</b>" of the product.
         </div>
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
+
         <div class="block block-rounded">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Product List</h3>

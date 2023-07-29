@@ -37,14 +37,14 @@
                         <div class="block-content pb-3">
                             <div id="faq6" class="mb-3" role="tablist" aria-multiselectable="true">
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                    <div class="block-header block-header-default" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q1" aria-expanded="false" aria-controls="faq6_q1">
-                                        <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i> High School GPA</a>
+                                    <div class="block-header block-header-tab" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q1" aria-expanded="false" aria-controls="faq6_q1">
+                                        <a class="text-white collapsed"><i class="nav-main-link-icon fa fa-clock"></i> High School GPA</a>
                                     </div>
                                     <div id="faq6_q1" class="collapse show" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#faq6" style="">
                                         <div class="block-content">
                                             <div class="block block-rounded">
                                                 <form id="high-school-form">
-                                                    <div class="mb-4">
+                                                    {{-- <div class="mb-4">
                                                         <label class="form-label" for="high_school_test_type">Select Test Type</label>
                                                         <select class="form-control hss-value" id="high_school_test_type" name="high_school_test_type">
                                                             @foreach($test_type as $key => $test)
@@ -75,7 +75,7 @@
                                                     <div class="mb-2">
                                                         <label class="form-label" for="high_school_composite_score"><span class="high-school-other-field-name">ACT</span> Composite Score</label>
                                                         <input type="text" class="form-control high-school-score hss-value" id="high_school_composite_score" value="{{ $college_list_date['high_school_composite_score'] }}" name="high_school_composite_score" placeholder="Please enter Composite Score" readonly="readonly">
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="mb-2">
                                                         <label class="form-label" for="unweighted_gpa"> Unweighted GPA</label>
                                                         <input type="text" class="form-control gpa-value store-value hss-value" id="unweighted_gpa" name="unweighted_gpa" value="{{ $college_list_date['unweighted_gpa'] }}" placeholder="Please enter unweighted gpa">
@@ -90,8 +90,8 @@
                                     </div>
                                 </div>
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                    <div class="block-header block-header-default" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q2" aria-expanded="false" aria-controls="faq6_q2">
-                                        <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i> Past/Current Test Scores</a>
+                                    <div class="block-header block-header-tab" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q2" aria-expanded="false" aria-controls="faq6_q2">
+                                        <a class="text-white collapsed"><i class="nav-main-link-icon fa fa-clock"></i> Past/Current Test Scores</a>
                                     </div>
                                     <div id="faq6_q2" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#faq6" style="">
                                         <div class="block-content">
@@ -105,8 +105,8 @@
                                     </div>
                                 </div>
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                    <div class="block-header block-header-default" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q3" aria-expanded="false" aria-controls="faq6_q3">
-                                        <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i>Goal Scores</a>
+                                    <div class="block-header block-header-tab" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q3" aria-expanded="false" aria-controls="faq6_q3">
+                                        <a class="text-white collapsed"><i class="nav-main-link-icon fa fa-clock"></i>Goal Scores</a>
                                     </div>
                                     <div id="faq6_q3" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#faq6">
                                         <div class="block-content">
@@ -150,8 +150,8 @@
                                     </div>
                                 </div>
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
-                                    <div class="block-header block-header-default" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q4" aria-expanded="false" aria-controls="faq6_q4">
-                                        <a class="text-dark collapsed"><i class="nav-main-link-icon fa fa-clock"></i>Final Scores</a>
+                                    <div class="block-header block-header-tab" role="tab" data-bs-toggle="collapse" data-bs-parent="#faq6" href="#faq6_q4" aria-expanded="false" aria-controls="faq6_q4">
+                                        <a class="text-white collapsed"><i class="nav-main-link-icon fa fa-clock"></i>Final Scores</a>
                                     </div>
                                     <div id="faq6_q4" class="collapse" role="tabpanel" aria-labelledby="faq6_h1"
                                         data-bs-parent="#faq6" style="">

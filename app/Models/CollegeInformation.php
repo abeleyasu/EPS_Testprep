@@ -37,6 +37,7 @@ class CollegeInformation extends Model
         'gpa_average',
         'sat_composite_score',
         'description',
+        'college_icon',
     ];
 
     protected $hidden = [

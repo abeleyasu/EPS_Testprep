@@ -56,4 +56,8 @@ class CollegeList extends Model
     public function college_list_details() {
         return $this->hasMany(CollegeSearchAdd::class, 'college_lists_id', 'id');
     }
+
+    public function userPastCurrentScore() {
+        return $this->hasMany(UserCollgeScore::class, 'college_list_id', 'id');
+    }
 }

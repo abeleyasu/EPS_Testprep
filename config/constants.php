@@ -1409,5 +1409,17 @@ return [
         'Most Difficult'
     ],
     'college_list_per_page' => 20,
+    'deadline_notification_frequency' => [
+        'day',
+        'week',
+        'month'
+    ],
+    'reminder_brefore_frequncy' => [
+        'minute',
+        'hour',
+        'day',
+        'week',
+        'month'
+    ]
 ]
 ?>
