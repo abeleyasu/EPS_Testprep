@@ -388,7 +388,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
                 Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
                 Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
-                
+
                 Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
                 Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             });
@@ -466,7 +466,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
         });
         Route::view('/practice-test-sections', 'user.practice-test-sections');
-        
+
         Route::group(['middleware' => ['subscription_valid:access-self-made-tests']], function () {
             Route::resource('self-made-test', SelfMadeTestController::class);
         });
@@ -476,7 +476,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
         // Please make any changes you think it's necessary to routing
         Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
-		Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
+        Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
@@ -484,6 +484,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/gettypes', [TestPrepController::class, 'gettypes'])->name('gettypes');
         Route::post('/generate-custom-quiz', [TestPrepController::class, 'generateCustomQuiz'])->name('generateCustomQuiz');
         Route::post('/getSelfMadeTestQuestion', [TestPrepController::class, 'getSelfMadeTestQuestion'])->name('getSelfMadeTestQuestion');
+        Route::post('/addMistakeType', [TestPrepController::class, 'addMistakeType'])->name('addMistakeType');
         Route::post('/changeTitleSelfMade', [TestPrepController::class, 'changeTitleSelfMade'])->name('changeTitleSelfMade');
         Route::post('/get_time', [TestPrepController::class, 'get_time'])->name('get_time');
 

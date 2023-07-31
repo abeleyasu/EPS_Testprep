@@ -3,6 +3,14 @@ $('button[type="button"]').click(function (e) {
 });
 
 $(function () {
+    var ref_this = "#btabs-animated-fade-home";
+    $(".nav-tabs").on("click", function (e) {
+        //debugger
+        ref_this = $("ul.nav-tabs li button.active").attr("data-bs-target");
+        if (ref_this !== "#btabs-animated-fade-home") {
+            $(".generate_custom_quiz_two").hide();
+        }
+    });
     toastr.options = {
         closeButton: true,
         newestOnTop: false,
@@ -60,14 +68,68 @@ $(function () {
     });
 
     $(window).on("scroll", function () {
-        if ($(this).scrollTop() < 5) {
-            $(".generate_custom_quiz_two").hide();
-            $(".generate_custom_quiz_one").show();
+        if (ref_this === "#btabs-animated-fade-home") {
+            if ($(this).scrollTop() < 5) {
+                $(".generate_custom_quiz_two").hide();
+                $(".generate_custom_quiz_one").show();
+            }
+            if ($(this).scrollTop() > 50) {
+                $(".generate_custom_quiz_two").show();
+                $(".generate_custom_quiz_one").hide();
+            }
         }
-        if ($(this).scrollTop() > 50) {
-            $(".generate_custom_quiz_two").show();
-            $(".generate_custom_quiz_one").hide();
+    });
+
+    function getMistakeTypeData(data, callback) {
+        $.ajax({
+            type: "POST",
+            url: ADD_MISTAKE_TYPE_ROUTE,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: data,
+            success: function (res) {
+                callback(res);
+            },
+        });
+    }
+    getMistakeTypeData(
+        {
+            _token: $('meta[name="csrf-token"]').attr("content"),
+            practice_test_section_id: PRACTICE_TEST_SECTION_ID,
+        },
+        (res) => {
+            const mistake_type_count = res?.mistake_type_count;
+            let tdata = "";
+            for (item in mistake_type_count) {
+                tdata += `<tr><td class="text-center">${item}</td><td class="text-center">${mistake_type_count[item]}</td></tr>`;
+            }
+            if (tdata) {
+                $(".table-mistake-types").append(tdata);
+            }
         }
+    );
+
+    $(".mistake-type").change(function () {
+        getMistakeTypeData(
+            {
+                _token: $('meta[name="csrf-token"]').attr("content"),
+                question_id: $(this).attr("data-question-id"),
+                mistake_type: $(this).val(),
+                practice_test_section_id: PRACTICE_TEST_SECTION_ID,
+            },
+            (res) => {
+                const mistake_type_count = res?.mistake_type_count;
+                let tdata = "";
+                for (item in mistake_type_count) {
+                    tdata += `<tr><td class="text-center">${item}</td><td class="text-center">${mistake_type_count[item]}</td></tr>`;
+                }
+                if (tdata) {
+                    $(".table-mistake-types tbody").empty();
+                    $(".table-mistake-types").append(tdata);
+                }
+            }
+        );
     });
 
     $("#generate-quiz").on("click", function (e) {
