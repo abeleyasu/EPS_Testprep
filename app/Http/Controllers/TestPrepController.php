@@ -70,6 +70,110 @@ class TestPrepController extends Controller
         return view('student.test-prep-dashboard.dashboard', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'getTestScores'), compact('events', 'final_arr'));
     }
 
+    public function get_test_score($testid) {
+        $user_id = auth()->id();
+
+        $helper = new Helper();
+        $sections = PracticeTestSection::join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            ->select('practice_test_sections.*')
+            ->where('practice_tests.id', $testid)
+            ->get();
+        
+        foreach ($sections as $section) {
+            $count_right_question[$section['id']] = [];
+            $sectionQuestions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
+            $userAnswer = UserAnswers::where('section_id', $section['id'])->where('user_id', $user_id)->get('answer');
+
+            if (isset($userAnswer[0]['answer'])) {
+                $decodedUserAnswer = json_decode($userAnswer[0]['answer'], true);
+
+                foreach ($sectionQuestions as $sectionQuestion) {
+                    if (isset($decodedUserAnswer[$sectionQuestion['id']])) {
+                        if ($sectionQuestion['multiChoice'] == 2) {
+                            $correct[$sectionQuestion['id']] = $sectionQuestion['answer'];
+                            if ($helper->stringExactMatch($correct[$sectionQuestion['id']], $decodedUserAnswer[$sectionQuestion['id']])) {
+                                array_push($count_right_question[$section['id']], $sectionQuestion['id']);
+                            }
+                        } else {
+                            if (str_replace(' ', '', $sectionQuestion['answer']) == str_replace(' ', '', $decodedUserAnswer[$sectionQuestion['id']])) {
+                                array_push($count_right_question[$section['id']], $sectionQuestion['id']);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $section_score = [];
+        foreach ($sections as $section) {
+            $testId = DB::table('practice_test_sections')
+                    ->where('id', $section['id'])
+                    ->value('testid');
+
+            if ($section['practice_test_type'] == 'Math_no_calculator') {
+                $other_section = PracticeTestSection::where('testid', $testId)->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
+                $other_right = 0;
+                foreach ($other_section as $sec) {
+                    $other_right += count($count_right_question[$sec]);
+                }
+                $total_right = count($count_right_question[$section['id']]) + $other_right;
+                $scaled_score = Score::where('section_id', $section['id'])->where('actual_score', $total_right)->get('converted_score');
+                if (isset($scaled_score[0]['converted_score'])) {
+                    $section_score[$section['id']] = $scaled_score[0]['converted_score'];
+                } else {
+                    $section_score[$section['id']] = 0;
+                }
+            } else if ($section['practice_test_type'] == 'Math_with_calculator') {
+                $other_section = PracticeTestSection::where('testid', $testId)->whereIn('practice_test_type', ['Math_no_calculator', 'Math_with_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
+                $other_right = 0;
+                foreach ($other_section as $sec) {
+                    $other_right += count($count_right_question[$sec]);
+                }
+                $total_right = count($count_right_question[$section['id']]) + $other_right;
+                $scaled_score = Score::where('section_id', $section['id'])->where('actual_score', $total_right)->get('converted_score');
+                if (isset($scaled_score[0]['converted_score'])) {
+                    $section_score[$section['id']] = $scaled_score[0]['converted_score'];
+                } else {
+                    $section_score[$section['id']] = 0;
+                }
+            } else {
+                $scaled_sco = Score::where('section_id', $section['id'])->where('actual_score', count($count_right_question[$section['id']]))->get('converted_score');
+                if (isset($scaled_sco[0]['converted_score'])) {
+                    $section_score[$section['id']] = $scaled_sco[0]['converted_score'];
+                } else {
+                    $section_score[$section['id']] = 0;
+                }
+            }
+        }
+
+        $scaled_score = 0;
+        $math_score = 0;
+        foreach ($sections as $section) {
+            if ($section['practice_test_type'] == 'Math_no_calculator' || $section['practice_test_type'] == 'Math_with_calculator') {
+                $math_score = $section_score[$section['id']];
+            } else {
+                $scaled_score += $section_score[$section['id']];
+            }
+        }
+        $scaled_score = $scaled_score + ($math_score);
+
+        if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {
+            $scaled_score = $scaled_score / ($sections->count());
+        } else {
+            $scaled_score = $scaled_score;
+        }
+        return $scaled_score;
+    }
+
+    public function get_last_testid($format) {
+        $user_id = auth()->id();
+        $latestTestId = PracticeTest::where('format', $format)
+                    ->where('user_id', $user_id)
+                    ->orderBy('id', 'desc')
+                    ->value('id') ?? 0;
+        return $latestTestId;
+    }
+
     public function update_test_type(Request $request)
     {
         // Get the authenticated user's ID
@@ -84,181 +188,9 @@ class TestPrepController extends Controller
             if ($updtvalue == 'primary_test_type') {
 
                 //Get Score of the last test
-                $scaled_score = 0;
-                $latestTestId = PracticeTest::where('format', $field_value)
-                    ->where('user_id', $user_id)
-                    ->orderBy('id', 'desc')
-                    ->value('id') ?? 0;
+                $latestTestId = $this->get_last_testid($field_value);
                 if ($latestTestId > 0) {
-                    $count = 0;
-                    $helper = new Helper();
-                    $get_all_section = PracticeTestSection::join('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid')
-                        ->select('practice_test_sections.*')
-                        ->where('practice_tests.id', $latestTestId)
-                        ->get();
-                    if (!$get_all_section->isEmpty()) {
-                        $store_sections_details = [];
-                        foreach ($get_all_section as $get_single_section) {
-                            $user_selected_answers = DB::table('user_answers')->where('user_id', $user_id)->where('section_id', $get_single_section->id)->get();
-
-                            if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
-                                $decoded_answers = [];
-                                $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
-
-                                $question_order = PracticeQuestion::where('practice_test_sections_id', $get_single_section->id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
-
-                                if (isset($question_order) && !empty($question_order)) {
-                                    foreach ($question_order as $order) {
-                                        if (isset($json_decoded_answers->{$order})) {
-                                            $decoded_answers[$order] = $json_decoded_answers->{$order};
-                                        } else {
-                                            $decoded_answers[$order] = '-';
-                                        }
-                                    }
-                                }
-                                $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
-                                $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
-
-                                foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
-                                    $get_question_details = PracticeQuestion::select('practice_questions.id as question_id', 'practice_questions.practice_test_sections_id as section_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id', 'practice_questions.answer_exp as answer_exp')
-                                        ->where('practice_questions.id', $question_id)
-                                        ->orderBy('practice_questions.question_order', 'ASC')
-                                        ->get();
-                                    $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers, 'user_selected_guess' => $json_decoded_guess->$question_id, 'user_selected_flag' => $json_decoded_flag->$question_id, 'get_question_details' => $get_question_details, 'all_sections' => $get_all_section, 'date_taken' => $user_selected_answers, 'type' => $field_value);
-                                } //END foreach ($decoded_answers as $question_id => $json_decoded_single_answers)
-                            } //END if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0]))
-                        } //END foreach ($get_all_section as $get_single_section)
-
-                        foreach ($store_sections_details as $store_sections_detail) {
-                            foreach ($store_sections_detail['all_sections'] as $section) {
-                                $section_id = $section->id;
-                                $section_type = $section->practice_test_type;
-                                $count_right_answer[$section_id][$section_type] = [];
-                                $count_total_question[$section_id][$section_type] = [];
-                            }
-                        }
-
-                        foreach ($store_sections_details as $store_sections_detail) {
-                            if (isset($store_sections_detail['user_selected_answer']) && !empty($store_sections_detail['user_selected_answer']) && isset($store_sections_detail['get_question_details'][0]->question_answer) && !empty($store_sections_detail['get_question_details'][0]->question_answer)) {
-                                foreach ($store_sections_detail['all_sections'] as $section) {
-                                    $section_id = $section->id;
-                                    $section_type = $section->practice_test_type;
-                                    if ($section_id == $store_sections_detail['get_question_details'][0]->section_id) {
-                                        if ($store_sections_detail['get_question_details'][0]->is_multiple_choice == 2) {
-                                            $correct_answer[$section_id] =  $store_sections_detail['get_question_details'][0]->question_answer;
-
-                                            if ($helper->stringExactMatch($correct_answer[$section_id], $store_sections_detail['user_selected_answer'])) {
-                                                array_push($count_right_answer[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-                                                array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-                                            } else {
-                                                array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-                                            }
-                                        } else {
-                                            if (str_replace(' ', '', $store_sections_detail['user_selected_answer']) == str_replace(' ', '', $store_sections_detail['get_question_details'][0]->question_answer)) {
-                                                array_push($count_right_answer[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-                                                array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-                                            } else {
-                                                array_push($count_total_question[$section_id][$section_type], $store_sections_detail['get_question_details'][0]->question_id);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } //END foreach ($store_sections_details as $store_sections_detail)
-
-
-                        foreach ($store_sections_details as $store_sections_detail) {
-                            $old_section_id = 0;
-                            foreach ($store_sections_detail['all_sections'] as $section) {
-                                $section_id = $section->id;
-                                $section_type = $section->practice_test_type;
-                                $total_scaled_score[$section_id][$section_type] = [];
-                                //new
-                                if ($section_type == 'Math_no_calculator') {
-                                    $total_other_right = 0;
-                                    $other_section = PracticeTestSection::where('testid', $id)->where('practice_test_type', 'Math_with_calculator')->get();
-                                    foreach ($other_section as $sec) {
-                                        $total_other_right += count($count_right_answer[$sec['id']][$sec['practice_test_type']]);
-                                    }
-                                    $total_right = $total_other_right + count($count_right_answer[$section_id][$section_type]);
-                                    $converted_score = Score::where('section_id', $section_id)->where('actual_score', $total_right)->get('converted_score');
-                                    if (isset($converted_score[0]['converted_score'])) {
-                                        array_push($total_scaled_score[$section_id][$section_type], $converted_score[0]['converted_score']);
-                                    } else {
-                                        array_push($total_scaled_score[$section_id][$section_type], 0);
-                                    }
-                                } else if ($section_type == 'Math_with_calculator') {
-                                    $total_other_right = 0;
-                                    $other_section = PracticeTestSection::where('testid', $id)->where('practice_test_type', 'Math_no_calculator')->get();
-                                    foreach ($other_section as $sec) {
-                                        $total_other_right += count($count_right_answer[$sec['id']][$sec['practice_test_type']]);
-                                    }
-                                    $total_right = $total_other_right + count($count_right_answer[$section_id][$section_type]);
-                                    $converted_score = Score::where('section_id', $section_id)->where('actual_score', $total_right)->get('converted_score');
-                                    if (isset($converted_score[0]['converted_score'])) {
-                                        array_push($total_scaled_score[$section_id][$section_type], $converted_score[0]['converted_score']);
-                                    } else {
-                                        array_push($total_scaled_score[$section_id][$section_type], 0);
-                                    }
-                                } else {
-                                    $right_answer = count($count_right_answer[$section_id][$section_type]);
-                                    $scaled_score = Score::where(['section_id' => $section_id, 'actual_score' => $right_answer])->get('converted_score');
-                                    if ($old_section_id != $section_id && isset($scaled_score[0]['converted_score'])) {
-                                        array_push($total_scaled_score[$section_id][$section_type], $scaled_score[0]['converted_score']);
-                                    } else {
-                                        array_push($total_scaled_score[$section_id][$section_type], 0);
-                                    }
-                                    $old_section_id = $section_id;
-                                }
-                            }
-                        } //END foreach ($store_sections_details as $store_sections_detail)
-
-                        if ($field_value == 'ACT') {
-                            $right_answers = 0;
-                            $total_questions = 0;
-                            $scaled_scores = 0;
-                            $count = 0;
-                            foreach ($store_sections_details as $store_sections_detail) {
-                                foreach ($store_sections_detail['all_sections'] as $section) {
-                                    $count++;
-                                    $section_id = $section->id;
-                                    $section_type = $section->practice_test_type;
-                                    $right_answers += count($count_right_answer[$section->id][$section->practice_test_type]);
-                                    $total_questions += count($count_total_question[$section->id][$section->practice_test_type]);
-                                    $scaled_scores += $total_scaled_score[$section->id][$section->practice_test_type][0];
-                                }
-                            }
-                            if ($count > 0) {
-                                $scaled_score = $scaled_scores / $count;
-                            } else {
-                                $scaled_score = 0;
-                            }
-                        } else {
-                            $right_answers = 0;
-                            $total_questions = 0;
-                            $scaled_scores = 0;
-                            $math_scaled_score = 0;
-                            foreach ($store_sections_details as $store_sections_detail) {
-                                foreach ($store_sections_detail['all_sections'] as $section) {
-                                    $section_id = $section->id;
-                                    $section_type = $section->practice_test_type;
-                                    $right_answers += count($count_right_answer[$section_id][$section_type]);
-                                    $total_questions += count($count_total_question[$section_id][$section_type]);
-                                    if ($section->practice_test_type == 'Math_no_calculator' || $section->practice_test_type == 'Math_with_calculator') {
-                                        $math_scaled_score = $total_scaled_score[$section_id][$section_type][0];
-                                    } else {
-                                        $scaled_scores += $total_scaled_score[$section_id][$section_type][0];
-                                    }
-                                }
-                            }
-
-                            if ($count > 0) {
-                                $scaled_score = $scaled_scores + $math_scaled_score;
-                            } else {
-                                $scaled_score = $scaled_scores;
-                            }
-                        }
-                    } //END if (!$get_all_section->isEmpty())
+                    $scaled_score = $this->get_test_score($latestTestId);
 
                     $testScore->primary_test_type = $field_value;
                     $testScore->last_test_score = $scaled_score;
@@ -277,10 +209,20 @@ class TestPrepController extends Controller
             $testScore = new TestScore();
             $testScore->user_id = $user_id;
             if ($updtvalue == 'primary_test_type') {
+
+                //Get Score of the last test
+                $latestTestId = $this->get_last_testid($field_value);
+                $scaled_score = 0;
+                if ($latestTestId > 0) {
+                    $scaled_score = $this->get_test_score($latestTestId);
+                }
                 $testScore->primary_test_type = $field_value;
                 $testScore->initial_score = 0;
-                $testScore->last_test_score = 0;
+                $testScore->last_test_score = $scaled_score;
                 $testScore->goal_score = 0;
+                $testScore->save();
+
+                return response()->json(['success' => '1', 'scaled_score' => $scaled_score]);
             } else if ($updtvalue == 'initial_score') {
                 $testScore->primary_test_type = '';
                 $testScore->initial_score = $field_value;
@@ -1180,6 +1122,11 @@ class TestPrepController extends Controller
             ->where('practice_tests.id', $request->get_section_id)
             ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
             ->count();
+
+        DB::table('practice_tests')
+            ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
+            ->where('practice_test_sections.id', '=', $request->get_section_id)
+            ->update(['practice_tests.user_id' => $current_user_id]);
 
         return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
     }

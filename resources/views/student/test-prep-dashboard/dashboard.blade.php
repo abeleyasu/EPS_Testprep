@@ -1318,13 +1318,35 @@
         let eventObj = @json($final_arr);
 
         pageCompCalendar.init(eventObj);
+		
+		var testTypeDropdown = $('#testTypeDropdown').val();
+        if(testTypeDropdown) {
+            $.ajax({
+                url: "{{ route('update_test_type') }}",
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    updtvalue: 'primary_test_type',
+                    field_value: testTypeDropdown
+                },
+                success: function(response) {
+                    $('.lastTestCls').text(response.scaled_score);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        } else {
+            $('.editInitialScore').hide();
+            $('.editGoalScore').hide();
+        }
 
         $(document).ready(function() {
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
             });
 			
-			$(".editPrimaryTest").click(function() {
+            $(".editPrimaryTest").click(function() {
                 $('#editDropdownContainer').toggle();
                 $('.selectedPrimaryTest').toggle();
             });
@@ -1350,6 +1372,9 @@
                             
                             $('#editDropdownContainer').toggle();
                             $('.selectedPrimaryTest').toggle();
+							
+							$('.editInitialScore').show();
+                            $('.editGoalScore').show();
 
                             toastr.options = {
                                 "progressBar": true,
