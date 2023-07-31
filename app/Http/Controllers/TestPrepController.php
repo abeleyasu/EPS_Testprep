@@ -70,7 +70,8 @@ class TestPrepController extends Controller
         return view('student.test-prep-dashboard.dashboard', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'getTestScores'), compact('events', 'final_arr'));
     }
 
-    public function get_test_score($testid) {
+    public function get_test_score($testid)
+    {
         $user_id = auth()->id();
 
         $helper = new Helper();
@@ -78,7 +79,7 @@ class TestPrepController extends Controller
             ->select('practice_test_sections.*')
             ->where('practice_tests.id', $testid)
             ->get();
-        
+
         foreach ($sections as $section) {
             $count_right_question[$section['id']] = [];
             $sectionQuestions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
@@ -107,8 +108,8 @@ class TestPrepController extends Controller
         $section_score = [];
         foreach ($sections as $section) {
             $testId = DB::table('practice_test_sections')
-                    ->where('id', $section['id'])
-                    ->value('testid');
+                ->where('id', $section['id'])
+                ->value('testid');
 
             if ($section['practice_test_type'] == 'Math_no_calculator') {
                 $other_section = PracticeTestSection::where('testid', $testId)->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])->whereNotIn('id', [$section['id']])->pluck('id')->toArray();
@@ -165,12 +166,13 @@ class TestPrepController extends Controller
         return $scaled_score;
     }
 
-    public function get_last_testid($format) {
+    public function get_last_testid($format)
+    {
         $user_id = auth()->id();
         $latestTestId = PracticeTest::where('format', $format)
-                    ->where('user_id', $user_id)
-                    ->orderBy('id', 'desc')
-                    ->value('id') ?? 0;
+            ->where('user_id', $user_id)
+            ->orderBy('id', 'desc')
+            ->value('id') ?? 0;
         return $latestTestId;
     }
 
@@ -275,9 +277,8 @@ class TestPrepController extends Controller
     public function singleReview(Request $request, $test, $id)
     {
         $current_user_id = Auth::id();
+        $practice_test_section_id = $id;
         $get_test_name = $test;
-        $set_get_question_category = array();
-        $test_category_type = array();
         $category_data = array();
         $categoryTypeData = [];
         $questionTypeData = [];
@@ -305,6 +306,7 @@ class TestPrepController extends Controller
                         'practice_questions.id as test_question_id',
                         'practice_questions.question_type_id',
                         'practice_questions.category_type',
+                        'practice_questions.mistake_type',
                         'practice_questions.tags as tags',
                         'practice_questions.answer as answer',
                         'practice_questions.category_type_values as category_type_values',
@@ -314,7 +316,7 @@ class TestPrepController extends Controller
                     ->where('practice_tests.id', $test_id)
                     ->orderBy('practice_questions.question_order', 'ASC')
                     ->get();
-
+                // dd($get_test_questions);
                 $get_all_cat_type = DB::table('practice_category_types')->get();
 
                 foreach ($get_test_questions as $question) {
@@ -343,10 +345,21 @@ class TestPrepController extends Controller
 
                 if (!$get_test_questions->isEmpty()) {
                     $percentage_arr_all = [];
+                    // dd($get_test_questions);
                     foreach ($get_test_questions as $get_single_test_questions) {
-                        $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
+                        $questionDetails = QuestionDetails::where("question_id", $get_single_test_questions->test_question_id)->get(['question_type', 'category_type'])->toArray();
+                        // dd($questionDetails);
+                        // $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
+                        $array_ques_type = array_map(function ($item) {
+                            return $item['question_type'];
+                        }, $questionDetails);
 
-                        $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+                        // $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+                        $array_cat_type = array_map(function ($item) {
+                            return $item['category_type'];
+                        }, $questionDetails);
+
+                        // dd($array_cat_type);
                         $percentage_arr = [];
                         if (isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type)) {
                             $mergedArray = [];
@@ -408,8 +421,8 @@ class TestPrepController extends Controller
                     ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
                     ->select(
                         'practice_questions.id as test_question_id',
-                        'practice_questions.question_type_id',
                         'practice_questions.category_type',
+                        'practice_questions.mistake_type',
                         'practice_questions.tags as tags',
                         'practice_questions.answer as answer',
                         'practice_questions.category_type_values as category_type_values',
@@ -450,9 +463,21 @@ class TestPrepController extends Controller
                 if (!$get_test_questions->isEmpty()) {
                     $percentage_arr_all = [];
                     foreach ($get_test_questions as $get_single_test_questions) {
-                        $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
 
-                        $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+                        $questionDetails = QuestionDetails::where("question_id", $get_single_test_questions->test_question_id)->get(['question_type', 'category_type'])->toArray();
+
+                        // $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
+
+                        // $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+
+                        $array_ques_type = array_map(function ($item) {
+                            return $item['question_type'];
+                        }, $questionDetails);
+
+                        // $array_cat_type = json_decode($get_single_test_questions->category_type, true);
+                        $array_cat_type = array_map(function ($item) {
+                            return $item['category_type'];
+                        }, $questionDetails);
 
                         if (isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type)) {
                             $mergedArray = [];
@@ -535,7 +560,21 @@ class TestPrepController extends Controller
                             foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
                                 $get_question_details = DB::table('practice_questions')
                                     // ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
-                                    ->select('practice_questions.id as question_id', 'practice_questions.practice_test_sections_id as section_id', 'practice_questions.title as question_title', 'practice_questions.type as practice_type', 'practice_questions.answer as question_answer', 'practice_questions.answer_content as question_answer_options', 'practice_questions.multiChoice as is_multiple_choice', 'practice_questions.question_order', 'practice_questions.tags', 'practice_questions.category_type as category_type', 'practice_questions.question_type_id as question_type_id', 'practice_questions.answer_exp as answer_exp')
+                                    ->select(
+                                        'practice_questions.id as question_id',
+                                        'practice_questions.practice_test_sections_id as section_id',
+                                        'practice_questions.title as question_title',
+                                        'practice_questions.type as practice_type',
+                                        'practice_questions.mistake_type as mistake_type',
+                                        'practice_questions.answer as question_answer',
+                                        'practice_questions.answer_content as question_answer_options',
+                                        'practice_questions.multiChoice as is_multiple_choice',
+                                        'practice_questions.question_order',
+                                        'practice_questions.tags',
+                                        'practice_questions.category_type as category_type',
+                                        'practice_questions.question_type_id as question_type_id',
+                                        'practice_questions.answer_exp as answer_exp'
+                                    )
                                     ->where('practice_questions.id', $question_id)
                                     ->orderBy('practice_questions.question_order', 'ASC')
                                     ->get();
@@ -576,6 +615,7 @@ class TestPrepController extends Controller
                                 'practice_questions.answer_content as question_answer_options',
                                 'practice_questions.multiChoice as is_multiple_choice',
                                 'practice_questions.question_order',
+                                'practice_questions.mistake_type',
                                 'practice_questions.tags',
                                 'practice_questions.category_type as category_type',
                                 'practice_questions.question_type_id as question_type_id',
@@ -600,12 +640,14 @@ class TestPrepController extends Controller
             $wrong_ans = 0;
             $total_question = $this->array_flatten(array_map("unserialize", array_unique(array_map("serialize", $percentage))));
             $count = count($total_question);
+            $allCorrect = true;
             foreach ($total_question as $value) {
                 if ($value == true) {
                     $correct_ans++;
                 }
 
                 if ($value == false) {
+                    $allCorrect = false;
                     $wrong_ans++;
                 }
             }
@@ -613,9 +655,13 @@ class TestPrepController extends Controller
                 $percentage_arr_all[$key] = [
                     "correct_ans" => $correct_ans,
                     "wrong_ans" => $wrong_ans,
-                    "percentage" => 100 * $correct_ans / $count . '%',
+                    "percentage" => 100 * $wrong_ans / $count . '%',
                     "percentage_label" => ($correct_ans > $wrong_ans ? $correct_ans : $wrong_ans) . "/" . $count . ($correct_ans > $wrong_ans ? ' Correct' : ' Incorrect'),
+                    "all_correct" => $allCorrect
                 ];
+                if ($allCorrect) {
+                    $percentage_arr_all[$key]['percentage_label'] = 'No Incorrect Answer';
+                }
             }
         }
         foreach ($store_sections_details as $store_sections_detail) {
@@ -953,6 +999,11 @@ class TestPrepController extends Controller
             $low_score = $low_score;
         }
 
+        if (!empty($percentage_arr_all)) {
+            $keys = array_column($percentage_arr_all, 'wrong_ans');
+            array_multisort($keys, SORT_DESC, $percentage_arr_all);
+        }
+
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
@@ -970,7 +1021,8 @@ class TestPrepController extends Controller
             'total_questions' => $total_questions,
             'scaled_score' => $scaled_score,
             'high_score' => $high_score,
-            'low_score' => $low_score
+            'low_score' => $low_score,
+            'practice_test_section_id' => $practice_test_section_id
         ]);
     }
 
@@ -1662,12 +1714,12 @@ class TestPrepController extends Controller
                     $sat_custom_details[$value['id']]['total_question'] = 0;
                     $sat_custom_details[$value['id']]['date_taken'] = '-';
                 }
-				if (isset($answer_detail[0]['actual_time'])) {
+                if (isset($answer_detail[0]['actual_time'])) {
                     $actual_time = $answer_detail[0]['actual_time'] ?? '';
                 } else {
                     $actual_time = '';
                 }
-                $sat_custom_details[$value['id']][$section['practice_test_type']."_actual_time"] = $actual_time;
+                $sat_custom_details[$value['id']][$section['practice_test_type'] . "_actual_time"] = $actual_time;
             }
         }
 
@@ -1703,12 +1755,12 @@ class TestPrepController extends Controller
                     $psat_custom_details[$value['id']]['total_question'] = 0;
                     $psat_custom_details[$value['id']]['date_taken'] = '-';
                 }
-				if (isset($answer_detail[0]['actual_time'])) {
+                if (isset($answer_detail[0]['actual_time'])) {
                     $actual_time = $answer_detail[0]['actual_time'] ?? '';
                 } else {
                     $actual_time = '';
                 }
-                $psat_custom_details[$value['id']][$section['practice_test_type']."_actual_time"] = $actual_time;
+                $psat_custom_details[$value['id']][$section['practice_test_type'] . "_actual_time"] = $actual_time;
             }
         }
 
@@ -1744,12 +1796,12 @@ class TestPrepController extends Controller
                     $act_custom_details[$value['id']]['total_question'] = 0;
                     $act_custom_details[$value['id']]['date_taken'] = '-';
                 }
-				if (isset($answer_detail[0]['actual_time'])) {
+                if (isset($answer_detail[0]['actual_time'])) {
                     $actual_time = $answer_detail[0]['actual_time'] ?? '';
                 } else {
                     $actual_time = '';
                 }
-                $act_custom_details[$value['id']][$section['practice_test_type']."_actual_time"] = $actual_time;
+                $act_custom_details[$value['id']][$section['practice_test_type'] . "_actual_time"] = $actual_time;
             }
         }
 
@@ -1829,7 +1881,7 @@ class TestPrepController extends Controller
         //     }
         // }
         $helper = new Helper();
-        
+
         //PSAT
         $psat_test = PracticeTest::where('format', 'PSAT')->whereNotIn('test_source', [2])->get();
         $psat_details_array = $this->getPsatDetailsArray($psat_test, $user_id, $helper);
@@ -1848,7 +1900,8 @@ class TestPrepController extends Controller
         return view('student.test-home-page.test_home_page', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'act_details_array', 'all_act_details_array', 'sat_details_array', 'all_sat_details_array', 'psat_details_array', 'all_psat_details_array', 'sat_custom_details', 'psat_custom_details', 'act_custom_details'));
     }
 
-    public function getActDetailsArray($act_test, $user_id) {
+    public function getActDetailsArray($act_test, $user_id)
+    {
         $act_details_array = [];
         foreach ($act_test as $test) {
             $act_details_array[$test->id]['test_id'] = $test->id;
@@ -1882,10 +1935,10 @@ class TestPrepController extends Controller
 
                 if (isset($answer_details[0]['actual_time'])) {
                     $actual_time = $answer_details[0]['actual_time'] ?? '';
-                } else{
+                } else {
                     $actual_time = '';
                 }
-                $act_details_array[$test->id][$section_detail->practice_test_type."_actual_time"] = $actual_time;
+                $act_details_array[$test->id][$section_detail->practice_test_type . "_actual_time"] = $actual_time;
 
                 $scaled_score_for_section = Score::where('section_id', $section_detail->id)->where('actual_score', $right_questions)->get('converted_score');
                 if (isset($scaled_score_for_section[0]['converted_score'])) {
@@ -1898,7 +1951,8 @@ class TestPrepController extends Controller
         return $act_details_array;
     }
 
-    public function getPsatDetailsArray($psat_test, $user_id, $helper) {
+    public function getPsatDetailsArray($psat_test, $user_id, $helper)
+    {
         $psat_details_array = [];
         foreach ($psat_test as $test) {
             $psat_details_array[$test->id]['test_id'] = $test->id;
@@ -1940,16 +1994,16 @@ class TestPrepController extends Controller
             $sections_details = PracticeTestSection::where('testid', $test->id)->where('format', 'PSAT')->get();
             foreach ($sections_details as $section_detail) {
                 $answers = UserAnswers::select('actual_time')
-                                ->where('user_id', $user_id)
-                                ->where('section_id', $section_detail['id'])
-                                ->where('test_id', $test->id)
-                                ->get();
+                    ->where('user_id', $user_id)
+                    ->where('section_id', $section_detail['id'])
+                    ->where('test_id', $test->id)
+                    ->get();
                 if ($answers->isNotEmpty()) {
                     $actual_time = $answers[0]->actual_time ?? '';
                 } else {
                     $actual_time = '';
                 }
-                $psat_details_array[$test->id][$section_detail['practice_test_type']."_actual_time"] = $actual_time;
+                $psat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $actual_time;
 
                 if ($section_detail['practice_test_type'] == 'Math_no_calculator') {
                     $tot_right = count($right_question[$test->id][$section_detail['practice_test_type']]) + (isset($right_question[$test->id]['Math_with_calculator']) ? count($right_question[$test->id]['Math_with_calculator']) : 0);
@@ -1981,7 +2035,8 @@ class TestPrepController extends Controller
         return $psat_details_array;
     }
 
-    public function getSatDetailsArray($sat_test, $user_id, $helper) {
+    public function getSatDetailsArray($sat_test, $user_id, $helper)
+    {
         $sat_details_array = [];
         foreach ($sat_test as $test) {
             $sat_details_array[$test->id]['test_id'] = $test->id;
@@ -2023,16 +2078,16 @@ class TestPrepController extends Controller
             $sections_details = PracticeTestSection::where('testid', $test->id)->where('format', 'SAT')->get();
             foreach ($sections_details as $section_detail) {
                 $answers = UserAnswers::select('actual_time')
-                                ->where('user_id', $user_id)
-                                ->where('section_id', $section_detail['id'])
-                                ->where('test_id', $test->id)
-                                ->get();
+                    ->where('user_id', $user_id)
+                    ->where('section_id', $section_detail['id'])
+                    ->where('test_id', $test->id)
+                    ->get();
                 if ($answers->isNotEmpty()) {
                     $actual_time = $answers[0]->actual_time ?? '';
                 } else {
                     $actual_time = '';
                 }
-                $sat_details_array[$test->id][$section_detail['practice_test_type']."_actual_time"] = $actual_time;
+                $sat_details_array[$test->id][$section_detail['practice_test_type'] . "_actual_time"] = $actual_time;
 
                 if ($section_detail['practice_test_type'] == 'Math_no_calculator') {
                     $tot_right = count($right_question[$test->id][$section_detail['practice_test_type']]) + (isset($right_question[$test->id]['Math_with_calculator']) ? count($right_question[$test->id]['Math_with_calculator']) : 0);
@@ -2393,5 +2448,26 @@ class TestPrepController extends Controller
             $time = PracticeTestSection::where('id', $request['section_id'])->first();
         }
         return response()->json(['time' => $time]);
+    }
+
+    public function addMistakeType(Request $request)
+    {
+        $questions = PracticeQuestion::where('id', $request['question_id'])->first();
+        $practice_test_section_id = $request['practice_test_section_id'];
+        if (!empty($questions)) {
+            $questions->mistake_type = $request['mistake_type'];
+            $questions->save();
+        }
+
+        $practice_questions = PracticeQuestion::where("practice_test_sections_id", $practice_test_section_id)->get();
+        $mistake_type_count = [];
+        foreach ($practice_questions as $question) {
+            if (!empty($question->mistake_type)) {
+                $mistake_type = PracticeQuestion::MISTAKE_TYPES[$question->mistake_type];
+                $num = $mistake_type_count[$mistake_type] ?? 0;
+                $mistake_type_count[$mistake_type] = $num + 1;
+            }
+        }
+        return response()->json(['questions' => $questions, 'mistake_type_count' => $mistake_type_count, 'status' => true]);
     }
 }
