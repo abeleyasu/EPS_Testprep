@@ -10,6 +10,7 @@ use App\Models\PermissionModule;
 use App\Models\Permission;
 use Spatie\Permission\Models\Role;
 use DB;
+use App\Http\Requests\AjaxProductInsertRequest;
 
 class ProductController extends Controller
 {
@@ -242,5 +243,93 @@ class ProductController extends Controller
             $role->syncPermissions($request->permission);
         }
         return redirect()->intended(route('admin.product.list'))->with('success', 'Permission attached successfully');
+    }
+
+    public function ajaxProducts(Request $request) {
+        $page = isset($request->page) ? $request->page : 1;
+        $search = isset($request->search) ? $request->search : null;
+        $limit = $page * 25;
+        $products = ProductCategory::whereHas('products')->with('products', function ($q) {
+            return $q->whereHas('plans', function ($plan) {
+                return $plan->where('interval', '!=', 'hour');
+            });
+        })->orderBy('order_index', 'asc');
+        if (!empty($products)) {
+            $products = $products->where(function ($product) use ($search) {
+                return $product->where('title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('products', function ($query) use ($search) {
+                        return $query->where('title', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+        $products = $products->paginate($limit);
+        $products = $products->toArray();
+        $total = 0;
+        $products = array_map(function ($item){
+            $children = array_map(function ($product){
+                return [
+                    'id' => $product['id'],
+                    'text' => $product['title']
+                ];
+            }, $item['products']);
+
+            return [
+                'text' => $item['title'],
+                'children' => $children
+            ];
+        }, $products['data']);
+
+        foreach ($products as $product) {
+            $total += count($product['children']);
+        }
+        return response()->json([
+            'data' => $products,
+            'total' => $total
+        ]);
+    }
+
+    public function ajaxCreate(AjaxProductInsertRequest $request) {
+        DB::beginTransaction();
+        try {
+            $product = $this->stripe->products->create([
+                'name' => $request->title,
+                'description' => $request->description
+            ]);
+            $lastOrderIndex = Product::max('order_index');
+            $create = Product::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'product_category_id' => $request->category,
+                'stripe_product_id' => $product['id'],
+                'order_index' => $lastOrderIndex + 1
+            ]);
+            if ($create ) {
+                $role = Role::create([
+                    'name' => $product['id'],
+                    'guard_name' => 'web'
+                ]);
+                if ($role) {
+                    $permissions = Permission::get();
+                    $role->syncPermissions($permissions);
+                }
+                DB::commit();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Product created successfully'
+                ]);
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Product creation failed'
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

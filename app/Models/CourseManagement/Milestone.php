@@ -24,7 +24,8 @@ class Milestone extends Model
         'content_category_id',
         'course_id',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
     ];
 
     public function hasTags() {

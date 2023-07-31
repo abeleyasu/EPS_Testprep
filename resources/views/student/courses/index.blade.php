@@ -147,23 +147,21 @@
                     @endphp
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
-                            @if($course->status == 'paid')
-								<a class="block block-rounded block-link-pop h-100 mb-0" href="javascript:;">
+                            <a class="block block-rounded block-link-pop h-100 mb-0" href="@if($course->status == 'unpaid' || $course->status == 'paid' && auth()->user()->isUserSubscibedToTheProduct($course->product_id)) {{ route('courses.milestone',['course' => $course->id]) }} @else javascript:; @endif">
 
-                                <div class="block-content block-content-full text-center bg-grayed">
+                                <div class="block-content block-content-full text-center @if($course->status == 'unpaid' || $course->status == 'paid' && auth()->user()->isUserSubscibedToTheProduct($course->product_id)) {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}  @else bg-grayed @endif">
 
-                                    <div class="btn-group float-end ">
-                                        <span class="badge bg-dark">Paid</span>
-                                    </div>
+                                    @if($course->status == 'paid')
+                                        <div class="btn-group float-end ">
+                                            <span class="badge bg-dark">Paid</span>
+                                        </div>
+                                    @endif
                                     
                                     <div class="item item-2x item-circle bg-white-10 py-3 my-3 mx-auto">
                                     {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
                                     </div>
-                                    @php
-                                    
-                                    @endphp
                                     <div class="fs-sm text-black">
-                                         {{$totalmilestone[$course->id]['total_milestone']}} milestones
+                                        {{$totalmilestone[$course->id]['total_milestone']}} milestones
                                     </div>
                                 </div>
                                 <div class="block-content block-content-full">
@@ -171,55 +169,20 @@
                                         {{ $course->title }}
                                     </h4>
                                     <div class="row mb-2">
-										<div class="col-12">
-											<div class="progress coursesBar" style="background:#c4c5c7;">
-													<div class="progress-bar "
-														style="background-color: blue; width: {{ $completion_percent }}%"
-														role="progressbar"
-														aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-											</div>
-										</div>
-									</div>
+                                        <div class="col-12">
+                                            <div class="progress coursesBar" style="background:#c4c5c7;">
+                                                    <div class="progress-bar "
+                                                        style="background-color: blue; width: {{ $completion_percent }}%"
+                                                        role="progressbar"
+                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="fs-sm text-muted">{{ $course->created_at->format( 'M d, Y') }}</div>
                                     
                                 </div>
                             </a>
-							@else
-								<a class="block block-rounded block-link-pop h-100 mb-0" href="{{ route('courses.milestone',['course' => $course->id]) }}">
-
-                                <div class="block-content block-content-full text-center {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}">
-
-                                    <div class="item item-2x item-circle bg-white-10 py-3 my-3 mx-auto">
-                                    {{--                                <i class="fab fa-html5 fa-2x text-white-75"></i>--}}
-                                    </div>
-                                    @php
-                                    
-                                    @endphp
-                                    <div class="fs-sm text-white-75">
-                                         {{$totalmilestone[$course->id]['total_milestone']}} milestones
-                                    </div>
-                                </div>
-                                <div class="block-content block-content-full">
-                                    <h4 class="h5 mb-1">
-                                        {{ $course->title }}
-                                    </h4>
-                                    <div class="row mb-2">
-										<div class="col-12">
-											<div class="progress" style="background:#c4c5c7;">
-													<div class="progress-bar "
-														style="background-color: blue; width:{{ $completion_percent }}%"
-														role="progressbar"
-														aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-											</div>
-										</div>
-									</div>
-                                    <div class="fs-sm text-muted">{{ $course->created_at->format( 'M d, Y') }}</div>
-                                    
-                                </div>
-                            </a>
-							@endif
-                        
-                            
                         </div>
                         <!-- END Course -->
                     @php } @endphp

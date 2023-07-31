@@ -227,6 +227,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductCategoryController::class, 'edit'])->name('category_edit');
                 Route::post('/delete', [ProductCategoryController::class, 'deleyeCateogry'])->name('category_delete');
                 Route::post('/change-order', [ProductCategoryController::class, 'changeOrder'])->name('category_change_order');
+
+                Route::get('ajax/categories', [ProductCategoryController::class, 'ajaxCategories'])->name('ajax_categories');
             });
 
             Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -238,6 +240,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
                 Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
                 Route::post('/change-order', [ProductController::class, 'changeOrder'])->name('product_change_order');
+
+                Route::get('/ajax/products', [ProductController::class, 'ajaxProducts'])->name('ajax_products');
+                Route::post('ajax/create', [ProductController::class, 'ajaxCreate'])->name('ajax_create');
 
                 Route::get('/permission/{id}', [ProductController::class, 'productPermission'])->name('productPermission');
                 Route::post('/permission/attach', [ProductController::class, 'attachPermission'])->name('attachPermission');
@@ -263,6 +268,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/attach-permission/{id}', 'permissionList')->name('permission-list');
                 Route::post('/attach-permission', 'attachPermission')->name('attach-permission');
+
+                Route::get('/ajax/roles', 'ajaxRoles')->name('ajax_roles');
             });
         });
 

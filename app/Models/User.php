@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\UserRole;
+use App\Models\Product;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -66,5 +67,14 @@ class User extends Authenticatable implements MustVerifyEmail
         $role = UserRole::where('id', $this->role)->first();
         $permissions = $role->permissions->where('guard_name', $gaurd)->pluck('name')->toArray();
         return in_array($permission, $permissions);
+    }
+
+    public function isUserSubscibedToTheProduct($product_id) {
+        if (!$product_id) return false;
+        $product = Product::where('id', $product_id)->first();
+        if ($product) {
+            return  $this->subscribedToProduct($product->stripe_product_id);
+        }
+        return false;
     }
 }

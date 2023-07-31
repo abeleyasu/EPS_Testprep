@@ -198,6 +198,11 @@
 	
 	------->
 	<div class="content content-boxed">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row coursedesc">
             {!! $module->description !!}
 		</div>
@@ -228,7 +233,7 @@
                                 @php
                                     $courseId = $getModules[0]->milestone->course_id; 
                                     $allMilestones = \App\Models\CourseManagement\Milestone::where('course_id', $courseId)->where('status', 'unpaid')->orderBy('order', 'asc')->pluck('id')->toArray();
-                                    $nextMilestone = $allMilestones[count($allMilestones) - 1] !== $getModules[0]->milestone_id ? array_search($getModules[0]->milestone_id,$allMilestones) + 1 : 0;
+                                    $nextMilestone = $allMilestones[count($allMilestones) - 1] !== $getModules[0]->milestone_id ? array_search($getModules[0]->milestone_id,$allMilestones) ? 1 : 0 : 0;
                                 @endphp  
                                 @if ($nextMilestone <= 1)
                                     <a href="{{ route('milestone.detail',['milestone'=>$allMilestones[$nextMilestone]]) }}" class="btn w-25 btn-alt-success">
@@ -291,7 +296,7 @@
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
 										    <h3>
-											@if($section->status == 'paid')
+											@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->product_id))
 												<a href="javascript:;" class="font-grayed">{{ $section->title }}</a>
 											@else
 											<a href="{{ route('sections.detail',['section'=>$section->id]) }}"> {{ $section->title }}</a>

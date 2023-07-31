@@ -39,4 +39,22 @@ class RolesController extends Controller
         }
         return redirect()->route('admin.roles.index')->with('error', 'Role not found');
     }
+
+    public function ajaxRoles(Request $request) {
+        $page = isset($request->page) ? $request->page : 1;
+        $search = isset($request->search) ? $request->search : null;
+        $limit = $page * 25;
+        $roles = UserRole::where('slug','!=','super_admin')->select('id', 'name as text');
+        if (!empty($search)) {
+            $roles = $roles->where(function ($role) use ($search) {
+                $role->where('name', 'like', '%' . $search . '%');
+            });
+        }
+        $roles = $roles->paginate($limit);
+        $roles = $roles->toArray();
+        return response()->json([
+            'data' => $roles['data'],
+            'total' => $roles['total']
+        ]);
+    }
 }

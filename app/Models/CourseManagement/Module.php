@@ -6,6 +6,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\UserRole;
 
 class Module extends Model
 {
@@ -20,7 +21,8 @@ class Module extends Model
         'added_by',
         'milestone_id',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
     ];
 
     public function milestone() {
@@ -58,6 +60,10 @@ class Module extends Model
                 ['model_has_tags.model_id', $this->id],
                 ['model_has_tags.model_type', get_class($this)]
             ])->get();
+    }
+
+    public function user_modules_roles() {
+        return $this->belongsToMany(UserRole::class,'modules_user_types', 'module_id', 'user_role_id');
     }
 
 }

@@ -147,7 +147,8 @@ class MilestoneController extends Controller
             'added_by' => auth()->id(),
             'course_id' => $request->select_course,
             'coverimage'=>$filename,
-            'published' => $request->get('published') ? true : false
+            'published' => $request->get('published') ? true : false,
+            'product_id' => empty($request->product) ? null : $request->product,
         ]);
 
         if ($milestone) {
@@ -194,8 +195,8 @@ class MilestoneController extends Controller
         if (!in_array($user->role, $mileston_permission)) {
             return redirect()->back()->with('error', 'You are not authorized to access this milestone');
         }
-		if($milestone->status == 'paid'){
-			return redirect(route('home'));
+		if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->product_id)){
+			return redirect(route('courses.milestone',['course' => $milestone->course_id]))->with('error', 'You are not authorized to access this milestone');
 		}
 		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
         
@@ -256,6 +257,10 @@ class MilestoneController extends Controller
         } else {
             $filename = $request->course_cover_image_old;
         }
+
+        if ($request->status == 'unpaid') {
+            $request->merge(['product' => null]);
+        }
 //        $this->reorderOnUpdate($milestone->order, $request->order, $id);
         $milestone->update([
             'name' => $request->name,
@@ -268,7 +273,8 @@ class MilestoneController extends Controller
 //            'added_by' => auth()->id(),
             'course_id' => $request->course,
             'coverimage' => $filename,
-            'published' => $request->get('published') ? true : false
+            'published' => $request->get('published') ? true : false,
+            'product_id' => empty($request->product) ? null : $request->product,
         ]);
 
 

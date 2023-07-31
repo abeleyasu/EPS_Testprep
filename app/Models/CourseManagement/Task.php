@@ -6,6 +6,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\UserRole;
 
 class Task extends Model
 {
@@ -19,7 +20,8 @@ class Task extends Model
         'order',
         'task_type',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
     ];
 
     public function section() {
@@ -41,5 +43,9 @@ class Task extends Model
                 ['model_has_tags.model_id', $this->id],
                 ['model_has_tags.model_type', get_class($this)]
             ])->get();
+    }
+
+    public function user_tasks_roles() {
+        return $this->belongsToMany(UserRole::class,'tasks_user_types', 'task_id', 'user_role_id');
     }
 }

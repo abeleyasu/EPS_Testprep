@@ -165,17 +165,7 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
-                            <div class="mb-2">
-                                <label for="type" class="form-label">User Type:</label>
-                                <select name="user_type[]" class="form-control user-type-selection {{$errors->has('user_type') ? 'is-invalid' : ''}}" multiple="multiple">
-									@foreach($usersRoles as $usersRole)
-										<option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
-									@endforeach
-                                </select>
-                                @error('user_type')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
+                            @include('admin.courses.components.user-role-dropdown')
                             <div class="mb-2">
                                 <label for="duration" class="form-label">Duration</label>
                                 <div class="row">
@@ -230,6 +220,8 @@
                                     <option value="unpaid">Unpaid</option>
                                 </select>
                             </div>
+
+                            @include('admin.courses.components.product-dropdown')
                         </div>
                     </div>
                 </div>
@@ -238,6 +230,7 @@
     <!-- END Edit User Form -->
     </div>
 </main>
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -390,14 +383,9 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
     <script>
-
-        $('.user-type-selection').select2({
-            multiple: true,
-            placeholder: 'Select an option',
-            theme: "classic"
-        });
 
         $(document).ready(()=>{
 		    $('#course_cover_image').change(function(){

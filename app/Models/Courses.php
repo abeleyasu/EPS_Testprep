@@ -23,7 +23,8 @@ class Courses extends Model
         'duration',
         'order',
         'status',
-        'coverimage'
+        'coverimage',
+        'product_id',
     ];
 	public function milestones() {
         return $this->hasMany(Milestone::class)->where('published', true);

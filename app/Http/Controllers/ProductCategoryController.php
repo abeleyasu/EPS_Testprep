@@ -112,4 +112,25 @@ class ProductCategoryController extends Controller
         }
         return "success";
     }
+
+    public function ajaxCategories(Request $request) {
+        $page = isset($request->page) ? $request->page : 1;
+        $search = isset($request->search) ? $request->search : null;
+        $limit = $page * 25;
+
+        $categories = ProductCategory::orderBy('id', 'asc')->select('id', 'title as text');
+
+        if (!empty($search)) {
+            $categories = $categories->where(function ($category) use ($search) {
+                return $category->where('title', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $categories = $categories->paginate($limit);
+        $categories = $categories->toArray();
+        return response()->json([
+            'data' => $categories['data'],
+            'total' => $categories['total']
+        ]);
+    }
 }

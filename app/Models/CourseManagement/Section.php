@@ -4,6 +4,7 @@ namespace App\Models\CourseManagement;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\UserRole;
 
 class Section extends Model
 {
@@ -15,7 +16,8 @@ class Section extends Model
         'order',
         'status',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
     ];
 
     public function tasks() {
@@ -63,5 +65,9 @@ class Section extends Model
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();
         return $tasks;
+    }
+
+    public function user_sections_roles() {
+        return $this->belongsToMany(UserRole::class,'sections_user_types', 'section_id', 'user_role_id');
     }
 }
