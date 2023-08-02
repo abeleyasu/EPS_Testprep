@@ -103,7 +103,7 @@ class SectionController extends Controller
         if (!$is_course_permission) {
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
-		if($section->status == 'paid' && !$user->isUserSubscibedToTheProduct($section->product_id)){
+		if(!$section->userHasSectionsPermissionOrNot() || $section->status == 'paid' && !$user->isUserSubscibedToTheProduct($section->product_id)){
 			return redirect(route('modules.detail',['module'=>$section->module_id]))->with('error', 'You are not authorized to access this section');
 		}
 		$milestone = array();

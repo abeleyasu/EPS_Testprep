@@ -26,7 +26,7 @@
                         {{ $milestone->name }}
                     </h1>
                     <h2 class="h4 fw-normal text-white-75">
-                        {{ $milestone->modules->count() }} Modules
+                        {{ $modules->count() }} Modules
                     </h2>
                 </div>
             </div>
@@ -118,7 +118,7 @@
 					@endforeach				
                 
                     @php
-						foreach($milestone->modules as $key => $module){
+						foreach($modules as $key => $module){
 
 							$sectionpercentage = 0;					
 							$completedsection = 0;
@@ -137,10 +137,10 @@
 								$completion_percent = floor($totalCompTasks/$totalTasks * 100);
 							}
 							
-							$sections = $module->sections();
-							$totalSections = $sections->count();
+							$sections = $module->sections;
+							$totalSections = count($sections);
 							$comSections=0;
-								foreach($module->sections as $section_key => $section){
+								foreach($sections as $section_key => $section){
 									$sectasks = $section->sectionTasks(auth()->id());
 									$sectotaltasks = $sectasks->count();
 									$seccompleteTasks = $section->sectionCompleteTasks(auth()->id());
@@ -267,7 +267,7 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-fw fa-book me-1"></i>
-                                    {{ $milestone->modules->count() }} modules
+                                    {{ $modules->count() }} modules
                                 </td>
                             </tr>
 {{--                            <tr>--}}

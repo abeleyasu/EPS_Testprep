@@ -109,12 +109,13 @@ class ModuleController extends Controller
         if (!$is_course_permission) {
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
-		if($module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->product_id)){
+		if(!$module->userHasModulePermissionOrNot() || $module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->product_id)){
 			return redirect(route('milestone.detail',['milestone'=>$module->milestone_id]))->with('error', 'You are not authorized to access this module');
 		}
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
-        // dd($getModules);
+        $sections = Section::getUserTypeWiseSections($module->id)->get();
+        // dd($sections);
         if($milestone){
             
             $courseId = $milestone->course_id;
@@ -122,7 +123,7 @@ class ModuleController extends Controller
             //print_r($course);
         }
 		
-        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone','course'));
+        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone','course', 'sections'));
     }
 
     /**

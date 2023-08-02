@@ -66,4 +66,14 @@ class Module extends Model
         return $this->belongsToMany(UserRole::class,'modules_user_types', 'module_id', 'user_role_id');
     }
 
+    public static function getModulesUserTypeWise($milestoneId) {
+        return Module::where('milestone_id', $milestoneId)->where('published', true)->whereHas('user_modules_roles', function($q) {
+            $q->where('user_role_id', auth()->user()->role);
+        });
+    }
+
+    public function userHasModulePermissionOrNot() {
+        return $this->user_modules_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
 }

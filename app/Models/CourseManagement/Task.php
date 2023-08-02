@@ -48,4 +48,8 @@ class Task extends Model
     public function user_tasks_roles() {
         return $this->belongsToMany(UserRole::class,'tasks_user_types', 'task_id', 'user_role_id');
     }
+
+    public function userHasTaskPermissionOrNot() {
+        return $this->user_tasks_roles->contains(auth()->user()->role);
+    }
 }

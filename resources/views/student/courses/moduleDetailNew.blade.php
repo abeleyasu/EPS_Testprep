@@ -137,7 +137,7 @@
                     {{ $module->title }}
                 </h1>
                 <h2 class="h4 fw-normal text-white-75">
-                    {{ $module->sections->count() }} Sections
+                    {{ $sections->count() }} Sections
                 </h2>
             </div>
         </div>
@@ -267,7 +267,7 @@
 						$totaltasks =0;
 						$completedsection = 0;
 					@endphp	
-						@foreach($module->sections as $key => $section)
+						@foreach($sections as $key => $section)
 							
                         <div class="block block-rounded">
 						
@@ -334,7 +334,7 @@
                                                                                   
 												<span class="mx-4">											
 												
-												@if($task->status == 'paid')
+												@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id))
 													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!}</a>
 												@else
 												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!} </a>
@@ -379,7 +379,7 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-fw fa-book me-1"></i>
-                                    {{ $module->sections->count() }} Sections
+                                    {{ $sections->count() }} Sections
                                 </td>
                             </tr>
 {{--                            <tr>--}}

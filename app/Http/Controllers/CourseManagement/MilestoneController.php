@@ -191,15 +191,18 @@ class MilestoneController extends Controller
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
         $user = auth()->user();
-        $mileston_permission = $milestone->user_milestone_roles->pluck('id')->toArray();
-        if (!in_array($user->role, $mileston_permission)) {
+        if (!$milestone->userHasMileStonePermissionOrNot()) {
             return redirect()->back()->with('error', 'You are not authorized to access this milestone');
         }
 		if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->product_id)){
 			return redirect(route('courses.milestone',['course' => $milestone->course_id]))->with('error', 'You are not authorized to access this milestone');
 		}
 		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
-        
+        $modules = Module::getModulesUserTypeWise($milestone->id)->with(['sections' => function ($q) {
+            $q->whereHas('user_sections_roles', function ($q) {
+                $q->where('user_role_id', auth()->user()->role);
+            });
+        }])->get();
         if($milestone){
             
                 $courseid = $milestone->course_id;
@@ -208,7 +211,7 @@ class MilestoneController extends Controller
             }
       
         
-        return view('student.courses.modules',compact('milestone','getMilestones','course'));
+        return view('student.courses.modules',compact('milestone','getMilestones','course', 'modules'));
     }
 
     /**

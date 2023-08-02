@@ -77,4 +77,8 @@ class Milestone extends Model
         return $this->belongsToMany(UserRole::class,'milestones_user_types', 'milestone_id', 'user_role_id');
     }
 
+    public function userHasMileStonePermissionOrNot() {
+        return $this->user_milestone_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
 }

@@ -90,7 +90,7 @@ class TaskController extends Controller
         if (!$is_course_permission) {
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
-		if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id)){
+		if(!$task->userHasTaskPermissionOrNot() || $task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id)){
 			return redirect(route('sections.detail',['section'=>$task->section_id]))->with('error', 'You are not authorized to access this task');
 		}
 		$gettasks = Task::where('section_id',$task->section_id)->orderBy('order')->get();
