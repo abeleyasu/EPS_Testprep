@@ -191,7 +191,6 @@ class TestPrepController extends Controller
 
                 //Get Score of the last test
                 $latestTestId = $this->get_last_testid($field_value);
-				return $latestTestId;
                 if ($latestTestId > 0) {
                     $scaled_score = $this->get_test_score($latestTestId);
 
@@ -1179,7 +1178,9 @@ class TestPrepController extends Controller
         DB::table('practice_tests')
             ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
             ->where('practice_test_sections.id', '=', $request->get_section_id)
-            ->update(['practice_tests.user_id' => $current_user_id]);
+            ->update(['practice_tests.user_id' => $current_user_id,
+					'practice_tests.updated_at' => DB::raw('NOW()')
+			]);
 
         return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
     }
