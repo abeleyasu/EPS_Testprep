@@ -1330,7 +1330,6 @@
                     field_value: testTypeDropdown
                 },
                 success: function(response) {
-					console.log(response);
                     $('.lastTestCls').text(response.scaled_score);
                 },
                 error: function(xhr) {

@@ -171,7 +171,7 @@ class TestPrepController extends Controller
         $user_id = auth()->id();
         $latestTestId = PracticeTest::where('format', $format)
             ->where('user_id', $user_id)
-            ->orderBy('id', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->value('id') ?? 0;
         return $latestTestId;
     }
