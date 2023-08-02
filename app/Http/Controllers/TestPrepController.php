@@ -191,6 +191,7 @@ class TestPrepController extends Controller
 
                 //Get Score of the last test
                 $latestTestId = $this->get_last_testid($field_value);
+				return $latestTestId;
                 if ($latestTestId > 0) {
                     $scaled_score = $this->get_test_score($latestTestId);
 
