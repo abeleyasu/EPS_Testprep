@@ -22,6 +22,7 @@ use App\Models\Score;
 use App\Models\SuperCategory;
 use App\Models\TestScore;
 use App\Models\User;
+use App\Models\UserPracticeTestQuestion;
 use App\Models\UserScrollPosition;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -387,8 +388,6 @@ class TestPrepController extends Controller
                     ->where('practice_tests.id', $test_id)
                     ->orderBy('practice_questions.question_order', 'ASC')
                     ->get();
-                // dd($get_test_questions);
-                $get_all_cat_type = DB::table('practice_category_types')->get();
 
                 foreach ($get_test_questions as $question) {
                     $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
@@ -1070,11 +1069,54 @@ class TestPrepController extends Controller
             $low_score = $low_score;
         }
 
-        if (!empty($percentage_arr_all)) {
-            $keys = array_column($percentage_arr_all, 'wrong_ans');
-            array_multisort($keys, SORT_DESC, $percentage_arr_all);
+        $checkData = [];
+
+        foreach ($categoryTypeData as $key => $catData) {
+            foreach ($catData as $catKey => $cat) {
+                $pq = PracticeQuestion::where("id", $key)->first();
+                foreach ($cat as $catKey1 => $catId) {
+                    $incorrect = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
+                    $correct = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+                    if (!empty($pq->answer) && in_array(strtolower($catKey), explode(",", $pq->answer))) {
+                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $correct + 1;
+                    } else {
+                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $incorrect + 1;
+                    }
+                    $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
+                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
+                }
+            }
         }
 
+        $categoryAndQuestionTypeSummaryData = [];
+        if (!empty($checkData)) {
+            $i = 0;
+            foreach ($checkData as $key => $data) {
+                $categoryAndQuestionTypeSummaryData[$i] = ['ct' => $key, 'qt' => $data, 'count' => 0, 'correct' => 0, 'incorrect' => 0];
+
+                foreach ($data as $qt) {
+
+                    $correct = $categoryAndQuestionTypeSummaryData[$i]['correct'];
+                    $incorrect = $categoryAndQuestionTypeSummaryData[$i]['incorrect'];
+                    $count = $categoryAndQuestionTypeSummaryData[$i]['count'];
+
+                    $incorrect_qt = $qt['incorrect'] ?? 0;
+                    $correct_qt = $qt['correct'] ?? 0;
+
+                    $categoryAndQuestionTypeSummaryData[$i]['count'] = $count + $qt['count'];
+                    $categoryAndQuestionTypeSummaryData[$i]['incorrect'] = $incorrect + $incorrect_qt;
+                    $categoryAndQuestionTypeSummaryData[$i]['correct'] = $correct + $correct_qt;
+                }
+                $i++;
+            }
+
+            if (!empty($categoryAndQuestionTypeSummaryData)) {
+                $keys = array_column($categoryAndQuestionTypeSummaryData, 'incorrect');
+                array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
+            }
+        }
+
+        // dd($categoryAndQuestionTypeSummaryData);
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
@@ -1093,7 +1135,8 @@ class TestPrepController extends Controller
             'scaled_score' => $scaled_score,
             'high_score' => $high_score,
             'low_score' => $low_score,
-            'practice_test_section_id' => $practice_test_section_id
+            'practice_test_section_id' => $practice_test_section_id,
+            'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData
         ]);
     }
 
@@ -1243,6 +1286,7 @@ class TestPrepController extends Controller
             ->whereNotIn('practice_test_sections.id', $set_completed_section_id)
             ->count();
 
+        dd("yes");
         return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
     }
 
@@ -2143,7 +2187,7 @@ class TestPrepController extends Controller
                 foreach ($questions as $index => $question) {
                     $questionOrder = $index + 1;
 
-                    PracticeQuestion::create([
+                    $pq = PracticeQuestion::create([
                         'title' => $question['title'],
                         'format' => $test_type,
                         'practice_test_sections_id' => $new_section['id'],
@@ -2169,6 +2213,8 @@ class TestPrepController extends Controller
                         'question_order' => $questionOrder,
                         'selfMade' => "1"
                     ]);
+
+                    UserPracticeTestQuestion::create(['practice_test_id' => $new_test['id'], 'temp_id' => $pq->id, 'practice_questions_id' => $question['id']]);
                 }
             } else {
                 $message = "No questions available for the given criteria.";
@@ -2401,6 +2447,8 @@ class TestPrepController extends Controller
                     'selfMade' => "1"
                 ]);
 
+                UserPracticeTestQuestion::create(['practice_test_id' => $new_test['id'], 'temp_id' => $practiceQuestion->id, 'practice_questions_id' => $question['id']]);
+
                 foreach ($super_category_values as $key => $val) {
                     $temp = [
                         'question_id' => $practiceQuestion->id,
@@ -2439,12 +2487,13 @@ class TestPrepController extends Controller
     {
         $questions = PracticeQuestion::where('id', $request['question_id'])->first();
         $practice_test_section_id = $request['practice_test_section_id'];
+        // dd($practice_test_section_id);
         if (!empty($questions)) {
             $questions->mistake_type = $request['mistake_type'];
             $questions->save();
         }
 
-        $practice_questions = PracticeQuestion::where("practice_test_sections_id", $practice_test_section_id)->get();
+        $practice_questions = PracticeQuestion::whereIn("practice_test_sections_id", $practice_test_section_id)->get();
         $mistake_type_count = [];
         foreach ($practice_questions as $question) {
             if (!empty($question->mistake_type)) {
