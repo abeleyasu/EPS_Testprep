@@ -155,6 +155,11 @@
 		</div>
 	</div>
 	<div class="content content-boxed">
+		@if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row">
 			<div class="row coursedesc">
 				{!! $section->description !!}
@@ -238,7 +243,7 @@
 									<div class="card-body row">
 										<div class="col-12 colapHead" >
 											<div class="col-11" style="float:left;">
-											@if($task->status == 'paid')
+											@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id))
 												<div class="dispalytask_list">
 												<div class="round" >
 													<input type="checkbox" id="checkbox{{$task->id}}"

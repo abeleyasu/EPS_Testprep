@@ -68,10 +68,9 @@
                                 </div>
 
                                 @endforeach
-                                    <button type="button" class="btn w-100 btn-alt-light text-center"
-                                            data-bs-toggle="modal" data-bs-target="#modal-block-large">
+                                    <a href="{{ route('tasks.create', ['section_id' => $section->id]) }}" class="btn w-100 btn-alt-light text-center">
                                         <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Task
-                                    </button>
+                                    </a>
                                 </div>
                             @endif
 
@@ -111,7 +110,9 @@
                                     @enderror
                                 </div>
 
-                                
+                                @include('admin.courses.components.user-role-dropdown', [
+                                    'selected_user_roles' => $section_user_types    
+                                ])
 
                                 <div class="mb-2">
                                     <label class="form-label" for="order">Order</label>
@@ -158,6 +159,10 @@
                                         <option value="unpaid" @if($section->status == 'unpaid') selected @endif>Unpaid</option>
                                     </select>
                                 </div>
+                                @include('admin.courses.components.product-dropdown', [
+                                    'product' => $section->product_id,
+                                    'status' => $section->status
+                                ])
                             </div>
                         </div>
                     </div>
@@ -166,7 +171,7 @@
         </div>
     </form>
 </main>
-
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -333,6 +338,7 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
     <script>
         $(document).ready(()=>{

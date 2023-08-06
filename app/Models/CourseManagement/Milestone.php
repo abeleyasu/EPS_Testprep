@@ -6,6 +6,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\UserRole;
 
 class Milestone extends Model
 {
@@ -23,7 +24,8 @@ class Milestone extends Model
         'content_category_id',
         'course_id',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
     ];
 
     public function hasTags() {
@@ -63,6 +65,20 @@ class Milestone extends Model
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();
         return $tasks;
+    }
+
+    public static function getUserTypeWiseMilestones($courseid) {   
+        return Milestone::where('course_id', $courseid)->where('published',1)->whereHas('user_milestone_roles', function ($query) {
+            $query->where('user_role_id', auth()->user()->role);
+        });
+    }
+
+    public function user_milestone_roles() {
+        return $this->belongsToMany(UserRole::class,'milestones_user_types', 'milestone_id', 'user_role_id');
+    }
+
+    public function userHasMileStonePermissionOrNot() {
+        return $this->user_milestone_roles()->where('user_role_id', auth()->user()->role)->exists();
     }
 
 }

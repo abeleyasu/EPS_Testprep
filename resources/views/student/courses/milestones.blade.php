@@ -56,6 +56,11 @@
         <!-- END Navigation -->
     <!-- Page Content -->
     <div class="content content-boxed">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row coursedesc">
             {!! $course->description !!}
 		</div>
@@ -115,7 +120,7 @@
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
 										    <h3>
-											@if($milestone->status == 'paid')
+											@if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->product_id))
 												<a href="javascript:;" class="font-grayed">{{ $milestone->name }}</a>
 											@else
 											<a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}">{{ $milestone->name }}</a>

@@ -137,7 +137,7 @@
                     {{ $module->title }}
                 </h1>
                 <h2 class="h4 fw-normal text-white-75">
-                    {{ $module->sections->count() }} Sections
+                    {{ $sections->count() }} Sections
                 </h2>
             </div>
         </div>
@@ -198,6 +198,11 @@
 	
 	------->
 	<div class="content content-boxed">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{session('error')}}
+            </div>
+        @endif
         <div class="row coursedesc">
             {!! $module->description !!}
 		</div>
@@ -228,7 +233,7 @@
                                 @php
                                     $courseId = $getModules[0]->milestone->course_id; 
                                     $allMilestones = \App\Models\CourseManagement\Milestone::where('course_id', $courseId)->where('status', 'unpaid')->orderBy('order', 'asc')->pluck('id')->toArray();
-                                    $nextMilestone = $allMilestones[count($allMilestones) - 1] !== $getModules[0]->milestone_id ? array_search($getModules[0]->milestone_id,$allMilestones) + 1 : 0;
+                                    $nextMilestone = $allMilestones[count($allMilestones) - 1] !== $getModules[0]->milestone_id ? array_search($getModules[0]->milestone_id,$allMilestones) ? 1 : 0 : 0;
                                 @endphp  
                                 @if ($nextMilestone <= 1)
                                     <a href="{{ route('milestone.detail',['milestone'=>$allMilestones[$nextMilestone]]) }}" class="btn w-25 btn-alt-success">
@@ -262,7 +267,7 @@
 						$totaltasks =0;
 						$completedsection = 0;
 					@endphp	
-						@foreach($module->sections as $key => $section)
+						@foreach($sections as $key => $section)
 							
                         <div class="block block-rounded">
 						
@@ -291,7 +296,7 @@
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
 										    <h3>
-											@if($section->status == 'paid')
+											@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->product_id))
 												<a href="javascript:;" class="font-grayed">{{ $section->title }}</a>
 											@else
 											<a href="{{ route('sections.detail',['section'=>$section->id]) }}"> {{ $section->title }}</a>
@@ -329,7 +334,7 @@
                                                                                   
 												<span class="mx-4">											
 												
-												@if($task->status == 'paid')
+												@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id))
 													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!}</a>
 												@else
 												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!} </a>
@@ -374,7 +379,7 @@
                             <tr>
                                 <td>
                                     <i class="fa fa-fw fa-book me-1"></i>
-                                    {{ $module->sections->count() }} Sections
+                                    {{ $sections->count() }} Sections
                                 </td>
                             </tr>
 {{--                            <tr>--}}

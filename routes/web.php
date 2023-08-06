@@ -227,6 +227,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductCategoryController::class, 'edit'])->name('category_edit');
                 Route::post('/delete', [ProductCategoryController::class, 'deleyeCateogry'])->name('category_delete');
                 Route::post('/change-order', [ProductCategoryController::class, 'changeOrder'])->name('category_change_order');
+
+                Route::get('ajax/categories', [ProductCategoryController::class, 'ajaxCategories'])->name('ajax_categories');
             });
 
             Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -238,6 +240,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
                 Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
                 Route::post('/change-order', [ProductController::class, 'changeOrder'])->name('product_change_order');
+
+                Route::get('/ajax/products', [ProductController::class, 'ajaxProducts'])->name('ajax_products');
+                Route::post('ajax/create', [ProductController::class, 'ajaxCreate'])->name('ajax_create');
 
                 Route::get('/permission/{id}', [ProductController::class, 'productPermission'])->name('productPermission');
                 Route::post('/permission/attach', [ProductController::class, 'attachPermission'])->name('attachPermission');
@@ -263,6 +268,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/attach-permission/{id}', 'permissionList')->name('permission-list');
                 Route::post('/attach-permission', 'attachPermission')->name('attach-permission');
+
+                Route::get('/ajax/roles', 'ajaxRoles')->name('ajax_roles');
             });
         });
 
@@ -334,7 +341,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
 
-            Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+            Route::group(['middleware' => ['subscription_valid:access-admission-dashboard']], function () {
+                Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+            });
 
             Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.', 'middleware' => ['subscription_valid:access-high-school-resume']], function () {
                 Route::get('/list', [PreviewController::class, 'list'])->name('list');
@@ -475,7 +484,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
         // Please make any changes you think it's necessary to routing
-        Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+        Route::group(['middleware' => ['subscription_valid:access-test-prep-dashboard']], function () {
+            Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+        });
         Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);

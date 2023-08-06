@@ -360,15 +360,47 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['English']) ? $act_test['English'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['English_actual_time']) && $act_test['English_actual_time'] !== '')
+                                                                                            ({{ $act_test['English_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['English_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['Math']) ? $act_test['Math'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['Math_actual_time']) && $act_test['Math_actual_time'] !== '')
+                                                                                            ({{ $act_test['Math_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['Math_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['Reading']) ? $act_test['Reading'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['Reading_actual_time']) && $act_test['Reading_actual_time'] !== '')
+                                                                                            ({{ $act_test['Reading_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['Reading_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['Science']) ? $act_test['Science'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['Science_actual_time']) && $act_test['Science_actual_time'] !== '')
+                                                                                            ({{ $act_test['Science_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['Science_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         @php
@@ -426,6 +458,15 @@
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
+																					@php
+                                                                                        $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                    @endphp
+                                                                                    <br>
+                                                                                    <span class="custom-actual-time">
+                                                                                        @if ($sectionTypeActualTime !== '')
+                                                                                            ({{ $sectionTypeActualTime }})
+                                                                                        @endif
+                                                                                    </span>
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
@@ -477,7 +518,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($act_details_array as $act_test)
+                                                                        @foreach ($all_act_details_array as $act_test)
                                                                             @if ($act_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
@@ -487,15 +528,47 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['English']) ? $act_test['English'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['English_actual_time']) && $act_test['English_actual_time'] !== '')
+                                                                                            ({{ $act_test['English_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['English_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['Math']) ? $act_test['Math'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['Math_actual_time']) && $act_test['Math_actual_time'] !== '')
+                                                                                            ({{ $act_test['Math_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['Math_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['Reading']) ? $act_test['Reading'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['Reading_actual_time']) && $act_test['Reading_actual_time'] !== '')
+                                                                                            ({{ $act_test['Reading_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['Reading_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($act_test['Science']) ? $act_test['Science'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($act_test['Science_actual_time']) && $act_test['Science_actual_time'] !== '')
+                                                                                            ({{ $act_test['Science_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $act_test['Science_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ number_format(((isset($act_test['English']) ? $act_test['English'] : '0') + (isset($act_test['Math']) ? $act_test['Math'] : '0') + (isset($act_test['Reading']) ? $act_test['Reading'] : '0') + (isset($act_test['Science']) ? $act_test['Science'] : '0')) / ($act_test['section_count'] == 0 ? 1 : $act_test['section_count']), 0) }}
@@ -569,13 +642,41 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($sat_test['Reading_actual_time']) && $sat_test['Reading_actual_time'] !== '')
+                                                                                            ({{ $sat_test['Reading_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $sat_test['Reading_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($sat_test['Writing_actual_time']) && $sat_test['Writing_actual_time'] !== '')
+                                                                                            ({{ $sat_test['Writing_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $sat_test['Writing_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{(isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0')}} --}}
                                                                                         {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @php
+                                                                                            $mathNoCalculatorActualTime = $sat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                            $mathWithCalculatorActualTime = $sat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                            $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                        @endphp
+
+                                                                                        @if ($totalTime !== '')
+                                                                                            ({{ $totalTime }})
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
@@ -642,6 +743,15 @@
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
+																					@php
+                                                                                        $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                    @endphp
+                                                                                    <br>
+                                                                                    <span class="custom-actual-time">
+                                                                                        @if ($sectionTypeActualTime !== '')
+                                                                                            ({{ $sectionTypeActualTime }})
+                                                                                        @endif
+                                                                                    </span>
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
@@ -688,7 +798,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($sat_details_array as $sat_test)
+                                                                        @foreach ($all_sat_details_array as $sat_test)
                                                                             @if ($sat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
@@ -698,13 +808,41 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($sat_test['Reading_actual_time']) && $sat_test['Reading_actual_time'] !== '')
+                                                                                            ({{ $sat_test['Reading_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $sat_test['Reading_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($sat_test['Writing_actual_time']) && $sat_test['Writing_actual_time'] !== '')
+                                                                                            ({{ $sat_test['Writing_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $sat_test['Writing_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
                                                                                         {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @php
+                                                                                            $mathNoCalculatorActualTime = $sat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                            $mathWithCalculatorActualTime = $sat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                            $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                        @endphp
+
+                                                                                        @if ($totalTime !== '')
+                                                                                            ({{ $totalTime }})
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
@@ -780,13 +918,41 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($psat_test['Reading_actual_time']) && $psat_test['Reading_actual_time'] !== '')
+                                                                                            ({{ $psat_test['Reading_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $psat_test['Reading_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($psat_test['Writing_actual_time']) && $psat_test['Writing_actual_time'] !== '')
+                                                                                            ({{ $psat_test['Writing_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $psat_test['Writing_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{(isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') +  (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0')}} --}}
                                                                                         {{ isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @php
+                                                                                            $mathNoCalculatorActualTime = $psat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                            $mathWithCalculatorActualTime = $psat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                            $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                        @endphp
+
+                                                                                        @if ($totalTime !== '')
+                                                                                            ({{ $totalTime }})
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
@@ -842,6 +1008,15 @@
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['right_question'] }}/{{ $getTest['total_question'] }}
+																					@php
+                                                                                    $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                    @endphp
+                                                                                    <br>
+                                                                                    <span class="custom-actual-time">
+                                                                                        @if ($sectionTypeActualTime !== '')
+                                                                                        ({{ $sectionTypeActualTime }})
+                                                                                        @endif
+                                                                                    </span>
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $getTest['section_type'] }}
@@ -890,7 +1065,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        @foreach ($psat_details_array as $psat_test)
+                                                                        @foreach ($all_psat_details_array as $psat_test)
                                                                             @if ($psat_test['date_taken'] !== '-')
                                                                                 <tr>
                                                                                     <td class="text-center">
@@ -900,13 +1075,41 @@
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($psat_test['Reading_actual_time']) && $psat_test['Reading_actual_time'] !== '')
+                                                                                            ({{ $psat_test['Reading_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $psat_test['Reading_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @if (isset($psat_test['Writing_actual_time']) && $psat_test['Writing_actual_time'] !== '')
+                                                                                            ({{ $psat_test['Writing_actual_time'] }})
+                                                                                        @else
+                                                                                            {{ $psat_test['Writing_actual_time'] ?? '' }}
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
                                                                                         {{ isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
+																						<br>
+                                                                                        <span class="custom-actual-time">
+                                                                                        @php
+                                                                                            $mathNoCalculatorActualTime = $psat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                            $mathWithCalculatorActualTime = $psat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                            $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                        @endphp
+
+                                                                                        @if ($totalTime !== '')
+                                                                                            ({{ $totalTime }})
+                                                                                        @endif
+                                                                                        </span>
                                                                                     </td>
                                                                                     <td class="text-center">
                                                                                         {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
@@ -943,6 +1146,37 @@
 @endcan
 
 @endsection
+@php
+    // Function to convert time string to seconds
+    function timeToSeconds($time) {
+        list($hours, $minutes, $seconds) = explode(':', $time);
+        return $hours * 3600 + $minutes * 60 + $seconds;
+    }
+
+    function addTimes($time1, $time2) {
+        // Convert time strings to seconds
+        $seconds1 = ($time1 !== '') ? timeToSeconds($time1) : 0;
+        $seconds2 = ($time2 !== '') ? timeToSeconds($time2) : 0;
+
+        // Case 1: If both values are empty strings, return an empty string
+        if ($seconds1 === 0 && $seconds2 === 0) {
+            return '';
+        }
+
+        // Case 2: If one of the values is an empty string, return the non-empty value
+        if ($seconds1 === 0 || $seconds2 === 0) {
+            return ($seconds1 !== 0) ? $time1 : $time2;
+        }
+
+        // Add the time intervals
+        $totalSeconds = $seconds1 + $seconds2;
+
+        // Convert the total seconds back to "H:i:s" format
+        $totalTime = gmdate('H:i:s', $totalSeconds);
+
+        return $totalTime;
+    }
+    @endphp
 
 @can('Access Test Home Page')
 @section('page-script')
@@ -1366,6 +1600,11 @@
                                                                                                                                                                                         } */
         .input_test_name {
             max-width: 110px !important;
+        }
+
+		.custom-actual-time {
+            font-size: 14px;
+            color: #888;
         }
     </style>
 @endsection

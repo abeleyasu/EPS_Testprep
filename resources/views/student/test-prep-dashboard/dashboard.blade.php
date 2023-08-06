@@ -3,7 +3,7 @@
 @section('title', 'Student View Dashboard : CPS')
 
 @section('user-content')
-@can('Access Practice Tests')
+@can('Access Test Prep Dashboard')
     <!-- Main Container -->
 
     <main id="main-container">
@@ -1287,13 +1287,13 @@
     <!-- End Main Container -->
 @endcan
 
-@cannot('Access Practice Tests')
+@cannot('Access Test Prep Dashboard')
     @include('components.subscription-warning')
 @endcan
 
 @endsection
 
-@can('Access Practice Tests')
+@can('Access Test Prep Dashboard')
 @section('page-script')
     <script src="{{ asset('assets/js/plugins/fullcalendar/main.min.js') }}"></script>
     <script src="{{ asset('assets/js/moment/moment.min.js') }}"></script>
@@ -1318,13 +1318,35 @@
         let eventObj = @json($final_arr);
 
         pageCompCalendar.init(eventObj);
+		
+		var testTypeDropdown = $('#testTypeDropdown').val();
+        if(testTypeDropdown) {
+            $.ajax({
+                url: "{{ route('update_test_type') }}",
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    updtvalue: 'primary_test_type',
+                    field_value: testTypeDropdown
+                },
+                success: function(response) {
+                    $('.lastTestCls').text(response.scaled_score);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        } else {
+            $('.editInitialScore').hide();
+            $('.editGoalScore').hide();
+        }
 
         $(document).ready(function() {
             $("#categoryQuestion1").click(function() {
                 $(this).toggleClass("show");
             });
 			
-			$(".editPrimaryTest").click(function() {
+            $(".editPrimaryTest").click(function() {
                 $('#editDropdownContainer').toggle();
                 $('.selectedPrimaryTest').toggle();
             });
@@ -1350,6 +1372,9 @@
                             
                             $('#editDropdownContainer').toggle();
                             $('.selectedPrimaryTest').toggle();
+							
+							$('.editInitialScore').show();
+                            $('.editGoalScore').show();
 
                             toastr.options = {
                                 "progressBar": true,

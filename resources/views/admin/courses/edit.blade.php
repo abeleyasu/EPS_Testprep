@@ -127,17 +127,9 @@
                                 <h3 class="block-title">Settings</h3>
                             </div>
                             <div class="block-content block-content-full">
-                                <div class="mb-2">
-                                    <label for="type" class="form-label">User Type:</label>
-                                    <select name="user_type" class="form-control">
-                                        @foreach($usersRoles as $usersRole)
-                                            <option value="{{$usersRole->id}}" @if ($course->user_type == $usersRole->id) selected @endif>{{$usersRole->name}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('user_type')
-                                    <div class="invalid-feedback">{{$message}}</div>
-                                    @enderror
-                                </div>
+                                @include('admin.courses.components.user-role-dropdown', [
+                                    'selected_user_roles' => $course_user_types    
+                                ])
                                 <div class="mb-2">
                                     <label for="duration" class="form-label">Duration</label>
                                     <div class="row">
@@ -196,6 +188,11 @@
                                         <option value="unpaid" @php if($course->status == 'unpaid'){ echo 'selected';} @endphp >Unpaid</option>
                                     </select>
                                 </div>
+
+                                @include('admin.courses.components.product-dropdown', [
+                                    'product' => $course->product_id,
+                                    'status' => $course->status
+                                ])
                             </div>
                     </div>
                 </div>
@@ -204,6 +201,7 @@
     <!-- END Edit User Form -->
     </div>
 </main>
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -337,10 +335,12 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
     <script>
 	var currentOrderId = '<?php echo $course->id; ?>';
         $(document).ready(()=>{
+
 			
 		  $('#course_cover_image').change(function(){
 			const file = this.files[0];

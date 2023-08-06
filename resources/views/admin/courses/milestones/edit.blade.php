@@ -162,22 +162,9 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
-
-                            <div class="mb-2">
-                                <label for="type" class="form-label">User Type:</label>
-                                <select name="user_type" class="form-control">
-									@foreach($usersRoles as $usersRole)
-										<option value="{{$usersRole->id}}"
-										
-                                        @if($milestone->user_type ==$usersRole->id)
-                                        selected
-                                        @endif >{{$usersRole->name}}</option>
-									@endforeach
-                                </select>
-                                @error('user_type')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
+                            @include('admin.courses.components.user-role-dropdown', [
+                                'selected_user_roles' => $mileston_user_roles    
+                            ])
                             <div class="mb-2">
                                 <label for="duration" class="form-label">Duration</label>
                                 <div class="row">
@@ -235,6 +222,11 @@
                                     <option value="unpaid" @php if($milestone->status == 'unpaid'){ echo 'selected';} @endphp>Unpaid</option>
                                 </select>
                             </div>
+
+                            @include('admin.courses.components.product-dropdown', [
+                                'product' => $milestone->product_id,
+                                'status' => $milestone->status
+                            ])
                         </div>
                     </div>
                 </div>
@@ -242,7 +234,7 @@
         </form>
     </div>
 </main>
-
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -373,7 +365,7 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
-
+    <script src="{{ asset('js/admin/course.js') }}"></script>
     <script>
 		var currentMileId = '<?php echo $milestone->id; ?>';
          $(document).ready(()=>{

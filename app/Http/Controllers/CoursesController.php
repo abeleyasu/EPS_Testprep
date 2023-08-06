@@ -32,14 +32,26 @@ class CoursesController extends Controller
     }
     public function store(Request $request)
     {
-		$validated = $request->validate([
+		$request->validate([
 			'name' => 'required',
 			// 'description' => 'required',
 			// 'content' => 'required',
-			'user_type' => 'required',
+			'user_type' => 'required|array|min:1',
 			'order' => 'required',
 			'status' => 'required',
-		]);
+            'product' => 'required_if:status,paid',
+		], [
+            'name.required' => 'Course name is required',
+            'user_type.required' => 'Course user type is required',
+            'user_type.min' => 'Course user type is required',
+            'user_type.array' => 'Course user type is required',
+            'order.required' => 'Course order is required',
+            'status.required' => 'Course status is required',
+            'product.required_if' => 'Product is required',
+        ]);
+
+
+        // dd($request->all());
 		
 		
         $published = $request->published;
@@ -65,12 +77,16 @@ class CoursesController extends Controller
             'description' => $request->description,
             'published'=>$published,
             'content' => $request->get('content'),
-            'user_type' => $request->get('user_type'),
+            'user_type' => $request->get('user_type')[0],
             'duration' => $duration,
             'order' => $request->get('order'),
             'status' => $request->get('status'),
-            'coverimage' =>$filename
+            'coverimage' =>$filename,
+            'product_id' => empty($request->product) ? null : $request->product,
         ]);
+
+        $course->user_course_roles()->attach($request->user_type);
+
 		/**********Order reset**********/
 		$courses = Courses::orderBy('order')->get();
 		
@@ -98,26 +114,50 @@ class CoursesController extends Controller
     }
     public function edit($id)
     {
+        // dd('called');
         $usersRoles = UserRole::where('slug','!=','super_admin')->get();		
         $milestones = Milestone::where('course_id',$id)->orderBy('order')->get();
         $tags = Tag::all();
         $sections = Section::all();
 		$course = Courses::findOrFail($id);
+        $course_user_types = $course->user_course_roles()->pluck('user_role_id')->toArray();
 		$course_tags = ModelTag::where([
             ['model_id', $course->id],
             ['model_type', get_class($course)]
         ])->pluck('tag_id')->toArray();
 		return view('admin.courses.edit',
-            compact('course','tags', 'course_tags', 'sections','usersRoles','milestones'));
+            compact('course','tags', 'course_tags', 'sections','usersRoles','milestones', 'course_user_types'));
 	}
     public function course_update(Request $request, $id)
     {
+        $request->validate([
+			'name' => 'required',
+			// 'description' => 'required',
+			// 'content' => 'required',
+			'user_type' => 'required|array|min:1',
+			'order' => 'required',
+			'status' => 'required',
+            'product' => 'required_if:status,paid',
+		], [
+            'name.required' => 'Course name is required',
+            'user_type.required' => 'Course user type is required',
+            'user_type.min' => 'Course user type is required',
+            'user_type.array' => 'Course user type is required',
+            'order.required' => 'Course order is required',
+            'status.required' => 'Course status is required',
+            'product.required_if' => 'Product is required',
+        ]);
         $published = $request->published;
         if($published == 'true'){
             $published = 1;
         }else{
             $published = 0; 
         }
+
+        if ($request->status == 'unpaid') {
+            $request->merge(['product' => null]);
+        }
+
 		$course = Courses::findOrFail($id);
         $filename = '';
         if($request->hasFile('course_cover_image')){
@@ -144,7 +184,13 @@ class CoursesController extends Controller
             'duration' => $duration,
             'order' => $request->get('order'),
             'status' => $request->get('status'),
+            'product_id' => empty($request->product) ? null : $request->product,
         ]); 
+        $course_user_types = $course->user_course_roles()->pluck('user_role_id')->toArray();
+        if (count($course_user_types) > 0) {
+            $course->user_course_roles()->detach($course_user_types);
+        }
+        $course->user_course_roles()->attach($request->user_type);
 		/**********Order reset**********/
 		/*$courses = Courses::orderBy('order')->get();
 		$currentId = $course->id;
@@ -214,7 +260,6 @@ class CoursesController extends Controller
 
     public function show($course)
     {		
-		
         $usersRoles = UserRole::where('slug','!=','super_admin')->get();		
 //        $milestones = Milestone::orderBy('order')->get();
         $tags = Tag::all();
@@ -225,16 +270,24 @@ class CoursesController extends Controller
 
     public function UserCourseDetail($course)
     {		
-		
-        //$usersRoles = UserRole::where('slug','!=','super_admin')->get();		
-        $milestones = Milestone::orderBy('order')->where('course_id','=',$course)->where('published',1)->get();
+        $user = auth()->user();
+        $course = Courses::orderBy('order')->where('id','=',$course)->first();
+        if (!$course) {
+            return redirect()->route('courses.index')->with('error', 'Course not found');
+        }
+        $couser_user_type = $course->user_course_roles()->pluck('user_role_id')->toArray();
+        if (!in_array($user->role, $couser_user_type)) {
+            return redirect()->route('courses.index')->with('error', 'You don\'t have permission to access this course');
+        }
+        // $milestones = Milestone::orderBy('order')->where('course_id','=',$course->id)->where('published',1)->get();
+        $milestones = Milestone::getUserTypeWiseMilestones($course->id)->orderBy('order')->get();
+        // dd($milestones);
         $totalmilestones = 0;
 		if($milestones){
 			$totalmilestones = $milestones->count();
 		}        
-        $course = Courses::orderBy('order')->where('id','=',$course)->first();
-        if($course->status == 'paid'){
-			return redirect(route('home'));
+        if($course->status == 'paid' && !$user->isUserSubscibedToTheProduct($course->product_id)){
+			return redirect()->route('courses.index')->with('error', 'You don\'t have permission to access this course.');
 		}
         $tags = Tag::all();
         $sections = Section::all();

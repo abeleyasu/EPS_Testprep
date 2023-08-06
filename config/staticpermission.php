@@ -89,6 +89,21 @@ return [
             ],
             'redirect_route' => 'user.reminders',
             'protected_routes' => NULL,
+        ],
+        [
+            'name' => 'Dasboard',
+            'permissions' => [
+                [
+                    'name' => 'Access Test Prep Dashboard',
+                    'redirect_route' => 'test_prep_dashboard',
+                    'protected_routes' => NULL,
+                ],
+                [
+                    'name' => 'Access Admission Dashboard',
+                    'redirect_route' => 'admin-dashboard.dashboard',
+                    'protected_routes' => NULL,
+                ],
+            ],
         ]
     ]
 ]

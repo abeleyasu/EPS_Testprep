@@ -44,10 +44,22 @@ class ModuleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ModuleRequest $request)
     {
-        
+        $request->validate([
+            'product' => 'required_if:status,==,paid',
+            'user_type' => 'required|array',
+        ],[
+            'product.required_if' => 'Product is required',
+            'user_type.required' => 'User type is required',
+            'user_type.array' => 'User type is required',
+        ]);
         $request->request->add(['added_by' => auth()->id()]);
+
+        if($request->product) {
+            $request->request->add(['product_id' => $request->product]);
+            unset($request['product']);
+        }
 
         /*$order = $request->order;
         if(!$order || $order == 0) {
@@ -57,6 +69,8 @@ class ModuleController extends Controller
         }*/
        
         $module = $this->createFromRequest(app('App\Models\CourseManagement\Module'),$request);
+
+        $module->user_modules_roles()->attach($request->user_type);
         /**********Order reset**********/
 		/*$modules = Module::orderBy('order')->get();
 		$currentId = $module->id;
@@ -90,11 +104,18 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-		if($module->status == 'paid'){
-			return redirect(route('home'));
+        // dd('called');
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($module->milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
+		if(!$module->userHasModulePermissionOrNot() || $module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->product_id)){
+			return redirect(route('milestone.detail',['milestone'=>$module->milestone_id]))->with('error', 'You are not authorized to access this module');
 		}
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
 		$milestone = Milestone::where('id', $module->milestone_id)->orderBy('order')->first();
+        $sections = Section::getUserTypeWiseSections($module->id)->get();
+        // dd($sections);
         if($milestone){
             
             $courseId = $milestone->course_id;
@@ -102,7 +123,7 @@ class ModuleController extends Controller
             //print_r($course);
         }
 		
-        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone','course'));
+        return view('student.courses.moduleDetailNew',compact('module', 'getModules','milestone','course', 'sections'));
     }
 
     /**
@@ -120,8 +141,9 @@ class ModuleController extends Controller
             ['model_id', $module->id],
             ['model_type', get_class($module)]
         ])->pluck('tag_id')->toArray();
+        $module_user_roles = $module->user_modules_roles()->pluck('user_roles.id')->toArray();
         return view('admin.courses.modules.edit', compact('module',
-            'milestones','tags', 'module_tags'));
+            'milestones','tags', 'module_tags', 'module_user_roles'));
     }
 
     /**
@@ -142,12 +164,25 @@ class ModuleController extends Controller
 //                $this->reorderOnCreate($request);
 //            }
 //        }
-
-        
-
         $request->request->add(['published' => $request->published ? true : false]);
 
+        if ($request->status == 'unpaid') {
+            $request->request->add(['product_id' => null]);
+        } else {
+            if($request->product) {
+                $request->request->add(['product_id' => $request->product]);
+                unset($request['product']);
+            }
+        }
+
         $this->updateFromRequest($module, $request);
+
+        $module_user_roles = $module->user_modules_roles()->pluck('user_roles.id')->toArray();
+        if (count($module_user_roles) > 0) {
+            $module->user_modules_roles()->detach($module_user_roles);
+        }
+        $module->user_modules_roles()->attach($request->user_type);
+
 		/**********Order reset**********/
 		/*$modules = Module::orderBy('order')->get();
 		$currentId = $module->id;

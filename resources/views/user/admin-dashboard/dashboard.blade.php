@@ -3,6 +3,7 @@
 @section('title', 'Admission Dashboard : CPS')
 
 @section('user-content')
+@can('Access Admission Dashboard')
 <main id="main-container">
   <div class="bg-image" style="background-image: url('{{ asset('static-image/admissionsimage.jpg') }}');">
     <div class="bg-black-15">
@@ -18,7 +19,6 @@
       </div>
     </div>
   </div>
-  @if(Auth::user()->isUserHasValidPermission('Access College Application Deadline Organizer')) 
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
       
@@ -52,7 +52,6 @@
       @endif
     </div>
   </div>
-  @endif
   <div class="content content-boxed">
     <div class="row">
       <div class="col-md-6 col-xl-6">
@@ -264,6 +263,11 @@
     </div>
   </div>
 </main>
+@endcan
+
+@cannot('Access Admission Dashboard')
+  @include('components.subscription-warning')
+@endcan
 @endsection
 
 @section('page-style')
@@ -340,6 +344,7 @@
 </style>
 @endsection
 
+@can('Access Admission Dashboard')
 @section('user-script')
 <script src="{{ asset('assets/js/owal-carousel/owl.carousel.min.js') }}"></script>
 <script>
@@ -366,3 +371,4 @@
 </script>
 
 @endsection
+@endcan

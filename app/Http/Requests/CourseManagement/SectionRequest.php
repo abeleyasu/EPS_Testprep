@@ -25,7 +25,23 @@ class SectionRequest extends FormRequest
     {
         return [
             'title' => 'required|max:220',
+            'product' => 'required_if:status,==,paid',
+            'user_type' => 'required|array',
 //            'description' => 'required'
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, mixed>
+     */
+    public function messages() {
+        return [
+            'title.required' => 'Section title is required',
+            'product.required_if' => 'Product is required',
+            'user_type.required' => 'User type is required',
+            'user_type.array' => 'User type is required',
         ];
     }
 }

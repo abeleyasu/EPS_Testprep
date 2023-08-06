@@ -55,7 +55,14 @@ class SectionController extends Controller
             $this->reorderOnCreate($request);
         }
 
+        if ($request->product) {
+            $request->request->add(['product_id' => $request->product]);
+            unset($request['product']);
+        }
+
         $section = $this->createFromRequest(app('App\Models\CourseManagement\Section'),$request);
+
+        $section->user_sections_roles()->attach($request->user_type);
 
 		/**********Order reset**********/
 		/*$sections = Section::orderBy('order')->get();
@@ -90,9 +97,14 @@ class SectionController extends Controller
      */
     public function show($id)
     {
+        $user = auth()->user();
         $section = Section::findOrFail($id);
-		if($section->status == 'paid'){
-			return redirect(route('home'));
+        $is_course_permission = Courses::userHasCoursePermissionOrNot($section->module->milestone->course_id);
+        if (!$is_course_permission) {
+            return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
+        }
+		if(!$section->userHasSectionsPermissionOrNot() || $section->status == 'paid' && !$user->isUserSubscibedToTheProduct($section->product_id)){
+			return redirect(route('modules.detail',['module'=>$section->module_id]))->with('error', 'You are not authorized to access this section');
 		}
 		$milestone = array();
 		$getSections = Section::where('module_id',$section->module_id)->orderBy('order')->get();
@@ -147,7 +159,8 @@ class SectionController extends Controller
             ['model_id', $section->id],
             ['model_type', get_class($section)]
         ])->pluck('tag_id')->toArray();
-        return view('admin.courses.sections.edit', compact('section','tags', 'section_tags', 'modules'));
+        $section_user_types = $section->user_sections_roles()->pluck('user_role_id')->toArray();
+        return view('admin.courses.sections.edit', compact('section','tags', 'section_tags', 'modules', 'section_user_types'));
     }
 
     /**
@@ -157,11 +170,25 @@ class SectionController extends Controller
      * @param  \App\Models\CourseManagement\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Section $section)
+    public function update(SectionRequest $request, Section $section)
     {
+        if ($request->status == 'unpaid') {
+            $request->request->add(['product_id' => null]);
+        } else {
+            if ($request->product) {
+                $request->request->add(['product_id' => $request->product]);
+                unset($request['product']);
+            }
+        }
         $request->request->add(['published' => $request->published ? true : false]);
 //        $this->reorderOnUpdate($section, $request);
         $model = $this->updateFromRequest($section, $request);
+
+        $section_user_types = $section->user_sections_roles()->pluck('user_role_id')->toArray();
+        if (count($section_user_types) > 0) {
+            $section->user_sections_roles()->detach($section_user_types);
+        }
+        $model->user_sections_roles()->attach($request->user_type);
 		/**********Order reset**********/
 		/*$sections = Section::orderBy('order')->get();
 		$currentId = $section->id;
