@@ -1680,7 +1680,9 @@
 
                                                                                 @foreach ($category_type_arr as $key => $category_type)
                                                                                     @for ($i = 0; $i < count($category_type); $i++)
-                                                                                        @if (strtolower($single_user_selected_answers['user_selected_answer']) === strtolower($key))
+                                                                                        @if (
+                                                                                            !empty($single_user_selected_answers['user_selected_answer']) &&
+                                                                                                in_array(strtolower($key), explode(',', $single_user_selected_answers['user_selected_answer'])))
                                                                                             <tr class="odd">
                                                                                                 <td>
                                                                                                     <?php
