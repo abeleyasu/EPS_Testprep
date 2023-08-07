@@ -41,7 +41,7 @@
                   @foreach($product->plans as $plan)
                     <div class="block-content pricing-price">
                       <div class="py-2 pricing-description">
-                        <p class="currency">${{ $plan->display_amount }}
+                        <p class="currency">${{ number_format($plan->display_amount) }}
                           @if($plan->interval === 'month')
                             <span class="text-muted interval">/Per <span class="text-capitalize">{{ $plan->interval }}</span></span>
                           @elseif($plan->interval === 'year')
@@ -49,7 +49,7 @@
                           @endif
                         </p>
                         @if($plan->interval === 'month' || $plan->interval === 'year')
-                          <span class="text-muted interval">(${{ $plan->amount }})</span>
+                          <span class="text-muted interval">(${{ number_format($plan->amount) }} total)</span>
                           <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} {{ $plan->interval === 'year' ? 'Year' : 'Month' }} Plan</span></p>
                         @elseif($plan->interval === 'hour')
                           <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Hour Plan</span></p>

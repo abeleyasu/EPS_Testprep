@@ -55,8 +55,8 @@ class PlanController extends Controller
                 'interval' => $plan['interval'],
                 'interval_count' => $plan['interval_count'],
                 'currency' => $plan['currency'],
-                'price' => $plan['amount'],
-                'amount' => $plan['display_amount'],
+                'price' => number_format($plan['amount']),
+                'amount' => number_format($plan['display_amount']),
                 'order_index' => $plan['order_index'] + 1,
                 'action' => '<div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Plan">

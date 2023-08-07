@@ -37,7 +37,7 @@
       <div class="col-md-8">
         <div class="block block-rounded block-link-shadow">
           <div class="block-header">
-            You will be charged ${{ $plan->amount }} for {{ $plan->name }} Plan
+            You will be charged ${{number_format($plan->amount)}} for {{ $plan->name }} Plan
           </div>
           <div class="block-content">
             <form id="payment-form" action="{{ route('subscription.create') }}" method="POST">
