@@ -163,7 +163,7 @@ class PlanController extends Controller
             'interval_count' => $request->interval_count,
             'interval' => $request->interval,
             'amount' => number_format($amount, 2, ".", ""),
-            'display_amount' => number_format($amount, 2, ".", ""),
+            'display_amount' => number_format($request->amount, 2, ".", ""),
             'order_index' => $lastOderIndex + 1,
         ]);
 
@@ -187,18 +187,28 @@ class PlanController extends Controller
     }
 
     public function deletePlan(Request $request) {
-        $plan = Plan::find($request->id);
-        if ($plan->interval == 'hour') {
-            $this->stripe->prices->update($plan->stripe_plan_id, [
-                'active' => false,
+        try {
+            $plan = Plan::find($request->id);
+            if ($plan->interval == 'hour') {
+                $this->stripe->prices->update($plan->stripe_plan_id, [
+                    'active' => false,
+                ]);
+            } else {
+                $this->stripe->plans->delete(
+                    $plan->stripe_plan_id
+                );
+            }
+            $plan->delete();
+            return response()->json([
+                'success' => true, 
+                'message' => 'Plan deleted successfully'
             ]);
-        } else {
-            $this->stripe->plans->delete(
-                $plan->stripe_plan_id
-            );
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => $e->getMessage()
+            ]);
         }
-        $plan->delete();
-        return "success";
     }
 
     public function getUserPlan() {
