@@ -303,6 +303,13 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{Route::is('admin.setting.*') ? 'active' : ''}}" href="{{route('admin.setting.index')}}">
+                        <i class="nav-main-link-icon si si-settings"></i>
+                        <span class="nav-main-link-name">Settings</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

@@ -188,12 +188,22 @@ class ProductController extends Controller
 
     public function deleteProduct(Request $request)
     {
-        $product = Product::find($request->id);
-        Role::where('name', $product->stripe_product_id)->delete();
-        $product->inclusions()->delete();
-        $this->stripe->products->delete($product->stripe_product_id, []);
-        $product->delete();
-        return "success";
+        try {
+            $product = Product::find($request->id);
+            $this->stripe->products->delete($product->stripe_product_id, []);
+            Role::where('name', $product->stripe_product_id)->delete();
+            $product->inclusions()->delete();
+            $product->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function changeOrder(Request $request) {
@@ -249,42 +259,19 @@ class ProductController extends Controller
         $page = isset($request->page) ? $request->page : 1;
         $search = isset($request->search) ? $request->search : null;
         $limit = $page * 25;
-        $products = ProductCategory::whereHas('products')->with('products', function ($q) {
-            return $q->whereHas('plans', function ($plan) {
-                return $plan->where('interval', '!=', 'hour');
-            });
-        })->orderBy('order_index', 'asc');
-        if (!empty($products)) {
+        $products = Product::whereHas('plans', function ($q) {
+            $q->where('interval', '!=', 'hour');
+        })->orderBy('order_index', 'asc')->select('id', 'title as text');
+        if (!empty($search)) {
             $products = $products->where(function ($product) use ($search) {
-                return $product->where('title', 'LIKE', "%{$search}%")
-                    ->orWhereHas('products', function ($query) use ($search) {
-                        return $query->where('title', 'LIKE', "%{$search}%");
-                    });
+                return $product->where('title', 'LIKE', "%{$search}%");
             });
         }
         $products = $products->paginate($limit);
         $products = $products->toArray();
-        $total = 0;
-        $products = array_map(function ($item){
-            $children = array_map(function ($product){
-                return [
-                    'id' => $product['id'],
-                    'text' => $product['title']
-                ];
-            }, $item['products']);
-
-            return [
-                'text' => $item['title'],
-                'children' => $children
-            ];
-        }, $products['data']);
-
-        foreach ($products as $product) {
-            $total += count($product['children']);
-        }
         return response()->json([
-            'data' => $products,
-            'total' => $total
+            'data' => $products['data'],
+            'total' => $products['total']
         ]);
     }
 

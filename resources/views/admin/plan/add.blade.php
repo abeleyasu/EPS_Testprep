@@ -17,27 +17,27 @@
                     @csrf
                     <div class="mb-4">
                         <label class="from-label">Product Category:</label>
-                        <select id="product_category" name="product_id" class="form-control form-control-lg form-control-alt {{$errors->has('plan_type') ? 'is-invalid' : ''}}">
+                        <select id="product_category" name="product_category" class="form-control form-control-lg form-control-alt {{$errors->has('product_category') ? 'is-invalid' : ''}}">
                             <option value="">Select Product Category</option>
                             @foreach($product_categories as $cateogry)
                                 <option value="{{ $cateogry->id }}">{{ $cateogry->title }}</option>
                             @endforeach
                         </select>
-                        @error('product_id')
+                        @error('product_category')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
                     <div class="mb-4">
                         <label class="from-label">Select Product:</label>
-                        <select id="product_id" name="product_id" class="form-control form-control-lg form-control-alt {{$errors->has('plan_type') ? 'is-invalid' : ''}}">
+                        <select id="product_id" name="product_id" class="form-control form-control-lg form-control-alt {{$errors->has('product_id') ? 'is-invalid' : ''}}">
                         </select>
                         @error('product_id')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="description" class="form-label">Amount:</label>
-                        <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}" id="amount" name="amount" placeholder="Amount" value="{{old('amount')}}">
+                        <label for="description" class="form-label">Cost per Interval:</label>
+                        <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('amount') ? 'is-invalid' : ''}}" id="amount" name="amount" placeholder="Cost per Interval" value="{{old('amount')}}">
                         @error('amount')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -55,11 +55,11 @@
                         @enderror
                     </div>
                     <div class="mb-4" id="in-count-ele">
-                        <label for="description" class="form-label">Interval Count (In Month):</label>
-                        <select id="interval_count" name="interval_count"  class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}">
+                        <label for="description" class="form-label">Interval Count:</label>
+                        {{-- <select id="interval_count" name="interval_count"  class="form-control form-control-lg form-control-alt {{$errors->has('interval_count') ? 'is-invalid' : ''}}">
                             <option value="">Select Interval Type</option>
-                        </select>
-                        {{-- <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('price') ? 'is-invalid' : ''}}" id="interval_count" name="interval_count" placeholder="Interval Count" value="{{old('interval_count')}}"> --}}
+                        </select> --}}
+                        <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('interval_count') ? 'is-invalid' : ''}}" id="interval_count" name="interval_count" placeholder="Interval Count" value="{{old('interval_count')}}">
                         @error('interval_count')
                             <div class="invalid-feedback">{{$message}}</div>
                         @enderror
@@ -83,18 +83,18 @@
 <script>
     $(document).ready(function() {
 
-        $('#interval').on('change', function (e) {
-            const interval = $(this).val();
-            let intervalcount = 12;
-            if (interval == 'hour') {
-                intervalcount = 24;
-            }
-            $('#interval_count').html('');
-            $('#interval_count').append(`<option value="">Select Interval Type</option>`);
-            for (let i = 1; i <= intervalcount; i++) {
-                $('#interval_count').append(`<option value="${i}">${i}</option>`);
-            }
-        })
+        // $('#interval').on('change', function (e) {
+        //     const interval = $(this).val();
+        //     let intervalcount = 12;
+        //     if (interval == 'hour') {
+        //         intervalcount = 24;
+        //     }
+        //     $('#interval_count').html('');
+        //     $('#interval_count').append(`<option value="">Select Interval Type</option>`);
+        //     for (let i = 1; i <= intervalcount; i++) {
+        //         $('#interval_count').append(`<option value="${i}">${i}</option>`);
+        //     }
+        // })
 
         $('#product_category').change(function() {
             var product_category_id = $(this).val();

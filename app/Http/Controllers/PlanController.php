@@ -56,6 +56,7 @@ class PlanController extends Controller
                 'interval_count' => $plan['interval_count'],
                 'currency' => $plan['currency'],
                 'price' => $plan['amount'],
+                'amount' => $plan['display_amount'],
                 'order_index' => $plan['order_index'] + 1,
                 'action' => '<div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Plan">
@@ -111,43 +112,58 @@ class PlanController extends Controller
 
     public function create(Request $request) {
         $rules = [
-            'product_id' => 'required',
-            'amount' => 'required|numeric',
+            'product_category' => 'required|exists:product_category,id',
+            'product_id' => 'required|exists:product,id',
+            'amount' => 'required|numeric|max:10000',
             'interval' => 'required',
+            'interval_count' => 'required|numeric|integer|between:1,100',
         ];
-        if ($request->interval === 'month') {
-            $rules['interval_count'] = 'required|numeric|digits_between:1,12';
-        }
         $customMessages = [
+            'product_category.required' => 'Product category is required',
+            'product_category.exists' => 'Product category is not exists',
             'product_id.required' => 'Product is required',
+            'product_id.exists' => 'Product is not exists',
+            'amount.required' => 'Cost per Interval is required',
+            'amount.numeric' => 'Cost per Interval must be numeric',
+            'amount.max' => 'Cost per Interval must be less than 10000',
+            'interval.required' => 'Interval is required',
+            'interval_count.required' => 'Interval count is required',
+            'interval_count.numeric' => 'Interval count must be numeric',
+            'interval_count.integer' => 'Interval count must be integer',
+            'interval_count.between' => 'Interval count must be between 1 to 100',
         ];
         $request->validate($rules, $customMessages);
         $lastOderIndex = Plan::max('order_index');
         $product = Product::find($request->product_id);
         $planid = null;
+        $amount = $request->amount * $request->interval_count;
+        if ($request->interval == 'hour') {
+            $amount = $request->amount;
+        }
         if ($request->interval == 'hour') {
             $price = $this->stripe->prices->create([
-                'unit_amount' => $request->amount * 100,
+                'unit_amount' => $amount * 100,
                 'currency' => 'usd',
                 'product' => $product->stripe_product_id,
             ]);
             $planid = $price['id'];
         } else {
             $plan = $this->stripe->plans->create([
-                'amount' => $request->amount * 100,
+                'amount' => $amount * 100,
                 'currency' => config('stripe.api_keys.currency'),
                 'interval' => $request->interval,
                 'product' => $product->stripe_product_id,
+                'interval_count' => $request->interval_count,
             ]);
             $planid = $plan['id'];
         }
         $create = Plan::create([
             'product_id' => $request->product_id,
             'stripe_plan_id' => $planid,
-            'interval_count' => $request->interval === 'month' || $request->interval === 'hour' ? $request->interval_count :  1,
+            'interval_count' => $request->interval_count,
             'interval' => $request->interval,
-            'amount' => number_format($request->amount, 2, ".", ""),
-            'display_amount' => number_format($request->amount, 2, ".", ""),
+            'amount' => number_format($amount, 2, ".", ""),
+            'display_amount' => number_format($amount, 2, ".", ""),
             'order_index' => $lastOderIndex + 1,
         ]);
 
@@ -172,9 +188,15 @@ class PlanController extends Controller
 
     public function deletePlan(Request $request) {
         $plan = Plan::find($request->id);
-        $this->stripe->plans->update(
-            $plan->stripe_plan_id
-        );
+        if ($plan->interval == 'hour') {
+            $this->stripe->prices->update($plan->stripe_plan_id, [
+                'active' => false,
+            ]);
+        } else {
+            $this->stripe->plans->delete(
+                $plan->stripe_plan_id
+            );
+        }
         $plan->delete();
         return "success";
     }
@@ -222,13 +244,10 @@ class PlanController extends Controller
     public function subscription(Request $request)
     {
         $plan = Plan::where('stripe_plan_id', $request->plan)->with('product')->first();
-
-        // Get the Payment Method ID from the Stripe Elements card input form
         $paymentMethodId = $request->payment_method;
         $customer = $request->user()->createOrGetStripeCustomer();
         try {
             $user = Auth::user();
-            // $user->addPaymentMethod($paymentMethodId);
             if ($user->subscribed('default')) {
                 $this->changeUserSubscription($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
@@ -329,7 +348,7 @@ class PlanController extends Controller
         ];
         if ($plan->interval_count > 1) {
             $enddate = Carbon::now()->addMonth($plan->interval_count);
-            $payload['cancel_at'] = $enddate->timestamp;
+            // $payload['cancel_at'] = $enddate->timestamp;
             $payload['metadata'] = [
                 'start_date' => Carbon::now()->format('Y-m-d'),
                 'pending_interval_period' => $plan->interval_count - 1,
@@ -337,7 +356,7 @@ class PlanController extends Controller
                 'end_date' => $enddate->format('Y-m-d'),
             ];
         } else {
-            $payload['cancel_at_period_end'] = true;
+            // $payload['cancel_at_period_end'] = true;
         }
         $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [],$payload);
         $this->setUserRole($plan, $user);
@@ -361,7 +380,7 @@ class PlanController extends Controller
         } else if ($plan->interval !== 'hour' && $active_subscription_plan->interval !== 'hour') {
             if ($plan->interval_count > 1) {
                 $enddate = Carbon::now()->addMonth($plan->interval_count);
-                $payload['cancel_at'] = $enddate->timestamp;
+                // $payload['cancel_at'] = $enddate->timestamp;
                 $payload['metadata'] = [
                     'start_date' => Carbon::now()->format('Y-m-d'),
                     'pending_interval_period' => $plan->interval_count - 1,
@@ -369,7 +388,7 @@ class PlanController extends Controller
                     'end_date' => $enddate->format('Y-m-d'),
                 ];
             } else {
-                $payload['cancel_at_period_end'] = true;
+                // $payload['cancel_at_period_end'] = true;
             }
             $user->subscription('default')->swap($plan->stripe_plan_id);
             $changeCancelDate = $this->stripe->subscriptions->update($active_subscription->stripe_id, $payload);

@@ -12,37 +12,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use App\Models\UserSettings;
+use App\Http\Requests\UserRegistration;
+use App\Models\AdminSettings;
+use Carbon\Carbon;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
     public function showSignUp(){
-		$usersRoles = UserRole::where('slug','!=','super_admin')->get();
+		$usersRoles = UserRole::where([
+            ['slug','!=','super_admin'],
+            ['is_visible',1]
+        ])->get();
         return view('signup',compact('usersRoles'));
     }
 
-    public function userSignUp(Request $request){
-        $request->validate([
-            'first_name' => ['required', 'min:3'],
-            'last_name' => ['required', 'min:3'],
-            'email' => ['required', 'email', 'unique:users'],
-            'phone' => ['required', 'numeric'],
-            'password' => ['required', 'confirmed', 'min:6'],
-            'role' => ['required'],
-            'terms' => ['accepted'],
-        ],
-		[
-			'first_name.required' => 'First Name is required',
-			'last_name.required' => 'Last Name is required',
-			'email.required' => 'Email is required',
-			'email.unique' => 'Email already exist',
-			'email.email' => 'The email must be a valid email address.',
-			'password.required' => 'Password is required',
-			'password.min' => 'The password must be at least 6 characters',
-			'phone.required' => 'Phone is required',
-			'phone.numeric' => 'Phone must be numeric',
-            'role.required' => 'Please select a role',
-		]);
-
+    public function userSignUp(UserRegistration $request){
         $user = User::create([
             'name' => $request->first_name." ".$request->last_name,
             'first_name' => $request->first_name,
@@ -55,14 +40,34 @@ class AuthController extends Controller
 
         $data = [
             'user_id' => $user->id,
+            'is_receive_emails_newsletters' => isset($request->is_receive_emails_newsletters) ? Str::lower($request->is_receive_emails_newsletters) == 'on' ? 1 : 0 : 0,
+            'is_receive_sms' => isset($request->is_receive_sms) ? Str::lower($request->is_receive_sms) == 'on' ? 1 : 0 : 0,
         ];
-        if (isset($request->is_verifed)) {
-            $data['is_receive_sms'] = 1; 
-        }
         UserSettings::create($data);
 
         if($user){
             $user->createOrGetStripeCustomer();
+            $admin_settings = AdminSettings::first();
+            if ($admin_settings) {
+                if ($admin_settings->is_free_access) {
+                    $trial_ends_at = Carbon::now();
+                    switch ($admin_settings->free_access_interval) {
+                        case 'day':
+                            $trial_ends_at->addDays($admin_settings->free_access_interval_count);
+                            break;
+                        case 'week':
+                            $trial_ends_at->addWeeks($admin_settings->free_access_interval_count);
+                            break;
+                        case 'month':
+                            $trial_ends_at->addMonths($admin_settings->free_access_interval_count);
+                            break;
+                    }
+                    $user->trial_ends_at = $trial_ends_at->format('Y-m-d');
+                    $user->save();
+                    $free_role = Role::where('name', config('constants.role_free_name'))->first();
+                    $user->assignRole($free_role);
+                }
+            }
             Auth::login($user);
             $this->mailgun->sendEmailConfirmationCode();
             if ($user->role === 1) {

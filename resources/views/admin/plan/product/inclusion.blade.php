@@ -28,6 +28,9 @@
 
         function removeInclusion(ele) {
             $(ele).parent().remove()
+            if (!$('#inclusion-holder').children().length) {
+                addInclusion('', false);
+            }
         }
 
         @php
@@ -45,7 +48,7 @@
         if (incs.length) {
             $('#inclusion-holder').html('');
             incs.forEach((item, inx) => {
-                addInclusion(item, !!inx);
+                addInclusion(item);
             })
         }
     </script>

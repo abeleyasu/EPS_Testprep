@@ -132,6 +132,11 @@ return [
             'path' => storage_path('logs/stripe_webhook.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'freesubscription' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/freesubscription_cronjob.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

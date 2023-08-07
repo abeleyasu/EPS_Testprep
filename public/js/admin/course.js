@@ -1,27 +1,3 @@
-const ajax = (url) => {
-    return {
-        delay: 500,
-        url: url,
-        dataType: 'json',
-        data: function (params) {
-            var query = {
-                search: params.term,
-                page: params.page || 1
-            }
-            return query;
-        },
-        processResults: function (data, params) {
-            params.page = params.page || 1;
-            return {
-                results: data.data,
-                pagination: {
-                    more: (params.page * 30) < data.total
-                }
-            };
-        }
-    }
-}
-
 $('select[name="user_type[]"]').select2({
     multiple: true,
     placeholder: 'Select an option',

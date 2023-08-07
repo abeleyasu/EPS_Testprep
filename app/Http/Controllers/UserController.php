@@ -217,18 +217,19 @@ class UserController extends Controller
                 'state_id' => ['required'],
                 'city_id' => ['required'],
                 'address_line_1' => ['required', 'min:5'],
-                'address_line_2' => ['required', 'min:5'],
-                'postal_code' => ['required', 'min:4'],
+                'address_line_2' => ['min:5'],
+                'postal_code' => ['required', 'max:5', 'integer', 'numeric'],
             ],
             [
                 'state_id.required' => 'State is required',
                 'city_id.required' => 'City is required',
                 'address_line_1.required' => 'Address line 1 is required',
-                'address_line_2.required' => 'Address line 2 is required',
                 'postal_code.required' => 'Postal code is required',
                 'address_line_1.min' => 'Address line 1 must be at least 5 characters',
                 'address_line_2.min' => 'Address line 2 must be at least 5 characters',
-                'postal_code.min' => 'Postal code must be at least 6 characters',
+                'postal_code.max' => 'Postal code must be at least 5 characters',
+				'postal_code.integer' => 'Postal Code should be digits',
+				'postal_code.numeric' => 'Postal Code should be digits',
 
             ],
         );

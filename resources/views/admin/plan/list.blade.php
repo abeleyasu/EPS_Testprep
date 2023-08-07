@@ -38,7 +38,8 @@
                             <th>Interval</th>
                             <th>Interval Count</th>
                             <th>Currency</th>
-                            <th>Price</th>
+                            <th>Total Amount</th>
+                            <th>Cost per Interval</th>
                             <th>order</th>
                             <th style="width: 10%;">Action</th>
                         </tr>
@@ -80,6 +81,7 @@
                 { "data": "interval_count", "name": "interval_count", "orderable": false },
                 { "data": "currency", "name": "currency", "orderable": false },
                 { "data": "price", "name": "price", "orderable": false },
+                { "data": "amount", "name": "amount", "orderable": false },
                 { "data": "order_index", "name": "order_index", "orderable": false },
                 { "data": "action", "name": "action", "orderable": false },
             ],

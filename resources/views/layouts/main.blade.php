@@ -108,6 +108,33 @@
         intl.setNumber(number);
       }
     });
+
+    const ajax = (url, options = null) => {
+      return {
+        delay: 500,
+        url: url,
+        dataType: 'json',
+        data: function (params) {
+          var query = {
+            search: params.term,
+            page: params.page || 1
+          }
+          if (options) {
+            query = {...query, ...options}
+          }
+          return query;
+        },
+        processResults: function (data, params) {
+          params.page = params.page || 1;
+          return {
+            results: data.data,
+            pagination: {
+              more: (params.page * 30) < data.total
+            }
+          };
+        }
+      }
+    }
   </script>
 
   

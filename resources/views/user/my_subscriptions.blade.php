@@ -38,10 +38,18 @@
           <div class="block-content">
             <div class="row">
               <div class="col-4">
+                <h3 class="block-title">Product</h3>
+              </div>
+              <div class="col-8">
+                {{ $currentPlan->product->title }}
+              </div>
+            </div>
+            <div class="row subscription-item">
+              <div class="col-4">
                 <h3 class="block-title">Your Current Plan</h3>
               </div>
               <div class="col-8">
-                ${{ $currentPlan->amount }} Per {{ $currentPlan->interval }}
+                ${{ $currentPlan->amount }} For {{ $currentPlan->interval_count }} {{ $currentPlan->interval }}
               </div>
             </div>
             @if($subscription->plan_type == 'subscription')
@@ -49,15 +57,21 @@
               <div class="col-4">
                 <h3 class="block-title">Billing Cycle</h3>
               </div>
+              @if(!$is_auto_renewal)
               <div class="col-8">
                 <div>
                   You will be charged ${{ $currentPlan->amount }} on {{ $subscription->next_billing_date }}
                 </div>
                 <div>
-                  <input type="checkbox" class="form-check-input" name="renewval" id="renewval">
-                  Enable automatic renewwal
+                  <input type="checkbox" class="form-check-input" name="renewval" id="renewval" @if(!$is_auto_renewal) checked @endif>
+                  Enable automatic renewal
                 </div>
               </div>
+              @else
+              <div class="col-8">
+                Your plan will expire in {{ $subscription->canceled_at }} <br>
+              </div>
+              @endif
             </div>
             @elseif($subscription->plan_type == 'one-time')
             <div class="row subscription-item">
@@ -81,8 +95,12 @@
               </div>
             </div>
             <div class="row subscription-item text-center">
-              <div>
-                <button class="btn btn-secondary px-4" id="cancel-subscription">Cancel Subscription</button>
+              <div class="d-flex gap-2 justify-content-center">
+                @if(!auth()->user()->subscription('default')->onGracePeriod()) 
+                  <button class="btn btn-secondary px-4" id="cancel-subscription">Cancel Subscription</button>
+                @else
+                  <button class="btn btn-secondary px-4" id="resume-subscription">Resume Subscription</button>
+                @endif
               </div>
             </div>
           </div>
@@ -116,18 +134,94 @@
               _token: "{{ csrf_token() }}",
               subscription_id: "{{ $subscription->stripe_id }}"
             },
-            success: function(response){
+          }).done(function (response) {
+            if (response.success) {
+              if (response.type == 'one-time') {
+                Swal.fire(
+                  'Cancelled!',
+                  'Your subscription has been cancelled.',
+                  'success'
+                ).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "{{ route('plan.index') }}";
+                  }
+                })
+              } else {
+                Swal.fire('Cancelled!', 'Your subscription has been cancelled.', 'success').then((result) => {
+                  if (result.isConfirmed) {
+                    location.reload();
+                  }
+                })
+              }
+            } else {
+              Swal.fire('Error!', response.message,'error')
+            }
+          })
+        }
+      })
+    })
+
+    $('#resume-subscription').click(function(e){
+      console.log('resume');
+      e.preventDefault();
+      Swal.fire({
+        title: 'Are you sure to resume this subscription?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, resume it!',
+        cancelButtonText: 'No, keep it'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "{{ route('mysubscriptions.resume') }}",
+            type: "POST",
+            headers: {
+              'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+          }).done(function (response) {
+            if (response.success) {
               Swal.fire(
-                'Cancelled!',
-                'Your subscription has been cancelled.',
+                'Resumed!',
+                'Your subscription has been resumed.',
                 'success'
               ).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href = "{{ route('plan.index') }}";
+                  location.reload();
                 }
               })
+            } else {
+              Swal.fire('Error!', response.message,'error')
             }
           })
+        }
+      })
+    })
+
+    $('#renewval').on('change', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: "{{ route('mysubscriptions.renewal') }}",
+        type: "POST",
+        data: {
+          _token: "{{ csrf_token() }}",
+          subscription_id: "{{ $subscription->stripe_id }}",
+          is_auto_renewal: e.target.checked
+        },
+      }).done(function (response) {
+        if (response.success) {
+          Swal.fire(
+            'Success!',
+            response.message,
+            'success'
+          )
+          $(this).prop('checked', !$(this).prop('checked'));
+        } else {
+          Swal.fire(
+            'Error!',
+            response.message,
+            'error'
+          )
         }
       })
     })

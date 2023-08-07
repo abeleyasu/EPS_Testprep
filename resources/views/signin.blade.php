@@ -26,9 +26,6 @@
                                 <h3 class="block-title">Sign In</h3>
                                 <div class="block-options">
                                     <a class="btn-block-option fs-sm" href="{{ route('password.request') }}">Forgot Password?</a>
-                                    <a class="btn-block-option" href="{{route('signup')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="New Account">
-                                        <i class="fa fa-user-plus"></i>
-                                    </a>
                                 </div>
                             </div>
                             <div class="block-content">
@@ -92,6 +89,12 @@
                     </div>
                 </div>
                 <div class="fs-sm text-muted text-center">
+                    <div class="mb-2">
+                        Don’t have an account? Register
+                        <a class="" href="{{route('signup')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="New Account">
+                            here
+                        </a>.
+                    </div>
                     <strong>{{ config('app.app_name') }}</strong> &copy; <span data-toggle="year-copy"></span>
                 </div>
             </div>

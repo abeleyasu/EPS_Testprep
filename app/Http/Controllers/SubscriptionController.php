@@ -31,6 +31,8 @@ class SubscriptionController extends Controller
         }
         $subscription = $user->subscriptions->first();
         $paymentMethod = null;
+        $is_auto_renewal = false;
+        $invoice = null;
         if ($subscription->plan_type == 'subscription') { 
             $getSubscription = $this->stripe->subscriptions->retrieve(
                 $subscription->stripe_id,
@@ -38,6 +40,11 @@ class SubscriptionController extends Controller
             );
             $paymentMethod = $getSubscription->default_payment_method;
             $subscription->next_billing_date = Carbon::createFromTimestamp($getSubscription->current_period_end)->format('M d, Y');
+            $is_auto_renewal = $getSubscription->cancel_at_period_end;
+            if ($is_auto_renewal) {
+                $subscription->canceled_at = Carbon::createFromTimestamp($getSubscription->current_period_end)->format('M d, Y');
+            }
+            $invoice = $getSubscription->latest_invoice;
         } else if ($subscription->plan_type == 'one-time') {
             $paymentIntent = $this->stripe->paymentIntents->retrieve(
                 $subscription->stripe_id,
@@ -58,7 +65,13 @@ class SubscriptionController extends Controller
         } else {
             $card = $user->defaultPaymentMethod();
         }
-        return view('user.my_subscriptions', ['subscription' => $subscription, 'currentPlan' => $currentPlan, 'card' => $card]);
+        return view('user.my_subscriptions', [
+            'subscription' => $subscription, 
+            'currentPlan' => $currentPlan, 
+            'card' => $card,
+            'is_auto_renewal' => $is_auto_renewal,
+            'invoice' => $invoice
+        ]);
     }
 
 
@@ -69,15 +82,25 @@ class SubscriptionController extends Controller
         $plan = Plan::where('stripe_plan_id', $active_subscription->stripe_price)->with('product')->first();
         $product_id = $plan->product->stripe_product_id;
         $role = Role::where('name', $plan->product->stripe_product_id)->first();
-        if ($role) {
-            $user->removeRole($role->id);
-        }
         if ($plan->interval == 'hour') {
             $this->cancelOneTimePlan($active_subscription);
+            $user->removeRole($role->id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Subscription is canceled successfully',
+                'type' => 'one-time'
+            ], 200);
         } else {
-            $user->subscription('default')->cancelNow();
+            $user->subscription('default')->cancel();
+            if (!auth()->user()->subscription('default')->onGracePeriod()) {
+                $user->removeRole($role->id);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Subscription is canceled successfully',
+                'type' => 'subscription'
+            ], 200);
         }
-        return "success";
     }
 
     public function cancelOneTimePlan($subscription) {
@@ -91,11 +114,48 @@ class SubscriptionController extends Controller
 
     public function resumesubscriptions(Request $request)
     {
-        $user = auth()->user();
-        $subscriptionName = $request->subscriptionName;
-        if ($subscriptionName) {
-            $user->subscription($subscriptionName)->resume();
-            return "Subscription is resumed";
+        try {
+            $user = auth()->user();
+            $user->subscription('default')->resume();
+            $active_subscription = $user->subscriptions->first();
+            $plan = Plan::where('stripe_plan_id', $active_subscription->stripe_price)->with('product')->first();
+            $product_id = $plan->product->stripe_product_id;
+            $role = Role::where('name', $plan->product->stripe_product_id)->first();
+            $user->syncRoles($role->id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Subscription is resumed successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 200);
         }
+    }
+
+    public function offSubscriptionAutoRenewval(Request $request) {
+        try {
+            $is_auto_renewal = $request->is_auto_renewal == 'false' ? true : false;
+            $updateSubscription = $this->stripe->subscriptions->update(
+                $request->subscription_id,
+                [
+                    'cancel_at_period_end' => $is_auto_renewal
+                ]
+            );
+            return response()->json([
+                'success' => true,
+                'message' => 'Subscription is updated successfully'
+            ], 200);
+        } catch (\Exception $e) { 
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 200);
+        }
+    }
+
+    public function downloadUserInvoice(Request $request, string $invoiceId) {
+        return $request->user()->downloadInvoice($invoiceId, [], 'invoice');
     }
 }

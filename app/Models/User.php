@@ -11,6 +11,8 @@ use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\UserRole;
 use App\Models\Product;
+use App\Models\HighSchoolResume\States;
+use App\Models\HighSchoolResume\Cities;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -76,5 +78,23 @@ class User extends Authenticatable implements MustVerifyEmail
             return  $this->subscribedToProduct($product->stripe_product_id);
         }
         return false;
+    }
+
+    public function city($city_id = null) {
+        if (!$city_id) {
+            $city_id = $this->city_id;
+        } else {
+            return false;
+        }
+        return Cities::where('id', $city_id)->first();
+    }
+
+    public function state($state_id = null) {
+        if (!$state_id) {
+            $state_id = $this->state_id;
+        } else {
+            return false;
+        }
+        return States::where('id', $state_id)->first();
     }
 }

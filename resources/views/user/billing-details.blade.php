@@ -49,7 +49,7 @@
                                 <label for="name" class="form-label">Address line 2:</label>
                                 <textarea name="address_line_2"
                                           class="form-control @if($errors->has('address_line_2')) is-invalid @endif"
-                                          required>{!! $user->address_line_2 !!}</textarea>
+                                          >{!! $user->address_line_2 !!}</textarea>
                             </div>
                             <div class="col-md-6 py-3">
                                 <label for="name" class="form-label">Postal code:</label>
@@ -196,17 +196,29 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault()
-            cardBtn.disabled = true
-            const {setupIntent, error} = await stripe.confirmCardSetup(
-                intent, {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: {
-                            name: cardHolderName.value
-                        }
+
+            const address = {
+                line1: "{{ auth()->user()->address_line_1 }}",
+                line2: "{{ auth()->user()->address_line_2 }}",
+                city: "{{ auth()->user()->city()->city_name }}",
+                state: "{{ auth()->user()->state()->state_name }}",
+                postal_code: "{{ auth()->user()->postal_code }}",
+            }
+
+            const payment_method = {
+                payment_method: {
+                    card: cardElement,
+                    billing_details: {
+                        name: cardHolderName.value,
+                        address: address,
+                        email: "{{ auth()->user()->email }}",
+                        phone: "{{ auth()->user()->phone }}"
                     }
                 }
-            )
+            }
+
+            cardBtn.disabled = true
+            const {setupIntent, error} = await stripe.confirmCardSetup(intent, payment_method)
             if (error) {
                 cardBtn.disable = false
             } else {

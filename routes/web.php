@@ -64,6 +64,8 @@ use App\Http\Controllers\AdmissionDashBoard;
 use App\Http\Controllers\WorksheetController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\StateCityController;
+use App\Http\Controllers\AdminSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -269,6 +271,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/attach-permission/{id}', 'permissionList')->name('permission-list');
                 Route::post('/attach-permission', 'attachPermission')->name('attach-permission');
 
+                Route::patch('change/role/status/{id}', 'changeRoleStatus')->name('change-role-status');
+
                 Route::get('/ajax/roles', 'ajaxRoles')->name('ajax_roles');
             });
         });
@@ -276,6 +280,13 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::group(['prefix' => 'permissions', 'as' => 'admin.permissions.'], function () {
             Route::controller(PermissionsController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
+            });
+        });
+
+        Route::group(['prefix' => 'settings', 'as' => 'admin.setting.'], function () {
+            Route::controller(AdminSettingsController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('save/free-subscription-setting', 'subscriptionSetting')->name('subscription-settings');
             });
         });
     });
@@ -506,9 +517,16 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
         Route::get('/my-subscription', [SubscriptionController::class, 'mysubscriptions'])->name('mysubscriptions.index');
         Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelsubscriptions'])->name('mysubscriptions.cancel');
-        Route::get('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/subscription/renweval', [SubscriptionController::class, 'offSubscriptionAutoRenewval'])->name('mysubscriptions.renewal');
+        Route::get('subscription/download-invoice/{id}', [SubscriptionController::class, 'downloadUserInvoice'])->name('mysubscriptions.download-invoice');
         Route::post('/subscription-create', [PlanController::class, 'subscriptioncreatewithexistingcard'])->name('subscriptions.create-custome');
         Route::get('/set-as-default/{payment_id}', [UserController::class, 'setAsDefaultCard'])->name('user.setAsDefault');
+    });
+
+    Route::controller(StateCityController::class)->group(function () {
+        Route::get('get/states', 'states')->name('get-states');
+        Route::get('get/cities/{id}', 'city')->name('get-cities');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');
