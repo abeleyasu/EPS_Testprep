@@ -293,8 +293,8 @@
       if (isDefaultBillingDetails.checked) {
         address.line1 = "{{ auth()->user()->address_line_1 }}",
         address.line2 = "{{ auth()->user()->address_line_2 }}",
-        address.city = "{{ auth()->user()->city()->city_name }}",
-        address.state = "{{ auth()->user()->state()->state_name }}",
+        address.city = "{{ auth()->user()->city() ? auth()->user()->city()->city_name : '' }}",
+        address.state = "{{ auth()->user()->state() ? auth()->user()->state()->state_name : '' }}",
         address.postal_code = "{{ auth()->user()->postal_code }}"
       }
 

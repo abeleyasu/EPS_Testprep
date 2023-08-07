@@ -48,8 +48,9 @@
                             <span class="text-muted interval"><span class="text-capitalize">/year</span></span>
                           @endif
                         </p>
-                        @if($plan->interval === 'month')
-                          <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Month Plan</span></p>
+                        @if($plan->interval === 'month' || $plan->interval === 'year')
+                          <span class="text-muted interval">(${{ $plan->amount }})</span>
+                          <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} {{ $plan->interval === 'year' ? 'Year' : 'Month' }} Plan</span></p>
                         @elseif($plan->interval === 'hour')
                           <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Hour Plan</span></p>
                         @endif

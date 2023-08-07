@@ -80,21 +80,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
 
-    public function city($city_id = null) {
-        if (!$city_id) {
-            $city_id = $this->city_id;
-        } else {
-            return false;
-        }
-        return Cities::where('id', $city_id)->first();
+    public function city() {
+        return Cities::where('id', $this->city_id)->first();
     }
 
-    public function state($state_id = null) {
-        if (!$state_id) {
-            $state_id = $this->state_id;
-        } else {
-            return false;
-        }
-        return States::where('id', $state_id)->first();
+    public function state() {
+        return States::where('id', $this->state_id)->first();
     }
 }

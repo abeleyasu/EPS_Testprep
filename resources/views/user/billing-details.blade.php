@@ -19,18 +19,21 @@
                                 <label for="name" class="form-label">State:</label>
                                 <select name="state_id" id="billing_state"
                                         class="form-control @if($errors->has('state_id')) is-invalid @endif"
-                                        required value="{!! $user->state_id !!}">
+                                        value="{!! $user->state_id !!}">
                                     <option value="" disabled selected>--- Select State ---</option>
                                     @foreach($states as $st)
                                         <option value="{!! $st->id !!}"
                                                 @if($user->state_id == $st->id) selected @endif>{!! $st->state_name !!}</option>
                                     @endforeach
                                 </select>
+                                @error('state_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 py-3">
                                 <label for="name" class="form-label">City:</label>
                                 <select name="city_id" id="city_id"
-                                        class="form-control @if($errors->has('city_id')) is-invalid @endif" required
+                                        class="form-control @if($errors->has('city_id')) is-invalid @endif"
                                         value="{!! $user->city_id !!}">
                                     <option value="" disabled selected>--- Select City ---</option>
                                     @foreach($cities as $ct)
@@ -38,24 +41,35 @@
                                                 @if($user->city_id == $ct->id) selected @endif>{!! $ct->city_name !!}</option>
                                     @endforeach
                                 </select>
+                                @error('city_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-12 py-3">
                                 <label for="name" class="form-label">Address line 1:</label>
                                 <textarea name="address_line_1"
                                           class="form-control @if($errors->has('address_line_1')) is-invalid @endif"
-                                          required>{!! $user->address_line_1 !!}</textarea>
+                                          >{!! $user->address_line_1 !!}</textarea>
+                                @error('address_line_1')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-12 py-3">
                                 <label for="name" class="form-label">Address line 2:</label>
                                 <textarea name="address_line_2"
                                           class="form-control @if($errors->has('address_line_2')) is-invalid @endif"
                                           >{!! $user->address_line_2 !!}</textarea>
+                                @error('address_line_2')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-6 py-3">
                                 <label for="name" class="form-label">Postal code:</label>
                                 <input type="text" name="postal_code" value="{!! $user->postal_code !!}"
-                                       class="form-control @if($errors->has('address_line_2')) is-invalid @endif"
-                                       required>
+                                       class="form-control @if($errors->has('postal_code')) is-invalid @endif">
+                                @error('postal_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="row mb-4 mt-4">
@@ -200,8 +214,8 @@
             const address = {
                 line1: "{{ auth()->user()->address_line_1 }}",
                 line2: "{{ auth()->user()->address_line_2 }}",
-                city: "{{ auth()->user()->city()->city_name }}",
-                state: "{{ auth()->user()->state()->state_name }}",
+                city: "{{ auth()->user()->city() ? auth()->user()->city()->city_name : '' }}",
+                state: "{{ auth()->user()->state() ? auth()->user()->state()->state_name : '' }}",
                 postal_code: "{{ auth()->user()->postal_code }}",
             }
 
