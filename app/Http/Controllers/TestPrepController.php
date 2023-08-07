@@ -999,20 +999,23 @@ class TestPrepController extends Controller
         }
 
         $checkData = [];
-
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
-                $pq = PracticeQuestion::where("id", $key)->first();
-                foreach ($cat as $catKey1 => $catId) {
-                    $incorrect = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
-                    $correct = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
-                    if (!empty($pq->answer) && in_array(strtolower($catKey), explode(",", $pq->answer))) {
-                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $correct + 1;
-                    } else {
-                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $incorrect + 1;
+                $answer_arr = $answer_arr ?? [];
+                $answers = explode(",", $answer_arr[$key] ?? []);
+                if (in_array(strtolower($catKey), $answers)) {
+                    $pq = PracticeQuestion::where("id", $key)->first();
+                    foreach ($cat as $catKey1 => $catId) {
+                        $incorrect = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
+                        $correct = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+                        if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $correct + 1;
+                        } else {
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $incorrect + 1;
+                        }
+                        $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
+                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
                     }
-                    $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
-                    $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
                 }
             }
         }
@@ -1021,7 +1024,13 @@ class TestPrepController extends Controller
         if (!empty($checkData)) {
             $i = 0;
             foreach ($checkData as $key => $data) {
-                $categoryAndQuestionTypeSummaryData[$i] = ['ct' => $key, 'qt' => $data, 'count' => 0, 'correct' => 0, 'incorrect' => 0];
+                $categoryAndQuestionTypeSummaryData[$i] = [
+                    'ct' => $key,
+                    'qt' => $data,
+                    'count' => 0,
+                    'correct' => 0,
+                    'incorrect' => 0
+                ];
 
                 foreach ($data as $qt) {
 
@@ -1045,7 +1054,7 @@ class TestPrepController extends Controller
             }
         }
 
-        // dd($categoryAndQuestionTypeSummaryData);
+
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
@@ -1221,9 +1230,10 @@ class TestPrepController extends Controller
         DB::table('practice_tests')
             ->join('practice_test_sections', 'practice_tests.id', '=', 'practice_test_sections.testid')
             ->where('practice_test_sections.id', '=', $request->get_section_id)
-            ->update(['practice_tests.user_id' => $current_user_id,
-					'practice_tests.updated_at' => DB::raw('NOW()')
-			]);
+            ->update([
+                'practice_tests.user_id' => $current_user_id,
+                'practice_tests.updated_at' => DB::raw('NOW()')
+            ]);
 
         return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
     }

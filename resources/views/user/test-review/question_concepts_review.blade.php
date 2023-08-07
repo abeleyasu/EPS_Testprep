@@ -422,7 +422,7 @@
                                                                             <div
                                                                                 style="width: 70px; display: flex; align-items: start;">
                                                                                 <button type="button"
-                                                                                    class="btn btn-danger fs-xs fw-semibold me-1 error-button"
+                                                                                    class="btn btn-success fs-xs fw-semibold me-1 error-button"
                                                                                     data-bs-toggle="tooltip"
                                                                                     data-bs-trigger="click"
                                                                                     data-bs-placement="top"
@@ -1675,9 +1675,7 @@
                                                                                     $category_type_arr = $categoryTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
                                                                                     $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
                                                                                     $checkbox_arr = $checkboxData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
-                                                                                    // dd($checkbox_arr);
                                                                                 @endphp
-
                                                                                 @foreach ($category_type_arr as $key => $category_type)
                                                                                     @for ($i = 0; $i < count($category_type); $i++)
                                                                                         @if (
