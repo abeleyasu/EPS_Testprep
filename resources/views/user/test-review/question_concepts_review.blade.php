@@ -2146,7 +2146,7 @@
                             </div>
                             <div class="block-content">
                                 <div class="block-content p-0">
-                                    @if (isset($store_all_data) && !empty($store_all_data))
+                                    @if (isset($categoryAndQuestionTypeSummaryData) && !empty($categoryAndQuestionTypeSummaryData))
                                         <div class="tab-content" id="myTabContent">
                                             @php
                                                 $test = 0;
