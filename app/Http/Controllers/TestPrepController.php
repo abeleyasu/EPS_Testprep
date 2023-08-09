@@ -20,6 +20,7 @@ use App\Models\QuestionDetails;
 use App\Models\QuestionType;
 use App\Models\Score;
 use App\Models\SuperCategory;
+use App\Models\TestProgress;
 use App\Models\TestScore;
 use App\Models\User;
 use App\Models\UserPracticeTestQuestion;
@@ -1077,6 +1078,142 @@ class TestPrepController extends Controller
         ]);
     }
 
+	public function test_progress_store(Request $request)
+    {
+        $current_user_id = Auth::id();
+        $get_section_id = $request->get_section_id;
+        $get_question_type = $request->get_question_type;
+        $get_practice_id = $request->get_practice_id;
+        $progress_index = $request->progress_index;
+        $actual_time = $request->actual_time;
+        $time_left = $request->time_left;
+        $curr_question_id = $request->curr_question_id;
+
+        $selected_flag_val = $request->selected_flag_val;
+        $selected_skip_val = $request->selected_skip_val;
+        $selected_guess_val = $request->selected_guess_val;
+        
+        
+        $filtered_answers = isset($request->selected_answer) ? array_filter($request->selected_answer) : [];
+
+        $get_question_ids_array = [];
+        
+        if (isset($filtered_answers) && !empty($filtered_answers)) {
+            $get_question_ids_array = array_keys($filtered_answers);
+        }
+
+        $existingRecord = TestProgress::where('section_id', $get_section_id)
+            ->where('user_id', $current_user_id)
+            ->first();
+        if ($existingRecord) {
+            if($existingRecord->is_submit) {
+                $existingRecord->delete();
+                return response()->json(['message' => 'delete']);
+            }
+
+            $filtered_guess = [];
+            if (!empty($existingRecord->guess)) {
+                $filtered_guess = json_decode($existingRecord->guess, true);
+            }
+            $filtered_guess[$curr_question_id] = $selected_guess_val;
+            ksort($filtered_guess);
+
+            $filtered_flag = [];
+            if (!empty($existingRecord->flag)) {
+                $filtered_flag = json_decode($existingRecord->flag, true);
+            }
+            $filtered_flag[$curr_question_id] = $selected_flag_val;
+            ksort($filtered_flag);
+
+            $filtered_skip = [];
+            if (!empty($existingRecord->skip)) {
+                $filtered_skip = json_decode($existingRecord->skip, true);
+            }
+            $filtered_skip[$curr_question_id] = $selected_skip_val;
+            ksort($filtered_skip);
+
+            $new_answered = [];
+            if (!empty($existingRecord->skip)) {
+                $new_answered = json_decode($existingRecord->selected_answer, true);
+            }
+            if (array_key_exists($curr_question_id, $filtered_answers)) {
+                $new_answered[$curr_question_id] = $filtered_answers[$curr_question_id];
+            }
+            ksort($new_answered);
+
+            $updates = [
+                'question_id' => json_encode($get_question_ids_array),
+                'selected_answer' => json_encode($new_answered),
+                'guess' => json_encode($filtered_guess),
+                'flag' => json_encode($filtered_flag),
+                'skip' => json_encode($filtered_skip),
+                'test_id' => $get_practice_id,
+                'progress_index' => $progress_index,
+                'actual_time' => $actual_time,
+                'time_left' => $time_left,
+            ];
+        
+            TestProgress::where('section_id', $get_section_id)
+                ->where('user_id', $current_user_id)
+                ->update($updates);
+            // $existingRecord->update($updates);
+        } else {
+            $filtered_guess = $filtered_flag = $filtered_skip = [];
+            foreach ($get_question_ids_array as $key => $question_id) {
+                if($question_id == $curr_question_id) {
+                    $filtered_guess[$curr_question_id] = $selected_guess_val;
+                    $filtered_flag[$curr_question_id] = $selected_flag_val;
+                    $filtered_skip[$curr_question_id] = $selected_skip_val;
+                } else {
+                    $filtered_guess[$question_id] = 'no';
+                    $filtered_flag[$question_id] = 'no';
+                    $filtered_skip[$question_id] = 'no';
+                }
+            }
+
+            ksort($get_question_ids_array);
+            ksort($filtered_answers);
+            ksort($filtered_guess);
+            ksort($filtered_flag);
+            ksort($filtered_skip);
+
+            $testProgress = new TestProgress();
+            $testProgress->user_id = $current_user_id;
+            $testProgress->section_id = $get_section_id;
+            $testProgress->question_id = json_encode($get_question_ids_array);
+            $testProgress->selected_answer = json_encode($filtered_answers);
+            $testProgress->guess = json_encode($filtered_guess);
+            $testProgress->flag = json_encode($filtered_flag);
+            $testProgress->skip = json_encode($filtered_skip);
+            $testProgress->test_id = $get_practice_id;
+            $testProgress->progress_index = $progress_index;
+            $testProgress->actual_time = $actual_time;
+            $testProgress->time_left = $time_left;
+            $testProgress->save();
+        }
+                
+        return response()->json(['message' => 'success']);
+    }
+
+    public function check_progress(Request $request)
+    {
+        $userId = Auth::id();
+        $sectionId = $request->sectionId;
+        $progressFlag = false;
+
+        $existingProgress = TestProgress::where('section_id', $sectionId)
+            ->where('user_id', $userId)
+            ->first();
+        if ($existingProgress) {
+            $progressFlag = true;
+            $timeLeft = $existingProgress->time_left;
+        }
+        
+
+        return response()->json(['existingProgress' => $existingProgress ?? null, 'progressFlag' => $progressFlag]);
+        
+    }
+
     public function set_answers(Request $request)
     {
         $current_user_id = Auth::id();
@@ -1233,6 +1370,15 @@ class TestPrepController extends Controller
                 'practice_tests.user_id' => $current_user_id,
                 'practice_tests.updated_at' => DB::raw('NOW()')
             ]);
+
+		$existingRecord = TestProgress::where('section_id', $get_section_id)
+            ->where('user_id', $current_user_id)
+            ->first();
+        if ($existingRecord) {
+            $existingRecord->update([
+				'is_submit' => 1,
+			]);
+        }
 
         return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
     }
@@ -2502,10 +2648,25 @@ class TestPrepController extends Controller
 
     public function get_time(Request $request)
     {
+        $sectionId = $request['section_id'];
+        $userId = Auth::id();
+        $progressFlag = false;
+        $timeLeft = '';
+
         if ($request['question_type'] == 'single') {
-            $time = PracticeTestSection::where('id', $request['section_id'])->first();
+            $time = PracticeTestSection::where('id', $sectionId)->first();
         }
-        return response()->json(['time' => $time]);
+
+        $existingRecord = TestProgress::where('section_id', $sectionId)
+            ->where('user_id', $userId)
+            ->first();
+        if ($existingRecord) {
+            $progressFlag = true;
+            $timeLeft = $existingRecord->time_left;
+        }
+
+        return response()->json(['time' => $time ?? null, 'progressFlag' => $progressFlag, 'time_left' => $timeLeft]);
+
     }
 
     public function addMistakeType(Request $request)

@@ -494,6 +494,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
+		Route::post('/test-progress/store', [TestPrepController::class, 'test_progress_store']);
+        Route::post('/check_progress',[TestPrepController::class,'check_progress'])->name('check_progress');
         // Please make any changes you think it's necessary to routing
         Route::group(['middleware' => ['subscription_valid:access-test-prep-dashboard']], function () {
             Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
