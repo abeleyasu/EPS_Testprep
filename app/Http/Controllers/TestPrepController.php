@@ -1000,62 +1000,78 @@ class TestPrepController extends Controller
         }
 
         $checkData = [];
-
+        $ctData = [];
+        // dump($categoryTypeData);
+        // dump($answer_arr);
+        // $new = [];
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
                 $answers = explode(",", $answer_arr[$key] ?? []);
                 if (in_array(strtolower($catKey), $answers)) {
                     $pq = PracticeQuestion::where("id", $key)->first();
+                    // $ctData[$key][$catKey] = array_unique($cat);
                     foreach ($cat as $catKey1 => $catId) {
-                        $incorrect = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
-                        $correct = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
-                        $addCount = false;
+                        $tmp = $ctData[$key][$catId] ?? [];
+                        if (!in_array($catKey, $tmp)) {
+                            $ctData[$key][$catId][] = $catKey;
+                        }
+
+                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
+                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+
                         if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
-                            if (empty($checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'])) {
-                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $correct + 1;
-                                $addCount = true;
-                            }
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
+                            $crr = $ctData[$catId]['correct'] ?? 0;
+                            // $ctData[$catKey]['correct'] = $ctData[$catKey]['correct']
+                            // $ctData[$catId]['correct'] = 1;
                         } else {
-                            if (empty($checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'])) {
-                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $incorrect + 1;
-                                $addCount = true;
-                            }
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] + 1;
+                            $crr = $ctData[$catId]['incorrect'] ?? 0;
+                            // $ctData[$catId]['incorrect'] = 1;
                         }
-                        if ($addCount) {
-                            $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
-                        }
+                        $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
+                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
                     }
                 }
             }
         }
-        // dd($checkData);
+
+        $catFinal = [];
+        foreach ($ctData as $ctDataKey => $ctDataValue) {
+            foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
+                $answer_arr = $answer_arr ?? [];
+                $answers = explode(",", $answer_arr[$ctDataKey] ?? []);
+                $pq = PracticeQuestion::where("id", $ctDataKey)->first();
+                foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
+                    if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
+                        $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
+                        if (true) {
+                            $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
+                        }
+                    } else {
+                        $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
+                        if (true) {
+                            $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
+                        }
+                    }
+            }
+        }
+
         $categoryAndQuestionTypeSummaryData = [];
         if (!empty($checkData)) {
             $i = 0;
             foreach ($checkData as $key => $data) {
+                $correct = $catFinal[$key]['correct'] ?? 0;
+                $incorrect = $catFinal[$key]['incorrect'] ?? 0;
                 $categoryAndQuestionTypeSummaryData[$i] = [
                     'ct' => $key,
                     'qt' => $data,
-                    'count' => 0,
-                    'correct' => 0,
-                    'incorrect' => 0
+                    'count' => $correct + $incorrect,
+                    'correct' => $correct,
+                    'incorrect' => $incorrect
                 ];
 
-                foreach ($data as $qt) {
-
-                    $correct = $categoryAndQuestionTypeSummaryData[$i]['correct'];
-                    $incorrect = $categoryAndQuestionTypeSummaryData[$i]['incorrect'];
-                    $count = $categoryAndQuestionTypeSummaryData[$i]['count'];
-
-                    $incorrect_qt = $qt['incorrect'] ?? 0;
-                    $correct_qt = $qt['correct'] ?? 0;
-
-                    $categoryAndQuestionTypeSummaryData[$i]['count'] = $count + $qt['count'];
-                    $categoryAndQuestionTypeSummaryData[$i]['incorrect'] = $incorrect + $incorrect_qt;
-                    $categoryAndQuestionTypeSummaryData[$i]['correct'] = $correct + $correct_qt;
-                }
                 $i++;
             }
 
