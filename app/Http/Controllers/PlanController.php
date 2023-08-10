@@ -17,10 +17,6 @@ use App\Models\SubscriptionItem;
 
 class PlanController extends Controller
 {
-    private $stripe;
-    public function __construct() {
-        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
-    }
     public function index() {
         // $plans = Plan::with('product')->get();
         return view('admin.plan.list');
@@ -258,7 +254,7 @@ class PlanController extends Controller
         $customer = $request->user()->createOrGetStripeCustomer();
         try {
             $user = Auth::user();
-            if ($user->subscribed('default')) {
+            if ($user->isSubscribeToSubscriptions() && $plan->interval != 'hour') {
                 $this->changeUserSubscription($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
@@ -291,7 +287,7 @@ class PlanController extends Controller
         $paymentMethodId = $request->user_card;
         try {
             $user = Auth::user();
-            if ($user->subscribed('default')) {
+            if ($user->isSubscribeToSubscriptions() && $plan->interval != 'hour') {
                 $this->changeUserSubscription($plan, $paymentMethodId);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
@@ -340,12 +336,20 @@ class PlanController extends Controller
             ]
         );
         if ($intent) {
-            if ($existing_subscription) {
-                $this->updateOneTimeSubscriptionData($user, $plan, $intent, $existing_subscription);
-            } else {
-                $this->createOneTimeSubscriptionData($user, $plan, $intent);
-            }
-            $this->setUserRole($plan, $user);
+            // if ($existing_subscription) {
+            //     $this->updateOneTimeSubscriptionData($user, $plan, $intent, $existing_subscription);
+            // } else {
+            // }
+            $this->createOneTimeSubscriptionData($user, $plan, $intent);
+            $this->mailgun->sendMail([
+                'to' => $user->email,
+                'subject' => 'Welcome to College Prep System - Your College Journey Begins Today',
+                'html' => view('email-template.subscription.new', [
+                    'name' => $user->first_name,
+                    'plan_name' => $plan->product->title
+                ])->render()
+            ]);
+            // $this->setUserRole($plan, $user);
         }
         return true;
     }
@@ -356,53 +360,23 @@ class PlanController extends Controller
             'default_payment_method' => $paymentMethodId,
             'collection_method' => 'charge_automatically',
         ];
-        if ($plan->interval_count > 1) {
-            $enddate = Carbon::now()->addMonth($plan->interval_count);
-            // $payload['cancel_at'] = $enddate->timestamp;
-            $payload['metadata'] = [
-                'start_date' => Carbon::now()->format('Y-m-d'),
-                'pending_interval_period' => $plan->interval_count - 1,
-                'total_interval_count' => $plan->interval_count,
-                'end_date' => $enddate->format('Y-m-d'),
-            ];
-        } else {
-            // $payload['cancel_at_period_end'] = true;
-        }
         $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [],$payload);
+        $this->mailgun->sendMail([
+            'to' => $user->email,
+            'subject' => 'Welcome to College Prep System - Your College Journey Begins Today',
+            'html' => view('email-template.subscription.new', [
+                'name' => $user->first_name,
+                'plan_name' => $plan->product->title
+            ])->render()
+        ]);
         $this->setUserRole($plan, $user);
         return true;
     }
 
     public function changeUserSubscription($plan, $paymentMethodId) {
         $user = Auth::user();
-        $active_subscription = Auth::user()->subscriptions()->active()->first();
-        $active_subscription_plan = Plan::where('stripe_plan_id', $active_subscription->stripe_price)->first();
-        $payload = [];
-        
-        if ($plan->interval == 'hour' && $active_subscription_plan->interval == 'hour') {
-            $this->subscribeUserToHourlyPlan($plan, $paymentMethodId, $active_subscription);
-        } else if ($plan->interval == 'hour' && $active_subscription_plan->interval !== 'hour') {
-            $user->subscription('default')->cancelNow();
-            $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
-        } else if ($plan->interval !== 'hour' && $active_subscription_plan->interval == 'hour') {
-            $this->canceledExistingOneTimeSubscription($user, $active_subscription);
-            $this->createSubscription($plan, $paymentMethodId);
-        } else if ($plan->interval !== 'hour' && $active_subscription_plan->interval !== 'hour') {
-            if ($plan->interval_count > 1) {
-                $enddate = Carbon::now()->addMonth($plan->interval_count);
-                // $payload['cancel_at'] = $enddate->timestamp;
-                $payload['metadata'] = [
-                    'start_date' => Carbon::now()->format('Y-m-d'),
-                    'pending_interval_period' => $plan->interval_count - 1,
-                    'total_interval_count' => $plan->interval_count,
-                    'end_date' => $enddate->format('Y-m-d'),
-                ];
-            } else {
-                // $payload['cancel_at_period_end'] = true;
-            }
-            $user->subscription('default')->swap($plan->stripe_plan_id);
-            $changeCancelDate = $this->stripe->subscriptions->update($active_subscription->stripe_id, $payload);
-        }
+        $active_subscription = $user->getUserStripeSubscription();
+        $active_subscription->swap($plan->stripe_plan_id);
         $this->setUserRole($plan, $user);
         return true;
     }
@@ -425,37 +399,7 @@ class PlanController extends Controller
         return $end_date;
     }
 
-    public function updateOneTimeSubscriptionData($user, $plan, $intent, $existing_subscription) {
-        $subscription = Subscription::where('id', $existing_subscription->id)->first();
-        $end_date = $this->getOneTimePlanEndDate($plan);
-        if ($subscription) {
-            $subscription->update([
-                'user_id' => $user->id,
-                'name' => 'default',
-                'stripe_id' => $intent->id,
-                'stripe_status' => $intent->status == 'succeeded' ? 'active' : 'failed',
-                'stripe_price' => $plan->stripe_plan_id,
-                'quantity' => 1,
-                'trial_ends_at' => null,
-                'ends_at' => null,
-                'plan_type' => 'one-time',
-                'plan_end_date' => $end_date->format('Y-m-d H:i:s'),
-            ]);
-            $subscriptionItem = SubscriptionItem::where('subscription_id', $subscription->id)->first();
-            if ($subscriptionItem) {
-                $subscriptionItem->update([
-                    'subscription_id' => $subscription->id,
-                    'stripe_id' => $intent->latest_charge,
-                    'stripe_product' => $plan->product->stripe_product_id,
-                    'stripe_price' => $plan->stripe_plan_id,
-                    'quantity' => 1,
-                ]);
-            }
-        }
-    }
-
     public function createOneTimeSubscriptionData($user, $plan, $intent) {
-        $end_date = $this->getOneTimePlanEndDate($plan);
         $subscription = Subscription::create([
             'user_id' => $user->id,
             'name' => 'default',
@@ -466,7 +410,7 @@ class PlanController extends Controller
             'trial_ends_at' => null,
             'ends_at' => null,
             'plan_type' => 'one-time',
-            'plan_end_date' => $end_date->format('Y-m-d H:i:s'),
+            'pending_consumed_hours' => $plan->interval_count,
         ]);
         if ($subscription) {
             SubscriptionItem::create([
@@ -475,16 +419,6 @@ class PlanController extends Controller
                 'stripe_product' => $plan->product->stripe_product_id,
                 'stripe_price' => $plan->stripe_plan_id,
                 'quantity' => 1,
-            ]);
-        }
-    }
-
-    public function canceledExistingOneTimeSubscription($user, $active_subscription) {
-        $subscription = Subscription::where('id', $active_subscription->id)->first();
-        if ($subscription) {
-            $subscription->update([
-                'stripe_status' => 'canceled',
-                'ends_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]);
         }
     }

@@ -23,10 +23,6 @@ use App\Models\UserSettings;
 class UserController extends Controller
 {
     public $states;
-	private $stripe;
-	public function __construct() {
-        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
-    }
 	public function dashboard()
 	{
 		return view('user/dashboard');
@@ -173,8 +169,34 @@ class UserController extends Controller
     }
     
     public function deleteCard(Request $request) {
-		$this->stripe->paymentMethods->detach($request->id, []);
-		return "success";
+		try {
+			$user = auth()->user();
+			$subscriptions = $user->getUserStripeSubscription();
+			if ($subscriptions) {
+				$getSubscription = $this->stripe->subscriptions->retrieve(
+					$subscriptions->stripe_id,
+					[]
+				);
+				if ($getSubscription) {
+					if ($getSubscription->default_payment_method == $request->id) {
+						return response()->json([
+							'success' => false, 
+							'message' => 'You can not delete default card because you have active subscription with this card. try to change payment method first then delete.'
+						], 200);
+					}
+				}
+			}
+			$user->deletePaymentMethod($request->id);
+			return response()->json([
+				'success' => true, 
+				'message' => 'Card deleted successfully.'
+			], 200);
+		} catch (\Exception $e) {
+			return response()->json([
+				'success' => false, 
+				'message' => $e->getMessage()
+			], 200);
+		}
 	}
 	
 	public function studentBillingDetails(Request $request)

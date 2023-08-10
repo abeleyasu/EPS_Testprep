@@ -289,6 +289,15 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('save/free-subscription-setting', 'subscriptionSetting')->name('subscription-settings');
             });
         });
+
+        Route::group(['prefix' => 'subscription', 'as' => 'admin.subscription.'], function () {
+            Route::controller(SubscriptionController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/{id}', 'getSubscriptionInfo')->name('subscription-info');
+                Route::post('/comsumed/{id}', 'consumendUserSubscription')->name('consumed-subscription');
+                Route::get('/comsumed/{id}', 'getConsumendUserSubscription')->name('consumed-subscription-detail');
+            });
+        });
     });
 
     //User Routes

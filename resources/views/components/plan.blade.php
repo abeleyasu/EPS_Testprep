@@ -56,11 +56,14 @@
                         @endif
                       </div>
                       @if(auth()->user())
-                        @if(Auth::user()->subscribed('default'))
-                          @if(Auth::user()->subscriptions()->active()->first()->stripe_price == $plan->stripe_plan_id)
-                            <div class="btn btn-light px-4">Purchased</div>
+                        @if(Auth::user()->isUserSubscriptionToAnyPlan())
+                          @php
+                            $subscriptions = Auth::user()->subscriptions()->active()->where('stripe_status', '!=','consumed')->get()->pluck('stripe_price')->toArray();
+                          @endphp
+                          @if(in_array($plan->stripe_plan_id, $subscriptions))
+                            <div class="btn btn-light px-4">{{ $plan->interval == 'hour' ? 'Added' : 'Current Subscription'  }}</div>
                           @else
-                            <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Upgrade</a>
+                            <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">{{ $plan->interval == 'hour' ? 'Add Package' : 'Upgrade'  }}</a>
                           @endif
                         @else 
                           <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>

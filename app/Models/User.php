@@ -87,4 +87,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function state() {
         return States::where('id', $this->state_id)->first();
     }
+
+    public function isUserSubscriptionOnGracePeriod() {
+        $subscription = $this->getUserStripeSubscription();
+        return $subscription && $subscription->onGracePeriod();
+    }
+
+    public function getUserStripeSubscription($name = 'default', $isAll = false) {
+        $query = $this->subscriptions()->active()->where('name', $name);
+        if (!$isAll) {
+            return $query->where('plan_type', '=', 'subscription')->first();
+        }
+        return $query->get();
+    }
+
+    public function isSubscribeToSubscriptions($name = 'default') {
+        $subscription = $this->getUserStripeSubscription($name);
+        if ($subscription) {
+            return $subscription->valid() || $subscription->onGracePeriod();
+        }
+        return false;
+    }
+
+    public function isUserSubscriptionToAnyPlan($name = 'default') {
+        $subscription = $this->getUserStripeSubscription($name, true);
+        return count($subscription) > 0;
+    }
 }

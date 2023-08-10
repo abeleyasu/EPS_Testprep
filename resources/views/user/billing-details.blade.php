@@ -3,6 +3,35 @@
 @section('title', 'User Dashboard : CPS')
 
 @section('user-content')
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+<style>
+.view-card{
+  display: flex;
+  flex-wrap: wrap;
+}
+.block-content {
+  padding: 1.25rem !important
+}
+.StripeElement {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  width: 100%;
+  margin-top: 10px;
+}
+.StripeElement--empty {
+  background-color: white;
+}
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+.StripeElement--focus {
+  border-color: #1e1e1e;
+}
+</style>
     <!-- Main Container -->
     <main id="main-container">
         <!-- Page Content -->
@@ -104,12 +133,13 @@
                             <div class="mb-4">
                                 <div id="card-element" name="token" class="form-control"></div>
                             </div>
+                            <div id="card-errors" class="text-danger"></div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6 col-xl-5">
                                 <button id="button" type="submit" class="btn w-100 btn-alt-success"
                                         data-secretkey="{{ $intent }}">
-                                    <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Add Payment Details
+                                    <i class="fa fa-fw fa-pencil me-1 opacity-50"></i> Save Payment Details
                                 </button>
                             </div>
                         </div>
@@ -132,9 +162,9 @@
                                     <span class="fw-semibold mb-1">{{ $card->billing_details->name }} ({{ $card->card->exp_month }}/{{ $card->card->exp_year }})</span>
                                 </div>
                                 <div class="col-5">
-                                    <span class="fw-semibold mb-1">{{ $card->card->brand }} ({{ $card->card->last4 }})</span>
+                                    <span class="fw-semibold mb-1"><i class="fa-brands fa-cc-{{$card->card->brand}}"></i>{{ $card->card->brand }} ({{ $card->card->last4 }})</span>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-2 d-flex gap-1">
                                     @if($customer && $customer->id === $card->id)
                                     <div class="btn btn-sm btn-alt-success">
                                         default
@@ -144,6 +174,11 @@
                                         Set default
                                     </a>
                                     @endif
+                                    <div>
+                                        <button class="btn btn-sm btn-alt-danger delete-card" data-id="{{ $card->id }}" data-bs-toggle="tooltip" title="Delete Card">
+                                            <i class="fa fa-fw fa-times"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 </div>
                             </span>
@@ -158,6 +193,7 @@
 @endsection
 
 @section('user-script')
+<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -201,6 +237,17 @@
         cardElement.on('change', function (event) {
             document.getElementById("button").disabled = event.empty;
         })
+
+        cardElement.on('change', (e) => {
+            if(e.error) {
+                cardBtn.disabled = true
+                $('#card-errors').text(e.error.message)
+            } else {
+                cardBtn.disabled = false
+                $('#card-errors').text('')
+            }
+        })
+
         const form = document.getElementById('payment-form')
         const cardBtn = document.getElementById('button')
         const cardHolderName = document.getElementById('card_holder_name')
@@ -234,6 +281,8 @@
             cardBtn.disabled = true
             const {setupIntent, error} = await stripe.confirmCardSetup(intent, payment_method)
             if (error) {
+                $('#card-errors').text(error.message)
+                console.log('error', error)
                 cardBtn.disable = false
             } else {
                 let token = document.createElement('input')
@@ -247,16 +296,39 @@
     </script>
     <script>
         $('.delete-card').click(function () {
-            if (confirm("Are you sure to delete this card?") == true) {
-                $.ajax({
-                    'url': "{{route('user.delete.card')}}",
-                    'type': "POST",
-                    'data': {id: $(this).data('id')},
-                    'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-                }).done(function (data) {
-                    document.location.reload();
-                });
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this card?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        'url': "{{route('user.delete.card')}}",
+                        'type': "POST",
+                        'data': {id: $(this).data('id')},
+                        'headers': {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                    }).done(function (response) {
+                        if (response.success) {
+                            Swal.fire(
+                                'Deleted!',
+                                response.message,
+                                'success'
+                            ).then((result) => {
+                                location.reload();
+                            })
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                response.message,
+                                'error'
+                            )
+                        }
+                    });
+                }
+            })
         });
     </script>
 @endsection

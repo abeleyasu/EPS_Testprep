@@ -22,8 +22,8 @@
 
         <!-- Right Section -->
         <div class="d-flex align-items-center">
+            <a href="{{route('plan.index')}}" class="btn btn-alt-success">Upgrade</a>
             @if(!Auth::user()->subscribed('default'))
-                <a href="{{route('plan.index')}}" class="btn btn-alt-success">Upgrade</a>
             @endif
             <!-- User Dropdown -->
             <div class="dropdown d-inline-block ms-2">
@@ -45,7 +45,7 @@
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.edit-profile')}}">Edit Profile</a></span>
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.get-billing-detail')}}">Billing Detail</a></span>
                         <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('user.settings')}}">Settings</a></span>
-                        @if(Auth::user()->subscribed('default'))
+                        @if(Auth::user()->isSubscribeToSubscriptions() || count(Auth::user()->subscriptions()->active()->get()) > 0)
                             <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('mysubscriptions.index')}}">My Subscription</a></span>
                         @else
                             <span class="dropdown-item d-flex align-items-center justify-content-between"><a class="fs-sm fw-medium" style="color:#334155" ; href="{{route('plan.index')}}">Subscription</a></span>

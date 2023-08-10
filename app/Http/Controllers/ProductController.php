@@ -14,13 +14,6 @@ use App\Http\Requests\AjaxProductInsertRequest;
 
 class ProductController extends Controller
 {
-    private $stripe;
-
-    public function __construct()
-    {
-        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
-    }
-
     public function index()
     {
         // $product = Product::with('productCategory')->get();
@@ -89,7 +82,7 @@ class ProductController extends Controller
             'product_category_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'inclusion' => 'required',
+            'inclusion.*' => 'required|alpha_num|string',
         ];
         $customMessage = [
             'product_category_id.required' => 'Category is required'
@@ -117,7 +110,10 @@ class ProductController extends Controller
                 $role->syncPermissions($permissions);
             }
             $inclusions = array_map(function ($item) use ($create) {
-                return ['product_id' => $create->id, 'inclusion' => $item];
+                $inclusion = strip_tags($item);
+                if (!empty($inclusion)) {
+                    return ['product_id' => $create->id, 'inclusion' => $item];
+                }
             }, $request->inclusion);
             ProductInclusion::insert($inclusions);
             return redirect()->intended(route('admin.product.list'))->with('success', 'Product created successfully');
@@ -138,7 +134,7 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'product_category_id' => 'required',
-            'inclusion' => 'required',
+            'inclusion.*' => 'required|string',
         ];
         $customMessage = [
             'product_category_id.required' => 'Category is required'
@@ -164,14 +160,20 @@ class ProductController extends Controller
 
         foreach ($oldIncs as $key => $oldInc) {
             if (isset($request->inclusion[$key])) {
-                ProductInclusion::where('id', $oldInc['id'])->update(['inclusion' => $request->inclusion[$key]]);
+                $inclusion = strip_tags($request->inclusion[$key]);
+                if (!empty($inclusion)) {
+                    ProductInclusion::where('id', $oldInc['id'])->update(['inclusion' => $inclusion]);
+                }
             } else {
                 array_push($deleteId, $oldInc['id']);
             }
         }
 
         for ($i = $oldLength; $i < $newLength; $i++) {
-            array_push($newInsert, ['product_id' => $request->id, 'inclusion' => $request->inclusion[$i]]);
+            $inclusion = strip_tags($request->inclusion[$i]);
+            if (!empty($inclusion)) {
+                array_push($newInsert, ['product_id' => $request->id, 'inclusion' => $inclusion]);
+            }
         }
 
         if (count($newInsert) > 0) {

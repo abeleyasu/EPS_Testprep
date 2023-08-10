@@ -35,6 +35,13 @@ class VerifyEmailController extends Controller
         $user = User::where('id', $request->id)->first();
         $user->email_verified_at = now();
         $user->save();
+        $this->mailgun->sendMail([
+            'to' => $user->email,
+            'subject' => 'Welcome to College Prep System - Your Account is Ready!',
+            'html' => view('email-template.welcome', [
+                'name' => $user->first_name,
+            ])->render()
+        ]);
         UserSettings::create([ 'user_id' => $user->id ]);
         Auth::logout();
         return redirect()->route('signin')->with('email_verified_success', 'Your Email Verified Successfully. Please Login.');

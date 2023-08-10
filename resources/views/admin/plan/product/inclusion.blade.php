@@ -8,7 +8,7 @@
                    placeholder="Inclusion" required>
         </div>
     </div>
-    @error('description')
+    @error('inclusion')
     <div class="invalid-feedback">{{$message}}</div>
     @enderror
 </div>

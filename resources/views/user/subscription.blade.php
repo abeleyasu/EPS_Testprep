@@ -133,7 +133,7 @@
                         <span class="fw-semibold mb-1">{{ $card->billing_details->name }} ({{ $card->card->exp_month }}/{{ $card->card->exp_year }})</span>
                       </div>
                       <div class="col-5">
-                        <span class="fw-semibold mb-1">{{ $card->card->brand }} ({{ $card->card->last4 }})</span>
+                        <span class="fw-semibold mb-1"><i class="fa-brands fa-cc-{{$card->card->brand}}"></i>{{ $card->card->brand }} ({{ $card->card->last4 }})</span>
                       </div>
                       <div class="col-2">
                         @if($customer && $customer->id === $card->id)
@@ -313,7 +313,7 @@
       cardBtn.disabled = true
       const { setupIntent, error } = await stripe.confirmCardSetup(cardBtn.dataset.secret, payment_method)
       if(error) {
-        console.log(error)
+        $('#card-errors').text(error.message)
         cardBtn.disable = false
       } else {
         let token = document.createElement('input')
