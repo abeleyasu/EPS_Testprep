@@ -340,7 +340,7 @@
             $('#total-pending-hours').html(response.data);
             if (response.data == 0) {
               $('button[data-bs-target="#add-consumed-details"]').remove();
-              $('#status').text('conaumed');
+              $('#status').text('consumed');
               // remove all class 
               $('#status').removeClass('bg-success-light text-success');
               $('#status').addClass('bg-warning-light text-warning');
