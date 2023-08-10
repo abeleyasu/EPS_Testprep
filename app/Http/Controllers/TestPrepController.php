@@ -999,6 +999,7 @@ class TestPrepController extends Controller
         }
 
         $checkData = [];
+
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
@@ -1008,18 +1009,27 @@ class TestPrepController extends Controller
                     foreach ($cat as $catKey1 => $catId) {
                         $incorrect = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
                         $correct = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+                        $addCount = false;
                         if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $correct + 1;
+                            if (empty($checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'])) {
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $correct + 1;
+                                $addCount = true;
+                            }
                         } else {
-                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $incorrect + 1;
+                            if (empty($checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'])) {
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $incorrect + 1;
+                                $addCount = true;
+                            }
                         }
-                        $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
-                        $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
+                        if ($addCount) {
+                            $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
+                        }
                     }
                 }
             }
         }
-
+        // dd($checkData);
         $categoryAndQuestionTypeSummaryData = [];
         if (!empty($checkData)) {
             $i = 0;
