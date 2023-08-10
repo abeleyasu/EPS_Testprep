@@ -2297,8 +2297,16 @@
                                                                     <div class="fw-semibold fs-sm">
                                                                         <div>
                                                                             <div>
-                                                                                @foreach ($categoryAndQuestionTypeSummary['qt'] as $qtDataKey => $qtData)
-                                                                                    {{-- {{ dd($qtData) }} --}}
+                                                                                @php
+                                                                                    $qtArray = [];
+                                                                                    if (!empty($categoryAndQuestionTypeSummary['qt'])) {
+                                                                                        $qtArray = $categoryAndQuestionTypeSummary['qt'];
+                                                                                        $keys = array_keys($qtArray);
+                                                                                        array_multisort(array_column($qtArray, 'incorrect'), SORT_DESC, SORT_NUMERIC, $qtArray, $keys);
+                                                                                        $qtArray = array_combine($keys, $qtArray);
+                                                                                    }
+                                                                                @endphp
+                                                                                @foreach ($qtArray as $qtDataKey => $qtData)
                                                                                     @php
                                                                                         $question_arr = Helper::getQuestionNameByID($qtDataKey);
                                                                                     @endphp
