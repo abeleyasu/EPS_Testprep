@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\CollegeMajorInformation;
 use App\Models\UserCollgeScore;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use DB;
 
 class InititalCollegeListController extends Controller
 {
@@ -548,21 +549,29 @@ class InititalCollegeListController extends Controller
         $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
             $q->where('is_active', true); 
         })->with(['college_list_details' => function ($query) {
-            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->orderBy('order_index')->with(['costcomparison']);
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->orderBy('order_index')->with(['costcomparison', 'collegeInformation']);
         }])->first();
+
+        $costcomparisonsummary = $costcomparisonsummary->toArray();
 
         $totalCount = 0;
         $data = [];
         if ($costcomparisonsummary) {
             foreach ($costcomparisonsummary['college_list_details'] as $college_data) {
+                $college_information = $college_data['college_information'];
+                $total_direct_cost = 0;
+                if ($college_information) {
+                    $total_direct_cost = $college_information['tution_and_fess'] + $college_information['room_and_board'];
+                }
+                $total_cost_attendance = $total_direct_cost - $college_data['costcomparison']['total_cost_attendance'];
                 $data[] = [
                     'id' => $college_data['id'],
                     'college_name' => $college_data['college_name'],
-                    'total_direct_cost' => '$'.$college_data['costcomparison']['total_direct_cost'],
-                    'total_merit_cost' => '$'.$college_data['costcomparison']['total_merit_aid'],
-                    'total_need_based_aid' => '$'.$college_data['costcomparison']['total_need_based_aid'],
-                    'total_outside_scholarship' => '$'.$college_data['costcomparison']['total_outside_scholarship'],
-                    'total_cost_attendance' => '$'.$college_data['costcomparison']['total_cost_attendance'],
+                    'total_direct_cost' => '$'.$total_direct_cost,
+                    'total_merit_cost' => '$'.number_format($college_data['costcomparison']['total_merit_aid']),
+                    'total_need_based_aid' => '$'.number_format($college_data['costcomparison']['total_need_based_aid']),
+                    'total_outside_scholarship' => '$'.number_format($college_data['costcomparison']['total_outside_scholarship']),
+                    'total_cost_attendance' => '$'.number_format($total_cost_attendance),
                 ];
     
                 $totalCount = $totalCount + count($costcomparisonsummary['college_list_details']);
@@ -578,23 +587,110 @@ class InititalCollegeListController extends Controller
     }
 
     public function getCollegeWiseList() {
-        $userid = Auth::user()->id;
-        $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
-            $q->where('is_active', true); 
-        })->with(['college_list_details' => function ($query) {
-            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->with(['costcomparison' => function ($costquery) {
-                $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
-            }])->orderBy('order_index', 'asc');
-        }])->first();
+        try {
+            $userid = Auth::user()->id;
+            $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
+                $q->where('is_active', true); 
+            })->with(['college_list_details' => function ($query) {
+                $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->with(['costcomparison' => function ($costquery) {
+                    $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
+                }, 'collegeInformation'])->orderBy('order_index', 'asc');
+            }])->first();
+    
+            if ($costcomparisonsummary) {
+                $costcomparisonsummary = $costcomparisonsummary->toArray();
+            }
 
-        if ($costcomparisonsummary) {
-            $costcomparisonsummary = $costcomparisonsummary->toArray();
+            
+            if (count($costcomparisonsummary) > 0) {
+                foreach ($costcomparisonsummary['college_list_details'] as $key => $costcomparison) {
+                    $college_information = $costcomparison['college_information'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_direct_cost'] = $college_information['tution_and_fess'] + $college_information['room_and_board'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_cost_attendance'] = $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_direct_cost'] - $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_cost_attendance'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetail']['direct_tuition_free_year'] = $college_information['tution_and_fess'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetail']['direct_room_board_year'] = $college_information['room_and_board'];
+                    unset($costcomparisonsummary[$key]['college_information']);
+                }
+            }
+            
+            return response()->json([
+                'success' => $costcomparisonsummary && count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
+                'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
+            ]);
+        } catch (\Exception $e) { 
+            dd($e);
         }
+    }
 
-        return response()->json([
-            'success' => $costcomparisonsummary && count($costcomparisonsummary['college_list_details']) > 0 ? true : false,
-            'data' => $costcomparisonsummary ? $costcomparisonsummary['college_list_details'] : [],
-        ]);
+    public function resetCostComparisonData(Request $request) {
+        try {
+            DB::beginTransaction();
+            $rules = [
+                'isall' => 'required',
+                'id' => 'required_if:isall,false',
+            ];
+            $validate = Validator::make($request->all(), $rules, [
+                'required_if' => 'The :attribute field is required.',
+            ]);
+            if ($validate->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validate->errors()->first(),
+                ]);
+            }
+            $cost_comparions = null;
+            if ($request->isall == 'true') {
+                $cost_comparions = CostComparison::where('user_id', Auth::id())->get();
+            } else {
+                $cost_comparions = CostComparison::where('id', $request->id)->get();
+            }
+
+            if (count($cost_comparions) > 0) {
+                foreach ($cost_comparions as $key => $cost_comparions) {
+                    if ($cost_comparions->user_id == Auth::id()) {
+                        $cost_comparions->total_direct_cost = null;
+                        $cost_comparions->total_merit_aid = null;
+                        $cost_comparions->total_need_based_aid = null;
+                        $cost_comparions->total_outside_scholarship = null;
+                        $cost_comparions->total_cost_attendance = null;
+                        $cost_comparions->save();
+        
+                        $cost_comparion_detail = CostComparisonDetail::where('cost_comparison_id', $cost_comparions->id)->first();
+                        $cost_comparion_detail->direct_tuition_free_year = null;
+                        $cost_comparion_detail->direct_room_board_year = null;
+                        $cost_comparion_detail->institutional_academic_merit_aid = null;
+                        $cost_comparion_detail->institutional_exchange_program_scho = null;
+                        $cost_comparion_detail->institutional_honors_col_program = null;
+                        $cost_comparion_detail->institutional_academic_department_scho = null;
+                        $cost_comparion_detail->institutional_atheletic_scho = null;
+                        $cost_comparion_detail->institutional_other_talent_scho = null;
+                        $cost_comparion_detail->institutional_diversity_scho = null;
+                        $cost_comparion_detail->institutional_legacy_scho = null;
+                        $cost_comparion_detail->institutional_other_scho = null;
+                        $cost_comparion_detail->need_base_federal_grants = null;
+                        $cost_comparion_detail->need_base_institutional_grants = null;
+                        $cost_comparion_detail->need_base_state_grants = null;
+                        $cost_comparion_detail->need_base_work_study_grants = null;
+                        $cost_comparion_detail->need_base_student_loans_grants = null;
+                        $cost_comparion_detail->need_base_parent_plus_grants = null;
+                        $cost_comparion_detail->need_base_other_grants = null;
+                        $cost_comparion_detail->save();
+                        $cost_comparions->costcomparisonotherscholarship()->delete();
+                    }
+                }
+                DB::commit();
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Cost comparison reset successfully',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ], 200);
+        }
     }
 
     public function saveCollegeCost(Request $request) {
@@ -644,7 +740,12 @@ class InititalCollegeListController extends Controller
     }
 
     public function editCollegeDetails(Request $request, $id) {
-        $isIdExist = CostComparisonDetail::where('cost_comparison_id', $id)->first();
+        $isIdExist = CostComparisonDetail::where('cost_comparison_id', $id)->with(['cost_comparison' => function ($cost) {
+            $cost->with(['college_search_add' => function ($college) {
+                $college->with(['collegeInformation']);
+            }]);
+        }])->first();
+        // dd($isIdExist->toArray());
         if (!$isIdExist) {
             return response()->json([
                 'success' => false,
@@ -661,8 +762,16 @@ class InititalCollegeListController extends Controller
     }
 
     public function calculateTotalCostOrAid($costcomparisonid) {
-        $data = CostComparisonDetail::where('cost_comparison_id', $costcomparisonid)->first()->toArray();
-        $total_direct_cost = $data['direct_tuition_free_year'] + $data['direct_room_board_year'];
+        $data = CostComparisonDetail::where('cost_comparison_id', $costcomparisonid)->with(['cost_comparison' => function ($cost) {
+            $cost->with(['college_search_add' => function ($college) {
+                $college->with(['collegeInformation']);
+            }]);
+        }])->first()->toArray();
+        $college_information = $data['cost_comparison']['college_search_add']['college_information'];
+        $total_direct_cost = 0;
+        if ($college_information) {
+            $total_direct_cost = $college_information['tution_and_fess'] + $college_information['room_and_board'];
+        }
         $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
         $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
 
@@ -671,14 +780,15 @@ class InititalCollegeListController extends Controller
         foreach ($otherscholarship as $key => $value) {
             $total_outside_scholarship += $value->amount;
         }
-        $total_cost_attendance = $total_direct_cost - ($total_merit_cost + $total_need_based_aid + $total_outside_scholarship);
+        $total_cost_attendance = $total_merit_cost + $total_need_based_aid + $total_outside_scholarship;
         CostComparison::where('id', $costcomparisonid)->update([
-            'total_direct_cost' => $total_direct_cost,
+            // 'total_direct_cost' => $total_direct_cost,
             'total_merit_aid' => $total_merit_cost,
             'total_need_based_aid' => $total_need_based_aid,
             'total_outside_scholarship' => $total_outside_scholarship,
             'total_cost_attendance' => $total_cost_attendance,
         ]);
+        $total_cost_attendance = $total_direct_cost - $total_cost_attendance;
         return [
             'total_direct_cost' => $total_direct_cost,
             'total_merit_aid' => $total_merit_cost,

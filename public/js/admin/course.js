@@ -109,3 +109,7 @@ $('#create-new-product').on('click', function (e) {
         })
     }
 })
+
+$('input[name="is_addmission_lesson"]').on('change', function (e) {
+    $('input[name="is_addmission_lesson"]').val($(this).is(':checked') ? 1 : 0)
+})

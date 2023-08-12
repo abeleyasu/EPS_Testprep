@@ -29,7 +29,10 @@
     @endif
     <div class="block block-rounded">
       <div class="block-header block-header-default">
-        <h3 class="block-title">User {{ $subscription['plan_type'] == 'subscription' ? 'Subscription' : 'Payment' }} Infroamtion</h3>
+        <a href="{{route('admin.subscription.index')}}" class="btn btn-sm btn-alt-primary me-2" data-bs-toggle="tooltip" title="back">
+          <i class="fa fa-fw fa-arrow-left-long"></i>
+        </a>
+        <h3 class="block-title">User {{ $subscription['plan_type'] == 'subscription' ? 'Subscription' : 'Payment' }} Information</h3>
       </div>
       <div class="block-content block-content-full">
 
@@ -176,7 +179,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="add-consumed-details-label">Enter User Subscription Consumed Hours Details</h5>
+        <h5 class="modal-title" id="add-consumed-details-label"><span id="modal-first-word">Enter</span> User Subscription Consumed Hours Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -257,7 +260,7 @@
     });
 
     $('.date-own').datepicker({
-      format: 'yyyy-mm-dd',
+      format: 'mm-dd-yyyy',
       autoclose: true
     });
 
@@ -328,7 +331,7 @@
 
       if ($('#add-form').valid()) {
         $.ajax({
-          url: "{{ route('admin.subscription.consumed-subscription', ['id' => $subscription['stripe_id']]) }}",
+          url: "{{ route('admin.subscription.consumed-subscription', ['subscriptionId' => $subscription['stripe_id']]) }}",
           method: "post",
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -341,9 +344,15 @@
             if (response.data == 0) {
               $('button[data-bs-target="#add-consumed-details"]').remove();
               $('#status').text('consumed');
-              // remove all class 
               $('#status').removeClass('bg-success-light text-success');
               $('#status').addClass('bg-warning-light text-warning');
+            } else {
+              $('#status').text('active');
+              $('#status').removeClass('bg-warning-light text-warning');
+              $('#status').addClass('bg-success-light text-success');
+              if ($('button[data-bs-target="#add-consumed-details"]').length == 0) {
+                $('.text-end').append('<button class="btn btn-alt-success" data-bs-toggle="modal" data-bs-target="#add-consumed-details">Add Consumed Hour</button>');
+              }
             }
             $('#add-consumed-details').modal('hide');
             $('#payment-consumed-hours').DataTable().ajax.reload();
@@ -356,6 +365,83 @@
 
     $('#add-consumed-details').on('hidden.bs.modal', function () {
       $('#add-form').trigger('reset');
+      $('#add-form').find('input[name="id"]').remove();
+      $('#modal-first-word').html('Enter');
+    })
+
+    $('#payment-consumed-hours').on('draw.dt', function (e, details) {
+      $('.edit-consumed-hours').on('click', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        if (id > 0) {
+          $.ajax({
+            url: "{{ route('admin.subscription.consumed-subscription-single-detail', ['id' => ':id']) }}".replace(':id', id),
+            method: "get",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+          }).done(function (response) {
+            if (response.success) {
+              $('#consumed_type').val(response.data.consumed_type);
+              $('#hours').val(response.data.hours);
+              $('#date').val(response.data.date);
+              $('#notes').val(response.data.note);
+              $('#add-form').append('<input type="hidden" name="id" value="' + response.data.id + '">');
+              $('#modal-first-word').html('Edit');
+              $('#add-consumed-details').modal('show');
+            } else {
+              toastr.error(response.message);
+            }
+          })
+        }
+      })
+
+      $('.delete-consumed-hours').on('click', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        if (id > 0) {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to delete this consumed hours detail?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                url: "{{ route('admin.subscription.consumed-subscription-delete', ['id' => ':id']) }}".replace(':id', id),
+                method: "delete",
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+              }).done(function (response) {
+                if (response.success) {
+                  toastr.success(response.message);
+                  $('#total-pending-hours').html(response.data);
+                  if (response.data == 0) {
+                    $('button[data-bs-target="#add-consumed-details"]').remove();
+                    $('#status').text('consumed');
+                    $('#status').removeClass('bg-success-light text-success');
+                    $('#status').addClass('bg-warning-light text-warning');
+                  } else {
+                    $('#status').text('active');
+                    $('#status').removeClass('bg-warning-light text-warning');
+                    $('#status').addClass('bg-success-light text-success');
+                    if ($('button[data-bs-target="#add-consumed-details"]').length == 0) {
+                      $('.text-end').append('<button class="btn btn-alt-success" data-bs-toggle="modal" data-bs-target="#add-consumed-details">Add Consumed Hour</button>');
+                    }
+                  }
+                  $('#payment-consumed-hours').DataTable().ajax.reload();
+                } else {
+                  toastr.error(response.message);
+                }
+              })
+            }
+          })
+        }
+      })
+
     })
   });
 </script>

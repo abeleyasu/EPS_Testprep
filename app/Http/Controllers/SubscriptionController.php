@@ -154,10 +154,10 @@ class SubscriptionController extends Controller
 
     public function consumendUserSubscription(Request $request, $subscriptionId) {
         try {
+            DB::beginTransaction();
             $subscription = Subscription::where([
                 ['stripe_id', '=' ,$subscriptionId],
                 ['plan_type', '=', 'one-time'],
-                ['stripe_status', '=', 'active']
             ])->first();
             if (!$subscription) {
                 return response()->json([
@@ -168,6 +168,27 @@ class SubscriptionController extends Controller
             $pending_hours = $subscription->pending_consumed_hours;
             if ($request->consumed_type == 'minute') {
                 $pending_hours = $pending_hours * 60;
+            }
+            if (isset($request->id)) {
+                $consumed_hours = SubscriptionConsumedHours::where('id', $request->id)->first();
+                if (!$consumed_hours) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Consumed hours not found'
+                    ], 200);
+                }
+
+                $pending_hours = $consumed_hours->hours + $pending_hours;
+
+                switch ($consumed_hours->consumed_type) {
+                    case 'hour':
+                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $consumed_hours->hours;
+                        break;
+                    case 'minute':
+                        $hours = number_format($consumed_hours->hours / 60, 1);
+                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $hours;
+                        break;
+                }
             }
             $rules = [
                 'hours' => 'required|numeric|between:1,'.$pending_hours,
@@ -196,25 +217,39 @@ class SubscriptionController extends Controller
                 'note' => $request->notes,
                 'consumed_type' => $request->consumed_type,
             ];
-            SubscriptionConsumedHours::create($data);
-            switch ($request->consumed_type) {
-                case 'hour':
-                    $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $request->hours;
-                    break;
-                case 'minute':
-                    $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - ($request->hours / 60);
-                    break;
+            $consumed_hours = null;
+            if (isset($request->id)) {
+                $consumed_hours = SubscriptionConsumedHours::where('id', $request->id)->update($data);
+            } else {
+                $consumed_hours = SubscriptionConsumedHours::create($data);
             }
-            if ($subscription->pending_consumed_hours <= 0) {
-                $subscription->stripe_status = 'consumed';
+            if ($consumed_hours) {
+                switch ($request->consumed_type) {
+                    case 'hour':
+                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $request->hours;
+                        break;
+                    case 'minute':
+                        $hours = number_format($request->hours / 60, 1);
+                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $hours;
+                        break;
+                }
+                $subscription->stripe_status = $subscription->pending_consumed_hours <= 0 ? 'consumed' : 'active';
+                $subscription->save();
+                DB::commit();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Hours consumed successfully',
+                    'data' => $subscription->pending_consumed_hours,
+                ], 200);
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Hours not consumed'
+                ], 200);
             }
-            $subscription->save();
-            return response()->json([
-                'success' => true,
-                'message' => 'Hours consumed successfully',
-                'data' => $subscription->pending_consumed_hours,
-            ], 200);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -254,7 +289,14 @@ class SubscriptionController extends Controller
                     'date' => $value['date'],
                     'notes' => $value['note'],
                     'consumed_type' => $value['consumed_type'],
-                    'action' => 'action'
+                    'action' => '<div class="btn-group">
+                                    <buton class="btn btn-sm btn-alt-secondary edit-consumed-hours" data-id="'. $value['id'] .'" data-bs-toggle="tooltip" title="Edit Consumed Hours">
+                                        <i class="fa fa-fw fa-pencil-alt"></i>
+                                    </buton>
+                                    <button type="button" class="btn btn-sm btn-alt-secondary delete-consumed-hours" data-id="'. $value['id'] .'" data-bs-toggle="tooltip" title="Delete Consumed Hours">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </button>
+                                </div>'
                 ];
             }
 
@@ -273,6 +315,72 @@ class SubscriptionController extends Controller
                 'message' => $e->getMessage()
             ], 200);
         }
+    }
+
+    public function getSingleConsumedDetails($consumedHourId) {
+        try {
+            $consumed_details = SubscriptionConsumedHours::where('id', $consumedHourId)->first();
+            if (!$consumed_details) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Consumed details not found'
+                ], 200);
+            }
+            return response()->json([
+                'success' => true,
+                'data' => $consumed_details
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Consumed details not found'
+            ], 200);
+        }
+    }
+
+    public function deleteConsumedHour($id) {
+        try {
+            DB::beginTransaction();
+            $consumed_details = SubscriptionConsumedHours::where('id', $id)->first();
+            if (!$consumed_details) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Consumed details not found'
+                ], 200);
+            }
+            $subscription = Subscription::where('id', $consumed_details->subscription_id)->first();
+            if (!$subscription) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Subscription not found'
+                ], 200);
+            }
+            switch ($consumed_details->consumed_type) {
+                case 'hour':
+                    $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $consumed_details->hours;
+                    break;
+                case 'minute':
+                    $hours = number_format($consumed_details->hours / 60, 1);
+                    $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $hours;
+                    break;
+            }
+            $subscription->save();
+            $consumed_details->delete();
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Consumed details deleted successfully',
+                'data' => $subscription->pending_consumed_hours
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Consumed details not found'
+            ], 200);
+        }   
     }
 
     public function mysubscriptions()

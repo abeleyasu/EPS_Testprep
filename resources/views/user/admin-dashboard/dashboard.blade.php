@@ -26,7 +26,7 @@
       <div class="row @if(count($college_list_deadline) > 3) owl-carousel owl-theme @endif">
         @foreach($college_list_deadline as $key => $deadline)
         <div class="@if(count($college_list_deadline) > 3) col-12 @else col-6 col-md-4 @endif">
-          <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center @if(!$deadline['college_deadline']['admissions_deadline']) box-height @endif">
+          <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center @if(!$deadline['college_information']['regular_admission_deadline']) box-height @endif">
             @if($deadline['college_information']['college_icon'])
               <img class="college-image" src="{{ asset('college_icon/' . $deadline['college_information']['college_icon']) }}" alt="">
             @else
@@ -34,9 +34,9 @@
             @endif
             <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{$key + 1}}</div>
             <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
-            @if($deadline['college_deadline']['admissions_deadline'])
+            @if($deadline['college_information']['regular_admission_deadline'])
               <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
-              <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline'] }}</a>
+              <a class="text-dark">{{ $deadline['college_information']['regular_admission_deadline'] }}</a>
               <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline_diff'] }}</a>
             @else
               <a href="{{ route('admin-dashboard.collegeApplicationDeadline') }}" class="btn btn-alt-success btn-sm">Add Deadline Date</a>
@@ -199,62 +199,29 @@
           </h3>
         </div>
         <div class="block-content">
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-person"></i> Milestone 1: Profile Development</a>
+          @if(count($milestones) > 0)
+            @foreach($milestones as $mKey => $milestone)
+            <div class="fs-sm push">
+              <div class="d-flex justify-content-between mb-2">
+                <div>
+                  @if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->product_id))
+                    <a href="javascript:;" class="font-grayed fw-semibold">
+                  @else
+                    <a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}" class="fw-semibold">
+                  @endif
+                    <i class="nav-main-link-icon fa fa-person"></i> 
+                    Milestone {{ $mKey + 1 }}: {{ $milestone->name }}
+                  </a>
+                </div>
               </div>
+              <p class="mb-0">{!! $milestone->description !!}</p>
             </div>
-            <p class="mb-0">Learn why developing your profile is important and how to do it.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-user-doctor"></i> Milestone 2: Career Exploration</a>
-              </div>
+            @endforeach
+          @else
+            <div class="no-data mb-4">
+              No milestones found
             </div>
-            <p class="mb-0">Learn how to research careers and decide what's right for you.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-magnifying-glass-location"></i> Milestone 3: College Search</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to search for colleges that fit you and your goals.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-brain"></i> Milestone 4: Test Prep</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to search for colleges that fit you and your goals.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-rectangle-list"></i> Milestone 5: College Applications</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to fill out your college applications and the do's and don't's of college applications.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-magnifying-glass-dollar"></i> Milestone 6: Financial Aid and Scholarships</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to find financial aid and research scholarships.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-school"></i> Milestone 7: Final College Selection</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to make a decision between the colleges that you were accepted to.</p>
-          </div>
+          @endif
           <div class="text-center push">
             <button type="button" class="btn btn-sm btn-alt-secondary">Visit the Test Prep Lesson Homepage for more..</button><!-- sends student to the Test Prep Milestone 4 page with all the Test Prep Modules on it -->
           </div>

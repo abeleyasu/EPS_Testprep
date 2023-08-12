@@ -26,6 +26,7 @@ class Milestone extends Model
         'coverimage',
         'published',
         'product_id',
+        'is_addmission_lesson',
     ];
 
     public function hasTags() {
@@ -67,10 +68,16 @@ class Milestone extends Model
         return $tasks;
     }
 
-    public static function getUserTypeWiseMilestones($courseid) {   
-        return Milestone::where('course_id', $courseid)->where('published',1)->whereHas('user_milestone_roles', function ($query) {
+    public static function getUserTypeWiseMilestones($courseid) { 
+        $milestone = Milestone::where('published',1)->whereHas('user_milestone_roles', function ($query) {
             $query->where('user_role_id', auth()->user()->role);
         });
+        if (gettype($courseid) == 'array') {
+            $milestone->whereIn('course_id', $courseid);
+        } else {
+            $milestone->where('course_id', $courseid);
+        }
+        return $milestone;
     }
 
     public function user_milestone_roles() {

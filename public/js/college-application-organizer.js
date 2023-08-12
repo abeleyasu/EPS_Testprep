@@ -108,7 +108,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="admissions_deadline-${dataset.id}">Admissions Deadline</label>
-                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" name="admissions_deadline" value="${data.admissions_deadline ? data.admissions_deadline : ''}" placeholder="mm/dd/yy" autocomplete="off">
+                                    <input type="text" class="date-own form-control update-form" disabled id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.admissions_deadline ? data.admissions_deadline : ''}" placeholder="mm/dd/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="ad_status">Status</label>
@@ -289,7 +289,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             `
             $('#' + elementid).append(content)
             $('.date-own').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'mm-dd-yyyy',
                 // startDate: '-3d',
                 autoclose: true
             });

@@ -294,8 +294,10 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::controller(SubscriptionController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/{id}', 'getSubscriptionInfo')->name('subscription-info');
-                Route::post('/comsumed/{id}', 'consumendUserSubscription')->name('consumed-subscription');
+                Route::post('/comsumed/{subscriptionId}', 'consumendUserSubscription')->name('consumed-subscription');
                 Route::get('/comsumed/{id}', 'getConsumendUserSubscription')->name('consumed-subscription-detail');
+                Route::get('/consumed/get/{id}', 'getSingleConsumedDetails')->name('consumed-subscription-single-detail');
+                Route::delete('/comsumed/{id}', 'deleteConsumedHour')->name('consumed-subscription-delete');
             });
         });
     });
@@ -465,6 +467,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::patch('save-cost-details', [InititalCollegeListController::class, 'saveCollegeCost'])->name('cost_comparison.save_cost_comparison_details');
                 Route::patch('edit-college-detail/{id}', [InititalCollegeListController::class, 'editCollegeDetails'])->name('cost_comparison.edit_college_detail');
                 Route::delete('delete-cost-details/{id}', [InititalCollegeListController::class, 'deleteCollegeCost'])->name('cost_comparison.delete_cost_details');
+                Route::post('reset-cost-comparison-data', [InititalCollegeListController::class, 'resetCostComparisonData'])->name('cost_comparison.reset-cost-comparion-data');
             });
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
         });

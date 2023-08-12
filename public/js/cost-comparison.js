@@ -22,7 +22,8 @@ function getCollegeListForCostComparison(active_accordion = null) {
                 <i class="fa fa-2x fa-bars"></i>
                 <span id="college-name-${i}">${costComparisonData.college_name}</span>
               </a> 
-              <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${costComparisonData.id}">Hide</button>
+              <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${costComparisonData.id}">Hide</button>
+              <button type="button" class="btn btn-sm btn-alt-danger reset-cost-comparion-data" data-id="${costcomparison.id}">Reset</button>
             </div>
             <div id="collapse${i}" class="collapse ${active_accordion && active_accordion == costcomparison.id ? 'show' : ''}" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
               <div class="college-content-wrapper college-content">
@@ -33,12 +34,12 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr>
                       <td>Tuition & Fees / Year</td>
-                      <td class="td-width"><input type="text" name="direct_tuition_free_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${detail.direct_tuition_free_year ? detail.direct_tuition_free_year : '0'}"></td>
+                      <td class="td-width"><input type="text" disabled data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${detail.direct_tuition_free_year ? detail.direct_tuition_free_year : '0'}"></td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>Room & Board / Year</td>
-                      <td class="td-width"><input type="text" name="direct_room_board_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${detail.direct_room_board_year ? detail.direct_room_board_year : '0'}"></td>
+                      <td class="td-width"><input type="text" disabled data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${detail.direct_room_board_year ? detail.direct_room_board_year : '0'}"></td>
                       <td></td>
                     </tr>
                     <tr class="even table-success">

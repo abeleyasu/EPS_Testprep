@@ -149,6 +149,7 @@ class MilestoneController extends Controller
             'coverimage'=>$filename,
             'published' => $request->get('published') ? true : false,
             'product_id' => empty($request->product) ? null : $request->product,
+            'is_addmission_lesson' => $request->get('is_addmission_lesson') ? true : false,
         ]);
 
         if ($milestone) {
@@ -278,6 +279,7 @@ class MilestoneController extends Controller
             'coverimage' => $filename,
             'published' => $request->get('published') ? true : false,
             'product_id' => empty($request->product) ? null : $request->product,
+            'is_addmission_lesson' => $request->get('is_addmission_lesson') ? true : false,
         ]);
 
 

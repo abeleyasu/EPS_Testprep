@@ -8,7 +8,10 @@
   <div class="content">
     <div class="block block-rounded">
       <div class="block-header block-header-default">
-        <h3 class="block-title">Edit College Information</h3>
+        <a href="{{ route('admin.admission-management.college-information.index') }}" class="btn btn-sm btn-alt-primary me-2" data-bs-toggle="tooltip" title="back">
+          <i class="fa fa-fw fa-arrow-left-long"></i>
+        </a>
+        <h3 class="block-title">Edit College Information : {{ $info->name }}</h3>
       </div>
       <div class="block-content block-content-full">
         <form action="{{ route('admin.admission-management.college-information.update') }}" method="POST" enctype="multipart/form-data">
@@ -198,8 +201,7 @@
   });
 
   $('.date-own').datepicker({
-    format: 'dd-mm-yyyy',
-    startDate: '-3d',
+    format: 'mm-dd-yyyy',
     autoclose: true
   });
 
