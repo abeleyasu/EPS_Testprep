@@ -39,7 +39,7 @@ class AdmissionDashBoard extends Controller
             $query->where('user_roles.id', $user->role);
         })->pluck('id')->toArray();
 
-        $milestones = Milestone::getUserTypeWiseMilestones($courses)->orderBy('order')->get();
+        $milestones = Milestone::getUserTypeWiseMilestones($courses)->orderBy('order')->where('is_addmission_lesson', true)->get();
 
         return view('user.admin-dashboard.dashboard', [
             'college_list_deadline' => $college_list_deadline,

@@ -185,7 +185,7 @@ class SubscriptionController extends Controller
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $consumed_hours->hours;
                         break;
                     case 'minute':
-                        $hours = number_format($consumed_hours->hours / 60, 1);
+                        $hours = number_format($consumed_hours->hours / 60, 2);
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $hours;
                         break;
                 }
@@ -229,17 +229,18 @@ class SubscriptionController extends Controller
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $request->hours;
                         break;
                     case 'minute':
-                        $hours = number_format($request->hours / 60, 1);
+                        $hours = number_format($request->hours / 60, 2);
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $hours;
                         break;
                 }
+                // dd($subscription->pending_consumed_hours);
                 $subscription->stripe_status = $subscription->pending_consumed_hours <= 0 ? 'consumed' : 'active';
                 $subscription->save();
                 DB::commit();
                 return response()->json([
                     'success' => true,
                     'message' => 'Hours consumed successfully',
-                    'data' => number_format($subscription->pending_consumed_hours, 1),
+                    'data' => number_format($subscription->pending_consumed_hours, 2),
                 ], 200);
             } else {
                 DB::rollBack();
@@ -362,17 +363,18 @@ class SubscriptionController extends Controller
                     $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $consumed_details->hours;
                     break;
                 case 'minute':
-                    $hours = number_format($consumed_details->hours / 60, 1);
+                    $hours = number_format($consumed_details->hours / 60, 2);
                     $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $hours;
                     break;
             }
+            $subscription->stripe_status = $subscription->pending_consumed_hours <= 0 ? 'consumed' : 'active';
             $subscription->save();
             $consumed_details->delete();
             DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'Consumed details deleted successfully',
-                'data' => number_format($subscription->pending_consumed_hours, 1)
+                'data' => number_format($subscription->pending_consumed_hours, 2)
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();

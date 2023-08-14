@@ -214,7 +214,7 @@
                   </a>
                 </div>
               </div>
-              <p class="mb-0">{!! $milestone->description !!}</p>
+              <p class="mb-0">{{ strip_tags($milestone->description) }}</p>
             </div>
             @endforeach
           @else
