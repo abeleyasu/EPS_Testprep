@@ -1526,6 +1526,9 @@ height: 270px
                     var selected_flag_details = [];
                     var selected_skip_details = [];
                     //Array for progress saving Ends
+                    var get_test_id = '';
+                    const urlParams = new URLSearchParams(window.location.search);
+                    get_test_id = urlParams.get('test_id');
 
                     var timerInterval = setInterval(function() {
                         elapsedMilliseconds += 1000;
@@ -1620,7 +1623,7 @@ height: 270px
                         var get_section_id = jQuery('#section_id').val();
                         var get_question_type = jQuery('#get_question_type').val();
                         var get_practice_id = jQuery(this).attr('data-practice_test_id');
-                        var get_test_id = '';
+                        
                         let question_ids = @json($total_questions);
                         var actual_time = jQuery('#actual_time').val();
 
@@ -1640,8 +1643,6 @@ height: 270px
                         }  else {
                             selected_answer[get_question_id] = '-';
                         }
-
-                        
 
                         Array.prototype.associate = function (keys) {
                             var result = {};

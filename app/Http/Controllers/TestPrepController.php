@@ -2122,8 +2122,23 @@ class TestPrepController extends Controller
 
         $all_sat_test = PracticeTest::where('format', 'SAT')->get();
         $all_sat_details_array = $this->getSatDetailsArray($all_sat_test, $user_id, $helper);
+		
+		//Test in Progress
+        $formats = ['ACT', 'SAT', 'PSAT'];
+        $getAllProgressPracticeTests = [];
+        foreach ($formats as $format) {
+            $getAllProgressPracticeTests[$format] = PracticeTest::select('practice_tests.*')
+                ->join('test_progress', 'test_progress.test_id', '=', 'practice_tests.id')
+                ->leftJoin('user_answers', function ($join) use ($user_id) {
+                    $join->on('practice_tests.id', '=', 'user_answers.test_id')
+                        ->where('user_answers.user_id', '=', $user_id);
+                })
+                ->where('practice_tests.format', $format)
+                ->whereNull('user_answers.user_id')
+                ->get();
+        }
 
-        return view('student.test-home-page.test_home_page', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'act_details_array', 'all_act_details_array', 'sat_details_array', 'all_sat_details_array', 'psat_details_array', 'all_psat_details_array', 'sat_custom_details', 'psat_custom_details', 'act_custom_details'));
+        return view('student.test-home-page.test_home_page', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'act_details_array', 'all_act_details_array', 'sat_details_array', 'all_sat_details_array', 'psat_details_array', 'all_psat_details_array', 'sat_custom_details', 'psat_custom_details', 'act_custom_details', 'getAllProgressPracticeTests'));
     }
 
     public function getActDetailsArray($act_test, $user_id)
