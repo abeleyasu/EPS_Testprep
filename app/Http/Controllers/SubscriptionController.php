@@ -286,7 +286,7 @@ class SubscriptionController extends Controller
                 $data[] = [
                     'id' => $value['id'],
                     'hours' => $value['hours'],
-                    'date' => Carbon::parse($value['date'])->format('m-d-Y'),
+                    'date' => $value['date'],
                     'notes' => $value['note'],
                     'consumed_type' => $value['consumed_type'],
                     'action' => '<div class="btn-group">
