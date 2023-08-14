@@ -192,7 +192,7 @@ class SubscriptionController extends Controller
             }
             $rules = [
                 'hours' => 'required|numeric|between:1,'.$pending_hours,
-                'date' => 'required|date_format:Y-m-d',
+                'date' => 'required|date_format:m-d-Y',
                 'consumed_type' => 'required|in:hour,minute',
             ];
             $validate = Validator::make($request->all(), $rules, [
@@ -286,7 +286,7 @@ class SubscriptionController extends Controller
                 $data[] = [
                     'id' => $value['id'],
                     'hours' => $value['hours'],
-                    'date' => $value['date'],
+                    'date' => Carbon::parse($value['date'])->format('m-d-Y'),
                     'notes' => $value['note'],
                     'consumed_type' => $value['consumed_type'],
                     'action' => '<div class="btn-group">
