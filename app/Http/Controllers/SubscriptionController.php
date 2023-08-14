@@ -239,7 +239,7 @@ class SubscriptionController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Hours consumed successfully',
-                    'data' => $subscription->pending_consumed_hours,
+                    'data' => number_format($subscription->pending_consumed_hours, 1),
                 ], 200);
             } else {
                 DB::rollBack();
