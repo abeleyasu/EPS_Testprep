@@ -120,7 +120,7 @@ button:hover {
 }
 .input-check[type="checkbox"]{
     width: 30px;
-    height: 30px;   
+    height: 30px;
     accent-color: #1f2937
 }
 .switchMulti{
@@ -131,7 +131,7 @@ button:hover {
     text-decoration: none;
     margin-right: 16px;
     padding: 5px 8px;
-} 
+}
 .btn-alt-secondary{
 	height: 30px;
 margin-right: 10px;
@@ -327,7 +327,7 @@ ul.answerOptionLsit li label input{
 
 .type-check[type="checkbox"]{
     width: 30px;
-    height: 30px;   
+    height: 30px;
     margin-left: 10px;
     accent-color: #1f2937;
 }
@@ -389,7 +389,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         </div>
                         <div class="block-content block-content-full">
                             <!----------------->
-							
+
 							<div class="container mt-5">
     <div class="row d-flex justify-content-center align-items-center">
         <div class="col-md-12">
@@ -434,13 +434,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <input type="text" value="{{$practicetests->category_type}}" name="category_type" id="category_type" placeholder="Category Type" class="form-control form-control-lg form-control-alt" >
 					</div> --}}
 
-					<div class="sectionContainerList" id="mainSectionContainer" data-id="">	
-                    <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">   
-					@foreach($testsections as $key=>$testsection)	
-                    		
+					<div class="sectionContainerList" id="mainSectionContainer" data-id="">
+                    <input type="hidden" name="sectionAddId" id="sectionAddId" value="0">
+					@foreach($testsections as $key=>$testsection)
+
 					<div class="sectionTypesFull {{ isset($testsection->practice_test_type) && ($testsection->practice_test_type == "Math_no_calculator" || $testsection->practice_test_type == "Math_with_calculator") ? 'checkMathDiv' : '' }} section_{{ $testsection->id }}" data-id="{{ $testsection->id }}" id="sectionDisplay_{{ $testsection->id }}" >
 					<div class="mb-2 mb-4">
-						<div class="sectionTypesFullMutli"> </div> 
+						<div class="sectionTypesFullMutli"> </div>
 						<div class="sectionTypesFullMutli firstRecord">
 							<ul class="sectionListtype">
 								<li>Type: &nbsp;<strong>{{ $testsection->format }}</strong></li>
@@ -453,8 +453,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <li class="edit-close-btn">
                                     <button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="{{$testsection->id}}" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section">
                                         <i class="fa fa-fw fa-pencil-alt"></i></button>
-                                    <button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-section_type="{{ $testsection->practice_test_type }}" data-id="{{ $testsection->id }}" onclick="deleteSection(this)"  data-bs-toggle="tooltip" title="Delete Section"> 
-                                        <i class="fa fa-fw fa-times"></i></button>    
+                                    <button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-section_type="{{ $testsection->practice_test_type }}" data-id="{{ $testsection->id }}" onclick="deleteSection(this)"  data-bs-toggle="tooltip" title="Delete Section">
+                                        <i class="fa fa-fw fa-times"></i></button>
                                 </li>
                                 <!--<li>Order: &nbsp;
                                     <select name="sectionOrder" class="sectionOrder">
@@ -467,7 +467,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 							</ul>
 							<ul class="sectionHeading">
 								<li>Question</li>
-								<li>Answer</li> 
+								<li>Answer</li>
 								<li>Passage</li>
 								<li>Passage Number</li>
 								<li>Fill Answer</li>
@@ -514,15 +514,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <input type="number" readonly class="form-control" name="section_order" value="{{ $testsection->section_order }}" id="order_{{ $testsection->id }}"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openOrderQuesDialog({{$testsection->id}})"><i class="fa-solid fa-check"></i></button>
                         </div>
 
-                    </div>				
+                    </div>
 					</div>
-					@endforeach                        
+					@endforeach
                     </div>
                     <div class="col-md-12 col-xl-12 mb-4">
                         <button type="button" data-id="0" class="btn w-25 btn-alt-success add_section_modal_btn">
                             <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Practice Test Section
                         </button>
-                    </div>  
+                    </div>
                     <div class="modal fade" id="sectionModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                             <div class="modal-content">
@@ -535,17 +535,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         <div class="mb-2">
                                             <label class="form-label validError" style="font-size: 13px; color: red;"></label>
                                         </div>
-                
+
                                         <div class="mb-2">
                                             <label class="form-label" style="font-size: 13px;">Practice Test Section Title:</label>
                                             <input id="testSectiontitle" value="" name="testSectiontitle"
                                                 placeholder="Enter Practice Section Title" class="form-control">
                                         </div>
-                
+
                                         <div class="mb-2 col-12">
                                             <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
                                             <select id="testSectionType" name="testSectionType" class="form-control js-select2 select" onchange="addClassScore(this)">
-                
+
                                             </select>
                                         </div>
 
@@ -560,7 +560,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 <input type="number" id="regular_time_hour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="regular_time_minute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="regular_time_second" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
                                             </div>
                                         </div>
-                                        
+
                                         {{-- <div class="mb-2">
                                             <label class="form-label" style="font-size: 13px;">50% Extended Time</label>
                                             <input type="time" id="50extended" name="50extended" step="1" class="form-control">
@@ -646,7 +646,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 <input type="number" id="edit50extendedhour" step="1" class="form-control me-1" placeholder="Enter Hours"/><span style="font-weight: 700">:</span><input type="number" id="edit50extendedminute" min="0" max="59" step="1"  class="form-control ms-1 me-1" placeholder="Enter Minutes" oninput="validateInput(this)"/><span style="font-weight: 700">:</span><input type="number" id="edit50extendedsecond" min="0" max="59" step="1"  class="form-control ms-1" placeholder="Enter Seconds" oninput="validateInput(this)"/>
                                             </div>
                                         </div>
- 
+
                                         {{-- <div class="mb-2">
                                             <label class="form-label" style="font-size: 13px;">100% Extended Time</label>
                                             <input type="time" id="edit100extended" name="edit100extended" step="1" class="form-control">
@@ -692,7 +692,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     </div>
 </div>
                             <!----------------->
-							
+
                         </div>
                     </div>
                 </div>
@@ -761,9 +761,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                     <div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
                         <select id="testSectionType" name="testSectionType" class="form-control">
-                            
+
                         </select>
-                    </div>                    
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -771,7 +771,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                 <input type="hidden" name="currentModelId" value="0" id="currentModelId">
                 <button type="button" class="btn btn-primary save_section">Save changes</button>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 <!-- Modal -->
@@ -784,7 +784,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                 <h5 class="modal-title" >Update Question</h5>
                 <input type="hidden" name="quesFormat" id="quesFormat">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                
+
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -815,7 +815,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <textarea id="js-ckeditor-addQue" name="js-ckeditor-addQue" class="form-control form-control-lg form-control-alt addQuestion" placeholder="update Question" ></textarea>
                         <span class="text-danger" id="questionError"></span>
                     </div>
-                    <?php 
+                    <?php
                         $helper = new Helper;
                         $tags = $helper->getAllQuestionTags();
                     ?>
@@ -835,7 +835,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
                        <div class="d-flex input-field align-items-center">
                         <select class="js-select2 select superCate" id="super_category_edit" name="super_category_edit" onchange="insertSuperCategory(this)" multiple>
-                            
+
                         </select>
                     </div>
                     <span class="text-danger" id="superCategoryError"></span>
@@ -857,7 +857,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </div>
                                 <span class="text-danger" id="superCategoryError"></span>
                             </div>
-                            
+
                             <div class="col-md-3 mb-2 me-2">
                                 <label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label>
                                 <div class="d-flex align-items-center">
@@ -905,7 +905,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                     </div>
                     <input type="hidden" name="editSelectedAnswerType" id="editSelectedAnswerType">
                     <div class="mb-2" id="selectedLayoutQuestion">
-                       
+
                         <div class="choiceOneInFour_Odd"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFour_Odd">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFour_OddAnswer_0">
@@ -978,7 +978,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFour"></label>
 
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourEven_'])
-                                    
+
                                     <textarea id="editChoiceOneInFour_EvenAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                                 </li>
                                 <li>
@@ -1012,7 +1012,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </li>
                             </ul>
                         </div>
-                    
+
                         <div class="choiceOneInFive_Odd"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFive_Odd">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFive_OddAnswer_0">
@@ -1149,7 +1149,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFourPass_OddAnswer_0">
                                     <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
-                                     
+
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => ''])
 
                                     <textarea id="editChoiceOneInFourPass_OddAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1255,7 +1255,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
                         <div class="choiceMultInFourFill">
                             <input type="hidden" name="questionType" id="questionType" value="choiceMultInFourFill">
-                            
+
                             <label class="form-label">
                                 <select class="switchMulti editMultipleChoice" onChange="editMultiChoice(this.value);">
                                     <option value="">Select Choice</option>
@@ -1315,9 +1315,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         <textarea id="editchoiceMultInFourFill_explanation_answer_4" name="editchoiceMultInFourFill_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                </ul>  
+                                </ul>
                             </div>
-                            
+
                             <div class="multiChoice_field withOutFillOptChoice" style="display:none">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceMultInFourFillwithOutFillOptChoice_0">
@@ -1345,7 +1345,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOptChoice_2">
                                         <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="editChoiceMultiChoiceInFourFill"></label>
-                                        
+
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'choiceMultInFourFill_'])
 
                                         <textarea id="editChoiceMultiChoiceInFourFill_3" name="editChoiceMultiChoiceInFourFill_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1367,7 +1367,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         <textarea id="editchoiceMultiChoiceInFourFill_explanation_answer_4" name="editchoiceMultiChoiceInFourFill_explanation_answer_4"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                </ul> 
+                                </ul>
                             </div>
 
                             <div class="fill_field withFillOpt " style="display:none">
@@ -1415,7 +1415,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         <div class="col-md-2 add-position">
                                             <button class="plus-button" fc_ans_col='A' fc_data-id-A="1" onclick="addNewTypes('A', this,'null', 'fc_')"><i class="fa-solid fa-plus"></i></button>
                                         </div>
-                                        
+
                                     </div>
                                 </div> --}}
 
@@ -1433,7 +1433,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                 <input type="hidden" name="sectionAddId" value="0" class="sectionAddId">
                 <button type="button" class="btn btn-primary update_question_section">Update changes</button>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 <!-- Modal -->
@@ -1476,7 +1476,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
             <div class="modal-header">
                 <h5 class="modal-title" >Add Question</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                
+
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -1502,7 +1502,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             </select>
                         </div>
                     </div>
-                   
+
                     <div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Question:<span class="text-danger">*</span></label>
                         <textarea id="js-ckeditor-add-addQue" name="js-ckeditor-add-addQue" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1515,11 +1515,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             id="addTag"
                             placeholder="add tag" class="form-control" onkeypress="addTagFunc(event)"/>
 
-                        <div class="row items-push mt-2 add-tag-div">                                  
-                           
+                        <div class="row items-push mt-2 add-tag-div">
+
                         </div>
                     </div> --}}
-                    <?php 
+                    <?php
                         $helper = new Helper;
                         $tags = $helper->getAllQuestionTags();
                     ?>
@@ -1539,13 +1539,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
                         <div class="d-flex align-items-center">
                             <select class="js-select2 select superCate" id="super_category_create" name="super_category_create" onchange="insertSuperCategory(this)" multiple>
-                                
+
                             </select>
                         </div>
                         <span class="text-danger" id="superCategoryError"></span>
                     </div> --}}
 
-                    {{-- <div class="mb-2 mb-4"> 
+                    {{-- <div class="mb-2 mb-4">
                         <label for="new_question_type_select">Question type:</label>
                         <select class="form-control form-control-lg form-control-alt"  name="new_question_type_select" id="new_question_type_select">
                             <option value="">Select Question Type</option>
@@ -1554,7 +1554,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             @endforeach
                         </select>
                     </div> --}}
-                    
+
                     {{-- <div class="input-container" id="add_New_Types">
                         <div class="d-flex input-field align-items-center">
                             <div class="col-md-1">
@@ -1592,7 +1592,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             </div>
                         </div>
                     </div> --}}
-                    
+
                     <div class="row passage-container align-items-center">
                         <div class="mb-2 col-md-5">
                             <label for="passage_number" class="form-label">Passage No<span class="text-danger">*</span></label>
@@ -1618,7 +1618,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <label class="form-label" style="font-size: 13px;">Passages:</label>
                         <select name="addPassagesType" class="form-control addPassagesType">
                             <option value="">Select Passages</option>
-                            
+
                         </select>
                     </div> --}}
                     <input type="hidden" name="addPassages" class="addPassages">
@@ -1632,7 +1632,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             @endforeach
                         </select>
                     </div>-->
-                    
+
                     {{-- <div class="mb-2">
                         <label class="form-label" style="font-size: 13px;">Passage Number:</label>
                         <select class="addPassNumber">
@@ -1651,7 +1651,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFour"></label>
 
                                 @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFourOdd_'])
-                                
+
                                 <textarea id="choiceOneInFour_OddAnswer_1" name="choiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                             </li>
                             <li>
@@ -1663,7 +1663,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceOneInFour"></label>
 
                                 @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFourOdd_'])
-                                
+
                                 <textarea id="choiceOneInFour_OddAnswer_2" name="choiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
                             </li>
                             <li>
@@ -1899,7 +1899,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <ul class="answerOptionLsit">
                             <li>
                                 <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="addChoiceOneInFourPass"></label>
-                                
+
                                 @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => ''])
 
                                 <textarea id="choiceOneInFourPass_OddAnswer_1" name="choiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1924,7 +1924,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <li>
                                 <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="addChoiceOneInFourPass"></label>
 
-                                
+
                                 @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => ''])
 
                                 <textarea id="choiceOneInFourPass_OddAnswer_3" name="choiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -2028,7 +2028,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </li>
                                 <li>
                                     <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox"  value="b" name="addChoiceMultInFourFill[]"></label>
-                                    
+
                                     @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'cb_choiceMultInFourFill_'])
 
                                     <textarea id="choiceMultInFourFillAnswer_2" name="choiceMultInFourFillAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
@@ -2042,7 +2042,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox"  value="c" name="addChoiceMultInFourFill[]"></label>
 
                                     @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'cb_choiceMultInFourFill_'])
-                                    
+
                                     <textarea id="choiceMultInFourFillAnswer_3" name="choiceMultInFourFillAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
                                 </li>
                                 <li>
@@ -2062,13 +2062,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     <textarea id="choiceMultInFourFill_explanation_answer_4" name="choiceMultInFourFill_explanation_answer_4"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                            </ul>    
+                            </ul>
                         </div>
                         <div class="multiChoice_field" style="display:none">
                             <ul class="answerOptionLsit">
                                 <li>
                                     <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="addChoiceMultiChoiceInFourFill"></label>
-                                    
+
                                     @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'choiceMultInFourFill_'])
 
                                     <textarea id="addChoiceMultiChoiceInFourFill_1" name="addChoiceMultiChoiceInFourFill_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -2082,7 +2082,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="addChoiceMultiChoiceInFourFill"></label>
 
                                     @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'choiceMultInFourFill_'])
-                                    
+
                                     <textarea id="addChoiceMultiChoiceInFourFill_2" name="addChoiceMultiChoiceInFourFill_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content"></textarea>
                                 </li>
                                 <li>
@@ -2092,7 +2092,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </li>
                                 <li>
                                     <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="addChoiceMultiChoiceInFourFill"></label>
-                                    
+
                                     @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'choiceMultInFourFill_'])
 
                                     <textarea id="addChoiceMultiChoiceInFourFill_3" name="addChoiceMultiChoiceInFourFill_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -2114,7 +2114,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     <textarea id="choiceMultiChoiceInFourFill_explanation_answer_4" name="choiceMultiChoiceInFourFill_explanation_answer_4"
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
-                            </ul> 
+                            </ul>
                         </div>
                         <div class="fill_field" style="display:none">
                             <div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="addChoiceMultInFourFill_filltype"  class="form-control addChoiceMultInFourFill_filltype"><option value="">Select Type</option><option value="number">Number</option><option value="decimal">Decimal</option><option value="fraction">Fraction</option></select></div>
@@ -2163,7 +2163,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </div>
                             </div> --}}
                             @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'fc_'])
-                            
+
                         </div>
                     </div>
                 </div>
@@ -2174,7 +2174,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                 <input type="hidden" name="addCurrentModelQueId" value="0" id="addCurrentModelQueId">
                 <button type="button" class="btn btn-primary save_section">Save changes</button>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 {{-- end modal  --}}
@@ -2198,7 +2198,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             </span>
                             <button class="btn btn-primary" value="{{ $testsection->id }}">{{ $testsection->id }} :- {{ $testsection->format }} {{ $testsection->practice_test_type }}</button>
                         </div>
-                    @endforeach   
+                    @endforeach
                 </div>
             </div>
             <div class="modal-footer">
@@ -2229,8 +2229,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </span>
                                 <button class="btn btn-primary" value="{{ $practQuestion->id }}">{!! $practQuestion->title !!}</button>
                             </div>
-                        @endforeach                    
-                    @endforeach 
+                        @endforeach
+                    @endforeach
                 </div>
             </div>
             <div class="modal-footer">
@@ -2238,7 +2238,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
             </div>
         </div>
     </div>
-</div>  
+</div>
 
 {{-- modal for new addad section questions  --}}
 <div class="modal fade" id="addDragModalQuestion" tabindex="-1" aria-labelledby="staticBackdropLabel"
@@ -2289,7 +2289,7 @@ aria-hidden="true">
                 $("#add_passage_number").prop("disabled", false);
                 $("select[name='addPassagesType']").prop("disabled", false);
             } else {
-                $("#add_passage_number").prop("disabled", true);  
+                $("#add_passage_number").prop("disabled", true);
                 $("select[name='addPassagesType']").prop("disabled", true);
             }
         });
@@ -2299,7 +2299,7 @@ aria-hidden="true">
                 $("#passage_number").prop("disabled", false);
                 $("select[name='passagesType']").prop("disabled", false);
             } else {
-                $("#passage_number").prop("disabled", true);  
+                $("#passage_number").prop("disabled", true);
                 $("select[name='passagesType']").prop("disabled", true);
             }
         });
@@ -2335,9 +2335,9 @@ aria-hidden="true">
             let format = $('#format').val();
             let super_category = '';
             // if(is_edit == true){
-            //     super_category = $('#questionMultiModal select[name="super_category_edit"]').val(); 
+            //     super_category = $('#questionMultiModal select[name="super_category_edit"]').val();
             // } else {
-            //     super_category = $('#addQuestionMultiModal select[name="super_category_create"]').val(); 
+            //     super_category = $('#addQuestionMultiModal select[name="super_category_create"]').val();
             // }
             let closestSuperCategory = $(data).closest('.category-custom').prev('.rating-tag').find('select.superCategory');
             if (closestSuperCategory.length > 0) {
@@ -2412,17 +2412,17 @@ aria-hidden="true">
         function insertQuestionType(data){
             let question_type = $(data).val();
                 question_type = question_type.join(" ");
-            let section_type = $('#section_type').val();  
+            let section_type = $('#section_type').val();
             let format = $('#format').val();
             let id = $(data).attr('data-id');
             let super_category = '';
             let category = '';
             // if(is_edit == true){
-            //     // super_category = $('#questionMultiModal select[name="super_category_edit"]').val(); 
+            //     // super_category = $('#questionMultiModal select[name="super_category_edit"]').val();
             //     super_category = $(`#questionMultiModal #edit_super_category_${id}`).val();
             //     category = $(`#questionMultiModal #category_type_${id}`).val();
             // } else {
-            //     // super_category = $('#addQuestionMultiModal select[name="super_category_create"]').val(); 
+            //     // super_category = $('#addQuestionMultiModal select[name="super_category_create"]').val();
             //     super_category = $(`#addQuestionMultiModal #super_category_create_${id}`).val();
             //     category = $(`#addQuestionMultiModal #add_category_type_${id}`).val();
             // }
@@ -2465,7 +2465,7 @@ aria-hidden="true">
                             option += `<option value="${value.id}">`;
                             option += `${value.category_type_title}`;
                             option += `</option>`;
-                        } 
+                        }
 
                         if(resp.type == 'question_type') {
                             option += `<option value="${value.id}">`;
@@ -2497,7 +2497,7 @@ aria-hidden="true">
                 let super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
                 let category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
                 let question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
-    
+
                 if(super_category == '') {
                     toastr.error('Please select a Super Category!');
                     return false;
@@ -2507,7 +2507,7 @@ aria-hidden="true">
                     toastr.error('Please select a category type!');
                     return false;
                 }
-    
+
                 if(question_type == '') {
                     toastr.error('Please select a question type!');
                     return false;
@@ -2541,27 +2541,27 @@ aria-hidden="true">
                 html += `</div>`;
                 html += `</div>`;
 
-                html += `<div class="mb-2 col-md-3 me-2 category-custom">`;                
-                html += `<div class="d-flex align-items-center">`;                
-                html += `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
+                html += `<div class="mb-2 col-md-3 me-2 category-custom">`;
+                html += `<div class="d-flex align-items-center">`;
+                html += `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;
                 // html += preGetPracticeCategoryType;
                 html += cat_type_option;
-                html += `</select>`;  
-                html += `</div>`;                
-                html += `</div>`;                
-                html += `<div class="mb-2 col-md-3 add_question_type_select">`; 
-                html += `<div class="d-flex align-items-center">`;                
-                html += `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
+                html += `</select>`;
+                html += `</div>`;
+                html += `</div>`;
+                html += `<div class="mb-2 col-md-3 add_question_type_select">`;
+                html += `<div class="d-flex align-items-center">`;
+                html += `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;
                 // html += preGetPracticeQuestionType;
                 html += question_type_option;
-                html += `</select>`;  
-                html += `</div>`;                
-                html += `</div>`; 
-                html += `<div class="col-md-1 add-minus-icon">`;                
-                html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;               
+                html += `</select>`;
                 html += `</div>`;
                 html += `</div>`;
-                    
+                html += `<div class="col-md-1 add-minus-icon">`;
+                html += `<button class="plus-button" onclick="removeNewTypes(this)"><i class="fa-solid fa-minus"></i></button>`;
+                html += `</div>`;
+                html += `</div>`;
+
             $(`#${disp_option}addNewTypes_${ans_col}`).append(html);
 
             $(`#${disp_option}edit_search-input_${ans_col}_${key}`).select2({
@@ -2607,7 +2607,7 @@ aria-hidden="true">
             let super_category = $(`#${disp_option}super_category_create_${ans_col}_${key - 1}`).val();
             let category_type = $(`#${disp_option}add_category_type_${ans_col}_${key - 1}`).val();
             let question_type = $(`#${disp_option}add_search-input_${ans_col}_${key - 1}`).val();
-          
+
             if(super_category == '') {
                 toastr.error('Please select a Super category!');
                 button.attr('disabled', false);
@@ -2645,26 +2645,26 @@ aria-hidden="true">
                 html += `</div>`;
                 html += `</div>`;
 
-                html += `<div class="col-md-3 mb-2 me-2 category-custom">`; 
-                html += `<div class="d-flex align-items-center">`;               
-                html += `<select class="js-select2 select categoryType" id="${disp_option}add_category_type_${ans_col}_${key}" name="${disp_option}add_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;                              
-                html +=  preGetPracticeCategoryType;                        
-                html += `</select>`; 
-                html += `</div>`;               
+                html += `<div class="col-md-3 mb-2 me-2 category-custom">`;
+                html += `<div class="d-flex align-items-center">`;
+                html += `<select class="js-select2 select categoryType" id="${disp_option}add_category_type_${ans_col}_${key}" name="${disp_option}add_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;
+                html +=  preGetPracticeCategoryType;
+                html += `</select>`;
+                html += `</div>`;
                 html += `</div>`;
 
-                html += `<div class="mb-2 col-md-3 add_question_type_select">`;   
-                html += `<div class="d-flex align-items-center">`;             
-                html += `<select class="js-select2 select questionType" id="${disp_option}add_search-input_${ans_col}_${key}" name="${disp_option}add_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;                             
+                html += `<div class="mb-2 col-md-3 add_question_type_select">`;
+                html += `<div class="d-flex align-items-center">`;
+                html += `<select class="js-select2 select questionType" id="${disp_option}add_search-input_${ans_col}_${key}" name="${disp_option}add_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;
                 html +=  preGetPracticeQuestionType;
                 html += `</select>`;
                 html += `</div>`;
                 html += `</div>`;
 
-                html += `<div class="col-md-1 add-minus-icon">`;                
-                html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;                
+                html += `<div class="col-md-1 add-minus-icon">`;
+                html += `<button class="plus-button" onclick="removeNewType(this)"><i class="fa-solid fa-minus"></i></button>`;
                 html += `</div>`;
-                html += `</div>`;         
+                html += `</div>`;
 
             $(`#${disp_option}add_New_Types_${ans_col}`).append(html);
 
@@ -2774,7 +2774,7 @@ aria-hidden="true">
             placeholder : "Select Super Category",
             maximumSelectionLength: 1
         });
-       
+
 
         $(`#diff_rating_edit`).select2({
             dropdownParent: $('#questionMultiModal'),
@@ -2927,8 +2927,8 @@ aria-hidden="true">
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
         // });
-		
-		
+
+
         // CKEDITOR.replace( 'choiceOneInFour_OddAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -2946,7 +2946,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // // new 
+        // // new
         // CKEDITOR.replace( 'choiceOneInFour_EvenAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -2978,7 +2978,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // // new 
+        // // new
         // CKEDITOR.replace( 'choiceOneInFour_Even_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -2993,7 +2993,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        
+
         // CKEDITOR.replace( 'choiceOneInFive_OddAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3037,7 +3037,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        
+
         // CKEDITOR.replace( 'choiceOneInFive_Odd_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3134,7 +3134,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // // new 
+        // // new
         // CKEDITOR.replace( 'choiceOneInFourPass_Even_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3151,7 +3151,7 @@ aria-hidden="true">
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
         // });
-        
+
 
         // CKEDITOR.replace( 'choiceMultInFourFillAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
@@ -3170,7 +3170,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        
+
         // CKEDITOR.replace( 'choiceMultInFourFill_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3207,7 +3207,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // // new 
+        // // new
         // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3242,7 +3242,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // // new 
+        // // new
         // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3259,7 +3259,7 @@ aria-hidden="true">
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
         // });
-        
+
         // CKEDITOR.replace( 'editChoiceOneInFive_OddAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3281,7 +3281,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // //new 
+        // //new
         // CKEDITOR.replace( 'editChoiceOneInFive_EvenAnswer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3324,7 +3324,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        // // new 
+        // // new
         // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3382,7 +3382,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        
+
         // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3436,7 +3436,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        
+
         // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3472,7 +3472,7 @@ aria-hidden="true">
         //     allowedContent
         // });
 
-        
+
         // CKEDITOR.replace( 'choiceMultiChoiceInFourFill_explanation_answer_1',{
         //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
         //     allowedContent
@@ -3526,8 +3526,8 @@ aria-hidden="true">
         // });
 
         jQuery(document).on('change', '.sectionOrder', function(){
-            var section_id = $('.add_question_modal_multi').attr("data-id"); 
-            var order_num = $(this).val(); 
+            var section_id = $('.add_question_modal_multi').attr("data-id");
+            var order_num = $(this).val();
             if(order_num =='' && order_num<1){
                 order_num = 1;
             }
@@ -3543,7 +3543,7 @@ aria-hidden="true">
                 }
             });
         });
-		
+
 		$('.edit_question').click(function() {
 			var id = $(this).data('id');
 			$.ajax({
@@ -3557,7 +3557,7 @@ aria-hidden="true">
 					var id = $('.question_id').val(res['id']);
 					var formate = res['format'];
 					var testid = res['testid'];
-					
+
 					$('#format option[value="'+formate+'"]').attr("selected", "selected");
 					$('#practicetestid option[value="'+testid+'"]').attr("selected", "selected");
 					CKEDITOR.instances['js-ckeditor-que-desc'].setData(res['description']);
@@ -3565,7 +3565,7 @@ aria-hidden="true">
                 }
             });
 		});
-		
+
 		$('.save_question').click(function() {
 			var format = $('#format').val();
 			var practicetestid = $('#practicetestid').val();
@@ -3602,7 +3602,7 @@ aria-hidden="true">
 
             var activeAnswerType = '.'+$('#editSelectedAnswerType').val();
             var questionType = $('#questionMultiModal '+activeAnswerType+' #questionType').val();
-            
+
             multiChoice = $('.editMultipleChoice option:selected').val();
             let ans_choices;
             let disp_section;
@@ -3690,12 +3690,12 @@ aria-hidden="true">
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
             if($('#passageRequired_2').is(':checked')){
-                if(question =='' || 
-                    tags.length ==0 || 
-                    jQuery.type(passNumber) == "null" || 
-                    passagesType =='' || 
-                    format =='' || 
-                    testSectionType =='' || 
+                if(question =='' ||
+                    tags.length ==0 ||
+                    jQuery.type(passNumber) == "null" ||
+                    passagesType =='' ||
+                    format =='' ||
+                    testSectionType =='' ||
                     ans_choices.some(choice => {
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
@@ -3718,17 +3718,17 @@ aria-hidden="true">
                     $('#passage_number').focus();
                     $('#questionMultiModal #passageTypeError').text(jQuery.type(passagesType) =='null' ? 'Passage Type is required!' : '');
                     $('#passagesType').focus();
-                    
+
                     ans_choices.forEach(choice => {
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
-                        
+
                         $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
                     });
-                    
+
                     return false;
                 }else{
                     // $('#questionMultiModal .validError').text('');
@@ -3745,16 +3745,16 @@ aria-hidden="true">
 
                 }
             } else {
-                if(question =='' || 
-                    tags ==0 || 
-                    format =='' || 
-                    testSectionType =='' || 
+                if(question =='' ||
+                    tags ==0 ||
+                    format =='' ||
+                    testSectionType =='' ||
                     ans_choices.some(choice => {
-                        const super_category_values = eval(`super_category_values_${choice}`);
-                        const get_category_type_values = eval(`get_category_type_values_${choice}`);
-                        const get_question_type_values = eval(`get_question_type_values_${choice}`);
+                        const super_category_values = superCategoryValues[choice];
+                        const get_category_type_values = getCategoryTypeValues[choice];
+                        const get_question_type_values = getQuestionTypeValues[choice];
                         return (
-                            super_category_values.length === 0 ||
+                            (super_category_values && super_category_values?.length) === 0 ||
                             get_category_type_values.length === 0 ||
                             get_question_type_values.length === 0
                         );
@@ -3771,7 +3771,7 @@ aria-hidden="true">
                         var super_category_values = eval(`super_category_values_${choice}`);
                         var get_category_type_values = eval(`get_category_type_values_${choice}`);
                         var get_question_type_values = eval(`get_question_type_values_${choice}`);
-                        
+
                         $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
@@ -3782,7 +3782,7 @@ aria-hidden="true">
                     // $('#questionMultiModal .validError').text('');
                     $('#questionMultiModal #questionError').text('');
                     $('#questionMultiModal #tagError').text('');
-                    
+
                     ans_choices.forEach(ans_choice => {
                         $(`#questionMultiModal #${disp_section}superCategoryError_${ans_choice}`).text('');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
@@ -3790,7 +3790,7 @@ aria-hidden="true">
                     });
                 }
             }
-            
+
             if($('#passageRequired_2').is(':checked')){
                 var pass = $('select[name="passagesType"] :selected').text();
                 var passNumber = $('#questionMultiModal .passNumber').val();
@@ -3802,8 +3802,8 @@ aria-hidden="true">
 			    var passagesType = '';
                 var passagesTypeTxt = '';
             }
-				
-                if(questionType =='choiceOneInFourPass_Odd'){                
+
+                if(questionType =='choiceOneInFourPass_Odd'){
 
                     answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFourPass"]:checked').val();
 
@@ -3832,19 +3832,19 @@ aria-hidden="true">
                      fillVals = $('#questionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
 
                     if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
-                        fill = fillVals.join();    
+                        fill = fillVals.join();
                         answerType = fill;
                     }
 	                if($('#questionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val() !=''){
-	                    fillType = $('#questionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val();  
+	                    fillType = $('#questionMultiModal #selectedLayoutQuestion .choiceMultInFourFill_filltype').val();
                         multiChoice = $('.editMultipleChoice option:selected').val();
 	                }
-	                
+
 
                     var singleChoM = $('#questionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
 
                     if(typeof singleChoM !== 'undefined' && singleChoM != null){
-                        
+
                         answerType = $('#questionMultiModal '+activeAnswerType+' input[name="editChoiceMultiChoiceInFourFill"]:checked').val();
                         multiChoice = $('.editMultipleChoice option:selected').val();
 
@@ -3852,15 +3852,15 @@ aria-hidden="true">
                         // multiChoice = 'multiChoice';
                         multiChoice = $('.editMultipleChoice option:selected').val();
                         var answerMap ='';
-                        var checkIDs = $('#questionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill[]"]:checked').map(function(){       
-                          answerMap += $(this).val()+', ';  
+                        var checkIDs = $('#questionMultiModal '+activeAnswerType+' input[name="choiceMultInFourFill[]"]:checked').map(function(){
+                          answerMap += $(this).val()+', ';
                           return $(this).val();
                         });
                         if(answerMap !=''){
                             answerType = answerMap.substring(0, answerMap.length - 2);
                         }
-                    }	                
-	                
+                    }
+
 	            } else if(questionType == 'choiceOneInFive'){
                     answerType = $('#questionMultiModal '+activeAnswerType+' input[name="choiceOneInFive"]:checked').val();
 
@@ -3872,9 +3872,9 @@ aria-hidden="true">
 
                 $('#questionMultiModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
-                
-				var section_id = $('.sectionAddId').val(); 
-                var questionOrderUpdated = $('#editQuestionOrder').val(); 
+
+				var section_id = $('.sectionAddId').val();
+                var questionOrderUpdated = $('#editQuestionOrder').val();
 				$.ajax({
 					data:{
 						'id': currentModelQueId,
@@ -3926,23 +3926,23 @@ aria-hidden="true">
                         let html = '';
                             html += `<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n`;
                             html += `<i class="fa-solid fa-grip-vertical"></i>\n`;
-                            html += `</span>\n`;    
+                            html += `</span>\n`;
                             html += `<button class="btn btn-primary" value="${currentModelQueId}">${question}</button>\n`;
-                            
-                        $(`#listWithHandleQuestion .questionaprat_${res.question_id}`).html(html); 
-                        // $('.questionaprat_'+currentModelQueId).remove();   
+
+                        $(`#listWithHandleQuestion .questionaprat_${res.question_id}`).html(html);
+                        // $('.questionaprat_'+currentModelQueId).remove();
                         // $('#listWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+currentModelQueId+'" data-section_id="'+section_id+'" data-id="'+currentModelQueId+'" style="display:none;">\n' +
                         // '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
                         // '<i class="fa-solid fa-grip-vertical"></i>\n' +
                         // '</span>\n' +
                         // '<button class="btn btn-primary" value="'+currentModelQueId+'">'+question+'</button>\n' +
-                        // '</div>');    
+                        // '</div>');
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
-					} 
-				});	
+					}
+				});
             setEmptyValue(questionType);
             return false;
-        
+
         });
 
         function clearError(){
@@ -3985,7 +3985,7 @@ aria-hidden="true">
             var dataId = $(this).attr("data-id");
             var format = $('#format').val();
             var AnuserOpts = $('#sectionDisplay_'+dataId+' .firstRecord ul li span .selectedSecTxt').val();
-            
+
             $('#addTestSectionTypeRead').val(AnuserOpts);
             $('#addCurrentModelQueId').val(dataId);
             // $('.addSectionAddId').val(dataId);
@@ -4037,12 +4037,12 @@ aria-hidden="true">
                             //         '_token': $('input[name="_token"]').val()
                             //     },
                             //     success: function(res) {
-                            //             result1 = res.records;  
+                            //             result1 = res.records;
                             //             for (var i = 0; i < result1.length; i++) {
                             //                 $('.table_body').append(`<tr id="score_${result1[i]['section_id']}_${i}" data-section_id="${result1[i]['section_id']}" data-question_id="${result1[i]['question_id']}" data-section_type="${result1[i]['section_type']}" data-test_id="${result1[i]['test_id']}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" class="form-control" value="${result1[i]['actual_score'] != null ? result1[i]['actual_score'] : ''}"></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"  value="${result1[i]['converted_score'] != null ? result1[i]['converted_score'] : ''}"></td></tr>`);
                             //             }
                             //         }
-                            //     }); 
+                            //     });
                             // } else {
                                 if(section_types == 'Math_no_calculator' || section_types == 'Math_with_calculator'){
                                     let mathDivs = getMathDiv();
@@ -4061,7 +4061,7 @@ aria-hidden="true">
                                             $('.table_body').append(`<tr id="score_${section_id}_${i}" data-section_id="${section_id}" data-question_id="${i}" data-section_type="${section_types}" data-test_id="${test_ids}" ><td><input type="number" placeholder="Actual Score" id="actualScore_${i}" name="actualScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td><td><input type="number" placeholder="Converted Score" id="convertedScore_${i}" name="convertedScore" class="form-control" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" value=""></td></tr>`);
                                         }
                                     }
-                                }    
+                                }
                             // }
                         } else {
                             if(section_types == 'Math_no_calculator' || section_types == 'Math_with_calculator'){
@@ -4099,7 +4099,7 @@ aria-hidden="true">
                     let testId = $(this).attr('data-test_id');
                     let actualScore = $('#actualScore_'+questionId).val();
                     let convertedScore = $('#convertedScore_'+questionId).val();
-                    
+
                     let scoreObj = {
                         'sectionId': sectionId,
                         'questionId': questionId,
@@ -4127,7 +4127,7 @@ aria-hidden="true">
                 $('#scoreModalMulti').modal('hide')
             }
         });
-        
+
 
         $(document).on('click', '.save_scores_btn', function() {
             let scores = [];
@@ -4138,7 +4138,7 @@ aria-hidden="true">
                 let testId = $(this).attr('data-test_id');
                 let actualScore = $('#actualScore_'+questionId).val();
                 let convertedScore = $('#convertedScore_'+questionId).val();
-                
+
                 let scoreObj = {
                     'sectionId': sectionId,
                     'questionId': questionId,
@@ -4197,7 +4197,7 @@ aria-hidden="true">
             var testSectionTitle = $('#testSectiontitle').val();
             var testSectionType = $('#testSectionType').val();
             var tags = $('input[name="tags"]').val();
-            
+
             var fill = 'N/A';
             var fillType = 'N/A';
             var answerType ='N/A';
@@ -4367,8 +4367,8 @@ aria-hidden="true">
                 });
 
 
-                const labels = ['superCategoryError', 'categoryTypeError', 'questionTypeError'];                
-                
+                const labels = ['superCategoryError', 'categoryTypeError', 'questionTypeError'];
+
                 var get_question_type_values = $('select[name=add_search-input]').map(function(i,v) {
                     var question_type_arr = [];
                     let question_type_val = $(v).val();
@@ -4380,12 +4380,12 @@ aria-hidden="true">
 
                 if($('#passageRequired_1').is(':checked')){
                     if(
-                        question =='' || 
-                        tags ==0 || 
-                        passNumber == '' || 
-                        passagesType =='' || 
-                        format =='' || 
-                        testSectionType =='' || 
+                        question =='' ||
+                        tags ==0 ||
+                        passNumber == '' ||
+                        passagesType =='' ||
+                        format =='' ||
+                        testSectionType =='' ||
                         ans_choices.some(choice => {
                             const super_category_values = superCategoryValues[choice];
                             const get_category_type_values = getCategoryTypeValues[choice];
@@ -4413,7 +4413,7 @@ aria-hidden="true">
                                 const super_category_values = superCategoryValues[choice];
                                 const get_category_type_values = getCategoryTypeValues[choice];
                                 const get_question_type_values = getQuestionTypeValues[choice];
-                                
+
                                 $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                                 $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                                 $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
@@ -4432,10 +4432,10 @@ aria-hidden="true">
                         });
                     }
                 } else {
-                    if(question =='' || 
-                        tags.length ==0 || 
-                        format =='' || 
-                        testSectionType =='' || 
+                    if(question =='' ||
+                        tags.length ==0 ||
+                        format =='' ||
+                        testSectionType =='' ||
                         ans_choices.some(choice => {
                                 const super_category_values = eval(`super_category_values_${choice}`);
                                 const get_category_type_values = eval(`get_category_type_values_${choice}`);
@@ -4457,7 +4457,7 @@ aria-hidden="true">
                             var super_category_values = eval(`super_category_values_${choice}`);
                             var get_category_type_values = eval(`get_category_type_values_${choice}`);
                             var get_question_type_values = eval(`get_question_type_values_${choice}`);
-                            
+
                             $(`#addQuestionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                             $(`#addQuestionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                             $(`#addQuestionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
@@ -4466,13 +4466,13 @@ aria-hidden="true">
                     }else{
                         $('#addQuestionMultiModal #questionError').text('');
                         $('#addQuestionMultiModal #tagError').text('');
-                        
+
                         ans_choices.forEach(choice => {
                             emptyError('addQuestionMultiModal', disp_section, choice);
                         });
                     }
-                }   
-                
+                }
+
                 if($('#passageRequired_1').is(':checked')){
                     var pass = $('select[name="addPassagesType"] :selected').text();
                     var passNumber = $('#addQuestionMultiModal .addPassNumber').val();
@@ -4484,8 +4484,8 @@ aria-hidden="true">
                     var passagesType = '';
                     var passagesTypeTxt = '';
                 }
-                
-                if(questionType =='choiceOneInFourPass_Odd'){ 
+
+                if(questionType =='choiceOneInFourPass_Odd'){
 
                     answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFourPass"]:checked').val();
 
@@ -4507,47 +4507,47 @@ aria-hidden="true">
 
                 } else if(questionType == 'choiceOneInFour_Even'){
 
-                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFour"]:checked').val(); 
+                    answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceOneInFour"]:checked').val();
 
                 } else if(questionType =='choiceMultInFourFill'){
                     fillVals = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill_fill[]"]').map(function(){return $(this).val();}).get();
-                    
+
 
                     if(typeof fillVals !== 'undefined' && fillVals.length !== 0){
                         fill = fillVals.join();
                         answerType = fill;
                     }
-                    
+
                     if($('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val() !=''){
-                        fillType = $('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val();  
+                        fillType = $('#addQuestionMultiModal #addSelectedLayoutQuestion '+activeAnswerType+' .addChoiceMultInFourFill_filltype').val();
                         multiChoice = $('.addMultiChoice option:selected').val();
                     }
 
                     var singleChoM = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
 
                     if(typeof singleChoM !== 'undefined' && singleChoM != null){
-                        
+
                         answerType = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultiChoiceInFourFill"]:checked').val();
                         multiChoice = $('.addMultiChoice option:selected').val();
 
-                    } else{ 
+                    } else{
                         // multiChoice = 'multiChoice';
                         multiChoice = $('.addMultiChoice option:selected').val();
                         var answerMap ='';
-                        var checkIDs = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill[]"]:checked').map(function(){       
-                        answerMap += $(this).val()+', ';  
+                        var checkIDs = $('#addQuestionMultiModal '+activeAnswerType+' input[name="addChoiceMultInFourFill[]"]:checked').map(function(){
+                        answerMap += $(this).val()+', ';
                         return $(this).val();
                         });
                         if(answerMap !=''){
                             answerType = answerMap.substring(0, answerMap.length - 2);
-                        }                       
+                        }
 
-                    }                    
-                    
+                    }
+
                 } else {
                     answerType = $('#addQuestionMultiModal  '+activeAnswerType+' input[name="'+questionType+'"]:checked').val();
                 }
-                
+
                 var answerContentJson =getAnswerContent(questionType, fill);
                 var answerExpJson = getAnswerExpContent(questionType, fill);
 
@@ -4555,7 +4555,7 @@ aria-hidden="true">
                 $('#addQuestionMultiModal').modal('hide');
 
                 questionOrder++;
-                var section_id = $('.addSectionAddId').val();  
+                var section_id = $('.addSectionAddId').val();
                 $.ajax({
                     data:{
                         'format': format,
@@ -4598,7 +4598,7 @@ aria-hidden="true">
                         '</span>\n' +
                         '<button class="btn btn-primary" value="'+res.question_id+'">'+question+'</button>\n' +
                         '</div>');
-                        
+
                         $('#addListWithHandleQuestion').append('<div class="list-group-item sectionsaprat_'+section_id+' quesBasedSecList questionaprat_'+res.question_id+'" data-section_id="'+section_id+'" data-id="'+res.question_id+'" style="display:none;">\n' +
                         '<span class="glyphicon question-glyphicon-move" aria-hidden="true">\n' +
                         '<i class="fa-solid fa-grip-vertical"></i>\n' +
@@ -4608,12 +4608,12 @@ aria-hidden="true">
 
                         MathJax.Hub.Queue(["Typeset",MathJax.Hub,'p']);
                         questionCount++;
-                    } 
-                }); 
+                    }
+                });
             }
             setEmptyValue(questionType);
             return false;
-        
+
         });
 	</script>
 <script>
@@ -4721,8 +4721,8 @@ async function nextPrev(n) {
                 // $('select[name="edit_super_category_D"').html('');
                 // $('select[name="edit_search-input_D"').html('');
 
-                
-                
+
+
                 // $('select[name="search-input"').html('');
                 // $('select[name="add_search-input"').html('');
                 let super_option = ``;
@@ -4813,11 +4813,11 @@ async function nextPrev(n) {
                 $('select[name="fc_edit_super_category_A"').html('');
                 $('select[name="fc_edit_category_type_A"').html('');
                 $('select[name="fc_edit_search-input_A"').html('');
-                
+
                 $(`select[name="fc_edit_super_category_A"`).append(super_option);
                 $(`select[name="fc_edit_category_type_A"`).append(category_option);
                 $(`select[name="fc_edit_search-input_A"`).append(questionType_option);
-                
+
             }
         });
     } else if (test_title_val == '') {
@@ -4997,7 +4997,7 @@ function practQuestioEdit(id){
                         let super_category_values_Arr = JSON.parse(result.super_category_values);
                         let category_type_values_Arr = JSON.parse(result.category_type_values);
                         let question_type_values_Arr = JSON.parse(result.question_type_values);
-                        
+
                         for (let key in super_category_values_Arr) {
                             if (super_category_values_Arr.hasOwnProperty(key)) {
                                 let values = super_category_values_Arr[key];
@@ -5006,8 +5006,8 @@ function practQuestioEdit(id){
                                 }
                             }
                         }
-                        
-                        
+
+
                         // let checkedValuesArr = is_category_checkedArr.map(item => item.checked);
 
                         $('#editQuestionOrder').val(result.question_order);
@@ -5024,9 +5024,9 @@ function practQuestioEdit(id){
                         $('#section_type').val(section_type);
 
                         $('#question_tags_edit').val(result.tags).trigger('change');
-                        
+
                         // $('#question_tags_edit').val(result.tags).trigger('change');
-                        
+
                         $(".passNumber").val(result.passage_number).change();
                         $('#passagesType').val(result.passages_id).change();
                         // for (let index = 1; index < categorytypeArr.length; index++) {
@@ -5046,7 +5046,7 @@ function practQuestioEdit(id){
 
                         // $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
 
-                        // setTimeout(function(){ 
+                        // setTimeout(function(){
 
                             //For checkbox
                             for (let key in checkbox_values_Arr) {
@@ -5098,7 +5098,7 @@ function practQuestioEdit(id){
                             success: (passRes) => {
                                 var opt = '';
                                 $.each(passRes, function( key, val){
-                                    opt +='<option value="'+val.id+'">'+val.title+'</option>';                      
+                                    opt +='<option value="'+val.id+'">'+val.title+'</option>';
                                 });
                                 $('#passagesType').html(opt);
                                 $("select[name=passagesType]").val(result.passages_id).trigger('change');
@@ -5110,15 +5110,15 @@ function practQuestioEdit(id){
                         $('#questionMultiModal').modal('show');
                     // }, 1000);
                     $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
-                    
+
                 }
             })
             //
-            
+
         }
     });
 
-    
+
 }
 
 async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice, checkbox_values, super_category_values, category_type_values, question_type_values){
@@ -5136,7 +5136,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             var jsonConvert = [];
             if(isJson(answer_content)){
                 jsonConvert = $.parseJSON(answer_content);
-            } 
+            }
         	var selHml='';
         	for(var i=1; i<= optObj.length; i++){
                 var arrIndex = Number(i)-1;
@@ -5147,20 +5147,20 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
                     var dynIds = 'editChoiceOneInFour_OddAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFour_Odd_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-            
-            
-        } 
-        // new 
+
+
+        }
+        // new
         if(answerOpt == 'choiceOneInFour_Even'){
             $('#editSelectedAnswerType').val('choiceOneInFour_Even');
             $('.choiceOneInFour_Odd').hide();
@@ -5174,7 +5174,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             var jsonConvert = [];
             if(isJson(answer_content)){
                 jsonConvert = $.parseJSON(answer_content);
-            } 
+            }
         	var selHml='';
         	for(var i=1; i<= optObj.length; i++){
                 var arrIndex = Number(i)-1;
@@ -5185,19 +5185,19 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
                     var dynIds = 'editChoiceOneInFour_EvenAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFour_Even_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-            
-            
-        } 
+
+
+        }
         if(answerOpt =='choiceOneInFive_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFive_Odd');
             $('.choiceOneInFour_Odd').hide();
@@ -5218,18 +5218,18 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
         			$('.choiceOneInFive_Odd ul li.choiceOneInFive_OddAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
-        		} 
+        		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
                     var dynIds = 'editChoiceOneInFive_OddAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFive_Odd_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
 
@@ -5255,22 +5255,22 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 var editInd = Number(i)+1;
         		if(optObj[arrIndex] == selectedOpt){
                     $('.choiceOneInFive_Even ul li.choiceOneInFive_EvenAnswer_'+arrIndex+' input[type="radio"] ').prop("checked", true);
-        		} 
+        		}
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
                     var dynIds = 'editChoiceOneInFive_EvenAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFive_Even_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
 
-        } 
+        }
         if(answerOpt =='choiceOneInFourPass_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFourPass_Odd');
             $('.choiceOneInFour_Odd').hide();
@@ -5285,8 +5285,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             var jsonConvert = [];
             if(isJson(answer_content)){
                 jsonConvert = $.parseJSON(answer_content);
-            }            
-            
+            }
+
         	for(var i=1; i<= optObj.length; i++){
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
@@ -5296,20 +5296,20 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
                     var dynIds = 'editChoiceOneInFourPass_OddAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFourPass_Odd_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-            
+
 
         }
-        // new 
+        // new
         if(answerOpt =='choiceOneInFourPass_Even'){
             $('#editSelectedAnswerType').val('choiceOneInFourPass_Even');
             $('.choiceOneInFour_Odd').hide();
@@ -5324,8 +5324,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             var jsonConvert = [];
             if(isJson(answer_content)){
                 jsonConvert = $.parseJSON(answer_content);
-            }            
-            
+            }
+
         	for(var i=1; i<= optObj.length; i++){
                 var arrIndex = Number(i)-1;
                 var editInd = Number(i)+1;
@@ -5335,19 +5335,19 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 if(jsonConvert.length>0){
                     var anwserInd = Number(i)-1;
                     var dynIds = 'editChoiceOneInFourPass_EvenAnswer_'+i;
-                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
+                    CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                 }
         	}
             if(answer_exp && answer_exp.length != null) {
                 for (let index = 0; index < answer_exp.length; index++) {
                     let count = index + 1;
                     const answer_id = `editchoiceOneInFourPass_Even_explanation_answer_${count}`;
-                    CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                    CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-            
 
-        } 
+
+        }
         if(answerOpt == 'choiceMultInFourFill'){
 
             $('#editSelectedAnswerType').val('choiceMultInFourFill');
@@ -5363,11 +5363,11 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
         	var multiChecked = trimStr.split(",");
         	var selHml='';
             var jsonConvert = [];
-            
+
             if(answer_content != null && isJson(answer_content)){
                 jsonConvert = $.parseJSON(answer_content);
             }
-            
+
             var fillHtl = '<input type="text" name="choiceMultInFourFill_fill[]" value="">';
 
             if(multiChoice == 1){
@@ -5381,14 +5381,14 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     if(jsonConvert.length>0){
                         var anwserInd = Number(i)-1;
                         var dynIds = 'editChoiceMultInFourFillAnswer_'+i;
-                        CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
-                    } 
+                        CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
+                    }
                 }
                 if(answer_exp && answer_exp.length != null) {
                     for (let index = 0; index < answer_exp.length; index++) {
                         let count = index + 1;
                         const answer_id = `editchoiceMultInFourFill_explanation_answer_${count}`;
-                        CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                        CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
             }else{
@@ -5397,21 +5397,21 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
                     if(selectedOpt == optObj[arrIndex]){
-                        
+
                         $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoice_'+arrIndex+' input[type="radio"]').prop("checked", true);
 
                     }
                     if(jsonConvert.length>0){
                         var anwserInd = Number(i)-1;
                         var dynIds = 'editChoiceMultiChoiceInFourFill_'+i;
-                        CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]); 
-                    } 
+                        CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
+                    }
                 }
                 if(answer_exp && answer_exp.length != null) {
                     for (let index = 0; index < answer_exp.length; index++) {
                         let count = index + 1;
                         const answer_id = `editchoiceMultiChoiceInFourFill_explanation_answer_${count}`;
-                        CKEDITOR.instances[answer_id].setData(answer_exp[index]); 
+                        CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
 
@@ -5425,7 +5425,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
         			optType +='<option value="'+arrFillType[j]+'" selected="selected">'+arrFillType[j].toUpperCase()+'</option>';
         		} else {
         			optType +='<option value="'+arrFillType[j]+'">'+arrFillType[j].toUpperCase()+'</option>';
-        		}                    		
+        		}
         	}
 
         	var fillDiv ='';
@@ -5433,7 +5433,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
 
         	if(fill != null && fill !='' && fill != 'N/A'){
                  var objFill = fill.split(',');
-                 
+
                  if(typeof objFill !== 'undefined' && objFill.length !== 0){
                     fillHtl = '';
                     for(var j=0; j<objFill.length; j++){
@@ -5442,7 +5442,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                  }
         		$('.withOutFillOpt').hide();
                 $('.withOutFillOptChoice').hide();
-                $('.withFillOpt').show();        	    
+                $('.withFillOpt').show();
         	} else{
                 if(multiChoice == 1){
                     $('.withOutFillOpt').show();
@@ -5456,7 +5456,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 }
             }
 
-            
+
             var seletedLayout = '<div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="choiceMultInFourFill_filltype"  class="form-control choiceMultInFourFill_filltype">'+optType+'</select> </div><div class="mb-2"> <label class="form-label" style="font-size: 13px;">Fill:</label> <label class="form-label editExtraFillOption" style="font-size: 13px;">'+fillHtl+'</label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="editMoreFillOption();" class="switchMulti">Add More Options</a></label></div>';
 
 
@@ -5469,7 +5469,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             // preGetPracticeCategoryType = await dropdown_lists(`/admin/getPracticeCategoryType?testType=${test_format_type_val}`);
             // preGetPracticeQuestionType = await dropdown_lists(`/admin/getPracticeQuestionType?testType=${test_format_type_val}`);
             // preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${test_format_type_val}`);
-            
+
             // for (let key in super_category_values_Arr) {
             //     if (super_category_values_Arr.hasOwnProperty(key)) {
             //         seletedLayout += '<div class="input-container" id="fc_addNewTypes_A">';
@@ -5477,7 +5477,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             //         for (let index = 0; index < super_category_values_Arr[key].length; index++) {
             //             seletedLayout += '<div class="d-flex input-field align-items-center">';
             //                 seletedLayout += '<div class="col-md-1"><label class="form-label" for="fc_edit_ct_checkbox_A">&ensp;</label><input type="checkbox" name="fc_edit_ct_checkbox_A" id="fc_edit_ct_checkbox_A_'+key+'"></div>';
-                        
+
             //                 seletedLayout += '<div class="col-md-3 mb-2 me-2 rating-tag"><label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti superCategory" id="fc_edit_super_category_A_'+key+'" name="fc_edit_super_category_A" style="width: 100%"><option value="">Select Super Category</option>'+preGetSuperCategory+'</select></div><span class="text-danger" id="fc_superCategoryError_A"></span></div>';
 
             //                 seletedLayout += '<div class="col-md-3 mb-2 me-2 category-custom"><label for="category_type" class="form-label">Category Type<span class="text-danger">*</span></label><div class="d-flex align-items-center"><select class="switchMulti categoryType" id="fc_edit_category_type_A_'+key+'" name="fc_edit_category_type_A" style="width: 100%"><option value="">Select Category Type</option>'+preGetPracticeCategoryType+'</select></div><span class="text-danger" id="fc_categoryTypeError_A"></span></div>';
@@ -5496,8 +5496,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             //         seletedLayout += '</div>';
             //     }
             // }
-            
-            
+
+
 
             $('.withFillOpt').html(seletedLayout);
 
@@ -5542,8 +5542,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             //         });
             //     }
             // }
-        }            
-        
+        }
+
     }
     function setEmptyValue(qType){
 		CKEDITOR.instances['js-ckeditor-addQue'].setData('');
@@ -5560,7 +5560,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['choiceOneInFour_OddAnswer_3'].setData('');
     CKEDITOR.instances['choiceOneInFour_OddAnswer_4'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['choiceOneInFour_EvenAnswer_1'].setData('');
     CKEDITOR.instances['choiceOneInFour_EvenAnswer_2'].setData('');
     CKEDITOR.instances['choiceOneInFour_EvenAnswer_3'].setData('');
@@ -5571,7 +5571,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['choiceOneInFour_Odd_explanation_answer_3'].setData('');
     CKEDITOR.instances['choiceOneInFour_Odd_explanation_answer_4'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_1'].setData('');
     CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_2'].setData('');
     CKEDITOR.instances['choiceOneInFour_Even_explanation_answer_3'].setData('');
@@ -5583,7 +5583,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['choiceOneInFive_OddAnswer_4'].setData('');
     CKEDITOR.instances['choiceOneInFive_OddAnswer_5'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['choiceOneInFive_EvenAnswer_1'].setData('');
     CKEDITOR.instances['choiceOneInFive_EvenAnswer_2'].setData('');
     CKEDITOR.instances['choiceOneInFive_EvenAnswer_3'].setData('');
@@ -5596,7 +5596,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_4'].setData('');
     CKEDITOR.instances['choiceOneInFive_Odd_explanation_answer_5'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_1'].setData('');
     CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_2'].setData('');
     CKEDITOR.instances['choiceOneInFive_Even_explanation_answer_3'].setData('');
@@ -5613,7 +5613,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_2'].setData('');
     CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_3'].setData('');
     CKEDITOR.instances['choiceOneInFourPass_EvenAnswer_4'].setData('');
-    
+
     CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_1'].setData('');
     CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_2'].setData('');
     CKEDITOR.instances['choiceOneInFourPass_Odd_explanation_answer_3'].setData('');
@@ -5630,7 +5630,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['choiceMultInFourFillAnswer_3'].setData('');
     CKEDITOR.instances['choiceMultInFourFillAnswer_4'].setData('');
 
-    
+
     CKEDITOR.instances['choiceMultInFourFill_explanation_answer_1'].setData('');
     CKEDITOR.instances['choiceMultInFourFill_explanation_answer_2'].setData('');
     CKEDITOR.instances['choiceMultInFourFill_explanation_answer_3'].setData('');
@@ -5644,7 +5644,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['editChoiceOneInFour_OddAnswer_3'].setData('');
     CKEDITOR.instances['editChoiceOneInFour_OddAnswer_4'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_1'].setData('');
     CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_2'].setData('');
     CKEDITOR.instances['editChoiceOneInFour_EvenAnswer_3'].setData('');
@@ -5655,7 +5655,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['editchoiceOneInFour_Odd_explanation_answer_3'].setData('');
     CKEDITOR.instances['editchoiceOneInFour_Odd_explanation_answer_4'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_1'].setData('');
     CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_2'].setData('');
     CKEDITOR.instances['editchoiceOneInFour_Even_explanation_answer_3'].setData('');
@@ -5667,20 +5667,20 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['editChoiceOneInFive_OddAnswer_4'].setData('');
     CKEDITOR.instances['editChoiceOneInFive_OddAnswer_5'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_1'].setData('');
     CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_2'].setData('');
     CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_3'].setData('');
     CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_4'].setData('');
     CKEDITOR.instances['editChoiceOneInFive_EvenAnswer_5'].setData('');
-    
+
     CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_1'].setData('');
     CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_2'].setData('');
     CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_3'].setData('');
     CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_4'].setData('');
     CKEDITOR.instances['editchoiceOneInFive_Odd_explanation_answer_5'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_1'].setData('');
     CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_2'].setData('');
     CKEDITOR.instances['editchoiceOneInFive_Even_explanation_answer_3'].setData('');
@@ -5692,7 +5692,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['editChoiceOneInFourPass_OddAnswer_3'].setData('');
     CKEDITOR.instances['editChoiceOneInFourPass_OddAnswer_4'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_1'].setData('');
     CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_2'].setData('');
     CKEDITOR.instances['editChoiceOneInFourPass_EvenAnswer_3'].setData('');
@@ -5703,7 +5703,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['editchoiceOneInFourPass_Odd_explanation_answer_3'].setData('');
     CKEDITOR.instances['editchoiceOneInFourPass_Odd_explanation_answer_4'].setData('');
 
-    // new 
+    // new
     CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_1'].setData('');
     CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_2'].setData('');
     CKEDITOR.instances['editchoiceOneInFourPass_Even_explanation_answer_3'].setData('');
@@ -5725,7 +5725,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['addChoiceMultiChoiceInFourFill_3'].setData('');
     CKEDITOR.instances['addChoiceMultiChoiceInFourFill_4'].setData('');
 
-    
+
     CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_1'].setData('');
     CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_2'].setData('');
     CKEDITOR.instances['choiceMultiChoiceInFourFill_explanation_answer_3'].setData('');
@@ -5735,16 +5735,16 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
     CKEDITOR.instances['editChoiceMultiChoiceInFourFill_2'].setData('');
     CKEDITOR.instances['editChoiceMultiChoiceInFourFill_3'].setData('');
     CKEDITOR.instances['editChoiceMultiChoiceInFourFill_4'].setData('');
-    
+
     CKEDITOR.instances['editchoiceMultiChoiceInFourFill_explanation_answer_1'].setData('');
     CKEDITOR.instances['editchoiceMultiChoiceInFourFill_explanation_answer_2'].setData('');
     CKEDITOR.instances['editchoiceMultiChoiceInFourFill_explanation_answer_3'].setData('');
     CKEDITOR.instances['editchoiceMultiChoiceInFourFill_explanation_answer_4'].setData('');
 
-	}  
+	}
     function appendAnswerOption(answerOpt,format){
-            
-            var questionAnsComb = 
+
+            var questionAnsComb =
             {
                 English:'choiceOneInFourPass',
                 Math:'choiceOneInFive',
@@ -5756,9 +5756,9 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
 
             };
             $.each(questionAnsComb, function(ind,val){
-                
+
                 if(ind == answerOpt){
-                    
+
                     if(val == 'choiceOneInFour'){
                         if(questionCount % 2 != 0){
                             $('#selectedAnswerType').val('choiceOneInFour_Odd');
@@ -5846,11 +5846,11 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                         $('.addchoiceOneInFourPass_Odd').hide();
                         $('.addchoiceOneInFourPass_Even').hide();
                         $('.addchoiceMultInFourFill').show();
-                    }                                     
+                    }
                 }
             });
-        
-        } 
+
+        }
 function getPassages(format){
     $.ajax({
         data:{
@@ -5868,7 +5868,7 @@ function getPassages(format){
             $('.addPassagesType').html(opt);
         }
      });
-}  
+}
 function multiChoice(arg){
     if(arg == 1){
         $('.multi_field').show();
@@ -5903,7 +5903,7 @@ function addMultiChoice(arg){
         $('input[name="addChoiceMultiChoiceInFourFill"]').prop("checked",false);
         $('#addSelectedLayoutQuestion .fill_field').hide();
     }
-}  
+}
 function editMultiChoice(arg){
     if(arg == 1){
         $('#selectedLayoutQuestion .multi_field').show();
@@ -5928,13 +5928,13 @@ function editMultiChoice(arg){
         $('input[name="editChoiceMultiChoiceInFourFill"]').prop("checked",false);
         $('#selectedLayoutQuestion .fill_field').hide();
     }
-}   
+}
 function addMoreFillOption(){
     $('.extraFillOption').append('<input type="text" name="addChoiceMultInFourFill_fill[]">');
 }
 function removeMoreFillOption(){
     $('.extraFillOption').html('');
-} 
+}
 function editMoreFillOption(){
     $('.editExtraFillOption').append('<input type="text" name="choiceMultInFourFill_fill[]">');
 }
@@ -5953,7 +5953,7 @@ function getAnswerContent(answerOpt, fill){
                 for(var i=1; i<6;i++){
                     var dynamicId = answerOpt+'Answer_'+i;
                     answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
-                }               
+                }
 
             } else if(answerOpt=='choiceOneInFive_Even'){
                 for(var i=1; i<6;i++){
@@ -5975,16 +5975,16 @@ function getAnswerContent(answerOpt, fill){
                             var dynamicId = answerOpt+'Answer_'+i;
                             answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
                         }
-                    } 
+                    }
                 }
-                
+
             }
         if(answerContenArr.length>0){
             return JSON.stringify(answerContenArr);
         }
         return '';
 }
-//start new 
+//start new
 function getAnswerExpContent(answerOpt, fill) {
             var answerExpArr = [];
             if (answerOpt == 'choiceOneInFive_Odd') {
@@ -5998,7 +5998,7 @@ function getAnswerExpContent(answerOpt, fill) {
                     var dynamicId = answerOpt + '_explanation_answer_' + i;
                     answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
                 }
-                
+
             } else {
                 if (fill == '' || fill == 'N/A') {
                     var choiceSel = $('.getFilterChoice').val();
@@ -6028,13 +6028,13 @@ function getEditAnswerContent(answerOpt, fill){
                 for(var i=1; i<6;i++){
                     var dynamicId = 'edit'+capitalizeFirstLetter(answerOpt)+'Answer_'+i;
                     answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
-                }               
+                }
 
             } else if(answerOpt=='choiceOneInFive_Even'){
                 for(var i=1; i<6;i++){
                     var dynamicId = 'edit'+capitalizeFirstLetter(answerOpt)+'Answer_'+i;
                     answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
-                } 
+                }
 
             }else {
                 if(fill == '' || fill =='N/A'){
@@ -6049,10 +6049,10 @@ function getEditAnswerContent(answerOpt, fill){
                         for(var i=1; i<5;i++){
                             var dynamicId = 'edit'+capitalizeFirstLetter(answerOpt)+'Answer_'+i;
                             answerContenArr.push(CKEDITOR.instances[dynamicId].getData());
-                        } 
-                    }                     
+                        }
+                    }
                 }
-                
+
             }
         if(answerContenArr.length>0){
             return JSON.stringify(answerContenArr);
@@ -6066,7 +6066,7 @@ function getEditAnswerExpContent(answerOpt, fill){
                 for(var i=1; i<6;i++){
                     var dynamicId = 'edit'+answerOpt+'_explanation_answer_' + i;
                     answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
-                }               
+                }
 
             } else if(answerOpt=='choiceOneInFive_Even'){
                 for(var i=1; i<6;i++){
@@ -6087,10 +6087,10 @@ function getEditAnswerExpContent(answerOpt, fill){
                         for(var i=1; i<5;i++){
                             var dynamicId = 'edit'+answerOpt+'_explanation_answer_'+i;
                             answerExpArr.push(CKEDITOR.instances[dynamicId].getData());
-                        } 
-                    }                     
+                        }
+                    }
                 }
-                
+
             }
         if(answerExpArr.length>0){
             return JSON.stringify(answerExpArr);
@@ -6133,7 +6133,7 @@ function capitalizeFirstLetter(string) {
 }
 function deleteTag(evt){
     $(evt).parent().remove();
-        
+
 }
 function openOrderDialog(secId) {
     $('#sectionAddId').val(secId);
@@ -6174,7 +6174,7 @@ Sortable.create(mainSectionContainer, {
             });
         });
     }
-},); 
+},);
 
 $('.add_section_modal_btn').click(function() {
     var optionObj = [];
@@ -6200,7 +6200,7 @@ $('.add_section_modal_btn').click(function() {
     $('#sectionModal').modal('show');
 });
 
-// new 
+// new
 
 $(document).ready(function(){
     var optionObj = [];
@@ -6250,7 +6250,7 @@ Sortable.create(listWithHandleQuestion, {
             $.each(results, function(index,val){
                 $('#sectionDisplay_'+val.question['practice_test_sections_id']+' .firstRecord .singleQuest_'+val.question['id']).remove();
                 let html = '';
-                    html += `<ul class="sectionList singleQuest_${val.question['id']}" data-id="${val.question['id']}">`; 
+                    html += `<ul class="sectionList singleQuest_${val.question['id']}" data-id="${val.question['id']}">`;
                     html += `<li>${val.question['title']}</li>`;
                     html += `<li class="answerValUpdate_${val.question['id']}">${val.question['answer']}</li>`;
                     html += `<li>${val.question['passages'] ? val.question['passages'] : ''}</li>`;
@@ -6258,7 +6258,7 @@ Sortable.create(listWithHandleQuestion, {
                     html += `<li>${val.question['fill']}</li>`;
                     html += `<li class="orderValUpdate_${val.question['id']}">${val.question['question_order']}</li>`;
                     html += `<li>`;
-                    html += `<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;    
+                    html += `<button type="button" class="btn btn-sm btn-alt-secondary edit-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Edit Question" onclick="practQuestioEdit(${val.question['id']})">`;
                     html += `<i class="fa fa-fw fa-pencil-alt"></i>`;
                     html += `</button>`;
                     html += `<button type="button" class="btn btn-sm btn-alt-secondary delete-section" data-id="${val.question['id']}" data-bs-toggle="tooltip" title="Delete Question"   onclick="practQuestioDel(${val.question['id']})">`;
@@ -6353,7 +6353,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
 
     function editSection(data) {
         let id = $(data).attr('data-id');
-        
+
         $.ajax({
             data: {
                 'sectionId': id ,
@@ -6376,7 +6376,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 $('#editTestSectionType').html(opt);
                 $('#editTestSectionTitle').val(`${res.sectionDetails.section_title}`);
                 $('#currentSectionId').val(`${res.sectionDetails.id}`);
-                
+
                 let regularTime = res.sectionDetails.regular_time.split(':');
                 let fiftyTime = res.sectionDetails.fifty_per_extended.split(':');
                 let hundredTime = res.sectionDetails.hundred_per_extended.split(':');
@@ -6419,7 +6419,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
             data: {
                 'sectionId': id ,
                 'sectionTitle': testSectionTitle,
-                'sectionType': testSectionType, 
+                'sectionType': testSectionType,
                 'regular': regularTime,
                 'fifty': fiftyExtended,
                 'hundred': hundredExtended,
@@ -6430,7 +6430,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
             success: (res) => {
                 $(`.editedAnswerOption_${id}`).find('strong').text(res.updatedSection.practice_test_type);
                 $(`.selectedSection_${id}`).val(`${res.updatedSection.practice_test_type}`);
-                
+
             }
         });
         $('#editSectionModal').modal('hide');
@@ -6463,10 +6463,10 @@ var test = Sortable.create(addListWithHandleQuestion, {
             success: (res) => {
                 $(`.section_${id}`).remove();
             }
-        });       
+        });
     }
 
-    
+
 </script>
-    
+
 @endsection
