@@ -2123,15 +2123,22 @@ class TestPrepController extends Controller
         $all_sat_test = PracticeTest::where('format', 'SAT')->get();
         $all_sat_details_array = $this->getSatDetailsArray($all_sat_test, $user_id, $helper);
 		
-		//Test in Progress
+        //Test in Progress
         $formats = ['ACT', 'SAT', 'PSAT'];
         $getAllProgressPracticeTests = [];
         foreach ($formats as $format) {
             $getAllProgressPracticeTests[$format] = PracticeTest::select('practice_tests.*')
-                ->join('test_progress', 'test_progress.test_id', '=', 'practice_tests.id')
+                ->join('test_progress', function ($join) use ($user_id) {
+                    $join->on('test_progress.test_id', '=', 'practice_tests.id')
+                        ->where('test_progress.user_id', '=', $user_id);
+                })
                 ->leftJoin('user_answers', function ($join) use ($user_id) {
                     $join->on('practice_tests.id', '=', 'user_answers.test_id')
                         ->where('user_answers.user_id', '=', $user_id);
+                })
+                ->where(function ($query) use ($user_id) {
+                    $query->where('practice_tests.user_id', '=', $user_id)
+                        ->orWhereNull('practice_tests.user_id');
                 })
                 ->where('practice_tests.format', $format)
                 ->whereNull('user_answers.user_id')

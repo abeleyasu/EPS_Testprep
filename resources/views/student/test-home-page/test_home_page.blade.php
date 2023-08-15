@@ -166,7 +166,7 @@
                                         {{-- collaps 2 --}}
                                     </div>
                                     <div class="accordion-item">
-                                        <div class="border">
+                                        <div class="border mb-3">
                                             <h2 class="accordion-header" id="headingTwo">
                                                 <button class="accordion-button collapsed border-0 fw-bold" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#collapseTwo"
@@ -292,8 +292,8 @@
                                         </div>
                                     </div>
 
-									<div class="accordion-item">
-                                        <div class="border mb-3">
+                                    <div class="accordion-item">
+                                        <div class="border">
                                             <h2 class="accordion-header" id="headingThree">
                                                 <button class="accordion-button border-0 fw-bold" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true"
