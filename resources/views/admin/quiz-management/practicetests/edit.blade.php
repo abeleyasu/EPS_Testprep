@@ -4437,15 +4437,15 @@ aria-hidden="true">
                         format =='' ||
                         testSectionType =='' ||
                         ans_choices.some(choice => {
-                                const super_category_values = eval(`super_category_values_${choice}`);
-                                const get_category_type_values = eval(`get_category_type_values_${choice}`);
-                                const get_question_type_values = eval(`get_question_type_values_${choice}`);
-                                return (
-                                    super_category_values.length === 0 ||
-                                    get_category_type_values.length === 0 ||
-                                    get_question_type_values.length === 0
-                                );
-                            })
+                            const super_category_values = superCategoryValues[choice];
+                            const get_category_type_values = getCategoryTypeValues[choice];
+                            const get_question_type_values = getQuestionTypeValues[choice];
+                            return (
+                                super_category_values.length === 0 ||
+                                get_category_type_values.length === 0 ||
+                                get_question_type_values.length === 0
+                            );
+                        })
                     ){
                         // $('#addQuestionMultiModal .validError').text('Below fields are required!');
                         $('#addQuestionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
