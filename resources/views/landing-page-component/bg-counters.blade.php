@@ -1,4 +1,4 @@
-<section id="bg-counters" class="section-padding position-relative bg-counters bg-black-board">
+<section id="bg-counters" class="section-padding parallax position-relative bg-counters bg-black-board">
   <div class="container">
     <div class="row align-items-center text-center">
       <div class="col-sm-12 col-lg-4">

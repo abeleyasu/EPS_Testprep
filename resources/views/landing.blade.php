@@ -8,11 +8,11 @@
 @include('landing-page-component.about')
 @include('landing-page-component.our-process')
 @include('landing-page-component.our-blog')
-@include('landing-page-component.bg-counters')
-@include('landing-page-component.our-apps')
-@include('landing-page-component.pricing')
-@include('landing-page-component.our-partners')
 @include('landing-page-component.our-testimonial')
+@include('landing-page-component.our-apps')
+@include('landing-page-component.bg-counters')
+{{--- @include('landing-page-component.pricing')
+@include('landing-page-component.our-partners') --}}
 @include('landing-page-component.stayconnect')
 
 @endsection

@@ -7,6 +7,9 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
+            <a class="nav-link" href="{{route('signup')}}" >Sign Up Free</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link about-content" href="#" >Prep System</a>
           </li>
           <li class="nav-item">

@@ -4,13 +4,19 @@
     <div class="stud-img"></div>
     <div class="bg-black bg-overlay opacity-3 z-index-1"></div>
     <div class="home-content">
-      <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+      <div class="d-flex flex-column align-items-center justify-content-center gap-4">
+        <h2 class="home-content-title text-center wow fadeInUp" data-wow-delay="200ms">
+          <div>College Prep System</div>
+          <div>Your Roadmap to College</div>
+        </h2>
         <a data-fancybox="" href="{{ asset('static-video/video.mp4') }}">
           <div class="play-icon">
             <i class="fas fa-play"></i>
           </div>
-        </a>
-        <h2 class="font-xlight home-content-title text-center wow fadeInUp" data-wow-delay="200ms">What is College Prep System?</h2>
+        </a>  
+        <div class="home-content-subtitle text-center wow fadeInUp" data-wow-delay="200ms">
+          Comprehensive tools and guidance for college admissions and ACT/SAT test prep in one groundbreaking system
+        </div>
         <div class="d-flex flex-column align-items-center justify-content-center home-content-block wow fadeInUp about-content" data-wow-delay="200ms">
           <span>Learn More</span>
           <i class="fa fa-2x fa-arrow-down home-content-icon hover-default"></i>

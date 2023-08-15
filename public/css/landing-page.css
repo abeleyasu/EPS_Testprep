@@ -2615,6 +2615,9 @@ a.dropdown-toggle::after {
     .bottom15 .icon {
         float: left;
     }
+    .process-wrapp {
+        margin: 0;
+    }
     .process-wrapp li::after,
     .process-wrapp li::before {
         width: 0 !important;
@@ -3822,6 +3825,7 @@ iframe {
 @media screen and (max-width: 992px) {
     .process-wrapp {
         text-align: center;
+        margin: 0;
     }
     .process-wrapp li {
         display: inline-block;
@@ -6678,7 +6682,12 @@ ul.latest_news li a:focus+span.defaultcolor {
     }
     .dark-slider h2,
     .light-slider h2 {
-        font-size: 34px !important;
+        font-size: 30px !important;
+        line-height: 35px;
+    }
+    .light-slider .home-content-subtitle {
+        font-size: 16px;
+        line-height: 25px;
     }
     .dark-slider p,
     .light-slider p {
@@ -6767,7 +6776,7 @@ ul.latest_news li a:focus+span.defaultcolor {
 
 .stud-img {
     background-repeat: no-repeat;
-    background-image: url('../static-image/students.jpg');
+    background-image: url('../static-image/v2/students.png');
     background-size: cover;
     background-position: center center;
     width: 100%;
@@ -6803,9 +6812,23 @@ ul.latest_news li a:focus+span.defaultcolor {
     margin: 0px; 
     padding: 0px; 
     letter-spacing: 0px; 
-    font-weight: 100; 
+    font-weight: 400; 
     font-size: 48px;
 }
+
+.home-content-subtitle {
+    transition: none 0s ease 0s;
+    text-align: inherit;
+    line-height: 24px;
+    border-width: 0px;
+    margin: 0px 0px 11px;
+    padding: 0px;
+    letter-spacing: 0px;
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+}
+
 .home-content-icon {
     transition: none 0s ease 0s; 
     text-align: inherit; 
@@ -6831,7 +6854,7 @@ body {
 }
 
 .news_item .image img {
-    height: 700px;
+    height: 600px;
     width: 100%;
     object-fit: cover;
 }
@@ -6845,7 +6868,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    background-image: url('../static-image/BlackboardImage.jpg');
+    background-image: url('../static-image/v2/friends2.png');
 }
 
 .item {
@@ -6854,10 +6877,46 @@ body {
 }
 
 .bg-testimonial-image {
-    background-image: url('../static-image/placeholder.png'); 
+    background-image: url('../static-image/v2/testimonials-transformed.png'); 
     background-size: cover; 
     background-repeat: no-repeat; 
     background-attachment: fixed; 
     background-position: center;
+}
 
+.height-block {
+    min-height: 1200px;
+    max-height: 1200px;
+}
+
+.about-icon-image {
+    width: 120px;
+    height: 110px;
+    object-fit: contain;
+}
+
+.about-feature-title {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.about-feature-subtitle {
+    font-weight: 400;
+    color: #000;
+}
+
+@media screen and (max-width: 992px) {
+    .height-block {
+        min-height: 1000px;
+        max-height: 1000px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .height-block {
+        min-height: auto;
+        max-height: auto;
+    }
 }

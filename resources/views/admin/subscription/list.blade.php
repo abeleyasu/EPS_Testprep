@@ -30,7 +30,7 @@
         <h3 class="block-title">User Subscription List</h3>
       </div>
       <div class="block-content block-content-full">
-        <table id="subscription-list" class="table table-bordered table-striped table-vcenter">
+        <table id="subscription-list" class="table table-bordered table-striped table-vcenter table-responsive">
           <thead>
             <tr>
               <th>id</th>
@@ -62,6 +62,7 @@
     processing: true,
     serverSide: true,
     searchDelay: 600,
+    // responsive: true,
     ajax: {
       url: "{{route('admin.subscription.index')}}",
       method: 'GET',
