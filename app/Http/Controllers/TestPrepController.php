@@ -281,6 +281,8 @@ class TestPrepController extends Controller
         $practice_test_section_id = $id;
         $get_test_name = $test;
         $category_data = array();
+        $percentage_arr_all = array();
+        $store_sections_details = array();
         $categoryTypeData = [];
         $questionTypeData = [];
         $count = 0;
@@ -533,7 +535,13 @@ class TestPrepController extends Controller
 
                 if (!$get_all_section->isEmpty()) {
                     foreach ($get_all_section as $get_single_section) {
-                        $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $get_single_section->id)->get();
+
+                        $user_selected_answers = DB::table('user_answers')
+                            ->where('user_id', $current_user_id)
+                            ->where('section_id', $get_single_section->id)
+                            ->latest()
+                            ->get();
+
                         if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
                             $decoded_answers = [];
                             $json_decoded_answers = json_decode($user_selected_answers[0]->answer);
@@ -587,7 +595,12 @@ class TestPrepController extends Controller
                     }
                 }
             } else if ($_GET['type'] == 'single') {
-                $user_selected_answers = DB::table('user_answers')->where('user_id', $current_user_id)->where('section_id', $id)->get();
+                $user_selected_answers = DB::table('user_answers')
+                    ->where('user_id', $current_user_id)
+                    ->where('section_id', $id)
+                    ->latest()
+                    ->get();
+
                 $test_section = PracticeTestSection::where('testid', $test_details->id)->where('id', $id)->get();
                 $store_user_answers_details = array();
                 if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
