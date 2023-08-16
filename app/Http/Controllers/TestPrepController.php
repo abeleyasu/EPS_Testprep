@@ -328,7 +328,11 @@ class TestPrepController extends Controller
                     $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
                 }
 
-                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->latest()->get();
+                $user_answers_data = DB::table('user_answers')
+                    ->where('user_id', $current_user_id)
+                    ->where('test_id', $test_id)
+                    ->latest()
+                    ->get();
                 $answer_arr = [];
                 foreach ($user_answers_data as $user_answer) {
                     $answers = json_decode($user_answer->answer, true);
@@ -433,7 +437,11 @@ class TestPrepController extends Controller
                     ->orderBy('practice_questions.question_order', 'ASC')
                     ->get();
 
-                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->latest()->get();
+                $user_answers_data = DB::table('user_answers')
+                    ->where('user_id', $current_user_id)
+                    ->where('section_id', $id)
+                    ->latest()
+                    ->get();
                 foreach ($get_test_questions as $question) {
                     $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
                     $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
@@ -1023,7 +1031,7 @@ class TestPrepController extends Controller
 
         $checkData = [];
         $ctData = [];
-        // dd($answer_arr);
+
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
@@ -2297,9 +2305,8 @@ class TestPrepController extends Controller
 
             return response()->json(['questions' => $questions, 'test_id' => $new_test->id, 'status' => true]);
         }
-        // dd($request->input("selectedCategories"))
     }
-    //new
+
     public function gettypes(Request $request)
     {
         $format = $request['test_type'];
@@ -2560,7 +2567,7 @@ class TestPrepController extends Controller
     {
         $questions = PracticeQuestion::where('id', $request['question_id'])->first();
         $practice_test_section_id = $request['practice_test_section_id'];
-        // dd($practice_test_section_id);
+
         if (!empty($questions)) {
             $questions->mistake_type = $request['mistake_type'];
             $questions->save();
