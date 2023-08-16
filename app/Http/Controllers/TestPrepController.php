@@ -286,6 +286,7 @@ class TestPrepController extends Controller
         $questionTypeData = [];
         $count = 0;
         $checkboxData = [];
+
         if (isset($_GET['test_id']) && !empty($_GET['test_id'])) {
             $test_id = $_GET['test_id'];
             $test_category_type = DB::table('practice_questions')
@@ -326,7 +327,7 @@ class TestPrepController extends Controller
                     $checkboxData[$question->test_question_id] = json_decode($question->checkbox_values ?? '', true);
                 }
 
-                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->get();
+                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->latest()->get();
                 $answer_arr = [];
                 foreach ($user_answers_data as $user_answer) {
                     $answers = json_decode($user_answer->answer, true);
@@ -345,22 +346,20 @@ class TestPrepController extends Controller
 
                 if (!$get_test_questions->isEmpty()) {
                     $percentage_arr_all = [];
-                    // dd($get_test_questions);
+
                     foreach ($get_test_questions as $get_single_test_questions) {
                         $questionDetails = QuestionDetails::where("question_id", $get_single_test_questions->test_question_id)->get(['question_type', 'category_type'])->toArray();
-                        // dd($questionDetails);
-                        // $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
+
                         $array_ques_type = array_map(function ($item) {
                             return $item['question_type'];
                         }, $questionDetails);
 
-                        // $array_cat_type = json_decode($get_single_test_questions->category_type, true);
                         $array_cat_type = array_map(function ($item) {
                             return $item['category_type'];
                         }, $questionDetails);
 
-                        // dd($array_cat_type);
                         $percentage_arr = [];
+
                         if (isset($array_cat_type) && !empty($array_cat_type) && isset($array_ques_type) && !empty($array_ques_type)) {
                             $mergedArray = [];
 
@@ -433,7 +432,7 @@ class TestPrepController extends Controller
                     ->orderBy('practice_questions.question_order', 'ASC')
                     ->get();
 
-                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->get();
+                $user_answers_data = DB::table('user_answers')->where('test_id', $test_id)->latest()->get();
                 foreach ($get_test_questions as $question) {
                     $questionDetails = QuestionDetails::where("question_id", $question->test_question_id)->get();
                     $questionTypeData[$question->test_question_id] = json_decode($question->question_type_values ?? '', true);
@@ -465,10 +464,6 @@ class TestPrepController extends Controller
                     foreach ($get_test_questions as $get_single_test_questions) {
 
                         $questionDetails = QuestionDetails::where("question_id", $get_single_test_questions->test_question_id)->get(['question_type', 'category_type'])->toArray();
-
-                        // $array_ques_type = json_decode($get_single_test_questions->question_type_id, true);
-
-                        // $array_cat_type = json_decode($get_single_test_questions->category_type, true);
 
                         $array_ques_type = array_map(function ($item) {
                             return $item['question_type'];
@@ -578,7 +573,16 @@ class TestPrepController extends Controller
                                     ->where('practice_questions.id', $question_id)
                                     ->orderBy('practice_questions.question_order', 'ASC')
                                     ->get();
-                                $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers, 'user_selected_guess' => $json_decoded_guess->$question_id, 'user_selected_flag' => $json_decoded_flag->$question_id, 'get_question_details' => $get_question_details, 'all_sections' => $get_all_section, 'date_taken' => $user_selected_answers, 'type' => $_GET['type']);
+
+                                $store_sections_details[] = array(
+                                    'user_selected_answer' => $json_decoded_single_answers,
+                                    'user_selected_guess' => $json_decoded_guess->question_id,
+                                    'user_selected_flag' => $json_decoded_flag->question_id,
+                                    'get_question_details' => $get_question_details,
+                                    'all_sections' => $get_all_section,
+                                    'date_taken' => $user_selected_answers,
+                                    'type' => $_GET['type']
+                                );
                             }
                         }
                     }
@@ -624,7 +628,16 @@ class TestPrepController extends Controller
                             ->where('practice_questions.id', $question_id)
                             ->orderBy('practice_questions.question_order', 'ASC')
                             ->get();
-                        $store_sections_details[] = array('user_selected_answer' => $json_decoded_single_answers, 'user_selected_guess' => (isset($json_decoded_guess) && !empty($json_decoded_guess)) ? $json_decoded_guess->$question_id : null, 'user_selected_flag' => (isset($json_decoded_flag) && !empty($json_decoded_flag)) ? $json_decoded_flag->$question_id : null, 'get_question_details' => $get_question_details, 'sections' => $test_section, 'date_taken' => $user_selected_answers, 'type' => $_GET['type']);
+
+                        $store_sections_details[] = array(
+                            'user_selected_answer' => $json_decoded_single_answers,
+                            'user_selected_guess' => (isset($json_decoded_guess) && !empty($json_decoded_guess)) ? $json_decoded_guess->$question_id ?? '' : null,
+                            'user_selected_flag' => (isset($json_decoded_flag) && !empty($json_decoded_flag)) ? $json_decoded_flag->$question_id ?? '' : null,
+                            'get_question_details' => $get_question_details,
+                            'sections' => $test_section,
+                            'date_taken' => $user_selected_answers,
+                            'type' => $_GET['type']
+                        );
                     }
                 }
             }
@@ -924,9 +937,6 @@ class TestPrepController extends Controller
                         $right_answers = count($count_right_answer[$id][$section_type]);
                         $scaled_score = $total_scaled_score[$id][$section_type];
                     }
-                    // $total_questions = count($count_total_question[$id][$section_type]) + $question_count;
-                    // $right_answers = count($count_right_answer[$id][$section_type]);
-                    // $scaled_score = $total_scaled_score[$id][$section_type];
                 } else {
                     $right_answers = count($count_right_answer[$id][$section_type]);
                     $total_questions = count($count_total_question[$id][$section_type]);
@@ -1001,16 +1011,14 @@ class TestPrepController extends Controller
 
         $checkData = [];
         $ctData = [];
-        // dump($categoryTypeData);
-        // dump($answer_arr);
-        // $new = [];
+
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
                 $answers = explode(",", $answer_arr[$key] ?? []);
                 if (in_array(strtolower($catKey), $answers)) {
                     $pq = PracticeQuestion::where("id", $key)->first();
-                    // $ctData[$key][$catKey] = array_unique($cat);
+
                     foreach ($cat as $catKey1 => $catId) {
                         $tmp = $ctData[$key][$catId] ?? [];
                         if (!in_array($catKey, $tmp)) {
@@ -1023,12 +1031,9 @@ class TestPrepController extends Controller
                         if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
                             $crr = $ctData[$catId]['correct'] ?? 0;
-                            // $ctData[$catKey]['correct'] = $ctData[$catKey]['correct']
-                            // $ctData[$catId]['correct'] = 1;
                         } else {
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] + 1;
                             $crr = $ctData[$catId]['incorrect'] ?? 0;
-                            // $ctData[$catId]['incorrect'] = 1;
                         }
                         $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
                         $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
