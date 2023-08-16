@@ -280,7 +280,8 @@ height: 270px
                         // console.log(result.existingProgress);
                         var get_offset = result.existingProgress.progress_index;
                         var question_id_arr = JSON.parse(result.existingProgress.question_id);
-                        $('#onload_question_id').val(question_id_arr[get_offset]);
+                        if(question_id_arr[get_offset])
+                            $('#onload_question_id').val(question_id_arr[get_offset]);
                         get_first_question(get_offset, result.existingProgress);
                         
                         jQuery('.next').attr('data-count', get_offset);
