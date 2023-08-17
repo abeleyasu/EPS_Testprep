@@ -28,6 +28,14 @@ $('select[name="product"]').select2({
     placeholder: 'Select an product',
 })
 
+$('select[name="products[]"]').select2({
+    allowClear: true,
+    ajax: ajax(core.ajaxProductList),
+    placeholder: 'Select an product',
+    theme: "classic",
+    multiple: true,
+})
+
 $('select[name="category"]').select2({
     allowClear: true,
     dropdownParent: $('#new-product-modal'),
@@ -108,8 +116,4 @@ $('#create-new-product').on('click', function (e) {
             }
         })
     }
-})
-
-$('input[name="is_addmission_lesson"]').on('change', function (e) {
-    $('input[name="is_addmission_lesson"]').val($(this).is(':checked') ? 1 : 0)
 })

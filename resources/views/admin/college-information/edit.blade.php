@@ -34,7 +34,7 @@
             <select id="entrance_difficulty" name="entrance_difficulty" class="form-control form-control-lg form-control-alt {{$errors->has('entrance_difficulty') ? 'is-invalid' : ''}}">
               <option value="">Select Entrance Difficulty</option>
               @foreach(config('constants.entrance_difficulty') as $key => $value)
-                <option value="{{ $value }}" @if($info->entrance_difficulty && $info->entrance_difficulty == $value) selected @endif >{{ $value }}</option>
+                <option value="{{ $value }}" @if((old('entrance_difficulty') && old('entrance_difficulty') == $value) || ($info->entrance_difficulty && $info->entrance_difficulty == $value)) selected @endif >{{ $value }}</option>
               @endforeach
             </select>
             @error('entrance_difficulty')
@@ -84,7 +84,7 @@
 
           <div class="mb-4">
             <label class="from-label">Cost of Attendance:</label>
-            <input type="text" class="form-control {{$errors->has('cost_of_attendance') ? 'is-invalid' : ''}}" name="cost_of_attendance" value="{{ $errors->has('cost_of_attendance') ? old('cost_of_attendance') :$info->cost_of_attendance }}"/>
+            <input type="text" class="form-control {{$errors->has('cost_of_attendance') ? 'is-invalid' : ''}}" name="cost_of_attendance" value="{{ old('cost_of_attendance') ? old('cost_of_attendance') : $info->cost_of_attendance }}"/>
             @error('cost_of_attendance')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
@@ -92,7 +92,7 @@
 
           <div class="mb-4">
             <label class="from-label">Tuition and Fees:</label>
-            <input type="text" class="form-control {{$errors->has('tution_and_fess') ? 'is-invalid' : ''}}" name="tution_and_fess" value="{{ $errors->has('tution_and_fess') ? old('tution_and_fess') : $info->tution_and_fess }}"/>
+            <input type="text" class="form-control {{$errors->has('tution_and_fess') ? 'is-invalid' : ''}}" name="tution_and_fess" value="{{ old('tution_and_fess') ? old('tution_and_fess') : $info->tution_and_fess }}"/>
             @error('tution_and_fess')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
@@ -100,7 +100,7 @@
 
           <div class="mb-4">
             <label class="from-label">Room and Board:</label>
-            <input type="text" class="form-control {{$errors->has('room_and_board') ? 'is-invalid' : ''}}" name="room_and_board" value="{{ $errors->has('room_and_board') ? old('room_and_board')  :  $info->room_and_board }}"/>
+            <input type="text" class="form-control {{$errors->has('room_and_board') ? 'is-invalid' : ''}}" name="room_and_board" value="{{ old('room_and_board') ? old('room_and_board')  :  $info->room_and_board }}"/>
             @error('room_and_board')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
@@ -116,7 +116,7 @@
 
           <div class="mb-4">
             <label class="from-label">Average Freshman Award:</label>
-            <input type="text" class="form-control {{$errors->has('average_freshman_award') ? 'is-invalid' : ''}}" name="average_freshman_award" value="{{ $errors->has('average_freshman_award') ? old('average_freshman_award') : $info->average_freshman_award }}"/>
+            <input type="text" class="form-control {{$errors->has('average_freshman_award') ? 'is-invalid' : ''}}" name="average_freshman_award" value="{{ old('average_freshman_award') ? old('average_freshman_award') : $info->average_freshman_award }}"/>
             @error('average_freshman_award')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
@@ -154,7 +154,7 @@
 
           <div class="mb-4">
             <label class="from-label">Regular Admission Deadline:</label>
-            <input type="text" class="date-own form-control {{$errors->has('regular_admission_deadline') ? 'is-invalid' : ''}}" name="regular_admission_deadline" value="{{ $info->regular_admission_deadline }}"/>
+            <input type="text" class="date-own form-control {{$errors->has('regular_admission_deadline') ? 'is-invalid' : ''}}" name="regular_admission_deadline" value="{{ old('regular_admission_deadline') ? old('regular_admission_deadline') : $info->regular_admission_deadline }}"/>
             @error('regular_admission_deadline')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
@@ -163,7 +163,7 @@
           <div class="mb-4">
             <label class="from-label">Description:</label>
             <textarea class="form-control" id="js-ckeditor-desc" name="description" rows="4" placeholder="College Description" autocomplete="__away">
-              {{ $info->description }}
+              {{ old('description') ? old('description') : $info->description }}
             </textarea>
             @error('description')
               <div class="invalid-feedback">{{$message}}</div>

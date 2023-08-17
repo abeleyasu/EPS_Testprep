@@ -64,6 +64,10 @@ class SectionController extends Controller
 
         $section->user_sections_roles()->attach($request->user_type);
 
+        if ($request->status == 'paid') {
+            $section->user_section_products()->attach($request->products);
+        }
+
 		/**********Order reset**********/
 		/*$sections = Section::orderBy('order')->get();
 		$currentId = $section->id;
@@ -103,7 +107,7 @@ class SectionController extends Controller
         if (!$is_course_permission) {
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
-		if(!$section->userHasSectionsPermissionOrNot() || $section->status == 'paid' && !$user->isUserSubscibedToTheProduct($section->product_id)){
+		if(!$section->userHasSectionsPermissionOrNot() || $section->status == 'paid' && !$user->isUserSubscibedToTheProduct($section->user_section_products()->pluck('product_id')->toArray())){
 			return redirect(route('modules.detail',['module'=>$section->module_id]))->with('error', 'You are not authorized to access this section');
 		}
 		$milestone = array();
@@ -189,6 +193,14 @@ class SectionController extends Controller
             $section->user_sections_roles()->detach($section_user_types);
         }
         $model->user_sections_roles()->attach($request->user_type);
+
+        $section_products = $section->user_section_products()->pluck('product_id')->toArray();
+        if (count($section_products) > 0) {
+            $section->user_section_products()->detach($section_products);
+        }
+        if ($request->status == 'paid') {
+            $section->user_section_products()->attach($request->products);
+        }
 		/**********Order reset**********/
 		/*$sections = Section::orderBy('order')->get();
 		$currentId = $section->id;

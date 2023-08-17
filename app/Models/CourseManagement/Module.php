@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\UserRole;
+use App\Models\Product;
 
 class Module extends Model
 {
@@ -74,6 +75,10 @@ class Module extends Model
 
     public function userHasModulePermissionOrNot() {
         return $this->user_modules_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
+    public function user_module_products() {
+        return $this->belongsToMany(Product::class,'module_products', 'module_id', 'product_id');
     }
 
 }

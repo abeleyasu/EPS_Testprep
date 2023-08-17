@@ -224,7 +224,7 @@
                             </div>
 
                             @include('admin.courses.components.product-dropdown', [
-                                'product' => $milestone->product_id,
+                                'product' => $milestone->user_milestone_products()->pluck('product_id')->toArray(),
                                 'status' => $milestone->status
                             ])
 

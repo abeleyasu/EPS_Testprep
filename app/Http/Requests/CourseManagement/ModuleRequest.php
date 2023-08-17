@@ -27,7 +27,7 @@ class ModuleRequest extends FormRequest
             'title' => 'required|max:220',
             'milestone_id' => 'required|exists:milestones,id',
             'user_type' => 'required|array',
-            'product' => 'required_if:status,==,paid',
+            'products' => 'required_if:status,paid|array|min:1',
 //            'description' => 'required'
         ];
     }
@@ -45,7 +45,9 @@ class ModuleRequest extends FormRequest
             'milestone_id.exists' => 'Milestone does not exists',
             'user_type.required' => 'User type is required',
             'user_type.array' => 'User type is required',
-            'product.required_if' => 'Product is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
         ];
     }
 }

@@ -26,7 +26,7 @@ class TaskRequest extends FormRequest
         return [
             'title' => 'required|max:220',
             'section_id' => 'required|exists:sections,id',
-            'product' => 'required_if:status,==,paid',
+            'products' => 'required_if:status,paid|array|min:1',
             'user_type' => 'required|array',
 //            'description' => 'required'
         ];
@@ -42,7 +42,9 @@ class TaskRequest extends FormRequest
             'title.required' => 'Task name is required',
             'section_id.required' => 'Section is required',
             'section_id.exists' => 'Section is required',
-            'product.required_if' => 'Product is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
             'user_type.required' => 'User type is required',
             'user_type.array' => 'User type is required',
         ];

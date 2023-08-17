@@ -10,7 +10,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\UserRole;
-use App\Models\Product;
 use App\Models\HighSchoolResume\States;
 use App\Models\HighSchoolResume\Cities;
 
@@ -71,11 +70,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return in_array($permission, $permissions);
     }
 
-    public function isUserSubscibedToTheProduct($product_id) {
-        if (!$product_id) return false;
-        $product = Product::where('id', $product_id)->first();
-        if ($product) {
-            return  $this->subscribedToProduct($product->stripe_product_id);
+    public function isUserSubscibedToTheProduct($products, $isWhichCalled = null) {
+        // dd($products);
+        if (isset($products) && !empty($products) && count($products) == 0) return false;
+        $subscription = $this->getUserStripeSubscription();
+        if ($subscription && $subscription->valid()) {
+            $product = $subscription->plan->product;
+            if ($product) {
+                // dd(in_array($product->id, $products));
+                return in_array($product->id, $products);
+            }
         }
         return false;
     }

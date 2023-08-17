@@ -62,7 +62,7 @@
     processing: true,
     serverSide: true,
     searchDelay: 600,
-    // responsive: true,
+    scrollX: true,
     ajax: {
       url: "{{route('admin.subscription.index')}}",
       method: 'GET',

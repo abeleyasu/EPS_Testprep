@@ -243,7 +243,7 @@
 									<div class="card-body row">
 										<div class="col-12 colapHead" >
 											<div class="col-11" style="float:left;">
-											@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id))
+											@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->user_task_products()->pluck('product_id')->toArray()))
 												<div class="dispalytask_list">
 												<div class="round" >
 													<input type="checkbox" id="checkbox{{$task->id}}"

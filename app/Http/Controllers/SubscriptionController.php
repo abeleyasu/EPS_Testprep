@@ -185,8 +185,7 @@ class SubscriptionController extends Controller
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $consumed_hours->hours;
                         break;
                     case 'minute':
-                        $hours = number_format($consumed_hours->hours / 60, 2);
-                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $hours;
+                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + ($consumed_hours->hours / 60);
                         break;
                 }
             }
@@ -229,8 +228,7 @@ class SubscriptionController extends Controller
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $request->hours;
                         break;
                     case 'minute':
-                        $hours = number_format($request->hours / 60, 2);
-                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - $hours;
+                        $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - ($request->hours / 60);
                         break;
                 }
                 // dd($subscription->pending_consumed_hours);
@@ -363,8 +361,7 @@ class SubscriptionController extends Controller
                     $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $consumed_details->hours;
                     break;
                 case 'minute':
-                    $hours = number_format($consumed_details->hours / 60, 2);
-                    $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + $hours;
+                    $subscription->pending_consumed_hours = $subscription->pending_consumed_hours + ($consumed_details->hours / 60);
                     break;
             }
             $subscription->stripe_status = $subscription->pending_consumed_hours <= 0 ? 'consumed' : 'active';

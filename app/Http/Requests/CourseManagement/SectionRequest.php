@@ -25,7 +25,7 @@ class SectionRequest extends FormRequest
     {
         return [
             'title' => 'required|max:220',
-            'product' => 'required_if:status,==,paid',
+            'products' => 'required_if:status,paid|array|min:1',
             'user_type' => 'required|array',
 //            'description' => 'required'
         ];
@@ -39,7 +39,9 @@ class SectionRequest extends FormRequest
     public function messages() {
         return [
             'title.required' => 'Section title is required',
-            'product.required_if' => 'Product is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
             'user_type.required' => 'User type is required',
             'user_type.array' => 'User type is required',
         ];

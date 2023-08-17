@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\UserRole;
+use App\Models\Product;
 
 class Milestone extends Model
 {
@@ -86,6 +87,10 @@ class Milestone extends Model
 
     public function userHasMileStonePermissionOrNot() {
         return $this->user_milestone_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
+    public function user_milestone_products() {
+        return $this->belongsToMany(Product::class,'milestones_products', 'milestone_id', 'product_id');
     }
 
 }

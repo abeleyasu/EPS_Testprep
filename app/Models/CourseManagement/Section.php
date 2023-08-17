@@ -5,6 +5,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\UserRole;
+use App\Models\Product;
 
 class Section extends Model
 {
@@ -83,5 +84,9 @@ class Section extends Model
 
     public function userHasSectionsPermissionOrNot() {
         return $this->user_sections_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
+    public function user_section_products() {
+        return $this->belongsToMany(Product::class,'section_products', 'section_id', 'product_id');
     }
 }

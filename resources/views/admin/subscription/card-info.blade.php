@@ -104,7 +104,7 @@
           @else
           <tr>
             <th>Total Pending Hours:</th>
-            <td id="total-pending-hours">{{ $subscription['pending_consumed_hours'] }}</td>
+            <td id="total-pending-hours">{{ number_format($subscription['pending_consumed_hours'], 2) }}</td>
           </tr>
           @endif
           <tr>

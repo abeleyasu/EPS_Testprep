@@ -80,9 +80,13 @@ $(document).ready(function () {
       let nextSection = $(".section-nav-smooth");
       if ($scroll > 250) {
         $navbar.addClass("fixedmenu");
+        $('.header-title').css('color', '#0099ff');
+        $('.logo-default').attr('src', $('#site_url').val() + '/static-image/logo-with-transparent-bg.png');
         nextSection.css("margin-top", headerHeight);
       } else {
         $navbar.removeClass("fixedmenu");
+        $('.header-title').css('color', '#fff');
+        $('.logo-default').attr('src', $('#site_url').val() + '/static-image/logo-no-bg.png');
         nextSection.css("margin-top", 0);
       }
       if ($scroll > 125) {

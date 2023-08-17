@@ -147,9 +147,9 @@
                     @endphp
                         <!-- Course -->
                         <div class="col-md-6 col-lg-4 col-xl-3">
-                            <a class="block block-rounded block-link-pop h-100 mb-0" href="@if($course->status == 'unpaid' || $course->status == 'paid' && auth()->user()->isUserSubscibedToTheProduct($course->product_id)) {{ route('courses.milestone',['course' => $course->id]) }} @else javascript:; @endif">
+                            <a class="block block-rounded block-link-pop h-100 mb-0" href="@if($course->status == 'unpaid' || $course->status == 'paid' && auth()->user()->isUserSubscibedToTheProduct($course->user_course_products()->pluck('product_id')->toArray())) {{ route('courses.milestone',['course' => $course->id]) }} @else javascript:; @endif">
 
-                                <div class="block-content block-content-full text-center @if($course->status == 'unpaid' || $course->status == 'paid' && auth()->user()->isUserSubscibedToTheProduct($course->product_id)) {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}  @else bg-grayed @endif">
+                                <div class="block-content block-content-full text-center @if($course->status == 'unpaid' || $course->status == 'paid' && auth()->user()->isUserSubscibedToTheProduct($course->user_course_products()->pluck('product_id')->toArray())) {{ \App\Constants\AppConstants::BG_CLASS[$key%11] }}  @else bg-grayed @endif">
 
                                     @if($course->status == 'paid')
                                         <div class="btn-group float-end ">

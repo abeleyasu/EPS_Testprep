@@ -160,7 +160,7 @@
                                     </select>
                                 </div>
                                 @include('admin.courses.components.product-dropdown', [
-                                    'product' => $section->product_id,
+                                    'product' => $section->user_section_products()->pluck('product_id')->toArray(),
                                     'status' => $section->status
                                 ])
                             </div>

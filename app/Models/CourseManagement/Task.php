@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\UserRole;
+use App\Models\Product;
 
 class Task extends Model
 {
@@ -51,5 +52,9 @@ class Task extends Model
 
     public function userHasTaskPermissionOrNot() {
         return $this->user_tasks_roles->contains(auth()->user()->role);
+    }
+
+    public function user_task_products() {
+        return $this->belongsToMany(Product::class,'task_products', 'task_id', 'product_id');
     }
 }
