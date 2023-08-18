@@ -567,6 +567,7 @@ class TestPrepController extends Controller
                             }
                             $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
                             $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
+                            $json_decoded_skip = json_decode($user_selected_answers[0]->skip);
 
                             foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
                                 $get_question_details = DB::table('practice_questions')
@@ -594,6 +595,7 @@ class TestPrepController extends Controller
                                     'user_selected_answer' => $json_decoded_single_answers,
                                     'user_selected_guess' => $json_decoded_guess->question_id,
                                     'user_selected_flag' => $json_decoded_flag->question_id,
+                                    'user_selected_skip' => $json_decoded_skip->question_id,
                                     'get_question_details' => $get_question_details,
                                     'all_sections' => $get_all_section,
                                     'date_taken' => $user_selected_answers,
@@ -609,7 +611,6 @@ class TestPrepController extends Controller
                     ->where('section_id', $id)
                     ->latest()
                     ->get();
-
                 $test_section = PracticeTestSection::where('testid', $test_details->id)->where('id', $id)->get();
                 $store_user_answers_details = array();
                 if (isset($user_selected_answers[0]) && !empty($user_selected_answers[0])) {
@@ -628,6 +629,7 @@ class TestPrepController extends Controller
                     }
                     $json_decoded_guess = json_decode($user_selected_answers[0]->guess);
                     $json_decoded_flag = json_decode($user_selected_answers[0]->flag);
+                    $json_decoded_skip = json_decode($user_selected_answers[0]->skip);
                     foreach ($decoded_answers as $question_id => $json_decoded_single_answers) {
                         $get_question_details = DB::table('practice_questions')
                             // ->join('passages', 'practice_questions.passages_id', '=', 'passages.id')
@@ -654,6 +656,7 @@ class TestPrepController extends Controller
                             'user_selected_answer' => $json_decoded_single_answers,
                             'user_selected_guess' => (isset($json_decoded_guess) && !empty($json_decoded_guess)) ? $json_decoded_guess->$question_id ?? '' : null,
                             'user_selected_flag' => (isset($json_decoded_flag) && !empty($json_decoded_flag)) ? $json_decoded_flag->$question_id ?? '' : null,
+                            'user_selected_skip' => (isset($json_decoded_skip) && !empty($json_decoded_skip)) ? $json_decoded_skip->$question_id ?? '' : null,
                             'get_question_details' => $get_question_details,
                             'sections' => $test_section,
                             'date_taken' => $user_selected_answers,
@@ -1857,12 +1860,28 @@ class TestPrepController extends Controller
     public function resetTest(Request $request, $id)
     {
         UserAnswers::where('user_id', Auth::id())->where('test_id', $request->test_id)->delete();
+
+        $current_user_id = Auth::id();
+        $existingRecord = TestProgress::where('test_id', $request->test_id)
+            ->where('user_id', $current_user_id)
+            ->first();
+        if ($existingRecord) {
+            $existingRecord->delete();
+        }
+
         return redirect(url('user/practice-test-sections/' . $request['test_id']));
     }
 
     public function resetSection(Request $request, $testId, $id)
     {
         UserAnswers::where('section_id', $id)->where('user_id', Auth::id())->delete();
+
+        $existingRecord = TestProgress::where('section_id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+        if ($existingRecord) {
+            $existingRecord->delete();
+        }
         return redirect(url('user/practice-test-sections/' . $testId));
     }
 

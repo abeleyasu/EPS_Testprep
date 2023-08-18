@@ -513,6 +513,14 @@
                                                                                         title="Flagged Question"></i>
                                                                                 @endif
 
+                                                                                @if ($single_user_selected_answers['user_selected_skip'] == 'yes')
+                                                                                    <i style="color:rgb(255, 255, 255)"
+                                                                                        class="fa fa-fw fa-forward me-1"
+                                                                                        data-bs-trigger="click"
+                                                                                        data-bs-placement="top"
+                                                                                        title="Skipped Question"></i>
+                                                                                @endif
+
                                                                                 @if ($single_user_selected_answers['user_selected_guess'] == 'yes')
                                                                                     <i class="fa fa-fw fa-circle-question me-1"
                                                                                         style="color:rgb(255, 255, 255)"
@@ -520,14 +528,6 @@
                                                                                         data-bs-trigger="click"
                                                                                         data-bs-placement="top"
                                                                                         title="Guessed On Question"></i>
-                                                                                @endif
-
-                                                                                @if ($single_user_selected_answers['user_selected_answer'] == '-')
-                                                                                    <i style="color:rgb(255, 255, 255)"
-                                                                                        class="fa fa-fw fa-forward me-1"
-                                                                                        data-bs-trigger="click"
-                                                                                        data-bs-placement="top"
-                                                                                        title="Skipped Question"></i>
                                                                                 @endif
                                                                             </div>
                                                                         </td>

@@ -612,28 +612,28 @@ height: 270px
                         totalGuess++
                 });
 
-                if(current_question_id==1 && !totalFlag && !totalGuess && !totalSkip)
-                {
-                    var alert_data={                        
-                        title: "You didn’t answer all questions do you want to review section now ?",
-                        // text: "You didn’t answer all questions do you want to review section now ?",
-                        type: "info",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "Cancel",
-                        closeOnConfirm: false,
-                        closeOnCancel: true,
-                        index:true,
-                    }
+                // if(current_question_id==1 && !totalFlag && !totalGuess && !totalSkip)
+                // {
+                //     var alert_data={                        
+                //         title: "You didn’t answer all questions do you want to review section now ?",
+                //         // text: "You didn’t answer all questions do you want to review section now ?",
+                //         type: "info",
+                //         showCancelButton: true,
+                //         confirmButtonColor: "#DD6B55",
+                //         confirmButtonText: "Yes",
+                //         cancelButtonText: "Cancel",
+                //         closeOnConfirm: false,
+                //         closeOnCancel: true,
+                //         index:true,
+                //     }
                     var reviewCount={
                         flag:totalFlag,
                         skip:totalSkip,
                         guess:totalGuess
                     }
-                }
-                else
-                {
+                // }
+                // else
+                // {
                     var questionBoxes = "";
                     for (let index = 0; index < question_ids.length; index++) {
                         var num = index + 1;
@@ -664,7 +664,7 @@ height: 270px
                         closeOnCancel: false,
                         index:false,
                     };
-                }
+                // }
                 sweet_alert(alert_data,reviewCount,question_ids);
             });
 
