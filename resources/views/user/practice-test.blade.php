@@ -206,7 +206,9 @@ height: 270px
                         <span><i class="fa fa-fw fa-circle-question me-1"></i>Guess</span>
                     </label>
 
-                    <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
+                    @if ($testSection[0]->practice_test_type == 'Math')
+                        <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
+                    @endif
                 </div>
                 <div class="col-xl-3">
                     <input type="hidden" id="actual_time" name="actual_time" value="00:00:00">

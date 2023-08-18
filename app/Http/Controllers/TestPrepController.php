@@ -2177,6 +2177,7 @@ class TestPrepController extends Controller
         $getAllProgressPracticeTests = [];
         foreach ($formats as $format) {
             $getAllProgressPracticeTests[$format] = PracticeTest::select('practice_tests.*')
+                ->distinct()
                 ->join('test_progress', function ($join) use ($user_id) {
                     $join->on('test_progress.test_id', '=', 'practice_tests.id')
                         ->where('test_progress.user_id', '=', $user_id);

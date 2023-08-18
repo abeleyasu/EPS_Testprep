@@ -431,6 +431,7 @@
                                                                     <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content py-0">
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="act_table_1">
@@ -524,6 +525,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">ACT CUSTOM QUIZ
                                                                         HISTORY</h3>
@@ -531,6 +533,7 @@
                                                                         id="sortable_act_2">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="act_table_2">
@@ -592,6 +595,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">ALL ACT TEST & QUIZ
                                                                         HISTORY</h3>
@@ -599,6 +603,7 @@
                                                                         id="sortable_act_3">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="act_table_3">
@@ -689,6 +694,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -716,6 +722,7 @@
                                                                     <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content pt-0">
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="sat_table_1">
@@ -798,6 +805,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
                                                                     </h3>
@@ -805,6 +813,7 @@
                                                                         id="sortable_sat_2">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="sat_table_2">
@@ -877,6 +886,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
                                                                         HISTORY</h3>
@@ -884,6 +894,7 @@
                                                                         id="sortable_sat_3">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="sat_table_3">
@@ -964,6 +975,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -992,6 +1004,7 @@
                                                                     <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content py-0">
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="psat_table_1">
@@ -1074,6 +1087,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">PSAT CUSTOM QUIZ
                                                                         HISTORY</h3>
@@ -1081,6 +1095,7 @@
                                                                         id="sortable_psat_2">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="psat_table_2">
@@ -1142,6 +1157,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">ALL PSAT TEST & QUIZ
                                                                         HISTORY</h3>
@@ -1149,6 +1165,7 @@
                                                                         id="sortable_psat_3">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="psat_table_3">
@@ -1231,6 +1248,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
