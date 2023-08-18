@@ -30,6 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'role',
         'password',
+        'parent_phone',
+        'is_active',
     ];
 
     /**
@@ -61,6 +63,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function deadlineReminderSettings() {
         return $this->hasMany(UserDeadlineNotificationSettings::class, 'user_id', 'id');
+    }
+
+    public function userrole() {
+        return $this->hasOne(UserRole::class, 'id', 'role');
     }
 
     public function isUserHasValidPermission($permission, $guardName = null) {

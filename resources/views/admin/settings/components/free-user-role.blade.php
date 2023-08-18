@@ -10,7 +10,7 @@
 <form action="{{ route('admin.setting.subscription-settings') }}" method="POST" id="free-subscription-permission">
     @csrf
     <div class="mb-2">
-        <label for="is_free_access" class="form-label">Actvie/Deactive Free User Subscription</label>
+        <label for="is_free_access" class="form-label">Active/Deactive Free User Subscription</label>
         <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" id="is_free_access" name="is_free_access" @if($setting->is_free_access) checked @endif>
         </div>

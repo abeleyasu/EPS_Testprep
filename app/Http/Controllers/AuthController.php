@@ -101,6 +101,7 @@ class AuthController extends Controller
 			'password.min' => 'The password must be at least 6 characters',
 		]);
 
+        $credentials['is_active'] = true;
         if(Auth::attempt($credentials, $request->remember)){
             $request->session()->regenerate();
 

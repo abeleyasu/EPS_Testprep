@@ -71,7 +71,6 @@
 @endsection
 
 @section('admin-script')
-<script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script>
   $('input[type="checkbox"]').on('change', function (e) {
     Swal.fire({

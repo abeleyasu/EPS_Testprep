@@ -219,7 +219,7 @@
       })
     })
 
-    $('.renewval').on('change', function (e) {
+    $('#renewval').on('change', function (e) {
       e.preventDefault();
       $.ajax({
         url: "{{ route('mysubscriptions.renewal') }}",

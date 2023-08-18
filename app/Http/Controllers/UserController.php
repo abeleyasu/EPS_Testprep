@@ -57,6 +57,7 @@ class UserController extends Controller
 					'phone' => ['required', 'numeric'],
 					// 'password' => ['required', 'min:6'],
 					'image' => 'image|mimes:jpeg,png,jpg|max:2048',
+					'parent_phone' => ['nullable', 'numeric'],
 				],
 				[
 					'first_name.required' => 'First Name is required',
@@ -67,6 +68,7 @@ class UserController extends Controller
 					// 'password.min' => 'The password must be at least 6 characters',
 					'phone.required' => 'Phone is required',
 					'phone.numeric' => 'Phone must be numeric',
+					'parent_phone.numeric' => 'Parent Phone must be numeric',
 				]
 			);
 			$image = '';
@@ -80,6 +82,7 @@ class UserController extends Controller
 			$user->first_name = $request->first_name;
 			$user->last_name = $request->last_name;
 			$user->phone = $request->phone;
+			$user->parent_phone = $request->parent_phone;
 			if ($image != '')
 				$user->profile_pic = $image;
 			// $user->password = Hash::make($request->password);

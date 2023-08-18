@@ -88,7 +88,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin', 'verified'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
-        Route::get('/user_list', [AdminController::class, 'userList'])->name('admin-user-list');
+        Route::get('/user/list', [AdminController::class, 'userList'])->name('admin-user-list');
+        Route::get('/user/info/{id}', [AdminController::class, 'singleUserInfor'])->name('admin-user-info');
+        Route::patch('/user/change-status/{id}', [AdminController::class, 'updateUserStatus'])->name('admin-user-change-status');
         Route::get('/create_user', [AdminController::class, 'showCreateUser'])->name('admin-create-user');
         Route::post('/create_user', [AdminController::class, 'createUser'])->name('admin-post-create-user');
         Route::get('/edit_user/{id}', [AdminController::class, 'showEditUser'])->name('admin-edit-user');

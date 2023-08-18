@@ -26,6 +26,7 @@
     <script src="{{asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js')}}"></script>
     <script src="{{asset('assets/js/pages/be_tables_datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <script>
         toastr.options = {
@@ -76,11 +77,22 @@
             }
         }
 
+        function updateUserStatus(url) {
+            return $.ajax({
+                url: url,
+                method: 'patch',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            })
+        }
+
         const core = {
             ajaxProductList: "{{ route('admin.product.ajax_products') }}",
             ajaxCategoriesList: "{{ route('admin.category.ajax_categories') }}",
             ajaxProductCreate: "{{ route('admin.product.ajax_create') }}",
             ajaxRolesList: "{{ route('admin.roles.ajax_roles') }}",
+            updateUserStatus: "{{ route('admin-user-change-status', ['id' => ':id']) }}",
         }
     </script>
     @yield('admin-script')

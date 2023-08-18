@@ -95,6 +95,7 @@
   <script>
     const input = document.querySelector("#phone");
     let intl = null
+    let parent_phoneintl = null; 
     if (input) {
       intl = window.intlTelInput(input, {
         initialCountry: "us",
@@ -106,6 +107,21 @@
         const countryData = intl.getSelectedCountryData();
         const number = '+' + countryData.dialCode + $(this).val();
         intl.setNumber(number);
+      }
+    });
+
+    const parent_phone = document.querySelector('#parent_phone');
+    if (parent_phone) {
+      parent_phoneintl = window.intlTelInput(parent_phone, {
+        initialCountry: "us",
+      });
+    }
+
+    $('#parent_phone').on('change', function(e, countryData) {
+      if (parent_phoneintl) {
+        const countryData = parent_phoneintl.getSelectedCountryData();
+        const number = '+' + countryData.dialCode + $(this).val();
+        parent_phoneintl.setNumber(number);
       }
     });
 

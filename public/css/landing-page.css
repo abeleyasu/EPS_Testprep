@@ -6951,3 +6951,7 @@ body {
         object-fit: cover;
     }
 }
+
+.sign-up-defaultcolor {
+    color: #24cdd5 !important;
+}

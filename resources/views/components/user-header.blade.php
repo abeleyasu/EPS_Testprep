@@ -28,15 +28,15 @@
             <!-- User Dropdown -->
             <div class="dropdown d-inline-block ms-2">
                 <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle" src="{{url('profile_images/'.auth()->user()->profile_pic)}}" alt="Header Avatar" style="width: 21px;">
-                    <span class="d-none d-sm-inline-block ms-2">{{ auth()->user()->last_name }}</span>
+                    <img class="rounded-circle" src="{{ auth()->user()->profile_pic ? asset('profile_images/' . auth()->user()->profile_pic) : asset('assets/media/avatars/no-user-image.png') }}" alt="Header Avatar" style="width: 21px; mix-blend-mode: multiply;">
+                    <span class="d-none d-sm-inline-block ms-2">{{ auth()->user()->first_name }}</span>
                     <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0 border-0" aria-labelledby="page-header-user-dropdown">
-                    <div class="p-3 text-center bg-body-light border-bottom rounded-top">
-                        <img class="img-avatar img-avatar48 img-avatar-thumb" src="{{url('profile_images/'.auth()->user()->profile_pic)}}" alt="">
+                    <div class="p-3 text-center bg-body-light border-bottom rounded-top"> 
+                        <img class="img-avatar img-avatar48 img-avatar-thumb" src="{{ auth()->user()->profile_pic ? asset('profile_images/' . auth()->user()->profile_pic) : asset('assets/media/avatars/no-user-image.png') }}" alt="" style="mix-blend-mode: multiply;">
                         <p class="mt-2 mb-0 fw-medium">{{ auth()->user()->name }}</p>
-                        <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
+                        <p class="mb-0 text-muted fs-sm fw-medium">{{ auth()->user()->userrole->name }}</p>
                     </div>
                     <div class="p-2" style="display:grid">
                         @if(Auth::user()->isUserHasValidPermission('Access Reminders')) 
