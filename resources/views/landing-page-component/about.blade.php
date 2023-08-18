@@ -1,4 +1,4 @@
-<section id="about" class="section-padding position-relative">
+<section id="about" class="section-padding pb-2 position-relative">
   <div class="container">
     <div class="row d-flex align-items-center">
       <div class="col-lg-9 text-sm-start text-center wow fadeInLeft" data-wow-delay="200ms">
@@ -114,5 +114,6 @@
       <a class="nav-link" href="{{route('signup')}}">
         <h3 class="defaultcolor">Sign Up Free</h3>
       </a>
+    </div>
   </div>
 </section>

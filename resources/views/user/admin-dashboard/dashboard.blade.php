@@ -204,7 +204,7 @@
             <div class="fs-sm push">
               <div class="d-flex justify-content-between mb-2">
                 <div>
-                  @if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->product_id))
+                  @if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->user_milestone_products()->pluck('product_id')->toArray()))
                     <a href="javascript:;" class="font-grayed fw-semibold">
                   @else
                     <a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}" class="fw-semibold">

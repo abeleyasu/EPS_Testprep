@@ -6,6 +6,7 @@
         <div style="display: flex" class="mb-2">
             <input type="text" class="form-control form-control-lg form-control-alt" name="inclusion[]"
                    placeholder="Inclusion" required>
+            <span style="cursor: pointer; margin-left: 12px" class="p-2 px-3 btn btn-alt-danger" onclick="removeInclusion(this, true)">-</span>
         </div>
     </div>
     @error('inclusion')
@@ -20,16 +21,16 @@
             html += '<div style="display: flex" class="mb-2">';
             html += `<input type="text" class="form-control form-control-lg form-control-alt" name="inclusion[]" placeholder="Inclusion" value="${val}" required>`;
             if (canBeRemoved) {
-                html += '<span style="cursor: pointer; margin-left: 12px" class="p-2 px-3 btn btn-alt-danger" onclick="removeInclusion(this)">-</span>';
+                html += '<span style="cursor: pointer; margin-left: 12px" class="p-2 px-3 btn btn-alt-danger" onclick="removeInclusion(this, '+canBeRemoved+')">-</span>';
             }
             html += '</div>';
             $('#inclusion-holder').append(html);
         }
 
-        function removeInclusion(ele) {
+        function removeInclusion(ele, isAddRemove = false) {
             $(ele).parent().remove()
             if (!$('#inclusion-holder').children().length) {
-                addInclusion('', false);
+                addInclusion('', isAddRemove);
             }
         }
 

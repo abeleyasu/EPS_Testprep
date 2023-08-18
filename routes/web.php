@@ -457,6 +457,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/past-current-score/{id}', [InititalcollegeListController::class, 'getPastCurrentScore'])->name('getPastCurrentScore');
                 Route::get('/get/past-current-score/{id}', [InititalcollegeListController::class, 'getSinglePastCurrentScore'])->name('getSinglePastCurrentScore');
                 Route::delete('/past-current-score/{id}', [InititalcollegeListController::class, 'deletePastCurrentScore'])->name('deletePastCurrentScore');
+
+                Route::delete('remove-user-college/{id}', [InititalcollegeListController::class, 'removeUserCollege'])->name('remove-user-college');
             });
 
             Route::group(['prefix' => 'cost-comparison', 'middleware' => ['subscription_valid:access-cost-comparison-tool']], function () {
@@ -469,6 +471,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::delete('delete-cost-details/{id}', [InititalCollegeListController::class, 'deleteCollegeCost'])->name('cost_comparison.delete_cost_details');
                 Route::post('reset-cost-comparison-data', [InititalCollegeListController::class, 'resetCostComparisonData'])->name('cost_comparison.reset-cost-comparion-data');
             });
+
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
         });
 

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CollegeSearchAdd extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'college_search_adds';
 
@@ -39,5 +40,9 @@ class CollegeSearchAdd extends Model
 
     public function collegeDeadline() {
         return $this->hasOne(CollegeDetails::class, 'college_id', 'id');
+    }
+
+    public function signle_college_information() {
+        return $this->hasOne(CollegeList::class, 'id', 'college_lists_id');
     }
 }

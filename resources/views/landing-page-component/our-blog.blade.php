@@ -1,4 +1,4 @@
-<section id="our-blog" class="section-padding position-relative">
+<section id="our-blog" class="section-padding pb-2 position-relative">
   <div class="container">
     <div class="heading-title heading_space js-animation-object animated fadeInUp">
       <h2 class="darkcolor font-normal text-center text-md-start">Student Success Stories</h2>

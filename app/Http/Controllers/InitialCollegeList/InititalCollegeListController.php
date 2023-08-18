@@ -1081,4 +1081,33 @@ class InititalCollegeListController extends Controller
             ]);
         }
     }
+
+    public function removeUserCollege($id) {
+        try {
+            $single_college = CollegeSearchAdd::where('id', $id)->first();
+            if (!$single_college) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'College not found',
+                ]);
+            }
+            $college_list = $single_college->signle_college_information;
+            if (Auth::id() != $college_list->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'College not found',
+                ]);
+            }
+            $single_college->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'College deleted successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ]);
+        }
+    }
 }

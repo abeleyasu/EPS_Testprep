@@ -34,7 +34,8 @@ function setApplicationHTML(records) {
                             <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a> 
                         </div>
                         <div class="col-2">
-                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="college-application-deadline" data-id="${data.id}">Remove</button>
                             ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : '' }
                         </div>
                     </div>

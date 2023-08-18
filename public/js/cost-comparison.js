@@ -23,7 +23,8 @@ function getCollegeListForCostComparison(active_accordion = null) {
                 <span id="college-name-${i}">${costComparisonData.college_name}</span>
               </a> 
               <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${costComparisonData.id}">Hide</button>
-              <button type="button" class="btn btn-sm btn-alt-danger reset-cost-comparion-data" data-id="${costcomparison.id}">Reset</button>
+              <button type="button" class="btn btn-sm btn-alt-danger reset-cost-comparion-data me-2" data-id="${costcomparison.id}">Reset</button>
+              <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="cost-comparison" data-id="${costComparisonData.id}">Remove</button>
             </div>
             <div id="collapse${i}" class="collapse ${active_accordion && active_accordion == costcomparison.id ? 'show' : ''}" aria-labelledby="headingOne" data-index="${i}" data-bs-parent=".accordionExample1">
               <div class="college-content-wrapper college-content">
