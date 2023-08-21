@@ -13,6 +13,8 @@
         @include('components.landing-page.footer')
     </main>
 </div>
+@include('landing-page-component.modals.auth.signin-modal')
+@include('landing-page-component.modals.auth.signup-modal')
 <!-- END Page Container -->
 @endsection
 

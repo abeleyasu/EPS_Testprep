@@ -18,6 +18,10 @@
             </button>
             <!-- END Toggle Mini Sidebar -->
         </div>
+
+        <div class="block-title d-none d-md-flex justify-content-center">
+            Welcome to College Prep System, {{ auth()->user()->first_name }}!
+        </div>
         <!-- END Left Section -->
 
         <!-- Right Section -->

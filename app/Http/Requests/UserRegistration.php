@@ -62,4 +62,17 @@ class UserRegistration extends FormRequest
             'is_receive_emails_newsletters.accepted' => 'Please accept to receive emails and newsletters',
         ];
     }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator) {
+        if ($this->ajax()) {
+            $response = response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 200);
+    
+            throw new \Illuminate\Validation\ValidationException($validator, $response);
+        } else {
+            throw new \Illuminate\Validation\ValidationException($validator);
+        }
+    }
 }

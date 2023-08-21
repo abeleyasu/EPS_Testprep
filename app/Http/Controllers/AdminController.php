@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
 use Carbon\Carbon;
+use App\Models\Subscription;
 
 class AdminController extends Controller
 {
@@ -139,9 +140,29 @@ class AdminController extends Controller
             $user_active_subscription['next_billing_date'] = Carbon::createFromTimestamp($getSubscription->current_period_end)->format('m-d-Y H:i:s');
             $user_active_subscription['is_active_automatic_renewal'] = $getSubscription->cancel_at_period_end;
         }
+        $cancel_failed_subscription = Subscription::where([
+            ['user_id', $user->id],
+            ['stripe_status', '!=', 'active'],
+            ['plan_type', '=', 'subscription'],
+        ])->get();
+        $hourly_subscription = Subscription::where([
+            ['user_id', $user->id],
+            ['plan_type', '=', 'one-time'],
+        ])->get();
+        $cards = [];
+        if ($user->stripe_id) {
+            $cards = $this->stripe->customers->allPaymentMethods($user->stripe_id);
+            if ($cards) {
+                $cards = $cards->data;
+            }
+        }
+        // dd($cards);
         return view('admin.user-info', [
             'user' => $user,
-            'active_subscription' => $user_active_subscription
+            'active_subscription' => $user_active_subscription,
+            'cancel_failed_subscription' => $cancel_failed_subscription,
+            'hourly_subscription' => $hourly_subscription,
+            'cards' => $cards,
         ]);
     }
 

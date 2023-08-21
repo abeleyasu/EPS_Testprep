@@ -27,5 +27,7 @@
 
 @section('home-script')
 <script src="{{ asset('assets/js/fancybox/jquery.fancybox.min.js') }}"></script>
+<!-- <script src="{{ asset('assets/js/waypoints.js') }}"></script> -->
+<script src="{{ asset('assets/js/countMe.min.js') }}"></script>
 <script src="{{ asset('js/landingpage.js') }}"></script>
 @endsection

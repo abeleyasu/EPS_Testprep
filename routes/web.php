@@ -557,6 +557,7 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::post('/signin', [AuthController::class, 'userSignIn'])->name('post-signin');
     Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
     Route::post('/signup', [AuthController::class, 'userSignUp'])->name('post-signup');
+    Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
     Route::get('forget-password', [AuthController::class, 'showForgetPassword'])->name('password.request');
     Route::post('forget-password', [AuthController::class, 'postForgetPassword'])->name('password.email');
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');

@@ -104,6 +104,7 @@ $('.js-data-example-ajax').select2({
 });
 
 function refreshResults(type) {
+  console.log('type -->', type)
   if (type === 'search-list') {
     getHideCollegeList();
   } else if (type === 'cost-comparison') {
@@ -182,7 +183,6 @@ $('#remove-all-college').on('click', function (e) {
 })
 
 $(document).on('click', '.remove-user-college', function(e) {
-  console.log('click');
   e.preventDefault();
   Swal.fire({
     title: 'Are you sure?',
@@ -203,8 +203,8 @@ $(document).on('click', '.remove-user-college', function(e) {
       }).done(function (response) {
         if (response.success) {
           toastr.success(response.message)
-          window.localStorage.setItem('APP-REFRESHED', Date.now()); 
           refreshResults(e.target.dataset.type);
+          window.localStorage.setItem('APP-REFRESHED', Date.now()); 
         } else {
           toastr.error(response.message)
         }

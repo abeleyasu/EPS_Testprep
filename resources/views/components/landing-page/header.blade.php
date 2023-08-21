@@ -8,7 +8,7 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link sign-up-defaultcolor" href="{{route('signup')}}" >Sign Up Free</a>
+            <a class="nav-link sign-up-defaultcolor" data-bs-toggle="modal" data-bs-target="#sign-up-modal">Sign Up Free</a>
           </li>
           <li class="nav-item">
             <a class="nav-link about-content" href="#" >Prep System</a>
@@ -23,7 +23,7 @@
             <a class="nav-link" href="{{ route('simple-pricing') }}">Pricing</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{route('signin')}}">Sign in</a>
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#sign-in-modal">Sign in</a>
           </li>
         </ul>
       </div>
@@ -43,7 +43,7 @@
             <a class="nav-link" href="{{route('signin')}}">Sign in</a>
           </li>
           <li class="nav-item d-block d-xl-none">
-            <a class="nav-link sign-up-defaultcolor" href="{{route('signup')}}" >Sign Up Free</a>
+            <a class="nav-link sign-up-defaultcolor" data-bs-toggle="modal" data-bs-target="#sign-up-modal">Sign Up Free</a>
           </li>
           <li class="nav-item d-block d-xl-none">
             <a class="nav-link about-content" href="#" >Prep System</a>

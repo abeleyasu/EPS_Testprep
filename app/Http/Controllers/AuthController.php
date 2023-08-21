@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use App\Models\UserSettings;
 use App\Http\Requests\UserRegistration;
+use App\Http\Requests\SignInRequest;
 use App\Models\AdminSettings;
 use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
@@ -24,7 +25,13 @@ class AuthController extends Controller
             ['slug','!=','super_admin'],
             ['is_visible',1]
         ])->get();
-        return view('signup',compact('usersRoles'));
+        return view('signup');
+    }
+
+    public function checkEmail(Request $request) {
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        return response()->json(!$user, 200);
     }
 
     public function userSignUp(UserRegistration $request){
@@ -71,12 +78,40 @@ class AuthController extends Controller
             Auth::login($user);
             $this->mailgun->sendEmailConfirmationCode();
             if ($user->role === 1) {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'User Registration Successfully',
+                        'redirect_url' => route('admin-dashboard'),
+                    ], 200);
+                }
                 return redirect()->intended(route('admin-dashboard'));
             } elseif ($user->role === 3) {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'User Registration Successfully',
+                        'redirect_url' => route('user-dashboard'),
+                    ], 200);
+                }
                 return redirect()->intended(route('user-dashboard'));
             } else {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'User Registration Successfully',
+                        'redirect_url' => route('signin'),
+                    ], 200);
+                }
                 return redirect()->intended('/login');
             }
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unable to create your account',
+            ], 200);
         }
 
         return back()->withErrors("Unable to create your account")
@@ -89,18 +124,9 @@ class AuthController extends Controller
         }
     }
 
-    public function userSignIn(Request $request){
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'min:6'],
-        ],
-		[
-			'email.required' => 'Email is required',
-			'email.email' => 'The email must be a valid email address.',
-			'password.required' => 'Password is required',
-			'password.min' => 'The password must be at least 6 characters',
-		]);
+    public function userSignIn(SignInRequest $request){
 
+        $credentials = $request->only('email', 'password');
         $credentials['is_active'] = true;
         if(Auth::attempt($credentials, $request->remember)){
             $request->session()->regenerate();
@@ -108,14 +134,43 @@ class AuthController extends Controller
             $user = Auth::user();
             $user->createOrGetStripeCustomer();
             if((int) $user->role == 1) {
+                $route = route('admin-dashboard');
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Login successfully',
+                        'redirect_url' => $route,
+                    ], 200);
+                }
                 return redirect()->intended(route('admin-dashboard'));
             }    
             elseif((int) $user->role == 3) {
+                $route = route('user-dashboard');
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Login successfully',
+                        'redirect_url' => $route,
+                    ], 200);
+                }
                 return redirect()->intended(route('user-dashboard'));
             }
             else {
+                if ($request->ajax()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'The provided credentials do not match our records.',
+                    ], 200);
+                }
                 return redirect()->intended('/login');
             }
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The provided credentials do not match our records.',
+            ], 200);
         }
 
         return back()->withErrors([

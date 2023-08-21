@@ -1727,7 +1727,7 @@ ul.links li a::before,
 .dropdown-toggle::after {
     transition: all 0s !important;
 }
-.btn-close{
+.side-menu .btn-close{
     background: none;
 }
 
@@ -3691,12 +3691,12 @@ iframe {
     background-size: cover;
 }
 
-.counters .count_nums {
+.counters {
     font-size: 6.25rem;
     line-height: 5rem;
 }
 
-.counters .count_nums,
+.counters,
 .counters i {
     vertical-align: middle;
 }
@@ -3826,13 +3826,13 @@ iframe {
 /*Accordion ends*/
 
 @media screen and (max-width: 1400px) {
-    .counters .count_nums {
+    .counters {
         font-size: 5.625rem;
     }
 }
 
 @media screen and (max-width: 1266px) {
-    .counters .count_nums {
+    .counters {
         font-size: 5rem;
     }
 }
@@ -4664,9 +4664,7 @@ textarea {
 }
 
 .contactus-wrapp,
-.getin_form .form-control,
-.form-check label::before,
-.form-check input[type="checkbox"]:checked+label::before {
+.getin_form .form-control {
     background: #fff;
 }
 
@@ -4732,7 +4730,7 @@ span.icon-contact {
     display: inline-block;
 }
 
-.form-check label::before {
+/* .form-check label::before {
     content: "\f00c";
     position: absolute;
     width: 17px;
@@ -4747,13 +4745,13 @@ span.icon-contact {
     -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-}
+} */
 
-.form-check input[type="checkbox"]:checked+label::before {
+/* .form-check input[type="checkbox"]:checked+label::before {
     background: #24cdd5;
     border-color: #24cdd5;
     color: #fff;
-}
+} */
 
 textarea {
     min-height: 160px;

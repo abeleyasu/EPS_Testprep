@@ -47,4 +47,23 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $exception) {});
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception) {
+        if ($exception instanceof TokenMismatchException) {
+            if (Auth::check()) {
+                Auth::logout();
+            }
+            return redirect()->route('signin')->with('error', 'Your session has expired. Please login again.');
+        }
+        return parent::render($request, $exception);
+    }
 }
