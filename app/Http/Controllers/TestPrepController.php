@@ -560,7 +560,7 @@ class TestPrepController extends Controller
                                     if (isset($json_decoded_answers->{$order})) {
                                         $decoded_answers[$order] = $json_decoded_answers->{$order};
                                     } else {
-                                        $decoded_answers[$order] = '-';
+                                        $decoded_answers[$order] = '';
                                     }
                                 }
                             }
@@ -621,7 +621,7 @@ class TestPrepController extends Controller
                             if (isset($json_decoded_answers->{$order})) {
                                 $decoded_answers[$order] = $json_decoded_answers->{$order};
                             } else {
-                                $decoded_answers[$order] = '-';
+                                $decoded_answers[$order] = '';
                             }
                         }
                     }
@@ -1032,12 +1032,15 @@ class TestPrepController extends Controller
         $checkData = [];
         $ctData = [];
 
+        // dd($answer_arr);
+
         foreach ($categoryTypeData as $key => $catData) {
             foreach ($catData as $catKey => $cat) {
                 $answer_arr = $answer_arr ?? [];
-                if (!empty($answer_arr[$key]) && $answer_arr[$key] != "-") {
-                    $answers = explode(",", $answer_arr[$key] ?? []);
-                    if (in_array(strtolower($catKey), $answers)) {
+                $selected_answer = $answer_arr[$key] ?? '';
+                if (!empty($selected_answer) && $selected_answer != "-") {
+                    $answers = explode(",", $selected_answer ?? []);
+                    if (in_array(strtolower($catKey), $answers) || $selected_answer == '</>') {
                         $pq = PracticeQuestion::where("id", $key)->first();
 
                         foreach ($cat as $catKey1 => $catId) {
@@ -1048,14 +1051,19 @@ class TestPrepController extends Controller
 
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] ?? 0;
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] ?? 0;
+                            $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] ?? 0;
 
-                            if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
+                            $conceptCorrect = $checkboxData[$key][$catKey][$catKey1] ?? "0";
+                            if ($conceptCorrect == "1") {
                                 $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['correct'] + 1;
-                                $crr = $ctData[$catId]['correct'] ?? 0;
                             } else {
                                 $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['incorrect'] + 1;
-                                $crr = $ctData[$catId]['incorrect'] ?? 0;
                             }
+
+                            if (in_array('</>', $answers)) {
+                                $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['missed'] + 1;
+                            }
+
                             $count = $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] ?? 0;
                             $checkData[$catId][$questionTypeData[$key][$catKey][$catKey1]]['count'] = $count + 1;
                         }
@@ -1065,24 +1073,31 @@ class TestPrepController extends Controller
         }
 
         $catFinal = [];
+        // dump($answer_arr);
+        // dump($ctData);
         foreach ($ctData as $ctDataKey => $ctDataValue) {
             foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                 $answer_arr = $answer_arr ?? [];
-                if (!empty($answer_arr[$ctDataKey]) && $answer_arr[$ctDataKey] != "-") {
-                    $answers = explode(",", $answer_arr[$ctDataKey] ?? []);
+                // dump($answer_arr[$key]);
+                $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
+                // dump($key);
+                // dump($selectedAnswer);
+                if (!empty($selectedAnswer) && $selectedAnswer != "-") {
+                    $answers = explode(",", $answer_arr[$ctDataKey] ?? '');
                     $pq = PracticeQuestion::where("id", $ctDataKey)->first();
                     foreach ($ctDataValueValue as $ctDataValueValueKey => $ctDataValueValueValue)
-                        if (!empty($pq->answer) && in_array(strtolower($pq->answer), $answers)) {
+                        // dump($ctDataKey, $ctDataValue, $ctDataValueValueValue);
+                        $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
+                    // dd("ct", $conceptCorrect);
+                    foreach ($conceptCorrect as $cp) {
+                        if ($cp === "1") {
                             $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
-                            if (true) {
-                                $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
-                            }
+                            $catFinal[$ctDataValueKey]['correct'] = $crt + 1;
                         } else {
                             $nocrt = $catFinal[$ctDataValueKey]['incorrect'] ?? 0;
-                            if (true) {
-                                $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
-                            }
+                            $catFinal[$ctDataValueKey]['incorrect'] = $nocrt + 1;
                         }
+                    }
                 }
             }
         }
@@ -1093,14 +1108,23 @@ class TestPrepController extends Controller
             foreach ($checkData as $key => $data) {
                 $correct = $catFinal[$key]['correct'] ?? 0;
                 $incorrect = $catFinal[$key]['incorrect'] ?? 0;
-                $categoryAndQuestionTypeSummaryData[$i] = [
+
+                $dataArray = [
                     'ct' => $key,
                     'qt' => $data,
                     'count' => $correct + $incorrect,
                     'correct' => $correct,
                     'incorrect' => $incorrect
                 ];
-
+                $total_qts = 0;
+                $total_incorrect_qts = 0;
+                foreach ($data as $dt) {
+                    $total_incorrect_qts += $dt['incorrect'];
+                    $total_qts += $dt['count'];
+                }
+                $dataArray['total_qts'] = $total_qts;
+                $dataArray['total_incorrect_qts'] = $total_incorrect_qts;
+                $categoryAndQuestionTypeSummaryData[$i] = $dataArray;
                 $i++;
             }
 
