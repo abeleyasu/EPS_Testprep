@@ -3,11 +3,6 @@
 @section('page-content')
 <div id="page-container">
     <main id="main-container">
-        <div class="loader">
-            <div class="loader-inner">
-                <div class="cssload-loader"></div>
-            </div>
-        </div>
         @include('components.landing-page.header')
         @yield('main-content')
         @include('components.landing-page.footer')
