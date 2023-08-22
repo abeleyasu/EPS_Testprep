@@ -62,6 +62,12 @@ class Handler extends ExceptionHandler
             if (Auth::check()) {
                 Auth::logout();
             }
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your session has expired. Please login again.',
+                ]);
+            }
             return redirect()->route('signin')->with('error', 'Your session has expired. Please login again.');
         }
         return parent::render($request, $exception);

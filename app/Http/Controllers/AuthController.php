@@ -126,56 +126,70 @@ class AuthController extends Controller
 
     public function userSignIn(SignInRequest $request){
 
-        $credentials = $request->only('email', 'password');
-        $credentials['is_active'] = true;
-        if(Auth::attempt($credentials, $request->remember)){
-            $request->session()->regenerate();
-
-            $user = Auth::user();
-            $user->createOrGetStripeCustomer();
-            if((int) $user->role == 1) {
-                $route = route('admin-dashboard');
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Login successfully',
-                        'redirect_url' => $route,
-                    ], 200);
+        try {
+            $credentials = $request->only('email', 'password');
+            $credentials['is_active'] = true;
+            if(Auth::attempt($credentials, $request->remember)){
+                $request->session()->regenerate();
+    
+                $user = Auth::user();
+                $user->createOrGetStripeCustomer();
+                if((int) $user->role == 1) {
+                    $route = route('admin-dashboard');
+                    if ($request->ajax()) {
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Login successfully',
+                            'redirect_url' => $route,
+                        ], 200);
+                    }
+                    return redirect()->intended(route('admin-dashboard'));
+                }    
+                elseif((int) $user->role == 3) {
+                    $route = route('user-dashboard');
+                    if ($request->ajax()) {
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Login successfully',
+                            'redirect_url' => $route,
+                        ], 200);
+                    }
+                    return redirect()->intended(route('user-dashboard'));
                 }
-                return redirect()->intended(route('admin-dashboard'));
-            }    
-            elseif((int) $user->role == 3) {
-                $route = route('user-dashboard');
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Login successfully',
-                        'redirect_url' => $route,
-                    ], 200);
+                else {
+                    if ($request->ajax()) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'The provided credentials do not match our records.',
+                        ], 200);
+                    }
+                    return redirect()->intended('/login');
                 }
-                return redirect()->intended(route('user-dashboard'));
             }
-            else {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'The provided credentials do not match our records.',
-                    ], 200);
-                }
-                return redirect()->intended('/login');
+    
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The provided credentials do not match our records.',
+                ], 200);
             }
-        }
+    
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        } catch (\Exception $e) {
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'The provided credentials do not match our records.',
-            ], 200);
-        }
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                ], 200);
+            }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        }
     }
 
     public function signOut(Request $request){
