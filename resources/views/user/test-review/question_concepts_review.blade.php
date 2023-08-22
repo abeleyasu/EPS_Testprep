@@ -58,7 +58,7 @@
                                         Prep
                                         System {{ isset($test_details->format) ? $test_details->format : '' }}
                                         {{ isset($test_details->title) ? $test_details->title : '' }}
-                                        {{ isset($test_details->id) ? '#' . $test_details->id : '' }}</a>
+                                    </a>
                                 </li>
                                 <li class="breadcrumb-item">
                                     <a class="link-fx"
@@ -108,7 +108,7 @@
                                     <p class="fw-semibold text-white mb-0">Question & Concept Review</p>
                                     <p class="fs-sm text-white-75 mb-0">
                                         {{ isset($test_details->title) ? $test_details->title : '' }}
-                                        {{ isset($test_details->id) ? '#' . $test_details->id : '' }}
+                                        {{-- {{ isset($test_details->id) ? '#' . $test_details->id : '' }} --}}
                                     </p>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@
                             <div class="block-header block-header-default">
                                 <h3 class="block-title">Score Summary -
                                     {{ isset($test_details->title) ? $test_details->title : '' }}
-                                    {{ isset($test_details->id) ? '#' . $test_details->id : '' }}</h3>
+                                </h3>
                             </div>
                             <div class="block-content">
                                 {{-- <div class="form-check form-switch">
@@ -195,12 +195,12 @@
                                             <td>
                                                 @if (isset($user_selected_answers[0]['date_taken']) && !empty($user_selected_answers[0]['date_taken']))
                                                     @foreach ($user_selected_answers[0]['date_taken'] as $test_date)
-                                                        <li>{{ date('d-m-Y', strtotime($test_date->created_at)) }}</li>
+                                                        <li>{{ date('m-d-Y', strtotime($test_date->created_at)) }}</li>
                                                     @endforeach
                                                 @endif
                                                 @if (isset($user_selected_answers[0]['taken_date']) && !empty($user_selected_answers[0]['taken_date']))
                                                     @foreach ($user_selected_answers[0]['taken_date'] as $test_date)
-                                                        <li>{{ date('d-m-Y', strtotime($test_date->created_at)) }}</li>
+                                                        <li>{{ date('m-d-Y', strtotime($test_date->created_at)) }}</li>
                                                     @endforeach
                                                 @endif
                                             </td>
@@ -215,8 +215,7 @@
                                 <h3 class="block-title">Question & Concept Review</h3>
                             </div>
                             <div class="block-content">
-                                <h3>{{ isset($test_details->title) ? $test_details->title : '' }}
-                                    {{ isset($test_details->id) ? '#' . $test_details->id : '' }}</h3>
+                                <h3>{{ isset($test_details->title) ? $test_details->title : '' }}</h3>
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-6">
