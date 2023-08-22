@@ -1678,12 +1678,16 @@
                                                                                     $question_type_arr = $questionTypeData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
                                                                                     $checkbox_arr = $checkboxData[$single_user_selected_answers['get_question_details'][0]->question_id] ?? [];
                                                                                     $user_selected_answer = $single_user_selected_answers['user_selected_answer'] ?? '';
+                                                                                    $question_id = $single_user_selected_answers['get_question_details'][0]->question_id ?? '';
                                                                                 @endphp
                                                                                 @foreach ($category_type_arr as $key => $category_type)
                                                                                     @for ($i = 0; $i < count($category_type); $i++)
-                                                                                        @if (in_array(strtolower($key), explode(',', $single_user_selected_answers['user_selected_answer'])))
-                                                                                            <tr class="odd">
-                                                                                                <td>
+                                                                                        @if (empty($user_selected_answer) ||
+                                                                                                in_array(strtolower($key), explode(',', $single_user_selected_answers['user_selected_answer'])))
+                                                                                            <tr
+                                                                                                class="odd {{ $question_id }}">
+                                                                                                <td
+                                                                                                    class="{{ $question_id }}">
                                                                                                     <?php
                                                                                                     $modal_count = 1;
                                                                                                     $category_arr = Helper::getCategoryNameByID($category_type[$i]);
@@ -2258,13 +2262,15 @@
                                                                             @php
                                                                                 $incorrect = $categoryAndQuestionTypeSummary['incorrect'] ?? 0;
                                                                                 $count = $categoryAndQuestionTypeSummary['count'] ?? 0;
+                                                                                $missed_ct = $categoryAndQuestionTypeSummary['missed'] ?? 0;
                                                                                 $percentage = ($incorrect / $categoryAndQuestionTypeSummary['count']) * 100;
                                                                                 $percentage = $percentage . '%';
                                                                             @endphp
                                                                             <div class="row">
                                                                                 <div class="col-md-12 text-center">
-                                                                                    <p class="block-title m-0">Total
-                                                                                        {{ $count }} tested
+                                                                                    <p class="block-title m-0">Tested
+                                                                                        on
+                                                                                        {{ $count }} questions
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -2282,7 +2288,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div
-                                                                                class="d-flex gap-3 justify-content-center align-items-center">
+                                                                                class="d-flex gap-3 justify-content-center align-items-center m-3">
                                                                                 {{-- @if ($incorrect == 0)
                                                                                     <div
                                                                                         class="text-success text-center">
@@ -2297,16 +2303,30 @@
                                                                                         Questions missed,
                                                                                     </div>
                                                                                 @endif --}}
-                                                                                @if ($categoryAndQuestionTypeSummary['total_incorrect_qts'] == 0)
-                                                                                    <div
-                                                                                        class="text-success text-center">
-                                                                                        All Question Types Correct
-                                                                                    </div>
-                                                                                @else
+                                                                                @if ($missed_ct !== $count)
+                                                                                    @if (
+                                                                                        $categoryAndQuestionTypeSummary['total_incorrect_qts'] == 0 &&
+                                                                                            $categoryAndQuestionTypeSummary['total_correct_qts'] == $categoryAndQuestionTypeSummary['total_qts']
+                                                                                    )
+                                                                                        <div
+                                                                                            class="text-success text-center">
+                                                                                            All Question Types Correct
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div
+                                                                                            class="text-danger text-center">
+                                                                                            {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
+                                                                                            Incorrect Question Types
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endif
+
+                                                                                @if ($missed_ct > 0)
                                                                                     <div
                                                                                         class="text-danger text-center">
-                                                                                        {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
-                                                                                        Question Types Incorrect
+                                                                                        {{ $missed_ct }} /
+                                                                                        {{ $count }}
+                                                                                        Missed
                                                                                     </div>
                                                                                 @endif
                                                                             </div>
@@ -2359,6 +2379,7 @@
                                                                                                 class="btn btn-dark fs-xs fw-semibold me-1 mb-3">{{ $question_arr->question_type_title }}</button>
                                                                                             @php
                                                                                                 $incorrect = $qtData['incorrect'] ?? 0;
+                                                                                                $missed_qt = $qtData['missed'] ?? 0;
                                                                                                 $count = $qtData['count'] ?? 0;
                                                                                                 $percentage = ($incorrect / $qtData['count']) * 100;
                                                                                                 $percentage = $percentage . '%';
@@ -2377,20 +2398,37 @@
                                                                                                     aria-valuemax="100">
                                                                                                 </div>
                                                                                             </div>
-                                                                                            @if ($incorrect == 0)
-                                                                                                <div
-                                                                                                    class="text-success text-center">
-                                                                                                    All Correct Answers
-                                                                                                </div>
-                                                                                            @else
-                                                                                                <div
-                                                                                                    class="text-danger text-center">
-                                                                                                    {{ $incorrect }}
-                                                                                                    /
-                                                                                                    {{ $count }}
-                                                                                                    Incorrect
-                                                                                                </div>
-                                                                                            @endif
+                                                                                            <div
+                                                                                                class="d-flex align-items-center justify-content-center gap-5">
+                                                                                                @if ($count != $missed_qt)
+                                                                                                    @if ($incorrect == 0 && $correct == $count)
+                                                                                                        <div
+                                                                                                            class="text-success text-center">
+                                                                                                            All Correct
+                                                                                                            Answers
+                                                                                                        </div>
+                                                                                                    @else
+                                                                                                        <div
+                                                                                                            class="text-danger text-center">
+                                                                                                            {{ $incorrect }}
+                                                                                                            /
+                                                                                                            {{ $count }}
+                                                                                                            Incorrect
+                                                                                                        </div>
+                                                                                                    @endif
+                                                                                                @endif
+
+                                                                                                @if ($missed_qt > 0)
+                                                                                                    <div
+                                                                                                        class="text-danger text-center">
+                                                                                                        {{ $missed_qt }}
+                                                                                                        /
+                                                                                                        {{ $count }}
+                                                                                                        Missed
+                                                                                                    </div>
+                                                                                                @endif
+                                                                                            </div>
+
                                                                                             <!-- MODAL -->
                                                                                             <div class="modal"
                                                                                                 id="modal-block-large-cg1ct1_{{ $qtDataKey }}"
