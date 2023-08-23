@@ -17,11 +17,11 @@
                 <i class="fa fa-fw fa-ellipsis-v"></i>
             </button>
             <!-- END Toggle Mini Sidebar -->
+            <div class="block-title d-none d-md-flex justify-content-center">
+                Welcome to College Prep System, {{ auth()->user()->first_name }}!
+            </div>
         </div>
 
-        <div class="block-title d-none d-md-flex justify-content-center">
-            Welcome to College Prep System, {{ auth()->user()->first_name }}!
-        </div>
         <!-- END Left Section -->
 
         <!-- Right Section -->

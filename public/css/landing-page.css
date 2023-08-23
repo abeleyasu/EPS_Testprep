@@ -1930,6 +1930,7 @@ ul.links li a::before,
     line-height: normal;
     margin: 16px 1.25rem;
     display: inline-block;
+    cursor: pointer;
 }
 .navbar-nav .nav-item:last-child .nav-link{
     margin-right: 0;
@@ -2541,7 +2542,7 @@ a.dropdown-toggle::after {
     }
     .process-wrapp li::before,
     .process-wrapp li::after {
-        width: 26% !important;
+        width: 16% !important;
     }
     .video-content-col{
         margin-right: 15px;
@@ -3477,7 +3478,7 @@ iframe {
     height: 1px;
     top: 115px;
     background: rgba(255, 255, 255, .5);
-    width: 30%;
+    width: 22%;
     z-index: -1;
     margin: 0;
 }
@@ -3692,7 +3693,7 @@ iframe {
 }
 
 .counters {
-    font-size: 6.25rem;
+    font-size: 5.25rem;
     line-height: 5rem;
 }
 
@@ -3827,13 +3828,13 @@ iframe {
 
 @media screen and (max-width: 1400px) {
     .counters {
-        font-size: 5.625rem;
+        font-size: 4.625rem;
     }
 }
 
 @media screen and (max-width: 1266px) {
     .counters {
-        font-size: 5rem;
+        font-size: 3rem;
     }
 }
 
@@ -6952,4 +6953,8 @@ body {
 
 .sign-up-defaultcolor {
     color: #24cdd5 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

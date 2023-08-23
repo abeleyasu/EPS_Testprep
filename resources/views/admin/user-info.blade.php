@@ -82,7 +82,7 @@
                             </tr>
                             <tr>
                                 <th>Role</th>
-                                <td></td>
+                                <td>{{ $user->userrole->name }}</td>
 
                                 <th>Email</th>
                                 <td>{{ $user->email }}</td>
@@ -243,7 +243,7 @@
                         </div>
                         <div class="block block-rounded c-border">
                             <div class="block-header block-header-default">
-                                <h3 class="block-title">Cancel/Failed Subscription Information</h3>
+                                <h3 class="block-title">Cancel Subscription History</h3>
                             </div>
                             <div class="block-content block-content-full">
                                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
@@ -288,7 +288,7 @@
                         </div>
                         <div class="block block-rounded c-border">
                             <div class="block-header block-header-default">
-                                <h3 class="block-title">Hourly Subscription Information</h3>
+                                <h3 class="block-title">Subscription History</h3>
                             </div>
                             <div class="block-content block-content-full">
                                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full">

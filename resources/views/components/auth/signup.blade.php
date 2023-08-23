@@ -60,7 +60,7 @@
         <div class="mb-4">
             <div class="form-check">
                 <input class="form-check-input @if(isset($sign_btn_hide)) fs-6 @endif {{$errors->has('terms') ? 'is-invalid' : ''}}" type="checkbox" id="terms" name="terms">
-                <label class="form-check-label" for="terms">I agree to Terms &amp; Conditions</label>
+                <label class="form-check-label" for="terms">I agree to <a class="fs-sm" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#one-signup-terms" style="color: #4c78dd !important">Terms &amp; Conditions</a></label>
             </div>
             @error('terms')
             <div class="invalid-feedback">{{$message}}</div>

@@ -7,6 +7,7 @@ use App\Models\CourseManagement\UserTaskStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\UserSettings;
+use Illuminate\Support\Facades\Crypt;
 
 class VerifyEmailController extends Controller
 {
@@ -27,8 +28,33 @@ class VerifyEmailController extends Controller
     }
 
     public function resend(Request $request) {
-        $this->mailgun->sendEmailConfirmationCode();
-        return back()->with('resent', 'Verification link sent!');
+        try {
+            $user_id = Crypt::decryptString($request->id);
+            $user = User::where('id', $user_id)->first();
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Something went wrong. Please try again later.'
+                ]);
+            }
+            $mail = $this->mailgun->sendEmailConfirmationCode($user);
+            if ($mail) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'New verification code has been sent to your email address.'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Something went wrong. Please try again later.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again later.'
+            ]);
+        }
     }
 
     public function verfiy(Request $request) {
@@ -43,7 +69,10 @@ class VerifyEmailController extends Controller
             ])->render()
         ]);
         UserSettings::create([ 'user_id' => $user->id ]);
-        Auth::logout();
-        return redirect()->route('signin')->with('email_verified_success', 'Your Email Verified Successfully. Please Login.');
+        return redirect()->route('home')->with([
+            'email_status' => 'success',
+            'email_message' => 'Your account has been verified. You can now login.',
+            'modal' => 'login'
+        ]);
     }
 }

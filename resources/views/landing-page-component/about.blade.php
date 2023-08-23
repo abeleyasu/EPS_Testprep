@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="text-center">
-      <a href="{{route('signup')}}" class="nav-link">
-        <h3 class="defaultcolor">Sign Up Free</h3>
+      <a data-bs-toggle="modal" data-bs-target="#sign-up-modal" class="nav-link">
+        <h3 class="defaultcolor cursor-pointer">Sign Up Free</h3>
       </a>
     </div>
     <div class="top30">
@@ -111,8 +111,8 @@
     </div>
     <div class="heading-title text-center mt-3">
       <h3>Start Your Journey Now</h3>
-      <a class="nav-link" href="{{route('signup')}}">
-        <h3 class="defaultcolor">Sign Up Free</h3>
+      <a class="nav-link" data-bs-toggle="modal" data-bs-target="#sign-up-modal">
+        <h3 class="defaultcolor cursor-pointer">Sign Up Free</h3>
       </a>
     </div>
   </div>

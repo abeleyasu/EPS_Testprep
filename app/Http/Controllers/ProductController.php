@@ -82,7 +82,7 @@ class ProductController extends Controller
             'product_category_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'inclusion.*' => 'required|alpha_num|string',
+            'inclusion.*' => 'required',
         ];
         $customMessage = [
             'product_category_id.required' => 'Category is required'
@@ -115,6 +115,7 @@ class ProductController extends Controller
                     return ['product_id' => $create->id, 'inclusion' => $item];
                 }
             }, $request->inclusion);
+            $inclusions = array_filter($inclusions);
             ProductInclusion::insert($inclusions);
             return redirect()->intended(route('admin.product.list'))->with('success', 'Product created successfully');
         }
@@ -134,7 +135,7 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'product_category_id' => 'required',
-            'inclusion.*' => 'required|string',
+            'inclusion.*' => 'required',
         ];
         $customMessage = [
             'product_category_id.required' => 'Category is required'
@@ -175,7 +176,6 @@ class ProductController extends Controller
                 array_push($newInsert, ['product_id' => $request->id, 'inclusion' => $inclusion]);
             }
         }
-
         if (count($newInsert) > 0) {
             ProductInclusion::insert($newInsert);
         }

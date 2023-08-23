@@ -17,6 +17,7 @@ use App\Http\Requests\SignInRequest;
 use App\Models\AdminSettings;
 use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Crypt;
 
 class AuthController extends Controller
 {
@@ -75,47 +76,22 @@ class AuthController extends Controller
                     $user->assignRole($free_role);
                 }
             }
-            Auth::login($user);
-            $this->mailgun->sendEmailConfirmationCode();
-            if ($user->role === 1) {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'User Registration Successfully',
-                        'redirect_url' => route('admin-dashboard'),
-                    ], 200);
-                }
-                return redirect()->intended(route('admin-dashboard'));
-            } elseif ($user->role === 3) {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'User Registration Successfully',
-                        'redirect_url' => route('user-dashboard'),
-                    ], 200);
-                }
-                return redirect()->intended(route('user-dashboard'));
-            } else {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'User Registration Successfully',
-                        'redirect_url' => route('signin'),
-                    ], 200);
-                }
-                return redirect()->intended('/login');
-            }
-        }
-
-        if ($request->ajax()) {
+            $this->mailgun->sendEmailConfirmationCode($user);
+            
+            $data = [
+                'id' => Crypt::encryptString($user->id),
+            ];
             return response()->json([
-                'success' => false,
-                'message' => 'Unable to create your account',
+                'success' => true,
+                'message' => 'User Registration Successfully. Please check your email to verify your account.',
+                'data' => $data,
             ], 200);
         }
 
-        return back()->withErrors("Unable to create your account")
-        ->onlyInput('email', 'first_name', 'last_name', 'phone');
+        return response()->json([
+            'success' => false,
+            'message' => 'Unable to create your account',
+        ], 200);
     }
 
     public function showSignIn(){
@@ -125,70 +101,54 @@ class AuthController extends Controller
     }
 
     public function userSignIn(SignInRequest $request){
-
         try {
             $credentials = $request->only('email', 'password');
             $credentials['is_active'] = true;
-            if(Auth::attempt($credentials, $request->remember)){
-                $request->session()->regenerate();
-    
-                $user = Auth::user();
-                $user->createOrGetStripeCustomer();
-                if((int) $user->role == 1) {
-                    $route = route('admin-dashboard');
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'success' => true,
-                            'message' => 'Login successfully',
-                            'redirect_url' => $route,
-                        ], 200);
-                    }
-                    return redirect()->intended(route('admin-dashboard'));
-                }    
-                elseif((int) $user->role == 3) {
-                    $route = route('user-dashboard');
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'success' => true,
-                            'message' => 'Login successfully',
-                            'redirect_url' => $route,
-                        ], 200);
-                    }
-                    return redirect()->intended(route('user-dashboard'));
-                }
-                else {
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'success' => false,
-                            'message' => 'The provided credentials do not match our records.',
-                        ], 200);
-                    }
-                    return redirect()->intended('/login');
-                }
-            }
-    
-            if ($request->ajax()) {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
                 return response()->json([
                     'success' => false,
                     'message' => 'The provided credentials do not match our records.',
                 ], 200);
             }
-    
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ])->onlyInput('email');
-        } catch (\Exception $e) {
 
-            if ($request->ajax()) {
+            if (!$user->hasVerifiedEmail()) {
                 return response()->json([
                     'success' => false,
-                    'message' => $e->getMessage(),
+                    'message' => 'Please verify your email address.',
+                    'data' => [
+                        'id' => Crypt::encryptString($user->id),
+                    ]
                 ], 200);
             }
-
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ])->onlyInput('email');
+            if(Auth::attempt($credentials, $request->remember)){
+                $request->session()->regenerate();
+                $user->createOrGetStripeCustomer();
+                if((int) $user->role == 1) {
+                    $route = route('admin-dashboard');
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Login successfully',
+                        'redirect_url' => $route,
+                    ], 200);
+                } else {
+                    $route = route('user-dashboard');
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Login successfully',
+                        'redirect_url' => $route,
+                    ], 200);
+                }
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'The provided credentials do not match our records.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 200);
         }
     }
 
@@ -199,7 +159,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect(route('signin'));
+        return redirect(route('home'));
     }
 
     public function showForgetPassword() {

@@ -200,30 +200,6 @@ $("form[class*='js-validation-signin']").validate({
   ...common_error_function
 })
 
-$('#signin').on('click', function (e) {
-  e.preventDefault();
-  const form = $("form[class*='js-validation-signin']");
-  if (form.valid()) {
-    $.ajax({
-      url: form.attr('action'),
-      type: 'POST',
-      data: form.serialize(),
-    }).done((response) => {
-      if (response.success) {
-        window.location.href = response.redirect_url
-      } else {
-        $('#errors').html('')
-        const alert = `
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          ${response.message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>`
-        $('#errors').append(alert);
-      }
-    })
-  }
-})
-
 $('#sign-in-modal').on('show.bs.modal', function () {
   $('#errors').html('')
   $('form[class*="js-validation-signin"]')[0].reset()
@@ -344,7 +320,17 @@ $('#signup').on('click', function(e) {
     }).done((response) => {
       console.log('response -->', response)
       if (response.success) {
-        window.location.href = response.redirect_url
+        $('#email-verification-modal').modal('show')
+        $('#sign-up-modal').modal('hide')
+        $('#verfication-emaiil-alerts').html('')
+        const alert = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          ${response.message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`
+        $('#verfication-emaiil-alerts').append(alert);
+        $('#email-verification-id').val(response.data.id)
+        // window.location.href = response.redirect_url
       } else {
         $('#registation-errors').html('')
         const alert = `

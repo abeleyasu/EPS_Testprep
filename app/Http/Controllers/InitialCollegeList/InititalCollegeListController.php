@@ -552,7 +552,9 @@ class InititalCollegeListController extends Controller
             $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->orderBy('order_index')->with(['costcomparison', 'collegeInformation']);
         }])->first();
 
-        $costcomparisonsummary = $costcomparisonsummary->toArray();
+        if ($costcomparisonsummary) {
+            $costcomparisonsummary = $costcomparisonsummary->toArray();
+        }
 
         $totalCount = 0;
         $data = [];
@@ -599,6 +601,8 @@ class InititalCollegeListController extends Controller
     
             if ($costcomparisonsummary) {
                 $costcomparisonsummary = $costcomparisonsummary->toArray();
+            } else {
+                $costcomparisonsummary = [];
             }
 
             

@@ -11,6 +11,7 @@
     @include('components.user-footer')
 </div>
 <!-- END Page Container -->
+@include('components.auth.email-verification')
 @endsection
 
 @section('page-script')
@@ -27,6 +28,14 @@
                 }
             }
         });
+        $(document).ready(function () {
+            const is_user_email_verified = "{{ Auth::check() ? Auth::user()->hasVerifiedEmail() : false }}";
+            if (!is_user_email_verified) {
+                $('#email-verification-modal').modal('show');
+                $('#verfication-emaiil-alerts').html('')
+                constructMessage('Please verify your email address', 'verfication-emaiil-alerts', 'danger')
+            }
+        })
         const core = {
             hidecollegeurl: "{{ route('admin-dashboard.initialCollegeList.changeSearchCollegeAddStatus', [ 'id' => ':id' ]) }}",
             gethideCollegeUrl: "{{ route('admin-dashboard.initialCollegeList.getHideCollege') }}",

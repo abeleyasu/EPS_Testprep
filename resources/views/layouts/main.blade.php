@@ -125,6 +125,40 @@
       }
     });
 
+    const constructMessage = (message, element_id, status) => {
+      let element = '#' + element_id;
+      $(element).html('')
+      const alert = `
+          <div class="alert alert-${status} alert-dismissible fade show" role="alert">
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>`
+      $(element).append(alert);
+    }
+
+    function resetEmailVerfication(id) {
+      return $.ajax({
+        url: "{{ route('verification.resend') }}",
+        type: 'POST',
+        data: {
+          _token: "{{ csrf_token() }}",
+          id: id,
+        }
+      })
+    }
+
+    $('#resend-verification-link').on('click', async function (e) {
+      e.preventDefault();
+      const response = await resetEmailVerfication($('#email-verification-id').val());
+      if (response.success) {
+        $('#verfication-emaiil-alerts').html('')
+        constructMessage(response.message, 'verfication-emaiil-alerts', 'success')
+      } else {
+        $('#verfication-emaiil-alerts').html('')
+        constructMessage(response.message, 'verfication-emaiil-alerts', 'danger')
+      }
+    })
+
     const ajax = (url, options = null) => {
       return {
         delay: 500,

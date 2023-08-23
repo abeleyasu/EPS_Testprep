@@ -95,7 +95,7 @@
                       <h3 class="block-title">Total Pending Hours:</h3>
                     </div>
                     <div class="col-8">
-                      {{ $subscription->pending_consumed_hours }}
+                      {{ number_format($subscription->pending_consumed_hours) }}
                     </div>
                   </div>
                   @endif

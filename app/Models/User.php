@@ -13,7 +13,7 @@ use App\Models\UserRole;
 use App\Models\HighSchoolResume\States;
 use App\Models\HighSchoolResume\Cities;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Billable, HasRoles;
 
@@ -122,5 +122,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isUserSubscriptionToAnyPlan($name = 'default') {
         $subscription = $this->getUserStripeSubscription($name, true);
         return count($subscription) > 0;
+    }
+
+    public function hasVerifiedEmail() {
+        return ! is_null($this->email_verified_at);
     }
 }

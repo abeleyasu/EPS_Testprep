@@ -13,7 +13,7 @@
       </div>
       <div class="col-sm-12 col-lg-4">
         <div class="counters whitecolor my-3">
-          <span class="font-light">$<span class="timer count-number" data-to="100000" data-speed="5024"></span></span>
+          <span class="font-light">$<span class="timer count-number" data-to="10000000" data-speed="5024"></span></span>
         </div>
         <h3 class="font-light whitecolor top20">Total Scholarship Dollars Awarded</h3>
       </div>

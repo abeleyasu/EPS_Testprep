@@ -231,8 +231,12 @@ class SubscriptionController extends Controller
                         $subscription->pending_consumed_hours = $subscription->pending_consumed_hours - ($request->hours / 60);
                         break;
                 }
-                // dd($subscription->pending_consumed_hours);
-                $subscription->stripe_status = $subscription->pending_consumed_hours <= 0 ? 'consumed' : 'active';
+                if ($subscription->pending_consumed_hours <= 0) {
+                    $subscription->pending_consumed_hours = 0;
+                    $subscription->stripe_status = 'consumed';    
+                } else {
+                    $subscription->stripe_status = 'active';
+                }
                 $subscription->save();
                 DB::commit();
                 return response()->json([

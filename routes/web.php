@@ -86,7 +86,7 @@ use App\Http\Controllers\AdminSettingsController;
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
-    Route::group(['middleware' => ['role:super_admin', 'verified'], 'prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['role:super_admin', 'email_verification'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
         Route::get('/user/list', [AdminController::class, 'userList'])->name('admin-user-list');
         Route::get('/user/info/{id}', [AdminController::class, 'singleUserInfor'])->name('admin-user-info');
@@ -305,7 +305,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
     });
 
     //User Routes
-    Route::group(['middleware' => ['role:standard_user', 'verified'], 'prefix' => 'user'], function () {
+    Route::group(['middleware' => ['role:standard_user', 'email_verification'], 'prefix' => 'user'], function () {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
 
@@ -553,9 +553,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
 // Auth Routes
 Route::group(['middleware' => ['guest', 'cors']], function () {
-    Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
+    // Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
     Route::post('/signin', [AuthController::class, 'userSignIn'])->name('post-signin');
-    Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
+    // Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
     Route::post('/signup', [AuthController::class, 'userSignUp'])->name('post-signup');
     Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
     Route::get('forget-password', [AuthController::class, 'showForgetPassword'])->name('password.request');
@@ -564,11 +564,11 @@ Route::group(['middleware' => ['guest', 'cors']], function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
     Route::get('/pricing', [PlanController::class, 'getPlanForNonUser'])->name('simple-pricing');
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
-    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
+    // Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
 });
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
 Route::get('/sendreminder', [SendReminder::class, 'index']);
