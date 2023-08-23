@@ -593,9 +593,9 @@ class TestPrepController extends Controller
 
                                 $store_sections_details[] = array(
                                     'user_selected_answer' => $json_decoded_single_answers,
-                                    'user_selected_guess' => $json_decoded_guess->$question_id,
-                                    'user_selected_flag' => $json_decoded_flag->$question_id,
-                                    'user_selected_skip' => $json_decoded_skip->$question_id,,
+                                    'user_selected_guess' => $json_decoded_guess->$question_id ?? '',
+                                    'user_selected_flag' => $json_decoded_flag->$question_id ?? '',
+                                    'user_selected_skip' => $json_decoded_skip->$question_id ?? '',
                                     'get_question_details' => $get_question_details,
                                     'all_sections' => $get_all_section,
                                     'date_taken' => $user_selected_answers,
@@ -1176,7 +1176,7 @@ class TestPrepController extends Controller
         ]);
     }
 
-	public function test_progress_store(Request $request)
+    public function test_progress_store(Request $request)
     {
         $current_user_id = Auth::id();
         $get_section_id = $request->get_section_id;
@@ -1190,12 +1190,12 @@ class TestPrepController extends Controller
         $selected_flag_val = $request->selected_flag_val;
         $selected_skip_val = $request->selected_skip_val;
         $selected_guess_val = $request->selected_guess_val;
-        
-        
+
+
         $filtered_answers = isset($request->selected_answer) ? array_filter($request->selected_answer) : [];
 
         $get_question_ids_array = [];
-        
+
         if (isset($filtered_answers) && !empty($filtered_answers)) {
             $get_question_ids_array = array_keys($filtered_answers);
         }
@@ -1204,7 +1204,7 @@ class TestPrepController extends Controller
             ->where('user_id', $current_user_id)
             ->first();
         if ($existingRecord) {
-            if($existingRecord->is_submit) {
+            if ($existingRecord->is_submit) {
                 $existingRecord->delete();
                 return response()->json(['message' => 'delete']);
             }
@@ -1250,7 +1250,7 @@ class TestPrepController extends Controller
                 'actual_time' => $actual_time,
                 'time_left' => $time_left,
             ];
-        
+
             TestProgress::where('section_id', $get_section_id)
                 ->where('user_id', $current_user_id)
                 ->update($updates);
@@ -1258,7 +1258,7 @@ class TestPrepController extends Controller
         } else {
             $filtered_guess = $filtered_flag = $filtered_skip = [];
             foreach ($get_question_ids_array as $key => $question_id) {
-                if($question_id == $curr_question_id) {
+                if ($question_id == $curr_question_id) {
                     $filtered_guess[$curr_question_id] = $selected_guess_val;
                     $filtered_flag[$curr_question_id] = $selected_flag_val;
                     $filtered_skip[$curr_question_id] = $selected_skip_val;
@@ -1289,7 +1289,7 @@ class TestPrepController extends Controller
             $testProgress->time_left = $time_left;
             $testProgress->save();
         }
-                
+
         return response()->json(['message' => 'success']);
     }
 
@@ -1306,10 +1306,9 @@ class TestPrepController extends Controller
             $progressFlag = true;
             $timeLeft = $existingProgress->time_left;
         }
-        
+
 
         return response()->json(['existingProgress' => $existingProgress ?? null, 'progressFlag' => $progressFlag]);
-        
     }
 
     public function set_answers(Request $request)
@@ -1469,13 +1468,13 @@ class TestPrepController extends Controller
                 'practice_tests.updated_at' => DB::raw('NOW()')
             ]);
 
-		$existingRecord = TestProgress::where('section_id', $get_section_id)
+        $existingRecord = TestProgress::where('section_id', $get_section_id)
             ->where('user_id', $current_user_id)
             ->first();
         if ($existingRecord) {
             $existingRecord->update([
-				'is_submit' => 1,
-			]);
+                'is_submit' => 1,
+            ]);
         }
 
         return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
@@ -2210,7 +2209,7 @@ class TestPrepController extends Controller
 
         $all_sat_test = PracticeTest::where('format', 'SAT')->get();
         $all_sat_details_array = $this->getSatDetailsArray($all_sat_test, $user_id, $helper);
-		
+
         //Test in Progress
         $formats = ['ACT', 'SAT', 'PSAT'];
         $getAllProgressPracticeTests = [];
@@ -2802,7 +2801,6 @@ class TestPrepController extends Controller
         }
 
         return response()->json(['time' => $time ?? null, 'progressFlag' => $progressFlag, 'time_left' => $timeLeft]);
-
     }
 
     public function addMistakeType(Request $request)
