@@ -1,11 +1,15 @@
 <header class="site-header" id="header">
-  <nav class="navbar navbar-expand-lg transparent-bg static-nav">
+  <nav class="navbar navbar-expand-xl transparent-bg static-nav">
     <div class="container">
       <a class="navbar-brand" href="#">
         <img src="{{ asset('static-image/logo-no-bg.png') }}" alt="logo" class="logo-default"> 
-      </a> &nbsp;&nbsp; <a class="whitecolor"><h3 class="font-xlight d-none d-sm-block"> College Prep System </h3></a>
+        <!-- logo-with-transparent-bg.png -->
+      </a> &nbsp;&nbsp; <a class="whitecolor"><h3 class="font-xlight d-none d-md-block header-title"> College Prep System </h3></a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link sign-up-defaultcolor" data-bs-toggle="modal" data-bs-target="#sign-up-modal">Sign Up Free</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link about-content" href="#" >Prep System</a>
           </li>
@@ -18,11 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ route('simple-pricing') }}">Pricing</a>
           </li>
-          @if(!Auth::user())
           <li class="nav-item">
-            <a class="nav-link" href="{{route('signin')}}">Sign in</a>
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#sign-in-modal">Sign in</a>
           </li>
-          @endif
         </ul>
       </div>
     </div>
@@ -37,6 +39,25 @@
       <nav class="side-nav w-100">
         <a class="whitecolor"><h3 class="font-xlight d-block d-sm-none"> College Prep System </h3></a>
         <ul class="navbar-nav">
+          <li class="nav-item d-block d-xl-none">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#sign-in-modal">Sign in</a>
+          </li>
+          <li class="nav-item d-block d-xl-none">
+            <a class="nav-link sign-up-defaultcolor" data-bs-toggle="modal" data-bs-target="#sign-up-modal">Sign Up Free</a>
+          </li>
+          <li class="nav-item d-block d-xl-none">
+            <a class="nav-link about-content" href="#" >Prep System</a>
+          </li>
+          <li class="nav-item d-block d-xl-none">
+            <a class="nav-link" href="#">Tutoring</a>
+          </li>
+          <li class="nav-item d-block d-xl-none">
+            <a class="nav-link" href="#">Admissions</a>
+          </li>
+          <li class="nav-item d-block d-xl-none">
+            <a class="nav-link" href="{{ route('simple-pricing') }}">Pricing</a>
+          </li>
+          <!-- Default Fields -->
           <li class="nav-item">
             <a class="nav-link" href="#">Results</a>
           </li>

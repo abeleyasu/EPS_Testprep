@@ -222,6 +222,14 @@
                             </div>
 
                             @include('admin.courses.components.product-dropdown')
+
+                            <div class="mb-2 mt-3 form-check">
+                                <input type="checkbox" id="is_addmission_lesson" name="is_addmission_lesson" class="form-check-input {{$errors->has('is_addmission_lesson') ? 'is-invalid' : ''}}">
+                                <label class="form-check-label" for="is_addmission_lesson">Admissions Lessons check box</label>
+                                @error('is_addmission_lesson')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>

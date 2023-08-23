@@ -190,7 +190,7 @@
                                 </div>
 
                                 @include('admin.courses.components.product-dropdown', [
-                                    'product' => $course->product_id,
+                                    'product' => $course->user_course_products()->pluck('product_id')->toArray(),
                                     'status' => $course->status
                                 ])
                             </div>

@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
-</head>
-<body style="font-weight: 500; font-size: 17px;">
-    <h2>Dear {{ $name }}</h2>
+@extends('email-template.layout.mail')
+
+@section('mail-content')
     <p>Congratulations on taking the first step toward your college journey by registering with College Prep System! We're excited to have you join our community and we're confident that you'll find our platform to be a valuable asset as you navigate the college admissions and test preparation process.</p>
     <p>Before you get started, we need to verify your email address to secure your account.</p>
     <p>Please click the link below to verify your email:</p>
@@ -77,14 +71,8 @@
         </li>
     </ol>
     <p>To access these resources, simply log in to your account, navigate to your dashboard, and start exploring.</p>
-    <p>If you need any assistance or have questions, please feel free to contact our support team at support@collegeprepsystem.com. We're here to help you every step of the way.</p>
+    <p>If you need any assistance or have questions, please feel free to contact our support team at @include('email-template.components.system-email'). We're here to help you every step of the way.</p>
     <p>Thank you for choosing College Prep System to guide you on this exciting journey. We look forward to seeing you excel.</p>
-    <p>Best wishes,</p>
-    <p>
-        Joy, Joel, and Jon from College Prep System <br>
-        Denver | Portland <br>
-        888.822.5701
-    </p>
+    @include('email-template.components.email-footer')
     <p>College Prep System is all you need to achieve your college dreams.</p>
-</body>
-</html>
+@endsection 

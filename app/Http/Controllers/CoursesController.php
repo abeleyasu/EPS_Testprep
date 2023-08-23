@@ -39,7 +39,7 @@ class CoursesController extends Controller
 			'user_type' => 'required|array|min:1',
 			'order' => 'required',
 			'status' => 'required',
-            'product' => 'required_if:status,paid',
+            'products' => 'required_if:status,paid|array|min:1',
 		], [
             'name.required' => 'Course name is required',
             'user_type.required' => 'Course user type is required',
@@ -47,7 +47,9 @@ class CoursesController extends Controller
             'user_type.array' => 'Course user type is required',
             'order.required' => 'Course order is required',
             'status.required' => 'Course status is required',
-            'product.required_if' => 'Product is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
         ]);
 
 
@@ -82,11 +84,16 @@ class CoursesController extends Controller
             'order' => $request->get('order'),
             'status' => $request->get('status'),
             'coverimage' =>$filename,
-            'product_id' => empty($request->product) ? null : $request->product,
         ]);
 
+        // For Course User Role
         $course->user_course_roles()->attach($request->user_type);
 
+        // For Course Products
+        if ($request->status == 'paid') {
+            $course->user_course_products()->attach($request->products);
+        }
+        
 		/**********Order reset**********/
 		$courses = Courses::orderBy('order')->get();
 		
@@ -137,7 +144,7 @@ class CoursesController extends Controller
 			'user_type' => 'required|array|min:1',
 			'order' => 'required',
 			'status' => 'required',
-            'product' => 'required_if:status,paid',
+            'products' => 'required_if:status,paid|array|min:1',
 		], [
             'name.required' => 'Course name is required',
             'user_type.required' => 'Course user type is required',
@@ -145,17 +152,15 @@ class CoursesController extends Controller
             'user_type.array' => 'Course user type is required',
             'order.required' => 'Course order is required',
             'status.required' => 'Course status is required',
-            'product.required_if' => 'Product is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
         ]);
         $published = $request->published;
         if($published == 'true'){
             $published = 1;
         }else{
             $published = 0; 
-        }
-
-        if ($request->status == 'unpaid') {
-            $request->merge(['product' => null]);
         }
 
 		$course = Courses::findOrFail($id);
@@ -180,17 +185,28 @@ class CoursesController extends Controller
             'published'=>$published,
             'coverimage'=>$filename,
 			'content' => $content,
-            'user_type' => $request->get('user_type'),
+            'user_type' => $request->get('user_type')[0],
             'duration' => $duration,
             'order' => $request->get('order'),
             'status' => $request->get('status'),
-            'product_id' => empty($request->product) ? null : $request->product,
         ]); 
+
+        // For Course User Role
         $course_user_types = $course->user_course_roles()->pluck('user_role_id')->toArray();
         if (count($course_user_types) > 0) {
             $course->user_course_roles()->detach($course_user_types);
         }
         $course->user_course_roles()->attach($request->user_type);
+
+        // For Course Product
+        $course_products = $course->user_course_products()->pluck('product_id')->toArray();
+        if (count($course_products) > 0) {
+            $course->user_course_products()->detach($course_products);
+        }
+        if ($request->status == 'paid' && count($request->products) > 0) {
+            $course->user_course_products()->attach($request->products);
+        }
+
 		/**********Order reset**********/
 		/*$courses = Courses::orderBy('order')->get();
 		$currentId = $course->id;
@@ -286,7 +302,7 @@ class CoursesController extends Controller
 		if($milestones){
 			$totalmilestones = $milestones->count();
 		}        
-        if($course->status == 'paid' && !$user->isUserSubscibedToTheProduct($course->product_id)){
+        if($course->status == 'paid' && !$user->isUserSubscibedToTheProduct($course->user_course_products()->pluck('product_id')->toArray(), 'user-course-details')){
 			return redirect()->route('courses.index')->with('error', 'You don\'t have permission to access this course.');
 		}
         $tags = Tag::all();

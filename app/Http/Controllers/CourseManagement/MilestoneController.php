@@ -41,6 +41,9 @@ class MilestoneController extends Controller
     public function studentIndex()
     {
         // dd('for user');
+        // ->AndWhereHas('user_course_products', function($query) use ($user) {
+        //     $query->where('products.id', $user->product_id);
+        // })
         $user = auth()->user();
         $courses = Courses::where('published', true)->orderBy('order')->whereHas('user_course_roles', function($query) use ($user) {
             $query->where('user_roles.id', $user->role);
@@ -148,11 +151,15 @@ class MilestoneController extends Controller
             'course_id' => $request->select_course,
             'coverimage'=>$filename,
             'published' => $request->get('published') ? true : false,
-            'product_id' => empty($request->product) ? null : $request->product,
+            'is_addmission_lesson' => $request->get('is_addmission_lesson') ? true : false,
         ]);
 
         if ($milestone) {
             $milestone->user_milestone_roles()->attach($request->user_type);
+
+            if ($request->status == 'paid') {
+                $milestone->user_milestone_products()->attach($request->products);
+            }
         }
 		/**********Order reset**********/
 		/*$milestones = Milestone::orderBy('order')->get();
@@ -194,7 +201,7 @@ class MilestoneController extends Controller
         if (!$milestone->userHasMileStonePermissionOrNot()) {
             return redirect()->back()->with('error', 'You are not authorized to access this milestone');
         }
-		if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->product_id)){
+		if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->user_milestone_products()->pluck('product_id')->toArray())){
 			return redirect(route('courses.milestone',['course' => $milestone->course_id]))->with('error', 'You are not authorized to access this milestone');
 		}
 		$getMilestones = Milestone::where('published', true)->where('id','=',$milestone->id)->orderBy('id')->get();
@@ -277,7 +284,7 @@ class MilestoneController extends Controller
             'course_id' => $request->course,
             'coverimage' => $filename,
             'published' => $request->get('published') ? true : false,
-            'product_id' => empty($request->product) ? null : $request->product,
+            'is_addmission_lesson' => $request->get('is_addmission_lesson') ? true : false,
         ]);
 
 
@@ -286,6 +293,14 @@ class MilestoneController extends Controller
             $milestone->user_milestone_roles()->detach($mileston_user_roles);
         }
         $milestone->user_milestone_roles()->attach($request->user_type);
+
+        $milestone_products = $milestone->user_milestone_products()->pluck('product_id')->toArray();
+        if (count($milestone_products) > 0) {
+            $milestone->user_milestone_products()->detach($milestone_products);
+        }
+        if ($request->status == 'paid' && count($request->products) > 0) {
+            $milestone->user_milestone_products()->attach($request->products);
+        }
 
 
 		/**********Order reset**********/

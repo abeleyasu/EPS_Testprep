@@ -31,4 +31,8 @@ class CostComparisonDetail extends Model
         'need_base_other_grants',
         'cost_of_attendance_year'
     ];
+
+    public function cost_comparison() {
+        return $this->belongsTo(CostComparison::class, 'cost_comparison_id', 'id');
+    }
 }

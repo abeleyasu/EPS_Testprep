@@ -41,6 +41,12 @@
                             @enderror
                         </div>
                         <div class="mb-4">
+                            <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('parent_phone') ? 'is-invalid' : ''}}" id="parent_phone" name="parent_phone" placeholder="Parent Phone Number (Optional)" value="{{old('parent_phone')}}">
+                            @error('parent_phone')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
                             <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
                             @error('password')
                             <div class="invalid-feedback">{{$message}}</div>

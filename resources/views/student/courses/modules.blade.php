@@ -170,7 +170,7 @@
                                         <div class="col-11" style="float:left;">
 										    <h3 style="line-height:0px;">
 																					
-											@if($module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->product_id))
+											@if($module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->user_module_products()->pluck('product_id')->toArray()))
 												<a href="javascript:;" class="font-grayed">{{ $module->title }}</a>
 											@else
 											<a href="{{ route('modules.detail',['module'=>$module->id]) }}">{{ $module->title }}</a>
@@ -223,7 +223,7 @@
                                             
 												<span class="mx-4">
 																								
-												@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->product_id))
+												@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->user_section_products()->pluck('product_id')->toArray()))
 													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i>  {{$key+1}}.{{$section_key+1}} {!! $section->title !!}</a>
 												@else
 												<a href="{{ route('sections.detail',['section'=>$section->id]) }}"><i class="fa-solid fa-list"></i>  {{$key+1}}.{{$section_key+1}} {!! $section->title !!} </a>

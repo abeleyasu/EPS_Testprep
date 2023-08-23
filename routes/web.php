@@ -64,6 +64,8 @@ use App\Http\Controllers\AdmissionDashBoard;
 use App\Http\Controllers\WorksheetController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\StateCityController;
+use App\Http\Controllers\AdminSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,9 +86,11 @@ use App\Http\Controllers\PermissionsController;
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
-    Route::group(['middleware' => ['role:super_admin', 'verified'], 'prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['role:super_admin', 'email_verification'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
-        Route::get('/user_list', [AdminController::class, 'userList'])->name('admin-user-list');
+        Route::get('/user/list', [AdminController::class, 'userList'])->name('admin-user-list');
+        Route::get('/user/info/{id}', [AdminController::class, 'singleUserInfor'])->name('admin-user-info');
+        Route::patch('/user/change-status/{id}', [AdminController::class, 'updateUserStatus'])->name('admin-user-change-status');
         Route::get('/create_user', [AdminController::class, 'showCreateUser'])->name('admin-create-user');
         Route::post('/create_user', [AdminController::class, 'createUser'])->name('admin-post-create-user');
         Route::get('/edit_user/{id}', [AdminController::class, 'showEditUser'])->name('admin-edit-user');
@@ -269,6 +273,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/attach-permission/{id}', 'permissionList')->name('permission-list');
                 Route::post('/attach-permission', 'attachPermission')->name('attach-permission');
 
+                Route::patch('change/role/status/{id}', 'changeRoleStatus')->name('change-role-status');
+
                 Route::get('/ajax/roles', 'ajaxRoles')->name('ajax_roles');
             });
         });
@@ -278,10 +284,28 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/', 'index')->name('index');
             });
         });
+
+        Route::group(['prefix' => 'settings', 'as' => 'admin.setting.'], function () {
+            Route::controller(AdminSettingsController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('save/free-subscription-setting', 'subscriptionSetting')->name('subscription-settings');
+            });
+        });
+
+        Route::group(['prefix' => 'subscription', 'as' => 'admin.subscription.'], function () {
+            Route::controller(SubscriptionController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/{id}', 'getSubscriptionInfo')->name('subscription-info');
+                Route::post('/comsumed/{subscriptionId}', 'consumendUserSubscription')->name('consumed-subscription');
+                Route::get('/comsumed/{id}', 'getConsumendUserSubscription')->name('consumed-subscription-detail');
+                Route::get('/consumed/get/{id}', 'getSingleConsumedDetails')->name('consumed-subscription-single-detail');
+                Route::delete('/comsumed/{id}', 'deleteConsumedHour')->name('consumed-subscription-delete');
+            });
+        });
     });
 
     //User Routes
-    Route::group(['middleware' => ['role:standard_user', 'verified'], 'prefix' => 'user'], function () {
+    Route::group(['middleware' => ['role:standard_user', 'email_verification'], 'prefix' => 'user'], function () {
         Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
 
@@ -435,6 +459,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/past-current-score/{id}', [InititalcollegeListController::class, 'getPastCurrentScore'])->name('getPastCurrentScore');
                 Route::get('/get/past-current-score/{id}', [InititalcollegeListController::class, 'getSinglePastCurrentScore'])->name('getSinglePastCurrentScore');
                 Route::delete('/past-current-score/{id}', [InititalcollegeListController::class, 'deletePastCurrentScore'])->name('deletePastCurrentScore');
+
+                Route::delete('remove-user-college/{id}', [InititalcollegeListController::class, 'removeUserCollege'])->name('remove-user-college');
             });
 
             Route::group(['prefix' => 'cost-comparison', 'middleware' => ['subscription_valid:access-cost-comparison-tool']], function () {
@@ -445,7 +471,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::patch('save-cost-details', [InititalCollegeListController::class, 'saveCollegeCost'])->name('cost_comparison.save_cost_comparison_details');
                 Route::patch('edit-college-detail/{id}', [InititalCollegeListController::class, 'editCollegeDetails'])->name('cost_comparison.edit_college_detail');
                 Route::delete('delete-cost-details/{id}', [InititalCollegeListController::class, 'deleteCollegeCost'])->name('cost_comparison.delete_cost_details');
+                Route::post('reset-cost-comparison-data', [InititalCollegeListController::class, 'resetCostComparisonData'])->name('cost_comparison.reset-cost-comparion-data');
             });
+
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
         });
 
@@ -483,6 +511,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
+		Route::post('/test-progress/store', [TestPrepController::class, 'test_progress_store']);
+        Route::post('/check_progress',[TestPrepController::class,'check_progress'])->name('check_progress');
         // Please make any changes you think it's necessary to routing
         Route::group(['middleware' => ['subscription_valid:access-test-prep-dashboard']], function () {
             Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
@@ -506,9 +536,16 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
         Route::get('/my-subscription', [SubscriptionController::class, 'mysubscriptions'])->name('mysubscriptions.index');
         Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelsubscriptions'])->name('mysubscriptions.cancel');
-        Route::get('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/subscription/renweval', [SubscriptionController::class, 'offSubscriptionAutoRenewval'])->name('mysubscriptions.renewal');
+        Route::get('subscription/download-invoice/{id}', [SubscriptionController::class, 'downloadUserInvoice'])->name('mysubscriptions.download-invoice');
         Route::post('/subscription-create', [PlanController::class, 'subscriptioncreatewithexistingcard'])->name('subscriptions.create-custome');
         Route::get('/set-as-default/{payment_id}', [UserController::class, 'setAsDefaultCard'])->name('user.setAsDefault');
+    });
+
+    Route::controller(StateCityController::class)->group(function () {
+        Route::get('get/states', 'states')->name('get-states');
+        Route::get('get/cities/{id}', 'city')->name('get-cities');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');
@@ -516,21 +553,22 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
 // Auth Routes
 Route::group(['middleware' => ['guest', 'cors']], function () {
-    Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
+    // Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
     Route::post('/signin', [AuthController::class, 'userSignIn'])->name('post-signin');
-    Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
+    // Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
     Route::post('/signup', [AuthController::class, 'userSignUp'])->name('post-signup');
+    Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
     Route::get('forget-password', [AuthController::class, 'showForgetPassword'])->name('password.request');
     Route::post('forget-password', [AuthController::class, 'postForgetPassword'])->name('password.email');
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
     Route::get('/pricing', [PlanController::class, 'getPlanForNonUser'])->name('simple-pricing');
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
-    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
+    // Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
 });
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
 Route::get('/sendreminder', [SendReminder::class, 'index']);

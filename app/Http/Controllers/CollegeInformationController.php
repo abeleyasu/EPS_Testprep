@@ -91,7 +91,7 @@ class CollegeInformationController extends Controller
             'average_freshman_award' => 'required|numeric',
             'early_action_offerd' => 'required|boolean',
             'early_decision_offerd' => 'required|boolean',
-            'regular_admission_deadline' => 'required|date',
+            'regular_admission_deadline' => 'required|date_format:m-d-Y',
         ];
 
         $customMessages = [

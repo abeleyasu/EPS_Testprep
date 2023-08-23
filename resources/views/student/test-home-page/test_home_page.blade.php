@@ -166,7 +166,7 @@
                                         {{-- collaps 2 --}}
                                     </div>
                                     <div class="accordion-item">
-                                        <div class="border">
+                                        <div class="border mb-3">
                                             <h2 class="accordion-header" id="headingTwo">
                                                 <button class="accordion-button collapsed border-0 fw-bold" type="button"
                                                     data-bs-toggle="collapse" data-bs-target="#collapseTwo"
@@ -292,6 +292,114 @@
                                         </div>
                                     </div>
 
+                                    <div class="accordion-item">
+                                        <div class="border">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button border-0 fw-bold" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true"
+                                                    aria-controls="collapseThree">
+                                                    Tests in Progress
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse"
+                                                aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <div>
+                                                        <div class="accordion accordion-flush" id="accordionFlushExampleThree">
+                                                            <div class="accordion-item">
+                                                                <div class="border mb-2">
+                                                                    <h2 class="accordion-header" id="flush-headingOne">
+                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                            type="button" data-bs-toggle="collapse"
+                                                                            data-bs-target="#tip_collapsTabOne"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="tip_collapsTabOne">
+                                                                            ACT
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="tip_collapsTabOne"
+                                                                    class="accordion-collapse collapse"
+                                                                    aria-labelledby="flush-headingOne"
+                                                                    data-bs-parent="#accordionFlushExampleThree">
+                                                                        <div class="accordion-body">
+                                                                            @if(!$getAllProgressPracticeTests['ACT']->isEmpty())
+                                                                            @foreach ($getAllProgressPracticeTests['ACT'] as $test)
+                                                                            @if ($test->format == 'ACT')
+                                                                            <a href="{{route('single_test', ['id' => $test->id])}}"><button class="btn btn-success d-block mb-2">College Prep {{ $test->title }}</button></a>
+                                                                            @endif
+                                                                            @endforeach
+                                                                            @else
+                                                                            <span class="text-danger">No any pending test!</span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="accordion-item">
+                                                                <div class="border mb-2">
+                                                                    <h2 class="accordion-header" id="flush-headingTwo">
+                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                            type="button" data-bs-toggle="collapse"
+                                                                            data-bs-target="#tip_collapsTabTwo"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="tip_collapsTabTwo">
+                                                                            SAT
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="tip_collapsTabTwo"
+                                                                        class="accordion-collapse collapse"
+                                                                        aria-labelledby="flush-headingTwo"
+                                                                        data-bs-parent="#accordionFlushExampleThree">
+                                                                        <div class="accordion-body">
+                                                                            @if(!$getAllProgressPracticeTests['SAT']->isEmpty())
+                                                                                @foreach($getAllProgressPracticeTests['SAT'] as $getOfficialPracticeTest)
+                                                                                    @if ($getOfficialPracticeTest->format == 'SAT')
+                                                                                        <a href="{{route('single_test', ['id' => $getOfficialPracticeTest->id])}}"><button class="btn btn-success d-block mb-2">Official Released {{ $getOfficialPracticeTest->title }}</button></a>            
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @else
+                                                                                <span class="text-danger">No any pending test!</span>
+                                                                            @endif     
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="accordion-item">
+                                                                <div class="border mb-2">
+                                                                    <h2 class="accordion-header" id="flush-headingThree">
+                                                                        <button class="accordion-button collapsed border-0 fw-bold"
+                                                                            type="button" data-bs-toggle="collapse"
+                                                                            data-bs-target="#tip_collapsTabThree"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="tip_collapsTabThree">
+                                                                            PSAT
+                                                                        </button>
+                                                                    </h2>
+                                                                    <div id="tip_collapsTabThree"
+                                                                        class="accordion-collapse collapse"
+                                                                        aria-labelledby="flush-headingThree"
+                                                                        data-bs-parent="#accordionFlushExampleThree">
+                                                                        <div class="accordion-body">
+                                                                            @if (!$getAllProgressPracticeTests['PSAT']->isEmpty())
+                                                                                @foreach($getAllProgressPracticeTests['PSAT'] as $getOfficialPracticeTest)
+                                                                                    @if ($getOfficialPracticeTest->format == 'PSAT')
+                                                                                        <a href="{{route('single_test', ['id' => $getOfficialPracticeTest->id])}}"><button class="btn btn-success d-block mb-2">Official Released {{ $getOfficialPracticeTest->title }}</button></a>            
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            @else
+                                                                                <span class="text-danger">No any pending test!</span>
+                                                                            @endif     
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+									
                                 </div>
                             </div>
                         </div>
@@ -323,6 +431,7 @@
                                                                     <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content py-0">
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="act_table_1">
@@ -416,6 +525,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">ACT CUSTOM QUIZ
                                                                         HISTORY</h3>
@@ -423,6 +533,7 @@
                                                                         id="sortable_act_2">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="act_table_2">
@@ -484,6 +595,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">ALL ACT TEST & QUIZ
                                                                         HISTORY</h3>
@@ -491,6 +603,7 @@
                                                                         id="sortable_act_3">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="act_table_3">
@@ -581,6 +694,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -608,6 +722,7 @@
                                                                     <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content pt-0">
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="sat_table_1">
@@ -690,6 +805,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
                                                                     </h3>
@@ -697,6 +813,7 @@
                                                                         id="sortable_sat_2">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="sat_table_2">
@@ -769,6 +886,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
                                                                         HISTORY</h3>
@@ -776,6 +894,7 @@
                                                                         id="sortable_sat_3">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="sat_table_3">
@@ -856,6 +975,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -884,6 +1004,7 @@
                                                                     <i class="fa-solid fa-angle-down"></i></button>
                                                             </div>
                                                             <div class="block-content py-0">
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="psat_table_1">
@@ -966,6 +1087,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">PSAT CUSTOM QUIZ
                                                                         HISTORY</h3>
@@ -973,6 +1095,7 @@
                                                                         id="sortable_psat_2">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="psat_table_2">
@@ -1034,6 +1157,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                                 <div class="block-header block-header-default px-0">
                                                                     <h3 class="block-title fw-bold ">ALL PSAT TEST & QUIZ
                                                                         HISTORY</h3>
@@ -1041,6 +1165,7 @@
                                                                         id="sortable_psat_3">Sort <i
                                                                             class="fa-solid fa-angle-down"></i></button>
                                                                 </div>
+                                                                <div class="table-responsive">
                                                                 <table
                                                                     class="table table-bordered table-striped table-vcenter"
                                                                     id="psat_table_3">
@@ -1123,6 +1248,7 @@
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

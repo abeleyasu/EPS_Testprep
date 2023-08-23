@@ -26,9 +26,6 @@
                                 <h3 class="block-title">Sign In</h3>
                                 <div class="block-options">
                                     <a class="btn-block-option fs-sm" href="{{ route('password.request') }}">Forgot Password?</a>
-                                    <a class="btn-block-option" href="{{route('signup')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="New Account">
-                                        <i class="fa fa-user-plus"></i>
-                                    </a>
                                 </div>
                             </div>
                             <div class="block-content">
@@ -54,36 +51,7 @@
                                     <!-- Sign In Form -->
                                     <!-- jQuery Validation (.js-validation-signin class is initialized in js/pages/op_auth_signin.min.js which was auto compiled from _js/pages/op_auth_signin.js) -->
                                     <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                                    <form class="js-validation-signin" action="{{route('post-signin')}}" method="POST">
-                                        @csrf
-                                        <div class="py-3">
-                                            <div class="mb-4">
-                                                <input type="text" class="form-control form-control-alt form-control-lg {{$errors->has('email') ? 'is-invalid' : ''}}" id="email" name="email" placeholder="Email" value="{{old('email')}}">
-                                                @error('email')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <input type="password" class="form-control form-control-alt form-control-lg {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
-                                                @error('password')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="remember" name="remember">
-                                                    <label class="form-check-label" for="login-remember">Remember Me</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-md-6 col-xl-5">
-                                                <button type="submit" class="btn w-100 btn-alt-primary">
-                                                    <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i> Sign In
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    @include('components.auth.signin')
                                     <!-- END Sign In Form -->
                                 </div>
                             </div>
@@ -92,6 +60,12 @@
                     </div>
                 </div>
                 <div class="fs-sm text-muted text-center">
+                    <div class="mb-2">
+                        Don’t have an account? Register
+                        <a class="" href="{{route('signup')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="New Account">
+                            here
+                        </a>.
+                    </div>
                     <strong>{{ config('app.app_name') }}</strong> &copy; <span data-toggle="year-copy"></span>
                 </div>
             </div>
@@ -106,4 +80,9 @@
 <!-- Page Script -->
 @section('page-script')
 <script src="{{asset('assets/js/pages/op_auth_signin.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        $('form[class*="js-validation-signin"]')[0].reset()
+    })
+</script>
 @endsection

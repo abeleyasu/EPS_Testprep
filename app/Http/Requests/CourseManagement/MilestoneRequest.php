@@ -26,7 +26,7 @@ class MilestoneRequest extends FormRequest
         return [
             'name' => 'required|max:220',
             'user_type' => 'required|array',
-            'product' => 'required_if:status,==,paid',
+            'products' => 'required_if:status,paid|array|min:1',
 //            'description' => 'required'
         ];
     }
@@ -41,7 +41,10 @@ class MilestoneRequest extends FormRequest
             'name.required' => 'Milestone name is required',
             'user_type.required' => 'User type is required',
             'user_type.array' => 'User type is required',
-            'product.required_if' => 'Product is required',
+            'products.required_if' => 'Product is required',
+            'products.min' => 'Product is required',
+            'products.array' => 'Product is required',
+            'is_addmission_lesson.boolean' => 'checkbox must be boolean',
         ];
     }
 }

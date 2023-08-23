@@ -14,13 +14,6 @@ use App\Http\Requests\AjaxProductInsertRequest;
 
 class ProductController extends Controller
 {
-    private $stripe;
-
-    public function __construct()
-    {
-        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
-    }
-
     public function index()
     {
         // $product = Product::with('productCategory')->get();
@@ -89,7 +82,7 @@ class ProductController extends Controller
             'product_category_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'inclusion' => 'required',
+            'inclusion.*' => 'required',
         ];
         $customMessage = [
             'product_category_id.required' => 'Category is required'
@@ -117,8 +110,12 @@ class ProductController extends Controller
                 $role->syncPermissions($permissions);
             }
             $inclusions = array_map(function ($item) use ($create) {
-                return ['product_id' => $create->id, 'inclusion' => $item];
+                $inclusion = strip_tags($item);
+                if (!empty($inclusion)) {
+                    return ['product_id' => $create->id, 'inclusion' => $item];
+                }
             }, $request->inclusion);
+            $inclusions = array_filter($inclusions);
             ProductInclusion::insert($inclusions);
             return redirect()->intended(route('admin.product.list'))->with('success', 'Product created successfully');
         }
@@ -138,7 +135,7 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'product_category_id' => 'required',
-            'inclusion' => 'required',
+            'inclusion.*' => 'required',
         ];
         $customMessage = [
             'product_category_id.required' => 'Category is required'
@@ -164,16 +161,21 @@ class ProductController extends Controller
 
         foreach ($oldIncs as $key => $oldInc) {
             if (isset($request->inclusion[$key])) {
-                ProductInclusion::where('id', $oldInc['id'])->update(['inclusion' => $request->inclusion[$key]]);
+                $inclusion = strip_tags($request->inclusion[$key]);
+                if (!empty($inclusion)) {
+                    ProductInclusion::where('id', $oldInc['id'])->update(['inclusion' => $inclusion]);
+                }
             } else {
                 array_push($deleteId, $oldInc['id']);
             }
         }
 
         for ($i = $oldLength; $i < $newLength; $i++) {
-            array_push($newInsert, ['product_id' => $request->id, 'inclusion' => $request->inclusion[$i]]);
+            $inclusion = strip_tags($request->inclusion[$i]);
+            if (!empty($inclusion)) {
+                array_push($newInsert, ['product_id' => $request->id, 'inclusion' => $inclusion]);
+            }
         }
-
         if (count($newInsert) > 0) {
             ProductInclusion::insert($newInsert);
         }
@@ -188,12 +190,22 @@ class ProductController extends Controller
 
     public function deleteProduct(Request $request)
     {
-        $product = Product::find($request->id);
-        Role::where('name', $product->stripe_product_id)->delete();
-        $product->inclusions()->delete();
-        $this->stripe->products->delete($product->stripe_product_id, []);
-        $product->delete();
-        return "success";
+        try {
+            $product = Product::find($request->id);
+            $this->stripe->products->delete($product->stripe_product_id, []);
+            Role::where('name', $product->stripe_product_id)->delete();
+            $product->inclusions()->delete();
+            $product->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function changeOrder(Request $request) {
@@ -249,42 +261,19 @@ class ProductController extends Controller
         $page = isset($request->page) ? $request->page : 1;
         $search = isset($request->search) ? $request->search : null;
         $limit = $page * 25;
-        $products = ProductCategory::whereHas('products')->with('products', function ($q) {
-            return $q->whereHas('plans', function ($plan) {
-                return $plan->where('interval', '!=', 'hour');
-            });
-        })->orderBy('order_index', 'asc');
-        if (!empty($products)) {
+        $products = Product::whereHas('plans', function ($q) {
+            $q->where('interval', '!=', 'hour');
+        })->orderBy('order_index', 'asc')->select('id', 'title as text');
+        if (!empty($search)) {
             $products = $products->where(function ($product) use ($search) {
-                return $product->where('title', 'LIKE', "%{$search}%")
-                    ->orWhereHas('products', function ($query) use ($search) {
-                        return $query->where('title', 'LIKE', "%{$search}%");
-                    });
+                return $product->where('title', 'LIKE', "%{$search}%");
             });
         }
         $products = $products->paginate($limit);
         $products = $products->toArray();
-        $total = 0;
-        $products = array_map(function ($item){
-            $children = array_map(function ($product){
-                return [
-                    'id' => $product['id'],
-                    'text' => $product['title']
-                ];
-            }, $item['products']);
-
-            return [
-                'text' => $item['title'],
-                'children' => $children
-            ];
-        }, $products['data']);
-
-        foreach ($products as $product) {
-            $total += count($product['children']);
-        }
         return response()->json([
-            'data' => $products,
-            'total' => $total
+            'data' => $products['data'],
+            'total' => $products['total']
         ]);
     }
 

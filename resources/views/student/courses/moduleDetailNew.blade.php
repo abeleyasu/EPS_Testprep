@@ -296,7 +296,7 @@
 									<div class="col-12 colapHead" >
                                         <div class="col-11" style="float:left;">
 										    <h3>
-											@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->product_id))
+											@if($section->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($section->user_section_products()->pluck('product_id')->toArray()))
 												<a href="javascript:;" class="font-grayed">{{ $section->title }}</a>
 											@else
 											<a href="{{ route('sections.detail',['section'=>$section->id]) }}"> {{ $section->title }}</a>
@@ -334,7 +334,7 @@
                                                                                   
 												<span class="mx-4">											
 												
-												@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id))
+												@if($task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->user_task_products()->pluck('product_id')->toArray()))
 													<a href="javascript:;" class="font-grayed"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!}</a>
 												@else
 												<a href="{{ route('tasks.detail',['task'=>$task->id]) }}"><i class="fa-solid fa-list"></i> </span> {{$key+1}}.{{$task_key+1}} {!! $task->title !!} </a>

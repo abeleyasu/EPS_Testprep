@@ -316,8 +316,9 @@
                       <span>${index + 1}</span>
                       <span>${data.college_name}</span>
                     </div>
-                    <div>
-                      <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
+                    <div class="d-flex">
+                      <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                      <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="step-4" data-id="${data.id}">Remove</button>
                     </div>
                   </div>
                   <div id="accodion-${index}" data-id="${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">

@@ -17,9 +17,9 @@
                                 <h3 class="block-title">Create Account</h3>
                                 <div class="block-options">
                                     <a class="btn-block-option fs-sm" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#one-signup-terms">View Terms</a>
-                                    <a class="btn-block-option" href="{{route('signin')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sign In">
+                                    {{--<a class="btn-block-option" href="{{route('signin')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="Sign In">
                                     <i class="fa fa-sign-in-alt"></i>
-                                    </a>
+                                    </a>--}}
                                 </div>
                             </div>
                             <div class="block-content">
@@ -32,81 +32,7 @@
                                     <!-- Sign Up Form -->
                                     <!-- jQuery Validation (.js-validation-signup class is initialized in js/pages/op_auth_signup.min.js which was auto compiled from _js/pages/op_auth_signup.js) -->
                                     <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-                                    <form class="js-validation-signup" id="register" action="{{route('post-signup')}}" method="POST">
-                                        @csrf
-                                        <div class="py-3">
-                                            <div class="mb-4">
-                                                <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('first_name') ? 'is-invalid' : ''}}" id="first_name" name="first_name" placeholder="First Name" value="{{old('first_name')}}">
-                                                @error('first_name')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('last_name') ? 'is-invalid' : ''}}" id="last_name" name="last_name" placeholder="Last Name" value="{{old('last_name')}}">
-                                                @error('last_name')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <input type="email" class="form-control form-control-lg form-control-alt {{$errors->has('email') ? 'is-invalid' : ''}}" id="email" name="email" placeholder="Email" value="{{old('email')}}">
-                                                @error('email')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <input type="text" class="form-control form-control-lg form-control-alt {{$errors->has('phone') ? 'is-invalid' : ''}}" id="phone" name="phone" placeholder="Phone" value="{{old('phone')}}">
-                                                @error('phone')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="is_verifed" name="is_verifed">
-                                                    <label class="form-check-label" for="is_verifed">By providing your number you consent to receive marketing/promotional/notification messages from College Prep System. To opt-out reply STOP on any message, or un-check the consent checkbox and save your profile. Message & Data rates may apply.</label>
-                                                </div>
-                                            </div>
-                                            <div class="mb-4">
-                                                <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password') ? 'is-invalid' : ''}}" id="password" name="password" placeholder="Password">
-                                                @error('password')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-4">
-                                                <input type="password" class="form-control form-control-lg form-control-alt {{$errors->has('password_confirmation') ? 'is-invalid' : ''}}" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
-                                                @error('password_confirmation')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-											<div class="mb-4">
-                                                <select name="role" class="form-control form-control-lg form-control-alt {{$errors->has('role') ? 'is-invalid' : ''}}">
-													<option value="">Select User Role</option>
-													@foreach($usersRoles as $usersRole)
-														<option value="{{$usersRole->id}}">{{$usersRole->name}}</option>
-													@endforeach
-												</select>
-                                                @error('role')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-											
-                                            <div class="mb-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input {{$errors->has('terms') ? 'is-invalid' : ''}}" type="checkbox" id="terms" name="terms">
-                                                    <label class="form-check-label" for="terms">I agree to Terms &amp; Conditions</label>
-                                                </div>
-                                                @error('terms')
-                                                <div class="invalid-feedback">{{$message}}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="row mb-4">
-                                            <div class="col-md-6 col-xl-5">
-                                                <button type="submit" class="btn w-100 btn-alt-success">
-                                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i> Sign Up
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                    @include('components.auth.signup')
                                     <!-- END Sign Up Form -->
                                 </div>
                             </div>
@@ -115,6 +41,12 @@
                     </div>
                 </div>
                 <div class="fs-sm text-muted text-center">
+                    <div class="mb-2">
+                        Already have an account ? Please Sign In
+                        <a class="" href="{{route('signin')}}" data-bs-toggle="tooltip" data-bs-placement="left" title="New Account">
+                            here
+                        </a>.
+                    </div>
                     <strong>OneUI 5.2</strong> &copy; <span data-toggle="year-copy"></span>
                 </div>
             </div>

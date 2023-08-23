@@ -27,4 +27,8 @@ class CostComparison extends Model
     public function costcomparisonotherscholarship() {
         return $this->hasMany(CostComparisonOtherScholarship::class, 'cost_comparison_id', 'id');
     }
+
+    public function college_search_add() {
+        return $this->belongsTo(CollegeSearchAdd::class, 'college_list_id', 'id');
+    }
 }

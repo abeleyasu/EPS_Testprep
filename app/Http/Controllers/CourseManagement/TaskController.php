@@ -64,6 +64,11 @@ class TaskController extends Controller
 
         $task = $this->createFromRequest(app('App\Models\CourseManagement\Task'),$request);
         $task->user_tasks_roles()->attach($request->user_type);
+
+        if ($request->status == 'paid') {
+            $task->user_task_products()->attach($request->products);
+        }
+
         if($request->tags) {
             foreach ($request->tags as $tag) {
                 ModelTag::create([
@@ -90,7 +95,7 @@ class TaskController extends Controller
         if (!$is_course_permission) {
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
-		if(!$task->userHasTaskPermissionOrNot() || $task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->product_id)){
+		if(!$task->userHasTaskPermissionOrNot() || $task->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($task->user_task_products()->pluck('product_id')->toArray())){
 			return redirect(route('sections.detail',['section'=>$task->section_id]))->with('error', 'You are not authorized to access this task');
 		}
 		$gettasks = Task::where('section_id',$task->section_id)->orderBy('order')->get();
@@ -178,6 +183,14 @@ class TaskController extends Controller
             $task->user_tasks_roles()->detach($task_user_types);
         }
         $task->user_tasks_roles()->attach($request->user_type);
+
+        $task_products = $task->user_task_products()->pluck('product_id')->toArray();
+        if (count($task_products) > 0) {
+            $task->user_task_products()->detach($task_products);
+        }
+        if ($request->status == 'paid') {
+            $task->user_task_products()->attach($request->products);
+        }
 
         if($request->tags) {
             ModelTag::where([

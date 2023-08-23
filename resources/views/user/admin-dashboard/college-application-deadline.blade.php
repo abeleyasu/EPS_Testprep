@@ -64,11 +64,9 @@
                 </div>
             </div>
             
-
             <div class="tab-content" id="myTabContent">
                 <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                     <div class="accordion accordionExample accordionExample2" id="userSelectedCollegeList" data-type="college-application-deadline" @if($college) data-collegeid="{{ $college->id }}" @endif>
-
                         @if(count($college_list_deadline) === 0)
                             <div class="no-data">No data found</div>
                         @endif  

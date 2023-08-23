@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\UserRole;
+use App\Models\Product;
 
 class Milestone extends Model
 {
@@ -26,6 +27,7 @@ class Milestone extends Model
         'coverimage',
         'published',
         'product_id',
+        'is_addmission_lesson',
     ];
 
     public function hasTags() {
@@ -67,10 +69,16 @@ class Milestone extends Model
         return $tasks;
     }
 
-    public static function getUserTypeWiseMilestones($courseid) {   
-        return Milestone::where('course_id', $courseid)->where('published',1)->whereHas('user_milestone_roles', function ($query) {
+    public static function getUserTypeWiseMilestones($courseid) { 
+        $milestone = Milestone::where('published',1)->whereHas('user_milestone_roles', function ($query) {
             $query->where('user_role_id', auth()->user()->role);
         });
+        if (gettype($courseid) == 'array') {
+            $milestone->whereIn('course_id', $courseid);
+        } else {
+            $milestone->where('course_id', $courseid);
+        }
+        return $milestone;
     }
 
     public function user_milestone_roles() {
@@ -79,6 +87,10 @@ class Milestone extends Model
 
     public function userHasMileStonePermissionOrNot() {
         return $this->user_milestone_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
+    public function user_milestone_products() {
+        return $this->belongsToMany(Product::class,'milestones_products', 'milestone_id', 'product_id');
     }
 
 }

@@ -1420,6 +1420,7 @@ return [
         'day',
         'week',
         'month'
-    ]
+    ],
+    'role_free_name' => 'Free',
 ]
 ?>

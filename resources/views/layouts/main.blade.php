@@ -95,6 +95,7 @@
   <script>
     const input = document.querySelector("#phone");
     let intl = null
+    let parent_phoneintl = null; 
     if (input) {
       intl = window.intlTelInput(input, {
         initialCountry: "us",
@@ -108,6 +109,82 @@
         intl.setNumber(number);
       }
     });
+
+    const parent_phone = document.querySelector('#parent_phone');
+    if (parent_phone) {
+      parent_phoneintl = window.intlTelInput(parent_phone, {
+        initialCountry: "us",
+      });
+    }
+
+    $('#parent_phone').on('change', function(e, countryData) {
+      if (parent_phoneintl) {
+        const countryData = parent_phoneintl.getSelectedCountryData();
+        const number = '+' + countryData.dialCode + $(this).val();
+        parent_phoneintl.setNumber(number);
+      }
+    });
+
+    const constructMessage = (message, element_id, status) => {
+      let element = '#' + element_id;
+      $(element).html('')
+      const alert = `
+          <div class="alert alert-${status} alert-dismissible fade show" role="alert">
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>`
+      $(element).append(alert);
+    }
+
+    function resetEmailVerfication(id) {
+      return $.ajax({
+        url: "{{ route('verification.resend') }}",
+        type: 'POST',
+        data: {
+          _token: "{{ csrf_token() }}",
+          id: id,
+        }
+      })
+    }
+
+    $('#resend-verification-link').on('click', async function (e) {
+      e.preventDefault();
+      const response = await resetEmailVerfication($('#email-verification-id').val());
+      if (response.success) {
+        $('#verfication-emaiil-alerts').html('')
+        constructMessage(response.message, 'verfication-emaiil-alerts', 'success')
+      } else {
+        $('#verfication-emaiil-alerts').html('')
+        constructMessage(response.message, 'verfication-emaiil-alerts', 'danger')
+      }
+    })
+
+    const ajax = (url, options = null) => {
+      return {
+        delay: 500,
+        url: url,
+        dataType: 'json',
+        data: function (params) {
+          var query = {
+            search: params.term,
+            page: params.page || 1
+          }
+          if (options) {
+            query = {...query, ...options}
+          }
+          return query;
+        },
+        processResults: function (data, params) {
+          params.page = params.page || 1;
+          return {
+            results: data.data,
+            pagination: {
+              more: (params.page * 30) < data.total
+            }
+          };
+        }
+      }
+    }
   </script>
 
   

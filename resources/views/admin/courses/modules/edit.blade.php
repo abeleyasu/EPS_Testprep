@@ -195,7 +195,7 @@
                             </div>
 
                             @include('admin.courses.components.product-dropdown', [
-                                'product' => $module->product_id,
+                                'product' => $module->user_module_products()->pluck('product_id')->toArray(),
                                 'status' => $module->status
                             ])
                         </div>

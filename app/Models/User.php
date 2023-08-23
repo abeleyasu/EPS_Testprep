@@ -10,9 +10,10 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\UserRole;
-use App\Models\Product;
+use App\Models\HighSchoolResume\States;
+use App\Models\HighSchoolResume\Cities;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Billable, HasRoles;
 
@@ -29,6 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'role',
         'password',
+        'parent_phone',
+        'is_active',
     ];
 
     /**
@@ -62,6 +65,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserDeadlineNotificationSettings::class, 'user_id', 'id');
     }
 
+    public function userrole() {
+        return $this->hasOne(UserRole::class, 'id', 'role');
+    }
+
     public function isUserHasValidPermission($permission, $guardName = null) {
         $gaurd = $guardName ? $guardName : 'user';
         $role = UserRole::where('id', $this->role)->first();
@@ -69,12 +76,55 @@ class User extends Authenticatable implements MustVerifyEmail
         return in_array($permission, $permissions);
     }
 
-    public function isUserSubscibedToTheProduct($product_id) {
-        if (!$product_id) return false;
-        $product = Product::where('id', $product_id)->first();
-        if ($product) {
-            return  $this->subscribedToProduct($product->stripe_product_id);
+    public function isUserSubscibedToTheProduct($products, $isWhichCalled = null) {
+        // dd($products);
+        if (isset($products) && !empty($products) && count($products) == 0) return false;
+        $subscription = $this->getUserStripeSubscription();
+        if ($subscription && $subscription->valid()) {
+            $product = $subscription->plan->product;
+            if ($product) {
+                // dd(in_array($product->id, $products));
+                return in_array($product->id, $products);
+            }
         }
         return false;
+    }
+
+    public function city() {
+        return Cities::where('id', $this->city_id)->first();
+    }
+
+    public function state() {
+        return States::where('id', $this->state_id)->first();
+    }
+
+    public function isUserSubscriptionOnGracePeriod() {
+        $subscription = $this->getUserStripeSubscription();
+        return $subscription && $subscription->onGracePeriod();
+    }
+
+    public function getUserStripeSubscription($name = 'default', $isAll = false) {
+        $query = $this->subscriptions()->active()->where('name', $name);
+        if (!$isAll) {
+            return $query->where('plan_type', '=', 'subscription')->first();
+        }
+        return $query->get();
+    }
+
+    public function isSubscribeToSubscriptions($name = 'default') {
+        $subscription = $this->getUserStripeSubscription($name);
+        if ($subscription) {
+            return $subscription->valid() || $subscription->onGracePeriod();
+        }
+        return false;
+    }
+
+    public function isUserSubscriptionToAnyPlan($name = 'default') {
+        $subscription = $this->getUserStripeSubscription($name, true);
+        return count($subscription) > 0;
+    }
+
+    public function hasVerifiedEmail() {
+        return ! is_null($this->email_verified_at);
     }
 }

@@ -46,20 +46,7 @@ class ModuleController extends Controller
      */
     public function store(ModuleRequest $request)
     {
-        $request->validate([
-            'product' => 'required_if:status,==,paid',
-            'user_type' => 'required|array',
-        ],[
-            'product.required_if' => 'Product is required',
-            'user_type.required' => 'User type is required',
-            'user_type.array' => 'User type is required',
-        ]);
         $request->request->add(['added_by' => auth()->id()]);
-
-        if($request->product) {
-            $request->request->add(['product_id' => $request->product]);
-            unset($request['product']);
-        }
 
         /*$order = $request->order;
         if(!$order || $order == 0) {
@@ -71,6 +58,11 @@ class ModuleController extends Controller
         $module = $this->createFromRequest(app('App\Models\CourseManagement\Module'),$request);
 
         $module->user_modules_roles()->attach($request->user_type);
+
+        if ($request->status === 'paid') {
+            $module->user_module_products()->attach($request->products);
+        }
+
         /**********Order reset**********/
 		/*$modules = Module::orderBy('order')->get();
 		$currentId = $module->id;
@@ -109,7 +101,7 @@ class ModuleController extends Controller
         if (!$is_course_permission) {
             return redirect()->route('courses.index')->with('error', 'You are not authorized to access this course');
         }
-		if(!$module->userHasModulePermissionOrNot() || $module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->product_id)){
+		if(!$module->userHasModulePermissionOrNot() || $module->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($module->user_module_products()->pluck('product_id')->toArray())){
 			return redirect(route('milestone.detail',['milestone'=>$module->milestone_id]))->with('error', 'You are not authorized to access this module');
 		}
 		$getModules = Module::where('milestone_id', $module->milestone_id)->orderBy('id')->get();
@@ -166,15 +158,6 @@ class ModuleController extends Controller
 //        }
         $request->request->add(['published' => $request->published ? true : false]);
 
-        if ($request->status == 'unpaid') {
-            $request->request->add(['product_id' => null]);
-        } else {
-            if($request->product) {
-                $request->request->add(['product_id' => $request->product]);
-                unset($request['product']);
-            }
-        }
-
         $this->updateFromRequest($module, $request);
 
         $module_user_roles = $module->user_modules_roles()->pluck('user_roles.id')->toArray();
@@ -182,6 +165,14 @@ class ModuleController extends Controller
             $module->user_modules_roles()->detach($module_user_roles);
         }
         $module->user_modules_roles()->attach($request->user_type);
+
+        $module_products = $module->user_module_products()->pluck('product_id')->toArray();
+        if (count($module_products) > 0) {
+            $module->user_module_products()->detach($module_products);
+        }
+        if ($request->status === 'paid') {
+            $module->user_module_products()->attach($request->products);
+        }
 
 		/**********Order reset**********/
 		/*$modules = Module::orderBy('order')->get();

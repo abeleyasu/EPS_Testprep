@@ -86,4 +86,8 @@ class Courses extends Model
         }
         return false;
     }
+
+    public function user_course_products() {
+        return $this->belongsToMany(Product::class,'course_products', 'course_id', 'product_id');
+    }
 }

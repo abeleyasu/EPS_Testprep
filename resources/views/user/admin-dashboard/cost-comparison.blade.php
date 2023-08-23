@@ -110,6 +110,7 @@
         <h3 class="block-title">YOUR COLLEGE LIST'S COSTS & AID</h3>
         <button type="button" class="btn btn-sm btn btn-alt-success" data-bs-toggle="modal" data-bs-target="#add_new_college">+ Add College</button>
         <button type="button" class="btn btn-sm btn-alt-success ms-2" id="view-hide-college-btn">View Hidden Colleges</button>
+        <button type="button" class="btn btn-sm btn-alt-danger ms-2" id="reset-all-cost-comparion-data" data-id="${costComparisonData.id}">Reset All</button>
       </div>
       <div class="block-content">
         <div class="tab-content" id="college-list-cost">
@@ -383,6 +384,7 @@
   })
 
   $(document).on('change', '.edit-value', function (e) {
+    if (!e.target.name) return;
     const value = checkNumber(e.target.value);
     if (!value) {
       return;
@@ -538,6 +540,51 @@
       }
     })
   })
+
+  $(document).on('click', '.reset-cost-comparion-data', function (e) {
+    resetCostComparisonData("You want to reset all data for this college? Once you reset, you can't undo this action.", e.target.dataset.id)
+  })
+
+  $(document).on('click', '#reset-all-cost-comparion-data', function (e) {
+    resetCostComparisonData("You want to reset all data for all colleges? Once you reset, you can't undo this action.", 0, true)
+  })
+
+  function resetCostComparisonData(text, id = 0, isAll = false) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, reset it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const data = {
+          isall: isAll,
+        }
+        if (!isAll) {
+          data.id = id;
+        }
+        $.ajax({
+          url: "{{ route('admin-dashboard.cost_comparison.reset-cost-comparion-data') }}",
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          data: data,
+        }).done((response) => {
+          if (response.success) {
+            toastr.success(response.message)
+            $('#costcomparison-summary').DataTable().ajax.reload();
+            getCollegeListForCostComparison();
+          } else {
+            toastr.error(response.message)
+          }
+        })
+      }
+    })
+  }
 </script>
 
 @endsection

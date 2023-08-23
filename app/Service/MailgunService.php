@@ -112,7 +112,6 @@ class MailgunService implements MailgunServiceInterface
                 return abort(500);
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return abort(500)->with('error', $e->getMessage());
         }
     }

@@ -19,15 +19,15 @@ class UpdateCourseUserTyppes extends Seeder
      */
     public function run()
     {
-        // $courses = Courses::all();
-        // foreach ($courses as $course) { 
-        //     $course->user_course_roles()->attach($course->user_type);
-        // }
+        $courses = Courses::all();
+        foreach ($courses as $course) { 
+            $course->user_course_roles()->attach($course->user_type);
+        }
 
-        // $milestones = Milestone::all();
-        // foreach ($milestones as $milestone) {
-        //     $milestone->user_milestone_roles()->attach($milestone->user_type);
-        // }
+        $milestones = Milestone::all();
+        foreach ($milestones as $milestone) {
+            $milestone->user_milestone_roles()->attach($milestone->user_type);
+        }
 
         $role = ['2'];
 

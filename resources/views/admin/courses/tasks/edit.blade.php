@@ -149,7 +149,7 @@
                                 </select>
                             </div>
                             @include('admin.courses.components.product-dropdown', [
-                                'product' => $task->product_id,
+                                'product' => $task->user_task_products()->pluck('product_id')->toArray(),
                                 'status' => $task->status
                             ])
                         </div>

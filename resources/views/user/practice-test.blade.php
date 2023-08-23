@@ -206,7 +206,9 @@ height: 270px
                         <span><i class="fa fa-fw fa-circle-question me-1"></i>Guess</span>
                     </label>
 
-                    <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
+                    @if ($testSection[0]->practice_test_type == 'Math')
+                        <button type="button" class="btn btn-sm btn-outline-dark fs-xs fw-semibold me-1 mb-3 calculator"><i class="fa fa-fw fa-calculator me-1" style="color:black"></i>Calculator</button>
+                    @endif
                 </div>
                 <div class="col-xl-3">
                     <input type="hidden" id="actual_time" name="actual_time" value="00:00:00">
@@ -257,17 +259,54 @@ height: 270px
         });
         
         jQuery(document).ready(function(){
+
+            //PROGRESS CHECK STARTS
+            let sectionId = $('#section_id').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            jQuery.ajax({
+                url: "{{ route('check_progress') }}",
+                method: 'post',
+                data: {
+                    'sectionId':sectionId,
+                },
+                success: function(result){
+                    let progressFlag = result.progressFlag;
+                    // progressFlag = 0;
+                    if(progressFlag) {
+                        //handleProgress(result.existingProgress);
+                        // console.log(result.existingProgress);
+                        var get_offset = result.existingProgress.progress_index;
+                        var question_id_arr = JSON.parse(result.existingProgress.question_id);
+                        if(question_id_arr[get_offset])
+                            $('#onload_question_id').val(question_id_arr[get_offset]);
+                        get_first_question(get_offset, result.existingProgress);
+                        
+                        jQuery('.next').attr('data-count', get_offset);
+                        jQuery('.prev').attr('data-count', get_offset);
+
+                    } else {
+                        var get_offset = jQuery('#get_offset').val();
+                        get_first_question(get_offset);
+                    }
+                }
+            });
+            //PROGRESS CHECK ENDS
+
             var selected_answer = [];
             var selected_gusess_details = [];
             var selected_flag_details = [];
             var selected_skip_details = [];
-            var get_offset = jQuery('#get_offset').val();
+            
             var question_id_arr = @json($total_questions);
             $('#onload_question_id').val(question_id_arr[0]);
             
             var getSelectedAnswer ;
             var check_click_type = 'onload';
-            get_first_question(get_offset);
             get_time();
 
             $('.content').on('click', 'input[name=example-radios-default]:radio', function() {
@@ -329,7 +368,32 @@ height: 270px
                 
                 var check_click_type = 'prev';
                 
-                get_first_question(get_offset);
+                //PROGRESS CHECK Starts
+                let sectionId = $('#section_id').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+
+                jQuery.ajax({
+                    url: "{{ route('check_progress') }}",
+                    method: 'post',
+                    data: {
+                        'sectionId':sectionId,
+                    },
+                    success: function(result){
+                        let progressFlag = result.progressFlag;
+                        // progressFlag = 0;
+                        if(progressFlag) {
+                            get_first_question(get_offset, result.existingProgress);
+                        } else {
+                            //var get_offset = jQuery('#get_offset').val();
+                            get_first_question(get_offset);
+                        }
+                    }
+                });
+                //PROGRESS CHECK Ends
 
                 var scroll_id = jQuery('.get_question_id').val();
                 scroll_id = scroll_id -1;
@@ -355,68 +419,6 @@ height: 270px
                 }});
 
             });
-            
-            // jQuery(".skip").click(function(){
-            //     var get_offset = jQuery(this).val();
-            //     var get_question_id = jQuery('.get_question_id').val();
-            //     let data_count = jQuery(this).attr('data-count');
-            //         data_count = parseInt(data_count);
-            //     jQuery(this).attr('data-count', data_count + 1);
-            //     jQuery('.prev').attr('data-count', data_count + 1);
-            //     jQuery('.next').attr('data-count', data_count + 1);
-
-            //     let arr_index = jQuery('.skip').attr('data-count');
-            //     $('#onload_question_id').val(question_id_arr[arr_index]);
-
-            //     if ( $('input:radio[name=example-radios-default]').length ) {
-            //         $('input:radio[name=example-radios-default]').prop('checked', false);
-            //         selected_skip_details[get_question_id] = 'no';
-            //     } else {
-            //         $('input[type=checkbox]').prop('checked', false);
-            //         selected_skip_details[get_question_id] = 'no';
-            //     }
-
-            //     $('.skip').css("color", "white");
-            //     $('.skip').css("background-color", "#0891b2");
-            //     if($("input[name='example-radios-default']").is(':checked')) { 
-            //         var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-            //         selected_answer[get_question_id] = getSelectedAnswer;
-            //         selected_skip_details[get_question_id] = 'no';
-            //     } else if($("input[name='example-checkbox-default']").is(':checked')) { 
-            //         var store_multi = '';
-            //         $('input[name="example-checkbox-default"]:checked').each(function() {
-            //             console.log(this.value);
-            //             store_multi += this.value+','; 
-            //         });
-            //         store_multi = store_multi.replace(/,\s*$/, "");
-            //         selected_answer[get_question_id] = store_multi;
-            //         selected_skip_details[get_question_id] = 'no';
-            //     }  else if($("input[name='example-textbox-default']")){
-            //         store_multi = $("input[name='example-textbox-default']").val();
-            //         selected_answer[get_question_id] = store_multi;
-            //         selected_skip_details[get_question_id] = 'no';
-            //     } else {
-            //         selected_answer[get_question_id] = '-';
-            //         selected_skip_details[get_question_id] = 'yes';
-            //     }
-
-            //     if(!$(".guess").is(':checked'))
-            //     {
-            //         selected_gusess_details[get_question_id] = 'no';
-            //     }
-
-            //     if(!$(".flag").is(':checked'))
-            //     {
-            //         selected_flag_details[get_question_id] = 'no';
-            //     }
-
-            //     if(!$(".skip").is(':checked'))
-            //     {
-            //         selected_skip_details[get_question_id] = 'no';
-            //     }
-            //     get_first_question(get_offset);
-            // });
-
             
             var count = 1;
             jQuery(".next").click(function(){
@@ -466,7 +468,32 @@ height: 270px
                     selected_skip_details[get_question_id] = 'no';
                 }
 
-                get_first_question(get_offset);
+                //PROGRESS CHECK Starts
+                let sectionId = $('#section_id').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+
+                jQuery.ajax({
+                    url: "{{ route('check_progress') }}",
+                    method: 'post',
+                    data: {
+                        'sectionId':sectionId,
+                    },
+                    success: function(result){
+                        let progressFlag = result.progressFlag;
+                        // progressFlag = 0;
+                        if(progressFlag) {
+                            get_first_question(get_offset, result.existingProgress);
+                        } else {
+                            get_first_question(get_offset);
+                        }
+                    }
+                });
+                //PROGRESS CHECK Ends
+
 
                 var scroll_position = $('#passage_description').scrollTop();
     
@@ -487,51 +514,6 @@ height: 270px
                         
                 }});
             });
-
-            // jQuery(".guess").click(function(){
-            //     var get_question_id = jQuery('.get_question_id').val();
-            //     if( $(this).is(':checked') ){
-
-            //         $('.skip').css("color", "#0891b2");
-            //         $('.skip').css("background-color", "white");
-            //         selected_skip_details[get_question_id] = 'no';
-
-            //         $('.main_guess_section').css("color", "white");
-            //         $('.main_guess_section').css("background-color", "#ea580c");
-            //         var randOption = Math.floor(Math.random() * 4);
-
-            //         if ( $('input:radio[name=example-radios-default]').length ) {
-            //             $('input:radio[name=example-radios-default]')[randOption].checked = true;
-            //         }
-            //         else{
-            //             $('input[type=checkbox]')[randOption].checked = true;
-            //         }
-                    
-            //         var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
-            //         selected_gusess_details[get_question_id] = 'yes';
-            //     }else{
-
-            //         if ( $('input:radio[name=example-radios-default]').length ) {
-            //             $('input:radio[name=example-radios-default]').prop('checked', false);
-            //         }
-            //         else{
-            //             $('input[type=checkbox]').prop('checked', false);
-            //         }
-            //         selected_gusess_details[get_question_id] = 'no';
-            //         $('.main_guess_section').css("color", "#ea580c");
-            //         $('.main_guess_section').css("background-color", "white");
-            //     }
-
-            //     if(!$(".flag").is(':checked'))
-            //     {
-            //         selected_flag_details[get_question_id] = 'no';
-            //     }
-
-            //     if(!$(".skip").is(':checked'))
-            //     {
-            //         selected_skip_details[get_question_id] = 'no';
-            //     }
-            // });
 
             //skip function
             jQuery(".skip").click(function(){
@@ -604,21 +586,7 @@ height: 270px
                 }
             });
 
-
-
             jQuery(".review").click(function(){
-            //     selected_flag_details = selected_flag_details.filter(function( element ) {
-            //         return element.value !== "undefined";
-            //         // return selected_flag_details[key] != 'null';
-            //     });
-            //    selected_gusess_details = selected_gusess_details.filter(function( element ) {
-            //         return element.value !== "undefined";
-            //         // return selected_gusess_details[key] != 'null';
-            //     });
-            //     selected_skip_details = selected_skip_details.filter(function( element ) {
-            //         return element.value !== "undefined";
-            //         // return selected_skip_details[key] != 'null';
-            //     });
                 var current_question_id = $('.next').val();
                 var question_ids = @json($total_questions);
 
@@ -646,28 +614,28 @@ height: 270px
                         totalGuess++
                 });
 
-                if(current_question_id==1 && !totalFlag && !totalGuess && !totalSkip)
-                {
-                    var alert_data={                        
-                        title: "You didn’t answer all questions do you want to review section now ?",
-                        // text: "You didn’t answer all questions do you want to review section now ?",
-                        type: "info",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "Cancel",
-                        closeOnConfirm: false,
-                        closeOnCancel: true,
-                        index:true,
-                    }
+                // if(current_question_id==1 && !totalFlag && !totalGuess && !totalSkip)
+                // {
+                //     var alert_data={                        
+                //         title: "You didn’t answer all questions do you want to review section now ?",
+                //         // text: "You didn’t answer all questions do you want to review section now ?",
+                //         type: "info",
+                //         showCancelButton: true,
+                //         confirmButtonColor: "#DD6B55",
+                //         confirmButtonText: "Yes",
+                //         cancelButtonText: "Cancel",
+                //         closeOnConfirm: false,
+                //         closeOnCancel: true,
+                //         index:true,
+                //     }
                     var reviewCount={
                         flag:totalFlag,
                         skip:totalSkip,
                         guess:totalGuess
                     }
-                }
-                else
-                {
+                // }
+                // else
+                // {
                     var questionBoxes = "";
                     for (let index = 0; index < question_ids.length; index++) {
                         var num = index + 1;
@@ -698,10 +666,9 @@ height: 270px
                         closeOnCancel: false,
                         index:false,
                     };
-                }
+                // }
                 sweet_alert(alert_data,reviewCount,question_ids);
             });
-
 
             function sweet_alert(data,review,question_ids){
                 swal({
@@ -752,8 +719,7 @@ height: 270px
                     }
                 );
             }
-         
-            
+
             jQuery(".submit_section_btn").click(function(){
                 if(jQuery('.next').prop('disabled') == false){
                     var timeisover = jQuery('#timeisover').val();
@@ -913,7 +879,7 @@ height: 270px
                 //     }
                     
                 // });
-                answer_details = answer_details.associate(question_ids);  
+                answer_details = answer_details.associate(question_ids);
 
                 flag_detail = flag_detail.filter(function(element, key){
                     return element !== 'undefined';
@@ -1014,7 +980,7 @@ height: 270px
                     }
                 });
             }
-            function get_first_question(get_offset)
+            function get_first_question(get_offset, existingProgress = null)
             {
                 $.ajaxSetup({
                   headers: {
@@ -1031,6 +997,8 @@ height: 270px
                         get_offset: get_offset,
                     },
                     success: function(result){
+                        let questionId = result.questions[0].question_id;
+
                         $('.submit_section_btn').attr('data-practice_test_id', result.practice_test_id);
                         var check_if_flag_selected = selected_flag_details[result.questions[0].question_id];
                         var check_if_guess_selected = selected_gusess_details[result.questions[0].question_id];
@@ -1186,7 +1154,8 @@ height: 270px
                                 get_option_number = result.questions[0].question_answer;
                             } 
 
-                        } else {                                                                                                                                                                                                                
+                        } 
+                        else { 
                             if(key == 0)
                                 {
                                     get_option_number = 'a';
@@ -1262,13 +1231,28 @@ height: 270px
                            {
                                 if(jQuery.type(result.questions[0].is_multiple_choice) == 'null')
                                 {
+                                    let selectStr = '';
+                                    if (existingProgress) {
+                                        let progress_selected_ans_Array = JSON.parse(existingProgress.selected_answer);
+                                        if (progress_selected_ans_Array?.[questionId] === get_option_number) {
+                                            selectStr = ' checked=checked ';
+                                        }
+                                    }
+
                                     set_questions_options += '<div class="space-y-2">';
-                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'" '+selectStr+'><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
                                 }
                                 else if(result.questions[0].is_multiple_choice == 1)
                                 {
+                                    let selectStr = '';
+                                    if (existingProgress) {
+                                        let progress_selected_ans_Array = JSON.parse(existingProgress.selected_answer);
+                                        if (progress_selected_ans_Array?.[questionId] === get_option_number) {
+                                            selectStr = ' checked=checked ';
+                                        }
+                                    }
                                     set_questions_options += '<div class="space-y-2">';
-                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="checkbox" id="'+get_option_number+'" name="example-checkbox-default" value="'+get_option_number+'" '+selectStr+'><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
                                 }
                                 else if(result.questions[0].is_multiple_choice == 2)
                                 {
@@ -1276,54 +1260,97 @@ height: 270px
                                 }
                                 else
                                 {
+                                    let selectStr = '';
+                                    if (existingProgress) {
+                                        let progress_selected_ans_Array = JSON.parse(existingProgress.selected_answer);
+                                        if (progress_selected_ans_Array?.[questionId] === get_option_number) {
+                                            selectStr = ' checked=checked ';
+                                        }
+                                    }
                                     set_questions_options += '<div class="space-y-2">';
-                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'"><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
+                                    set_questions_options += '<div class="form-check"><input class="form-check-input" type="radio" id="'+get_option_number+'" name="example-radios-default" value="'+get_option_number+'" '+selectStr+'><label class="form-check-label" for="'+get_option_number+'">'+get_option_number.toUpperCase()+'. '+val+'</label></div></div>'
                                 }
                            }
                         });
 
                         set_questions_options += '</div>';
 
-                        if(check_if_flag_selected === undefined || check_if_flag_selected == 'no' )
-                        {
-                            $('.flag').prop('checked', false);
-                            $('.main_flag_section').css("color", "#dc2626");
-                            $('.main_flag_section').css("background-color", "white");
-                        }else{
-                            $('.flag').prop('checked', true);
-                            $('.main_flag_section').css("color", "white");
-                            $('.main_flag_section').css("background-color", "#dc2626");
+                        if (existingProgress?.flag) {
+                            const flagArray = JSON.parse(existingProgress.flag);
+                            // console.log('existingFlag = '+flagArray[questionId]);
+                            if (flagArray[questionId] === 'yes') {
+                                $('.flag').prop('checked', true);
+                                $('.main_flag_section').css("color", "white");
+                                $('.main_flag_section').css("background-color", "#dc2626");
+                            } else {
+                                $('.flag').prop('checked', false);
+                                $('.main_flag_section').css("color", "#dc2626");
+                                $('.main_flag_section').css("background-color", "white");
+                            }
+                        }
+                        else {
+                            if(check_if_flag_selected === undefined || check_if_flag_selected == 'no' )
+                            {
+                                $('.flag').prop('checked', false);
+                                $('.main_flag_section').css("color", "#dc2626");
+                                $('.main_flag_section').css("background-color", "white");
+                            }else{
+                                $('.flag').prop('checked', true);
+                                $('.main_flag_section').css("color", "white");
+                                $('.main_flag_section').css("background-color", "#dc2626");
+                            }
                         }
                     
-                        if(check_if_guess_selected === undefined || check_if_guess_selected == 'no')
-                        {
-                            $('.guess').prop('checked', false);
-                            $('.main_guess_section').css("color", "#ea580c");
-                            $('.main_guess_section').css("background-color", "white");
-                        }else{
-                            $('.guess').prop('checked', true);
-                            $('.main_guess_section').css("color", "white");
-                            $('.main_guess_section').css("background-color", "#ea580c");
+                        if (existingProgress?.guess) {
+                            const guessArray = JSON.parse(existingProgress.guess);
+                            // console.log('existingGuess = '+guessArray[questionId]);
+                            if (guessArray[questionId] === 'yes') {
+                                $('.guess').prop('checked', true);
+                                $('.main_guess_section').css("color", "white");
+                                $('.main_guess_section').css("background-color", "#ea580c");
+                            } else {
+                                $('.guess').prop('checked', false);
+                                $('.main_guess_section').css("color", "#ea580c");
+                                $('.main_guess_section').css("background-color", "white");
+                            }
+                        }
+                        else {
+                            if(check_if_guess_selected === undefined || check_if_guess_selected == 'no')
+                            {
+                                $('.guess').prop('checked', false);
+                                $('.main_guess_section').css("color", "#ea580c");
+                                $('.main_guess_section').css("background-color", "white");
+                            }else{
+                                $('.guess').prop('checked', true);
+                                $('.main_guess_section').css("color", "white");
+                                $('.main_guess_section').css("background-color", "#ea580c");
+                            }
                         }
 
-                        // if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
-                        // {
-                        //     $('.skip').css("color", "#0891b2");
-                        //     $('.skip').css("background-color", "white");
-                        // }else{
-                        //     $('.skip').css("color", "white");
-                        //     $('.skip').css("background-color", "#0891b2");
-                        // }
-
-                        if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
-                        {
-                            $('.skip').prop('checked', false);
-                            $('.main_skip_section').css("color", "#ea580c");
-                            $('.main_skip_section').css("background-color", "white");
-                        }else{
-                            $('.skip').prop('checked', true);
-                            $('.main_skip_section').css("color", "white");
-                            $('.main_skip_section').css("background-color", "#ea580c");
+                        if (existingProgress?.skip) {
+                            const skipArray = JSON.parse(existingProgress.skip);
+                            // console.log('existingSkip = '+skipArray[questionId]);
+                            if (skipArray[questionId] === 'yes') {
+                                $('.skip').prop('checked', true);
+                                $('.main_skip_section').css("color", "white");
+                                $('.main_skip_section').css("background-color", "#ea580c");
+                            } else {
+                                $('.skip').prop('checked', false);
+                                $('.main_skip_section').css("color", "#ea580c");
+                                $('.main_skip_section').css("background-color", "white");
+                            }
+                        } 
+                        else {
+                            if(check_if_skip_selected === undefined || check_if_skip_selected == 'no')
+                            {
+                                $('.skip').prop('checked', false);
+                                $('.main_skip_section').css("color", "#ea580c");
+                                $('.main_skip_section').css("background-color", "white");
+                            }else{
+                                $('.skip').prop('checked', true);
+                                $('.main_skip_section').css("color", "white");
+                                $('.main_skip_section').css("background-color", "#ea580c");
+                            }
                         }
 
                         jQuery('#set_question_data').html(set_questions_options);
@@ -1449,22 +1476,26 @@ height: 270px
             let OptionValue = option.get('time');
             let section_id = $('#section_id').val();
             let question_type = $('#get_question_type').val();
-            $.ajaxSetup({
-                  headers: {
-                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                  }
-                });
 
-                jQuery.ajax({
-                    url: "{{ route('get_time') }}",
-                    method: 'post',
-                    data: {
-                        'time':OptionValue,
-                        'section_id':section_id,
-                        question_type: question_type,
-                    },
-                    success: function(result){
-                        //console.log(result.time);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+
+            jQuery.ajax({
+                url: "{{ route('get_time') }}",
+                method: 'post',
+                data: {
+                    'time':OptionValue,
+                    'section_id':section_id,
+                    question_type: question_type,
+                },
+                success: function(result){
+                    //console.log(result.time);
+                    if(result.progressFlag) {
+                        $('#time_selected').val(result.time_left);
+                    } else{
                         if(OptionValue == 'regular'){
                             $('#time_selected').val(result.time.regular_time);
                         } else if(OptionValue == '50per'){
@@ -1474,90 +1505,205 @@ height: 270px
                         } else {
                             $('#time_selected').val('00:00:00');
                         }
-
-                        var targetTime = $('#time_selected').val();
-                        var parts = targetTime.split(':');
-                        var targetHours = parseInt(parts[0], 10);
-                        var targetMinutes = parseInt(parts[1], 10);
-                        var targetSeconds = parseInt(parts[2], 10);
-                        var targetMilliseconds = ((targetHours * 60 * 60) + (targetMinutes * 60) + targetSeconds) * 1000;
-
-                        var hours = targetHours;
-                        var minutes = targetMinutes;
-                        var seconds = targetSeconds;
-                        var elapsedMilliseconds = 0;
-
-                        var actual_hours = 0;
-                        var actual_minutes = 0;
-                        var actual_seconds = 0;
-
-                        var timerInterval = setInterval(function() {
-                            elapsedMilliseconds += 1000;
-
-                            actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
-                            actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
-                            actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
-
-                            if (elapsedMilliseconds < targetMilliseconds && OptionValue != 'untimed' ) {
-                                var remainingMilliseconds = targetMilliseconds - elapsedMilliseconds;
-                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
-                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
-                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
-                            } else if (OptionValue == 'untimed' ){
-                                var remainingMilliseconds = targetMilliseconds + elapsedMilliseconds ;
-                                hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
-                                minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
-                                seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
-                            }
-                            else {
-                                clearInterval(timerInterval);
-                                hours = 0;
-                                minutes = 0;
-                                seconds = 0;
-                            }
-
-                            var formattedHours = hours.toString().padStart(2, '0');
-                            var formattedMinutes = minutes.toString().padStart(2, '0');
-                            var formattedSeconds = seconds.toString().padStart(2, '0');
-
-                            var formattedActualHours = actual_hours.toString().padStart(2, '0');
-                            var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
-                            var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
-
-                            $('#timer').text(formattedHours + ':' + formattedMinutes + ':' + formattedSeconds);
-                            $('#actual_time').val(formattedActualHours + ':' + formattedActualMinutes + ':' + formattedActualSeconds);
-                            
-                            if(OptionValue != 'untimed'){
-                                if (hours === 0 && minutes === 5 && seconds === 0) {
-                                    swal({
-                                        icon: 'warning',
-                                        title: 'Time is elapsed!',
-                                        text: 'You have 5 minutes remaining.',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'OK'
-                                    });
-                                }
-
-                                if (hours === 0 && minutes === 0 && seconds === 0) {
-                                    clearInterval(timerInterval);
-                                    swal({
-                                        icon: 'warning',
-                                        title: 'Time is over!',
-                                        text: 'Your time has expired.',
-                                        confirmButtonColor: '#3085d6',
-                                        confirmButtonText: 'Continue'
-                                    },function(isConfirm){
-                                        $('#timeisover').val(1);
-                                        if(isConfirm){
-                                            $('.submit_section_btn').trigger('click');
-                                        }
-                                    });
-                                }
-                            }
-                        }, 1000);
                     }
 
-                });
+                    var targetTime = $('#time_selected').val();
+                    var parts = targetTime.split(':');
+                    var targetHours = parseInt(parts[0], 10);
+                    var targetMinutes = parseInt(parts[1], 10);
+                    var targetSeconds = parseInt(parts[2], 10);
+                    var targetMilliseconds = ((targetHours * 60 * 60) + (targetMinutes * 60) + targetSeconds) * 1000;
+
+                    var hours = targetHours;
+                    var minutes = targetMinutes;
+                    var seconds = targetSeconds;
+                    var elapsedMilliseconds = 0;
+
+                    var actual_hours = 0;
+                    var actual_minutes = 0;
+                    var actual_seconds = 0;
+
+                    //Array for progress saving Starts
+                    var selected_answer = [];
+                    var selected_gusess_details = [];
+                    var selected_flag_details = [];
+                    var selected_skip_details = [];
+                    //Array for progress saving Ends
+                    var get_test_id = '';
+                    const urlParams = new URLSearchParams(window.location.search);
+                    get_test_id = urlParams.get('test_id');
+
+                    var timerInterval = setInterval(function() {
+                        elapsedMilliseconds += 1000;
+
+                        actual_hours = Math.floor(elapsedMilliseconds / (60 * 60 * 1000));
+                        actual_minutes = Math.floor((elapsedMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                        actual_seconds = Math.floor((elapsedMilliseconds % (60 * 1000)) / 1000);
+
+                        if (elapsedMilliseconds < targetMilliseconds && OptionValue != 'untimed' ) {
+                            var remainingMilliseconds = targetMilliseconds - elapsedMilliseconds;
+                            hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                            minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                            seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+                        } else if (OptionValue == 'untimed' ){
+                            var remainingMilliseconds = targetMilliseconds + elapsedMilliseconds ;
+                            hours = Math.floor(remainingMilliseconds / (60 * 60 * 1000));
+                            minutes = Math.floor((remainingMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
+                            seconds = Math.floor((remainingMilliseconds % (60 * 1000)) / 1000);
+                        }
+                        else {
+                            clearInterval(timerInterval);
+                            hours = 0;
+                            minutes = 0;
+                            seconds = 0;
+                        }
+
+                        var formattedHours = hours.toString().padStart(2, '0');
+                        var formattedMinutes = minutes.toString().padStart(2, '0');
+                        var formattedSeconds = seconds.toString().padStart(2, '0');
+
+                        var formattedActualHours = actual_hours.toString().padStart(2, '0');
+                        var formattedActualMinutes = actual_minutes.toString().padStart(2, '0');
+                        var formattedActualSeconds = actual_seconds.toString().padStart(2, '0');
+
+                        $('#timer').text(formattedHours + ':' + formattedMinutes + ':' + formattedSeconds);
+                        $('#actual_time').val(formattedActualHours + ':' + formattedActualMinutes + ':' + formattedActualSeconds);
+                        
+                        if(OptionValue != 'untimed'){
+                            if (hours === 0 && minutes === 5 && seconds === 0) {
+                                swal({
+                                    icon: 'warning',
+                                    title: 'Time is elapsed!',
+                                    text: 'You have 5 minutes remaining.',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+
+                            if (hours === 0 && minutes === 0 && seconds === 0) {
+                                clearInterval(timerInterval);
+                                swal({
+                                    icon: 'warning',
+                                    title: 'Time is over!',
+                                    text: 'Your time has expired.',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Continue'
+                                },function(isConfirm){
+                                    $('#timeisover').val(1);
+                                    if(isConfirm){
+                                        $('.submit_section_btn').trigger('click');
+                                    }
+                                });
+                            }
+                        }
+
+
+                        //Progress Saving Starts
+                        let progress_index = jQuery('.next').attr('data-count');
+                        var get_question_id = jQuery('#onload_question_id').val();
+                        
+                        let selected_flag_val;
+                        if($(".flag").is(':checked')) {
+                            selected_flag_val = 'yes';
+                        } else {
+                            selected_flag_val = 'no';
+                        }
+
+                        let selected_skip_val;
+                        if($(".skip").is(':checked')) {
+                            selected_skip_val = 'yes';
+                        } else {
+                            selected_skip_val = 'no';
+                        }
+
+                        let selected_guess_val;
+                        if($(".guess").is(':checked')) {
+                            selected_guess_val = 'yes';
+                        } else {
+                            selected_guess_val = 'no';
+                        }
+                        
+                        var get_section_id = jQuery('#section_id').val();
+                        var get_question_type = jQuery('#get_question_type').val();
+                        var get_practice_id = jQuery(this).attr('data-practice_test_id');
+                        
+                        let question_ids = @json($total_questions);
+                        var actual_time = jQuery('#actual_time').val();
+
+                        if($("input[name='example-radios-default']").is(':checked')) { 
+                            var getSelectedAnswer = $("input[name='example-radios-default']:checked").val();
+                            selected_answer[get_question_id] = getSelectedAnswer;
+                        } else if($("input[name='example-checkbox-default']").is(':checked')) { 
+                            var store_multi = '';
+                            $('input[name="example-checkbox-default"]:checked').each(function() {
+                                store_multi += this.value+','; 
+                            });
+                            store_multi = store_multi.replace(/,\s*$/, "");
+                            selected_answer[get_question_id] = store_multi;
+                        } else if($("input[name='example-textbox-default']")){
+                            store_multi = $("input[name='example-textbox-default']").val();
+                            selected_answer[get_question_id] = store_multi;
+                        }  else {
+                            selected_answer[get_question_id] = '-';
+                        }
+
+                        Array.prototype.associate = function (keys) {
+                            var result = {};
+
+                            this.forEach(function (el, i) {
+                                result[keys[i]] = el;
+                            });
+                            return result;
+                        };
+
+                        let answer_details = [];
+                        for (let index = 0; index < question_ids.length; index++) {
+                            if(selected_answer.hasOwnProperty(question_ids[index])) {
+                                answer_details[question_ids[index]] = selected_answer[question_ids[index]];
+                            } else {
+                                answer_details[question_ids[index]] = '-';
+                            }
+                        }  
+                        answer_details = answer_details.filter(function(element, key){
+                            return element !== 'undefined';
+                        });
+
+                        answer_details = answer_details.associate(question_ids);
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            }
+                        });
+                        jQuery.ajax({
+                            url: "{{ url('/user/test-progress/store') }}",
+                            method: 'post',
+                            data: {
+                                selected_answer:answer_details,
+                                selected_guess_val:selected_guess_val,
+                                selected_flag_val:selected_flag_val,
+                                selected_skip_val:selected_skip_val,
+                                get_section_id:get_section_id,
+                                get_practice_id:get_test_id,
+                                get_question_type:get_question_type,
+                                progress_index:progress_index,
+                                curr_question_id: get_question_id,
+                                actual_time:actual_time,
+                                time_left:formattedHours + ':' + formattedMinutes + ':' + formattedSeconds
+                            },
+                            success: function(result){
+                                if (typeof result !== 'undefined' && result.message === 'delete') {
+                                //if(result.message === 'delete') {
+                                    clearInterval(timerInterval);
+                                }
+                                // console.log('result>>'+result);
+                            }
+                        });
+                        //Progress Saving Ends
+                    }, 1000);
+                }
+
+            });
         }
 </script>
 @endsection
