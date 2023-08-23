@@ -2261,6 +2261,7 @@
                                                                             @php
                                                                                 $incorrect = $categoryAndQuestionTypeSummary['incorrect'] ?? 0;
                                                                                 $count = $categoryAndQuestionTypeSummary['count'] ?? 0;
+                                                                                $total_questions = $categoryAndQuestionTypeSummary['total_qts'] ?? 0;
                                                                                 $missed_ct = $categoryAndQuestionTypeSummary['missed'] ?? 0;
                                                                                 $percentage = ($incorrect / $categoryAndQuestionTypeSummary['count']) * 100;
                                                                                 $percentage = $percentage . '%';
@@ -2269,7 +2270,8 @@
                                                                                 <div class="col-md-12 text-center">
                                                                                     <p class="block-title m-0">Tested
                                                                                         on
-                                                                                        {{ $count }} questions
+                                                                                        {{ $questionsCtPresent[$categoryAndQuestionTypeSummary['ct']] ?? 0 }}
+                                                                                        questions
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -2315,6 +2317,8 @@
                                                                                         <div
                                                                                             class="text-danger text-center">
                                                                                             {{ $categoryAndQuestionTypeSummary['total_incorrect_qts'] }}
+                                                                                            /
+                                                                                            {{ $categoryAndQuestionTypeSummary['total_qts'] }}
                                                                                             Incorrect Question Types
                                                                                         </div>
                                                                                     @endif
