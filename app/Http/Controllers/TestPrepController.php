@@ -593,9 +593,9 @@ class TestPrepController extends Controller
 
                                 $store_sections_details[] = array(
                                     'user_selected_answer' => $json_decoded_single_answers,
-                                    'user_selected_guess' => $json_decoded_guess->question_id,
-                                    'user_selected_flag' => $json_decoded_flag->question_id,
-                                    'user_selected_skip' => $json_decoded_skip->question_id,
+                                    'user_selected_guess' => $json_decoded_guess->$question_id,
+                                    'user_selected_flag' => $json_decoded_flag->$question_id,
+                                    'user_selected_skip' => $json_decoded_skip->$question_id,,
                                     'get_question_details' => $get_question_details,
                                     'all_sections' => $get_all_section,
                                     'date_taken' => $user_selected_answers,
@@ -1078,7 +1078,15 @@ class TestPrepController extends Controller
 
         $catFinal = [];
 
+        $questionsCtPresent = [];
+
         foreach ($ctData as $ctDataKey => $ctDataValue) {
+            $ctDataUniqueValue = array_unique(array_keys($ctDataValue));
+
+            foreach ($ctDataUniqueValue as $uniqueData) {
+                $ct = $questionsCtPresent[$uniqueData] ?? 0;
+                $questionsCtPresent[$uniqueData] = $ct + 1;
+            }
             foreach ($ctDataValue as $ctDataValueKey => $ctDataValueValue) {
                 $answer_arr = $answer_arr ?? [];
                 $selectedAnswer = $answer_arr[$ctDataKey] ?? '';
@@ -1089,7 +1097,6 @@ class TestPrepController extends Controller
                         $conceptCorrect = $checkboxData[$ctDataKey][$ctDataValueValueValue];
                     $crt = $catFinal[$ctDataValueKey]['correct'] ?? 0;
                     $missed = $catFinal[$ctDataValueKey]['missed'] ?? 0;
-                    // dump($selectedAnswer);
                     if (empty($selectedAnswer)) {
                         $catFinal[$ctDataValueKey]['missed'] = $missed + 1;
                     } else {
@@ -1108,6 +1115,7 @@ class TestPrepController extends Controller
         }
 
         $categoryAndQuestionTypeSummaryData = [];
+
         if (!empty($checkData)) {
             $i = 0;
             foreach ($checkData as $key => $data) {
@@ -1143,11 +1151,11 @@ class TestPrepController extends Controller
                 array_multisort($keys, SORT_DESC, $categoryAndQuestionTypeSummaryData);
             }
         }
-        // dd($checkData);
-        // dd($categoryAndQuestionTypeSummaryData);
+
         return view('user.test-review.question_concepts_review',  [
             'category_data' => $category_data,
             'questionTypeData' => $questionTypeData,
+            'questionsCtPresent' => $questionsCtPresent,
             'categoryTypeData' => $categoryTypeData,
             'checkboxData' => $checkboxData,
             'test_details' => $test_details,
