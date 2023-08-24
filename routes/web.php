@@ -66,6 +66,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\StateCityController;
 use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\UserSurveyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -300,6 +301,13 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/comsumed/{id}', 'getConsumendUserSubscription')->name('consumed-subscription-detail');
                 Route::get('/consumed/get/{id}', 'getSingleConsumedDetails')->name('consumed-subscription-single-detail');
                 Route::delete('/comsumed/{id}', 'deleteConsumedHour')->name('consumed-subscription-delete');
+            });
+        });
+
+        Route::group(['prefix' => 'survey', 'as' => 'admin.survey.'], function () {
+            Route::controller(UserSurveyController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/{id}', 'getSurveyInfo')->name('survey-info');
             });
         });
     });
@@ -541,6 +549,11 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('subscription/download-invoice/{id}', [SubscriptionController::class, 'downloadUserInvoice'])->name('mysubscriptions.download-invoice');
         Route::post('/subscription-create', [PlanController::class, 'subscriptioncreatewithexistingcard'])->name('subscriptions.create-custome');
         Route::get('/set-as-default/{payment_id}', [UserController::class, 'setAsDefaultCard'])->name('user.setAsDefault');
+
+        Route::controller(UserSurveyController::class)->group(function () {
+            Route::get('/survey', 'surveyForm')->name('survey-form');
+            Route::post('/survey', 'saveSurvey')->name('survey-form-submit');
+        });
     });
 
     Route::controller(StateCityController::class)->group(function () {

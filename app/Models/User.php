@@ -127,4 +127,8 @@ class User extends Authenticatable
     public function hasVerifiedEmail() {
         return ! is_null($this->email_verified_at);
     }
+
+    public function userSurvey() {
+        return $this->hasOne(UserSurvey::class, 'user_id', 'id');
+    }
 }
