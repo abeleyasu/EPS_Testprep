@@ -7,6 +7,7 @@ use App\Http\Requests\SurveyRequest;
 use App\Models\UserSurvey;
 use App\Models\UserSurveyEmails;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class UserSurveyController extends Controller
 {
@@ -152,12 +153,15 @@ class UserSurveyController extends Controller
                         'email_type' => 'friend'
                     ]);
                 }
+                Log::channel('otherlogs')->info('Survey saved.');
                 DB::commit();
                 return redirect()->route('user-dashboard')->with('success', 'Thank you for taking the survey.');
             }
+            Log::channel('otherlogs')->info('Survey not saved.');
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong. Please try again later.')->withInput();
         } catch (\Exception $e) {
+            Log::channel('otherlogs')->info($e);
             DB::rollBack();
             return redirect()->back()->with('error', 'Something went wrong. Please try again later.')->withInput();
         }

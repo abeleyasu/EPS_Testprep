@@ -118,10 +118,10 @@ $(document).ready(function () {
         var value = $(this).val();
         if (value == 'student') {
             $("label[for='high_school_year']").html('Your Year in High School');
-            $("label[for='parent_student_emails']").html('What’s your parent’s email address? (when they buy College Prep System, you will get a referral reward for sharing and they’ll get a discount).');
+            $("label[for='parent_student_emails']").find('span:first').html('What’s your parent’s email address? (when they buy College Prep System, you will get a referral reward for sharing and they’ll get a discount) ');
         } else {
             $("label[for='high_school_year']").html('Your Student’s Year in High School.');
-            $("label[for='parent_student_emails']").html('What’s your student’s email address? (when they buy College Prep System, you will get a referral reward for sharing and they’ll get a discount).');
+            $("label[for='parent_student_emails']").find('span:first').html('What’s your student’s email address? (when they buy College Prep System, you will get a referral reward for sharing and they’ll get a discount).');
         }
     });
 
@@ -146,67 +146,55 @@ $(document).ready(function () {
     });
 })
 
+function getBtnHtml(type = 'others') {
+    if (type == 'parent_student_emails') {
+        const length = $('#parent_student_emails_holder').children().length;
+        return `
+            <div class="mb-2">
+                <div class="d-flex gap-2">
+                    <input type="text" name="parent_student_emails[${length}]" class="form-control parent-student-email" placeholder="Enter email address">
+                    <span class="btn btn-alt-danger cursor-pointer remove-parent-student-email"><i class="fa fa-minus"></i></span>
+                </div>
+            </div>`
+    } else {
+        const length = $('#friends_holder').children().length;
+        return `
+            <div class="mb-2">
+                <div class="d-flex gap-2">
+                    <input type="text" name="friends[${length}]" class="form-control friends-emails" placeholder="Enter email address">
+                    <span class="btn btn-alt-danger cursor-pointer remove-friends"><i class="fa fa-minus" ></i></span>
+                </div>
+            </div>`
+    }
+} 
+
 $(document).on('click', '.add-parent-student-email', function (e) {
     e.preventDefault();
-    const length = $('#parent_student_emails_holder').children().length;
-    let html = `
-        <div class="mb-2">
-            <div class="d-flex gap-2">
-                <input type="text" name="parent_student_emails[${length}]" class="form-control parent-student-email" placeholder="Enter email address">
-                <span class="px-3 py-2 btn btn-alt-success cursor-pointer add-parent-student-email">+</span>
-            </div>
-        </div>`
-
-    $('#parent_student_emails_holder').append(html);
+    $('#parent_student_emails_holder').append(getBtnHtml('parent_student_emails'));
     addValidationRules();
-
-    if ($('#parent_student_emails_holder').children().length > 1) {
-        $('#parent_student_emails_holder').children().each(function (index, element) {
-            if (index < $('#parent_student_emails_holder').children().length - 1) {
-                console.log(element);
-                $(element).find('.add-parent-student-email').removeClass('btn-alt-success add-parent-student-email').addClass('btn-alt-danger remove-parent-student-email').html('-');
-            }
-        })
-    }
 })
 
 $(document).on('click', '.remove-parent-student-email', function (e) {
     e.preventDefault();
-    addValidationRules();
     $(this).parent().parent().remove();
-    if ($('.add-parent-student-email').length == 1) {
-        $('.add-parent-student-email').removeClass('btn-alt-danger remove-parent-student-email').addClass('btn-alt-success add-parent-student-email').html('+');
+
+    if ($('#parent_student_emails_holder').children().length == 0) {
+        $('#parent_student_emails_holder').append(getBtnHtml('parent_student_emails'));
     }
+    addValidationRules();
 })
 
 $(document).on('click', '.add-friends', function (e) {
     e.preventDefault();
-    const length = $('#friends_holder').children().length;
-    let html = `
-        <div class="mb-2">
-            <div class="d-flex gap-2">
-                <input type="text" name="friends[${length}]" class="form-control friends-emails" placeholder="Enter email address">
-                <span class="px-3 py-2 btn btn-alt-success cursor-pointer add-friends">+</span>
-            </div>
-        </div>`
-
-    $('#friends_holder').append(html);
+    $('#friends_holder').append(getBtnHtml());
     addValidationRules()
-    if ($('#friends_holder').children().length > 1) {
-        $('#friends_holder').children().each(function (index, element) {
-            if (index < $('#friends_holder').children().length - 1) {
-                $(element).find('.add-friends').removeClass('btn-alt-success add-friends').addClass('btn-alt-danger remove-friends').html('-');
-            }
-        });
-        
-    }
 })
 
 $(document).on('click', '.remove-friends', function (e) {
     e.preventDefault();
-    addValidationRules()
     $(this).parent().parent().remove();
-    if ($('.add-friends').length == 1) {
-        $('.add-friends').removeClass('btn-alt-danger remove-friends').addClass('btn-alt-success add-friends').html('+');
+    if ($('#friends_holder').children().length == 0) {
+        $('#friends_holder').append(getBtnHtml());
     }
+    addValidationRules()
 })

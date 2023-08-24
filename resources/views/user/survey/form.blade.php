@@ -60,7 +60,10 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="parent_student_emails" class="form-label">What’s your parent’s email address? (when they buy College Prep System, you will get a referral reward for sharing and they’ll get a discount). </label>
+                                <label for="parent_student_emails" class="form-label">
+                                    <span>What’s your parent’s email address? (when they buy College Prep System, you will get a referral reward for sharing and they’ll get a discount). </span>
+                                    <span class="btn btn-alt-success btn-sm cursor-pointer add-parent-student-email"><i class="fa fa-plus" ></i></span>
+                                </label>
                                 <div id="parent_student_emails_holder">
                                     @if(old('parent_student_emails') && count(old('parent_student_emails')) > 0)
                                         @foreach(old('parent_student_emails') as $key => $old)
@@ -70,11 +73,7 @@
                                                         $error_key = 'parent_student_emails.' . $key
                                                     @endphp
                                                     <input type="text" name="parent_student_emails[]" value="{{ $old }}" class="form-control parent-student-email {{$errors->has($error_key) ? 'is-invalid' : 'dsfsf'}}" placeholder="Enter email address">
-                                                    @if ($key == count(old('parent_student_emails')) - 1)
-                                                        <span class="px-3 py-2 btn btn-alt-success cursor-pointer add-parent-student-email">+</span>
-                                                    @else
-                                                        <span class="px-3 py-2 btn btn-alt-danger cursor-pointer remove-parent-student-email">-</span>
-                                                    @endif
+                                                    <span class="btn btn-alt-danger cursor-pointer remove-parent-student-email"><i class="fa fa-minus"></i></span>
                                                 </div>
                                                 @if($errors->has($error_key)) 
                                                     <div class="text-danger">{{ $errors->first($error_key) }}</div>
@@ -85,14 +84,17 @@
                                         <div class="mb-2">
                                             <div class="d-flex gap-2">
                                                 <input type="text" name="parent_student_emails[0]" class="form-control parent-student-email" placeholder="Enter email address">
-                                                <span class="px-3 py-2 btn btn-alt-success cursor-pointer add-parent-student-email">+</span>
+                                                <span class="btn btn-alt-danger cursor-pointer remove-parent-student-email"><i class="fa fa-minus" ></i></span>
                                             </div>
                                         </div>
                                     @endif
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="friends" class="form-label">If you’d like to earn referral rewards (gift cards to Amazon, Starbucks, and more) for sharing with friends, add their email addresses here. </label>
+                                <label for="friends" class="form-label">
+                                    If you’d like to earn referral rewards (gift cards to Amazon, Starbucks, and more) for sharing with friends, add their email addresses here. 
+                                    <span class="btn btn-alt-success btn-sm cursor-pointer add-friends"><i class="fa fa-plus" ></i></span>
+                                </label>
                                 <div id="friends_holder">
                                     @if(old('friends') && count(old('friends')) > 0)
                                         @foreach(old('friends') as $key => $old)
@@ -102,11 +104,7 @@
                                                         $error_key = 'friends.' . $key
                                                     @endphp
                                                     <input type="text" name="friends[]" value="{{ $old }}" class="form-control parent-student-email {{$errors->has($error_key) ? 'is-invalid' : 'dsfsf'}}" placeholder="Enter email address">
-                                                    @if ($key == count(old('friends')) - 1)
-                                                        <span class="px-3 py-2 btn btn-alt-success cursor-pointer add-friends">+</span>
-                                                    @else
-                                                        <span class="px-3 py-2 btn btn-alt-danger cursor-pointer remove-friends">-</span>
-                                                    @endif
+                                                    <span class="btn btn-alt-danger cursor-pointer remove-friends"><i class="fa fa-minus" ></i></span>
                                                 </div>
                                                 @if($errors->has($error_key)) 
                                                     <div class="text-danger">{{ $errors->first($error_key) }}</div>
@@ -117,7 +115,7 @@
                                         <div class="mb-2">
                                             <div class="d-flex gap-2">
                                                 <input type="text" name="friends[0]" class="form-control friends-emails" placeholder="Enter email address">
-                                                <span class="px-3 py-2 btn btn-alt-success cursor-pointer add-friends">+</span>
+                                                <span class="btn btn-alt-danger cursor-pointer remove-friends"><i class="fa fa-minus" ></i></span>
                                             </div>
                                         </div>
                                     @endif
