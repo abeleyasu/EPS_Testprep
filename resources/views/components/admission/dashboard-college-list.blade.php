@@ -10,12 +10,12 @@
                 @endif
                 <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{$key + 1}}</div>
                 <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
+                <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
                 @if($deadline['college_information']['regular_admission_deadline'])
-                    <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
                     <a class="text-dark">{{ $deadline['college_information']['regular_admission_deadline'] }}</a>
                     <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline_diff'] }}</a>
                 @else
-                    <a href="{{ route('admin-dashboard.collegeApplicationDeadline') }}" class="btn btn-alt-success btn-sm">Add Deadline Date</a>
+                    <span class="text-danger">Not Published</span>
                 @endif
                 </div>
             </div>
