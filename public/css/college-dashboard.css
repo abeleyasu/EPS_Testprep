@@ -1,0 +1,88 @@
+.college-image {
+    display: inline-block !important;
+    width: 64px !important;
+    height: 64px;
+    border-radius: 50%;
+}
+.block-header-tab {
+    background-color: #1f2937;
+    text-align: left;
+    justify-content: left;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.block-header-tab i {
+    font-size: 17px;
+    position: relative;
+    top: 0px;
+}
+.no-data {
+    border: 1px solid;
+    border-style: dashed;
+    border-color: darkgray;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.owl-carousel .owl-nav button.owl-prev {
+    background: #d9e8c3;
+    color: #000;
+    border: 1px solid #d9e8c3;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.owl-carousel .owl-nav button.owl-next {
+    background: #d9e8c3;
+    color: #000;
+    border: 1px solid #d9e8c3;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    transform: translateY(-50%);
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.box-height {
+    height: 232px;
+}
+
+.my-college-section .row > * {
+    padding: 0px;
+}
+
+.my-test-score .block .block-content .row > * { 
+    padding: 1px !important;
+}
+
+.my-test-score .block .block-content {
+    padding: 0.25rem 1.25rem 1px !important;
+}
+
+.border-class {
+    border: 2px solid #eee;
+}
+
+.my-college-section .block-content {
+    padding: 0px 14px 0px 13px;
+}

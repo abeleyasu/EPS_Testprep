@@ -26,71 +26,9 @@
         <!-- Stats -->
         <div class="bg-body-extra-light">
             <div class="content content-boxed">
-                <div class="row text-center">
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow test-block" style="background: #000;">
-                            <a class="btn-block-option editPrimaryTest" href="javascript:void(0)" style="float: right">
-                                <i class="fas fa-edit" style="color: #0099ff;"></i>
-                            </a>
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Primary Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase selectedPrimaryTest">
-                                {!! optional($getTestScores)->primary_test_type ?? '<span style="font-size: 5.5px;">Please input your primary test by clicking on <i class="fas fa-edit" style="color: #0099ff;"></i> button</span>' !!}
-                            </div>
-                            <div id="editDropdownContainer" style="display: none;">
-                                <select id="testTypeDropdown">
-                                    <option value="">Select</option>
-                                    <option value="ACT" {{ optional($getTestScores)->primary_test_type === 'ACT' ? 'selected' : '' }}>ACT</option>
-                                    <option value="SAT" {{ optional($getTestScores)->primary_test_type === 'SAT' ? 'selected' : '' }}>SAT</option>
-                                    <option value="PSAT" {{ optional($getTestScores)->primary_test_type === 'PSAT' ? 'selected' : '' }}>PSAT</option>
-                                </select>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow test-block" style="background: #000">
-                            <a class="btn-block-option editInitialScore" href="javascript:void(0)" style="float: right">
-                                <i class="fas fa-edit" style="color: #0099ff;"></i>
-                            </a>
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Initial Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase initialScoreCls">
-                                {{ optional($getTestScores)->initial_score ?? '0' }}
-                            </div>
-                            <div id="editInitialScoreContainer" style="display: none;">
-                                <input style="width: 50px; text-align: center;" type="text" name="txtinitialScore" id="txtinitialScore" value="{{ optional($getTestScores)->initial_score ?? '0' }}" autocomplete="off">
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow test-block" style="background: #000">
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Last Test</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase lastTestCls">
-                                {{ optional($getTestScores)->last_test_score ?? '0' }}
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="block block-bordered shadow test-block" style="background: #000">
-                            <a class="btn-block-option editGoalScore" href="javascript:void(0)" style="float: right">
-                                <i class="fas fa-edit" style="color: #0099ff;"></i>
-                            </a>
-                            <br>
-                            <div class="fs-md fw-semibold text-uppercase" style="color: #0099ff">Goal Score</div>
-                            <div class="fs-lg fw-semibold text-white text-uppercase goalScoreCls">
-                                {{ optional($getTestScores)->goal_score ?? '0' }}
-                            </div>
-                            <div id="editGoalScoreContainer" style="display: none;">
-                                <input style="width: 50px; text-align: center;" type="text" name="txtgoleScore" id="txtgoalScore" value="{{ optional($getTestScores)->goal_score ?? '0' }}" autocomplete="off">
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                </div>
+                @include('components.test-prep.test-score', [
+                    'getTestScores' => $getTestScores,
+                ])
             </div>
         </div>
         <!-- END Stats -->
@@ -128,53 +66,9 @@
                                             <!-- Calendar -->
                                             <div class="block block-rounded">
                                                 <div class="block-content">
-                                                    <div class="row items-push">
-                                                        <div class="col-md-12 col-lg-12 col-xl-12"
-                                                            style='padding: 0 !important'>
-                                                            <!-- Calendar Container -->
-                                                            <div id="js-calendar"></div>
-                                                        </div>
-                                                        <div class="col-md-6 col-lg-6 col-xl-6">
-                                                            <!-- Add Event Form -->
-                                                            <form class="js-form-add-event push">
-                                                                <div class="input-group">
-                                                                    <input type="text" name="title" id="event-title"
-                                                                        class="js-add-event form-control"
-                                                                        placeholder="Add Event..">
-                                                                    <span class="input-group-text" style="cursor: pointer"
-                                                                        onclick="addTitle()">
-                                                                        <i class="fa fa-fw fa-plus-circle"></i>
-                                                                    </span>
-                                                                </div>
-                                                            </form>
-                                                            <!-- END Add Event Form -->
-
-                                                            <!-- Event List -->
-                                                            @if (!empty($events))
-                                                                <ul id="js-events" class="list list-events">
-                                                                    @foreach ($events as $event)
-                                                                        <li class="event-list-{{ $event->id }}">
-                                                                            <div class="js-event p-2 fs-sm fw-medium rounded bg-{{ $event->color }}-light text-{{ $event->color }}"
-                                                                                data-url="{{ route('calendar.assignEvent') }}"
-                                                                                data-id="{{ $event->id }}">
-                                                                                {{ $event->title }}<span
-                                                                                    class="main-event-trash"
-                                                                                    onclick="mainEventTrash({{ $event->id }})"><i
-                                                                                        class="fa-solid fa-trash"></i></span>
-                                                                            </div>
-                                                                        </li>
-                                                                    @endforeach
-                                                                </ul>
-                                                            @endif
-                                                            <div class="text-center">
-                                                                <p class="fs-sm text-muted">
-                                                                    <i class="fa fa-arrows-alt"></i> Drag and drop events on
-                                                                    the calendar
-                                                                </p>
-                                                            </div>
-                                                            <!-- END Event List -->
-                                                        </div>
-                                                    </div>
+                                                    @include('components.test-prep.calendar', [
+                                                        'events' => $events
+                                                    ])
                                                 </div>
                                             </div>
                                             <!-- END Calendar -->
@@ -1315,9 +1209,11 @@
 
 
     <script>
-        let eventObj = @json($final_arr);
-
-        pageCompCalendar.init(eventObj);
+        // $(document).ready(function () {
+        //     let eventObj = @json($final_arr);
+    
+        // })
+        pageCompCalendar.init(@json($final_arr));
 		
 		var testTypeDropdown = $('#testTypeDropdown').val();
         if(testTypeDropdown) {

@@ -21,35 +21,9 @@
   </div>
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
-      
-      @if(count($college_list_deadline) > 0)
-      <div class="row @if(count($college_list_deadline) > 3) owl-carousel owl-theme @endif">
-        @foreach($college_list_deadline as $key => $deadline)
-        <div class="@if(count($college_list_deadline) > 3) col-12 @else col-6 col-md-4 @endif">
-          <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center @if(!$deadline['college_information']['regular_admission_deadline']) box-height @endif">
-            @if($deadline['college_information']['college_icon'])
-              <img class="college-image" src="{{ asset('college_icon/' . $deadline['college_information']['college_icon']) }}" alt="">
-            @else
-              <img class="college-image" src="{{ asset('static-image/no-image.jpg') }}" alt="">
-            @endif
-            <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{$key + 1}}</div>
-            <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
-            @if($deadline['college_information']['regular_admission_deadline'])
-              <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
-              <a class="text-dark">{{ $deadline['college_information']['regular_admission_deadline'] }}</a>
-              <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline_diff'] }}</a>
-            @else
-              <a href="{{ route('admin-dashboard.collegeApplicationDeadline') }}" class="btn btn-alt-success btn-sm">Add Deadline Date</a>
-            @endif
-          </div>
-        </div>
-        @endforeach
-      </div>
-      @else
-      <div class="no-data mb-4">
-        <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-alt-success btn-sm">Click here to add college</a>
-      </div>
-      @endif
+      @include('components.admission.dashboard-college-list', [
+        'college_list_deadline' => $college_list_deadline
+      ])
     </div>
   </div>
   <div class="content content-boxed">
@@ -199,29 +173,9 @@
           </h3>
         </div>
         <div class="block-content">
-          @if(count($milestones) > 0)
-            @foreach($milestones as $mKey => $milestone)
-            <div class="fs-sm push">
-              <div class="d-flex justify-content-between mb-2">
-                <div>
-                  @if($milestone->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($milestone->user_milestone_products()->pluck('product_id')->toArray()))
-                    <a href="javascript:;" class="font-grayed fw-semibold">
-                  @else
-                    <a href="{{ route('milestone.detail',['milestone'=>$milestone->id]) }}" class="fw-semibold">
-                  @endif
-                    <i class="nav-main-link-icon fa fa-person"></i> 
-                    Milestone {{ $mKey + 1 }}: {{ $milestone->name }}
-                  </a>
-                </div>
-              </div>
-              <p class="mb-0">{{ strip_tags($milestone->description) }}</p>
-            </div>
-            @endforeach
-          @else
-            <div class="no-data mb-4">
-              No milestones found
-            </div>
-          @endif
+          @include('components.admission.milestone-lession', [
+            'milestones' => $milestones
+          ])
           <div class="text-center push">
             <button type="button" class="btn btn-sm btn-alt-secondary">Visit the Test Prep Lesson Homepage for more..</button><!-- sends student to the Test Prep Milestone 4 page with all the Test Prep Modules on it -->
           </div>
@@ -239,76 +193,7 @@
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/js/owal-carousel/owl.carousel.min.css') }}">
-<style>
-  .college-image {
-    display: inline-block!important;
-    width: 64px !important;
-    height: 64px;
-    border-radius: 50%;
-  }
-  .block-header-tab {
-    background-color: #1f2937;
-    text-align: left;
-    justify-content: left;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  .block-header-tab i {
-    font-size: 17px;
-    position: relative;
-    top: 0px;
-  }
-  .no-data {
-    border: 1px solid;
-    border-style: dashed;
-    border-color: darkgray;
-    padding: 10px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  .owl-carousel .owl-nav button.owl-prev {
-    background: #d9e8c3;
-    color: #000;
-    border: 1px solid #d9e8c3;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    outline: none;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .owl-carousel .owl-nav button.owl-next {
-    background: #d9e8c3;
-    color: #000;
-    border: 1px solid #d9e8c3;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    right: -20px;
-    transform: translateY(-50%);
-    outline: none;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .box-height {
-    height: 232px;
-  }
-</style>
+<link rel="stylesheet" href="{{ asset('css/college-dashboard.css') }}">
 @endsection
 
 @can('Access Admission Dashboard')

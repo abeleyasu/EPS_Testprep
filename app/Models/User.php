@@ -32,6 +32,7 @@ class User extends Authenticatable
         'password',
         'parent_phone',
         'is_active',
+        'login_count',
     ];
 
     /**

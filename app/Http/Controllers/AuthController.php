@@ -44,6 +44,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'login_count' => 1,
         ]);
 
         $data = [
@@ -133,6 +134,11 @@ class AuthController extends Controller
                     ], 200);
                 } else {
                     $route = route('user-dashboard');
+                    if ($user->login_count == 1){
+                        $route = route('survey-form');
+                        $user->login_count++;
+                        $user->save();
+                    }
                     return response()->json([
                         'success' => true,
                         'message' => 'Login successfully',

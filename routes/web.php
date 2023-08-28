@@ -67,6 +67,7 @@ use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\StateCityController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\UserSurveyController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -314,7 +315,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
     //User Routes
     Route::group(['middleware' => ['role:standard_user', 'email_verification'], 'prefix' => 'user'], function () {
-        Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
 
         Route::group(['middleware' => ['subscription_valid:access-courses']], function () {
@@ -374,7 +375,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
 
             Route::group(['middleware' => ['subscription_valid:access-admission-dashboard']], function () {
-                Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+                Route::get('/dashboard', [DashboardController::class, 'admission_dashboard'])->name('dashboard');
             });
 
             Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.', 'middleware' => ['subscription_valid:access-high-school-resume']], function () {
@@ -523,7 +524,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/check_progress',[TestPrepController::class,'check_progress'])->name('check_progress');
         // Please make any changes you think it's necessary to routing
         Route::group(['middleware' => ['subscription_valid:access-test-prep-dashboard']], function () {
-            Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+            Route::get('/test-prep-dashboard', [DashboardController::class, 'test_prep_dashboard'])->name('test_prep_dashboard');
         });
         Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
 
