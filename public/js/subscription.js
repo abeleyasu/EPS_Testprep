@@ -65,3 +65,17 @@ $("#payment-form").validate({
   },
   ...common_error_function
 });
+
+$('#referral-code-form').validate({
+  rules: {
+    referral_code: {
+      required: true,
+    },
+  },
+  messages: {
+    referral_code: {
+      required: "Referral code is required",
+    },
+  },
+  ...common_error_function
+});

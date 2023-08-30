@@ -162,7 +162,13 @@ class TestPrepController extends Controller
                     $testScore->save();
 
                     return response()->json(['success' => '1', 'scaled_score' => $scaled_score]);
-                } //END if($latestTestId > 0)
+                } else {
+                    $testScore->primary_test_type = $field_value;
+                    $testScore->last_test_score = 0;
+                    $testScore->save();
+
+                    return response()->json(['success' => '1', 'scaled_score' => 0]);
+                }
             } else if ($updtvalue == 'initial_score') {
                 $testScore->initial_score = $field_value;
                 $testScore->save();

@@ -33,6 +33,8 @@ class User extends Authenticatable
         'parent_phone',
         'is_active',
         'login_count',
+        'referral_code',
+        'referred_rewards_points',
     ];
 
     /**

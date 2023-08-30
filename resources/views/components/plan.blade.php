@@ -55,6 +55,16 @@
                           <p class="text-muted"><span class="text-capitalize">{{ $plan->interval_count }} Hour Plan</span></p>
                         @endif
                       </div>
+                      @php 
+                        $code = '';
+                        $params = [
+                          'plan' => $plan->id,
+                        ];
+                        if (isset($_GET['code'])) {
+                          $params['code'] = $_GET['code'];
+                        }
+                        $url = route('plans.show', $params);
+                      @endphp
                       @if(auth()->user())
                         @if(Auth::user()->isUserSubscriptionToAnyPlan())
                           @php
@@ -63,13 +73,13 @@
                           @if(in_array($plan->stripe_plan_id, $subscriptions))
                             <div class="btn btn-light px-4">{{ $plan->interval == 'hour' ? 'Added' : 'Current Subscription'  }}</div>
                           @else
-                            <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">{{ $plan->interval == 'hour' ? 'Add Package' : 'Upgrade'  }}</a>
+                            <a href="{{ $url }}" class="btn btn-secondary px-4">{{ $plan->interval == 'hour' ? 'Add Package' : 'Upgrade'  }}</a>
                           @endif
                         @else 
-                          <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                          <a href="{{ $url }}" class="btn btn-secondary px-4">Choose</a>
                         @endif
                       @else
-                        <a href="{{ route('plans.show', $plan->id) }}" class="btn btn-secondary px-4">Choose</a>
+                        <a href="{{ $url }}" class="btn btn-secondary px-4">Choose</a>
                       @endif
                     </div>
                   @endforeach

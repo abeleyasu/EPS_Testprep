@@ -112,6 +112,28 @@
           </div>
         </div>
 
+        @if($plan->interval == 'year' || $plan->interval == 'month')
+        <div class="block block-rounded">
+          <div class="block-header">
+            <h3 class="block-title">
+              Do you have a referral code? (Optional)
+            </h3>
+          </div>
+          <div class="block-content">
+            <form class="row g-3" id="referral-code-form">
+              @csrf
+              <div class="col-auto">
+                <label for="referral_code" class="visually-hidden">Referal Code</label>
+                <input type="text" class="form-control" name="referral_code" id="referral_code" placeholder="Referal Code" value="{{ isset($_GET['code']) ? $_GET['code'] : '' }}">
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Apply</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        @endif
+
         @if(count($cards['data']) > 0)
         <div class="block block-rounded">
           <div class="block-header">
@@ -177,7 +199,6 @@
 <script>
 
   $(document).ready(function () {
-
     function initStateAndCityDropdown() {
       $('select[name="state"]').select2({
         placeholder: '--- Select State ---',
@@ -343,6 +364,46 @@
           userExistingcardForm.submit()
         }
       })
+    })
+
+    $('#referral-code-form').on('submit', function (e) {
+      e.preventDefault()
+      const isAlreadyExistInputInUserCardForm = $('#user-card-form').find('input[name="referral_code"]').length
+      if (isAlreadyExistInputInUserCardForm) {
+        $('#user-card-form').find('input[name="referral_code"]').remove()
+      }
+      const isAlreadyExistInputInPaymentForm = $('#payment-form').find('input[name="referral_code"]').length
+      if (isAlreadyExistInputInPaymentForm) {
+        $('#payment-form').find('input[name="referral_code"]').remove()
+      }
+      if ($(this).valid()) {
+        $.ajax({
+          url: "{{ route('validate-referral-code') }}",
+          type: 'POST',
+          data: $(this).serialize(),
+        }).done((response) => {
+          if (response.success) {
+            const createinput = document.createElement('input');
+            createinput.setAttribute('type', 'hidden');
+            createinput.setAttribute('name', 'referral_code');
+            createinput.setAttribute('value', $('#referral_code').val());
+            $('#user-card-form').append(createinput);
+            console.log($('#user-card-form'));
+            $('#payment-form').append($(createinput).clone());
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: response.message,
+            })
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: response.message,
+            })
+          }
+        })
+      }
     })
 </script>
 @endsection

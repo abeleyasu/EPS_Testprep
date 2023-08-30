@@ -225,7 +225,7 @@
                 </li>
 
                 <li class="nav-main-item">
-                    <a class="nav-main-link" href="#">
+                    <a class="nav-main-link {{ Route::is('rewards.*') ? 'active' : '' }}" href="{{ route('rewards.index') }}">
                         <i class="nav-main-link-icon far fa-dollar-sign"></i>
                         <span class="nav-main-link-name">Rewards</span>
                     </a>

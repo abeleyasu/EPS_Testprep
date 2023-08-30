@@ -31,7 +31,7 @@
         <div class="block-header block-header-tab justify-content-center fs-4">
           My College
         </div>
-        <div class="block-content">
+        <div class="block-content p-0">
           @include('components.admission.dashboard-college-list', [
             'college_list_deadline' => $college_list_deadline
           ])
