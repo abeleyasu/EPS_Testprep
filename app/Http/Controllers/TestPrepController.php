@@ -1878,6 +1878,12 @@ class TestPrepController extends Controller
 
     public function resetSection(Request $request, $testId, $id)
     {
+        $pq = PracticeQuestion::where("practice_test_sections_id", $id);
+
+        if ($pq->count()) {
+            $pq->update(["mistake_type" => NULL]);
+        }
+
         UserAnswers::where('section_id', $id)->where('user_id', Auth::id())->delete();
 
         $existingRecord = TestProgress::where('section_id', $id)

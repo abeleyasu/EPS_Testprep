@@ -127,6 +127,8 @@ $(function () {
                 if (tdata) {
                     $(".table-mistake-types tbody").empty();
                     $(".table-mistake-types").append(tdata);
+                } else {
+                    $(".table-mistake-types tbody").empty();
                 }
             }
         );

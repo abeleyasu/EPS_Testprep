@@ -1625,7 +1625,8 @@
                                                                                 id="example-select"
                                                                                 data-question-id="{{ $single_user_selected_answers['get_question_details'][0]->question_id }}"
                                                                                 name="example-select">
-                                                                                <option selected>Mistake Type (Select
+                                                                                <option value="" selected>Mistake
+                                                                                    Type (Select
                                                                                     One)</option>
                                                                                 <option
                                                                                     @if ($single_user_selected_answers['get_question_details'][0]->mistake_type == 'content_misunderstanding') selected @endif
