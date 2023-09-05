@@ -40,6 +40,7 @@ class GoogleService {
         $client->setScopes(config('google-laravel.GOOGLE_SCOPES'));
         $client->setApprovalPrompt(env('GOOGLE_APPROVAL_PROMPT'));
         $client->setAccessType(env('GOOGLE_ACCESS_TYPE'));
+        $client->setPrompt('consent');
 
         return $client;
     }
@@ -138,7 +139,7 @@ class GoogleService {
                 return $calender->toSimpleObject();
             }
         }
-        return $this->createCalender();
+        return $this->createCalender($service);
     }
 
     public function createCalender($service) {
