@@ -2539,6 +2539,40 @@ class TestPrepController extends Controller
         }
     }
 
+    public function getAllTypes(Request $request)
+    {
+        $section_type = $request['section_type'];
+        $format = $request['test_type'];
+
+        $super_category = SuperCategory::where('format', $format)
+            ->where('section_type', $section_type)
+            ->where('selfMade', 1)
+            ->get();
+        $category = [];
+        $questionType = [];
+        foreach ($super_category as $super) {
+            $superId = array($super->id);
+            $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
+                ->where('section_type', $section_type)
+                ->where('selfMade', 1)
+                ->get();
+            foreach ($category[$super->id] as $categories) {
+                $categoryId = array($categories['id']);
+                $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
+                    ->where('selfMade', 1)
+                    ->whereIn('category_id', $categoryId)
+                    ->get();
+            }
+        }
+        return response()->json(
+            [
+                'super_category' => $super_category,
+                'category' => $category,
+                'questionType' => $questionType
+            ]
+        );
+    }
+
     public function gettypes(Request $request)
     {
         $format = $request['test_type'];
@@ -2572,16 +2606,18 @@ class TestPrepController extends Controller
         $allUnaswered = 0;
         $allUnasweredArray = [];
         foreach ($diff_ratings as $diff_rating) {
-            $query = PracticeQuestion::query()->select('practice_questions.*');
+            $query = PracticeQuestion::query()->select('practice_questions.*', "practice_tests.test_source as test_source");
             $query->where('practice_questions.format', $format)
                 ->where('practice_questions.diff_rating', $diff_rating->id)
-                ->where('practice_questions.selfMade', '0');
+                ->where('practice_questions.selfMade', '0')
+                ->where('practice_questions.test_source', '2');
 
             if (!empty($diff_rating_value)) {
                 $query->whereIn("diff_rating", $diff_rating_value);
             }
             $query->leftJoin('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id');
             $query->leftJoin('question_details', 'question_details.question_id', '=', 'practice_questions.id');
+            $query->leftJoin('practice_tests', 'practice_tests.id', '=', 'practice_test_sections.testid');
             $no_section = false;
             if (isset($request['section_type']) && !empty($request['section_type'])) {
                 $query->where('practice_test_sections.practice_test_type', $request['section_type']);
@@ -2613,12 +2649,13 @@ class TestPrepController extends Controller
                 if (!empty($answers->answer)) {
                     $answer = json_decode($answers->answer, 1);
                     $answer = array_filter($answer, function ($val) {
-                        return $val != "-";
+                        return !empty($val);
                     });
                     $keys = array_keys($answer);
                     array_push($allQuestionsAnswered, ...$keys);
                 }
             }
+
             $questionsData = $query->inRandomOrder()->pluck('id');
             $questionsData = $questionsData->toArray() ?? [];
             $questions = array_unique($questionsData);
@@ -2651,27 +2688,31 @@ class TestPrepController extends Controller
             'type' => 'all'
         ];
 
-        $super_category = SuperCategory::where('format', $format)
-            ->where('section_type', $section_type)
-            ->where('selfMade', 1)
-            ->get();
-        $category = [];
-        $questionType = [];
-        foreach ($super_category as $super) {
-            $superId = array($super->id);
-            $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
-                ->where('section_type', $section_type)
-                ->where('selfMade', 1)
-                ->get();
-            foreach ($category[$super->id] as $categories) {
-                $categoryId = array($categories['id']);
-                $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
-                    ->where('selfMade', 1)
-                    ->whereIn('category_id', $categoryId)
-                    ->get();
-            }
-        }
-        return response()->json(['super_category' => $super_category, 'category' => $category, 'questionType' => $questionType, 'count' => $countQuestion]);
+        // $super_category = SuperCategory::where('format', $format)
+        //     ->where('section_type', $section_type)
+        //     ->where('selfMade', 1)
+        //     ->get();
+        // $category = [];
+        // $questionType = [];
+        // foreach ($super_category as $super) {
+        //     $superId = array($super->id);
+        //     $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
+        //         ->where('section_type', $section_type)
+        //         ->where('selfMade', 1)
+        //         ->get();
+        //     foreach ($category[$super->id] as $categories) {
+        //         $categoryId = array($categories['id']);
+        //         $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
+        //             ->where('selfMade', 1)
+        //             ->whereIn('category_id', $categoryId)
+        //             ->get();
+        //     }
+        // }
+        return response()->json(
+            [
+                'count' => $countQuestion
+            ]
+        );
     }
 
     public function getSelfMadeTestQuestion(Request $request)
