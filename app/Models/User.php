@@ -32,6 +32,9 @@ class User extends Authenticatable
         'password',
         'parent_phone',
         'is_active',
+        'login_count',
+        'referral_code',
+        'referred_rewards_points',
     ];
 
     /**
@@ -126,5 +129,17 @@ class User extends Authenticatable
 
     public function hasVerifiedEmail() {
         return ! is_null($this->email_verified_at);
+    }
+
+    public function userSurvey() {
+        return $this->hasOne(UserSurvey::class, 'user_id', 'id');
+    }
+
+    public function googleAccount() {
+        return $this->hasOne(UserGoogleAccount::class, 'user_id', 'id');
+    }
+
+    public function userSetting() {
+        return $this->hasOne(UserSettings::class, 'user_id', 'id');
     }
 }

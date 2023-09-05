@@ -23,10 +23,6 @@ use App\Models\UserSettings;
 class UserController extends Controller
 {
     public $states;
-	public function dashboard()
-	{
-		return view('user/dashboard');
-	}
 	public function resume()
 	{
 		$userId = auth()->id();

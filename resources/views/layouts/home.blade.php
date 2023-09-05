@@ -59,7 +59,7 @@
                         $('#errors').html('')
                         if (response.data) {    
                             let error = response.message + '<br>'
-                            error += '<a class="text-primary" data-id="'+response.data.id+'" id="resend-verification-link-login-modal">Reset Email Verification Link</a>';
+                            error += '<a class="text-primary" data-id="'+response.data.id+'" id="resend-verification-link-login-modal">Resend Email Verification Link</a>';
                             constructMessage(error, 'errors', 'danger')
                         } else {
                             constructMessage(response.message, 'errors', 'danger')

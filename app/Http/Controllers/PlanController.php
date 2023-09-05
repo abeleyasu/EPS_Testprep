@@ -14,6 +14,8 @@ use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 use App\Models\Subscription;
 use App\Models\SubscriptionItem;
+use App\Models\UserRewards;
+use Illuminate\Support\Facades\Validator;
 
 class PlanController extends Controller
 {
@@ -252,17 +254,21 @@ class PlanController extends Controller
         $plan = Plan::where('stripe_plan_id', $request->plan)->with('product')->first();
         $paymentMethodId = $request->payment_method;
         $customer = $request->user()->createOrGetStripeCustomer();
+        $referral_code = null;
+        if (isset($request->referral_code)) {
+            $referral_code = $request->referral_code;
+        }
         try {
             $user = Auth::user();
             if ($user->isSubscribeToSubscriptions() && $plan->interval != 'hour') {
-                $this->changeUserSubscription($plan, $paymentMethodId);
+                $this->changeUserSubscription($plan, $paymentMethodId, $referral_code);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
                 if ($plan->interval == 'hour') {
                     $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
                 } else {
-                    $this->createSubscription($plan, $paymentMethodId);
+                    $this->createSubscription($plan, $paymentMethodId, $referral_code);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
                 }
             }
@@ -285,17 +291,21 @@ class PlanController extends Controller
     public function subscriptioncreatewithexistingcard(Request $request) {
         $plan = Plan::where('stripe_plan_id', $request->plan)->first();
         $paymentMethodId = $request->user_card;
+        $referral_code = null;
+        if (isset($request->referral_code)) {
+            $referral_code = $request->referral_code;
+        }
         try {
             $user = Auth::user();
             if ($user->isSubscribeToSubscriptions() && $plan->interval != 'hour') {
-                $this->changeUserSubscription($plan, $paymentMethodId);
+                $this->changeUserSubscription($plan, $paymentMethodId, $referral_code);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
                 if ($plan->interval == 'hour') {
                     $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
                 } else {
-                    $this->createSubscription($plan, $paymentMethodId);
+                    $this->createSubscription($plan, $paymentMethodId, $referral_code);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
                 }
             }
@@ -354,13 +364,18 @@ class PlanController extends Controller
         return true;
     }
 
-    public function createSubscription($plan, $paymentMethodId) {
+    public function createSubscription($plan, $paymentMethodId, $referral_code) {
         $user = Auth::user();
         $payload = [
             'default_payment_method' => $paymentMethodId,
             'collection_method' => 'charge_automatically',
         ];
         $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [],$payload);
+        if ($referral_code) {
+            if ($referral_code) {
+                $this->addReferralCount($referral_code, $user);
+            }
+        }
         $this->mailgun->sendMail([
             'to' => $user->email,
             'subject' => 'Welcome to College Prep System - Your College Journey Begins Today',
@@ -373,10 +388,28 @@ class PlanController extends Controller
         return true;
     }
 
-    public function changeUserSubscription($plan, $paymentMethodId) {
+    public function addReferralCount($referral_code, $user) {
+        $referral_code_user = User::where('referral_code', $referral_code)->first();
+        if ($referral_code_user) {
+            $createRewards = UserRewards::create([
+                'user_id' => $user->id,
+                'referred_user_id' => $referral_code_user->id,
+            ]);
+            if ($createRewards) {
+                $referral_code_user->update([
+                    'referred_rewards_points' => $referral_code_user->referred_rewards_points + 1,
+                ]);
+            }
+        }
+    }
+
+    public function changeUserSubscription($plan, $paymentMethodId, $referral_code) {
         $user = Auth::user();
         $active_subscription = $user->getUserStripeSubscription();
         $active_subscription->swap($plan->stripe_plan_id);
+        if ($referral_code) {
+            $this->addReferralCount($referral_code, $user);
+        }
         $this->setUserRole($plan, $user);
         return true;
     }
@@ -421,5 +454,41 @@ class PlanController extends Controller
                 'quantity' => 1,
             ]);
         }
+    }
+
+    public function validateReferralCode(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'referral_code' => 'required|exists:users,referral_code',
+        ], [
+            'referral_code.required' => 'Referral code is required',
+            'referral_code.exists' => 'Referral code is not exists',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validation->errors()->first(),
+            ], 200);
+        }
+        $referral_code_user = User::where('referral_code', $request->referral_code)->first();
+        if ($referral_code_user->id == auth()->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can not use your own referral code',
+            ], 200);
+        }
+
+        $is_user_already_used_referral_code = UserRewards::where('user_id', auth()->user()->id)->where('referred_user_id', $referral_code_user->id)->first();
+
+        if ($is_user_already_used_referral_code) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already used this referral code',
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Referral code is valid',
+        ], 200);
     }
 }

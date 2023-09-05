@@ -373,6 +373,13 @@
                         <span class="nav-main-link-name">Settings</span>
                     </a>
                 </li>
+
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{Route::is('admin.survey.*') ? 'active' : ''}}" href="{{route('admin.survey.index')}}">
+                        <i class="nav-main-link-icon fa-solid fa-file"></i>
+                        <span class="nav-main-link-name">Survey Management</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

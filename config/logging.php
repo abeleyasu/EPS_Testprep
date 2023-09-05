@@ -137,6 +137,11 @@ return [
             'path' => storage_path('logs/freesubscription_cronjob.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'otherlogs' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/otherlogs.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

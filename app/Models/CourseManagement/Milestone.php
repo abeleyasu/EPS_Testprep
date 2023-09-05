@@ -93,4 +93,28 @@ class Milestone extends Model
         return $this->belongsToMany(Product::class,'milestones_products', 'milestone_id', 'product_id');
     }
 
+    public function task_completed_per() {
+        $total_task = $this->tasks()->count();
+        $total_completed_task = $this->completeTasks(auth()->user()->id)->count();
+        if ($total_completed_task > 0) {
+            return floor(($total_completed_task / $total_task) * 100);
+        } else {
+            return 0;
+        }
+    }
+
+    public function total_completed_module() {
+        $completedmodule = 0;
+        foreach($this->modules as $mmkey=>$module){
+            $mtotaltasks = $module->tasks()->count();
+            $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+            if($mtotaltasks>0){
+                if($mtotaltasks == $mtotalcompletetasks){
+                    $completedmodule++;
+                }
+            }
+        }
+        return $completedmodule;
+    }
+
 }

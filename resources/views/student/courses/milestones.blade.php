@@ -77,7 +77,7 @@
 					
 						foreach($milestones as $mkey=>$milestone){
 							$totalMilestone=0;
-						 $completion_percent=0;
+						    $completion_percent=0;
 							$completedmodule=0;
 							$totalmodules=0;
 							 $modulepercentage=0;
@@ -89,24 +89,27 @@
 							$totalTasks =  $tasks->count();
 							$completeTasks =  $milestone->completeTasks(auth()->id());
 							$totalCompleteTasks =  $completeTasks->count();
-							 $totalMilestone=$totalMilestone+1;
-							 if($totalCompleteTasks>0){
-								 $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
-							 }
+                            
+                            $totalMilestone=$totalMilestone+1;
+
+                            if($totalCompleteTasks>0){
+                                $completion_percent = floor(($totalCompleteTasks/$totalTasks)*100);
+                            }
 							 
 							 
-							 foreach($milestone->modules as $mmkey=>$module){
-								 $mtotaltasks = $module->tasks()->count();
-								 $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
-								 if($mtotaltasks>0){
-									 if($mtotaltasks == $mtotalcompletetasks){
-										$completedmodule=$completedmodule+1;
-									 }
-								 }
-							 }
-							 if($completedmodule>0 && $totalmodules){
-								$modulepercentage = floor(($completedmodule/$totalmodules)*100);	
-							 }
+                            foreach($milestone->modules as $mmkey=>$module){
+                                $mtotaltasks = $module->tasks()->count();
+                                $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+                                if($mtotaltasks>0){
+                                    if($mtotaltasks == $mtotalcompletetasks){
+                                    $completedmodule=$completedmodule+1;
+                                    }
+                                }
+                            }
+
+                            if($completedmodule>0 && $totalmodules){
+                                $modulepercentage = floor(($completedmodule/$totalmodules)*100);	
+                            }
 							 
 						@endphp
                         <div class="block block-rounded">

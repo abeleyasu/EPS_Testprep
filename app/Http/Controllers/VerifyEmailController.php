@@ -60,6 +60,7 @@ class VerifyEmailController extends Controller
     public function verfiy(Request $request) {
         $user = User::where('id', $request->id)->first();
         $user->email_verified_at = now();
+        $user->referral_code = $this->commonService->referral_code(6);
         $user->save();
         $this->mailgun->sendMail([
             'to' => $user->email,

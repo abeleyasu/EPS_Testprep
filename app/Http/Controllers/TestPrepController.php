@@ -33,45 +33,6 @@ use Carbon\Carbon;
 class TestPrepController extends Controller
 {
     /* Fetch all event and display in calendar */
-
-    public function dashboard()
-    {
-        $getAllPracticeTests = PracticeTest::where('test_source', 0)->get();
-        $getOfficialPracticeTests = PracticeTest::where('test_source', 1)->get();
-        // $given_test_array = [];
-        // foreach($getAllPracticeTests as $test){
-        //     $given_test = UserAnswers::where(['user_id' => Auth::id(),'test_id' => $test->id])->first();
-        //     if($given_test){
-        //         array_push($given_test_array , $test->id);
-        //     }
-        // }
-
-        $getTestScores = TestScore::where('user_id', Auth::id())->first();
-
-        $events = CalendarEvent::where('user_id', Auth::id())->where('is_assigned', 0)->get();
-        $all_events = UserCalendar::with(['event' => function ($query) {
-            $query->where('user_id', Auth::id());
-        }])->get();
-
-        $final_arr = [];
-
-        foreach ($all_events as $event) {
-            if (!empty($event->event)) {
-                $event_arr['id'] = $event->id;
-                $event_arr['title'] = $event->event->title;
-                $event_arr['description'] = $event->event->description;
-                $event_arr['time'] = $event->event->event_time;
-                $event_arr['start'] = $event->start_date;
-                $event_arr['color'] = $this->findColor($event->event->color);
-                $event_arr['end'] = isset($event->end_date) ? date('Y-m-d H:i:s', strtotime('+1 day', strtotime($event->end_date))) : null;
-                $event_arr['allDay'] = date('H:i:s', strtotime($event->start_date)) == "00:00:00" ? true : false;
-                array_push($final_arr, $event_arr);
-            }
-        }
-
-        return view('student.test-prep-dashboard.dashboard', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'getTestScores'), compact('events', 'final_arr'));
-    }
-
     public function get_test_score($testid)
     {
         $user_id = auth()->id();
@@ -201,7 +162,13 @@ class TestPrepController extends Controller
                     $testScore->save();
 
                     return response()->json(['success' => '1', 'scaled_score' => $scaled_score]);
-                } //END if($latestTestId > 0)
+                } else {
+                    $testScore->primary_test_type = $field_value;
+                    $testScore->last_test_score = 0;
+                    $testScore->save();
+
+                    return response()->json(['success' => '1', 'scaled_score' => 0]);
+                }
             } else if ($updtvalue == 'initial_score') {
                 $testScore->initial_score = $field_value;
                 $testScore->save();
@@ -246,8 +213,7 @@ class TestPrepController extends Controller
 
     /* Find color by color class */
 
-    public function findColor($color)
-    {
+    public function findColor($color) {
         if ($color == "info") {
             $c_code = "#0891b2";
         } else if ($color == "warning") {

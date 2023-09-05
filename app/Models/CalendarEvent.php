@@ -21,4 +21,8 @@ class CalendarEvent extends Model
         'event_time',
         'google_calendar_event_id'
     ];
+
+    public function user_calendar() {
+        return $this->hasOne(UserCalendar::class, 'event_id', 'id');
+    }
 }
