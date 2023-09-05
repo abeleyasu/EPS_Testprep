@@ -69,6 +69,7 @@ use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\UserSurveyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RewardsController;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -564,8 +565,18 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/', 'sendReferralNotification')->name('send-notification');
             });
         });
-    });
 
+    });
+    
+    Route::controller(GoogleController::class)->group(function () {
+        Route::get('auth/google', 'google')->name('google');
+        Route::get('auth/google/callback', 'googleCallback')->name('googleCallback');
+        Route::group(['prefix' => 'google', 'as' => 'google.'], function () {
+            Route::get('/disconnect/google', 'disconnect')->name('disconnect');
+            Route::get('/calendars', 'getCalenders')->name('calendars');
+            Route::get('/create/calender', 'storeUserCalender')->name('create-user-calender');
+        });
+    });
     Route::controller(StateCityController::class)->group(function () {
         Route::get('get/states', 'states')->name('get-states');
         Route::get('get/cities/{id}', 'city')->name('get-cities');

@@ -30,6 +30,7 @@ class DashboardController extends Controller
             'final_arr' => $this->dashboardService->all_events(),
             'milestones' => $this->dashboardService->milestones(),
             'college_list_deadline' => $this->dashboardService->college_list_deadline(),
+            'google_calendar' => $this->dashboardService->google_calendar(),
         ]);
 	}
 
@@ -41,6 +42,7 @@ class DashboardController extends Controller
             'milestones' => $this->dashboardService->milestones(),
             'getAllPracticeTests' => $this->dashboardService->get_all_practice_tests(),
             'getOfficialPracticeTests' => $this->dashboardService->get_official_practice_tests(),
+            'google_calendar' => $this->dashboardService->google_calendar(),
         ]);
     }
 

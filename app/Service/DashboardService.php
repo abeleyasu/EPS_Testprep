@@ -14,8 +14,9 @@ use App\Models\PracticeTest;
 use App\Models\TestScore;
 use App\Models\CalendarEvent;
 use App\Models\UserCalendar;
+use App\Service\GoogleService;
 
-class DashboardService
+class DashboardService extends GoogleService
 {
     public function user() {
         return Auth::user();
@@ -85,6 +86,16 @@ class DashboardService
     public function events() {
         $user = $this->user();
         return CalendarEvent::where('user_id', $user->id)->where('is_assigned', 0)->get();
+    }
+
+    public function google_calendar() {
+        $user = $this->user();
+        if ($user->googleAccount) {
+            $getSingleCalender = $this->getSingleCalendar($user->googleAccount->google_calendar_id);
+            return $getSingleCalender;
+        } else {
+            return null;
+        }
     }
 
     public function all_events() {

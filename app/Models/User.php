@@ -134,4 +134,12 @@ class User extends Authenticatable
     public function userSurvey() {
         return $this->hasOne(UserSurvey::class, 'user_id', 'id');
     }
+
+    public function googleAccount() {
+        return $this->hasOne(UserGoogleAccount::class, 'user_id', 'id');
+    }
+
+    public function userSetting() {
+        return $this->hasOne(UserSettings::class, 'user_id', 'id');
+    }
 }

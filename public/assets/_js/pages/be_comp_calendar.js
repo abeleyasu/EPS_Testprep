@@ -93,7 +93,7 @@ class pageCompCalendar {
         let calendar = new FullCalendar.Calendar(
             document.getElementById("js-calendar"),
             {
-                themeSystem: "standard",
+                themeSystem: "bootstrap5",
                 firstDay: 1,
                 editable: true,
                 selectable: true,
@@ -213,15 +213,18 @@ class pageCompCalendar {
                                 let color = resp.data.event.color;
                                 let desc = resp.data.event.description;
                                 let time = resp.data.event.event_time;
-                                let formattedTime = time.slice(0, 5);
 
+                                
                                 const input = document.querySelector('#exampleInputEventTime');
                                 const picker = flatpickr(input, {
                                     enableTime: true,
                                     noCalendar: true,
                                     dateFormat: "H:i",
                                 });
-                                picker.setDate(formattedTime, false, "H:i");
+                                if (time) {
+                                    let formattedTime = time.slice(0, 5);
+                                    picker.setDate(formattedTime, false, "H:i");
+                                }
 
                                 $('#exampleInputEventTitle').val(title);
                                 $('#exampleInputEventColor').val(color);

@@ -100,7 +100,8 @@
                     <div id="practice-calendar" class="collapse show" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-1">
                       <div class="block-content">
                         @include('components.test-prep.calendar', [
-                          'events' => $events
+                          'events' => $events,
+                          'google_calendar' => $google_calendar
                         ])
                       </div>
                     </div>
@@ -113,6 +114,7 @@
       </section>
     </div>
 </main>
+@include('components.test-prep.calender-modal')
 <!-- END Main Container -->
 @endsection
 
@@ -139,6 +141,7 @@
 <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/dropzone/min/dropzone.min.js')}}"></script>
 <script src="{{ asset('assets/js/owal-carousel/owl.carousel.min.js') }}"></script>
+
 <script>
   One.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-masked-inputs', 'jq-rangeslider', 'jq-colorpicker']);
   $(".owl-carousel").owlCarousel({
