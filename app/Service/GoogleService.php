@@ -79,7 +79,6 @@ class GoogleService {
         if ($this->googleAcount()) {
             UserGoogleAccount::where('user_id', $this->user()->id)->update($object);
         } else {
-            dd($data);
             $object['user_id'] = $this->user()->id;
             $object['google_id'] = $this->oauth_user()->id;
             UserGoogleAccount::create($object);
@@ -96,7 +95,6 @@ class GoogleService {
 
     public function setupTokenFirstTime() {
         $this->token = $this->client->getAccessToken();
-        dd($this->token);
         $this->client->setAccessToken($this->token);
         $this->storeUserAccessToken($this->token);
         $this->createOrGetCalender();
