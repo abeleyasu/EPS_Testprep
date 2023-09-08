@@ -387,8 +387,18 @@
                 getTypeFunctionality((res) => {
                     count_data = res.count;
                     $.each(res.count, function(i, v) {
-                        $(`.diff_${i}`).html(`(${v.count})`);
+                        console.log(i);
+                        if (i == 6) {
+                            $(`.diff_5`).html(`(${v.count})`);
+                        } else if (i == 7) {
+                            $(`.diff_6`).html(`(${v.count})`);
+                        } else {
+                            $(`.diff_${i}`).html(`(${v.count})`);
+                        }
                     });
+
+                    // const all_count_data = count_data?.find((item) => item.type === "all");
+                    console.log("all_count_data: ", count_data)
                 });
             };
 
