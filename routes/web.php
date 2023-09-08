@@ -321,6 +321,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
     Route::group(['middleware' => ['role:standard_user', 'email_verification'], 'prefix' => 'user'], function () {
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
+        Route::post('/addNotesToQuestionReview', [TestPrepController::class, 'addNotesToQuestionReview'])->name('addNotesToQuestionReview');
 
         Route::group(['middleware' => ['subscription_valid:access-courses']], function () {
             Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');

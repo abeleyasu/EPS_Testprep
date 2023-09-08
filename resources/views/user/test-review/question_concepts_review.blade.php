@@ -280,6 +280,7 @@
                                             var get_user_answer = jQuery(this).data('user-answer');
                                             var get_answers_exp = jQuery(this).data('answers-exp');
                                             var get_answers_explanation = jQuery(this).data('answers-explanation');
+                                            console.log(get_answers_explanation);
                                             var get_question_id = jQuery(this).data('question-id');
 
                                             jQuery(".set_serial_no").text(serial_no);
@@ -305,7 +306,7 @@
                                                         if (get_answers_explanation && get_answers_explanation[i].length) {
                                                             $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[
                                                                     i] +
-                                                                "</p><div class='d-flex'>Explanation: &nbsp;" +
+                                                                "</p><div class='d-flex flex-column'>Explanation: &nbsp;" +
                                                                 get_answers_explanation[i] + "</div>"));
                                                         } else {
                                                             $("div").find('[data-option=' + i + ']').html($("<p>" + get_answers_exp[
@@ -418,20 +419,22 @@
                                                                                 class="fa fa-angle-right text-white me-2 accordian-icon"></i>
                                                                         </td>
                                                                         <td class="d-flex align-items-center">
-                                                                            <div
-                                                                                style="width: 70px; display: flex; align-items: start;">
-                                                                                <button type="button"
-                                                                                    class="btn btn-success fs-xs fw-semibold me-1 error-button"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    data-bs-trigger="click"
-                                                                                    data-bs-placement="top"
-                                                                                    title="Question No.">{{ $count++ }}</button>
-                                                                            </div>
                                                                             <?php $correct = [];
                                                                             array_push($correct, str_replace(' ', '', $single_user_selected_answers['get_question_details'][0]->question_answer));
                                                                             $helper = new Helper();
                                                                             $user_selected_answer = empty($single_user_selected_answers['user_selected_answer']) ? '-' : $single_user_selected_answers['user_selected_answer'];
                                                                             ?>
+                                                                            <div
+                                                                                style="width: 70px; display: flex; align-items: start;">
+                                                                                <button type="button"
+                                                                                    class="btn @if ($helper->stringExactMatch($correct[0], $single_user_selected_answers['user_selected_answer'])) btn-success
+                                                                                    @else
+                                                                                    btn-danger @endif  fs-xs fw-semibold me-1 error-button"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-trigger="click"
+                                                                                    data-bs-placement="top"
+                                                                                    title="Question No.">{{ $count++ }}</button>
+                                                                            </div>
 
                                                                             @if ($single_user_selected_answers['get_question_details'][0]->is_multiple_choice == 2)
                                                                                 {{-- @if (in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), explode(',', $correct[0])) || in_array(str_replace(' ', '', $single_user_selected_answers['user_selected_answer']), $correct) || Str::contains($correct[0], explode(',', str_replace(' ', '', $single_user_selected_answers['user_selected_answer'])))) --}}
@@ -535,6 +538,7 @@
                                                                     </tr>
                                                                 </table>
                                                             </div>
+
                                                             <div id="collapse_<?php echo $single_user_selected_answers['get_question_details'][0]->question_id; ?>" class="collapse"
                                                                 aria-labelledby="headingOne"
                                                                 data-parent=".accordionExample">
@@ -576,9 +580,23 @@
                                                                                                     class="block block-rounded block-bordered">
                                                                                                     <div
                                                                                                         class="block-content">
-                                                                                                        <p>N/A</p>
+                                                                                                        {!! $single_user_selected_answers['get_question_details'][0]->question_title !!}
                                                                                                     </div>
                                                                                                 </div>
+
+                                                                                                @if (!empty($single_user_selected_answers['get_question_details'][0]->title))
+                                                                                                    <div id="my-block"
+                                                                                                        class="block block-rounded block-bordered">
+                                                                                                        <div
+                                                                                                            class="block-content">
+                                                                                                            {!! $single_user_selected_answers['get_question_details'][0]->title !!}
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                            class="block-content">
+                                                                                                            {!! $single_user_selected_answers['get_question_details'][0]->description !!}
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                @endif
 
                                                                                                 <div id="my-block"
                                                                                                     class="block block-rounded block-bordered p-0">
@@ -599,13 +617,13 @@
                                                                                                                 data-action="content_toggle"></button>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div
+                                                                                                    {{-- <div
                                                                                                         class="block-content">
                                                                                                         <p
                                                                                                             class="set_question_title">
                                                                                                             {!! $single_user_selected_answers['get_question_details'][0]->question_title !!}
                                                                                                         </p>
-                                                                                                    </div>
+                                                                                                    </div> --}}
                                                                                                 </div>
                                                                                                 @if ($single_user_selected_answers['get_question_details'][0]->practice_type == 'choiceOneInFive_Odd')
                                                                                                     <div
@@ -624,7 +642,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-home"
                                                                                                                     data-option-value='a'
-                                                                                                                    aria-selected="true">Answer
+                                                                                                                    aria-selected="true">
                                                                                                                     A</button>
                                                                                                             </li>
                                                                                                             <li
@@ -637,7 +655,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='b'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     B</button>
                                                                                                             </li>
                                                                                                             <li
@@ -650,7 +668,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='c'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     C</button>
                                                                                                             </li>
                                                                                                             <li
@@ -663,7 +681,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='d'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     D</button>
                                                                                                             </li>
                                                                                                             <li
@@ -676,7 +694,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='e'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     E</button>
                                                                                                             </li>
                                                                                                         </ul>
@@ -759,7 +777,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-home"
                                                                                                                     data-option-value='f'
-                                                                                                                    aria-selected="true">Answer
+                                                                                                                    aria-selected="true">
                                                                                                                     F</button>
                                                                                                             </li>
                                                                                                             <li
@@ -772,7 +790,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='g'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     G</button>
                                                                                                             </li>
                                                                                                             <li
@@ -785,7 +803,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='h'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     H</button>
                                                                                                             </li>
                                                                                                             <li
@@ -798,7 +816,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='j'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     J</button>
                                                                                                             </li>
                                                                                                             <li
@@ -811,7 +829,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='k'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     K</button>
                                                                                                             </li>
                                                                                                         </ul>
@@ -894,7 +912,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-home"
                                                                                                                     data-option-value='a'
-                                                                                                                    aria-selected="true">Answer
+                                                                                                                    aria-selected="true">
                                                                                                                     A</button>
                                                                                                             </li>
                                                                                                             <li
@@ -907,7 +925,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='b'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     B</button>
                                                                                                             </li>
                                                                                                             <li
@@ -920,7 +938,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='c'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     C</button>
                                                                                                             </li>
                                                                                                             <li
@@ -933,7 +951,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='d'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     D</button>
                                                                                                             </li>
                                                                                                         </ul>
@@ -1005,7 +1023,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-home"
                                                                                                                     data-option-value='f'
-                                                                                                                    aria-selected="true">Answer
+                                                                                                                    aria-selected="true">
                                                                                                                     F</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1018,7 +1036,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='g'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     G</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1031,7 +1049,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='h'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     H</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1044,7 +1062,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='j'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     J</button>
                                                                                                             </li>
                                                                                                         </ul>
@@ -1116,7 +1134,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-home"
                                                                                                                     data-option-value='a'
-                                                                                                                    aria-selected="true">Answer
+                                                                                                                    aria-selected="true">
                                                                                                                     A</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1129,7 +1147,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='b'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     B</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1142,7 +1160,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='c'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     C</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1155,7 +1173,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='d'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     D</button>
                                                                                                             </li>
                                                                                                         </ul>
@@ -1227,7 +1245,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-home"
                                                                                                                     data-option-value='f'
-                                                                                                                    aria-selected="true">Answer
+                                                                                                                    aria-selected="true">
                                                                                                                     F</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1240,7 +1258,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='g'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     G</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1253,7 +1271,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='h'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     H</button>
                                                                                                             </li>
                                                                                                             <li
@@ -1266,7 +1284,7 @@
                                                                                                                     role="tab"
                                                                                                                     aria-controls="btabs-alt-static-profile"
                                                                                                                     data-option-value='j'
-                                                                                                                    aria-selected="false">Answer
+                                                                                                                    aria-selected="false">
                                                                                                                     J</button>
                                                                                                             </li>
                                                                                                         </ul>
@@ -1340,7 +1358,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-home"
                                                                                                                         data-option-value='a'
-                                                                                                                        aria-selected="true">Answer
+                                                                                                                        aria-selected="true">
                                                                                                                         A</button>
                                                                                                                 </li>
                                                                                                                 <li
@@ -1353,7 +1371,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-profile"
                                                                                                                         data-option-value='b'
-                                                                                                                        aria-selected="false">Answer
+                                                                                                                        aria-selected="false">
                                                                                                                         B</button>
                                                                                                                 </li>
                                                                                                                 <li
@@ -1366,7 +1384,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-profile"
                                                                                                                         data-option-value='c'
-                                                                                                                        aria-selected="false">Answer
+                                                                                                                        aria-selected="false">
                                                                                                                         C</button>
                                                                                                                 </li>
                                                                                                                 <li
@@ -1379,7 +1397,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-profile"
                                                                                                                         data-option-value='d'
-                                                                                                                        aria-selected="false">Answer
+                                                                                                                        aria-selected="false">
                                                                                                                         D</button>
                                                                                                                 </li>
                                                                                                             </ul>
@@ -1451,7 +1469,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-home"
                                                                                                                         data-option-value='a'
-                                                                                                                        aria-selected="true">Answer
+                                                                                                                        aria-selected="true">
                                                                                                                         A</button>
                                                                                                                 </li>
                                                                                                                 <li
@@ -1464,7 +1482,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-profile"
                                                                                                                         data-option-value='b'
-                                                                                                                        aria-selected="false">Answer
+                                                                                                                        aria-selected="false">
                                                                                                                         B</button>
                                                                                                                 </li>
                                                                                                                 <li
@@ -1477,7 +1495,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-profile"
                                                                                                                         data-option-value='c'
-                                                                                                                        aria-selected="false">Answer
+                                                                                                                        aria-selected="false">
                                                                                                                         C</button>
                                                                                                                 </li>
                                                                                                                 <li
@@ -1490,7 +1508,7 @@
                                                                                                                         role="tab"
                                                                                                                         aria-controls="btabs-alt-static-profile"
                                                                                                                         data-option-value='d'
-                                                                                                                        aria-selected="false">Answer
+                                                                                                                        aria-selected="false">
                                                                                                                         D</button>
                                                                                                                 </li>
                                                                                                             </ul>
@@ -1605,14 +1623,30 @@
                                                                                                         </div>
                                                                                                     @endif
                                                                                                 @endif
+                                                                                                <div id="my-block"
+                                                                                                    class="block block-rounded block-bordered my-2">
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        Notes
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="block-content">
+                                                                                                        <textarea class="form-control"
+                                                                                                            onchange="handleNotesChange(this,{{ $single_user_selected_answers['get_question_details'][0]->question_id }})"
+                                                                                                            placeholder="Enter your notes here...">{{ $single_user_selected_answers['get_question_details'][0]->notes }}</textarea>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="block-content block-content-full text-end bg-body">
+
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        class="btn btn-sm block-header-default  text-white review_model_close"
+                                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div
-                                                                                            class="block-content block-content-full text-end bg-body">
-                                                                                            <button type="button"
-                                                                                                class="btn btn-sm block-header-default  text-white review_model_close"
-                                                                                                data-bs-dismiss="modal">Close</button>
-                                                                                        </div>
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -1683,6 +1717,7 @@
                                                                                 @foreach ($category_type_arr as $key => $category_type)
                                                                                     @for ($i = 0; $i < count($category_type); $i++)
                                                                                         @if (empty($user_selected_answer) ||
+                                                                                                $user_selected_answer === '-' ||
                                                                                                 in_array(strtolower($key), explode(',', $single_user_selected_answers['user_selected_answer'])))
                                                                                             <tr
                                                                                                 class="odd {{ $question_id }}">
@@ -2847,6 +2882,7 @@
     const GETTYPES_ROUTE = "{{ route('gettypes') }}";
     const GETSELFMADEQUESTION_ROUTE = "{{ route('getSelfMadeTestQuestion') }}";
     const ADD_MISTAKE_TYPE_ROUTE = "{{ route('addMistakeType') }}";
+    const ADD_NOTES_ROUTE = "{{ route('addNotesToQuestionReview') }}";
     const PRACTICE_TEST_SECTION_ID = @json($practice_test_section_ids);
 </script>
 <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
@@ -2869,6 +2905,23 @@
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
+    }
+
+    function handleNotesChange(e, questionId) {
+        console.log(e.value, questionId);
+        const notes = e.value;
+        $.ajax({
+            type: "POST",
+            url: ADD_NOTES_ROUTE,
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                notes,
+                questionId,
+            },
+            success: function(res) {},
+        });
     }
 </script>
 @endsection

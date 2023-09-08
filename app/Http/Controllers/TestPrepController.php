@@ -283,6 +283,7 @@ class TestPrepController extends Controller
                         'practice_questions.category_type_values as category_type_values',
                         'practice_questions.question_type_values as question_type_values',
                         'practice_questions.checkbox_values as checkbox_values',
+                        'practice_questions.notes',
                     )
                     ->where('practice_tests.id', $test_id)
                     ->orderBy('practice_questions.question_order', 'ASC')
@@ -399,6 +400,7 @@ class TestPrepController extends Controller
                         'practice_questions.category_type_values as category_type_values',
                         'practice_questions.question_type_values as question_type_values',
                         'practice_questions.checkbox_values as checkbox_values',
+                        'practice_questions.notes',
                     )
                     ->where('practice_test_sections.id', $id)
                     ->orderBy('practice_questions.question_order', 'ASC')
@@ -548,12 +550,17 @@ class TestPrepController extends Controller
                                         'practice_questions.answer_content as question_answer_options',
                                         'practice_questions.multiChoice as is_multiple_choice',
                                         'practice_questions.question_order',
+                                        'practice_questions.passages_id',
                                         'practice_questions.tags',
+                                        'passages.title',
+                                        'practice_questions.notes',
+                                        'passages.description',
                                         'practice_questions.category_type as category_type',
                                         'practice_questions.question_type_id as question_type_id',
                                         'practice_questions.answer_exp as answer_exp'
                                     )
                                     ->where('practice_questions.id', $question_id)
+                                    ->leftJoin("passages", "passages.id", "=", "practice_questions.passages_id")
                                     ->orderBy('practice_questions.question_order', 'ASC')
                                     ->get();
 
@@ -610,11 +617,16 @@ class TestPrepController extends Controller
                                 'practice_questions.question_order',
                                 'practice_questions.mistake_type',
                                 'practice_questions.tags',
+                                'practice_questions.passages_id',
+                                'passages.title',
+                                'practice_questions.notes',
+                                'passages.description',
                                 'practice_questions.category_type as category_type',
                                 'practice_questions.question_type_id as question_type_id',
                                 'practice_questions.answer_exp as answer_exp'
                             )
                             ->where('practice_questions.id', $question_id)
+                            ->leftJoin("passages", "passages.id", "=", "practice_questions.passages_id")
                             ->orderBy('practice_questions.question_order', 'ASC')
                             ->get();
 
@@ -1140,6 +1152,20 @@ class TestPrepController extends Controller
             'practice_test_section_id' => $practice_test_section_id,
             'categoryAndQuestionTypeSummaryData' => $categoryAndQuestionTypeSummaryData
         ]);
+    }
+
+    public function addNotesToQuestionReview(Request $request)
+    {
+        $notes = $request->notes ?? "";
+        $questionId = $request->questionId ?? "";
+
+        if (!empty($notes) && !empty($questionId)) {
+            $practiceQuestion = PracticeQuestion::findOrFail($questionId);
+            $practiceQuestion->notes = $notes;
+            $practiceQuestion->save();
+            return response()->json(['message' => 'success', 'data' => ['practiceQuestion' => $practiceQuestion]]);
+        }
+        return response()->json(['message' => 'failed']);
     }
 
     public function test_progress_store(Request $request)
@@ -2575,8 +2601,8 @@ class TestPrepController extends Controller
             $query = PracticeQuestion::query()->select('practice_questions.*', "practice_tests.test_source as test_source");
             $query->where('practice_questions.format', $format)
                 ->where('practice_questions.diff_rating', $diff_rating->id)
-                ->where('practice_questions.selfMade', '0')
-                ->where('practice_questions.test_source', '2');
+                ->where('practice_questions.selfMade', '0');
+            // ->where('practice_questions.test_source', '2');
 
             if (!empty($diff_rating_value)) {
                 $query->whereIn("diff_rating", $diff_rating_value);
@@ -2634,13 +2660,14 @@ class TestPrepController extends Controller
             }
 
             $questions = array_values($questions);
-
+            // var_dump($questions);
             $questionsCount = count($questions);
             $all = $all + $questionsCount;
 
             $countQuestion[$diff_rating->id] = [
                 'count' => $no_section ? 0 : $questionsCount,
-                'questions' => $no_section ? [] : $questions
+                'questions' => $no_section ? [] : $questions,
+                'type' => $diff_rating->title
             ];
         }
         $countQuestion[] = [
