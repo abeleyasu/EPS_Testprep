@@ -114,6 +114,9 @@
       </section>
     </div>
 </main>
+<div id="loadingIndicator" class="loading-indicator" style="display: none;">
+  <img src="{{ asset('image/Spinner.gif') }}" alt="Loading...">
+</div>
 @include('components.test-prep.calender-modal')
 <!-- END Main Container -->
 @endsection
@@ -122,6 +125,47 @@
 <link rel="stylesheet" href="{{ asset('assets/js/owal-carousel/owl.carousel.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/college-dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
+
+<!-- data table -->
+<link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
+<link rel="stylesheet" id="css-main" href="{{asset('assets/css/oneui.min.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
+
+<style>
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
+  .loader {
+      margin: auto;
+    border: 5px solid #EAF0F6;
+    border-radius: 50%;
+    border-top: 5px solid #FF7A59;
+    width: 100px;
+    height: 100px;
+    animation: spinner 4s linear infinite;
+  }
+
+  @keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
 @endsection
 
 @section('user-script')
@@ -131,7 +175,6 @@
 <script src="{{ asset('assets/_js/pages/be_comp_calendar.js') }}"></script>
 <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
 
-<script src="{{asset('assets/js/lib/jquery.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
@@ -141,6 +184,15 @@
 <script src="{{asset('assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/dropzone/min/dropzone.min.js')}}"></script>
 <script src="{{ asset('assets/js/owal-carousel/owl.carousel.min.js') }}"></script>
+<!-- Data Table -->
+<script src="{{asset('assets/js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js')}}"></script>
+
+<script src="{{ asset('js/calender.js') }}"></script>
 
 <script>
   One.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-masked-inputs', 'jq-rangeslider', 'jq-colorpicker']);

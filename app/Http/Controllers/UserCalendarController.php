@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\GoogleCalendar\Event as GoogleCalendarEvent;
 use Carbon\Carbon;
 use App\Service\CalendarEventService;
+use App\Http\Requests\CalendarEventRequest;
 
 class UserCalendarController extends Controller
 {
@@ -21,8 +22,15 @@ class UserCalendarController extends Controller
         $this->calendarEventService = $calendarEventService;
     }
 
-    public function addAssignEvent(Request $request)
-    {
+    public function getAllEvent(Request $request) {
+        try {
+            return $this->calendarEventService->getAllEvent($request->all());
+        } catch (\Exception $e) {
+            return response()->json(["success" => false, "data" => "", "message" => $e->getMessage()]);
+        }
+    }
+
+    public function addAssignEvent(CalendarEventRequest $request) {
         try {
             $createEvent = $this->calendarEventService->assignCalenderEvent($request->all());
             if ($createEvent) {

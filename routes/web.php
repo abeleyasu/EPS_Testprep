@@ -366,6 +366,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::put('/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('.updateEvent');
             Route::post('/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('.addAssignEvent');
             Route::get('/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('.getEventById');
+            Route::get('/get-all-events', [UserCalendarController::class, 'getAllEvent'])->name('.getAllEvents');
         });
 
         Route::group(['middleware' => ['subscription_valid:access-reminders']], function () {
@@ -578,6 +579,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::group(['prefix' => 'google', 'as' => 'google.'], function () {
             Route::get('/disconnect/google', 'disconnect')->name('disconnect');
             Route::get('/calendars', 'getCalenders')->name('calendars');
+            Route::delete('/calendar', 'deleteCalender')->name('delete-calender');
             Route::get('/create/calender', 'storeUserCalender')->name('create-user-calender');
         });
     });
@@ -615,3 +617,5 @@ Route::get('/sendreminder', [SendReminder::class, 'index']);
 Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
 Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);
+
+Route::get('/list/get-all-events', [UserCalendarController::class, 'getAllEvent'])->name('.getAllEvents');

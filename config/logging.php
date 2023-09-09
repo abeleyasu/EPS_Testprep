@@ -142,6 +142,11 @@ return [
             'path' => storage_path('logs/otherlogs.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
+        'googleevents' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/googleevents.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];

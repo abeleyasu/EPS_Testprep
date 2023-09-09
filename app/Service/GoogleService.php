@@ -11,6 +11,8 @@ use Google_Service_Calendar_Event;
 use Google_Service_Calendar_EventDateTime;
 use Google_Service_Calendar_EventAttendee;
 use Google_Service_Oauth2;
+use Google_Service_Calendar_Channel;
+use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\UserGoogleAccount;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +27,7 @@ class GoogleService {
     protected $user;
     protected $UserGoogleAccountModal;
 
-    protected $calender_name = 'College Prep System';
+    public $calender_name = 'College Prep System';
 
     public function __construct(UserGoogleAccount $UserGoogleAccount) {
         $this->client = $this->client();
@@ -271,10 +273,10 @@ class GoogleService {
         return $payload;
     }
 
-    public function isEventExist($calender_event_id) {
+    public function isEventExist($calender_event_id, $calendarId) {
         try {
             $service = $this->service();
-            $get_event = $service->events->get($this->googleCalendarId(), $calender_event_id);
+            $get_event = $service->events->get($calendarId, $calender_event_id);
             return true;
         } catch (\Exception $e) { 
             if ($e->getCode() == 404) {
@@ -284,7 +286,7 @@ class GoogleService {
         }
     }
 
-    public function insertEvent($data, $optParams = []) {
+    public function insertEvent($data, $calendarId = null, $optParams = []) {
         if (!$this->isCalenderExist()) return null;  
         $payload = [
             'summary' => $data['title'] ?? null,
@@ -297,17 +299,21 @@ class GoogleService {
         $payload = $this->setStartEndDate($payload, isset($optParams['is_all_day']) && $optParams['is_all_day']);
         $event = new Google_Service_Calendar_Event($payload);
         $service = $this->service();
-        $event = $service->events->insert($this->googleCalendarId(), $event);
+        $calendarId = $calendarId ? $calendarId : $this->googleCalendarId();
+        $event = $service->events->insert($calendarId, $event);
         return $event->toSimpleObject();
     }
 
-    public function updateEvent($calender_event_id, $data, $optParams = []) {
-        if (!$this->isCalenderExist()) return null;
-        if (!$this->isEventExist($calender_event_id)) {
-            return $this->insertEvent($data, $optParams);
+    public function updateEvent($calender_event_id, $data, $calendarId = null, $optParams = []) {
+        if (!$calendarId) {
+            if (!$this->isCalenderExist()) return null;
+        }
+        $calendarId = $calendarId ? $calendarId : $this->googleCalendarId();
+        if (!$this->isEventExist($calender_event_id, $calendarId)) {
+            return $this->insertEvent($data, $calendarId, $optParams);
         }
         $service = $this->service();
-        $get_event = $service->events->get($this->googleCalendarId(), $calender_event_id);
+        $get_event = $service->events->get($calendarId, $calender_event_id);
         if ($get_event) {
             $payload = [
                 'summary' => $data['title'] ?? $get_event->getSummary(),
@@ -319,7 +325,7 @@ class GoogleService {
             ];
             $payload = $this->setStartEndDate($payload, isset($optParams['is_all_day']) && $optParams['is_all_day']);
             $event = new Google_Service_Calendar_Event($payload);
-            $updatedEvent = $service->events->update($this->googleCalendarId(), $get_event->getId(), $event);
+            $updatedEvent = $service->events->update($calendarId, $get_event->getId(), $event);
             return $updatedEvent->toSimpleObject();
         }
     }
@@ -329,6 +335,116 @@ class GoogleService {
         $service = $this->service();
         $service->events->delete($this->googleCalendarId(), $calender_event_id);
         return true;
+    }
+
+    public function getCalendarEvents($calendarId = null) {
+        if (!$calendarId) {
+            if (!$this->isCalenderExist()) return null;
+        }
+        try {
+            $service = $this->service();
+            $calendar_id = $calendarId ? $calendarId : $this->googleCalendarId();
+            $events = $service->events->listEvents($calendar_id);
+            $list = [];
+            foreach ($events->getItems() as $event) {
+                $list[] = $event;
+            }
+            return $list;
+        } catch (\Exception $e) {
+            if ($e->getCode() == 404) {
+                return [
+                    'code' => 404,
+                    'data' => null,
+                ];
+            }
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function getColors() {
+        if (!$this->isCalenderExist()) return null;
+        $service = $this->service();
+        $colors = $service->colors->get();
+        $list = [];
+        foreach ($colors->getEvent() as $key => $color) {
+            $list[] = [
+                'id' => $key,
+                'background' => $color->getBackground(),
+            ];
+        }
+        return $list;
+    }
+
+    public function getColor($color_id) {
+        if ($color_id) {
+            $colors = $this->getColors();
+            $color = collect($colors)->where('id', $color_id)->first();
+            if ($color) {
+                $bg = $color['id'];
+                $c_code = $bg;
+                if($bg == 1) {
+                    $c_code = "info"; // Blue
+                } else if($bg == 6) {
+                    $c_code = "warning"; // Orange
+                } else if($bg == 2) {
+                    $c_code = "success"; // Green
+                } else if($bg == 4) {
+                    $c_code = "danger"; // Red
+                } else {
+                    $c_code = $bg; //purple
+                }
+                return $c_code;
+            }
+        }
+        return null;
+    }
+
+    // public function watchEvent() {
+    //     // if (!$this->isCalenderExist()) return null;
+    //     // dd('called');
+    //     $service = new Google_Service_Calendar($this->client);
+    //     $event = new Google_Service_Calendar_Channel();
+    //     $event->setId(Str::uuid());
+    //     $event->setType('web_hook');
+    //     $event->setAddress(config('google-laravel.GOOGLE_WEBHOOK_URL'));
+    //     $calendarId = $this->UserGoogleAccountModal->where('user_id', $this->user()->id)->first()->google_calendar_id;
+    //     $event->setParams([
+    //         'ttl' => 3600,
+    //         'id' => $calendarId,
+    //     ]);
+    //     $watchEvent = $service->events->watch($calendarId, $event);
+    //     $this->updateWatchDataInDB($watchEvent->toSimpleObject());
+    //     return $watchEvent->toSimpleObject();
+    // }
+
+    // public function updateWatchDataInDB($data) {
+    //     if (!$this->googleAcount()) return null;
+    //     $googleAccount = $this->googleAcount();
+    //     $this->UserGoogleAccountModal->where('user_id', $this->user()->id)->update([
+    //         'google_event_watch_id' => $googleAccount->id,
+    //         'google_event_watch_expires' => $googleAccount->expiration,
+    //         'google_event_watch_resource_id' => $googleAccount->resourceId,
+    //         'google_event_watch_token' => $googleAccount->token,
+    //         'google_event_watch_resource_uri' => $googleAccount->resourceUri,
+    //         'google_event_watch_created_at' => Carbon::now(),
+    //     ]);
+    //     return true;
+    // }
+
+    public function findColor($color) {
+        if ($color == "info") {
+            $c_code = "#0891b2";
+        } else if ($color == "warning") {
+            $c_code = "#e04f1a";
+        } else if ($color == "success") {
+            $c_code = "#82b54b";
+        } else if ($color == "danger") {
+            $c_code = "#dc2626";
+        } else {
+            $c_code = $color ? $color : "#4c78dd";
+        }
+
+        return $c_code;
     }
 
 }

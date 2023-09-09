@@ -14,4 +14,5 @@ return [
     ],
     'GOOGLE_APPROVAL_PROMPT' => env('GOOGLE_APPROVAL_PROMPT', 'force'),
     'GOOGLE_ACCESS_TYPE' => env('GOOGLE_ACCESS_TYPE', 'offline'),
+    'GOOGLE_WEBHOOK_URL' => env('GOOGLE_WEBHOOK_URL', null),
 ];

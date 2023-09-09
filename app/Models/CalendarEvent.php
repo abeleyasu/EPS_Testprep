@@ -19,10 +19,15 @@ class CalendarEvent extends Model
         'is_assigned',
         'color',
         'event_time',
-        'google_calendar_event_id'
+        'google_calendar_event_id',
+        'user_calender_id'
     ];
 
     public function user_calendar() {
         return $this->hasOne(UserCalendar::class, 'event_id', 'id');
+    }
+
+    public function get_calender_from_list() {
+        return $this->hasOne(UserCalendersList::class, 'id', 'user_calender_id');
     }
 }

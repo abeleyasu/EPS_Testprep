@@ -10,47 +10,180 @@ use App\Models\CalendarEvent;
 use App\Models\UserCalendar;
 use App\Models\UserGoogleAccount;
 use App\Models\Reminder;
+use App\Models\UserCalendersList;
 use DB;
 use Carbon\Carbon;
 
 class CalendarEventService extends GoogleService {
     
-    protected $calenderEventModal, $userCalendarModal, $reminderModal;
+    protected $calenderEventModal, $userCalendarModal, $reminderModal, $userCalendersListModal;
 
     protected $isAllDay = true;
 
-    public function __construct(CalendarEvent $calenderEventModal, UserCalendar $userCalendarModal, Reminder $reminderModal , UserGoogleAccount $UserGoogleAccount) {
+    public function __construct(CalendarEvent $calenderEventModal, UserCalendar $userCalendarModal, Reminder $reminderModal , UserCalendersList $userCalendersListModal, UserGoogleAccount $UserGoogleAccount) {
         parent::__construct($UserGoogleAccount);
         $this->calenderEventModal = $calenderEventModal;
         $this->userCalendarModal = $userCalendarModal;
         $this->reminderModal = $reminderModal;
+        $this->userCalendersListModal = $userCalendersListModal;
     }
 
     public function findEvent($event_id) {
         return $this->calenderEventModal->where('id', $event_id)->first();
     }
 
+    public function getAllEvent($data) {
+        try {
+            $user = $this->user();
+            $user_calenders = $this->userCalendersListModal->where('user_id', $user->id)->get();
+            if (count($user_calenders) > 0) {
+                foreach ($user_calenders as $userCalendar) {
+                    $getCalenderEvents = $this->getCalendarEvents($userCalendar->calender_id);
+                    if (isset($getCalenderEvents['code']) && $getCalenderEvents['code'] === 404) {
+                        $userCalendar->forceDelete();
+                    } else {
+                        $this->createOrUpdateEvent($getCalenderEvents, $userCalendar);
+                    }
+                }
+            }
+            $cps_calendar = $this->getCalendarEvents();
+            if (isset($getCalenderEvents['code']) && $getCalenderEvents['code'] === 404) {
+                // do something here (Pending)
+            } else {
+                $this->createOrUpdateEvent($cps_calendar);
+            }
+
+            $all_events = UserCalendar::with(['event' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }])->whereBetween('start_date', [Carbon::parse($data['start'])->format('Y-m-d H:i:s'), Carbon::parse($data['end'])->format('Y-m-d H:i:s')])->get();
+    
+            $final_arr = [];
+    
+            foreach ($all_events as $event) {
+                if (!empty($event->event)) {
+
+                    $final_end_date = null;
+                    if (isset($event->end_date)) {
+                        $event_end_date = Carbon::parse($event->end_date);
+                        $event_start_date = Carbon::parse($event->start_date);
+                        $final_end_date = $event_start_date->isSameDay($event_end_date) ? null : $event->end_date;
+                    }
+
+                    $event_arr['id'] = $event->id;
+                    $event_arr['title'] = $event->event->title;
+                    $event_arr['description'] = $event->event->description;
+                    $event_arr['time'] = $event->event->event_time;
+                    $event_arr['start'] = $event->start_date;
+                    $event_arr['color'] = $this->findColor($event->event->color);
+                    $event_arr['end'] = $final_end_date;
+                    $event_arr['allDay'] = date('H:i:s', strtotime($event->start_date)) == "00:00:00" ? true : false;
+                    array_push($final_arr, $event_arr);
+                }
+            }
+    
+            return $final_arr;
+        } catch (\Exception $e) {
+            dd($e);
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function createOrUpdateEvent($events, $usercalendar = null) {
+        $events = collect($events);
+        $eventsIds = $events->pluck('id')->toArray();
+
+        foreach ($events as $event_key => $event) {
+            $orgnizer = $event['organizer']['email'];
+            $user_calendar = $this->userCalendersListModal->where([
+                ['calender_id', '=', $orgnizer],
+                ['user_id', '=', auth()->user()->id], 
+            ])->first();
+            $calendar_event = CalendarEvent::where('google_calendar_event_id', $event['id'])->first();
+            $data = [
+                'title' => $event['summary'] ? $event['summary'] : 'No Title',
+                'description' => $event['description'],
+                'event_time' => Carbon::parse($event['start']['dateTime'])->format('H:i:s'),
+                'color' => $this->getColor($event['colorId']) ?? '#4c78dd',
+                'is_assigned' => 1,
+                'user_calender_id' => $user_calendar ? $user_calendar->id : null,
+            ];
+            $date_data = [];
+            if ($event['start']['date']) {
+                $date_data['start_date'] = Carbon::parse($event['start']['date'])->format('Y-m-d' . ' 00:00:00');
+                $date_data['end_date'] = Carbon::parse($event['end']['date'])->format('Y-m-d' . ' 00:00:00');
+            } else if ($event['start']['dateTime']) {
+                $date_data['start_date'] = Carbon::parse($event['start']['dateTime'])->format('Y-m-d H:i:s');
+                $date_data['end_date'] = Carbon::parse($event['end']['dateTime'])->format('Y-m-d H:i:s');
+            }
+            if ($calendar_event) {
+                $calendar_event->update($data);
+                $user_calender = UserCalendar::where('event_id', $calendar_event->id)->first();
+                if ($user_calender) {
+                    $user_calender->update($date_data);
+                } else {
+                    $date_data['event_id'] = $calendar_event->id;
+                    $user_calender = UserCalendar::create($date_data);
+                }
+            } else {
+                $data['user_id'] = $this->user()->id;
+                $data['google_calendar_event_id'] = $event['id'];
+                $calendar_event = CalendarEvent::create($data);
+                $date_data['event_id'] = $calendar_event->id;
+                $user_calender = UserCalendar::create($date_data);
+            }
+        }
+        $delete_events = CalendarEvent::where('user_id', auth()->user()->id);
+        if ($usercalendar) {
+            $delete_events = $delete_events->where('user_calender_id', $usercalendar->id);
+        } else {
+            if ($this->googleAcount()) {
+                $delete_events = $delete_events->where('user_calender_id', null)->where('google_calendar_event_id', '!=', null);
+            } else {
+                $delete_events = $delete_events->where('google_calendar_event_id', '!=', null);
+            }
+        }
+        $delete_events = $delete_events->whereNotIn('google_calendar_event_id', $eventsIds)->get();
+        
+        foreach ($delete_events as $delete_event) {
+            $user_calender = UserCalendar::where('event_id', $delete_event->id)->first();
+            if ($user_calender) {
+                $user_calender->delete();
+                $delete_event->delete();
+            }
+        }
+        if ($usercalendar) {
+        }
+    }
+
+    public function deleteSpecificCalendeEvent($calender_id) {
+
+    }
+
     public function assignCalenderEvent($data, $optParams = []) {
         DB::beginTransaction();
         try {
-            // dd($data);
             $payload = [
                 'title' => $data['title'],
                 'color' => $data['color'],
-                'description' => $data['desc'],
-                'event_time' => $data['time'],
+                'description' => $data['description'],
             ];
-            if (isset($payload['event_time']) && $payload['event_time']) {
-                $time = strtotime($payload['event_time']);
-                $event_time = date('H:i:s', $time);
-                $start_date = Carbon::parse($data['start_date'])->format('Y-m-d');
-                $start_date = $start_date . ' ' . $event_time;
-                $payload['start_date'] = $start_date;
-                $end_date = Carbon::parse($start_date)->addHour();
-                $payload['end_date'] = $end_date->format('Y-m-d H:i:s');
+
+            if (isset($data['is_all_day'])) {
+                $payload['start_date'] = $data['start_date'];
+                $payload['end_date'] = $data['end_date'];    
+                $payload['is_all_day'] = true;
+            } else {
+                $payload['is_all_day'] = false;
+                $payload['start_date'] = $data['start_date'] . ' ' . $data['start_time'];
+                $payload['end_date'] = $data['end_date'] . ' ' . $data['end_time'];
             }
+
+            $optParams = [
+                'is_all_day' => $payload['is_all_day'],
+            ];
+
             $calenderEventId = null;
-            $store_event_google = $this->insertEvent($payload, $optParams);
+            $store_event_google = $this->insertEvent($payload, null, $optParams);
             if ($store_event_google) {
                 $calenderEventId = $store_event_google->id;
             }
@@ -58,15 +191,15 @@ class CalendarEventService extends GoogleService {
                 "user_id" => $this->user()->id,
                 "title" => $data['title'],
                 "color" => $data['color'],
-                "description" => $data['desc'],
-                "event_time" => $data['time'],
+                "description" => $data['description'],
+                "event_time" => $data['time'] ?? null,
                 "google_calendar_event_id" => $calenderEventId,
                 "is_assigned" => 1
             ]);
             $user_calender = $this->userCalendarModal->create([
                 "event_id" => $calender_event->id,
-                "start_date" => $start_date,
-                "end_date" => $payload['end_date']
+                "start_date" => Carbon::parse($payload['start_date'])->format('Y-m-d H:i:s'),
+                "end_date" => Carbon::parse($payload['end_date'])->format('Y-m-d H:i:s')
             ]);
             DB::commit();
             return $calender_event;
@@ -88,7 +221,7 @@ class CalendarEventService extends GoogleService {
                 $optParams = [
                     'is_all_day' => $this->isAllDay,
                 ];
-                $store_event_google = $this->insertEvent($calender_event_clone, $optParams);
+                $store_event_google = $this->insertEvent($calender_event_clone, null, $optParams);
                 if ($store_event_google) {
                     $calenderEventId = $store_event_google->id;
                 }
@@ -118,6 +251,10 @@ class CalendarEventService extends GoogleService {
             $user_calender = $this->userCalendarModal->where('id', $user_calender_id)->first();
             if ($user_calender) {
                 $calender_event = $user_calender->event;
+                $calendatId = null;
+                if ($calender_event->user_calender_id) {
+                    $calendatId = $calender_event->get_calender_from_list->calender_id;
+                }
                 $optParams = [
                     'is_all_day' => $this->isAllDay,
                 ];
@@ -125,7 +262,7 @@ class CalendarEventService extends GoogleService {
                     "start_date" => $data['start_date'],
                     "end_date" => $data['end_date']
                 ];
-                $update_event_google = $this->updateEvent($calender_event->google_calendar_event_id, $payload, $optParams);
+                $update_event_google = $this->updateEvent($calender_event->google_calendar_event_id, $payload, $calendatId, $optParams);
                 if ($update_event_google) {
                     $this->userCalendarModal->whereId($user_calender_id)->update([
                         "start_date" => $data['start_date'],
@@ -153,31 +290,34 @@ class CalendarEventService extends GoogleService {
                 $payload = [
                     "title" => $data['title'],
                     "color" => $data['color'],
-                    "description" => $data['desc'],
-                    "event_time" => $data['time']
+                    "description" => $data['description'],
                 ];
                 $calender_event->update($payload);
-                if (isset($payload['event_time']) && $payload['event_time']) {
-                    $time = strtotime($payload['event_time']);
-                    $event_time = date('H:i:s', $time);
-                    $start_date = Carbon::parse($user_calender->start_date)->format('Y-m-d');
-                    $start_date = $start_date . ' ' . $event_time;
-                    $payload['start_date'] = $start_date;
-                    if ($user_calender->end_date) {
-                        $end_date = Carbon::parse($user_calender->end_date)->format('Y-m-d');
-                        $end_date = $end_date . ' ' . $event_time;
-                        $payload['end_date'] = $end_date;
-                    } else {
-                        $end_date = Carbon::parse($start_date)->addHour();
-                        $end_date = $end_date->format('Y-m-d H:i:s');
-                        $payload['end_date'] = $end_date;
-                    }
-                    $user_calender->update([
-                        "start_date" => $start_date,
-                        "end_date" => $end_date
-                    ]);
+                if (isset($data['is_all_day'])) {
+                    $payload['start_date'] = $data['start_date'];
+                    $payload['end_date'] = $data['end_date'];    
+                    $payload['is_all_day'] = true;
+                } else {
+                    $payload['is_all_day'] = false;
+                    $payload['start_date'] = $data['start_date'] . ' ' . $data['start_time'];
+                    $payload['end_date'] = $data['end_date'] . ' ' . $data['end_time'];
                 }
-                $update_event_google = $this->updateEvent($calender_event->google_calendar_event_id, $payload, $optParams);
+
+                $optParams = [
+                    'is_all_day' => $payload['is_all_day'],
+                ];
+
+                $user_calender->update([
+                    "start_date" => Carbon::parse($payload['start_date'])->format('Y-m-d H:i:s'),
+                    "end_date" => Carbon::parse($payload['end_date'])->format('Y-m-d H:i:s')
+                ]);
+
+                $calendarId = null;
+                if ($calender_event->user_calender_id) {
+                    $calendarId = $calender_event->get_calender_from_list->calender_id;
+                }
+
+                $update_event_google = $this->updateEvent($calender_event->google_calendar_event_id, $payload, $calendarId, $optParams);
                 if ($update_event_google) {
                     DB::commit();
                     return $calender_event;

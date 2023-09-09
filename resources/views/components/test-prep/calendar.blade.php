@@ -11,9 +11,9 @@
             Connect Google Account
         </a>
     @else
-        Disconnect Goolge Account for Accessing Google Calendar <br>
+        Disconnect Google Account for Accessing Google Calendar <br>
         <a href="{{ route('google.disconnect') }}" class="bnt btn-alt-danger btn-sm">
-            Disconnect Goolge Account
+            Disconnect Google Account
         </a>
         <div class="mt-3">
             @if ($google_calendar)
@@ -25,10 +25,32 @@
                     <a href="{{ route('google.create-user-calender') }}" class="btn btn-alt-primary btn-sm text-center">Create Calender</a>
                 </span>
             @endif
+            <div id="user-calendar-list" class="mb-5 mt-3" role="tablist" aria-multiselectable="true">
+                <div class="block block-rounded block-bordered overflow-hidden mb-1">
+                    <div class="block-header block-header-tab" role="tab" id="faq12_h1">
+                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#user-calendar-list" href="#user-calendars" aria-expanded="true" aria-controls="user-calendars">
+                        <i class="nav-main-link-icon fa fa-file"></i> 
+                        Calendat List
+                    </a>
+                    </div>
+                    <div id="user-calendars" class="collapse show" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#user-calendar-list">
+                        <div class="block-content" id="">
+                            <table id="user-caledars-list" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Calendar Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     @endif
 </div>
-<div class="row items-push">
+<div class="row items-push position-relative">
     <div class="col-md-12 col-lg-12 col-xl-12"
         style='padding: 0 !important'>
         <!-- Calendar Container -->
@@ -73,5 +95,8 @@
             </p>
         </div>
         <!-- END Event List -->
+    </div>
+    <div id="calendar-loader" class="loading-indicator position-absolute" style="display: none;">
+        <div class="loader"></div>
     </div>
 </div>
