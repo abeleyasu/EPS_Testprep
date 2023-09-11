@@ -22,12 +22,12 @@ return new class extends Migration
                 $table->string('status');
                 $table->tinyInteger('order')->nullable();
                 $table->string('task_type')->nullable();
-                $table->timestamps();
-                $table->softDeletes();
                 $table->tinyInteger('published');
                 $table->string('coverimage')->nullable();
-                $table->foreign('section_id')->references('id')
-                    ->on('sections')->onDelete('cascade');
+                $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
+                $table->timestamps();
+                $table->softDeletes();
             });
         }
     }

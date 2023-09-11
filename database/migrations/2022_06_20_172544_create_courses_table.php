@@ -25,6 +25,7 @@ return new class extends Migration
                 $table->integer('duration');
                 $table->integer('order');
                 $table->string('coverimage');
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
                 $table->timestamps();
                 $table->softDeletes();
             });

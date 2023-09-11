@@ -23,8 +23,9 @@ return new class extends Migration
                 $table->string('status')->nullable();
                 $table->string('coverimage');
                 $table->boolean('published')->default(false);
-                $table->timestamps();
                 $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
+                $table->timestamps();
             });
         }
     }

@@ -22,6 +22,8 @@ return new class extends Migration
                 $table->string('category_type')->nullable();
                 $table->text('description')->nullable();
                 $table->integer('diff_rating')->nullable()->comment('0 => Easy, 1 => Medium, 2 => Hard, 3 =>Yikes, 4 => AllUnanswered, 5 =>AllQuestions');
+                $table->enum("mistake_type", ["content_misunderstanding", "random_error", "timing_issue"])->nullable();
+                $table->text('notes')->nullable();
                 $table->timestamps();
             });
         }

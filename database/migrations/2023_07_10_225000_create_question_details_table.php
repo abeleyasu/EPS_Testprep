@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('super_category')->nullable();
             $table->integer('category_type')->nullable();
             $table->integer('question_type')->nullable();
+            $table->enum("concept_correct", ["1", "0"])->nullable();
+            $table->timestamps();
         });
     }
 

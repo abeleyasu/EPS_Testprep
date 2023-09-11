@@ -30,6 +30,9 @@ class CreatePermissionTables extends Migration
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->integer('permision_module_id');
+            $table->longText('protected_routes')->nullable();
+            $table->string('redirect_route')->nullable();
+            $table->string('permission_slug')->nullable();
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);
@@ -43,6 +46,7 @@ class CreatePermissionTables extends Migration
             }
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            $table->string('slug')->nullable();
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);

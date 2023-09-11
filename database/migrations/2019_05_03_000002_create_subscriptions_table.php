@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('stripe_status');
             $table->string('stripe_price')->nullable();
             $table->string('plan_type')->default('subscription');
+            $table->string('pending_consumed_hours')->nullable();
             $table->integer('quantity')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('ends_at')->nullable();

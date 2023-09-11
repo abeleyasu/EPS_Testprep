@@ -30,6 +30,8 @@ return new class extends Migration
                 $table->string('coverimage');
                 $table->boolean('published')->default(false);
                 $table->unsignedBigInteger('added_by');
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
+                $table->boolean('is_addmission_lesson')->default(false);
                 $table->timestamps();
                 $table->softDeletes();
 
