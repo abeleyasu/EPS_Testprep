@@ -1229,13 +1229,17 @@ class TestPrepController extends Controller
         $existingRecord = TestProgress::where('section_id', $get_section_id)
             ->where('user_id', $current_user_id)
             ->first();
+
+
         if ($existingRecord) {
+            $get_question_ids_array = json_decode($existingRecord->question_id);
             if ($existingRecord->is_submit) {
                 $existingRecord->delete();
                 return response()->json(['message' => 'delete']);
             }
 
             $filtered_guess = [];
+
             if (!empty($existingRecord->guess)) {
                 $filtered_guess = json_decode($existingRecord->guess, true);
             }
@@ -1632,12 +1636,21 @@ class TestPrepController extends Controller
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.id', $id)
             ->get();
-
+        // dd($total_questions);
         $isSubmitted = 0;
         if (!empty($test_id)) {
-            $testProgress = TestProgress::where(["test_id" => $test_id, "section_id" => $id, "user_id" => Auth::user()->id])->first();
+            $testProgress = TestProgress::where(
+                [
+                    "test_id" => $test_id,
+                    "section_id" => $id,
+                    "user_id" => Auth::user()->id
+                ]
+            )->first();
+
             if (!empty($testProgress)) {
                 $isSubmitted = $testProgress->is_submit;
+                $testProgress->question_id = json_encode($total_questions);
+                $testProgress->save();
             }
         }
         if ($isSubmitted == 1) {
