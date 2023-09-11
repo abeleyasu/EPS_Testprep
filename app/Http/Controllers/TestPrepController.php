@@ -1195,13 +1195,17 @@ class TestPrepController extends Controller
         $existingRecord = TestProgress::where('section_id', $get_section_id)
             ->where('user_id', $current_user_id)
             ->first();
+
+
         if ($existingRecord) {
+            $get_question_ids_array = json_decode($existingRecord->question_id);
             if ($existingRecord->is_submit) {
                 $existingRecord->delete();
                 return response()->json(['message' => 'delete']);
             }
 
             $filtered_guess = [];
+
             if (!empty($existingRecord->guess)) {
                 $filtered_guess = json_decode($existingRecord->guess, true);
             }
@@ -1587,11 +1591,49 @@ class TestPrepController extends Controller
     public function singleSection(Request $request, $id)
     {
         $set_offset = 0;
-        $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)->orderBy('question_order', 'ASC')->pluck('id')->toArray();
+
+        $test_id = $request->test_id ?? '';
+
+        $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)
+            ->orderBy('question_order', 'ASC')
+            ->pluck('id')
+            ->toArray();
+
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.id', $id)
             ->get();
-        return view('user.practice-test', ['section_id' => $id, 'set_offset' => $set_offset, 'question_type' => 'single', 'total_questions' => $total_questions, 'testSection' => $testSection]);
+        // dd($total_questions);
+        $isSubmitted = 0;
+        if (!empty($test_id)) {
+            $testProgress = TestProgress::where(
+                [
+                    "test_id" => $test_id,
+                    "section_id" => $id,
+                    "user_id" => Auth::user()->id
+                ]
+            )->first();
+
+            if (!empty($testProgress)) {
+                $isSubmitted = $testProgress->is_submit;
+                $testProgress->question_id = json_encode($total_questions);
+                $testProgress->save();
+            }
+        }
+        if ($isSubmitted == 1) {
+            return back();
+        }
+
+        return view(
+            'user.practice-test',
+            [
+                'section_id' => $id,
+                'set_offset' => $set_offset,
+                'question_type' => 'single',
+                'total_questions' => $total_questions,
+                'testSection' => $testSection,
+                'isSubmitted' => $isSubmitted
+            ]
+        );
     }
 
     public function allSection(Request $request, $id)
