@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->id();			
                 $table->string('name');
                 $table->string('slug');
+                $table->boolean('is_visible')->default(true);
                 $table->timestamps();			
             });
         }

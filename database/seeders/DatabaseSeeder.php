@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call(HonorsCoursesSeeder::class);
         $this->call(IntendedCollegeMinorSeeder::class);
         $this->call(IntendedCollegeMajorSeeder::class);
-        
-
+        $this->call(StateSeeder::class);
+        $this->call(CitySeeder::class);
+        $this->call(AddMorePermission::class);
+        $this->call(ConvertPlanToRoleSeeder::class);
     }
 }

@@ -24,6 +24,7 @@ return new class extends Migration
                 $table->unsignedBigInteger('added_by');
                 $table->string('coverimage');
                 $table->boolean('published')->default(false);
+                $table->foreignId('product_id')->nullable()->references('id')->on('product')->onDelete('cascade');
                 $table->timestamps();
                 $table->softDeletes();
 

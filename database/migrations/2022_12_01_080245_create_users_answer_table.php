@@ -25,6 +25,7 @@ return new class extends Migration
                 $table->text('guess');
                 $table->text('flag');
 				$table->text('skip')->nullable();
+                $table->time('actual_time')->nullable();
                 $table->integer('test_id');
                 
             });
