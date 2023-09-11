@@ -10,11 +10,6 @@ use App\Models\Subscription;
 
 class OneTimeSubscription extends Controller
 {
-    private $stripe;
-    public function __construct() {
-        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
-    }
-
     public function index(Request $request) {
         try {
             $subscriptions = Subscription::where([

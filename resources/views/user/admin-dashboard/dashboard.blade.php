@@ -3,6 +3,7 @@
 @section('title', 'Admission Dashboard : CPS')
 
 @section('user-content')
+@can('Access Admission Dashboard')
 <main id="main-container">
   <div class="bg-image" style="background-image: url('{{ asset('static-image/admissionsimage.jpg') }}');">
     <div class="bg-black-15">
@@ -20,35 +21,9 @@
   </div>
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
-      
-      @if(count($college_list_deadline) > 0)
-      <div class="row @if(count($college_list_deadline) > 3) owl-carousel owl-theme @endif">
-        @foreach($college_list_deadline as $key => $deadline)
-        <div class="@if(count($college_list_deadline) > 3) col-12 @else col-6 col-md-4 @endif">
-          <div class="block block-bordered shadow py-3 px-2 gap-1 d-flex flex-column align-items-center">
-            @if($deadline['college_information']['college_icon'])
-              <img class="college-image" src="{{ asset('college_icon/' . $deadline['college_information']['college_icon']) }}" alt="">
-            @else
-              <img class="college-image" src="{{ asset('static-image/no-image.jpg') }}" alt="">
-            @endif
-            <div class="fs-sm fw-semibold text-muted text-uppercase">Choice #{{$key + 1}}</div>
-            <a class="text-dark text-center">{{ $deadline['college_name'] }}</a>
-            @if($deadline['college_deadline']['admissions_deadline'])
-              <div class="fs-sm fw-semibold text-muted text-uppercase">Admissions Deadline</div>
-              <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline'] }}</a>
-              <a class="text-dark">{{ $deadline['college_deadline']['admissions_deadline_diff'] }}</a>
-            @else
-              <a href="{{ route('admin-dashboard.collegeApplicationDeadline') }}" class="btn btn-alt-success btn-sm">Add Deadline Date</a>
-            @endif
-          </div>
-        </div>
-        @endforeach
-      </div>
-      @else
-      <div class="no-data mb-4">
-        <a href="{{ route('admin-dashboard.initialCollegeList.step1') }}" class="btn btn-alt-success btn-sm">Click here to add college</a>
-      </div>
-      @endif
+      @include('components.admission.dashboard-college-list', [
+        'college_list_deadline' => $college_list_deadline
+      ])
     </div>
   </div>
   <div class="content content-boxed">
@@ -164,19 +139,19 @@
           <div class="block-content">
             <div id="section-2" class="mb-5" role="tablist" aria-multiselectable="true">
               @if(count($worksheet_data) > 0)
-                @foreach($worksheet_data as $worksheet)
+                @foreach($worksheet_data as $key => $worksheet)
                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                   <div class="block-header block-header-tab" role="tab" id="faq12_h1">
-                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#tips-for-college-fairs" aria-expanded="true" aria-controls="tips-for-college-fairs">
+                    <a class="text-white" data-bs-toggle="collapse" data-bs-parent="#section-2" href="#item-{{$key}}" aria-expanded="true" aria-controls="item-{{$key}}">
                       <i class="nav-main-link-icon fa fa-file"></i> 
                       {{ $worksheet->name }}
                     </a>
                   </div>
-                  <div id="tips-for-college-fairs" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-2">
+                  <div id="item-{{$key}}" class="collapse" role="tabpanel" aria-labelledby="faq12_h1" data-bs-parent="#section-2">
                     <div class="block-content">
                       <div>{{ $worksheet->description }}</div>
                       <div>Click the below to download the worksheet</div>
-                      <a href="{{ asset('uploads/worksheet/' . $worksheet->sheet_name) }}" download="sheet.csv" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray download-worksheet"></i>Download Worksheet</a>
+                      <a href="{{ asset('uploads/worksheet/' . $worksheet->sheet_name) }}" target="_black" class="btn btn-gray fs-xs fw-semibold me-1 mb-3 bg-dark text-gray download-worksheet"></i>Download Worksheet</a>
                     </div>
                   </div>
                 </div>
@@ -198,62 +173,9 @@
           </h3>
         </div>
         <div class="block-content">
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-person"></i> Milestone 1: Profile Development</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn why developing your profile is important and how to do it.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-user-doctor"></i> Milestone 2: Career Exploration</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to research careers and decide what's right for you.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-magnifying-glass-location"></i> Milestone 3: College Search</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to search for colleges that fit you and your goals.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-brain"></i> Milestone 4: Test Prep</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to search for colleges that fit you and your goals.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-rectangle-list"></i> Milestone 5: College Applications</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to fill out your college applications and the do's and don't's of college applications.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-magnifying-glass-dollar"></i> Milestone 6: Financial Aid and Scholarships</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to find financial aid and research scholarships.</p>
-          </div>
-          <div class="fs-sm push">
-            <div class="d-flex justify-content-between mb-2">
-              <div>
-                <a class="fw-semibold" href=""><i class="nav-main-link-icon fa fa-school"></i> Milestone 7: Final College Selection</a>
-              </div>
-            </div>
-            <p class="mb-0">Learn how to make a decision between the colleges that you were accepted to.</p>
-          </div>
+          @include('components.admission.milestone-lession', [
+            'milestones' => $milestones
+          ])
           <div class="text-center push">
             <button type="button" class="btn btn-sm btn-alt-secondary">Visit the Test Prep Lesson Homepage for more..</button><!-- sends student to the Test Prep Milestone 4 page with all the Test Prep Modules on it -->
           </div>
@@ -262,78 +184,19 @@
     </div>
   </div>
 </main>
+@endcan
+
+@cannot('Access Admission Dashboard')
+  @include('components.subscription-warning')
+@endcan
 @endsection
 
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/js/owal-carousel/owl.carousel.min.css') }}">
-<style>
-  .college-image {
-    display: inline-block!important;
-    width: 64px !important;
-    height: 64px;
-    border-radius: 50%;
-  }
-  .block-header-tab {
-    background-color: #1f2937;
-    text-align: left;
-    justify-content: left;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  .block-header-tab i {
-    font-size: 17px;
-    position: relative;
-    top: 0px;
-  }
-  .no-data {
-    border: 1px solid;
-    border-style: dashed;
-    border-color: darkgray;
-    padding: 10px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  .owl-carousel .owl-nav button.owl-prev {
-    background: #d9e8c3;
-    color: #000;
-    border: 1px solid #d9e8c3;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    outline: none;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .owl-carousel .owl-nav button.owl-next {
-    background: #d9e8c3;
-    color: #000;
-    border: 1px solid #d9e8c3;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    right: -20px;
-    transform: translateY(-50%);
-    outline: none;
-    transition: all 0.3s ease-in-out;
-  }
-</style>
+<link rel="stylesheet" href="{{ asset('css/college-dashboard.css') }}">
 @endsection
 
+@can('Access Admission Dashboard')
 @section('user-script')
 <script src="{{ asset('assets/js/owal-carousel/owl.carousel.min.js') }}"></script>
 <script>
@@ -360,3 +223,4 @@
 </script>
 
 @endsection
+@endcan

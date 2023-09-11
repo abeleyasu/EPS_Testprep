@@ -4,6 +4,8 @@ namespace App\Models\CourseManagement;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\UserRole;
+use App\Models\Product;
 
 class Section extends Model
 {
@@ -15,14 +17,17 @@ class Section extends Model
         'order',
         'status',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
     ];
 
     public function tasks() {
         return $this->hasMany(Task::class)->orderBy('order');
     }
 	public function totalTasks() {
-        return $this->tasks()->where('published','=', 1);
+        return $this->tasks()->where('published','=', 1)->whereHas('user_tasks_roles', function ($q) {
+            $q->where('user_role_id', auth()->user()->role);
+        });
     }
 
 
@@ -32,7 +37,9 @@ class Section extends Model
             ->leftjoin('user_task_statuses','tasks.id','user_task_statuses.task_id')
 			->where('tasks.published',1)
             ->where('sections.id', $this->id)
-			->orderBy('order')->get();
+			->orderBy('order')->whereHas('user_tasks_roles', function ($q) {
+                $q->where('user_role_id', auth()->user()->role);
+            })->get();
         return $tasks;
     }
     public function module() {
@@ -63,5 +70,23 @@ class Section extends Model
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();
         return $tasks;
+    }
+
+    public function user_sections_roles() {
+        return $this->belongsToMany(UserRole::class,'sections_user_types', 'section_id', 'user_role_id');
+    }
+
+    public static function getUserTypeWiseSections($moduleId) {
+        return Section::where('module_id', $moduleId)->where('published', 1)->whereHas('user_sections_roles', function ($q) {
+            $q->where('user_role_id', auth()->user()->role);
+        })->orderBy('order');
+    }
+
+    public function userHasSectionsPermissionOrNot() {
+        return $this->user_sections_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
+    public function user_section_products() {
+        return $this->belongsToMany(Product::class,'section_products', 'section_id', 'product_id');
     }
 }

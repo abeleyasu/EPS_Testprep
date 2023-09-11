@@ -13,9 +13,16 @@ use App\Models\ReminderType;
 use App\Models\CalendarEvent;
 use App\Models\UserCalendar;
 use Carbon\Carbon;
+use App\Service\GoogleService;
 
 class CollegeApplicationDeadlineController extends Controller
 {
+    protected $googleService;
+
+    public function __construct(GoogleService $googleService) {
+        $this->googleService = $googleService;
+    }
+
     public function index()
     {
         $college_list_deadline = CollegeDetails::where('user_id', '=', Auth::id())->whereHas('college_details', function ($q) { 
@@ -46,7 +53,6 @@ class CollegeApplicationDeadlineController extends Controller
                 'data' => $college_list_deadline ? $college_list_deadline->college_list_details->toArray() : [],
             ];
         } catch (\Exception $e) {
-            dd($e);
             return [
                 'success' => false,
                 'message' => 'Oops! Something went wrong',
@@ -56,16 +62,28 @@ class CollegeApplicationDeadlineController extends Controller
 
     public function getSingleApplicationData($id) {
         try {
-            $college_list_deadline = CollegeDetails::where('id', '=', $id)->first()->toArray();
-            return [
+            $college_list_deadline = CollegeDetails::where('id', '=', $id)->first();
+            if (!$college_list_deadline) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'College not found',
+                ]);
+            }
+            $deadline_date = null;
+            if ($college_list_deadline->college_details->collegeInformation) {
+                $deadline_date = $college_list_deadline->college_details->collegeInformation->regular_admission_deadline;
+            }
+            $college_list_deadline = $college_list_deadline->toArray();
+            $college_list_deadline['admissions_deadline'] = $deadline_date;
+            return response()->json([
                 'success' => true,
                 'data' => $college_list_deadline,
-            ];
+            ]);
         } catch (\Exception $e) {
-            return [
+            return response()->json([
                 'success' => false,
                 'message' => 'Oops! Something went wrong',
-            ];
+            ]);
         }
     }
 
@@ -211,7 +229,7 @@ class CollegeApplicationDeadlineController extends Controller
             foreach ($fields as $key => $field) {
                 if ($college[$field] && !empty($college[$field])) {
                     $reminder = Reminder::where('college_id', $college['college_details']['id'])->where('field', $field)->first();
-                    $date = Carbon::parse($college[$field]);
+                    $date = Carbon::createFromFormat('m-d-Y', $college[$field]);
                     $time = $date->format('H:i:s');
                     $type= ucwords(str_replace("_", " ", $field));
                     $data = [
@@ -242,25 +260,50 @@ class CollegeApplicationDeadlineController extends Controller
     public function setCalendarEvent($reminder, $date) {
         $event = CalendarEvent::where('reminders_id', $reminder->id)->first();
         if ($event) {
-            $event->update([
+            $data = [
                 'title' => $reminder->reminder_name,
                 'event_time' => $reminder->when_time
-            ]);
+            ];
+            if (isset($data['event_time']) && $data['event_time']) {
+                $time = strtotime($data['event_time']);
+                $event_time = date('H:i:s', $time);
+                $start_date = Carbon::parse($date)->format('Y-m-d');
+                $start_date = $start_date . ' ' . $event_time;
+                $data['start_date'] = $start_date;
+                $end_date = Carbon::parse($start_date)->addHour();
+                $data['end_date'] = $end_date->format('Y-m-d H:i:s');
+            }
+            $this->googleService->updateEvent($event->google_calendar_event_id, $data);
+            $event->update($data);
             $userCalendar = UserCalendar::where('event_id', $event->id)->first();
             $userCalendar->update([
                 "start_date" => $date,
                 "end_date" => $date,
             ]);
         } else {
-            $calendarEvent = CalendarEvent::create([
+            $data = [
 				"user_id" => Auth::id(),
 				"reminders_id" => $reminder->id,
 				"title" => $reminder->reminder_name,
 				"description" => '',
 				"color" => 'info',
 				"is_assigned" => 1,
-				'event_time' => $reminder->when_time
-			]);
+				'event_time' => $reminder->when_time,
+			];
+            if (isset($data['event_time']) && $data['event_time']) {
+                $time = strtotime($data['event_time']);
+                $event_time = date('H:i:s', $time);
+                $start_date = Carbon::parse($date)->format('Y-m-d');
+                $start_date = $start_date . ' ' . $event_time;
+                $data['start_date'] = $start_date;
+                $end_date = Carbon::parse($start_date)->addHour();
+                $data['end_date'] = $end_date->format('Y-m-d H:i:s');
+            }
+            $createevent = $this->googleService->insertEvent($data);
+            if ($createevent) {
+                $data['google_calendar_event_id'] = $createevent->id;
+            }
+            $calendarEvent = CalendarEvent::create($data);
             UserCalendar::create([
                 "event_id" => $calendarEvent->id,
                 "start_date" => $date,

@@ -148,12 +148,15 @@ class PracticeQuestionController extends Controller
 
         $i = 0;
         foreach ($super_category_values as $key => $val) {
-            $insertValues[] = [
-                'question_id' => $question->id,
-                'super_category' => $val[0],
-                'category_type' => $category_type_values[$ans_choices[$i]][0] ?? '',
-                'question_type' => $question_type_values[$ans_choices[$i]][0] ?? ''
-            ];
+            foreach ($val as $k => $v) {
+                $insertValues[] = [
+                    'question_id' => $question->id,
+                    'super_category' => $v,
+                    'category_type' => $category_type_values[$ans_choices[$i]][$k] ?? '',
+                    'question_type' => $question_type_values[$ans_choices[$i]][$k] ?? '',
+                    'concept_correct' => $checkbox_values[$ans_choices[$i]][$k] ?? ''
+                ];
+            }
             $i++;
         }
 
@@ -354,15 +357,17 @@ class PracticeQuestionController extends Controller
         $insertValues = [];
         $i = 0;
         foreach ($super_category_values as $key => $val) {
-            $insertValues[] = [
-                'question_id' => $question->id,
-                'super_category' => $val[0],
-                'category_type' => $category_type_values[$ans_choices[$i]][0] ?? '',
-                'question_type' => $question_type_values[$ans_choices[$i]][0] ?? ''
-            ];
+            foreach ($val as $k => $v) {
+                $insertValues[] = [
+                    'question_id' => $question->id,
+                    'super_category' => $v,
+                    'category_type' => $category_type_values[$ans_choices[$i]][$k] ?? '',
+                    'question_type' => $question_type_values[$ans_choices[$i]][$k] ?? '',
+                    'concept_correct' => $checkbox_values[$ans_choices[$i]][$k] ?? ''
+                ];
+            }
             $i++;
         }
-
         $question_details = QuestionDetails::where('question_id', $question->id);
         if ($question_details->count()) {
             $question_details->delete();

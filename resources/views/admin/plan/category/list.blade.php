@@ -34,6 +34,7 @@
                             <th></th>
                             <th>Name</th>
                             <th style="width: 60%;">Plan key</th>
+                            <th>Type</th>
                             <th>Order</th>
                             <th style="width: 15%;">Action</th>
                         </tr>
@@ -69,6 +70,7 @@
                 { "data": "id", "visible": false, "searchable": false, "orderable": false },
                 { "data": "title", "orderable": false },
                 { "data": "description", "orderable": false },
+                { "data": "type", "orderable": false },
                 { "data": "order_index", "orderable": false },
                 { "data": "action", "orderable": false },
             ],

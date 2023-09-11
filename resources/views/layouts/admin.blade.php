@@ -25,8 +25,27 @@
     <script src="{{asset('assets/js/plugins/datatables-buttons/dataTables.buttons.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js')}}"></script>
     <script src="{{asset('assets/js/pages/be_tables_datatables.min.js')}}"></script>
+    <script src="{{asset('assets/js/toastr/toastr.min.js')}}"></script>
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <script>
+        toastr.options = {
+            "closeButton": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
         function deleteItem(id) {
             if(confirm("Are you sure to delete this item?") == true) {
                 $('#delete-form-'+id).submit();
@@ -56,6 +75,24 @@
                     }
                 });
             }
+        }
+
+        function updateUserStatus(url) {
+            return $.ajax({
+                url: url,
+                method: 'patch',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            })
+        }
+
+        const core = {
+            ajaxProductList: "{{ route('admin.product.ajax_products') }}",
+            ajaxCategoriesList: "{{ route('admin.category.ajax_categories') }}",
+            ajaxProductCreate: "{{ route('admin.product.ajax_create') }}",
+            ajaxRolesList: "{{ route('admin.roles.ajax_roles') }}",
+            updateUserStatus: "{{ route('admin-user-change-status', ['id' => ':id']) }}",
         }
     </script>
     @yield('admin-script')

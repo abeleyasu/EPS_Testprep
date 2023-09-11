@@ -32,7 +32,7 @@
                         <div class="block-content block-content-full">
                             <div class="row">
                                 @foreach($module['permission'] as $permission_key => $permission)
-                                    <div class="col-4 mb-2">
+                                    <div class="col-3 mb-2">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="{{$module_key.'-'.$permission_key}}" value="{{ $permission['id'] }}" name="permission[]" @if(in_array( $permission['id'] ,$attach_permission)) checked @endif>
                                             <label class="form-check-label" for="{{$module_key.'-'.$permission_key}}">

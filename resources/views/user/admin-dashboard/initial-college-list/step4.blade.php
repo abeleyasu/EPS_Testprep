@@ -96,7 +96,7 @@
         <div class="block-content block-content-full">
           <div class="tab-content" id="user-college-list">
             <div class="setup-content" role="tabpanel" id="deadline-reminder-content-accordian" aria-labeledby="deadline-reminders">
-              <div class="accordion" id="userSelectedCollegeList">
+              <div class="accordion" id="userSelectedCollegeList" data-type="step-4" @if($score) data-collegeid="{{ $score['id']  }}" @endif>
 
               </div>
             </div>
@@ -295,7 +295,6 @@
       },
       success: function(response) {
         if (response.success) {
-          console.log(response)
           $('#userSelectedCollegeList').html('');
           const options = ['Smart', 'Match', 'Reach'];
           if (response.data.length > 0) {
@@ -314,11 +313,12 @@
                     <div class="d-flex align-items-center w-100 gap-3 text-white fw-600" role="tab" data-bs-toggle="collapse" data-bs-parent="#userSelectedCollegeList" href="#accodion-${index}" aria-expanded="false" aria-controls="accodion-${index}">
                       <i class="fa fa-2x fa-angle-right" id="toggle${index}"></i>
                       <i class="fa fa-bars"></i>
-                      <span>${data.order_index}</span>
+                      <span>${index + 1}</span>
                       <span>${data.college_name}</span>
                     </div>
-                    <div>
-                      <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
+                    <div class="d-flex">
+                      <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                      <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="step-4" data-id="${data.id}">Remove</button>
                     </div>
                   </div>
                   <div id="accodion-${index}" data-id="${index}" class="collapse" role="tabpanel" aria-labelledby="faq6_h1" data-bs-parent="#userSelectedCollegeList">
@@ -364,7 +364,6 @@
   }
 
   $(document).on('change', '.selection-type', function (e) {
-    console.log(e)
     switch (e.target.value) {
       case 'Smart':
         // set background color blue

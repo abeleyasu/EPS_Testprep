@@ -104,6 +104,8 @@
                                 @enderror
                             </div>
 
+                            @include('admin.courses.components.user-role-dropdown')
+
                             <div class="mb-2">
                                 <label class="form-label" for="order">Order</label>
 
@@ -147,6 +149,7 @@
                                     <option value="unpaid">Unpaid</option>
                                 </select>
                             </div>
+                            @include('admin.courses.components.product-dropdown')
                         </div>
                     </div>
                 </div>
@@ -155,6 +158,7 @@
     </div>
 </main>
 <!-- END Main Container -->
+@include('admin.courses.components.create-new-product')
 <div class="modal fade" id="dragModal"
 
      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -188,6 +192,7 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
 
     <script>
         $(document).ready(()=>{

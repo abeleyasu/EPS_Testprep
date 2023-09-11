@@ -17,6 +17,7 @@ class ProductCategory extends Model
         'status',
         'description',
         'order_index',
+        'type',
     ];
 
     public function products()

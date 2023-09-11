@@ -1,13 +1,13 @@
-<section id="our-blog" class="section-padding position-relative">
+<section id="our-blog" class="section-padding pb-2 position-relative">
   <div class="container">
     <div class="heading-title heading_space js-animation-object animated fadeInUp">
-      <span class="defaultcolor text-center text-md-start">Meet a handful of our students</span>
       <h2 class="darkcolor font-normal text-center text-md-start">Student Success Stories</h2>
-      <p class="heading_space mt-n3 mt-sm-0 text-center text-md-start">College Prep System has had 100's of success stories just like these. Make your story the next great success! </p>
+      <span class="defaultcolor text-center text-md-start">Meet a handful of our students</span>
+      {{--- <p class="heading_space mt-n3 mt-sm-0 text-center text-md-start">College Prep System has had 100's of success stories just like these. Make your story the next great success! </p> --}}
     </div>
     <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <div class="news_item shadow position-relative text-center text-md-start">
+      <div class="col-sm-12 col-lg-3 col-md-6">
+        <div class="news_item shadow position-relative text-center text-md-start height-block">
           <div class="image">
             <img src="{{ asset('static-image/elliot.png') }}" alt="">
           </div>
@@ -18,8 +18,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6">
-        <div class="news_item shadow text-center text-md-start">
+      <div class="col-sm-12 col-lg-3 col-md-6">
+        <div class="news_item shadow text-center text-md-start height-block">
           <div class="image">
             <img src="{{ asset('static-image/arianna.jpg') }}" alt="">
           </div>
@@ -30,8 +30,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6">
-        <div class="news_item shadow text-center text-md-start">
+      <div class="col-sm-12 col-lg-3 col-md-6">
+        <div class="news_item shadow text-center text-md-start height-block">
           <div class="image">
             <img src="{{ asset('static-image/riley.png') }}" alt="">
           </div>
@@ -42,8 +42,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6">
-        <div class="news_item shadow text-center text-md-start">
+      <div class="col-sm-12 col-lg-3 col-md-6">
+        <div class="news_item shadow text-center text-md-start height-block">
           <div class="image">
             <img src="{{ asset('static-image/yi.png') }}" alt="">
           </div>

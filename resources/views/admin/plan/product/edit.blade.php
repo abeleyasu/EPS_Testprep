@@ -19,7 +19,7 @@
                     <div class="mb-4">
                         <label class="from-label">Category Type:</label>
                         <select id="product_category_id" name="product_category_id" class="form-control form-control-lg form-control-alt {{$errors->has('product_category_id') ? 'is-invalid' : ''}}">
-                            <option value="">Select Cateogry</option>
+                            <option value="">Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" @if($product->product_category_id == $category->id) selected @endif >{{ $category->title }}</option>
                             @endforeach

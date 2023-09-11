@@ -26,7 +26,7 @@
               <div class="col-md-3 col-sm-6">
                 <div class="form-group">
                   <label for="email" class="d-none"></label>
-                  <input class="form-control" type="email" placeholder="Email:" required="" id="email" name="email">
+                  <input class="form-control" type="email" placeholder="Email:" required="" id="email1" name="email1">
                 </div>
               </div>
               <div class="col-md-3 col-sm-6">

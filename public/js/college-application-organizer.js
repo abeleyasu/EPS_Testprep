@@ -34,7 +34,8 @@ function setApplicationHTML(records) {
                             <a class="text-white fw-600 collapsed"><i class="fa fa-2x fa-angle-right" id="toggle${i}"></i><i class="fa fa-bars fa-2x"></i>${data.college_name}</a> 
                         </div>
                         <div class="col-2">
-                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list" data-id="${data.id}">Hide</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger hide-college-from-list me-2" data-id="${data.id}">Hide</button>
+                            <button type="button" class="btn btn-sm btn-alt-danger remove-user-college" data-type="college-application-deadline" data-id="${data.id}">Remove</button>
                             ${data.college_deadline.is_application_checklist == 1 ? '<i class="fa fa-2x fa-circle-check text-white"></i>' : '' }
                         </div>
                     </div>
@@ -108,7 +109,9 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="admissions_deadline-${dataset.id}">Admissions Deadline</label>
-                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" name="admissions_deadline" value="${data.admissions_deadline ? data.admissions_deadline : ''}" placeholder="mm/dd/yy" autocomplete="off">
+                                    <div class="form-control" id="admissions_deadline-${dataset.id}">
+                                        ${data.admissions_deadline ? data.admissions_deadline : 'mm/dd/yy'}
+                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="ad_status">Status</label>
@@ -289,7 +292,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
             `
             $('#' + elementid).append(content)
             $('.date-own').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'mm-dd-yyyy',
                 // startDate: '-3d',
                 autoclose: true
             });

@@ -8,31 +8,22 @@ use App\Models\CollegeList;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Worksheet;
+use App\Models\CourseManagement\Milestone;
+use App\Models\Courses;
+use App\Service\DashboardService;
 
 class AdmissionDashBoard extends Controller
 {
+
+    public function __construct(DashboardService $dashboardService) {
+        $this->dashboardService = $dashboardService;
+    }
+
     public function index() {
-        $user = Auth::user();
-        $college_list_deadline = CollegeList::where('user_id', Auth::id())->with(['college_list_details' => function ($detail) {
-            $detail->where('is_active', true)->orderBy('order_index')->with(['collegeDeadline', 'collegeInformation']);
-        }])->first();
-        if ($college_list_deadline) {
-            $college_list_deadline = $college_list_deadline->toArray();
-            $college_list_deadline = $college_list_deadline['college_list_details'];
-            foreach ($college_list_deadline as $key => $deadline) {
-                if ($college_list_deadline[$key]['college_deadline']['admissions_deadline']) {
-                    $college_list_deadline[$key]['college_deadline']['admissions_deadline'] = Carbon::parse($deadline['college_deadline']['admissions_deadline'])->format('m/d/Y');
-                    $create_date = Carbon::parse($deadline['college_deadline']['admissions_deadline']);
-                    $college_list_deadline[$key]['college_deadline']['admissions_deadline_diff'] = 'Due in '. $create_date->diffInDays(Carbon::now()) . ' days';
-                }
-            }
-        } else {
-            $college_list_deadline = [];
-        }
-        $worksheet_data = Worksheet::all();
         return view('user.admin-dashboard.dashboard', [
-            'college_list_deadline' => $college_list_deadline,
-            'worksheet_data' => $worksheet_data,
+            'college_list_deadline' => $this->dashboardService->college_list_deadline(),
+            'worksheet_data' => $this->dashboardService->worksheet_data(),
+            'milestones' => $this->dashboardService->milestones(),
         ]);
     }
 }

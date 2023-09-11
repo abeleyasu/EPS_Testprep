@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12 col-sm-12 text-center">
         <div class="heading-title whitecolor wow fadeInUp" data-wow-delay="200ms">
-          <h2 class="font-normal">Applying to College: Milestones </h2>
+          <h2 class="font-normal">Milestone Roadmap: Your Path to College</h2>
           <span>Guiding students every step of the way </span>
         </div>
       </div>

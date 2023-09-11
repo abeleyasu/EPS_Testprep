@@ -14,13 +14,11 @@ use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 use App\Models\Subscription;
 use App\Models\SubscriptionItem;
+use App\Models\UserRewards;
+use Illuminate\Support\Facades\Validator;
 
 class PlanController extends Controller
 {
-    private $stripe;
-    public function __construct() {
-        $this->stripe = new \Stripe\StripeClient(config('stripe.api_keys.secret_key'));
-    }
     public function index() {
         // $plans = Plan::with('product')->get();
         return view('admin.plan.list');
@@ -55,7 +53,8 @@ class PlanController extends Controller
                 'interval' => $plan['interval'],
                 'interval_count' => $plan['interval_count'],
                 'currency' => $plan['currency'],
-                'price' => $plan['amount'],
+                'price' => number_format($plan['amount']),
+                'amount' => number_format($plan['display_amount']),
                 'order_index' => $plan['order_index'] + 1,
                 'action' => '<div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Plan">
@@ -111,42 +110,57 @@ class PlanController extends Controller
 
     public function create(Request $request) {
         $rules = [
-            'product_id' => 'required',
-            'amount' => 'required|numeric',
+            'product_category' => 'required|exists:product_category,id',
+            'product_id' => 'required|exists:product,id',
+            'amount' => 'required|numeric|max:10000',
             'interval' => 'required',
+            'interval_count' => 'required|numeric|integer|between:1,100',
         ];
-        if ($request->interval === 'month') {
-            $rules['interval_count'] = 'required|numeric|digits_between:1,12';
-        }
         $customMessages = [
+            'product_category.required' => 'Product category is required',
+            'product_category.exists' => 'Product category is not exists',
             'product_id.required' => 'Product is required',
+            'product_id.exists' => 'Product is not exists',
+            'amount.required' => 'Cost per Interval is required',
+            'amount.numeric' => 'Cost per Interval must be numeric',
+            'amount.max' => 'Cost per Interval must be less than 10000',
+            'interval.required' => 'Interval is required',
+            'interval_count.required' => 'Interval count is required',
+            'interval_count.numeric' => 'Interval count must be numeric',
+            'interval_count.integer' => 'Interval count must be integer',
+            'interval_count.between' => 'Interval count must be between 1 to 100',
         ];
         $request->validate($rules, $customMessages);
         $lastOderIndex = Plan::max('order_index');
         $product = Product::find($request->product_id);
         $planid = null;
+        $amount = $request->amount * $request->interval_count;
+        if ($request->interval == 'hour') {
+            $amount = $request->amount;
+        }
         if ($request->interval == 'hour') {
             $price = $this->stripe->prices->create([
-                'unit_amount' => $request->amount * 100,
+                'unit_amount' => $amount * 100,
                 'currency' => 'usd',
                 'product' => $product->stripe_product_id,
             ]);
             $planid = $price['id'];
         } else {
             $plan = $this->stripe->plans->create([
-                'amount' => $request->amount * 100,
+                'amount' => $amount * 100,
                 'currency' => config('stripe.api_keys.currency'),
                 'interval' => $request->interval,
                 'product' => $product->stripe_product_id,
+                'interval_count' => $request->interval_count,
             ]);
             $planid = $plan['id'];
         }
         $create = Plan::create([
             'product_id' => $request->product_id,
             'stripe_plan_id' => $planid,
-            'interval_count' => $request->interval === 'month' || $request->interval === 'hour' ? $request->interval_count :  1,
+            'interval_count' => $request->interval_count,
             'interval' => $request->interval,
-            'amount' => number_format($request->amount, 2, ".", ""),
+            'amount' => number_format($amount, 2, ".", ""),
             'display_amount' => number_format($request->amount, 2, ".", ""),
             'order_index' => $lastOderIndex + 1,
         ]);
@@ -171,12 +185,28 @@ class PlanController extends Controller
     }
 
     public function deletePlan(Request $request) {
-        $plan = Plan::find($request->id);
-        $this->stripe->plans->update(
-            $plan->stripe_plan_id
-        );
-        $plan->delete();
-        return "success";
+        try {
+            $plan = Plan::find($request->id);
+            if ($plan->interval == 'hour') {
+                $this->stripe->prices->update($plan->stripe_plan_id, [
+                    'active' => false,
+                ]);
+            } else {
+                $this->stripe->plans->delete(
+                    $plan->stripe_plan_id
+                );
+            }
+            $plan->delete();
+            return response()->json([
+                'success' => true, 
+                'message' => 'Plan deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function getUserPlan() {
@@ -222,22 +252,23 @@ class PlanController extends Controller
     public function subscription(Request $request)
     {
         $plan = Plan::where('stripe_plan_id', $request->plan)->with('product')->first();
-
-        // Get the Payment Method ID from the Stripe Elements card input form
         $paymentMethodId = $request->payment_method;
         $customer = $request->user()->createOrGetStripeCustomer();
+        $referral_code = null;
+        if (isset($request->referral_code)) {
+            $referral_code = $request->referral_code;
+        }
         try {
             $user = Auth::user();
-            // $user->addPaymentMethod($paymentMethodId);
-            if ($user->subscribed('default')) {
-                $this->changeUserSubscription($plan, $paymentMethodId);
+            if ($user->isSubscribeToSubscriptions() && $plan->interval != 'hour') {
+                $this->changeUserSubscription($plan, $paymentMethodId, $referral_code);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
                 if ($plan->interval == 'hour') {
                     $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
                 } else {
-                    $this->createSubscription($plan, $paymentMethodId);
+                    $this->createSubscription($plan, $paymentMethodId, $referral_code);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
                 }
             }
@@ -260,17 +291,21 @@ class PlanController extends Controller
     public function subscriptioncreatewithexistingcard(Request $request) {
         $plan = Plan::where('stripe_plan_id', $request->plan)->first();
         $paymentMethodId = $request->user_card;
+        $referral_code = null;
+        if (isset($request->referral_code)) {
+            $referral_code = $request->referral_code;
+        }
         try {
             $user = Auth::user();
-            if ($user->subscribed('default')) {
-                $this->changeUserSubscription($plan, $paymentMethodId);
+            if ($user->isSubscribeToSubscriptions() && $plan->interval != 'hour') {
+                $this->changeUserSubscription($plan, $paymentMethodId, $referral_code);
                 return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
             } else {
                 if ($plan->interval == 'hour') {
                     $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your subscription updated successfully');
                 } else {
-                    $this->createSubscription($plan, $paymentMethodId);
+                    $this->createSubscription($plan, $paymentMethodId, $referral_code);
                     return redirect()->route('mysubscriptions.index')->with('message', 'Your plan subscribed successfully');
                 }
             }
@@ -311,68 +346,69 @@ class PlanController extends Controller
             ]
         );
         if ($intent) {
-            if ($existing_subscription) {
-                $this->updateOneTimeSubscriptionData($user, $plan, $intent, $existing_subscription);
-            } else {
-                $this->createOneTimeSubscriptionData($user, $plan, $intent);
-            }
-            $this->setUserRole($plan, $user);
+            // if ($existing_subscription) {
+            //     $this->updateOneTimeSubscriptionData($user, $plan, $intent, $existing_subscription);
+            // } else {
+            // }
+            $this->createOneTimeSubscriptionData($user, $plan, $intent);
+            $this->mailgun->sendMail([
+                'to' => $user->email,
+                'subject' => 'Welcome to College Prep System - Your College Journey Begins Today',
+                'html' => view('email-template.subscription.new', [
+                    'name' => $user->first_name,
+                    'plan_name' => $plan->product->title
+                ])->render()
+            ]);
+            // $this->setUserRole($plan, $user);
         }
         return true;
     }
 
-    public function createSubscription($plan, $paymentMethodId) {
+    public function createSubscription($plan, $paymentMethodId, $referral_code) {
         $user = Auth::user();
         $payload = [
             'default_payment_method' => $paymentMethodId,
             'collection_method' => 'charge_automatically',
         ];
-        if ($plan->interval_count > 1) {
-            $enddate = Carbon::now()->addMonth($plan->interval_count);
-            $payload['cancel_at'] = $enddate->timestamp;
-            $payload['metadata'] = [
-                'start_date' => Carbon::now()->format('Y-m-d'),
-                'pending_interval_period' => $plan->interval_count - 1,
-                'total_interval_count' => $plan->interval_count,
-                'end_date' => $enddate->format('Y-m-d'),
-            ];
-        } else {
-            $payload['cancel_at_period_end'] = true;
-        }
         $user->newSubscription('default', $plan->stripe_plan_id)->create($paymentMethodId, [],$payload);
+        if ($referral_code) {
+            if ($referral_code) {
+                $this->addReferralCount($referral_code, $user);
+            }
+        }
+        $this->mailgun->sendMail([
+            'to' => $user->email,
+            'subject' => 'Welcome to College Prep System - Your College Journey Begins Today',
+            'html' => view('email-template.subscription.new', [
+                'name' => $user->first_name,
+                'plan_name' => $plan->product->title
+            ])->render()
+        ]);
         $this->setUserRole($plan, $user);
         return true;
     }
 
-    public function changeUserSubscription($plan, $paymentMethodId) {
-        $user = Auth::user();
-        $active_subscription = Auth::user()->subscriptions()->active()->first();
-        $active_subscription_plan = Plan::where('stripe_plan_id', $active_subscription->stripe_price)->first();
-        $payload = [];
-        
-        if ($plan->interval == 'hour' && $active_subscription_plan->interval == 'hour') {
-            $this->subscribeUserToHourlyPlan($plan, $paymentMethodId, $active_subscription);
-        } else if ($plan->interval == 'hour' && $active_subscription_plan->interval !== 'hour') {
-            $user->subscription('default')->cancelNow();
-            $this->subscribeUserToHourlyPlan($plan, $paymentMethodId);
-        } else if ($plan->interval !== 'hour' && $active_subscription_plan->interval == 'hour') {
-            $this->canceledExistingOneTimeSubscription($user, $active_subscription);
-            $this->createSubscription($plan, $paymentMethodId);
-        } else if ($plan->interval !== 'hour' && $active_subscription_plan->interval !== 'hour') {
-            if ($plan->interval_count > 1) {
-                $enddate = Carbon::now()->addMonth($plan->interval_count);
-                $payload['cancel_at'] = $enddate->timestamp;
-                $payload['metadata'] = [
-                    'start_date' => Carbon::now()->format('Y-m-d'),
-                    'pending_interval_period' => $plan->interval_count - 1,
-                    'total_interval_count' => $plan->interval_count,
-                    'end_date' => $enddate->format('Y-m-d'),
-                ];
-            } else {
-                $payload['cancel_at_period_end'] = true;
+    public function addReferralCount($referral_code, $user) {
+        $referral_code_user = User::where('referral_code', $referral_code)->first();
+        if ($referral_code_user) {
+            $createRewards = UserRewards::create([
+                'user_id' => $user->id,
+                'referred_user_id' => $referral_code_user->id,
+            ]);
+            if ($createRewards) {
+                $referral_code_user->update([
+                    'referred_rewards_points' => $referral_code_user->referred_rewards_points + 1,
+                ]);
             }
-            $user->subscription('default')->swap($plan->stripe_plan_id);
-            $changeCancelDate = $this->stripe->subscriptions->update($active_subscription->stripe_id, $payload);
+        }
+    }
+
+    public function changeUserSubscription($plan, $paymentMethodId, $referral_code) {
+        $user = Auth::user();
+        $active_subscription = $user->getUserStripeSubscription();
+        $active_subscription->swap($plan->stripe_plan_id);
+        if ($referral_code) {
+            $this->addReferralCount($referral_code, $user);
         }
         $this->setUserRole($plan, $user);
         return true;
@@ -396,37 +432,7 @@ class PlanController extends Controller
         return $end_date;
     }
 
-    public function updateOneTimeSubscriptionData($user, $plan, $intent, $existing_subscription) {
-        $subscription = Subscription::where('id', $existing_subscription->id)->first();
-        $end_date = $this->getOneTimePlanEndDate($plan);
-        if ($subscription) {
-            $subscription->update([
-                'user_id' => $user->id,
-                'name' => 'default',
-                'stripe_id' => $intent->id,
-                'stripe_status' => $intent->status == 'succeeded' ? 'active' : 'failed',
-                'stripe_price' => $plan->stripe_plan_id,
-                'quantity' => 1,
-                'trial_ends_at' => null,
-                'ends_at' => null,
-                'plan_type' => 'one-time',
-                'plan_end_date' => $end_date->format('Y-m-d H:i:s'),
-            ]);
-            $subscriptionItem = SubscriptionItem::where('subscription_id', $subscription->id)->first();
-            if ($subscriptionItem) {
-                $subscriptionItem->update([
-                    'subscription_id' => $subscription->id,
-                    'stripe_id' => $intent->latest_charge,
-                    'stripe_product' => $plan->product->stripe_product_id,
-                    'stripe_price' => $plan->stripe_plan_id,
-                    'quantity' => 1,
-                ]);
-            }
-        }
-    }
-
     public function createOneTimeSubscriptionData($user, $plan, $intent) {
-        $end_date = $this->getOneTimePlanEndDate($plan);
         $subscription = Subscription::create([
             'user_id' => $user->id,
             'name' => 'default',
@@ -437,7 +443,7 @@ class PlanController extends Controller
             'trial_ends_at' => null,
             'ends_at' => null,
             'plan_type' => 'one-time',
-            'plan_end_date' => $end_date->format('Y-m-d H:i:s'),
+            'pending_consumed_hours' => $plan->interval_count,
         ]);
         if ($subscription) {
             SubscriptionItem::create([
@@ -450,13 +456,39 @@ class PlanController extends Controller
         }
     }
 
-    public function canceledExistingOneTimeSubscription($user, $active_subscription) {
-        $subscription = Subscription::where('id', $active_subscription->id)->first();
-        if ($subscription) {
-            $subscription->update([
-                'stripe_status' => 'canceled',
-                'ends_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            ]);
+    public function validateReferralCode(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'referral_code' => 'required|exists:users,referral_code',
+        ], [
+            'referral_code.required' => 'Referral code is required',
+            'referral_code.exists' => 'Referral code is not exists',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validation->errors()->first(),
+            ], 200);
         }
+        $referral_code_user = User::where('referral_code', $request->referral_code)->first();
+        if ($referral_code_user->id == auth()->user()->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You can not use your own referral code',
+            ], 200);
+        }
+
+        $is_user_already_used_referral_code = UserRewards::where('user_id', auth()->user()->id)->where('referred_user_id', $referral_code_user->id)->first();
+
+        if ($is_user_already_used_referral_code) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already used this referral code',
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Referral code is valid',
+        ], 200);
     }
 }

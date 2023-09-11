@@ -18,4 +18,8 @@ class PermissionModule extends Model
     public function permission() {
         return $this->hasMany(Permission::class, 'permision_module_id', 'id');
     }
+
+    public function userPermission() {
+        return $this->hasMany(UserPermission::class, 'module_id', 'id');
+    }
 }

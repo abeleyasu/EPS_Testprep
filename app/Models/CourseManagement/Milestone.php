@@ -6,6 +6,8 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\UserRole;
+use App\Models\Product;
 
 class Milestone extends Model
 {
@@ -23,7 +25,9 @@ class Milestone extends Model
         'content_category_id',
         'course_id',
         'coverimage',
-        'published'
+        'published',
+        'product_id',
+        'is_addmission_lesson',
     ];
 
     public function hasTags() {
@@ -63,6 +67,54 @@ class Milestone extends Model
             ->where('tasks.published', 1)
 			->where('user_task_statuses.user_id', $userId)->get();
         return $tasks;
+    }
+
+    public static function getUserTypeWiseMilestones($courseid) { 
+        $milestone = Milestone::where('published',1)->whereHas('user_milestone_roles', function ($query) {
+            $query->where('user_role_id', auth()->user()->role);
+        });
+        if (gettype($courseid) == 'array') {
+            $milestone->whereIn('course_id', $courseid);
+        } else {
+            $milestone->where('course_id', $courseid);
+        }
+        return $milestone;
+    }
+
+    public function user_milestone_roles() {
+        return $this->belongsToMany(UserRole::class,'milestones_user_types', 'milestone_id', 'user_role_id');
+    }
+
+    public function userHasMileStonePermissionOrNot() {
+        return $this->user_milestone_roles()->where('user_role_id', auth()->user()->role)->exists();
+    }
+
+    public function user_milestone_products() {
+        return $this->belongsToMany(Product::class,'milestones_products', 'milestone_id', 'product_id');
+    }
+
+    public function task_completed_per() {
+        $total_task = $this->tasks()->count();
+        $total_completed_task = $this->completeTasks(auth()->user()->id)->count();
+        if ($total_completed_task > 0) {
+            return floor(($total_completed_task / $total_task) * 100);
+        } else {
+            return 0;
+        }
+    }
+
+    public function total_completed_module() {
+        $completedmodule = 0;
+        foreach($this->modules as $mmkey=>$module){
+            $mtotaltasks = $module->tasks()->count();
+            $mtotalcompletetasks = $module->completeTasks(auth()->id())->count();
+            if($mtotaltasks>0){
+                if($mtotaltasks == $mtotalcompletetasks){
+                    $completedmodule++;
+                }
+            }
+        }
+        return $completedmodule;
     }
 
 }

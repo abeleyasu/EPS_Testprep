@@ -162,22 +162,9 @@
                                 <div class="invalid-feedback">{{$message}}</div>
                                 @enderror
                             </div>
-
-                            <div class="mb-2">
-                                <label for="type" class="form-label">User Type:</label>
-                                <select name="user_type" class="form-control">
-									@foreach($usersRoles as $usersRole)
-										<option value="{{$usersRole->id}}"
-										
-                                        @if($milestone->user_type ==$usersRole->id)
-                                        selected
-                                        @endif >{{$usersRole->name}}</option>
-									@endforeach
-                                </select>
-                                @error('user_type')
-                                <div class="invalid-feedback">{{$message}}</div>
-                                @enderror
-                            </div>
+                            @include('admin.courses.components.user-role-dropdown', [
+                                'selected_user_roles' => $mileston_user_roles    
+                            ])
                             <div class="mb-2">
                                 <label for="duration" class="form-label">Duration</label>
                                 <div class="row">
@@ -235,6 +222,19 @@
                                     <option value="unpaid" @php if($milestone->status == 'unpaid'){ echo 'selected';} @endphp>Unpaid</option>
                                 </select>
                             </div>
+
+                            @include('admin.courses.components.product-dropdown', [
+                                'product' => $milestone->user_milestone_products()->pluck('product_id')->toArray(),
+                                'status' => $milestone->status
+                            ])
+
+                            <div class="mb-2 mt-3 form-check">
+                                <input type="checkbox" id="is_addmission_lesson" name="is_addmission_lesson" @if($milestone->is_addmission_lesson) checked @endif class="form-check-input {{$errors->has('is_addmission_lesson') ? 'is-invalid' : ''}}">
+                                <label class="form-check-label" for="is_addmission_lesson">Admissions Lessons check box</label>
+                                @error('is_addmission_lesson')
+                                    <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -242,7 +242,7 @@
         </form>
     </div>
 </main>
-
+@include('admin.courses.components.create-new-product')
 <!-- END Main Container -->
 <div class="modal fade" id="dragModal"
 
@@ -373,7 +373,7 @@
     <script src="{{asset('assets/js/plugins/ckeditor/ckeditor.js')}}"></script>
 
     <script src="{{asset('assets/js/plugins/Sortable.js')}}"></script>
-
+    <script src="{{ asset('js/admin/course.js') }}"></script>
     <script>
 		var currentMileId = '<?php echo $milestone->id; ?>';
          $(document).ready(()=>{

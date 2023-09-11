@@ -935,7 +935,6 @@
             } else {
                 toastr.error('Oops! Something went wrong')
             }
-            console.log('response -->', response)
         })
     })
 
@@ -954,8 +953,6 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    console.log('e -->', e)
-                    console.log('e.target.dataset.url -->', e.target.dataset.url)
                     window.open(e.target.href, '_blank')
                 }
             })

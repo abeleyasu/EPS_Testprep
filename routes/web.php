@@ -62,6 +62,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserDeadlineNotificationSettingsController;
 use App\Http\Controllers\AdmissionDashBoard;
 use App\Http\Controllers\WorksheetController;
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\StateCityController;
+use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\CustomQuizController;
+use App\Http\Controllers\UserSurveyController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RewardsController;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,9 +91,11 @@ use App\Http\Controllers\WorksheetController;
 
 Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
-    Route::group(['middleware' => ['role:super_admin', 'verified'], 'prefix' => 'admin'], function () {
+    Route::group(['middleware' => ['role:super_admin', 'email_verification'], 'prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
-        Route::get('/user_list', [AdminController::class, 'userList'])->name('admin-user-list');
+        Route::get('/user/list', [AdminController::class, 'userList'])->name('admin-user-list');
+        Route::get('/user/info/{id}', [AdminController::class, 'singleUserInfor'])->name('admin-user-info');
+        Route::patch('/user/change-status/{id}', [AdminController::class, 'updateUserStatus'])->name('admin-user-change-status');
         Route::get('/create_user', [AdminController::class, 'showCreateUser'])->name('admin-create-user');
         Route::post('/create_user', [AdminController::class, 'createUser'])->name('admin-post-create-user');
         Route::get('/edit_user/{id}', [AdminController::class, 'showEditUser'])->name('admin-edit-user');
@@ -141,6 +152,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('tasks/{task}/preview', [TaskController::class, 'preview'])->name('tasks.preview');
         });
         Route::resource('tags', TagController::class);
+        Route::resource('custom-quizzes', CustomQuizController::class);
         Route::resource('questiontags', QuestionTagController::class);
         Route::resource('categories', CategoryController::class);
         Route::post('categories/update_data/{id}', [CategoryController::class, 'update_data'])->name('categories.update_data');
@@ -225,6 +237,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductCategoryController::class, 'edit'])->name('category_edit');
                 Route::post('/delete', [ProductCategoryController::class, 'deleyeCateogry'])->name('category_delete');
                 Route::post('/change-order', [ProductCategoryController::class, 'changeOrder'])->name('category_change_order');
+
+                Route::get('ajax/categories', [ProductCategoryController::class, 'ajaxCategories'])->name('ajax_categories');
             });
 
             Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -236,6 +250,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::post('/edit', [ProductController::class, 'edit'])->name('product_edit');
                 Route::post('/delete', [ProductController::class, 'deleteProduct'])->name('product_delete');
                 Route::post('/change-order', [ProductController::class, 'changeOrder'])->name('product_change_order');
+
+                Route::get('/ajax/products', [ProductController::class, 'ajaxProducts'])->name('ajax_products');
+                Route::post('ajax/create', [ProductController::class, 'ajaxCreate'])->name('ajax_create');
 
                 Route::get('/permission/{id}', [ProductController::class, 'productPermission'])->name('productPermission');
                 Route::post('/permission/attach', [ProductController::class, 'attachPermission'])->name('attachPermission');
@@ -255,12 +272,56 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/get-product/{id}', [PlanController::class, 'getProduct'])->name('get_product');
             });
         });
+
+        Route::group(['prefix' => 'roles', 'as' => 'admin.roles.'], function () {
+            Route::controller(RolesController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/attach-permission/{id}', 'permissionList')->name('permission-list');
+                Route::post('/attach-permission', 'attachPermission')->name('attach-permission');
+
+                Route::patch('change/role/status/{id}', 'changeRoleStatus')->name('change-role-status');
+
+                Route::get('/ajax/roles', 'ajaxRoles')->name('ajax_roles');
+            });
+        });
+
+        Route::group(['prefix' => 'permissions', 'as' => 'admin.permissions.'], function () {
+            Route::controller(PermissionsController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+            });
+        });
+
+        Route::group(['prefix' => 'settings', 'as' => 'admin.setting.'], function () {
+            Route::controller(AdminSettingsController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('save/free-subscription-setting', 'subscriptionSetting')->name('subscription-settings');
+            });
+        });
+
+        Route::group(['prefix' => 'subscription', 'as' => 'admin.subscription.'], function () {
+            Route::controller(SubscriptionController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/{id}', 'getSubscriptionInfo')->name('subscription-info');
+                Route::post('/comsumed/{subscriptionId}', 'consumendUserSubscription')->name('consumed-subscription');
+                Route::get('/comsumed/{id}', 'getConsumendUserSubscription')->name('consumed-subscription-detail');
+                Route::get('/consumed/get/{id}', 'getSingleConsumedDetails')->name('consumed-subscription-single-detail');
+                Route::delete('/comsumed/{id}', 'deleteConsumedHour')->name('consumed-subscription-delete');
+            });
+        });
+
+        Route::group(['prefix' => 'survey', 'as' => 'admin.survey.'], function () {
+            Route::controller(UserSurveyController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/{id}', 'getSurveyInfo')->name('survey-info');
+            });
+        });
     });
 
     //User Routes
-    Route::group(['middleware' => ['role:standard_user', 'verified'], 'prefix' => 'user'], function () {
-        Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user-dashboard');
+    Route::group(['middleware' => ['role:standard_user', 'email_verification'], 'prefix' => 'user'], function () {
+        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('user-dashboard');
         Route::get('/resume', [UserController::class, 'resume'])->name('resume');
+        Route::post('/addNotesToQuestionReview', [TestPrepController::class, 'addNotesToQuestionReview'])->name('addNotesToQuestionReview');
 
         Route::group(['middleware' => ['subscription_valid:access-courses']], function () {
             Route::get('/courses', [MilestoneController::class, 'studentIndex'])->name('courses.index');
@@ -305,6 +366,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::put('/update-event/{id}', [UserCalendarController::class, 'updateEvent'])->name('.updateEvent');
             Route::post('/add-assign-event', [UserCalendarController::class, 'addAssignEvent'])->name('.addAssignEvent');
             Route::get('/get-event/{id}', [UserCalendarController::class, 'getEventById'])->name('.getEventById');
+            Route::get('/get-all-events', [UserCalendarController::class, 'getAllEvent'])->name('.getAllEvents');
         });
 
         Route::group(['middleware' => ['subscription_valid:access-reminders']], function () {
@@ -318,7 +380,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
 
         Route::group(['prefix' => 'admin-dashboard', 'as' => 'admin-dashboard.'], function () {
 
-            Route::get('/dashboard', [AdmissionDashBoard::class, 'index'])->name('dashboard');
+            Route::group(['middleware' => ['subscription_valid:access-admission-dashboard']], function () {
+                Route::get('/dashboard', [DashboardController::class, 'admission_dashboard'])->name('dashboard');
+            });
 
             Route::group(['prefix' => 'high-school-resume', 'as' => 'highSchoolResume.', 'middleware' => ['subscription_valid:access-high-school-resume']], function () {
                 Route::get('/list', [PreviewController::class, 'list'])->name('list');
@@ -372,7 +436,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/college-application-deadline', [CollegeApplicationDeadlineController::class, 'index'])->name('collegeApplicationDeadline');
                 Route::post('/college_application_save', [CollegeApplicationDeadlineController::class, 'college_application_save'])->name('college_application_save');
                 Route::post('/set-application-completed', [CollegeApplicationDeadlineController::class, 'set_application_completed'])->name('set_application_completed');
-                
+
                 Route::get('/get-college-list', [CollegeApplicationDeadlineController::class, 'list'])->name('collegeApplicationDeadline.collegeList');
                 Route::post('/college_save', [InititalCollegeListController::class, 'collegeSave'])->name('collegeApplicationDeadline.college_save');
             });
@@ -410,6 +474,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::get('/past-current-score/{id}', [InititalcollegeListController::class, 'getPastCurrentScore'])->name('getPastCurrentScore');
                 Route::get('/get/past-current-score/{id}', [InititalcollegeListController::class, 'getSinglePastCurrentScore'])->name('getSinglePastCurrentScore');
                 Route::delete('/past-current-score/{id}', [InititalcollegeListController::class, 'deletePastCurrentScore'])->name('deletePastCurrentScore');
+
+                Route::delete('remove-user-college/{id}', [InititalcollegeListController::class, 'removeUserCollege'])->name('remove-user-college');
             });
 
             Route::group(['prefix' => 'cost-comparison', 'middleware' => ['subscription_valid:access-cost-comparison-tool']], function () {
@@ -420,7 +486,9 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
                 Route::patch('save-cost-details', [InititalCollegeListController::class, 'saveCollegeCost'])->name('cost_comparison.save_cost_comparison_details');
                 Route::patch('edit-college-detail/{id}', [InititalCollegeListController::class, 'editCollegeDetails'])->name('cost_comparison.edit_college_detail');
                 Route::delete('delete-cost-details/{id}', [InititalCollegeListController::class, 'deleteCollegeCost'])->name('cost_comparison.delete_cost_details');
+                Route::post('reset-cost-comparison-data', [InititalCollegeListController::class, 'resetCostComparisonData'])->name('cost_comparison.reset-cost-comparion-data');
             });
+
             Route::get('/career-exploration', [CareerExplorationController::class, 'index'])->name('careerExploration');
         });
 
@@ -450,7 +518,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/practice-test/all/{id}', [TestPrepController::class, 'allSection'])->name('all_section');
         });
         Route::view('/practice-test-sections', 'user.practice-test-sections');
-        
+
         Route::group(['middleware' => ['subscription_valid:access-self-made-tests']], function () {
             Route::resource('self-made-test', SelfMadeTestController::class);
         });
@@ -458,15 +526,22 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('/get_section_questions/post', [TestPrepController::class, 'get_questions']);
 
         Route::post('/set_user_question_answer/post', [TestPrepController::class, 'set_answers']);
+        Route::post('/test-progress/store', [TestPrepController::class, 'test_progress_store']);
+        Route::post('/check_progress', [TestPrepController::class, 'check_progress'])->name('check_progress');
         // Please make any changes you think it's necessary to routing
-        Route::get('/test-prep-dashboard', [TestPrepController::class, 'dashboard'])->name('test_prep_dashboard');
+        Route::group(['middleware' => ['subscription_valid:access-test-prep-dashboard']], function () {
+            Route::get('/test-prep-dashboard', [DashboardController::class, 'test_prep_dashboard'])->name('test_prep_dashboard');
+        });
+        Route::post('/update_test_type', [TestPrepController::class, 'update_test_type'])->name('update_test_type');
 
         Route::post('/set_scroll_position/post', [TestPrepController::class, 'set_scrollPosition']);
         Route::post('/get_scroll_position/post', [TestPrepController::class, 'get_scrollPosition']);
 
         Route::post('/gettypes', [TestPrepController::class, 'gettypes'])->name('gettypes');
+        Route::post('/getAllTypes', [TestPrepController::class, 'getAllTypes'])->name('getAllTypes');
         Route::post('/generate-custom-quiz', [TestPrepController::class, 'generateCustomQuiz'])->name('generateCustomQuiz');
         Route::post('/getSelfMadeTestQuestion', [TestPrepController::class, 'getSelfMadeTestQuestion'])->name('getSelfMadeTestQuestion');
+        Route::post('/addMistakeType', [TestPrepController::class, 'addMistakeType'])->name('addMistakeType');
         Route::post('/changeTitleSelfMade', [TestPrepController::class, 'changeTitleSelfMade'])->name('changeTitleSelfMade');
         Route::post('/get_time', [TestPrepController::class, 'get_time'])->name('get_time');
 
@@ -477,34 +552,70 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
         Route::get('/my-subscription', [SubscriptionController::class, 'mysubscriptions'])->name('mysubscriptions.index');
         Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelsubscriptions'])->name('mysubscriptions.cancel');
-        Route::get('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/resume-subscription', [SubscriptionController::class, 'resumesubscriptions'])->name('mysubscriptions.resume');
+        Route::post('/subscription/renweval', [SubscriptionController::class, 'offSubscriptionAutoRenewval'])->name('mysubscriptions.renewal');
+        Route::get('subscription/download-invoice/{id}', [SubscriptionController::class, 'downloadUserInvoice'])->name('mysubscriptions.download-invoice');
         Route::post('/subscription-create', [PlanController::class, 'subscriptioncreatewithexistingcard'])->name('subscriptions.create-custome');
         Route::get('/set-as-default/{payment_id}', [UserController::class, 'setAsDefaultCard'])->name('user.setAsDefault');
+        Route::post('/validate-referral-code', [PlanController::class, 'validateReferralCode'])->name('validate-referral-code');
+
+        Route::controller(UserSurveyController::class)->group(function () {
+            Route::get('/survey', 'surveyForm')->name('survey-form');
+            Route::post('/survey', 'saveSurvey')->name('survey-form-submit');
+        });
+
+        Route::controller(RewardsController::class)->group(function () {
+            Route::group(['prefix' => 'rewards', 'as' => 'rewards.'], function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'sendReferralNotification')->name('send-notification');
+            });
+        });
+
+    });
+    
+    Route::controller(GoogleController::class)->group(function () {
+        Route::get('auth/google', 'google')->name('google');
+        Route::get('auth/google/callback', 'googleCallback')->name('googleCallback');
+        Route::group(['prefix' => 'google', 'as' => 'google.'], function () {
+            Route::get('/disconnect/google', 'disconnect')->name('disconnect');
+            Route::get('/calendars', 'getCalenders')->name('calendars');
+            Route::delete('/calendar', 'deleteCalender')->name('delete-calender');
+            Route::get('/create/calender', 'storeUserCalender')->name('create-user-calender');
+        });
+    });
+    Route::controller(StateCityController::class)->group(function () {
+        Route::get('get/states', 'states')->name('get-states');
+        Route::get('get/cities/{id}', 'city')->name('get-cities');
     });
 
     Route::get('/logout', [AuthController::class, 'signOut'])->name('signout');
+
+    Route::get('/{code}', [RewardsController::class, 'getCode'])->name('get-code');
 });
 
 // Auth Routes
 Route::group(['middleware' => ['guest', 'cors']], function () {
-    Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
+    // Route::get('/login', [AuthController::class, 'showSignIn'])->name('signin');
     Route::post('/signin', [AuthController::class, 'userSignIn'])->name('post-signin');
-    Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
+    // Route::get('/register', [AuthController::class, 'showSignUp'])->name('signup');
     Route::post('/signup', [AuthController::class, 'userSignUp'])->name('post-signup');
+    Route::post('/check-email', [AuthController::class, 'checkEmail'])->name('check-email');
     Route::get('forget-password', [AuthController::class, 'showForgetPassword'])->name('password.request');
     Route::post('forget-password', [AuthController::class, 'postForgetPassword'])->name('password.email');
     Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
     Route::get('/pricing', [PlanController::class, 'getPlanForNonUser'])->name('simple-pricing');
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
-    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.resend');
+    // Route::get('/verify-email', [VerifyEmailController::class, 'send'])->name('verification.notice');
 });
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
 Route::get('/sendreminder', [SendReminder::class, 'index']);
 Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
 Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);
+
+Route::get('/list/get-all-events', [UserCalendarController::class, 'getAllEvent'])->name('.getAllEvents');

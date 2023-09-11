@@ -432,6 +432,10 @@
         }
     });
 
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
+
     $('#is_select_college_size').on('change', function(e) {
         hideshow('college_size_step', this.checked);
     });

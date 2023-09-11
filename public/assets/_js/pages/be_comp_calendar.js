@@ -73,17 +73,20 @@ class pageCompCalendar {
      *
      */
     static initCalendar(eventObj) {
-        // console.log("sbzeventObj =>>>", eventObj);
         var formattedEvents = [];
         // Loop through the eventObj array and format each object
         for (var i = 0; i < eventObj.length; i++) {
             var event = eventObj[i];
+
+            const start_date = moment(event.start).format("YYYY-MM-DD");
+            const end_date = moment(event.end).format("YYYY-MM-DD");
+
             var formattedEvent = {
                 id: event.id,
                 title: event.title,
                 description: event.description,
                 start: event.start,
-                end: event.end,
+                end: start_date == end_date ? null : event.end,
                 color: event.color,
                 allDay: event.allDay,
                 
@@ -93,7 +96,7 @@ class pageCompCalendar {
         let calendar = new FullCalendar.Calendar(
             document.getElementById("js-calendar"),
             {
-                themeSystem: "standard",
+                themeSystem: "bootstrap5",
                 firstDay: 1,
                 editable: true,
                 selectable: true,
@@ -209,24 +212,37 @@ class pageCompCalendar {
                         success: function (resp) {
                             if (resp.success) {
                                 $("#event-click-model").modal("show");
-                                let title = resp.data.event.title;
-                                let color = resp.data.event.color;
-                                let desc = resp.data.event.description;
-                                let time = resp.data.event.event_time;
-                                let formattedTime = time.slice(0, 5);
 
-                                const input = document.querySelector('#exampleInputEventTime');
-                                const picker = flatpickr(input, {
-                                    enableTime: true,
-                                    noCalendar: true,
-                                    dateFormat: "H:i",
-                                });
-                                picker.setDate(formattedTime, false, "H:i");
+                                const start_date_obj = moment(resp.data.start_date)
+                                const end_date_obj = moment(resp.data.end_date)
 
-                                $('#exampleInputEventTitle').val(title);
-                                $('#exampleInputEventColor').val(color);
-                                // $('#exampleInputEventTime').val(formattedTime);
-                                $('#exampleInputEventDescription').val(desc);
+                                const start_date = start_date_obj.format("YYYY-MM-DD");
+                                const end_date = end_date_obj.format("YYYY-MM-DD");
+
+                                const start_time = start_date_obj.format("hh:mm A");
+                                const end_time = end_date_obj.format("hh:mm A");
+
+                                $('#EditInputStartDate').val(start_date);
+                                $('#EditInputEndDate').val(end_date);
+
+                                if (start_time == '12:00 AM' && end_time == '12:00 AM') {
+                                    $('#edit_is_all_day').prop('checked', true);
+                                    $('#edit_is_all_day').trigger('change');
+                                    $('#EditInputEndEventTime').val(null);
+                                    $('#EditInputStartEventTime').val(null);
+                                    $('#EditInputStartEventTime').parent().addClass('d-none')
+                                    $('#EditInputEndEventTime').parent().addClass('d-none')
+                                } else {
+                                    $('#EditInputStartEventTime').parent().removeClass('d-none')
+                                    $('#EditInputEndEventTime').parent().removeClass('d-none')
+                                    $('#edit_is_all_day').prop('checked', false);
+                                    $('#edit_is_all_day').trigger('change');
+                                    $('#EditInputEndEventTime').val(end_time);
+                                    $('#EditInputStartEventTime').val(start_time);
+                                }
+                                $('#exampleInputEventTitle').val(resp.data.event.title);
+                                $('#exampleInputEventColor').val(resp.data.event.color.charAt(0) == '#' ? `others` : resp.data.event.color);
+                                $('#exampleInputEventDescription').val(resp.data.event.description);
                                 $("#event-click-model .btn-main-id").attr("data-id", resp.data.event.id);
 
                             }
@@ -237,10 +253,10 @@ class pageCompCalendar {
                     });
                 },
                 select: function(info) {
-                    let start_date = moment(info.startStr).format("YYYY-MM-DD HH:mm:ss");
+                    let start_date = moment(info.startStr).format("YYYY-MM-DD");
                     let end_date = null;
                     if (info.endStr != "") {
-                        end_date = moment(info.endStr).subtract(1, "days").format("YYYY-MM-DD HH:mm:ss");
+                        end_date = moment(info.endStr).subtract(1, "days").format("YYYY-MM-DD");
                     } else {
                         end_date = null;
                     }
@@ -248,7 +264,24 @@ class pageCompCalendar {
                     $('#AddInputEndDate').val(end_date);
                     $('#event-select-model').modal('show');
                 },
-                events: formattedEvents,
+                events: {
+                    url: $("#site_url").val() + "/user/calendar/get-all-events",
+                    method: "get",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr("content"),
+                    },
+                    failure: function () {
+                        toastr.error("There was an error while fetching FullCalendar!");
+                    },
+                },
+                loading: function (isLoading) {
+                    if (isLoading) {
+                        $('#calendar-loader').show();
+                    } else {
+                        $('#calendar-loader').hide();
+                    }
+                },
+                eventAfterAllRender: function (view) {},
                 eventTimeFormat: {
                     hour: 'numeric',
                     minute: '2-digit',
@@ -321,138 +354,69 @@ class pageCompCalendar {
         });
 
         $('#editEvent').click(function() {
-            let id = $('#editEvent').attr('data-id');
-            let title = $('#exampleInputEventTitle').val();
-            let color = $('#exampleInputEventColor').val();
-            let time = $('#exampleInputEventTime').val();
-            let desc = $('#exampleInputEventDescription').val();
-
-            let site_url = $("#site_url").val();
-            let listEvent = calendar.getEvents();
-            
-            if(title == "") {
-                toastr.error("Please Enter Title!");
-                return false;
-            }
-
-            if(color == "") {
-                toastr.error("Please Select Color!");
-                return false;
-            }
-
-            if(time == "") {
-                toastr.error("Please Input Time!");
-                return false;
-            }
-
-            if(desc == "") {
-                toastr.error("Please Input Description!");
-                return false;
-            }
-            showLoadingIndicator();
-
-            $.ajax({
-                url: `${site_url}/user/calendar/update-event/${id}`,
-                type: "PUT",
-                dataType: "JSON",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr(
-                    "content"
-                    ),
-                    title: title,
-                    color: color,
-                    time: time,
-                    desc: desc
-                },
-                success: function(resp) {
+            const form = $('#EditEventModel');
+            if (form.valid()) {
+                let id = $('#editEvent').attr('data-id');
+                let site_url = $("#site_url").val();
+                let listEvent = calendar.getEvents();
+                showLoadingIndicator();
+    
+                $.ajax({
+                    url: `${site_url}/user/calendar/update-event/${id}`,
+                    type: "PUT",
+                    dataType: "JSON",
+                    data: form.serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                }).done((resp) => {
                     if (resp.success) {
                         hideLoadingIndicator();
                         $('#event-click-model').modal('hide');
-                        $('#exampleInputEventTitle').val('');
-                        $('#exampleInputEventColor').val('');
-                        $('#AddInputEventTime').val('');
-                        $('#AddInputEventDescription').val('');
+                        form.trigger("reset");
                         listEvent.forEach(event => { 
                             event.remove();
                         });
                         calendar.addEventSource(resp.data);
                         toastr.success(resp.message);
+                    } else {
+                        hideLoadingIndicator();
+                        toastr.error(resp.message);
                     }
-                },
-                error: function(err) {
-                    hideLoadingIndicator();
-                    console.log("err =>>>", err);
-                }
-            });
+                })
+            }
         });
 
         $('#addEvent').click(function() {
-            let title = $('#AddInputEventTitle').val();
-            let color = $('#AddInputEventColor').val();
-            let start_date = $('#AddInputStartDate').val();
-            let end_date = $('#AddInputEndDate').val();
-            let site_url = $("#site_url").val();
-            let time = $('#AddInputEventTime').val();
-            let desc = $('#AddInputEventDescription').val();
-
-            let listEvent = calendar.getEvents();
-
-            if(title == "") {
-                toastr.error("Please Enter Title!");
-                return false;
-            }
-
-            if(color == "") {
-                toastr.error("Please Select Color!");
-                return false;
-            }
-
-            if(time == "") {
-                toastr.error("Please Input Time!");
-                return false;
-            }
-
-            if(desc == "") {
-                toastr.error("Please Input Description!");
-                return false;
-            }
-            showLoadingIndicator();
-
-            $.ajax({
-                url: `${site_url}/user/calendar/add-assign-event`,
-                type: "POST",
-                dataType: "JSON",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr(
-                    "content"
-                    ),
-                    title: title,
-                    color: color,
-                    start_date: start_date,
-                    end_date: end_date,
-                    time: time,
-                    desc: desc
-                },
-                success: function(resp) {
+            const form = $('#AddEventModel')
+            if (form.valid()) {
+                let site_url = $("#site_url").val();
+                let listEvent = calendar.getEvents();
+                showLoadingIndicator();
+                $.ajax({
+                    url: `${site_url}/user/calendar/add-assign-event`,
+                    type: "POST",
+                    dataType: "JSON",
+                    data: form.serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                }).done((resp) => {
                     if (resp.success) {
+                        hideLoadingIndicator();
                         $('#event-select-model').modal('hide');
-                        $('#AddInputEventTitle').val('');
-                        $('#AddInputEventColor').val('');
-                        $('#AddInputEventTime').val('');
-                        $('#AddInputEventDescription').val('');
+                        form.trigger("reset");
                         listEvent.forEach(event => { 
                             event.remove();
                         });
                         calendar.addEventSource(resp.data);
                         toastr.success(resp.message);
+                    } else {
+                        hideLoadingIndicator();
+                        toastr.error(resp.message);
                     }
-                    hideLoadingIndicator();
-                },
-                error: function(err) {
-                    console.log("err =>>>", err);
-                    hideLoadingIndicator();
-                }
-            });
+                })
+            }
         });
 
         calendar.render();
