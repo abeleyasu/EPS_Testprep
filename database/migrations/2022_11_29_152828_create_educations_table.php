@@ -18,6 +18,7 @@ return new class extends Migration
                 $table->id();
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->string('current_grade')->nullable();
+                $table->string('graduation_designation')->nullable();
                 $table->string('month')->nullable();
                 $table->integer('year')->nullable();
                 $table->string('high_school_name')->nullable();
@@ -37,6 +38,7 @@ return new class extends Migration
                 $table->string('ap_courses')->nullable();
                 $table->longText('course_data')->nullable();
                 $table->longText('honor_course_data')->nullable();
+				$table->tinyInteger('test_taken_status')->default(0)->comment('0 = I have taken a test, 1 = I have not taken a test yet');
                 $table->longText('testing_data')->nullable();
                 $table->string('intended_college_major')->nullable();
                 $table->string('intended_college_minor')->nullable();

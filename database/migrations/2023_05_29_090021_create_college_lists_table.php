@@ -41,6 +41,13 @@ return new class extends Migration
             // end
             $table->integer('active_step')->nullable()->default(1);
             $table->string('status')->nullable()->default('not_completed');
+            $table->string('unweighted_gpa')->nullable();
+            $table->string('weighted_gpa')->nullable();
+
+            $table->string('high_school_composite_score')->nullable();
+            $table->string('goal_composite_score')->nullable();
+            $table->string('final_composite_score')->nullable();
+            $table->string('final_write_score')->nullable();
             $table->timestamps();
         });
     }

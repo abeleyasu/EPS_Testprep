@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('user_answers')) {
-        Schema::create('user_answers', function (Blueprint $table) {
+        Schema::create('test_scores', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('section_id');
-            $table->integer('question_id');
-            $table->text('answer');
+            $table->integer('user_id')->unsigned();
+            $table->enum('primary_test_type', ['ACT', 'SAT', 'PSAT']);
+            $table->float('initial_score');
+            $table->float('last_test_score');
+            $table->float('goal_score');
             $table->timestamps();
         });
-        }
     }
 
     /**
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_answers');
+        Schema::dropIfExists('test_scores');
     }
 };
