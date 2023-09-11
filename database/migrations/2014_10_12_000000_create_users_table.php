@@ -24,10 +24,6 @@ return new class extends Migration
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
-                $table->string('stripe_id')->nullable();
-                $table->string('pm_type')->nullable();
-                $table->string('pm_last_four')->nullable();
-                $table->string('trial_ends_at')->nullable();
                 $table->integer('state_id')->nullable();
                 $table->integer('city_id')->nullable();
                 $table->string('address_line_1')->nullable();

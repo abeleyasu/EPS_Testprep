@@ -20,7 +20,7 @@ return new class extends Migration
                 $table->integer('section_id');
                 $table->integer('question_id');
                 $table->text('answer');
-				$table->timestamp('deleted_at')->nullable()->onUpdate(CURRENT_TIMESTAMP);
+				$table->timestamp('deleted_at')->nullable()->onUpdate(DB::raw('CURRENT_TIMESTAMP'));
 				$table->timestamps();
                 $table->text('guess');
                 $table->text('flag');

@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('field', 255)->nullable();
             $table->tinyInteger('is_send')->default(0);
             $table->timestamps();
-            $table->timestamp('updated_at')->useCurrent()->onUpdate(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
