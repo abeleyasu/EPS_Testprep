@@ -1734,12 +1734,14 @@ class TestPrepController extends Controller
         $checkTestQuestion = DB::table('practice_questions')
             ->join('practice_test_sections', 'practice_test_sections.id', '=', 'practice_questions.practice_test_sections_id')
             ->where('practice_test_sections.testid', $id)
+            ->where('practice_test_sections.is_active', "1")
             ->count();
 
         $testSections = DB::table('practice_tests')
             ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
             ->select('practice_test_sections.*', 'practice_tests.title', 'practice_tests.is_test_completed', 'practice_tests.format',  'practice_tests.description', 'practice_tests.tags' /*, 'practice_questions.*'*/)
             ->where('practice_test_sections.testid', $id)
+            ->where('practice_test_sections.is_active', "1")
             ->orderBy('section_order', 'ASC')
             ->get();
 
@@ -1747,6 +1749,7 @@ class TestPrepController extends Controller
             ->join('practice_test_sections', 'practice_test_sections.testid', '=', 'practice_tests.id')
             ->select('practice_test_sections.*', 'practice_tests.title', 'practice_tests.format',  'practice_tests.description', 'practice_tests.tags' /*, 'practice_questions.*'*/)
             ->where('practice_test_sections.testid', $id)
+            ->where('practice_test_sections.is_active', "1")
             ->count();
 
         $testSection = DB::table('practice_tests')
@@ -1796,23 +1799,6 @@ class TestPrepController extends Controller
             }
         }
 
-        // foreach($store_sections_details as $section_detail){
-        //     $right[$section_detail['Sections'][0]['id']][$section_detail['Sections'][0]['practice_test_type']] = [];
-        //     foreach($section_detail['Sections_question'] as $question){
-        //         $user_answer = UserAnswers::where('section_id',$question['practice_test_sections_id'])->get();
-        //         $answer_array = json_decode($user_answer[0]['answer'],true);
-        //         if(isset($answer_array) && !empty($answer_array)){
-        //             if(str_replace(' ','',$question['answer']) == str_replace(' ','',$answer_array[$question['id']])){
-        //                 array_push($right[$section_detail['Sections'][0]['id']][$section_detail['Sections'][0]['practice_test_type']], $question['id']);
-        //             }
-        //         }
-        //     }
-        // }
-        // $score = [];
-        // foreach($right as $key => $right_count){
-        //     $section_score = Score::where('section_id',$key)->where('actual_score',count($right_count))->first();
-        //     $score[$section_score->section_type][$key] = $section_score['converted_score'];
-        // }
         $helper = new Helper();
         $sections = PracticeTestSection::where('testid', $id)->get();
         foreach ($sections as $section) {
@@ -1893,48 +1879,23 @@ class TestPrepController extends Controller
         } else {
             $total_score = $total_score;
         }
-        // if(isset($section_score) && !empty($section_score)){
-        //     foreach($sections as $section){
-        //         $score[$section['id']] = [];
-        //         if($section['practice_test_type'] == 'Math_no_calculator'){
-        //             $another_section = PracticeTestSection::where('testid',$id)->where('practice_test_type','Math_with_calculator')->pluck('id');
-        //             if(isset($section_score[$another_section[0]])){
-        //                 $score[$section['id']] = $section_score[$section['id']] + $section_score[$another_section[0]];
-        //             } else {
-        //                 if(isset($section_score[$section['id']])){
-        //                     $score[$section['id']] = $section_score[$section['id']];
-        //                 } else {
-        //                     $score[$section['id']] = 0;
-        //                 }
-        //             }
-        //         } else if($section['practice_test_type'] == 'Math_with_calculator'){
-        //             $another_section = PracticeTestSection::where('testid',$id)->where('practice_test_type','Math_no_calculator')->pluck('id');
-        //             if(isset($section_score[$another_section[0]])){
-        //                 $score[$section['id']] = $section_score[$section['id']] + $section_score[$another_section[0]];
-        //             } else {
-        //                 if($section_score[$section['id']]){
-        //                     $score[$section['id']] = $section_score[$section['id']];
-        //                 } else {
-        //                     $score[$section['id']] = 0;
-        //                 }
-        //             }
-        //         } else {
-        //             if(isset($section_score[$section['id']])){
-        //                 $score[$section['id']] = $section_score[$section['id']];
-        //             } else {
-        //                 $score[$section['id']] = 0;
-        //             }
 
-        //         }
-        //     }
-        // } else {
-        //     foreach($sections as $section){
-        //         $score[$section['id']] = 0;
-        //     }
 
-        // }
-
-        return view('user.practice-test-sections', ['selected_test_id' => $id, 'testSections' => $testSections, 'testSectionName' => $testSectionName, 'testSection' => $testSection, 'testSectionsDetails' => $store_sections_details, 'get_total_sections' => $get_total_sections, 'get_total_questions' => $get_total_questions, 'check_test_completed' => $check_test_completed, 'checkTestQuestion' => $checkTestQuestion, 'get_test_description' => $get_test_description, 'score' => $section_score, 'total_score' => $total_score, 'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0']);
+        return view('user.practice-test-sections', [
+            'selected_test_id' => $id,
+            'testSections' => $testSections,
+            'testSectionName' => $testSectionName,
+            'testSection' => $testSection,
+            'testSectionsDetails' => $store_sections_details,
+            'get_total_sections' => $get_total_sections,
+            'get_total_questions' => $get_total_questions,
+            'check_test_completed' => $check_test_completed,
+            'checkTestQuestion' => $checkTestQuestion,
+            'get_test_description' => $get_test_description,
+            'score' => $section_score,
+            'total_score' => $total_score,
+            'total_all_section_question' => isset($total_all_section_question) ? $total_all_section_question : '0'
+        ]);
     }
 
     public function set_scrollPosition(Request $request)
@@ -1968,9 +1929,11 @@ class TestPrepController extends Controller
         UserAnswers::where('user_id', Auth::id())->where('test_id', $request->test_id)->delete();
 
         $current_user_id = Auth::id();
+
         $existingRecord = TestProgress::where('test_id', $request->test_id)
             ->where('user_id', $current_user_id)
             ->first();
+
         if ($existingRecord) {
             $existingRecord->delete();
         }
@@ -1978,23 +1941,90 @@ class TestPrepController extends Controller
         return redirect(url('user/practice-test-sections/' . $request['test_id']));
     }
 
-    public function resetSection(Request $request, $testId, $id)
+    public function resetSection($testId, $id)
     {
-        $pq = PracticeQuestion::where("practice_test_sections_id", $id);
 
-        if ($pq->count()) {
-            $pq->update(["mistake_type" => NULL]);
+        $practiceTest = PracticeTest::where("id", $testId)->first(
+            [
+                "title",
+                "format",
+                "test_source",
+                "description",
+                "tags",
+                "is_test_completed",
+                "user_id"
+            ]
+        );
+
+        if (!empty($practiceTest)) {
+
+            $practiceTest = $practiceTest->toArray();
+
+            $newPracticeTest = PracticeTest::create($practiceTest);
+
+            if (!empty($newPracticeTest)) {
+
+                $allSections = PracticeTestSection::where(
+                    [
+                        ["testid", "=", $testId]
+                    ]
+                )->get([
+                    "format",
+                    "practice_test_type",
+                    "testid",
+                    "section_order",
+                    "is_section_completed",
+                    "section_title",
+                    "regular_time",
+                    "fifty_per_extended",
+                    "hundred_per_extended"
+                ]);
+
+                // dd($allSections);
+
+                foreach ($allSections as $section) {
+                    $section_type = $section->toArray();
+
+                    $section_type["testid"] = $newPracticeTest->id;
+
+                    $newPracticeTestSection = PracticeTestSection::create($section_type);
+
+                    $questions = PracticeQuestion::where("practice_test_sections_id", $id)->get([
+                        'title',
+                        'format',
+                        'practice_test_sections_id',
+                        'type',
+                        'passages_id',
+                        'passages',
+                        'passage_number',
+                        'answer',
+                        'answer_content',
+                        'answer_exp',
+                        'fill',
+                        'fillType',
+                        'multiChoice',
+                        'tags',
+                        'question_type_id',
+                        'category_type',
+                        'diff_rating',
+                        'super_category',
+                        'category_type_values',
+                        'super_category_values',
+                        'checkbox_values',
+                        'question_type_values',
+                        'question_order',
+                        'selfMade'
+                    ]);
+
+                    foreach ($questions as $question) {
+                        $question = $question->toArray();
+                        $question['practice_test_sections_id'] = $newPracticeTestSection->id;
+                        PracticeQuestion::create($question);
+                    }
+                }
+            }
+            return redirect(url('user/practice-test-sections/' . $newPracticeTest->id));
         }
-
-        UserAnswers::where('section_id', $id)->where('user_id', Auth::id())->delete();
-
-        $existingRecord = TestProgress::where('section_id', $id)
-            ->where('user_id', Auth::id())
-            ->first();
-        if ($existingRecord) {
-            $existingRecord->delete();
-        }
-        return redirect(url('user/practice-test-sections/' . $testId));
     }
 
     public function testHomePage()
