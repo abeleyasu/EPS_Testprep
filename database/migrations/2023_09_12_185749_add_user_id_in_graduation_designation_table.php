@@ -26,10 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('graduation_designation', function (Blueprint $table) {
-            if (Schema::hasColumn('graduation_designation', 'user_id')) {
-                $table->dropForeign(['graduation_designation_user_id_foreign']);
-                $table->dropColumn('user_id');
-            }
+            $table->dropColumn('user_id');
         });
     }
 };
