@@ -26,8 +26,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('intended_college_lists', function (Blueprint $table) {
-            $table->dropForeign(['intended_college_lists_user_id_foreign']);
-            $table->dropColumn('user_id');
+            if (Schema::hasColumn('intended_college_lists', 'user_id')) {
+                $table->dropForeign(['intended_college_lists_user_id_foreign']);
+                $table->dropColumn('user_id');
+            }
         });
     }
 };
