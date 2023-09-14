@@ -1190,6 +1190,10 @@ class TestPrepController extends Controller
 
         if (isset($filtered_answers) && !empty($filtered_answers)) {
             $get_question_ids_array = array_keys($filtered_answers);
+            if (!in_array($curr_question_id, $get_question_ids_array)) {
+                array_push($get_question_ids_array, $curr_question_id);
+                $filtered_answers[$curr_question_id] = '-';
+            }
         }
 
         $existingRecord = TestProgress::where('section_id', $get_section_id)
@@ -1200,8 +1204,8 @@ class TestPrepController extends Controller
         if ($existingRecord) {
             $get_question_ids_array = json_decode($existingRecord->question_id);
             if ($existingRecord->is_submit) {
-                $existingRecord->delete();
-                return response()->json(['message' => 'delete']);
+                // $existingRecord->delete();
+                return response()->json(['message' => 'delete', 'data' => ['selected_answer' => json_decode($existingRecord->selected_answer, true)]]);
             }
 
             $filtered_guess = [];
@@ -1227,12 +1231,13 @@ class TestPrepController extends Controller
             ksort($filtered_skip);
 
             $new_answered = [];
-            if (!empty($existingRecord->skip)) {
+            if (!empty($existingRecord->selected_answer)) {
                 $new_answered = json_decode($existingRecord->selected_answer, true);
             }
             if (array_key_exists($curr_question_id, $filtered_answers)) {
                 $new_answered[$curr_question_id] = $filtered_answers[$curr_question_id];
             }
+
             ksort($new_answered);
 
             $updates = [
@@ -1284,9 +1289,12 @@ class TestPrepController extends Controller
             $testProgress->actual_time = $actual_time;
             $testProgress->time_left = $time_left;
             $testProgress->save();
+            $existingRecord = $testProgress;
         }
 
-        return response()->json(['message' => 'success']);
+        return response()->json(['message' => 'success', 'data' => [
+            'selected_answer' => json_decode($existingRecord->selected_answer, true)
+        ]]);
     }
 
     public function check_progress(Request $request)
@@ -1473,7 +1481,15 @@ class TestPrepController extends Controller
             ]);
         }
 
-        return response()->json(['success' => '0', 'section_id' => $get_section_id, 'get_test_type' => $get_question_type, 'get_test_name' => $get_test_name, 'total_question' => $get_total_question]);
+        return response()->json(
+            [
+                'success' => '0',
+                'section_id' => $get_section_id,
+                'get_test_type' => $get_question_type,
+                'get_test_name' => $get_test_name,
+                'total_question' => $get_total_question
+            ]
+        );
     }
 
     public function get_questions(Request $request)
