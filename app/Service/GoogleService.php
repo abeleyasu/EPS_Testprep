@@ -496,7 +496,9 @@ class GoogleService {
                     $event->user_calendar()->delete();
                     $event->delete();
                 } else {
-                    $this->deleteEvent($event->google_calendar_event_id);
+                    if ($event->google_calendar_event_id) {
+                        $this->deleteEvent($event->google_calendar_event_id);
+                    }
                     $event->update([
                         'google_calendar_event_id' => null,
                     ]);
