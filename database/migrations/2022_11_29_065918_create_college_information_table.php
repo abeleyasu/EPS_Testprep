@@ -19,6 +19,7 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('city')->nullable();
                 $table->string('state')->nullable();
+                $table->string('college_id')->nullable()->comment('college_id from college scorecard');
                 $table->string('sat_math_average')->nullable();
                 $table->string('sat_reading_writing_average')->nullable();
                 $table->string('act_composite_average')->nullable();

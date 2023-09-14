@@ -83,6 +83,23 @@
                     @endif
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="prev-btn next-btn">
+                                    <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.employmentCertification') }}"
+                                        class="btn btn-alt-success prev-step"> Previous Step
+                                    </a> 
+                                   
+                                </div>
+                                <div class="next-btn d-flex">
+                                    @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                                    @if (!isset($resume_id))
+                                        <div>
+                                            @include('components.reset-all-drafts-button')
+                                        </div>
+                                    @endif
+                                    <input type="submit" class="btn btn-alt-success next-step" value="Next Step" >
+                                </div>
+                            </div>
                             <div class="accordion accordionExample2">
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
@@ -109,14 +126,14 @@
                                                         </tr>
                                                         @if(!empty($featuredAttribute->featured_skills_data))
                                                             @foreach ($featuredAttribute->featured_skills_data as $index => $featured_skills_data)
-                                                                <tr class="featured_skill_data_table_row {{ $loop->first ? '' : 'remove_featured_skill_data' }}">
+                                                                <tr class="featured_skill_data_table_row {{ $loop->last ? '' : 'remove_featured_skill_data' }}">
                                                                     <td>
                                                                         <input type="text" class="form-control" value="{{ $featured_skills_data['skill'] }}" id="featured_skill"
                                                                             name="featured_skills_data[{{ $index }}][skill]" placeholder="EX:Leadership">
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i onclick="{{ $loop->first ? 'addFeaturedSkillData(this)' : 'removeFeaturedSkillData(this)' }}" data-count="{{ count($featuredAttribute->featured_skills_data) != 0 ? count($featuredAttribute->featured_skills_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                            <i onclick="{{ $loop->last ? 'addFeaturedSkillData(this)' : 'removeFeaturedSkillData(this)' }}" data-count="{{ count($featuredAttribute->featured_skills_data) != 0 ? count($featuredAttribute->featured_skills_data) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -165,7 +182,7 @@
                                                         </tr>
                                                         @if(!empty($featuredAttribute->featured_awards_data))
                                                             @foreach ($featuredAttribute->featured_awards_data as $index => $featured_awards_data) 
-                                                                <tr class="featured_award_data_table_row {{ $loop->first ? '' : 'remove_featured_award_data' }}">
+                                                                <tr class="featured_award_data_table_row {{ $loop->last ? '' : 'remove_featured_award_data' }}">
                                                                     <td>
                                                                         <input type="text"
                                                                             class="form-control"
@@ -175,7 +192,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i data-count="{{ count($featuredAttribute->featured_awards_data) != 0 ? count($featuredAttribute->featured_awards_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addFeaturedAwardData(this)' : 'removeFeaturedAwardData(this)' }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                            <i data-count="{{ count($featuredAttribute->featured_awards_data) != 0 ? count($featuredAttribute->featured_awards_data) - 1 : 0 }}" onclick="{{ $loop->last ? 'addFeaturedAwardData(this)' : 'removeFeaturedAwardData(this)' }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -230,7 +247,7 @@
                                                         </tr>
                                                         @if(!empty($featuredAttribute->featured_languages_data))
                                                             @foreach ($featuredAttribute->featured_languages_data as $index => $featured_languages_data)   
-                                                                <tr class="featured_language_data_table_row {{ $loop->first ? '' : 'remove_featured_language_data' }}">
+                                                                <tr class="featured_language_data_table_row {{ $loop->last ? '' : 'remove_featured_language_data' }}">
                                                                     <td>
                                                                         <input type="text"
                                                                             class="form-control"
@@ -247,7 +264,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i data-count="{{ count($featuredAttribute->featured_languages_data) != 0 ? count($featuredAttribute->featured_languages_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addFeaturedLanguageData(this)' : 'removeFeaturedLanguageData(this)' }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                            <i data-count="{{ count($featuredAttribute->featured_languages_data) != 0 ? count($featuredAttribute->featured_languages_data) - 1 : 0 }}" onclick="{{ $loop->last ? 'addFeaturedLanguageData(this)' : 'removeFeaturedLanguageData(this)' }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -303,7 +320,7 @@
                                                         </tr>
                                                         @if(!empty($featuredAttribute->dual_citizenship_data))
                                                             @foreach ($featuredAttribute->dual_citizenship_data as $index => $dual_citizenship)   
-                                                                <tr class="dual_citizenship_table_row {{ $loop->first ? '' : 'remove_dual_citizenship_data' }}">
+                                                                <tr class="dual_citizenship_table_row {{ $loop->last ? '' : 'remove_dual_citizenship_data' }}">
                                                                     <td>
                                                                         <input type="text"
                                                                             class="form-control"
@@ -313,7 +330,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i data-count="{{ count($featuredAttribute->dual_citizenship_data) != 0 ? count($featuredAttribute->dual_citizenship_data) - 1 : 0 }}" onclick="{{ $loop->first ? 'addDualCitizenShipData(this)' : 'removeDualCitizenShipData(this)' }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                            <i data-count="{{ count($featuredAttribute->dual_citizenship_data) != 0 ? count($featuredAttribute->dual_citizenship_data) - 1 : 0 }}" onclick="{{ $loop->last ? 'addDualCitizenShipData(this)' : 'removeDualCitizenShipData(this)' }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -348,6 +365,7 @@
                                    
                                 </div>
                                 <div class="next-btn d-flex">
+                                    @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                                     @if (!isset($resume_id))
                                         <div>
                                             @include('components.reset-all-drafts-button')

@@ -15,6 +15,8 @@ use Google_Service_Calendar_Channel;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\UserGoogleAccount;
+use App\Models\CalendarEvent;
+use App\Models\UserCalendersList;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DateTime;
@@ -26,6 +28,7 @@ class GoogleService {
     public $oauth;
     protected $user;
     protected $UserGoogleAccountModal;
+    private $is_first_time_login = false;
 
     public $calender_name = 'College Prep System';
 
@@ -63,7 +66,11 @@ class GoogleService {
     }
 
     public function userTimeZone() {
-        return $this->user()->userSetting->timezone;
+        if ($this->user()->userSetting) {
+            return $this->user()->userSetting->timezone;
+        } else {
+            return 'America/Los_Angeles';
+        }
     }
 
     public function defaultCalendarId() {
@@ -97,10 +104,13 @@ class GoogleService {
     }
 
     public function setupTokenFirstTime() {
+        $this->is_first_time_login = true;
         $this->token = $this->client->getAccessToken();
         $this->client->setAccessToken($this->token);
         $this->storeUserAccessToken($this->token);
         $this->createOrGetCalender();
+        $this->createCPSCalendarEventsOnGoogleCalendar();
+        $this->is_first_time_login = false;
         return $this->token;
     }
 
@@ -164,16 +174,18 @@ class GoogleService {
     }
 
     public function disconnect() {
+        $this->deleteAllCalenderEvents();
         $this->client->revokeToken();
         UserGoogleAccount::where('user_id', $this->user()->id)->delete();
     }
 
     public function service() {
-        // if (!$this->client) {
-        //     $this->client = $this->client();
-        // }
-        $this->setOrGetAccessToken();
-        return new Google_Service_Calendar($this->client);
+        if ($this->is_first_time_login) {
+            return new Google_Service_Calendar($this->client);
+        } else {
+            $this->setOrGetAccessToken();
+            return new Google_Service_Calendar($this->client);
+        }
     }
 
     public function calendars() {
@@ -287,7 +299,9 @@ class GoogleService {
     }
 
     public function insertEvent($data, $calendarId = null, $optParams = []) {
-        if (!$this->isCalenderExist()) return null;  
+        if (!$calendarId) {
+            if (!$this->isCalenderExist()) return null;  
+        }
         $payload = [
             'summary' => $data['title'] ?? null,
             'location' => $data['location'] ?? null,
@@ -445,6 +459,56 @@ class GoogleService {
         }
 
         return $c_code;
+    }
+
+    public function createCPSCalendarEventsOnGoogleCalendar() {
+        $events = CalendarEvent::where('user_id', Auth::id())->get();
+        $calendar_id = UserGoogleAccount::where('user_id', Auth::id())->first()->google_calendar_id;
+        if (count($events) > 0) {
+            foreach ($events as $key => $event) {
+                $payload = [
+                    'title' => $event->title,
+                    'description' => $event->description,
+                    'location' => $event->location ?? null,
+                    'color' => $event->color,
+                    'start_date' => $event->user_calendar->start_date,
+                    'end_date' => $event->user_calendar->end_date,
+                ];
+                $optParams = [];
+                if (Carbon::parse($event->user_calendar->start_date)->format('H:i:s') == "00:00:00") {
+                    $optParams['is_all_day'] = true;
+                }
+                $inserted_event =  $this->insertEvent($payload, $calendar_id, $optParams);
+                if ($inserted_event) {
+                    $event->update([
+                        'google_calendar_event_id' => $inserted_event->id,
+                    ]);
+                }
+            }
+        }
+    }
+
+    public function deleteAllCalenderEvents() {
+        $events = CalendarEvent::where('user_id', Auth::id())->get();
+        if (count($events) > 0) {
+            foreach ($events as $key => $event) {
+                if ($event->user_calender_id) {
+                    $event->user_calendar()->delete();
+                    $event->delete();
+                } else {
+                    $this->deleteEvent($event->google_calendar_event_id);
+                    $event->update([
+                        'google_calendar_event_id' => null,
+                    ]);
+                }
+            }
+        }
+        $calendars = UserCalendersList::withTrashed()->where('user_id', Auth::id())->get();
+        if (count($calendars) > 0) {
+            foreach ($calendars as $key => $calendar) {
+                $calendar->forceDelete();
+            }
+        }
     }
 
 }

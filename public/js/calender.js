@@ -236,7 +236,6 @@ $('#user-caledars-list').on('draw.dt', function () {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                 }).done((response) => {
-                    // console.log(response);
                     if (response.success) {
                         $('#user-caledars-list').DataTable().ajax.reload()
                         pageCompCalendar.init([]);
@@ -245,6 +244,56 @@ $('#user-caledars-list').on('draw.dt', function () {
                         toastr.error(response.message)
                     }
                 })
+            }
+        })
+    })
+
+    $('.show-specific-college').on('click', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to show this calendar? Once you show this calendar, you can see all event of this calendar.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: site_url + "/google/show/calendar",
+                    type: 'PATCH',
+                    data: {
+                        id: id
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                }).done((response) => {
+                    if (response.success) {
+                        $('#user-caledars-list').DataTable().ajax.reload()
+                        pageCompCalendar.init([]);
+                        toastr.success(response.message)
+                    } else {
+                        toastr.error(response.message)
+                    }
+                })
+            }
+        })
+    })
+
+    $('#disconnet-google-account').on('click', function (e) { 
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to disconnect your google account? Once you disconnect your google account, you can't see any event of your google calendar and you can't add any event in your google calendar.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                window.location = $(this).attr('href');
             }
         })
     })

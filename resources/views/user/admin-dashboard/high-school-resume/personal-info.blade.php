@@ -96,6 +96,16 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                             <div class="accordion accordionExample">
+                                <div class="d-flex justify-content-end mb-3">
+                                    @if (!isset($resume_id))
+                                        <div>
+                                            @include('components.reset-all-drafts-button')
+                                        </div>
+                                    @endif
+                                    <div class="next-btn">
+                                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step"/>
+                                    </div>
+                                </div>
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
                                     <div class="block-header block-header-tab" type="button" data-toggle="collapse"
                                         data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -291,12 +301,12 @@
                                                 </div>
                                                 <div class="mb-4 position-relative">
                                                     <label class="form-label" for="social_links">
-                                                        Social Links
+                                                        Social Links 
                                                     </label>
                                                     <div class="social_link_div">
                                                         @if (!empty($personal_info->social_links))
                                                             @foreach ($personal_info->social_links as $index => $social_link)
-                                                                <div class="row p-0 mt-3 {{ $loop->first ? '' : 'remove_links' }}">
+                                                                <div class="row p-0 mt-3 {{ $loop->last ? '' : 'remove_links' }}">
                                                                     <div class="col-lg-11">
                                                                         <input type="text" class="form-control social_links"
                                                                             name="social_links[{{ $index }}][link]"
@@ -305,7 +315,7 @@
                                                                     </div>
                                                                     <div class="col-lg-1">
                                                                         <a href="javascript:void(0)" class="add-btn">
-                                                                            <i onclick="{{ $loop->first ? 'addLinks(this)' : 'removeLinks(this)' }}" data-count="{{ count($personal_info->social_links) != 0 ? count($personal_info->social_links) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                            <i onclick="{{ $loop->last ? 'addLinks(this)' : 'removeLinks(this)' }}" data-count="{{ count($personal_info->social_links) != 0 ? count($personal_info->social_links) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </a>
                                                                     </div>
                                                                 </div>
@@ -503,16 +513,16 @@
                 }
             });
 
-            let social_links = $('input[name^="social_links"]');
+            // let social_links = $('input[name^="social_links"]');
 
-            social_links.filter('input[name$="[link]"]').each(function() {
-                $(this).rules("add", {
-                    url: true,
-                    messages: {
-                        "url": "Social link must be a valid url"
-                    }
-                });
-            });
+            // social_links.filter('input[name$="[link]"]').each(function() {
+            //     $(this).rules("add", {
+            //         url: true,
+            //         messages: {
+            //             "url": "Social link must be a valid url"
+            //         }
+            //     });
+            // });
 			$('#state').on('change', function() {
 			var state_id = this.value;	
 			$("#city").html('');

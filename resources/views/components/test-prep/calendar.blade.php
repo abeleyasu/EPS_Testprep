@@ -12,7 +12,7 @@
         </a>
     @else
         Disconnect Google Account for Accessing Google Calendar <br>
-        <a href="{{ route('google.disconnect') }}" class="bnt btn-alt-danger btn-sm">
+        <a href="{{ route('google.disconnect') }}" id="disconnet-google-account" class="bnt btn-alt-danger btn-sm">
             Disconnect Google Account
         </a>
         <div class="mt-3">

@@ -126,6 +126,7 @@
 <link rel="stylesheet" href="{{ asset('css/college-dashboard.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/flatpickr/flatpickr.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/toastr/toastr.min.css') }}">
 
 <!-- data table -->
 <link rel="stylesheet" href="{{asset('assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css')}}">
@@ -138,6 +139,9 @@
 <link rel="stylesheet" href="{{ asset('assets/js/plugins/fullcalendar/main.min.css') }}">
 
 <style>
+  .toast-success {
+    background-color: #51A351 !important;
+  }
   .loading-indicator {
     display: flex;
     justify-content: center;
@@ -171,9 +175,9 @@
 @section('user-script')
 <script src="{{ asset('assets/js/plugins/fullcalendar/main.min.js') }}"></script>
 <script src="{{ asset('assets/js/moment/moment.min.js') }}"></script>
+<script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('assets/_js/pages/be_comp_calendar.js') }}"></script>
-<script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
 
 <script src="{{asset('assets/js/plugins/flatpickr/flatpickr.min.js')}}"></script>
 <script src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
@@ -195,6 +199,22 @@
 <script src="{{ asset('js/calender.js') }}"></script>
 
 <script>
+  toastr.options = {
+    "closeButton": true,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
   One.helpersOnLoad(['js-flatpickr', 'jq-datepicker', 'jq-maxlength', 'jq-select2', 'jq-masked-inputs', 'jq-rangeslider', 'jq-colorpicker']);
   $(".owl-carousel").owlCarousel({
     margin: 1,
@@ -460,23 +480,6 @@
         });
       }
     })
-  }
-
-  toastr.options = {
-    "closeButton": true,
-    "newestOnTop": false,
-    "progressBar": true,
-    "positionClass": "toast-top-right",
-    "preventDuplicates": false,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
   }
 </script>
 @endsection

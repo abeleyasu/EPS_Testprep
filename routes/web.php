@@ -580,6 +580,7 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
             Route::get('/disconnect/google', 'disconnect')->name('disconnect');
             Route::get('/calendars', 'getCalenders')->name('calendars');
             Route::delete('/calendar', 'deleteCalender')->name('delete-calender');
+            Route::patch('show/calendar', 'showCalender')->name('show-calender');
             Route::get('/create/calender', 'storeUserCalender')->name('create-user-calender');
         });
     });
@@ -614,7 +615,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, 'verfiy'])->name('verification.verify');
 Route::get('/sendreminder', [SendReminder::class, 'index']);
-Route::get('/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
+Route::get('/static/fetchcollegeinformation', [FetchCollegeInformation::class, 'index']);
 Route::get('/colleges/search', [EducationController::class, 'searchColleges']);
 Route::get('/collegemajor', [CollegeMajorInformationc::class, 'index']);
 

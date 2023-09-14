@@ -61,19 +61,23 @@ class GoogleController extends Controller
                         ]);
                     }
                     if ($usercalendar) {
+                        $dData = [
+                            'name' => $calendar->summary
+                        ];
                         if (!$usercalendar->trashed()) {
-                            $dData = [
-                                'name' => $calendar->summary
-                            ];
                             if ($calendar->summary == $this->googleService->calender_name) {
                                 continue;
                             } else {
                                 $dData['action'] = '
-                                    <button class="btn btn-sm btn-alt-danger delete-specific-college" data-id="'.$calendar->id.'">Delete</button>
+                                    <button class="btn btn-sm btn-alt-danger delete-specific-college" data-id="'.$calendar->id.'">Hide</button>
                                 ';
                             }
-                            $data[] = $dData;
+                        } else {
+                            $dData['action'] = '
+                                <button class="btn btn-sm btn-alt-success show-specific-college" data-id="'.$calendar->id.'">Show</button>
+                            ';
                         }
+                        $data[] = $dData;
                     }
                 }
                 $deletedCalendars = UserCalendersList::whereNotIn('calender_id', $calendarIds)->get();
@@ -122,7 +126,38 @@ class GoogleController extends Controller
                 DB::commit();
                 return response()->json([
                     'success' => true,
-                    'message' => 'Calender deleted successfully.'
+                    'message' => 'Calender hide successfully.'
+                ]);
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Calender not found.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function showCalender(Request $request) {
+        DB::beginTransaction();
+        try {
+            $calender = UserCalendersList::withTrashed()->where([
+                'user_id' => auth()->user()->id,
+                'calender_id' => $request->id
+            ])->first();
+
+            if ($calender) {
+                $calender->restore();
+                DB::commit();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Calender restored successfully.'
                 ]);
             } else {
                 DB::rollBack();
@@ -143,6 +178,7 @@ class GoogleController extends Controller
     public function storeUserCalender(Request $request) {
         try {
             $create = $this->googleService->createCalender($this->googleService->service());
+            $this->googleService->createCPSCalendarEventsOnGoogleCalendar();
             if ($create) {
                 return redirect()->route('home')->with('success', 'Calender created successfully.');
             } else {

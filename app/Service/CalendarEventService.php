@@ -47,51 +47,99 @@ class CalendarEventService extends GoogleService {
                 }
             }
             $cps_calendar = $this->getCalendarEvents();
-            if (isset($getCalenderEvents['code']) && $getCalenderEvents['code'] === 404) {
+            if (isset($cps_calendar['code']) && $cps_calendar['code'] === 404) {
                 // do something here (Pending)
             } else {
-                $this->createOrUpdateEvent($cps_calendar);
-            }
-
-            $all_events = UserCalendar::with(['event' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }])->whereBetween('start_date', [Carbon::parse($data['start'])->format('Y-m-d H:i:s'), Carbon::parse($data['end'])->format('Y-m-d H:i:s')])->get();
-    
-            $final_arr = [];
-    
-            foreach ($all_events as $event) {
-                if (!empty($event->event)) {
-
-                    $final_end_date = null;
-                    if (isset($event->end_date)) {
-                        $event_end_date = Carbon::parse($event->end_date);
-                        $event_start_date = Carbon::parse($event->start_date);
-                        $final_end_date = $event_start_date->isSameDay($event_end_date) ? null : $event->end_date;
+                if ($cps_calendar) {
+                    $this->createOrUpdateEvent($cps_calendar);
+                } else {
+                    $calendar_events = CalendarEvent::where('user_id', $user->id)->where('google_calendar_event_id', '!=', null)->where('user_calender_id', null)->get();
+                    foreach ($calendar_events as $calendar_event) {
+                        $calendar_event->google_calendar_event_id = null;
+                        $calendar_event->save();
                     }
-
-                    $event_arr['id'] = $event->id;
-                    $event_arr['title'] = $event->event->title;
-                    $event_arr['description'] = $event->event->description;
-                    $event_arr['time'] = $event->event->event_time;
-                    $event_arr['start'] = $event->start_date;
-                    $event_arr['color'] = $this->findColor($event->event->color);
-                    $event_arr['end'] = $final_end_date;
-                    $event_arr['allDay'] = date('H:i:s', strtotime($event->start_date)) == "00:00:00" ? true : false;
-                    array_push($final_arr, $event_arr);
                 }
             }
+
+            return $this->fetchAllEvents($data);
+
+            // $all_events = UserCalendar::with(['event' => function ($query) use ($user) {
+            //     $query->where('user_id', $user->id);
+            // }])->whereBetween('start_date', [Carbon::parse($data['start'])->format('Y-m-d H:i:s'), Carbon::parse($data['end'])->format('Y-m-d H:i:s')])->get();
     
-            return $final_arr;
+            // $final_arr = [];
+    
+            // foreach ($all_events as $event) {
+            //     if (!empty($event->event)) {
+
+            //         $final_end_date = null;
+            //         if (isset($event->end_date)) {
+            //             $event_end_date = Carbon::parse($event->end_date);
+            //             $event_start_date = Carbon::parse($event->start_date);
+            //             $final_end_date = $event_start_date->isSameDay($event_end_date) ? null : $event->end_date;
+            //         }
+
+            //         $event_arr['id'] = $event->id;
+            //         $event_arr['title'] = $event->event->title;
+            //         $event_arr['description'] = $event->event->description;
+            //         $event_arr['time'] = $event->event->event_time;
+            //         $event_arr['start'] = $event->start_date;
+            //         $event_arr['color'] = $this->findColor($event->event->color);
+            //         $event_arr['end'] = $final_end_date;
+            //         $event_arr['allDay'] = date('H:i:s', strtotime($event->start_date)) == "00:00:00" ? true : false;
+            //         array_push($final_arr, $event_arr);
+            //     }
+            // }
+    
+            // return $final_arr;
         } catch (\Exception $e) {
             dd($e);
             throw new Exception($e->getMessage());
         }
     }
 
+    public function fetchAllEvents($data = []) {
+        $user = $this->user();
+        $all_events = UserCalendar::with(['event' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }]);
+
+        if (isset($data['start']) && isset($data['end'])) {
+            $all_events = $all_events->whereBetween('start_date', [Carbon::parse($data['start'])->format('Y-m-d H:i:s'), Carbon::parse($data['end'])->format('Y-m-d H:i:s')]);
+        }
+
+        $all_events = $all_events->get();
+
+        $final_arr = [];
+
+        foreach ($all_events as $event) {
+            if (!empty($event->event)) {
+
+                $final_end_date = null;
+                if (isset($event->end_date)) {
+                    $event_end_date = Carbon::parse($event->end_date);
+                    $event_start_date = Carbon::parse($event->start_date);
+                    $final_end_date = $event_start_date->isSameDay($event_end_date) ? null : $event->end_date;
+                }
+
+                $event_arr['id'] = $event->id;
+                $event_arr['title'] = $event->event->title;
+                $event_arr['description'] = $event->event->description;
+                $event_arr['time'] = $event->event->event_time;
+                $event_arr['start'] = $event->start_date;
+                $event_arr['color'] = $this->findColor($event->event->color);
+                $event_arr['end'] = $final_end_date;
+                $event_arr['allDay'] = date('H:i:s', strtotime($event->start_date)) == "00:00:00" ? true : false;
+                array_push($final_arr, $event_arr);
+            }
+        }
+
+        return $final_arr;
+    }
+
     public function createOrUpdateEvent($events, $usercalendar = null) {
         $events = collect($events);
         $eventsIds = $events->pluck('id')->toArray();
-
         foreach ($events as $event_key => $event) {
             $orgnizer = $event['organizer']['email'];
             $user_calendar = $this->userCalendersListModal->where([
@@ -150,8 +198,6 @@ class CalendarEventService extends GoogleService {
                 $user_calender->delete();
                 $delete_event->delete();
             }
-        }
-        if ($usercalendar) {
         }
     }
 
@@ -214,6 +260,7 @@ class CalendarEventService extends GoogleService {
             DB::beginTransaction();
             $calender_event = $this->findEvent($event_id);
             $start_date = $data['start_date'];
+            $end_date = $data['end_date'];
             if ($calender_event) {
                 $calender_event_clone = $calender_event->toArray();
                 $calender_event_clone['start_date'] = $start_date;
@@ -227,7 +274,8 @@ class CalendarEventService extends GoogleService {
                 }
                 $this->userCalendarModal->create([
                     "event_id" => $event_id,
-                    "start_date" => $start_date
+                    "start_date" => $start_date,
+                    "end_date" => $end_date
                 ]);
                 $this->calenderEventModal->whereId($event_id)->update([
                     "google_calendar_event_id" => $calenderEventId,
@@ -317,11 +365,9 @@ class CalendarEventService extends GoogleService {
                     $calendarId = $calender_event->get_calender_from_list->calender_id;
                 }
 
-                $update_event_google = $this->updateEvent($calender_event->google_calendar_event_id, $payload, $calendarId, $optParams);
-                if ($update_event_google) {
-                    DB::commit();
-                    return $calender_event;
-                }
+                $this->updateEvent($calender_event->google_calendar_event_id, $payload, $calendarId, $optParams);
+                DB::commit();
+                return $calender_event;
             } else {
                 DB::rollBack();
                 throw new Exception("Calender event not found");

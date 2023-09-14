@@ -82,6 +82,23 @@
                     @if(isset($resume_id) && $resume_id != null)
                         <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                     @endif
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="prev-btn next-btn">
+                            <a href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.honors') }}"
+                                class="btn btn-alt-success prev-step">
+                                Previous Step
+                            </a>
+                        </div>
+                        <div class="next-btn d-flex">
+                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                            @if (!isset($resume_id))
+                                <div>
+                                    @include('components.reset-all-drafts-button')
+                                </div>
+                            @endif
+                            <input type="submit" class="btn btn-alt-success next-step" value="Next Step"> 
+                        </div>
+                    </div>
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content">
                             <div class="accordion accordionExample2">
@@ -99,7 +116,7 @@
                                                 <table class="table table_demonstrated_data">
                                                     <tbody>
                                                         <tr>
-                                                            <td>
+                                                            <td style="width: 300px;">
                                                                 <label class="form-label" for="position">
                                                                     Position
                                                                 </label>
@@ -112,7 +129,6 @@
                                                             <td>
                                                                 <label class="form-label" for="grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -134,9 +150,9 @@
                                                         </tr>
                                                         @if(!empty($activity->demonstrated_data))
                                                             @foreach ($activity->demonstrated_data as $index => $demonstrated_data)
-                                                                <tr class="demonstrated_data_table_row {{ $loop->first ? '' : 'remove_demonstrated_data' }}">
+                                                                <tr class="demonstrated_data_table_row {{ $loop->last ? '' : 'remove_demonstrated_data' }}">
                                                                     <td style="min-width:220px;">
-                                                                        <select class="js-select2 form-select single-select2-class" id="demonstrated_position_{{ $index }}" name="demonstrated_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="demonstrated_position_{{ $index }}" name="demonstrated_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
                                                                                 <option value="{{$position->position_name}}" {{ isset($demonstrated_data['position']) && $demonstrated_data['position'] != null ? ($demonstrated_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
@@ -173,7 +189,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i data-count="{{ count($activity->demonstrated_data) != 0 ? count($activity->demonstrated_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addDemonstratedData(this)' : 'removeDemonstratedData(this)' }}"></i>
+                                                                            <i data-count="{{ count($activity->demonstrated_data) != 0 ? count($activity->demonstrated_data) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->last ? 'addDemonstratedData(this)' : 'removeDemonstratedData(this)' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -181,7 +197,7 @@
                                                         @else
                                                             <tr class="demonstrated_data_table_row">
                                                                 <td>
-                                                                    <select class="js-select2 form-select single-select2-class" id="demonstrated_position_0" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" id="demonstrated_position_0" name="demonstrated_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
@@ -265,7 +281,6 @@
                                                             <td width='20%'>
                                                                 <label class="form-label" for="leadership_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td width='5%'>
@@ -274,9 +289,9 @@
                                                         </tr>
                                                         @if(!empty($activity->leadership_data))
                                                             @foreach($activity->leadership_data as $index => $leadership_data)
-                                                                <tr class="leadership_data_table_row {{ $loop->first ? '' : 'remove_leadership_data' }}">
+                                                                <tr class="leadership_data_table_row {{ $loop->last ? '' : 'remove_leadership_data' }}">
                                                                     <td>
-                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_status_{{ $index }}" name="leadership_data[{{ $index }}][status]" style="width: 100%;" data-placeholder="Select Status" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_status_{{ $index }}" name="leadership_data[{{ $index }}][status]" style="width: 100%;" data-placeholder="Select Status">
                                                                             <option value="">Select Status</option>
                                                                             @foreach($status as $sta)
                                                                                 <option value="{{ $sta->status }}" {{ isset($leadership_data['status']) && $leadership_data['status'] != null ? ($leadership_data['status'] == $sta->status ? 'selected' : '') : '' }} > {{ $sta->status }} </option>
@@ -291,7 +306,7 @@
                                                                             placeholder="Enter Status"> --}}
                                                                     </td>
                                                                     <td>
-                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_position_{{ $index }}" name="leadership_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_position_{{ $index }}" name="leadership_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
                                                                                 <option value="{{$position->position_name}}" {{ isset($leadership_data['position']) && $leadership_data['position'] != null ? ($leadership_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
@@ -299,7 +314,7 @@
                                                                         </select>
                                                                     </td>
                                                                     <td>
-                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_organization_{{ $index }}" name="leadership_data[{{ $index }}][organization]" style="width: 100%;" data-placeholder="Select Organization" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="leadership_organization_{{ $index }}" name="leadership_data[{{ $index }}][organization]" style="width: 100%;" data-placeholder="Select Organization">
                                                                             <option value="">Select Organization</option>
                                                                             @foreach($organizations as $organization)
                                                                                 <option value="{{ $organization->name }}" {{ isset($leadership_data['organization']) && $leadership_data['organization'] != null ? ($leadership_data['organization'] == $organization->name ? 'selected' : '') : '' }} > {{ $organization->name }} </option>
@@ -325,7 +340,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i data-count="{{ count($activity->leadership_data) != 0 ? count($activity->leadership_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addLeadershipData(this)' : 'removeLeadershipData(this)' }}"></i>
+                                                                            <i data-count="{{ count($activity->leadership_data) != 0 ? count($activity->leadership_data) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->last ? 'addLeadershipData(this)' : 'removeLeadershipData(this)' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -333,7 +348,7 @@
                                                         @else   
                                                             <tr class="leadership_data_table_row">
                                                                 <td>
-                                                                    <select class="js-select2 form-select single-select2-class" data-placeholder="Select Status" id="leadership_status_0" name="leadership_data[0][status]" style="width: 100%;" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" data-placeholder="Select Status" id="leadership_status_0" name="leadership_data[0][status]" style="width: 100%;">
                                                                         <option value="" style='display: none'></option>
                                                                         @foreach($status as $sta)
                                                                             <option value="{{ $sta->status }}" > {{ $sta->status }} </option>
@@ -345,7 +360,7 @@
                                                                         placeholder="Enter Status"> --}}
                                                                 </td>
                                                                 <td>
-                                                                    <select class="js-select2 form-select single-select2-class" id="leadership_position_0" name="leadership_data[0][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" id="leadership_position_0" name="leadership_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position->position_name}}" > {{$position->position_name}} </option>
@@ -354,7 +369,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <select class="js-select2 select single-select2-class" id="leadership_organization_0"
-                                                                        name="leadership_data[0][organization]" data-placeholder="Select Organization" multiple="multiple">
+                                                                        name="leadership_data[0][organization]" data-placeholder="Select Organization">
                                                                         <option value="">Select Organization</option>
                                                                         @foreach ($organizations as $organization)
                                                                             <option value="{{ $organization->name }}">{{ $organization->name }}</option>
@@ -403,12 +418,12 @@
                                                 <table class="table table_activities_data">
                                                     <tbody>
                                                         <tr>
-                                                            <td>
+                                                            <td style="width: 250px;">
                                                                 <label class="form-label" for="activity_position">
                                                                     Position
                                                                 </label>
                                                             </td>
-                                                            <td>
+                                                            <td style="width: 250px;">
                                                                 <label class="form-label" for="activity">
                                                                     Organization
                                                                 </label>
@@ -416,7 +431,6 @@
                                                             <td>
                                                                 <label class="form-label" for="activity_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -435,9 +449,9 @@
                                                         </tr>
                                                         @if(!empty($activity->activities_data))
                                                             @foreach($activity->activities_data as $index => $activities_data)
-                                                                <tr class="activity_data_table_row {{ $loop->first ? '' : 'remove_activity_data' }}">
+                                                                <tr class="activity_data_table_row {{ $loop->last ? '' : 'remove_activity_data' }}">
                                                                     <td style="min-width:220px">
-                                                                        <select class="js-select2 form-select single-select2-class" id="activity_position_{{ $index }}" name="activities_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="activity_position_{{ $index }}" name="activities_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
                                                                                 <option value="{{$position->position_name}}" {{ isset($activities_data['position']) && $activities_data['position'] != null ? ($activities_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
@@ -445,7 +459,7 @@
                                                                         </select>
                                                                     </td>
                                                                     <td style="min-width:270px;">
-                                                                        <select class="js-select2 form-select single-select2-class" id="activity_activity_{{ $index }}" name="activities_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Organization" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="activity_activity_{{ $index }}" name="activities_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Organization">
                                                                             <option value="">Select Organization</option>
                                                                             @foreach($organizations as $organization)
                                                                                 <option value="{{ $organization->name }}" {{ isset($activities_data['activity']) && $activities_data['activity'] != null ? ($activities_data['activity'] == $organization->name ? 'selected' : '') : '' }} > {{ $organization->name }} </option>
@@ -478,7 +492,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i data-count="{{ count($activity->activities_data) != 0 ? count($activity->activities_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addActivityData(this)' : 'removeActivityData(this)' }}"></i>
+                                                                            <i data-count="{{ count($activity->activities_data) != 0 ? count($activity->activities_data) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->last ? 'addActivityData(this)' : 'removeActivityData(this)' }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -486,7 +500,7 @@
                                                         @else
                                                             <tr class="activity_data_table_row">
                                                                 <td>
-                                                                    <select class="js-select2 form-select single-select2-class" id="activity_position_0" name="activities_data[0][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" id="activity_position_0" name="activities_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
@@ -494,7 +508,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td>
-                                                                    <select class="js-select2 form-select single-select2-class" id="activity_activity_0" name="activities_data[0][activity]" style="width: 100%;" data-placeholder="Select Organization" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" id="activity_activity_0" name="activities_data[0][activity]" style="width: 100%;" data-placeholder="Select Organization">
                                                                         <option value="">Select Organization</option>
                                                                         @foreach($organizations as $organization)
                                                                             <option value="{{ $organization->name }}"> {{ $organization->name }} </option>
@@ -562,7 +576,6 @@
                                                             <td width='15%'>
                                                                 <label class="form-label" for="athletics_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td width='20%'>
@@ -581,9 +594,9 @@
                                                         </tr>
                                                         @if(!empty($activity->athletics_data))
                                                             @foreach ($activity->athletics_data as $index => $athletics_data)
-                                                                <tr class="athletics_data_table_row {{ $loop->first ? '' : 'remove_athletics_data' }}">
+                                                                <tr class="athletics_data_table_row {{ $loop->last ? '' : 'remove_athletics_data' }}">
 																   <td>
-                                                                        <select class="js-select2 form-select single-select2-class" id="athletics_activity_{{ $index }}" name="athletics_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="athletics_activity_{{ $index }}" name="athletics_data[{{ $index }}][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                             <option value="">Select Position</option>
                                                                             @foreach($demonstrated_positions as $position)
                                                                                 <option value="{{$position->position_name}}" {{ isset($athletics_data['position']) && $athletics_data['position'] != null ? ($athletics_data['position']  == $position->position_name ? 'selected' : '') : '' }}> {{$position->position_name}} </option>
@@ -591,7 +604,7 @@
                                                                         </select>
                                                                     </td>
                                                                     <td>
-                                                                        <select class="js-select2 form-select single-select2-class" id="athletics_position_{{ $index }}" name="athletics_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Activity" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="athletics_position_{{ $index }}" name="athletics_data[{{ $index }}][activity]" style="width: 100%;" data-placeholder="Select Activity">
                                                                             <option value="">Select Activity</option>
                                                                             @foreach($athletics_positions as $athletics_position)
                                                                                 <option value="{{ $athletics_position->position }}" {{ isset($athletics_data['activity']) && $athletics_data['activity'] != null ? ($athletics_data['activity'] == $athletics_position->position ? 'selected' : '') : '' }} > {{ $athletics_position->position }} </option>
@@ -625,7 +638,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus'}}" data-count="{{ count($activity->athletics_data) != 0 ? count($activity->athletics_data) - 1 : 0 }}" onclick=" {{ $loop->first ? 'addAthleticsData(this)' : 'removeAthleticsData(this)' }} "></i>
+                                                                            <i class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus'}}" data-count="{{ count($activity->athletics_data) != 0 ? count($activity->athletics_data) - 1 : 0 }}" onclick=" {{ $loop->last ? 'addAthleticsData(this)' : 'removeAthleticsData(this)' }} "></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -633,7 +646,7 @@
                                                         @else
                                                             <tr class="athletics_data_table_row">
 																<td>
-                                                                    <select class="js-select2 form-select single-select2-class" id="athletics_activity" name="athletics_data[0][position]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
+                                                                    <select class="js-select2 form-select single-select2-class" id="athletics_activity" name="athletics_data[0][position]" style="width: 100%;" data-placeholder="Select Position">
                                                                         <option value="">Select Position</option>
                                                                         @foreach($demonstrated_positions as $position)
                                                                             <option value="{{$position->position_name}}"> {{$position->position_name}} </option>
@@ -651,7 +664,7 @@
                                                                         id="athletics_positions" name="athletics_data[0][activity]"
                                                                         value=""
                                                                         placeholder="Vice President" autocomplete="off"> --}}
-                                                                        <select class="js-select2 form-select single-select2-class" id="athletics_position_0" name="athletics_data[0][activity]" style="width: 100%;" data-placeholder="Select Activity" multiple="multiple">
+                                                                        <select class="js-select2 form-select single-select2-class" id="athletics_position_0" name="athletics_data[0][activity]" style="width: 100%;" data-placeholder="Select Activity">
                                                                             <option value="">Select Activity</option>
                                                                             @foreach($athletics_positions as $athletics_position)
                                                                                 <option value="{{ $athletics_position->position }}" > {{ $athletics_position->position }} </option>
@@ -710,7 +723,7 @@
                                                 <table class="table comunity_table">
                                                     <tbody>
                                                         <tr>
-                                                            <td>
+                                                            <td style="width: 300px;">
                                                                  <label class="form-label" for="participation_level">
                                                                     Position
                                                                 </label>
@@ -723,7 +736,6 @@
                                                             <td>
                                                                  <label class="form-label" for="community_grade">
                                                                     Grade(s)
-                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                             </td>
                                                             <td>
@@ -737,7 +749,7 @@
                                                         </tr>
                                                         @if(!empty($activity->community_service_data))
                                                             @foreach ($activity->community_service_data as $index => $community_service_data)
-                                                                <tr class="community_data_table_row {{ $loop->first ? '' : 'remove_comunity_data' }}">
+                                                                <tr class="community_data_table_row {{ $loop->last ? '' : 'remove_comunity_data' }}">
                                                                     <td style="min-width:220px">
                                                                         <select class="js-select2 form-select single-select2-class" id="community_level_{{ $index }}" name="community_service_data[{{$index}}][level]" style="width: 100%;" data-placeholder="Select Position" multiple="multiple">
                                                                             <option value="">Select Position</option>
@@ -772,7 +784,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                            <i class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus'}}" onclick="{{ $loop->first ? 'addCommunityData(this)' :'removeCommunityData(this)' }}" data-count="{{ count($activity->community_service_data) != 0 ? count($activity->community_service_data) - 1 : 0 }}"></i>
+                                                                            <i class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus'}}" onclick="{{ $loop->last ? 'addCommunityData(this)' :'removeCommunityData(this)' }}" data-count="{{ count($activity->community_service_data) != 0 ? count($activity->community_service_data) - 1 : 0 }}"></i>
                                                                         </a>
                                                                     </td>
                                                                 </tr>
@@ -838,6 +850,7 @@
                             </a>
                         </div>
                         <div class="next-btn d-flex">
+                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                             @if (!isset($resume_id))
                                 <div>
                                     @include('components.reset-all-drafts-button')
@@ -899,18 +912,8 @@
 
         $(document).ready(function() {
             $('.single-select2-class').select2({
-                maximumSelectionLength: 1,
+                // maximumSelectionLength: 1,
                 tags: true,
-                language: {
-                    maximumSelected: function () {
-                        return '';
-                    }
-                }
-            }).on('select2:opening', function (event) {
-                var selectedOptions = $(this).val();
-                if (selectedOptions && selectedOptions.length >= 1) {
-                    event.preventDefault();
-                }
             });
         });
 
@@ -1088,46 +1091,46 @@
                 },
             });
 
-            $('select[name^="demonstrated_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
-            $('select[name^="leadership_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
-            $('select[name^="activities_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
-            $('select[name^="athletics_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
-            $('select[name^="community_service_data"]').filter('select[name$="[grade][]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Grade field is required"
-                    }
-                });
-            });
+            // $('select[name^="demonstrated_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
+            // $('select[name^="leadership_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
+            // $('select[name^="activities_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
+            // $('select[name^="athletics_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
+            // $('select[name^="community_service_data"]').filter('select[name$="[grade][]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Grade field is required"
+            //         }
+            //     });
+            // });
             
         });
     </script>

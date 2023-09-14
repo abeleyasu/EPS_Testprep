@@ -81,6 +81,21 @@
                 @if(isset($resume_id) && $resume_id != null)
                     <input type="hidden" name="resume_id" id="resume_id" value="{{ $resume_id }}">
                 @endif
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="prev-btn">
+                        <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
+                        </a>
+                    </div>
+                    <div class="next-btn d-flex">
+                        @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                        @if (!isset($resume_id))
+                            <div>
+                                @include('components.reset-all-drafts-button')
+                            </div>
+                        @endif
+                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step">
+                    </div>
+                </div>
                 <div class="tab-content" id="myTabContent">
                     <div class="setup-content" role="tabpanel" id="step2" aria-labelledby="step2-tab">
                         <div class="accordion accordionExample2">
@@ -115,7 +130,7 @@
                                                                 <label class="form-label" for="graduation_designation">
                                                                     Graduation Designation 
                                                                 </label>
-                                                                <select class="js-select2 form-select single-select2-class" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation" multiple="multiple">
+                                                                <select class="js-select2 form-select single-select2-class" name="graduation_designation" style="width: 100%;" data-placeholder="Select Graduation Designation">
                                                                     <option value="">Select Graduation Designation</option>
                                                                     @foreach($graduation_designations as $graduation_designation)
                                                                         <option value="{{ $graduation_designation->designation}}" {{ isset($education['graduation_designation']) && $education['graduation_designation'] != null ? ($education['graduation_designation'] == $graduation_designation->designation ? 'selected' : '') : '' }}>{{$graduation_designation->designation}}</option>
@@ -343,15 +358,15 @@
                                                             
                                                             @if(!empty($education->ib_courses))
                                                                 @foreach($education->ib_courses as $index => $ib_course_data)
-                                                                    <tr class="IB_course_table_row {{ $loop->first ? '' : 'remove_IB_course_data' }}">
+                                                                    <tr class="IB_course_table_row {{ $loop->last ? '' : 'remove_IB_course_data' }}">
                                                                         <td>
-                                                                            <select class="js-select2 form-select single-select2-class" name="ib_courses[{{ $index }}][name_of_ib_course]" id="ib_courses[{{ $index }}][name_of_ib_course]" style="width: 100%;" data-placeholder="Select IB course" multiple="multiple">
+                                                                            <select class="js-select2 form-select" name="ib_courses[{{ $index }}][name_of_ib_course]" id="ib_courses[{{ $index }}][name_of_ib_course]" style="width: 100%;" data-placeholder="Select IB course">
                                                                                 <option value="">Select IB course</option>
                                                                                 @foreach($courses_list as $course_list)
-                                                                                @if($course_list->course_type == 1)
-                                                                                    <option value="{{ $course_list->name }}" {{ isset($ib_course_data['name_of_ib_course']) && $ib_course_data['name_of_ib_course'] != null ? ($ib_course_data['name_of_ib_course'] == $course_list->name ? 'selected' : '') : '' }}>{{ $course_list->name }}</option>
-                                                                                @endif
-                                                                            @endforeach
+                                                                                    @if($course_list->course_type == 1)
+                                                                                        <option value="{{ $course_list->name }}" {{ isset($ib_course_data['name_of_ib_course']) && $ib_course_data['name_of_ib_course'] != null ? ($ib_course_data['name_of_ib_course'] == $course_list->name ? 'selected' : '') : '' }}>{{ $course_list->name }}</option>
+                                                                                    @endif
+                                                                                @endforeach
                                                                             </select>
                                                                         </td>
                                                                         <td>
@@ -366,8 +381,8 @@
                                                                             <a href="javascript:void(0)"
                                                                                 class="add-btn d-flex plus-icon">
                                                                                 <i ib-course-count="{{ count($education->ib_courses) != 0 ? count($education->ib_courses) - 1 : 0 }}"
-                                                                                    class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"
-                                                                                    onclick="{{ $loop->first ? 'addIBCourseData(this)' : 'removeIBcourseData(this)' }}"></i>
+                                                                                    class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"
+                                                                                    onclick="{{ $loop->last ? 'addIBCourseData(this)' : 'removeIBcourseData(this)' }}"></i>
                                                                             </a>
                                                                         </td>
                                                                     </tr>
@@ -375,7 +390,7 @@
                                                             @else
                                                                 <tr class="IB_course_table_row">
                                                                     <td>
-                                                                        <select class="js-select2 form-select single-select2-class" name="ib_courses[0][name_of_ib_course]" id="ib_courses[0][name_of_ib_course]" style="width: 100%;" data-placeholder="Select IB course" multiple="multiple">
+                                                                        <select class="js-select2 form-select" name="ib_courses[0][name_of_ib_course]" id="ib_courses[0][name_of_ib_course]" style="width: 100%;" data-placeholder="Select IB course">
                                                                             <option value="">Select IB course</option>
                                                                             @foreach($courses_list as $course_list)
                                                                                 @if($course_list->course_type == 1)
@@ -427,15 +442,15 @@
                                                             </tr>
                                                             @if(!empty($education->ap_courses))
                                                                 @foreach($education->ap_courses as $index => $ap_course_data)
-                                                                    <tr class="AP_course_table_row {{ $loop->first ? '' : 'remove_AP_course_data' }}">
+                                                                    <tr class="AP_course_table_row {{ $loop->last ? '' : 'remove_AP_course_data' }}">
                                                                         <td>
-                                                                            <select class="js-select2 form-select ap_courses-select2-class" name="ap_courses[{{ $index }}][name_of_ap_course]" id="ap_courses[{{ $index }}][name_of_ap_course]" style="width: 100%;" data-placeholder="Select AP course" multiple="multiple">
+                                                                            <select class="js-select2 form-select" name="ap_courses[{{ $index }}][name_of_ap_course]" id="ap_courses[{{ $index }}][name_of_ap_course]" style="width: 100%;" data-placeholder="Select AP course">
                                                                                 <option value="">Select AP course</option>
                                                                                 @foreach($courses_list as $course_list)
-                                                                                @if($course_list->course_type == 2)
-                                                                                    <option value="{{ $course_list->name }}" {{ isset($ap_course_data['name_of_ap_course']) && $ap_course_data['name_of_ap_course'] != null ? ($ap_course_data['name_of_ap_course'] == $course_list->name ? 'selected' : '') : '' }}>{{ $course_list->name }}</option>
-                                                                                @endif
-                                                                            @endforeach
+                                                                                    @if($course_list->course_type == 2)
+                                                                                        <option value="{{ $course_list->name }}" {{ isset($ap_course_data['name_of_ap_course']) && $ap_course_data['name_of_ap_course'] != null ? ($ap_course_data['name_of_ap_course'] == $course_list->name ? 'selected' : '') : '' }}>{{ $course_list->name }}</option>
+                                                                                    @endif
+                                                                                @endforeach
                                                                             </select>
                                                                         </td>
                                                                         <td>
@@ -450,8 +465,8 @@
                                                                             <a href="javascript:void(0)"
                                                                                 class="add-btn d-flex plus-icon">
                                                                                 <i ap-course-count="{{ count($education->ap_courses) != 0 ? count($education->ap_courses) - 1 : 0 }}"
-                                                                                    class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}"
-                                                                                    onclick="{{ $loop->first ? 'addAPCourseData(this)' : 'removeAPcourseData(this)' }}"></i>
+                                                                                    class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}"
+                                                                                    onclick="{{ $loop->last ? 'addAPCourseData(this)' : 'removeAPcourseData(this)' }}"></i>
                                                                             </a>
                                                                         </td>
                                                                     </tr>
@@ -459,7 +474,7 @@
                                                             @else
                                                                 <tr class="AP_course_table_row">
                                                                     <td>
-                                                                        <select class="js-select2 form-select ap_courses-select2-class" name="ap_courses[0][name_of_ap_course]" id="ap_courses[0][name_of_ap_course]" style="width: 100%;" data-placeholder="Select AP course" multiple="multiple">
+                                                                        <select class="js-select2 form-select" name="ap_courses[0][name_of_ap_course]" id="ap_courses[0][name_of_ap_course]" style="width: 100%;" data-placeholder="Select AP course">
                                                                             <option value="">Select AP course</option>
                                                                             @foreach($courses_list as $course_list)
                                                                                 @if($course_list->course_type == 2)
@@ -546,7 +561,7 @@
                                                     </tr>
                                                     @if (!empty($education->course_data))
                                                         @foreach($education->course_data as $index => $course_data) 
-                                                            <tr class="course_data_table_row {{ $loop->first ? '' : 'remove_courses' }}">
+                                                            <tr class="course_data_table_row {{ $loop->last ? '' : 'remove_courses' }}">
                                                                 <td>
                                                                     <input type="text" class="form-control" value="{{ $course_data['course_name'] }}" data-count="{{$index}}" id="course_name_{{$index}}" name="course_data[{{ $index }}][course_name]" placeholder="Ex: College English 101" onchange="change(this)">
                                                                 </td>
@@ -569,7 +584,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <a href="javascript:void(0)" class="add-btn d-flex plus-icon">
-                                                                        <i data-count="{{ count($education->course_data) != 0 ? count($education->course_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addCourseData(this)' : 'removeCourses(this)' }}"></i>
+                                                                        <i data-count="{{ count($education->course_data) != 0 ? count($education->course_data) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->last ? 'addCourseData(this)' : 'removeCourses(this)' }}"></i>
                                                                     </a>
                                                                 </td>                                                                
                                                             </tr>
@@ -614,7 +629,7 @@
                                                 </tr>
                                                 @if (!empty($education->honor_course_data))
                                                 @foreach ($education->honor_course_data as $index => $honor_course_data)
-                                                        <tr class="honor_course_data_table_row {{ $loop->first ? '' : 'remove_honors_courses' }}"> 
+                                                        <tr class="honor_course_data_table_row {{ $loop->last ? '' : 'remove_honors_courses' }}"> 
                                                             <td class="select2-container_main select2-container_main-position"> 
                                                                 <select class="js-select2"
                                                                 id="honor_course_data_{{$index}}" name="honor_course_data[{{$index}}][course_data][]"
@@ -630,7 +645,7 @@
                                                             </td>
                                                             <td>
                                                                 <a href="javascript:void(0)" class="add-btn plus-icon d-flex">
-                                                                    <i data-count="{{ count($education->honor_course_data) != 0 ? count($education->honor_course_data) - 1 : 0 }}" class="fa-solid {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addHonorCourseData(this)' : 'removeHonorsCourses(this)' }}"></i>
+                                                                    <i data-count="{{ count($education->honor_course_data) != 0 ? count($education->honor_course_data) - 1 : 0 }}" class="fa-solid {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->last ? 'addHonorCourseData(this)' : 'removeHonorsCourses(this)' }}"></i>
                                                                 </a>                                                        
                                                             </td>
                                                         </tr>
@@ -692,19 +707,16 @@
                                                         <td>
                                                             <label class="form-label" for="name_of_test">
                                                                 Name Of Test
-                                                                <span class="text-danger">*</span>
                                                             </label>
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="results_score">
                                                                 Results Score
-                                                                <span class="text-danger">*</span>
                                                             </label>
                                                         </td>
                                                         <td>
                                                             <label class="form-label" for="date">
                                                                 Date
-                                                                <span class="text-danger">*</span>
                                                             </label>
                                                         </td>
                                                         <td>
@@ -713,7 +725,7 @@
                                                     </tr>
                                                     @if(!empty($education->testing_data))
                                                         @foreach($education->testing_data as $index => $testing_data)
-                                                            <tr class="testing_table_row {{ $loop->first ? '' : 'remove_testing_data' }}">
+                                                            <tr class="testing_table_row {{ $loop->last ? '' : 'remove_testing_data' }}">
                                                                 <td>
                                                                     <select class="form-select" name="testing_data[{{ $index }}][name_of_test]" style="width: 100%;">
                                                                         <option value="" disabled selected hidden>Select Name Of Test</option>
@@ -730,7 +742,7 @@
                                                                 </td>
                                                                 <td>                                                            
                                                                     <a href="javascript:void(0)" class="add-btn plus-icon d-flex" id="testing-add-btn-id">
-                                                                        <i data-count="{{ count($education->testing_data) != 0 ? count($education->testing_data) - 1 : 0 }}" class="fa-solid  {{ $loop->first ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->first ? 'addTestingData(this)' : 'removeTestingData(this)' }}"></i>
+                                                                        <i data-count="{{ count($education->testing_data) != 0 ? count($education->testing_data) - 1 : 0 }}" class="fa-solid  {{ $loop->last ? 'fa-plus' : 'fa-minus' }}" onclick="{{ $loop->last ? 'addTestingData(this)' : 'removeTestingData(this)' }}"></i>
                                                                     </a>                                                        
                                                                 </td>
                                                             </tr>
@@ -777,7 +789,6 @@
                                                         <label class="form-label" for="intended_college_major">
                                                             Intended College Major
                                                         </label>
-                                                        <span class="text-danger">*</span>
                                                         <select class="js-select2 select"
                                                             id="intended_college_major"
                                                             name="intended_college_major[]"
@@ -794,7 +805,6 @@
                                                         <label class="form-label" for="intended_college_minor">
                                                             Intended College Minor
                                                         </label>
-                                                        <span class="text-danger">*</span>
                                                         <select class="js-select2 select"
                                                             id="intended_college_minor"
                                                             name="intended_college_minor[]"
@@ -820,6 +830,7 @@
                         </a>
                     </div>
                     <div class="next-btn d-flex">
+                        @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                         @if (!isset($resume_id))
                             <div>
                                 @include('components.reset-all-drafts-button')
@@ -959,19 +970,8 @@
 
         $(document).ready(function() {
             $('.single-select2-class').select2({
-                maximumSelectionLength: 1,
                 tags: true,
-                language: {
-                    maximumSelected: function () {
-                        return '';
-                    }
-                }
-            }).on('select2:opening', function (event) {
-                var selectedOptions = $(this).val();
-                if (selectedOptions && selectedOptions.length >= 1) {
-                    event.preventDefault();
-                }
-            });
+            })
             $('.ap_courses-select2-class').select2({
                 maximumSelectionLength: 1,
                 tags: true,
@@ -1050,92 +1050,92 @@
                     $('.testing_data_table select').prop('disabled', true);
 
 
-                    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
-                        $(this).rules("add", {
-                            required: false
-                        });
-                    });
-                    testing_data.filter('input[name$="[date]"],input[name$="[results_score]"]').each(function() {
-                        $(this).rules("add", {
-                            required: false
-                        });
-                    });
+                    // $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
+                    //     $(this).rules("add", {
+                    //         required: false
+                    //     });
+                    // });
+                    // testing_data.filter('input[name$="[date]"],input[name$="[results_score]"]').each(function() {
+                    //     $(this).rules("add", {
+                    //         required: false
+                    //     });
+                    // });
                 }else{
 
                     $('.testing_data_table input').prop('disabled', false);
                     $('.testing_data_table select').prop('disabled', false);
                     $('#testing-add-btn-id').css('pointer-events', 'auto');
                     
-                    $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
-                        $(this).rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Name of test field is required"
-                            }
-                        });
-                    });
+                    // $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
+                    //     $(this).rules("add", {
+                    //         required: true,
+                    //         messages: {
+                    //             required: "Name of test field is required"
+                    //         }
+                    //     });
+                    // });
 
-                    testing_data.filter('input[name$="[results_score]"]').each(function() {
-                        $(this).rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Result score field is required"
-                            }
-                        });
-                    });
-                    testing_data.filter('input[name$="[date]"]').each(function() {
-                        $(this).rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Date field is required"
-                            }
-                        });
-                    });
+                    // testing_data.filter('input[name$="[results_score]"]').each(function() {
+                    //     $(this).rules("add", {
+                    //         required: true,
+                    //         messages: {
+                    //             required: "Result score field is required"
+                    //         }
+                    //     });
+                    // });
+                    // testing_data.filter('input[name$="[date]"]').each(function() {
+                    //     $(this).rules("add", {
+                    //         required: true,
+                    //         messages: {
+                    //             required: "Date field is required"
+                    //         }
+                    //     });
+                    // });
                 }
             });
 
-            $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Name of test field is required"
-                    }
-                });
-            });
+            // $('select[name^="testing_data"]').filter('select[name$="[name_of_test]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Name of test field is required"
+            //         }
+            //     });
+            // });
 
-            testing_data.filter('input[name$="[results_score]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Result score field is required"
-                    }
-                });
-            });
-            testing_data.filter('input[name$="[date]"]').each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Date field is required"
-                    }
-                });
-            });
+            // testing_data.filter('input[name$="[results_score]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Result score field is required"
+            //         }
+            //     });
+            // });
+            // testing_data.filter('input[name$="[date]"]').each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Date field is required"
+            //         }
+            //     });
+            // });
 
-            $("#intended_college_major").filter("#intended_college_major").each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Intended college major field is required"
-                    }
-                });
-            });
-            $("#intended_college_minor").filter("#intended_college_minor").each(function() {
-                $(this).rules("add", {
-                    required: true,
-                    messages: {
-                        required: "Intended college minor field is required"
-                    }
-                });
-            });
+            // $("#intended_college_major").filter("#intended_college_major").each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Intended college major field is required"
+            //         }
+            //     });
+            // });
+            // $("#intended_college_minor").filter("#intended_college_minor").each(function() {
+            //     $(this).rules("add", {
+            //         required: true,
+            //         messages: {
+            //             required: "Intended college minor field is required"
+            //         }
+            //     });
+            // });
 			$('#high_school_state').on('change', function() {
 			var state_id = this.value;	
 			$("#high_school_city").html('');

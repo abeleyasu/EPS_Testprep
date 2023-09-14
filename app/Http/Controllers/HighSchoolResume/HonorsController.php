@@ -15,9 +15,17 @@ use App\Models\HighSchoolResume\HonorsAchievementAwards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use App\Service\ResumeService;
 
 class HonorsController extends Controller
 {
+
+    protected $resumeService;
+
+    public function __construct(ResumeService $resumeService) {
+        $this->resumeService = $resumeService;
+    }
+
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
@@ -50,14 +58,14 @@ class HonorsController extends Controller
         $status = HonorsStatuses::select('id','status')->orderBY('status', 'asc')->get();
         // $awards = Config::get('constants.honor_achievement_awards');
         $awards = HonorsAchievementAwards::select('id','award')->orderBY('award', 'asc')->get();
-        $grades = Grade::all();
+        $grades = Grade::where('user_id', Auth::id())->get();
         $details = 0;
         return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages', 'grades','status','awards'));
     }
 
-    public function store(HonorsRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->all();
 
         $grade_ids = Grade::pluck('id')->toArray();
 
@@ -79,14 +87,20 @@ class HonorsController extends Controller
                 }
 
                 if(isset($value['grade']) && !empty($value['grade'])){
-                    foreach($value['grade'] as $grade){
-                        if(!in_array($grade , $grade_ids)){
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['honors_data'][$key]['grade']);                    
-                            $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['honors_data'][$key]['grade'] = $grade_array;
-                        }    
-                    }  
+                    // foreach($value['grade'] as $grade){
+                    //     if(!in_array($grade , $grade_ids)){
+                    //         $grade_info = Grade::create([
+                    //             'name' => $grade,
+                    //             'user_id' => Auth::id()
+                    //         ]);
+                    //         $index = array_search($grade, $data['honors_data'][$key]['grade']);                    
+                    //         $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['honors_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }  
+                    $data['honors_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                } else {
+                    $data['honors_data'][$key]['grade'] = [];
                 }
             }
         }
@@ -97,7 +111,12 @@ class HonorsController extends Controller
         
         $data['user_id'] = Auth::id();
 
+        // dd($data);
+
+        
         if (!empty($data)) {
+            unset($data['honor']);
+            unset($data['redirect_link']);
             Honor::create($data);
             return redirect()->route('admin-dashboard.highSchoolResume.activities');
         }
@@ -127,14 +146,18 @@ class HonorsController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty($value['grade'])) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['honors_data'][$key]['grade']);
-                            $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['honors_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create([
+                    //             'name' => $grade,
+                    //             'user_id' => Auth::id()
+                    //         ]);
+                    //         $index = array_search($grade, $data['honors_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['honors_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['honors_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['honors_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
         }

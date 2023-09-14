@@ -186,9 +186,10 @@
 									{{-- <span class="d-block mb-2">School Name / City / State /
 										District :
 									</span> --}}
-									{{ $education->high_school_name }} /
-									{{ $education->high_school_city }} /
-									{{ $education->high_school_state }} /
+									<b>{{ implode(',', ($current_grade)) }}</b>,
+									{{ $education->high_school_name }} ,
+									{{ $education->high_school_city }} ,
+									{{ $education->high_school_state }} ,
 									<!-- {{ $education->high_school_district }} -->
 									@if (isset($education->graduation_designation) && $education->graduation_designation != null)
 										({{$education->graduation_designation}})
@@ -221,9 +222,9 @@
 										@endphp
 									@endif
 								</li>
-								<li>
+								{{---<li>
 									<span>Current Grade:</span>{{ implode(',', ($current_grade)) }}
-								</li>
+								</li>--}}
 								{{-- <li>
 									<span> Month / Year :
 									</span>
@@ -450,23 +451,25 @@
 								@endphp
 
 								@foreach ($community_service_data as $data)
-									@php
-										if (isset($data['level'])) {
-											$community_service_array['level'][] = $data['level'];
-										}
-										if (isset($data['service'])) {
-											$community_service_array['service'][] = $data['service'];
-										}
-										if (isset($data['grade'])) {
-											$community_service_array['grade'][] = $data['grade'];
-										}
-										if (isset($data['location'])) {
-											$community_service_array['location'][] = $data['location'];
-										}
-									@endphp
+									<li class="list-type">
+										@if (isset($data['grade']))
+											<b>{{ \App\Helpers\Helper::getGradeByIdArray($data['grade']) }}: </b>
+										@endif
+										@if (isset($data['level']))
+											{{ $data['level'] }}
+											@if ((isset($data['level']) && !empty($data['level'])) || (isset($data['service']) && !empty($data['service']))),@endif
+										@endif
+										@if (isset($data['service']))
+											{{ $data['service'] }}
+											@if ((isset($data['service']) && !empty($data['service'])) || (isset($data['location']) && !empty($data['location']))),@endif
+										@endif
+										@if (isset($data['location']))
+											{{ $data['location'] }}
+										@endif
+									</li>
 								@endforeach
 
-								<li class="list-type">
+								{{---<li class="list-type">
 									@if (isset($community_service_array['grade']) && !empty($community_service_array['grade']))
 										<b>{{ \App\Helpers\Helper::getGradeAllByIdArray($community_service_array['grade']) }}: </b>
 									@endif
@@ -479,7 +482,7 @@
 									@if (isset($community_service_array['location']) && !empty($community_service_array['location']))
 										{{ implode(',', $community_service_array['location']) }}
 									@endif
-								</li>
+								</li>--}}
 							</ul>
 						</div>
 					</div>

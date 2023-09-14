@@ -16,9 +16,16 @@ use App\Models\HighSchoolResume\Athletics_positions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use App\Service\ResumeService;
 
 class ActivityController extends Controller
 {
+    protected $resumeService;
+
+    public function __construct(ResumeService $resumeService) {
+        $this->resumeService = $resumeService;
+    }
+
     public function index(Request $request)
     {
         $resume_id = $request->resume_id;
@@ -76,14 +83,18 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);
-                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create([
+                    //             'name' => $grade,
+                    //             'user_id' => Auth::id()
+                    //         ]);
+                    //         $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['demonstrated_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['demonstrated_data'] = array_values($data['demonstrated_data']);
@@ -115,14 +126,15 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);
-                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['leadership_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['leadership_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['leadership_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['leadership_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['leadership_data'] = array_values($data['leadership_data']);
@@ -146,14 +158,15 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
-                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['activities_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['activities_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['activities_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['activities_data'] = array_values($data['activities_data']);
@@ -177,14 +190,15 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);
-                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['athletics_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['athletics_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['athletics_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['athletics_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['athletics_data'] = array_values($data['athletics_data']);
@@ -201,14 +215,15 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);
-                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['community_service_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['community_service_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['community_service_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['community_service_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['community_service_data'] = array_values($data['community_service_data']);
@@ -239,14 +254,15 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);
-                            $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['demonstrated_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['demonstrated_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['demonstrated_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['demonstrated_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['demonstrated_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['demonstrated_data'] = array_values($data['demonstrated_data']);
@@ -277,14 +293,15 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['leadership_data'][$key]['grade']);
-                            $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['leadership_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['leadership_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['leadership_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['leadership_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['leadership_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['leadership_data'] = array_values($data['leadership_data']);
@@ -308,14 +325,15 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['activities_data'][$key]['grade']);
-                            $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['activities_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['activities_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['activities_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['activities_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['activities_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['activities_data'] = array_values($data['activities_data']);
@@ -339,14 +357,15 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['athletics_data'][$key]['grade']);
-                            $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['athletics_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['athletics_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['athletics_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['athletics_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['athletics_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['athletics_data'] = array_values($data['athletics_data']);
@@ -363,14 +382,15 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    foreach ($value['grade'] as $grade) {
-                        if (!in_array($grade, $grade_ids)) {
-                            $grade_info = Grade::create(['name' => $grade]);
-                            $index = array_search($grade, $data['community_service_data'][$key]['grade']);
-                            $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
-                            $data['community_service_data'][$key]['grade'] = $grade_array;
-                        }
-                    }
+                    // foreach ($value['grade'] as $grade) {
+                    //     if (!in_array($grade, $grade_ids)) {
+                    //         $grade_info = Grade::create(['name' => $grade]);
+                    //         $index = array_search($grade, $data['community_service_data'][$key]['grade']);
+                    //         $grade_array = array_replace($data['community_service_data'][$key]['grade'], [$index => $grade_info->id]);
+                    //         $data['community_service_data'][$key]['grade'] = $grade_array;
+                    //     }
+                    // }
+                    $data['community_service_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
                 }
             }
             $data['community_service_data'] = array_values($data['community_service_data']);

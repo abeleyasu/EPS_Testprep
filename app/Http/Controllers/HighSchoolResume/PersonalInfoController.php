@@ -87,6 +87,8 @@ class PersonalInfoController extends Controller
             $details = 1;
         }
 
+        // dd($personal_info->toArray());
+
         return view('user.admin-dashboard.high-school-resume.personal-info', compact('personal_info', 'education', 'honor', 'activity', 'employmentCertification', 'featuredAttribute', 'details', 'resume_id', 'validations_rules', 'validations_messages','states','cities'));
     }
 

@@ -30,9 +30,9 @@ return [
                 "required" => true,
                 "email" => true
             ],
-            "social_links[*][link]" => [
-                "url" => true
-            ],
+            // "social_links[*][link]" => [
+            //     "url" => true
+            // ],
             "parent_email_one" => [
                 "required" => true,
                 "email" => true

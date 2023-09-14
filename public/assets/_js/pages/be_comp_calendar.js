@@ -105,38 +105,42 @@ class pageCompCalendar {
                     left: "title",
                     right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                 },
-                drop: function (info) {
-                    info.draggedEl.parentNode.remove();
-                },
+                // drop: function (info) {
+                //     console.log('drop called');
+                //     console.log(info);
+                //     info.draggedEl.parentNode.remove();
+                // },
                 eventReceive: function (info) {
                     let event_id = info.draggedEl.dataset.id;
                     let url = info.draggedEl.dataset.url;
                     let start_date = moment(info.event.startStr).format("YYYY-MM-DD HH:mm:ss");
+                    let end_date = start_date; 
                     let listEvent = calendar.getEvents();
                     $.ajax({
                         url: url,
                         type: "POST",
-                        dataType: "JSON",
                         data: {
                             _token: $('meta[name="csrf-token"]').attr(
                                 "content"
                             ),
                             event_id: event_id,
                             start_date: start_date,
+                            end_date: end_date,
                         },
-                        success: function (resp) {
-                            if (resp.success) {
-                                listEvent.forEach(event => { 
-                                    event.remove();
-                                });
-                                calendar.addEventSource(resp.data);
-                                toastr.success(resp.message);
-                            }
-                        },
-                        error: function (err) {
-                            console.log("err =>>>", err);
-                        },
-                    });
+                    }).done((resp) => {
+                        if (resp.success) { 
+                            listEvent.forEach(event => { 
+                                event.remove();
+                            });
+                            calendar.addEventSource(resp.data);
+                            toastr.success(resp.message);
+                            info.draggedEl.parentNode.remove();
+                        } else {
+                            $('#js-events').prepend(info.draggedEl);
+                            info.revert();
+                            toastr.error(resp.message);
+                        }
+                    })
                 },
                 eventResize: function (info) {
                     let id = info.event.id;
@@ -160,15 +164,14 @@ class pageCompCalendar {
                             start_date: start_date,
                             end_date: end_date,
                         },
-                        success: function (resp) {
-                            if (resp.success) {
-                                toastr.success(resp.message);
-                            }
-                        },
-                        error: function (err) {
-                            console.log("err =>>>", err);
-                        },
-                    });
+                    }).done((resp) => {
+                        if (resp.success) {
+                            toastr.success(resp.message);
+                        } else {
+                            info.revert();
+                            toastr.error(resp.message);
+                        }
+                    })
                 },
                 eventDrop: function (info) {
                     let id = info.event.id;
@@ -192,15 +195,14 @@ class pageCompCalendar {
                             start_date: start_date,
                             end_date: end_date,
                         },
-                        success: function (resp) {
-                            if (resp.success) {
-                                toastr.success(resp.message);
-                            }
-                        },
-                        error: function (err) {
-                            console.log("err =>>>", err);
-                        },
-                    });
+                    }).done((resp) => {
+                        if (resp.success) {
+                            toastr.success(resp.message);
+                        } else {
+                            info.revert();
+                            toastr.error(resp.message);
+                        }
+                    })
                 },
                 eventClick: function (info) {
                     let id = info.event.id;
