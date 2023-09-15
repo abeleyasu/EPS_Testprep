@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PracticeTest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CustomQuizController extends Controller
@@ -14,12 +15,13 @@ class CustomQuizController extends Controller
      */
     public function index()
     {
-        //
-        $customQuizzes = PracticeTest::select("practice_tests.id as id", "users.name as name")
-            ->leftJoin("users", "users.id", "=", "practice_tests.user_id")
-            ->where("test_source", 2)
-            ->get();
+        $customQuizzes = User::selectRaw("users.id as user_id,users.name as name,practice_tests.id as practice_test_id")
+            ->join("practice_tests", "users.id", "=", "practice_tests.user_id")
+            ->get()
+            ->toArray();
 
+        $temp = array_unique(array_column($customQuizzes, 'user_id'));
+        $customQuizzes = array_intersect_key($customQuizzes, $temp);
         return view("admin.custom-quizzes.index", compact('customQuizzes'));
     }
 
@@ -52,9 +54,19 @@ class CustomQuizController extends Controller
      */
     public function show($id)
     {
-        $customQuizzes = PracticeTest::where("test_source", 2)
-            ->where("user_id", $id)
-            ->get();
+        $customQuizzes = User::selectRaw("
+        users.id as user_id,
+        users.name as name,
+        practice_tests.id as practice_test_id,
+        practice_tests.title as title,
+        practice_tests.format as format,
+        practice_tests.created_at as created_at
+        ")
+            ->join("practice_tests", "users.id", "=", "practice_tests.user_id")
+            ->where("practice_tests.user_id", $id)
+            ->get()
+            ->toArray();
+        // dd($customQuizzes);
         return view("admin.custom-quizzes.show", compact('customQuizzes'));
     }
 
