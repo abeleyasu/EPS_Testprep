@@ -2029,6 +2029,7 @@ class TestPrepController extends Controller
                         'checkbox_values',
                         'question_type_values',
                         'question_order',
+                        'parent_id',
                         'selfMade'
                     ]);
 
@@ -2638,6 +2639,7 @@ class TestPrepController extends Controller
                         'checkbox_values' => $question['checkbox_values'],
                         'question_type_values' => $question['question_type_values'],
                         'question_order' => $questionOrder,
+                        'parent_id' => $question['id'],
                         'selfMade' => "1"
                     ]);
 
@@ -2763,7 +2765,7 @@ class TestPrepController extends Controller
                 if (!empty($answers->answer)) {
                     $answer = json_decode($answers->answer, 1);
                     $answer = array_filter($answer, function ($val) {
-                        return !empty($val);
+                        return !empty($val) && $val !== "-";
                     });
                     $keys = array_keys($answer);
                     array_push($allQuestionsAnswered, ...$keys);
@@ -2775,14 +2777,21 @@ class TestPrepController extends Controller
             $questions = array_unique($questionsData);
 
             foreach ($questions as $que) {
-                if (!in_array($que, $allQuestionsAnswered)) {
+                $pq = PracticeQuestion::select("id", "parent_id")->whereIn("id", $allQuestionsAnswered)->get();
+                $pq = array_map(
+                    function ($item) {
+                        return $item["parent_id"] ?? $item["id"];
+                    },
+                    $pq->toArray()
+                );
+                if (!in_array($que, $pq)) {
                     $allUnaswered = $allUnaswered + 1;
                     array_push($allUnasweredArray, $que);
                 }
             }
 
             $questions = array_values($questions);
-            // var_dump($questions);
+
             $questionsCount = count($questions);
             $all = $all + $questionsCount;
 
@@ -2797,32 +2806,13 @@ class TestPrepController extends Controller
             'questions' => $no_section ? [] : $allUnasweredArray,
             'type' => 'unanswered'
         ];
+
         $countQuestion[] = [
             'count' => $no_section ? 0 : $all,
             'questions' => '',
             'type' => 'all'
         ];
 
-        // $super_category = SuperCategory::where('format', $format)
-        //     ->where('section_type', $section_type)
-        //     ->where('selfMade', 1)
-        //     ->get();
-        // $category = [];
-        // $questionType = [];
-        // foreach ($super_category as $super) {
-        //     $superId = array($super->id);
-        //     $category[$super->id] = PracticeCategoryType::whereIn('super_category_id', $superId)
-        //         ->where('section_type', $section_type)
-        //         ->where('selfMade', 1)
-        //         ->get();
-        //     foreach ($category[$super->id] as $categories) {
-        //         $categoryId = array($categories['id']);
-        //         $questionType[$categories['id']] = QuestionType::where('section_type', $section_type)
-        //             ->where('selfMade', 1)
-        //             ->whereIn('category_id', $categoryId)
-        //             ->get();
-        //     }
-        // }
         return response()->json(
             [
                 'count' => $countQuestion
@@ -2912,6 +2902,7 @@ class TestPrepController extends Controller
                     'checkbox_values' => $question['checkbox_values'],
                     'question_type_values' => $question['question_type_values'],
                     'question_order' => $questionOrder,
+                    'parent_id' => $question['id'],
                     'selfMade' => "1"
                 ]);
 
