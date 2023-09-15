@@ -40,10 +40,10 @@
                         <tbody>
                             @foreach ($customQuizzes as $quiz)
                                 <tr>
-                                    <td class="fw-semibold fs-sm">{{ $quiz->name }}</td>
+                                    <td class="fw-semibold fs-sm">{{ $quiz['name'] }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a href="{{ route('custom-quizzes.show', ['custom_quiz' => $quiz->id]) }}"
+                                            <a href="{{ route('custom-quizzes.show', ['custom_quiz' => $quiz['user_id']]) }}"
                                                 target="_blank" class="btn btn-sm btn-alt-secondary"
                                                 data-bs-toggle="tooltip" title="Preview Module">
                                                 <i class="fa fa-fw fa-eye"></i>

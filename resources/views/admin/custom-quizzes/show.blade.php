@@ -43,9 +43,9 @@
                             @foreach ($customQuizzes as $quiz)
                                 <tr>
                                     <td class="fw-semibold fs-sm">{{ $loop->iteration }}</td>
-                                    <td class="fw-semibold fs-sm">{{ $quiz->title }}</td>
-                                    <td class="fw-semibold fs-sm">{{ $quiz->format }}</td>
-                                    <td class="fw-semibold fs-sm">{{ $quiz->created_at }}</td>
+                                    <td class="fw-semibold fs-sm">{{ $quiz['title'] }}</td>
+                                    <td class="fw-semibold fs-sm">{{ $quiz['format'] }}</td>
+                                    <td class="fw-semibold fs-sm">{{ $quiz['created_at'] }}</td>
                                 </tr>
                             @endforeach
 
