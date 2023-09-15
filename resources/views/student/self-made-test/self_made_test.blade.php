@@ -129,14 +129,16 @@
                                                                         id="all_unanswered" value="all_unanswered"
                                                                         class="questions_type">
                                                                     <label for="all_unanswered" class="ms-2">All
-                                                                        Unanswered <span class="ms-2 diff_5"></label>
+                                                                        Unanswered <span
+                                                                            class="all_unanswered_span ms-2 diff_5"></label>
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <input type="radio" name="questions_type"
                                                                         id="all_questions" value="all_questions"
                                                                         class="questions_type" checked>
                                                                     <label for="all_questions" class="ms-2">All
-                                                                        Questions <span class="ms-2 diff_6"></label>
+                                                                        Questions <span
+                                                                            class="all_questions_span ms-2 diff_6"></label>
                                                                 </div>
                                                                 <div class="mb-2">
                                                                     <input type="number" name="no_of_questions"
@@ -387,18 +389,13 @@
                 getTypeFunctionality((res) => {
                     count_data = res.count;
                     $.each(res.count, function(i, v) {
-                        console.log(i);
-                        if (i == 6) {
-                            $(`.diff_5`).html(`(${v.count})`);
-                        } else if (i == 7) {
-                            $(`.diff_6`).html(`(${v.count})`);
-                        } else {
-                            $(`.diff_${i}`).html(`(${v.count})`);
+                        $(`.diff_${i}`).html(`(${v.count})`);
+                        if (v.type == "unanswered") {
+                            $(`.all_unanswered_span`).html(`(${v.count})`);
+                        } else if (v.type == "all") {
+                            $(`.all_questions_span`).html(`(${v.count})`);
                         }
                     });
-
-                    // const all_count_data = count_data?.find((item) => item.type === "all");
-                    console.log("all_count_data: ", count_data)
                 });
             };
 
