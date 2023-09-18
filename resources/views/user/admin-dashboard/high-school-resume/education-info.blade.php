@@ -86,8 +86,8 @@
                         <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
                         </a>
                     </div>
+                    @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                     <div class="next-btn d-flex">
-                        @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                         @if (!isset($resume_id))
                             <div>
                                 @include('components.reset-all-drafts-button')
@@ -829,8 +829,8 @@
                         <a href="{{ isset($resume_id) ? url('user/admin-dashboard/high-school-resume/personal-info?resume_id='.$resume_id) : route('admin-dashboard.highSchoolResume.personalInfo') }}" class="btn btn-alt-success prev-step"> Previous Step
                         </a>
                     </div>
+                    @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                     <div class="next-btn d-flex">
-                        @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                         @if (!isset($resume_id))
                             <div>
                                 @include('components.reset-all-drafts-button')

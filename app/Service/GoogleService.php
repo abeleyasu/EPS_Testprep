@@ -103,15 +103,13 @@ class GoogleService {
         return $token_created_date_time->gte(Carbon::now());
     }
 
-    public function setupTokenFirstTime() {
+    public function attachRequiredGoogleCalendarService($token) {
         $this->is_first_time_login = true;
-        $this->token = $this->client->getAccessToken();
-        $this->client->setAccessToken($this->token);
-        $this->storeUserAccessToken($this->token);
+        $this->client->setAccessToken($token);
         $this->createOrGetCalender();
         $this->createCPSCalendarEventsOnGoogleCalendar();
         $this->is_first_time_login = false;
-        return $this->token;
+        return $token;
     }
 
     public function setOrGetAccessToken() {
@@ -466,23 +464,25 @@ class GoogleService {
         $calendar_id = UserGoogleAccount::where('user_id', Auth::id())->first()->google_calendar_id;
         if (count($events) > 0) {
             foreach ($events as $key => $event) {
-                $payload = [
-                    'title' => $event->title,
-                    'description' => $event->description,
-                    'location' => $event->location ?? null,
-                    'color' => $event->color,
-                    'start_date' => $event->user_calendar->start_date,
-                    'end_date' => $event->user_calendar->end_date,
-                ];
-                $optParams = [];
-                if (Carbon::parse($event->user_calendar->start_date)->format('H:i:s') == "00:00:00") {
-                    $optParams['is_all_day'] = true;
-                }
-                $inserted_event =  $this->insertEvent($payload, $calendar_id, $optParams);
-                if ($inserted_event) {
-                    $event->update([
-                        'google_calendar_event_id' => $inserted_event->id,
-                    ]);
+                if ($event->user_calendar) {
+                    $payload = [
+                        'title' => $event->title,
+                        'description' => $event->description,
+                        'location' => $event->location ?? null,
+                        'color' => $event->color,
+                        'start_date' => $event->user_calendar->start_date,
+                        'end_date' => $event->user_calendar->end_date,
+                    ];
+                    $optParams = [];
+                    if (Carbon::parse($event->user_calendar->start_date)->format('H:i:s') == "00:00:00") {
+                        $optParams['is_all_day'] = true;
+                    }
+                    $inserted_event =  $this->insertEvent($payload, $calendar_id, $optParams);
+                    if ($inserted_event) {
+                        $event->update([
+                            'google_calendar_event_id' => $inserted_event->id,
+                        ]);
+                    }
                 }
             }
         }

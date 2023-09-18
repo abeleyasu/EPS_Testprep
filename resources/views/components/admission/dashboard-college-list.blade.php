@@ -22,7 +22,7 @@
         @endforeach
     @endif
     @php
-        $total_element = count($college_list_deadline) == 0 ? 5 : 3;
+        $total_element = count($college_list_deadline) == 0 ? 1 : 3;
     @endphp
     @for($i = 0; $i < $total_element; $i++)
         <div class="col-12">

@@ -15,15 +15,28 @@
       </div>
     </div>
     <div class="content">
+      @if(!auth()->user()->userSurvey)
+        <div class="alert alert-success fade show" role="alert">
+          Congratulations! You have successfully completed your profile. If you have the time, please take a moment to tell us how satisfied you are with your experience so far.
+          <a href="{{ route('survey-form') }}" class="btn btn-sm btn-primary">Take Survey</a>
+        </div>
+      @endif
+
       @if(session('success'))
         <div class="alert alert-success fade show" role="alert">
           {{ session('success') }}
         </div>
       @endif
-      @if(!auth()->user()->userSurvey)
+
+      @if(session('success_google'))
         <div class="alert alert-success fade show" role="alert">
-          Congratulations! You have successfully completed your profile. If you have the time, please take a moment to tell us how satisfied you are with your experience so far.
-          <a href="{{ route('survey-form') }}" class="btn btn-sm btn-primary">Take Survey</a>
+          {{ session('success_google') }}
+        </div>
+      @endif
+
+      @if(session('error_google'))
+        <div class="alert alert-danger fade show" role="alert">
+          {{ session('error_google') }}
         </div>
       @endif
         

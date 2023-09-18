@@ -96,14 +96,18 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="setup-content" role="tabpanel" id="step1" aria-labelledby="step1-tab">
                             <div class="accordion accordionExample">
-                                <div class="d-flex justify-content-end mb-3">
-                                    @if (!isset($resume_id))
-                                        <div>
-                                            @include('components.reset-all-drafts-button')
+                                <div class="d-flex justify-content-between mt-3">
+                                    <div></div>
+                                    @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                                    <div class="next-btn d-flex">
+                                        @if (!isset($resume_id))
+                                            <div>
+                                                @include('components.reset-all-drafts-button')
+                                            </div>
+                                        @endif
+                                        <div class="next-btn">
+                                            <input type="submit" class="btn btn-alt-success next-step" value="Next Step"/>
                                         </div>
-                                    @endif
-                                    <div class="next-btn">
-                                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step"/>
                                     </div>
                                 </div>
                                 <div class="block block-rounded block-bordered overflow-hidden mb-1">
@@ -365,14 +369,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-end mt-3">
-                                    @if (!isset($resume_id))
-                                        <div>
-                                            @include('components.reset-all-drafts-button')
+                                <div class="d-flex justify-content-between mt-3">
+                                    <div></div>
+                                    @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
+                                    <div class="next-btn d-flex">
+                                        @if (!isset($resume_id))
+                                            <div>
+                                                @include('components.reset-all-drafts-button')
+                                            </div>
+                                        @endif
+                                        <div class="next-btn">
+                                            <input type="submit" class="btn btn-alt-success next-step" value="Next Step"/>
                                         </div>
-                                    @endif
-                                    <div class="next-btn">
-                                        <input type="submit" class="btn btn-alt-success next-step" value="Next Step"/>
                                     </div>
                                 </div>
                             </div>

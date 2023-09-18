@@ -33,7 +33,7 @@
                         </a>
                     </li>
                     <li role="presentation">
-                        <a class="nav-link active" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/employment-certifications?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
+                        <a class="nav-link active" href="{{ isset($resume_id) && $resume_id != null ? url('user/admin-dashboard/high-school-resume/honors?resume_id=' . $resume_id) : route('admin-dashboard.highSchoolResume.honors') }}" id="step3-tab">
                             <p>3</p>
                             <i class="fa-solid fa-check"></i>
                             <h6>Honors </h6>
@@ -89,8 +89,8 @@
                                     class="btn btn-alt-success prev-step "> Previous Step
                                 </a>
                             </div>
+                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                             <div class="next-btn d-flex">
-                                @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                                 @if (!isset($resume_id))
                                     <div>
                                         @include('components.reset-all-drafts-button')
@@ -251,8 +251,8 @@
                                     class="btn btn-alt-success prev-step "> Previous Step
                                 </a>
                             </div>
+                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                             <div class="next-btn d-flex">
-                                @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                                 @if (!isset($resume_id))
                                     <div>
                                         @include('components.reset-all-drafts-button')

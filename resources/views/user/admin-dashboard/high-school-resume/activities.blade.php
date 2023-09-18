@@ -89,8 +89,8 @@
                                 Previous Step
                             </a>
                         </div>
+                        @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                         <div class="next-btn d-flex">
-                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                             @if (!isset($resume_id))
                                 <div>
                                     @include('components.reset-all-drafts-button')
@@ -849,8 +849,8 @@
                                 Previous Step
                             </a>
                         </div>
+                        @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                         <div class="next-btn d-flex">
-                            @include('user.admin-dashboard.high-school-resume.components.return-homepage-btn')
                             @if (!isset($resume_id))
                                 <div>
                                     @include('components.reset-all-drafts-button')

@@ -8,6 +8,7 @@ use App\Models\UserGoogleAccount;
 use App\Models\UserCalendersList;
 use App\Models\CalendarEvent;
 use App\Models\UserCalendar;
+use Illuminate\Support\Arr;
 use DB;
 
 class GoogleController extends Controller
@@ -25,16 +26,43 @@ class GoogleController extends Controller
         if($request->has('code')){
             $client = $this->googleService->client;
             $client->authenticate($request->input('code'));
-            $store_token = $this->googleService->setupTokenFirstTime();
-            return redirect()->route('home')->with('success', 'Google account connected successfully.');
+            $user = $this->googleService->oauth_user();
+            $is_existing_user = UserGoogleAccount::where('google_id', $user->id)->first();
+            if ($is_existing_user) {
+                return redirect(route('user-dashboard'))->with('error_google', 'Google account already connected with another account.');
+            }
+            $token = $client->getAccessToken();
+            $scope = explode(' ', $token['scope']);
+            if (($key = array_search('openid', $scope)) == true) {
+                unset($scope[$key]);
+            }
+            $difference = array_diff(config('google-laravel.GOOGLE_SCOPES'), $scope);
+            if (count($difference) > 0) {
+                $client->revokeToken($token);
+                return redirect(route('user-dashboard'))->with('error_google', 'Please check the permissions of google account to access the calendar.');
+            }
+            $google_user = UserGoogleAccount::create([
+                'user_id' => auth()->user()->id,
+                'google_id' => $user->id,
+                'google_access_token' => $token['access_token'],
+                'google_refresh_token' => $token['refresh_token'],
+                'google_token_type' => $token['token_type'],
+                'google_expires_in' => $token['expires_in'],
+                'google_id_token' => $token['id_token'],
+                'google_token_created' => now(),
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            $this->googleService->attachRequiredGoogleCalendarService($token);
+            return redirect(route('user-dashboard'))->with('success_google', 'Google account connected successfully.');
         } else {
-            return redirect()->route('home')->with('error', 'Google account connection failed.');
+            return redirect(route('user-dashboard'))->with('error_google', 'Google account connection failed.');
         }
     }
 
     public function disconnect() {
         $this->googleService->disconnect();
-        return redirect()->route('home')->with('success', 'Google account disconnected successfully.');
+        return redirect()->route('user-dashboard')->with('success_google', 'Google account disconnected successfully.');
     }
 
     public function getCalenders(Request $request) {
@@ -48,7 +76,7 @@ class GoogleController extends Controller
             if (count($calendars) > 0) {
                 $data = [];
                 foreach ($calendars as $key => $calendar) {
-                    $usercalendar = UserCalendersList::withTrashed()->where('calender_id', $calendar->id)->first();
+                    $usercalendar = UserCalendersList::withTrashed()->where('user_id', auth()->user()->id)->where('calender_id', $calendar->id)->first();
                     if ($usercalendar) {
                         $usercalendar->update([
                             'calender_name' => $calendar->summary
@@ -80,7 +108,7 @@ class GoogleController extends Controller
                         $data[] = $dData;
                     }
                 }
-                $deletedCalendars = UserCalendersList::whereNotIn('calender_id', $calendarIds)->get();
+                $deletedCalendars = UserCalendersList::where('user_id', auth()->user()->id)->whereNotIn('calender_id', $calendarIds)->get();
                 if (count($deletedCalendars) > 0) {
                     foreach ($deletedCalendars as $key => $deletedCalendar) {
                         $deletedCalendar->forceDelete();

@@ -97,7 +97,6 @@ class pageCompCalendar {
             document.getElementById("js-calendar"),
             {
                 themeSystem: "bootstrap5",
-                firstDay: 1,
                 editable: true,
                 selectable: true,
                 droppable: true,
@@ -105,11 +104,9 @@ class pageCompCalendar {
                     left: "title",
                     right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                 },
-                // drop: function (info) {
-                //     console.log('drop called');
-                //     console.log(info);
-                //     info.draggedEl.parentNode.remove();
-                // },
+                drop: function (info) {
+                    info.draggedEl.parentNode.remove();
+                },
                 eventReceive: function (info) {
                     let event_id = info.draggedEl.dataset.id;
                     let url = info.draggedEl.dataset.url;
@@ -134,9 +131,8 @@ class pageCompCalendar {
                             });
                             calendar.addEventSource(resp.data);
                             toastr.success(resp.message);
-                            info.draggedEl.parentNode.remove();
                         } else {
-                            $('#js-events').prepend(info.draggedEl);
+                            $('#js-events').prepend(info.draggedEl.parentNode);
                             info.revert();
                             toastr.error(resp.message);
                         }
