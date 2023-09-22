@@ -36,12 +36,12 @@
         }
 
         /* #addNewTypes .select2-container--default,.add_question_type_select .select2-container--default,.removeNewTypes .select2-container--default,.add_question_type_select .select2-container--default {
-                                                                            width: 305px !important;
-                                                                        }
-                                                                        .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
-                                                                            height: 22px;
-                                                                            margin: 6px 10px 0;
-                                                                        } */
+                                                                                                                                                            width: 305px !important;
+                                                                                                                                                        }
+                                                                                                                                                        .removeNewTypes .select2-search__field,.add_question_type_select .select2-search__field,#addNewTypes .select2-search__field,.add_question_type_select .select2-search__field{
+                                                                                                                                                            height: 22px;
+                                                                                                                                                            margin: 6px 10px 0;
+                                                                                                                                                        } */
         button {
             background-color: #4CAF50;
             color: #ffffff;
@@ -287,8 +287,8 @@
         }
 
         /* .input-container {
-                                                                            margin-bottom: 10px;
-                                                                        } */
+                                                                                                                                                            margin-bottom: 10px;
+                                                                                                                                                        } */
 
 
 
@@ -433,8 +433,8 @@
         }
 
         /* .rating-tag .select2-container--default .select2-selection--multiple{
-                                                                            padding: 5px !important;
-                                                                        } */
+                                                                                                                                                            padding: 5px !important;
+                                                                                                                                                        } */
         .type-check[type="checkbox"] {
             width: 30px;
             height: 30px;
@@ -2311,9 +2311,9 @@
                                         <option value="2">Fill Choice</option>
                                     </select>
                                     <!--<a href="javascript:;" onClick="editMultiChoice(1);" class="switchMulti">Multi Choice</a>
-                                                                                                </label>
-                                                                                                <label class="form-label" style="font-size: 13px;">
-                                                                                                    <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
+                                                                                                                                                                                </label>
+                                                                                                                                                                                <label class="form-label" style="font-size: 13px;">
+                                                                                                                                                                                    <a href="javascript:;" onClick="editMultiChoice(2);" class="switchMulti">Fill Choice</a>-->
                                 </label>
 
                                 <div class="multi_field withOutFillOpt" style="display: none">
@@ -2868,11 +2868,15 @@
             let button = $(data);
             button.attr('disabled', true);
 
+            // console.log($(data).parent().parent().parent().find(".d-flex.input-field.align-items-center").length)
+
+            // const key = $(data).parent().parent().parent().find(".d-flex.input-field.align-items-center").length;
             let key = $(data).attr('data-id');
             key = parseInt(key);
-
+            key += 1;
             let ans_col = $(data).attr('ans_col');
 
+            console.log(ans_col, key);
             let testType = $('#format').val();
             let super_category = $(`#${disp_option}super_category_create_${ans_col}_${key - 1}`).val();
             let category_type = $(`#${disp_option}add_category_type_${ans_col}_${key - 1}`).val();
@@ -2966,7 +2970,7 @@
 
             button.attr('disabled', false);
 
-            $(data).attr('data-id', key + 1);
+            $(data).attr('data-id', key);
 
         }
 
@@ -3007,9 +3011,13 @@
         }
 
         function removeNewType(data) {
+            console.log($(data).parent().parent().parent());
+            const addPlusButton = $(data).parent().parent().parent().find(
+                "button.add-plus-button");
             $(data).parents('.removeNewType').remove();
-            let count = $('.plus-button').attr('data-id');
-            $('.plus-button').attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
+            // let count = addPlusButton.attr("data-id");
+            // count = parseInt(count);
+            // addPlusButton.attr('data-id', `${count - 1 == 0 ? 1 : count - 1}`);
         }
 
         function removeNewTypes(data) {
