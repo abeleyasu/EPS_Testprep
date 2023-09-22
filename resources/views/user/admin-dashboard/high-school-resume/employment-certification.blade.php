@@ -170,7 +170,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="employment_select_{{ $index }}"
                                                                                 name="employment_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['employment_grades'] as $grade)
                                                                                     <option {{  isset($employment_data['grade']) && $employment_data['grade'] != null ? (in_array($grade->id ,is_array($employment_data['grade']) ? $employment_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -222,7 +222,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="employment_select_0"
                                                                             name="employment_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['employment_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -312,7 +312,7 @@
                                                                                 id="significant_select_{{ $index }}"
                                                                                 name="significant_data[{{ $index }}][grade][]"
                                                                                 multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['other_significant_grades'] as $grade)
                                                                                     <option {{ isset($significant_data['grade']) && $significant_data['grade'] != null ? (in_array($grade->id ,is_array($significant_data['grade']) ? $significant_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -356,7 +356,7 @@
                                                                             id="significant_select_0"
                                                                             name="significant_data[0][grade][]"
                                                                             multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['other_significant_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>

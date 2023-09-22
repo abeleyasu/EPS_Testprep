@@ -12,5 +12,6 @@ class Grade extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'type'
     ];
 }

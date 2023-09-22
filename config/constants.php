@@ -1422,5 +1422,16 @@ return [
         'month'
     ],
     'role_free_name' => 'Free',
+    'grades_types' => [
+        'current_grades' => 'current_grades',
+        'honors_grades' => 'honors_grades',
+        'demonstrated_grades' => 'demonstrated_grades',
+        'leadership_grades' => 'leadership_grades',
+        'activities_grades' => 'activities_grades',
+        'athletics_grades' => 'athletics_grades',
+        'community_service_grades' => 'community_service_grades',
+        'employment_grades' => 'employment_grades',
+        'other_significant_grades' => 'other_significant_grades'
+    ],
 ]
 ?>

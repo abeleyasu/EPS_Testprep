@@ -48,7 +48,7 @@ class EmploymentCertificationController extends Controller
                 $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
             }
             $details = 0;
-            $grades = Grade::all();
+            $grades = $this->resumeService->getEmploymentCertification();
             $validations_rules = Config::get('validation.employment_certifications.rules');
             $validations_messages = Config::get('validation.employment_certifications.messages');
             $demonstrated_positions = DemonstratedPositions::select('position_name')->orderBY('position_name', 'asc')->get();
@@ -76,7 +76,7 @@ class EmploymentCertificationController extends Controller
                     }
                 }
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['employment_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['employment_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.employment_grades'));
                 } else {
                     $data['employment_data'][$key]['grade'] = [];
                 }
@@ -87,7 +87,7 @@ class EmploymentCertificationController extends Controller
         if (!empty($data['significant_data'])) {
             foreach ($data['significant_data'] as $key => $value) {
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['significant_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['significant_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.other_significant_grades'));
                 } else {
                     $data['significant_data'][$key]['grade'] = [];
                 }
@@ -122,7 +122,7 @@ class EmploymentCertificationController extends Controller
                     }
                 }
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['employment_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['employment_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.employment_grades'));
                 } else {
                     $data['employment_data'][$key]['grade'] = [];
                 }
@@ -133,7 +133,7 @@ class EmploymentCertificationController extends Controller
         if (!empty($data['significant_data'])) {
             foreach ($data['significant_data'] as $key => $value) {
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['significant_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['significant_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.other_significant_grades'));
                 } else {
                     $data['significant_data'][$key]['grade'] = [];
                 }

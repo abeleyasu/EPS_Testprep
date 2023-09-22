@@ -541,7 +541,7 @@ async function addHonorsData(data){
             html += `<td class="select2-container_main ">`;
             html += `<div class="select2-container_main ">`;
             html += `<select class="js-select2" data-placeholder="Select Grade" id="honor_select_${$count}" name="honors_data[${$count}][grade][]" multiple="multiple">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += await dropdown_lists(`/user/grades/list?type=honors`);
             html += `</select>`;
             html += `</div>`;
             html += `</td>`;
@@ -646,7 +646,7 @@ async function addDemonstratedData(data) {
             html += `<td>`;
             html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" id="demonstrated_select_${$count}" data-placeholder="Select Demonstrated Grade" name="demonstrated_data[${$count}][grade][]" multiple="multiple">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += await dropdown_lists(`/user/grades/list?type=demonstrated`);
             html += `</div>`;
             html += `</select>`;
             html += `</td>`;
@@ -731,7 +731,7 @@ async function addLeadershipData(data) {
             html += `<td>`;
             html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" data-placeholder="Select leadership Grade" id="leadership_select_${$count}" name="leadership_data[${$count}][grade][]" multiple="multiple">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += await dropdown_lists(`/user/grades/list?type=leadership`);
             html += `</select>`;
             html += `</div>`;
             html += `</td>`;
@@ -809,7 +809,7 @@ async function addActivityData(data) {
             html += `<td>`;
             html += `<div class="select2-container_main">`;
             html += `<select class="js-select2 select" data-placeholder="Select activities Grade" id="activity_select_${$count}" name="activities_data[${$count}][grade][]" multiple="multiple">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += await dropdown_lists(`/user/grades/list?type=activities`);
             html += `</select>`;
             html += `</div>`;
             html += `</td>`;
@@ -891,7 +891,7 @@ async function addAthleticsData(data){
         html += `<td>`;
         html += `<div class="select2-container_main">`;
         html += `<select class="js-select2 select" data-placeholder="Select atheletics Grade" id="athletics_select_${$count}" name="athletics_data[${$count}][grade][]" multiple="multiple">`;
-        html += await dropdown_lists(`/user/grades/list`);
+        html += await dropdown_lists(`/user/grades/list?type=athletics`);
         html += `</select>`;
         html += `</div>`;
         html += `</td>`;
@@ -975,7 +975,7 @@ async function addCommunityData(data){
         html += `<td>`;
         html += `<div class="select2-container_main">`;
         html += `<select class="js-select2 select" data-placeholder="Select community Grade" id="community_select_${$count}" name="community_service_data[${$count}][grade][]" multiple="multiple">`;
-        html += await dropdown_lists(`/user/grades/list`);
+        html += await dropdown_lists(`/user/grades/list?type=community_service`);
         html += `</select>`;
         html += `</div>`;
         html += `</td>`;
@@ -1053,7 +1053,7 @@ async function addEmploymentData(data){
         html += `</td>`;
         html += `<td>`;
         html += `<select class="js-select2 select" data-placeholder="Select employment grade" id="employment_select_${$count}" name="employment_data[${$count}][grade][]" multiple="multiple">`;
-        html += await dropdown_lists(`/user/grades/list`);
+        html += await dropdown_lists(`/user/grades/list?type=employment`);
         html += `</select>`;
         html += `</td>`;
         html += `<td>`;
@@ -1112,7 +1112,7 @@ async function addSignificantData(data)
             html += `</td>`;
             html += `<td>`;
             html += `<select class="js-select2 select" data-placeholder="Select significant grade" id="significant_select_${$count}" name="significant_data[${$count}][grade][]" multiple="multiple">`;
-            html += await dropdown_lists(`/user/grades/list`);
+            html += await dropdown_lists(`/user/grades/list?type=other_significant`);
             html += `</select>`;
             html += `</td>`;
             html += `<td>`;

@@ -54,7 +54,8 @@ class ActivityController extends Controller
             $employmentCertification = EmploymentCertification::whereUserId($user_id)->where('is_draft', 0)->first();
             $featuredAttribute = FeaturedAttribute::whereUserId($user_id)->where('is_draft', 0)->first();
         }
-        $grades = Grade::all();
+        $grades = $this->resumeService->getGradesForActivities();
+
         $validations_rules = Config::get('validation.activities.rules');
         $validations_messages = Config::get('validation.activities.messages');
         // $organizations = Config::get('constants.leadership_organization');
@@ -89,7 +90,7 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['demonstrated_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['demonstrated_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.demonstrated_grades'));
                 } else {
                     $data['demonstrated_data'][$key]['grade'] = [];
                 }
@@ -123,7 +124,7 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['leadership_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['leadership_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.leadership_grades'));
                 } else {
                     $data['leadership_data'][$key]['grade'] = [];
                 }
@@ -149,7 +150,7 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['activities_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['activities_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.activities_grades'));
                 } else {
                     $data['activities_data'][$key]['grade'] = [];
                 }
@@ -175,7 +176,7 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['athletics_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['athletics_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.athletics_grades'));
                 } else {
                     $data['athletics_data'][$key]['grade'] = [];
                 }
@@ -194,7 +195,7 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['community_service_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['community_service_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.community_service_grades'));
                 } else {
                     $data['community_service_data'][$key]['grade'] = [];
                 }
@@ -234,7 +235,7 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['demonstrated_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['demonstrated_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.demonstrated_grades'));
                 } else {
                     $data['demonstrated_data'][$key]['grade'] = [];
                 }
@@ -267,7 +268,7 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['leadership_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['leadership_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.leadership_grades'));
                 } else {
                     $data['leadership_data'][$key]['grade'] = [];
                 }
@@ -293,7 +294,7 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['activities_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['activities_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.activities_grades'));
                 } else {
                     $data['activities_data'][$key]['grade'] = [];
                 }
@@ -319,7 +320,7 @@ class ActivityController extends Controller
                 }
                 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['athletics_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['athletics_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.athletics_grades'));
                 } else {
                     $data['athletics_data'][$key]['grade'] = [];
                 }
@@ -338,7 +339,7 @@ class ActivityController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty(array_filter($value))) {
-                    $data['community_service_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['community_service_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.community_service_grades'));
                 } else {
                     $data['community_service_data'][$key]['grade'] = [];
                 }

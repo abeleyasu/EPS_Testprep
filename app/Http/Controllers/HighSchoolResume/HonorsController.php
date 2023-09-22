@@ -58,7 +58,7 @@ class HonorsController extends Controller
         $status = HonorsStatuses::select('id','status')->orderBY('status', 'asc')->get();
         // $awards = Config::get('constants.honor_achievement_awards');
         $awards = HonorsAchievementAwards::select('id','award')->orderBY('award', 'asc')->get();
-        $grades = Grade::where('user_id', Auth::id())->get();
+        $grades = $this->resumeService->getGrades(config('constants.grades_types.honors_grades'));
         $details = 0;
         return view('user.admin-dashboard.high-school-resume.honors', compact('honor','activity','employmentCertification','featuredAttribute','details','resume_id', 'validations_rules', 'validations_messages', 'grades','status','awards'));
     }
@@ -87,7 +87,7 @@ class HonorsController extends Controller
                 }
 
                 if(isset($value['grade']) && !empty($value['grade'])){
-                    $data['honors_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['honors_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.honors_grades'));
                 } else {
                     $data['honors_data'][$key]['grade'] = [];
                 }
@@ -135,7 +135,7 @@ class HonorsController extends Controller
                 }
 
                 if (isset($value['grade']) && !empty($value['grade'])) {
-                    $data['honors_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade']);
+                    $data['honors_data'][$key]['grade'] = $this->resumeService->createGrade($value['grade'], config('constants.grades_types.honors_grades'));
                 } else {
                     $data['honors_data'][$key]['grade'] = [];
                 }

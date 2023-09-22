@@ -48,14 +48,15 @@ class ResumeService
         return $major_array_ids;
     }
 
-    public function createGrade($grades) {
+    public function createGrade($grades, $type = null) {
         $grade_array_ids = array();
-        $grade_ids = Grade::where('user_id', Auth::id())->pluck('id')->toArray();
+        $grade_ids = Grade::where('user_id', Auth::id())->where('type', $type)->pluck('id')->toArray();
         foreach ($grades as $grade) {
             if (!in_array($grade, $grade_ids)) {
                 $grade_info = Grade::create([
                     'name' => $grade,
-                    'user_id' => Auth::id()
+                    'user_id' => Auth::id(),
+                    'type' => $type
                 ]);
                 array_push($grade_array_ids, $grade_info->id);
             } else {
@@ -66,6 +67,39 @@ class ResumeService
             }
         }
         return $grade_array_ids;
+    }
+
+    public function getGrades($type = null) {
+        return Grade::where('user_id', Auth::id())->whereNull('type')->orWhere('type', $type)->get();
+    }
+
+    public function getGradesForActivities() {
+        $types = [
+            config('constants.grades_types.demonstrated_grades'),
+            config('constants.grades_types.leadership_grades'),
+            config('constants.grades_types.activities_grades'),
+            config('constants.grades_types.athletics_grades'),
+            config('constants.grades_types.community_service_grades'),
+        ];
+
+        $grades = array();
+        foreach ($types as $type) {
+            $grades[$type] = $this->getGrades($type);
+        }
+        return $grades;
+    }
+
+    public function getEmploymentCertification() {
+        $types = [
+            config('constants.grades_types.employment_grades'),
+            config('constants.grades_types.other_significant_grades'),
+        ];
+
+        $grades = array();
+        foreach ($types as $type) {
+            $grades[$type] = $this->getGrades($type);
+        }
+        return $grades;
     }
 }
 ?>

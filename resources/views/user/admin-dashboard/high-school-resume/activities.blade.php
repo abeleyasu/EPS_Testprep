@@ -170,7 +170,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="demonstrated_select_{{ $index }}"
                                                                                 name="demonstrated_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['demonstrated_grades'] as $grade)
                                                                                     <option {{ isset($demonstrated_data['grade']) && $demonstrated_data['grade'] != null ? (in_array($grade->id ,is_array($demonstrated_data['grade']) ? $demonstrated_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -215,7 +215,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="demonstrated_select_0"
                                                                             name="demonstrated_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['demonstrated_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -332,7 +332,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="leadership_select_{{ $index }}"
                                                                                 name="leadership_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['leadership_grades'] as $grade)
                                                                                     <option {{ isset($leadership_data['grade']) && $leadership_data['grade'] != null ? (in_array($grade->id ,is_array($leadership_data['grade']) ? $leadership_data['grade'] : []) ? 'selected' : ' ') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -386,7 +386,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="leadership_select_0"
                                                                             name="leadership_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['leadership_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -470,7 +470,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="activity_select_{{ $index }}"
                                                                                 name="activities_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['activities_grades'] as $grade)
                                                                                     <option {{ isset($activities_data['grade']) && $activities_data['grade'] != null ? (in_array($grade->id ,is_array($activities_data['grade']) ? $activities_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -519,7 +519,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="activity_select_0"
                                                                             name="activities_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['activities_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -616,7 +616,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="athletics_select_{{ $index }}"
                                                                                 name="athletics_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['athletics_grades'] as $grade)
                                                                                     <option {{ isset($athletics_data['grade']) && $athletics_data['grade'] != null ? (in_array($grade->id ,is_array($athletics_data['grade']) ? $athletics_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -676,7 +676,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="athletics_select_0"
                                                                             name="athletics_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['athletics_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
@@ -769,7 +769,7 @@
                                                                         <div class="select2-container_main">
                                                                             <select class="js-select2 select" id="community_select_{{ $index }}"
                                                                                 name="community_service_data[{{ $index }}][grade][]" multiple="multiple">
-                                                                                @foreach ($grades as $grade)
+                                                                                @foreach ($grades['community_service_grades'] as $grade)
                                                                                     <option {{ isset($community_service_data['grade']) && $community_service_data['grade'] != null ? (in_array($grade->id ,is_array($community_service_data['grade']) ? $community_service_data['grade'] : []) ? 'selected' : '') : '' }} value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                                 @endforeach
                                                                             </select>
@@ -814,7 +814,7 @@
                                                                     <div class="select2-container_main">
                                                                         <select class="js-select2 select" id="community_select_0"
                                                                             name="community_service_data[0][grade][]" multiple="multiple">
-                                                                            @foreach ($grades as $grade)
+                                                                            @foreach ($grades['community_service_grades'] as $grade)
                                                                                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                                                                             @endforeach
                                                                         </select>
