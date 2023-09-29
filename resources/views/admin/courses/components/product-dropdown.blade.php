@@ -2,7 +2,7 @@
 
 <div class="mb-2 product-options @if(isset($status) && $status != 'paid') d-none @endif">
     <label class="form-label" for="status">Select Product</label>
-    <select name="products[]" class="form-control {{$errors->has('products') ? 'is-invalid' : ''}}" multiple="multiple">
+    <select name="products[]" class="form-control {{$errors->has('products') ? 'is-invalid' : ''}} @if(isset($classes)) {{ $classes }} @endif" style="width: 100% !important" multiple="multiple">
         @if(isset($product) && count($product) > 0) 
             @foreach($product as $p)
                 @php

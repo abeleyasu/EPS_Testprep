@@ -17,12 +17,18 @@ return new class extends Migration
             Schema::create('question_types', function (Blueprint $table) {
                 $table->id();
                 $table->text('question_type_title')->nullable();
+                $table->integer('selfMade')->default(0)->comment('0: No selfmade, 1: selfmade');
+                $table->string('format')->nullable();
+                $table->string('section_type')->nullable();
                 $table->text('question_type_description')->nullable();
                 $table->text('question_type_lesson')->nullable();
                 $table->text('question_type_strategies')->nullable();
                 $table->text('question_type_identification_methods')->nullable();
-                $table->timestamp('deleted_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+                $table->text('question_type_identification_activity')->nullable();
+                $table->integer('super_category_id')->nullable();
+                $table->integer('category_id')->nullable();
                 $table->timestamps();
+                $table->softDeletes();
             });
         }
     }

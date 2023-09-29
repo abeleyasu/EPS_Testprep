@@ -55,8 +55,8 @@
                                       placeholder="Description" >
                                 <option value="">Select Type</option>
                                 <option value="PSAT">PSAT</option>
-                                <option value="PSAT">SAT</option>
-                                <option value="PSAT">ACT</option>
+                                <option value="SAT">SAT</option>
+                                <option value="ACT">ACT</option>
                             </select>
                             @error('type')
                             <div class="invalid-feedback">{{$message}}</div>

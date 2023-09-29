@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('question_tags', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('practice_tests', function (Blueprint $table) {
+            $table->enum('status', ['paid', 'unpaid'])->nullable()->after('user_id')->default('unpaid');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_tags');
+        Schema::table('practice_tests', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };

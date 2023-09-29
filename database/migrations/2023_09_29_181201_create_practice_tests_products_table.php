@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('scores', function (Blueprint $table) {
+        Schema::create('practice_test_product', function (Blueprint $table) {
             $table->id();
-            $table->integer('section_id');
-            $table->integer('question_id');
-            $table->integer('actual_score');
-            $table->integer('converted_score');
-            $table->string('section_type');
-            $table->integer('test_id');
+            $table->foreignId('practice_test_id')->references('id')->on('practice_tests')->cascadeOnDelete();
+            $table->foreignId('product_id')->references('id')->on('product')->cascadeOnDelete();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scores');
+        Schema::dropIfExists('practice_test_product');
     }
 };

@@ -16,6 +16,7 @@ use App\Models\Score;
 use App\Models\SuperCategory;
 use App\Models\UserAnswers;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Validator;
 
 class PracticeTestsController extends Controller
 {
@@ -89,28 +90,82 @@ class PracticeTestsController extends Controller
 
     public function addPracticeTest(Request $request)
     {
-        if(empty($request->get_test_id))
-        {
-            $practice = new PracticeTest();
-            $practice->title = $request->title;
-            $practice->format = $request->format;
-            $practice->test_source = $request->source;
-            $practice->is_test_completed = '';
-            $practice->save();
-        }
-        else if(!empty($request->get_test_id))
-        {
-            $practices = PracticeTest::where('id', $request->get_test_id)->get();
-            
-            foreach($practices as $practice) {
+        DB::beginTransaction();
+        try {
+            $rules = [
+                'title' => 'required',
+                'format' => 'required',
+                'source' => 'required',
+                'status' => 'required',
+                'products' => 'required_if:status,paid|array|min:1',
+            ];
+    
+            $customMessages = [
+                'title.required' => 'Title is required',
+                'format.required' => 'Test type is required',
+                'source.required' => 'Test source is required',
+                'status.required' => 'Test status is required',
+                'products.required_if' => 'Product is required',
+                'products.min' => 'Product is required',
+                'products.array' => 'Product is required',
+            ];
+    
+            $validate = Validator::make($request->all(), $rules, $customMessages);
+            if ($validate->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validate->errors()->first(),
+                ]);
+            }
+            if(empty($request->get_test_id)) {
+                $practice = new PracticeTest();
                 $practice->title = $request->title;
                 $practice->format = $request->format;
                 $practice->test_source = $request->source;
+                $practice->is_test_completed = '';
+                $practice->status = $request->status;
                 $practice->save();
+    
+                if ($request->status == 'paid') {
+                    $practice->practice_tests_products()->attach($request->products);
+                }
+    
+            } else if(!empty($request->get_test_id)) {
+                $practice = PracticeTest::where('id', $request->get_test_id)->first();
+                
+                if (!$practice) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Test not found',
+                    ]);
+                }
+                $practice->title = $request->title;
+                $practice->format = $request->format;
+                $practice->test_source = $request->source;
+                $practice->status = $request->status;
+                $practice->save();
+
+                $get_all_attach_products = $practice->practice_tests_products()->pluck('product_id')->toArray();
+                if (count($get_all_attach_products) > 0) {
+                    $practice->practice_tests_products()->detach($get_all_attach_products);
+                }
+                if ($request->status == 'paid') {
+                    $practice->practice_tests_products()->attach($request->products);
+                }
+
             }
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'test_id' => $practice->id,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
-        
-        return $practice->id;
     }
 
     /**
@@ -183,6 +238,7 @@ class PracticeTestsController extends Controller
 		Score::where('test_id',$id)->delete();
         PracticeTestSection::where('testid',$id)->delete();
 		$practicetests = PracticeTest::find($id);
+        $practicetests->practice_tests_products()->detach();
         $practicetests->delete();
         return redirect()->route('practicetests.index')->with('message','Question deleted successfully');
     }

@@ -18,6 +18,13 @@
                     </div>
                 </div>
                 <div class="content">
+                    @if(session('error'))
+                    <div class="mx-lg-auto col-lg-10">
+                        <div class="alert alert-danger">
+                            {{session('error')}}
+                        </div>
+                    </div>
+                    @endif
                     <div class="card p-3  col-lg-10 mx-lg-auto ">
                         <nav class="d-flex justify-content-center">
                             <div class="nav nav-tabs mb-3 btn-group" id="nav-tab" role="tablist">
@@ -73,11 +80,10 @@
                                                                                 @if (!$getOfficialPracticeTests['ACT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['ACT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'ACT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">Official
-                                                                                                    Released
-                                                                                                    {{ $getOfficialPracticeTest->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -108,11 +114,10 @@
                                                                                 @if (!$getOfficialPracticeTests['SAT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['SAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'SAT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">Official
-                                                                                                    Released
-                                                                                                    {{ $getOfficialPracticeTest->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -143,11 +148,10 @@
                                                                                 @if (!$getOfficialPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getOfficialPracticeTests['PSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'PSAT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">Official
-                                                                                                    Released
-                                                                                                    {{ $getOfficialPracticeTest->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -200,11 +204,10 @@
                                                                                 @if (!$getAllPracticeTests['ACT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['ACT'] as $test)
                                                                                         @if ($test->format == 'ACT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $test->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">College
-                                                                                                    Prep
-                                                                                                    {{ $test->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $test,
+                                                                                                'slug' => 'College Prep'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -235,11 +238,10 @@
                                                                                 @if (!$getAllPracticeTests['SAT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['SAT'] as $test)
                                                                                         @if ($test->format == 'SAT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $test->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">College
-                                                                                                    Prep
-                                                                                                    {{ $test->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $test,
+                                                                                                'slug' => 'College Prep'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -270,11 +272,10 @@
                                                                                 @if (!$getAllPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getAllPracticeTests['PSAT'] as $test)
                                                                                         @if ($test->format == 'PSAT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $test->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">College
-                                                                                                    Prep
-                                                                                                    {{ $test->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $test,
+                                                                                                'slug' => 'College Prep'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -327,11 +328,10 @@
                                                                                 @if (!$getAllProgressPracticeTests['ACT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['ACT'] as $test)
                                                                                         @if ($test->format == 'ACT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $test->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">College
-                                                                                                    Prep
-                                                                                                    {{ $test->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $test,
+                                                                                                'slug' => 'College Prep'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -362,11 +362,10 @@
                                                                                 @if (!$getAllProgressPracticeTests['SAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['SAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'SAT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">Official
-                                                                                                    Released
-                                                                                                    {{ $getOfficialPracticeTest->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else
@@ -397,11 +396,10 @@
                                                                                 @if (!$getAllProgressPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['PSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'PSAT')
-                                                                                            <a
-                                                                                                href="{{ route('single_test', ['id' => $getOfficialPracticeTest->id]) }}"><button
-                                                                                                    class="btn btn-success d-block mb-2">Official
-                                                                                                    Released
-                                                                                                    {{ $getOfficialPracticeTest->title }}</button></a>
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
                                                                                         @endif
                                                                                     @endforeach
                                                                                 @else

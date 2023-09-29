@@ -55,4 +55,8 @@ class Product extends Model
     public function user_product_task() {
         return $this->belongsToMany(Task::class,'task_products', 'product_id', 'task_id');
     }
+    
+    public function product_practice_tests() {
+        return $this->belongsToMany(PracticeTest::class);
+    }
 }

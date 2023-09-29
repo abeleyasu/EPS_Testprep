@@ -349,7 +349,8 @@
         }
 
         .form-label {
-            display: block
+            display: block;
+            font-size: 16px;
         }
 
         #addNewType .select2-container--default {
@@ -526,7 +527,7 @@
                             <div class="block-content block-content-full">
                                 <!----------------->
 
-                                <div class="container mt-5">
+                                <div class="container">
                                     <div class="row d-flex justify-content-center align-items-center">
                                         <div class="col-md-12">
                                             <div class="all-steps" id="all-steps" style="display: none;"> <span
@@ -570,6 +571,17 @@
                                                             <option value="2">Quiz Questions</option>
                                                         </select>
                                                     </div>
+
+                                                    <div class="mb-2">
+                                                        <label class="form-label" for="status">Status</label>
+
+                                                        <select name="status" class="form-control" id="status">
+                                                            <option value="paid">Paid</option>
+                                                            <option value="unpaid">Unpaid</option>
+                                                        </select>
+                                                    </div>
+
+                                                    @include('admin.courses.components.product-dropdown')
                                                 </div>
                                             </div>
                                             <div class="tab">
@@ -590,6 +602,7 @@
                                                         Section</button>
                                                 </div>
                                             </div>
+                                            
                                             <div style="overflow:auto;" id="nextprevious">
                                                 <div style="float:right;">
                                                     <a href="javascript:;" class="btn btn-sm btn-primary" id="prevBtn"
@@ -2579,6 +2592,7 @@
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/admin/course.js') }}"></script>
     <script>
         let is_edit = false;
         var questionCount = 1;
@@ -3238,636 +3252,6 @@
                 }
             });
         });
-
-        // CKEDITOR.replace('js-ckeditor-desc', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        /*CKEDITOR.replace( 'js-ckeditor-addQuesection',{
-        	extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        	allowedContent
-        });*/
-        /*CKEDITOR.replace( 'js-ckeditor-passsection',{
-        	extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        	allowedContent
-        });*/
-        // CKEDITOR.replace('js-ckeditor-addQue', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_OddAnswer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_OddAnswer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_OddAnswer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_OddAnswer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_EvenAnswer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_Odd_explanation_answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFour_Even_explanation_answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Odd_Answer_5', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace('choiceOneInFive_Even_Answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Even_Answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Even_Answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Even_Answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFive_Even_Answer_5', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Odd_explanation_answer_odd5', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFive_Even_explanation_answer_even5', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFourPass_OddAnswer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceOneInFourPass_EvenAnswer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Odd_explanation_answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceOneInFourPass_Even_explanation_answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultInFourFillAnswer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceMultInFourFillAnswer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceMultInFourFillAnswer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceMultInFourFillAnswer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultInFourFill_explanation_answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_1', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_2', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_3', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace('choiceMultiChoiceInFourFill_explanation_answer_4', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // //for edit functionality
-        // CKEDITOR.replace('js-ckeditor-edit-addQue', {
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFour_OddAnswer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFour_EvenAnswer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFour_Odd_explanation_answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFour_Even_explanation_answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Odd_Answer_5',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFive_Even_Answer_5',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Odd_explanation_answer_odd5',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFive_Even_explanation_answer_even5',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_OddAnswer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceOneInFourPass_EvenAnswer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Odd_explanation_answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // // new
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceOneInFourPass_Even_explanation_answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceMultInFourFillAnswer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceMultInFourFill_explanation_answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editChoiceMultiChoiceInFourFill_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-
-        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_1',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_2',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_3',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
-        // CKEDITOR.replace( 'editchoiceMultiChoiceInFourFill_explanation_answer_4',{
-        //     extraPlugins: 'oembed,colorbutton,colordialog,font,ckeditor_wiris',
-        //     allowedContent
-        // });
 
         $('.edit_question').click(function() {
             var id = $(this).data('id');
@@ -5957,12 +5341,19 @@
             var test_format_type_val = jQuery('#format').val();
             var test_source = jQuery('#source').val();
             var get_test_id = jQuery('#get_question_id').val();
+            const status = jQuery('select[name="status"]').val();
+            const products = jQuery('select[name="products[]"]').val();
 
             preGetPracticeCategoryType = await dropdown_lists(
                 `/admin/getPracticeCategoryType?testType=${test_format_type_val}`);
             preGetPracticeQuestionType = await dropdown_lists(
                 `/admin/getPracticeQuestionType?testType=${test_format_type_val}`);
             preGetSuperCategory = await dropdown_lists(`/admin/getSuperCategory?testType=${test_format_type_val}`);
+
+            if (test_title_val == '' || status == '' || (status == 'paid' && products == 0)) {
+                $('.testvalidError').text('Below fields are required!');
+                return false;
+            }
 
             if (test_title_val != '') {
                 $('.testvalidError').text('');
@@ -5972,121 +5363,113 @@
                         'title': test_title_val,
                         'source': test_source,
                         'get_test_id': get_test_id,
+                        'status': status,
+                        'products': products,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: "{{ route('addPracticeTest') }}",
                     method: 'post',
-                    success: (res) => {
-                        jQuery("#get_question_id").val(res);
-                        // document.cookie = "format = " + $('#format').val();
+                }).done((response) => {
+                    if (response.success) {
+                        jQuery("#get_question_id").val(response.test_id);
+
+                        $.ajax({
+                            data: {
+                                'format': test_format_type_val,
+                                '_token': $('input[name="_token"]').val()
+                            },
+                            url: "{{ route('addDropdownOption') }}",
+                            method: 'post',
+                            success: (res) => {
+
+                                let super_option = ``;
+                                $.each(res.super, function(i, v) {
+                                    super_option += `<option value=${v['id']}>${v['title']}</option>`;
+                                });
+
+
+                                let category_option = ``;
+                                $.each(res.category, function(i, v) {
+                                    category_option +=
+                                        `<option value=${v['id']}>${v['category_type_title']}</option>`;
+                                });
+
+
+                                let questionType_option = ``;
+                                $.each(res.questionType, function(i, v) {
+                                    questionType_option +=
+                                        `<option value=${v['id']}>${v['question_type_title']}</option>`;
+                                });
+
+                                const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_',
+                                    'oneInFourEven_', 'oneInFourPassEven_', 'choiceMultInFourFill_',
+                                    'cb_choiceMultInFourFill_'
+                                ]
+                                const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'];
+                                disp_sections.forEach(disp_section => {
+                                    ans_choices.forEach(ans_choice => {
+                                        $(`select[name="${disp_section}add_category_type_${ans_choice}"`)
+                                            .html('');
+                                        $(`select[name="${disp_section}super_category_create_${ans_choice}"`)
+                                            .html('');
+                                        $(`select[name="${disp_section}add_search-input_A${ans_choice}"`)
+                                            .html('');
+
+                                        $(`select[name="${disp_section}super_category_create_${ans_choice}"`)
+                                            .append(super_option);
+                                        // $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).append(super_option);
+
+                                        $(`select[name="${disp_section}add_category_type_${ans_choice}"`)
+                                            .append(category_option);
+                                        // $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).append(category_option);
+
+                                        $(`select[name="${disp_section}add_search-input_${ans_choice}"`)
+                                            .append(questionType_option);
+                                        // $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).append(questionType_option);
+                                    });
+                                });
+
+                                $('select[name="fc_super_category_create_A"').html('');
+                                $('select[name="fc_add_category_type_A"').html('');
+                                $('select[name="fc_add_search-input_A"').html('');
+
+                                $('select[name="fc_super_category_create_A"').append(super_option);
+                                $('select[name="fc_add_category_type_A"').append(category_option);
+                                $('select[name="fc_add_search-input_A"').append(questionType_option);
+
+                                $('select[name="fc_edit_super_category_A"').html('');
+                                $('select[name="fc_edit_category_type_A"').html('');
+                                $('select[name="fc_edit_search-input_A"').html('');
+
+                                $(`select[name="fc_edit_super_category_A"`).append(super_option);
+                                $(`select[name="fc_edit_category_type_A"`).append(category_option);
+                                $(`select[name="fc_edit_search-input_A"`).append(questionType_option);
+                            }
+                        });
+
+                        if (n == 1 && !validateForm()) return false;
+                        x[currentTab].style.display = "none";
+                        currentTab = currentTab + n;
+                        if (currentTab >= x.length) {
+
+
+                            document.getElementById("regForm").submit();
+                            return false;
+
+                            document.getElementById("nextprevious").style.display = "none";
+                            document.getElementById("all-steps").style.display = "none";
+                            document.getElementById("register").style.display = "none";
+                            document.getElementById("text-message").style.display = "block";
+                        }
+                        showTab(currentTab);
+                        clearModel();
+
+                    } else {
+                        toastr.error(response.message);
+                        return false;
                     }
-                });
-                $.ajax({
-                    data: {
-                        'format': test_format_type_val,
-                        '_token': $('input[name="_token"]').val()
-                    },
-                    url: "{{ route('addDropdownOption') }}",
-                    method: 'post',
-                    success: (res) => {
-                        // $('select[name="super_category_create"').html('');
-                        // $('select[name="edit_super_category"').html('');
-                        // $('select[name="category_type"').html('');
-                        // $('select[name="edit_category_type"').html('');
-                        // $('select[name="search-input"').html('');
-                        // $('select[name="edit_search-input"').html('');
-
-
-                        let super_option = ``;
-                        $.each(res.super, function(i, v) {
-                            super_option += `<option value=${v['id']}>${v['title']}</option>`;
-                        });
-
-
-                        let category_option = ``;
-                        $.each(res.category, function(i, v) {
-                            category_option +=
-                                `<option value=${v['id']}>${v['category_type_title']}</option>`;
-                        });
-
-
-                        let questionType_option = ``;
-                        $.each(res.questionType, function(i, v) {
-                            questionType_option +=
-                                `<option value=${v['id']}>${v['question_type_title']}</option>`;
-                        });
-
-                        const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_',
-                            'oneInFourEven_', 'oneInFourPassEven_', 'choiceMultInFourFill_',
-                            'cb_choiceMultInFourFill_'
-                        ]
-                        const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'];
-                        disp_sections.forEach(disp_section => {
-                            ans_choices.forEach(ans_choice => {
-                                $(`select[name="${disp_section}add_category_type_${ans_choice}"`)
-                                    .html('');
-                                $(`select[name="${disp_section}super_category_create_${ans_choice}"`)
-                                    .html('');
-                                $(`select[name="${disp_section}add_search-input_A${ans_choice}"`)
-                                    .html('');
-
-                                // $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).html('');
-                                // $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).html('');
-                                // $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).html('');
-
-
-                                $(`select[name="${disp_section}super_category_create_${ans_choice}"`)
-                                    .append(super_option);
-                                // $(`select[name="${disp_section}edit_super_category_${ans_choice}"`).append(super_option);
-
-                                $(`select[name="${disp_section}add_category_type_${ans_choice}"`)
-                                    .append(category_option);
-                                // $(`select[name="${disp_section}edit_category_type_${ans_choice}"`).append(category_option);
-
-                                $(`select[name="${disp_section}add_search-input_${ans_choice}"`)
-                                    .append(questionType_option);
-                                // $(`select[name="${disp_section}edit_search-input_${ans_choice}"`).append(questionType_option);
-                            });
-                        });
-
-                        $('select[name="fc_super_category_create_A"').html('');
-                        $('select[name="fc_add_category_type_A"').html('');
-                        $('select[name="fc_add_search-input_A"').html('');
-
-                        $('select[name="fc_super_category_create_A"').append(super_option);
-                        $('select[name="fc_add_category_type_A"').append(category_option);
-                        $('select[name="fc_add_search-input_A"').append(questionType_option);
-
-                        $('select[name="fc_edit_super_category_A"').html('');
-                        $('select[name="fc_edit_category_type_A"').html('');
-                        $('select[name="fc_edit_search-input_A"').html('');
-
-                        $(`select[name="fc_edit_super_category_A"`).append(super_option);
-                        $(`select[name="fc_edit_category_type_A"`).append(category_option);
-                        $(`select[name="fc_edit_search-input_A"`).append(questionType_option);
-                    }
-                });
-            } else if (test_title_val == '') {
-                $('.testvalidError').text('Below fields are required!');
-                return false;
+                })
             }
-
-            if (n == 1 && !validateForm()) return false;
-            x[currentTab].style.display = "none";
-            currentTab = currentTab + n;
-            if (currentTab >= x.length) {
-
-
-                document.getElementById("regForm").submit();
-                return false;
-
-                document.getElementById("nextprevious").style.display = "none";
-                document.getElementById("all-steps").style.display = "none";
-                document.getElementById("register").style.display = "none";
-                document.getElementById("text-message").style.display = "block";
-            }
-            showTab(currentTab);
-            clearModel();
         }
 
         function validateForm() {

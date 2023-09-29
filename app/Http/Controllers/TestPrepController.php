@@ -1676,6 +1676,15 @@ class TestPrepController extends Controller
 
     public function singleTest(Request $request, $id)
     {
+        $practice_test = PracticeTest::where('id', $id)->first();
+
+        if (!$practice_test) {
+            return redirect(route('test_home_page'))->with('error', 'Test not found');
+        }
+
+        if ($practice_test->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($practice_test->practice_tests_products()->pluck('product_id')->toArray())) {
+            return redirect(route('test_home_page'))->with('error', 'You are not authorized to access this test');
+        }
 
         $current_user_id = Auth::id();
 

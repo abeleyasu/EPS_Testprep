@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('format');
+            $table->integer('selfMade')->default(0)->comment('0: No selfmade, 1: selfmade');
+            $table->string('section_type')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
