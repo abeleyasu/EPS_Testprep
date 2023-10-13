@@ -109,9 +109,7 @@ function getSingleApplicationData(dataset, staticdata, elementid) {
                             <div class="row">
                                 <div class="col-6">
                                     <label class="form-label" for="admissions_deadline-${dataset.id}">Admissions Deadline</label>
-                                    <div class="form-control" id="admissions_deadline-${dataset.id}">
-                                        ${data.admissions_deadline ? data.admissions_deadline : 'mm/dd/yy'}
-                                    </div>
+                                    <input type="text" class="date-own form-control update-form" id="admissions_deadline-${dataset.id}" data-index="${dataset.id}" value="${data.admissions_deadline ? data.admissions_deadline : 'mm/dd/yy'}" name="admissions_deadline" placeholder="dd/mm/yy" autocomplete="off">
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" for="ad_status">Status</label>

@@ -57,7 +57,13 @@ class DashboardService extends GoogleService
             $college_list_deadline = $college_list_deadline['college_list_details'];
             foreach ($college_list_deadline as $key => $deadline) {
                 $college_information_deadline = $deadline['college_information']['regular_admission_deadline'];
-                if ($college_information_deadline) {
+                $dead = $deadline['college_deadline']['admissions_deadline'];
+                if($dead){
+                    $date = Carbon::createFromFormat('m-d-Y', $dead);
+                    $days = $date->diffInDays(Carbon::now());
+                    $college_list_deadline[$key]['college_information']['regular_admission_deadline'] = $date->format('m-d-Y');
+                    $college_list_deadline[$key]['college_deadline']['admissions_deadline_diff'] = 'Due in '. $days . ' days';
+                }elseif($college_information_deadline) {
                     $date = Carbon::createFromFormat('m-d-Y', $college_information_deadline);
                     $days = $date->diffInDays(Carbon::now());
                     $college_list_deadline[$key]['college_information']['regular_admission_deadline'] = $date->format('m-d-Y');
