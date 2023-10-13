@@ -51,6 +51,11 @@ class PracticeQuestionController extends Controller
         $question->fillType = $request->fillType;
         $question->multiChoice = $request->multiChoice;
         $question->question_order = $request->question_order;
+
+        $question->disc_value = $request->diffValue;
+        $question->diff_value = $request->discValue;
+        $question->guessing_value = $request->guessingValue;
+
         $rating_array = $request->diff_rating ?? ['2'];
 
         if (in_array($request->testSectionType, ['Reading', 'Writing'])) {
@@ -270,6 +275,11 @@ class PracticeQuestionController extends Controller
         $question->fill = $request->fill;
         $question->fillType = $request->fillType;
         $question->multiChoice = $request->multiChoice;
+
+        // $question->disc_value = $request->diffValue;
+        // $question->diff_value = $request->discValue;
+        // $question->guessing_value = $request->guessingValue;
+
         $rating_array = $request->diff_rating;
         foreach ($rating_array as $key => $value) {
             $rating_id = DiffRating::where('title', $value)->orWhere('id', $value)->first();
@@ -507,7 +517,8 @@ class PracticeQuestionController extends Controller
         // } else {
         // 	$hundred_extended = null;
         // }
-
+        $practiceTestSection = [];
+        
         $practiceSection = new PracticeTestSection();
         $practiceSection->format = $request->format;
         $practiceSection->section_title = $request->testSectionTitle;
@@ -518,24 +529,239 @@ class PracticeQuestionController extends Controller
         $practiceSection->regular_time = $request->regular;
         $practiceSection->fifty_per_extended = $request->fifty;
         $practiceSection->hundred_per_extended = $request->hundred;
+        $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
         $practiceSection->save();
+        array_push($practiceTestSection,$practiceSection->id);
         DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
         if ($request->testSectionType == 'Math_with_calculator') {
             $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_no_calculator')->get();
             if (isset($exist_section) && !empty($exist_section)) {
                 foreach ($exist_section as $section) {
-                    Score::create(['section_id' => $practiceSection->id, 'question_id' => $section['question_id'], 'actual_score' => $section['actual_score'], 'converted_score' => $section['converted_score'], 'section_type' => $request->testSectionType, 'test_id' => $request->get_test_id]);
+                    Score::create([
+                        'section_id' => $practiceSection->id, 
+                        'question_id' => $section['question_id'], 
+                        'actual_score' => $section['actual_score'], 
+                        'converted_score' => $section['converted_score'], 
+                        'section_type' => $request->testSectionType, 
+                        'test_id' => $request->get_test_id
+                    ]);
                 }
             }
         } else if ($request->testSectionType == 'Math_no_calculator') {
             $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_with_calculator')->get();
             if (isset($exist_section) && !empty($exist_section)) {
                 foreach ($exist_section as $section) {
-                    Score::create(['section_id' => $practiceSection->id, 'question_id' => $section['question_id'], 'actual_score' => $section['actual_score'], 'converted_score' => $section['converted_score'], 'section_type' => $request->testSectionType, 'test_id' => $request->get_test_id]);
+                    Score::create([
+                        'section_id' => $practiceSection->id, 
+                        'question_id' => $section['question_id'], 
+                        'actual_score' => $section['actual_score'], 
+                        'converted_score' => $section['converted_score'], 
+                        'section_type' => $request->testSectionType, 
+                        'test_id' => $request->get_test_id
+                    ]);
                 }
             }
         }
-        return $practiceSection->id;
+
+        // Automatically generate two more sections when Type of question is Digital SAT/PSAT.
+        if ($request->question_type == 'DSAT') {
+            if ($request->testSectionType == 'Reading_And_Writing') {
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2A (Easy) - Reading & Writing';
+                $practiceSection->practice_test_type = 'Easy_Reading_And_Writing';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 2;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+
+                array_push($practiceTestSection,$practiceSection->id);
+
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2B (Hard) - Reading & Writing';
+                $practiceSection->practice_test_type = 'Hard_Reading_And_Writing';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 3;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+
+                array_push($practiceTestSection,$practiceSection->id);
+                
+            }elseif($request->testSectionType == 'Math') {
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2A (Easy) - Math';
+                $practiceSection->practice_test_type = 'Math_with_calculator';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 2;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+
+                array_push($practiceTestSection,$practiceSection->id);
+
+                DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
+
+                $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_no_calculator')->get();
+                if (isset($exist_section) && !empty($exist_section)) {
+                    foreach ($exist_section as $section) {
+                        Score::create([
+                            'section_id' => $practiceSection->id, 
+                            'question_id' => $section['question_id'], 
+                            'actual_score' => $section['actual_score'], 
+                            'converted_score' => $section['converted_score'], 
+                            'section_type' => $request->testSectionType, 
+                            'test_id' => $request->get_test_id
+                        ]);
+                    }
+                }
+
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2B (Hard) - Math';
+                $practiceSection->practice_test_type = 'Math_no_calculator';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 3;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+
+                array_push($practiceTestSection,$practiceSection->id);
+
+                DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
+                $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_with_calculator')->get();
+                if (isset($exist_section) && !empty($exist_section)) {
+                    foreach ($exist_section as $section) {
+                        Score::create([
+                            'section_id' => $practiceSection->id, 
+                            'question_id' => $section['question_id'], 
+                            'actual_score' => $section['actual_score'], 
+                            'converted_score' => $section['converted_score'], 
+                            'section_type' => $request->testSectionType, 
+                            'test_id' => $request->get_test_id
+                        ]);
+                    }
+                }
+                
+
+            }else{
+                // no such case
+            }
+
+            
+        }elseif($request->question_type == 'DPSAT'){
+            if ($request->testSectionType == 'Reading_And_Writing') {
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2A (Easy) - Reading & Writing';
+                $practiceSection->practice_test_type = 'Easy_Reading_And_Writing';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 2;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+                array_push($practiceTestSection,$practiceSection->id);
+
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2B (Hard) - Reading & Writing';
+                $practiceSection->practice_test_type = 'Hard_Reading_And_Writing';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 3;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+                array_push($practiceTestSection,$practiceSection->id);
+                
+            }elseif($request->testSectionType == 'Math') {
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2A (Easy) - Math';
+                $practiceSection->practice_test_type = 'Math_with_calculator';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 2;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+                array_push($practiceTestSection,$practiceSection->id);
+
+                DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
+
+                $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_no_calculator')->get();
+                if (isset($exist_section) && !empty($exist_section)) {
+                    foreach ($exist_section as $section) {
+                        Score::create([
+                            'section_id' => $practiceSection->id, 
+                            'question_id' => $section['question_id'], 
+                            'actual_score' => $section['actual_score'], 
+                            'converted_score' => $section['converted_score'], 
+                            'section_type' => $request->testSectionType, 
+                            'test_id' => $request->get_test_id
+                        ]);
+                    }
+                }
+
+                $practiceSection = new PracticeTestSection();
+                $practiceSection->format = $request->format;
+                $practiceSection->section_title = 'Module 2B (Hard) - Math';
+                $practiceSection->practice_test_type = 'Math_no_calculator';
+                $practiceSection->testid = $request->get_test_id;
+                $practiceSection->section_order = 3;
+                $practiceSection->is_section_completed = '';
+                $practiceSection->regular_time = $request->regular;
+                $practiceSection->fifty_per_extended = $request->fifty;
+                $practiceSection->hundred_per_extended = $request->hundred;
+                $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
+                $practiceSection->save();
+                array_push($practiceTestSection,$practiceSection->id);
+
+                DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
+                $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_with_calculator')->get();
+                if (isset($exist_section) && !empty($exist_section)) {
+                    foreach ($exist_section as $section) {
+                        Score::create([
+                            'section_id' => $practiceSection->id, 
+                            'question_id' => $section['question_id'], 
+                            'actual_score' => $section['actual_score'], 
+                            'converted_score' => $section['converted_score'], 
+                            'section_type' => $request->testSectionType, 
+                            'test_id' => $request->get_test_id
+                        ]);
+                    }
+                }
+
+            }else{
+                // no such case
+            }
+        }else{
+            // no such case.
+        }
+        return $practiceTestSection;
+        // return $practiceSection->id;
     }
 
     public function addPracticeCategoryType(Request $request)
@@ -798,6 +1024,7 @@ class PracticeQuestionController extends Controller
             "practice_test_type" => $request->sectionType,
             "regular_time" => $request->regular,
             "fifty_per_extended" => $request->fifty,
+            "required_number_of_correct_answers" => $request->required_number_of_correct_answers,
             "hundred_per_extended" => $request->hundred
         ]);
 

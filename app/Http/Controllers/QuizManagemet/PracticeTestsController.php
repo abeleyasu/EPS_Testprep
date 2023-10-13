@@ -21,8 +21,20 @@ use Illuminate\Support\Facades\Validator;
 class PracticeTestsController extends Controller
 {
     use CRUD;
-	public $testformat = ['SAT'=>'SAT PRACTICE TEST','ACT'=>'ACT PRACTICE TEST', 'PSAT' => 'PSAT PRACTICE TEST'];
-	public $questionformat = ['ACT'=> 'ACT Question', 'SAT'=>'SAT Question', 'PSAT'=>'PSAT Question'];
+	public $testformat = [
+        'SAT'=>'SAT PRACTICE TEST',
+        'ACT'=>'ACT PRACTICE TEST', 
+        'PSAT' => 'PSAT PRACTICE TEST',
+        'DSAT' => 'Digital SAT',
+        'DPSAT' => 'Digital PSAT'
+    ];
+	public $questionformat = [
+        'ACT'=> 'ACT Question', 
+        'SAT'=>'SAT Question', 
+        'PSAT'=>'PSAT Question',
+        'DSAT' => 'Digital SAT Question',
+        'DPSAT' => 'Digital PSAT Question'
+    ];
     public $testSource = ['0' => 'College Prep System Practice Test', '1' => 'Official Released Practice Test', '2' => 'Quiz Questions'];
 	public function __construct(){
 		View::share('testformats', $this->testformat);
