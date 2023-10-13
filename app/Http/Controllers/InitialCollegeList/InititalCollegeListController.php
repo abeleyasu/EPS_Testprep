@@ -549,21 +549,23 @@ class InititalCollegeListController extends Controller
         $costcomparisonsummary = CollegeList::where('user_id', $userid)->select('id')->whereHas('college_list_details', function ($q) { 
             $q->where('is_active', true); 
         })->with(['college_list_details' => function ($query) {
-            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->orderBy('order_index')->with(['costcomparison', 'collegeInformation']);
+            $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id', 'college_id')->orderBy('order_index')->with(['costcomparison' => function ($costquery) {
+                $costquery->with(['costcomparisondetail', 'costcomparisonotherscholarship']);
+            }, 'collegeInformation']);
         }])->first();
 
         if ($costcomparisonsummary) {
             $costcomparisonsummary = $costcomparisonsummary->toArray();
         }
-
         $totalCount = 0;
         $data = [];
         if ($costcomparisonsummary) {
             foreach ($costcomparisonsummary['college_list_details'] as $college_data) {
                 $college_information = $college_data['college_information'];
+                $detailInformation = $college_data['costcomparison']['costcomparisondetail'];
                 $total_direct_cost = 0;
                 if ($college_information) {
-                    $total_direct_cost = $college_information['tution_and_fess'] + $college_information['room_and_board'];
+                    $total_direct_cost = ($detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess']) + ($detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board']);
                 }
                 $total_cost_attendance = $total_direct_cost - $college_data['costcomparison']['total_cost_attendance'];
                 $data[] = [
@@ -604,15 +606,14 @@ class InititalCollegeListController extends Controller
             } else {
                 $costcomparisonsummary = [];
             }
-
-            
             if (count($costcomparisonsummary) > 0) {
                 foreach ($costcomparisonsummary['college_list_details'] as $key => $costcomparison) {
                     $college_information = $costcomparison['college_information'];
-                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_direct_cost'] = $college_information['tution_and_fess'] + $college_information['room_and_board'];
+                    $detailInformation = $costcomparison['costcomparison']['costcomparisondetail'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_direct_cost'] = ($detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess']) + ($detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board']);
                     $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_cost_attendance'] = $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_direct_cost'] - $costcomparisonsummary['college_list_details'][$key]['costcomparison']['total_cost_attendance'];
-                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetail']['direct_tuition_free_year'] = $college_information['tution_and_fess'];
-                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetail']['direct_room_board_year'] = $college_information['room_and_board'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetail']['direct_tuition_free_year'] = $detailInformation['direct_tuition_free_year'] ? $detailInformation['direct_tuition_free_year'] : $college_information['tution_and_fess'];
+                    $costcomparisonsummary['college_list_details'][$key]['costcomparison']['costcomparisondetail']['direct_room_board_year'] = $detailInformation['direct_room_board_year'] ? $detailInformation['direct_room_board_year'] : $college_information['room_and_board'];
                     unset($costcomparisonsummary[$key]['college_information']);
                 }
             }

@@ -3,5 +3,5 @@
     <button class="btn btn-success d-block mb-2">{{ $slug }} {{ $test->title }}</button>
 </a>
 @else 
-<button class="btn btn-secondary cursor-na d-block mb-2" data-bs-toggle="tooltip" title="Paid Test">{{ $slug }} {{ $test->title }}</button>
+    <a href="{{ route('plan.index') }}" class="btn btn-secondary cursor-na  mb-2" data-bs-toggle="tooltip" title="Paid Test (Test Prep Only, Test Prep & College Admission, Tutoring Only Package, Tutoring & College Advising)">{{ $slug }} {{ $test->title }}</a>
 @endif

@@ -35,12 +35,13 @@ function getCollegeListForCostComparison(active_accordion = null) {
                     </tr>
                     <tr>
                       <td>Tuition & Fees / Year</td>
-                      <td class="td-width"><input type="text" disabled data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${detail.direct_tuition_free_year ? detail.direct_tuition_free_year : '0'}"></td>
+                      <td class="td-width"><input type="text" name="direct_tuition_free_year"  data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_tuition_free_year-${i}" value="${detail.direct_tuition_free_year ? detail.direct_tuition_free_year : '0'}"></td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>Room & Board / Year</td>
-                      <td class="td-width"><input type="text" disabled data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${detail.direct_room_board_year ? detail.direct_room_board_year : '0'}"></td>
+                      <td class="td-width">
+                        <input type="text" name="direct_room_board_year" data-index="${i}" data-id="${detail.id}" class="form-control edit-value" id="direct_room_board_year-${i}" value="${detail.direct_room_board_year ? detail.direct_room_board_year : '0'}"></td>
                       <td></td>
                     </tr>
                     <tr class="even table-success">
