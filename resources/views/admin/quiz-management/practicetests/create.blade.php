@@ -665,6 +665,7 @@
                                 <input id="required_number_of_correct_answers" 
                                     name="required_number_of_correct_answers" 
                                     class="form-control" type="number"
+                                    
                                     placeholder="Enter Required Number Of Correct Answers" >
                             </div>
                         </div>
@@ -913,14 +914,19 @@
                                 </div>
                             </div>
                             <div class="col-md-4 for_digital_only">
-                                <div class="mb-2 rating-tag ">
+                                <div class="mb-2 ">
                                     <label class="form-label" for="diff-value">Diff Value<span
                                             class="text-danger">*</span></label>
                                             
                                     <div class="d-flex align-items-center">
-                                        <input class="form-control" placeholder="Diff Value" type="number" id="diff-value" name="diff_value">
+                                        <input class="form-control"
+                                               placeholder="Diff Value" 
+                                               min="0" max="100" type="number" 
+                                               oninput="validateInput(this)"
+                                               required
+                                               id="diffValue" name="diff_value">
                                     </div>
-                                    <span class="text-danger" id="tagError"></span>
+                                    <span class="text-danger" id="diffValueError"></span>
                                 </div>
                             </div>
                             <div class="col-md-4 for_digital_only">
@@ -929,9 +935,14 @@
                                             class="text-danger">*</span></label>
                                             
                                     <div class="d-flex align-items-center">
-                                        <input class="form-control" placeholder="Disc Value" type="number" id="disc-value" name="disc_value">
+                                        <input class="form-control"
+                                                 placeholder="Disc Value" 
+                                                 min="0" max="100" type="number" 
+                                                 oninput="validateInput(this)"
+                                                 required
+                                                 type="number" id="disc-value" name="disc_value">
                                     </div>
-                                    <span class="text-danger" id="tagError"></span>
+                                    <span class="text-danger" id="disc-valueError"></span>
                                 </div>
                             </div>
                         </div>
@@ -1019,7 +1030,7 @@
                                                         type="radio" value="a" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
@@ -1027,7 +1038,7 @@
                                                             <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1052,15 +1063,20 @@
                                                     type="radio" value="b" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" 
+                                                                placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                                oninput="validateInput(this)"
+                                                                required
+                                                                id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1086,15 +1102,19 @@
                                                 type="radio" value="c" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1120,15 +1140,19 @@
                                                 type="radio" value="d" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                             min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1160,15 +1184,19 @@
                                                 type="radio" value="f" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1197,10 +1225,14 @@
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1226,15 +1258,19 @@
                                                 type="radio" value="h" name="choiceOneInFour"></label>
                                             </div>
                                             <div class="col-md-8">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1259,15 +1295,19 @@
                                                 type="radio" value="j" name="choiceOneInFour">
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1299,15 +1339,19 @@
                                                 type="radio" value="a" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1333,15 +1377,19 @@
                                                 type="radio" value="b" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1367,15 +1415,19 @@
                                                 type="radio" value="c" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1400,15 +1452,19 @@
                                                 type="radio" value="d" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1434,15 +1490,19 @@
                                                 type="radio" value="e" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            type="number"min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1475,15 +1535,19 @@
                                                 type="radio" value="f" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2 ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1509,15 +1573,19 @@
                                                 type="radio" value="g" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1543,15 +1611,19 @@
                                                 type="radio" value="h" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                             id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1577,15 +1649,20 @@
                                                 type="radio" value="j" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                             id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1611,15 +1688,19 @@
                                                 type="radio" value="k" name="choiceOneInFive"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1651,15 +1732,19 @@
                                                 type="radio" value="a" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1685,15 +1770,19 @@
                                                 type="radio" value="b" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1719,15 +1808,19 @@
                                                 type="radio" value="c" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1753,15 +1846,19 @@
                                                 <input type="radio" value="d" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1794,15 +1891,19 @@
                                                 type="radio" value="f" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1828,15 +1929,19 @@
                                                 type="radio" value="g" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1862,15 +1967,19 @@
                                                 type="radio" value="h" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            type="number"min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1896,15 +2005,19 @@
                                                 type="radio" value="j" name="choiceOneInFourPass"></label>
                                             </div>
                                             <div class="col-md-8 for_digital_only">
-                                                <div class="mb-2 rating-tag ">
+                                                <div class="mb-2  ">
                                                     <label class="form-label" for="guessing-value">Guessing Value<span
                                                             class="text-danger">*</span>
                                                             
                                                         <div class="d-flex align-items-center">
-                                                            <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                            <input class="form-control" placeholder="Guessing Value" 
+                                                            min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                            id="guessing-value" name="guessing_value">
                                                         </div>
                                                     </label>
-                                                    <span class="text-danger" id="tagError"></span>
+                                                    <span class="text-danger" id="guessing-valueError"></span>
                                                 </div>  
                                             </div>
                                         </div>
@@ -1950,15 +2063,19 @@
                                                     type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2  ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                                oninput="validateInput(this)"
+                                                                required  
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -1987,15 +2104,19 @@
                                                     type="checkbox" value="b" name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2 ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required  
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2024,15 +2145,19 @@
                                                     type="checkbox" value="c" name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2 ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                                oninput="validateInput(this)"
+                                                                required  
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2061,15 +2186,19 @@
                                                     type="checkbox" value="d" name="choiceMultInFourFill[]"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2  ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                                oninput="validateInput(this)"
+                                                                required  
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2103,15 +2232,19 @@
                                                     name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2 ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                                oninput="validateInput(this)"
+                                                                required  
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2139,15 +2272,19 @@
                                                     name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2  ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                                oninput="validateInput(this)"
+                                                                required 
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2175,15 +2312,19 @@
                                                     name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2  ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2211,15 +2352,19 @@
                                                     name="choiceMultiChoiceInFourFill"></label>
                                                 </div>
                                                 <div class="col-md-8 for_digital_only">
-                                                    <div class="mb-2 rating-tag ">
+                                                    <div class="mb-2 ">
                                                         <label class="form-label" for="guessing-value">Guessing Value<span
                                                                 class="text-danger">*</span>
                                                                 
                                                             <div class="d-flex align-items-center">
-                                                                <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                                <input class="form-control" placeholder="Guessing Value" 
+                                                                min="0" max="100" type="number" 
+                                                            oninput="validateInput(this)"
+                                                            required 
+                                                                id="guessing-value" name="guessing_value">
                                                             </div>
                                                         </label>
-                                                        <span class="text-danger" id="tagError"></span>
+                                                        <span class="text-danger" id="guessing-valueError"></span>
                                                     </div>  
                                                 </div>
                                             </div>
@@ -2361,7 +2506,8 @@
                         $helper = new Helper();
                         $tags = $helper->getAllQuestionTags();
                         ?>
-                        <div class="mb-2 rating-tag ">
+                        <div class="row">
+                        <div class=" col-md-4 mb-2 rating-tag ">
                             <label class="form-label" for="tags">Question Tags<span
                                     class="text-danger">*</span></label>
                             <div class="d-flex align-items-center">
@@ -2374,6 +2520,41 @@
                             </div>
                             <span class="text-danger" id="tagError"></span>
                         </div>
+
+                        <div class="col-md-4 for_digital_only">
+                            <div class="mb-2 ">
+                                <label class="form-label" for="diffValue">Diff Value<span
+                                        class="text-danger">*</span></label>
+                                        
+                                <div class="d-flex align-items-center">
+                                    <input class="form-control"
+                                            placeholder="Diff Value" 
+                                            min="0" max="100" type="number" 
+                                            oninput="validateInput(this)"
+                                            required
+                                            id="diffValueEdit" name="diff_value_edit">
+                                </div>
+                                <span class="text-danger" id="diffValueError"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 for_digital_only">
+                            <div class="mb-2 rating-tag ">
+                                <label class="form-label" for="discValue">Disc Value<span
+                                        class="text-danger">*</span></label>
+                                        
+                                <div class="d-flex align-items-center">
+                                    <input class="form-control"
+                                                placeholder="Disc Value" 
+                                                min="0" max="100" type="number" 
+                                                oninput="validateInput(this)"
+                                                required
+                                                type="number" id="discValueEdit" name="disc_value_edit">
+                                </div>
+                                <span class="text-danger" id="discValueError"></span>
+                            </div>
+                        </div>
+                        </div>
+
                         {{-- new for the super category  --}}
                         {{-- <div class="mb-2 rating-tag ">
                             <label class="form-label" for="superCategory">Super Category<span class="text-danger">*</span></label>
@@ -2454,8 +2635,26 @@
                                     value="choiceOneInFour_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFour_OddAnswer_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>A: </span><input
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input
                                                 type="radio" value="a" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2471,8 +2670,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                 type="radio" value="b" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2488,8 +2706,29 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_2">
-                                        <label class="form-label" style="font-size: 13px;"><span>C:</span><input
+                                    <div class="row">  
+
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input
                                                 type="radio" value="c" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2505,9 +2744,29 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_OddAnswer_3">
-                                        <label class="form-label" style="font-size: 13px;"><span>D: </span>
-                                            <input type="radio" value="d" name="choiceOneInFour">
-                                        </label>
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>D: </span>
+                                                <input type="radio" value="d" name="choiceOneInFour">
+                                            </label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2531,8 +2790,28 @@
                                     value="choiceOneInFour_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFour_EvenAnswer_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>F: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input
                                                 type="radio" value="f" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2548,8 +2827,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>G: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
                                                 type="radio" value="g" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2565,8 +2863,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_2">
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>H:</span><input
                                                 type="radio" value="h" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2582,8 +2900,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFour_EvenAnswer_3">
-                                        <label class="form-label" style="font-size: 13px;"><span>J: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input
                                                 type="radio" value="j" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2606,8 +2944,27 @@
                                     value="choiceOneInFive_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFive_OddAnswer_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>A: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input
                                                 type="radio" value="a" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2623,8 +2980,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                 type="radio" value="b" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2640,8 +3017,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_2">
-                                        <label class="form-label" style="font-size: 13px;"><span>C:</span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input
                                                 type="radio" value="c" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2657,8 +3054,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_3">
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input
                                                 type="radio" value="d" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2674,8 +3091,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_OddAnswer_4">
-                                        <label class="form-label" style="font-size: 13px;"><span>E: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>E: </span><input
                                                 type="radio" value="e" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2699,8 +3135,28 @@
                                     value="choiceOneInFive_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFive_EvenAnswer_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>F: </span><input
+                                    <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input
                                                 type="radio" value="f" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2716,8 +3172,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>G: </span><input
+                                        <div class="row">  
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
                                                 type="radio" value="g" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2733,8 +3209,28 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_2">
-                                        <label class="form-label" style="font-size: 13px;"><span>H:</span><input
+                                    <div class="row">  
+
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>H:</span><input
                                                 type="radio" value="h" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2750,8 +3246,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_3">
-                                        <label class="form-label" style="font-size: 13px;"><span>J: </span><input
+                                        <div class="row">  
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input
                                                 type="radio" value="j" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2767,8 +3282,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFive_EvenAnswer_4">
-                                        <label class="form-label" style="font-size: 13px;"><span>K: </span><input
+                                        <div class="row">  
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>K: </span><input
                                                 type="radio" value="k" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2791,8 +3325,27 @@
                                     value="choiceOneInFourPass_Odd">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFourPass_OddAnswer_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>A: </span><input
+                                        <div class="row">  
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input
                                                 type="radio" value="a" name="choiceOneInFourPass"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2808,8 +3361,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input
+                                        <div class="row">     
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                 type="radio" value="b" name="choiceOneInFourPass"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2825,8 +3397,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_2">
-                                        <label class="form-label" style="font-size: 13px;"><span>C: </span><input
-                                                type="radio" value="c" name="choiceOneInFourPass"></label>
+                                    <div class="row">      
+                                    <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input
+                                                type="radio" value="c" name="choiceOneInFourPass"></label>  
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2842,8 +3433,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_OddAnswer_3">
+                                    <div class="row">        
+                                    <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>D: </span><input
-                                                type="radio" value="d" name="choiceOneInFourPass"></label>
+                                                type="radio" value="d" name="choiceOneInFourPass"></label>  
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2867,8 +3477,27 @@
                                     value="choiceOneInFourPass_Even">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceOneInFourPass_EvenAnswer_0">
+                                    <div class="row">    
+                                    <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>F: </span><input
                                                 type="radio" value="f" name="choiceOneInFourPass"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2884,8 +3513,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_1">
+                                    <div class="row">
+                                        <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>G: </span><input
                                                 type="radio" value="g" name="choiceOneInFourPass"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2901,8 +3549,27 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_2">
+                                    <div class="row">
+                                        <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>H: </span><input
                                                 type="radio" value="h" name="choiceOneInFourPass"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -2917,9 +3584,28 @@
                                         <textarea id="editchoiceOneInFourPass_Even_explanation_answer_3" name="editchoiceOneInFourPass_explanation_answer_3"
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
-                                    <li class="choiceOneInFourPass_EvenAnswer_3">
+                                    <li class="choiceOneInFourPass_EvenAnswer_3 ">
+                                    <div class="row">
+                                        <div class="col-md-4">
                                         <label class="form-label" style="font-size: 13px;"><span>J: </span><input
                                                 type="radio" value="j" name="choiceOneInFourPass"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2 ">
+                                                <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" 
+                                                        placeholder="Guessing Value" type="number" 
+                                                        id="guessing_value_edit" name="guessing_value_edit">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessingValueError"></span>
+                                            </div>  
+                                        </div>
+                                        </div>
+                                        
 
                                         @include(
                                             'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3230,7 +3916,7 @@
 
         $('.for_digital_only').hide();
 
-        $("#passageRequired_1").click(function() {
+        $("#passageRequired_1").click(function() { 
             if ($(this).is(":checked")) {
                 $("#passage_number").prop("disabled", false);
                 $("select[name='passagesType']").prop("disabled", false);
@@ -3913,6 +4599,7 @@
         });
 
         $('.add_section_modal_btn').click(function() {
+            $("input[name=required_number_of_correct_answers]").val("");
             whichModel = "section";
             $('#testSectiontitle').val('');
             $('#regular_time_hour, #regular_time_minute, #regular_time_second, #50extendedhour, #50extendedminute, #50extendedsecond, #100extendedhour, #100extendedminute, #100extendedsecond')
@@ -3995,6 +4682,7 @@
             is_edit = false;
             clearModel();
             clearError();
+            $("input[type=number]"). val("");
             $('#passageRequired_1').prop('checked', true);
             $('#passage_number').prop('disabled', false);
             $('select[name="passagesType"]').prop('disabled', false);
@@ -4343,6 +5031,8 @@
                     success: (result) => {
 
                         $.each(result, function (key, res) {
+                            sectionOrder = currentModelId = key;
+                            sectionOrder++;
                             let ScoreClass =
                             `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
                             $('.sectionContainerList').append(
@@ -4370,7 +5060,7 @@
                                 '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
                                 res + '" data-section_type="' + testSectionType + '" data-test_id="' +
                                 get_test_id +
-                                '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
+                                '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+sectionOrder+'" id="order_' +
                                 res +
                                 '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
                                 res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
@@ -5005,7 +5695,9 @@
                                         }
                                     }
                                 }
-
+                                
+                                $('#diffValueEdit').val(result.diff_value);
+                                $('#discValueEdit').val(result.disc_value);
                                 $('#editQuestionOrder').val(result.question_order);
                                 $('#editCurrentModelQueId').val(result.id);
                                 $('#quesFormat').val(result.format);
@@ -5507,6 +6199,8 @@
             // console.log('activeAnswerType>>'+activeAnswerType);
             var questionType = $('#editQuestionMultiModal ' + activeAnswerType + ' #editQuestionType').val();
             // console.log('questionType>>'+questionType);
+
+
 
             multiChoice = $('.editMultipleChoice option:selected').val();
 
@@ -6161,7 +6855,6 @@
                         x[currentTab].style.display = "none";
                         currentTab = currentTab + n;
                         if (currentTab >= x.length) {
-
 
                             document.getElementById("regForm").submit();
                             return false;

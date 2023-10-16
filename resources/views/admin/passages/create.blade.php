@@ -57,6 +57,8 @@
                                 <option value="PSAT">PSAT</option>
                                 <option value="SAT">SAT</option>
                                 <option value="ACT">ACT</option>
+                                <option value="DSAT">Digital SAT</option>
+                                <option value="DPSAT">Digital PSAT</option>
                             </select>
                             @error('type')
                             <div class="invalid-feedback">{{$message}}</div>
