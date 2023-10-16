@@ -62,6 +62,8 @@
                                                         <option value="SAT">SAT</option>
                                                         <option value="PSAT">PSAT</option>
                                                         <option value="ACT">ACT</option>
+                                                        <option value="DSAT">Digital SAT</option>
+                                                        <option value="DPSAT">Digital PSAT</option>
                                                     </select>
                                                 </div>
                                                 <div class="mb-2 col-md-12 ptype mt-2">

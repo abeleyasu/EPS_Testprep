@@ -767,7 +767,9 @@ class PracticeQuestionController extends Controller
     public function addPracticeCategoryType(Request $request)
     {
         if (isset($request->searchValue) && !empty($request->searchValue)) {
-            $super_category_id = SuperCategory::where('id', $request['super_category'][0])->orWhere('title', $request['super_category'][0])->first();
+            $super_category_id = SuperCategory::where('id', $request['super_category'][0])
+                ->orWhere('title', $request['super_category'][0])
+                ->first();
             $practiceCatType = PracticeCategoryType::create([
                 'category_type_title' => $request->searchValue,
                 'format' => $request->format,
@@ -1156,8 +1158,12 @@ class PracticeQuestionController extends Controller
 
     public function findSuperCategory(Request $request)
     {
-        $super_categories = SuperCategory::where('format', $request['format'])->where('section_type', $request['section_type'])->get();
-        $categories = PracticeCategoryType::where('format', $request['format'])->where('section_type', $request['section_type'])->get();
+        $super_categories = SuperCategory::where('format', $request['format'])
+            ->where('section_type', $request['section_type'])
+            ->get();
+        $categories = PracticeCategoryType::where('format', $request['format'])
+            ->where('section_type', $request['section_type'])
+            ->get();
         return response()->json(['superCategory' => $super_categories, 'categories' => $categories]);
     }
 
