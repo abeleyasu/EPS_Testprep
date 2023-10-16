@@ -772,11 +772,14 @@ class InititalCollegeListController extends Controller
                 $college->with(['collegeInformation']);
             }]);
         }])->first()->toArray();
+
         $college_information = $data['cost_comparison']['college_search_add']['college_information'];
-        $total_direct_cost = 0;
-        if ($college_information) {
-            $total_direct_cost = $college_information['tution_and_fess'] + $college_information['room_and_board'];
-        }
+
+        $tution_and_fees = $data['direct_tuition_free_year'] ? $data['direct_tuition_free_year'] : $college_information['tution_and_fess'];
+        $room_and_board = $data['direct_room_board_year'] ? $data['direct_room_board_year'] : $college_information['room_and_board'];
+
+        $total_direct_cost = $tution_and_fees + $room_and_board;
+        
         $total_merit_cost = $data['institutional_academic_merit_aid'] + $data['institutional_exchange_program_scho'] + $data['institutional_honors_col_program'] + $data['institutional_academic_department_scho'] + $data['institutional_atheletic_scho'] + $data['institutional_other_talent_scho'] + $data['institutional_diversity_scho'] + $data['institutional_legacy_scho'] + $data['institutional_other_scho'];
         $total_need_based_aid = $data['need_base_federal_grants'] + $data['need_base_institutional_grants'] + $data['need_base_state_grants'] + $data['need_base_work_study_grants'] + $data['need_base_student_loans_grants'] + $data['need_base_parent_plus_grants'] + $data['need_base_other_grants'];
 
@@ -888,6 +891,7 @@ class InititalCollegeListController extends Controller
     }
 
     public function getUserCollegeList() {
+        // $college_list = CollegeSearchAdd::where('college_lists_id', $college_id)->where('is_active', true)->with(['collegeInformation'])->orderBy('order_index', 'asc')->get();
         try {
             $collegelist = CollegeList::where('user_id', Auth::id())->with(['college_list_details' => function ($query) {
                 $query->where('is_active', true)->select('id', 'college_name', 'college_lists_id')->orderBy('order_index');
