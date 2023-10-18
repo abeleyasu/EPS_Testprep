@@ -2507,52 +2507,52 @@
                         $tags = $helper->getAllQuestionTags();
                         ?>
                         <div class="row">
-                        <div class=" col-md-4 mb-2 rating-tag ">
-                            <label class="form-label" for="tags">Question Tags<span
-                                    class="text-danger">*</span></label>
-                            <div class="d-flex align-items-center">
-                                <select class="js-select2 select questionTag" id="question_tags_edit"
-                                    name="question_tags_edit" onchange="insertQuestionTag(this)" multiple>
-                                    @foreach ($tags as $tag)
-                                        <option value="{{ $tag['id'] }}">{{ $tag['title'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <span class="text-danger" id="tagError"></span>
-                        </div>
-
-                        <div class="col-md-4 for_digital_only">
-                            <div class="mb-2 ">
-                                <label class="form-label" for="diffValue">Diff Value<span
+                            <div class=" col-md-4 mb-2 rating-tag ">
+                                <label class="form-label" for="tags">Question Tags<span
                                         class="text-danger">*</span></label>
-                                        
                                 <div class="d-flex align-items-center">
-                                    <input class="form-control"
-                                            placeholder="Diff Value" 
-                                            min="0" max="100" type="number" 
-                                            oninput="validateInput(this)"
-                                            required
-                                            id="diffValueEdit" name="diff_value_edit">
+                                    <select class="js-select2 select questionTag" id="question_tags_edit"
+                                        name="question_tags_edit" onchange="insertQuestionTag(this)" multiple>
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag['id'] }}">{{ $tag['title'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <span class="text-danger" id="diffValueError"></span>
+                                <span class="text-danger" id="tagError"></span>
                             </div>
-                        </div>
-                        <div class="col-md-4 for_digital_only">
-                            <div class="mb-2 rating-tag ">
-                                <label class="form-label" for="discValue">Disc Value<span
-                                        class="text-danger">*</span></label>
-                                        
-                                <div class="d-flex align-items-center">
-                                    <input class="form-control"
-                                                placeholder="Disc Value" 
+
+                            <div class="col-md-4 for_digital_only">
+                                <div class="mb-2 ">
+                                    <label class="form-label" for="diffValue">Diff Value<span
+                                            class="text-danger">*</span></label>
+                                            
+                                    <div class="d-flex align-items-center">
+                                        <input class="form-control"
+                                                placeholder="Diff Value" 
                                                 min="0" max="100" type="number" 
                                                 oninput="validateInput(this)"
                                                 required
-                                                type="number" id="discValueEdit" name="disc_value_edit">
+                                                id="diffValueEdit" name="diff_value_edit">
+                                    </div>
+                                    <span class="text-danger" id="diffValueError"></span>
                                 </div>
-                                <span class="text-danger" id="discValueError"></span>
                             </div>
-                        </div>
+                            <div class="col-md-4 for_digital_only">
+                                <div class="mb-2 rating-tag ">
+                                    <label class="form-label" for="discValue">Disc Value<span
+                                            class="text-danger">*</span></label>
+                                            
+                                    <div class="d-flex align-items-center">
+                                        <input class="form-control"
+                                                    placeholder="Disc Value" 
+                                                    min="0" max="100" type="number" 
+                                                    oninput="validateInput(this)"
+                                                    required
+                                                    type="number" id="discValueEdit" name="disc_value_edit">
+                                    </div>
+                                    <span class="text-danger" id="discValueError"></span>
+                                </div>
+                            </div>
                         </div>
 
                         {{-- new for the super category  --}}
@@ -3898,14 +3898,15 @@
 @section('admin-script')
 
     <script src="{{ asset('assets/js/plugins/ckeditor/ckeditor.js') }}"></script>
-
     <script src="{{ asset('assets/js/plugins/Sortable.js') }}"></script>
     <script src="{{ asset('js/tagify.min.js') }}"></script>
     <script src="{{ asset('js/tagify.polyfills.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('js/admin/course.js') }}"></script>
+
     <script>
         let is_edit = false;
+
         var questionCount = 1;
         var questionOrder = 0;
         var sectionOrder = 0;
@@ -4051,6 +4052,7 @@
             let id = $(data).attr('data-id');
             let super_category = '';
             let category = '';
+
             super_category = $(data).closest('.add_question_type_select').siblings('.rating-tag').find(
                 'select.superCategory').first().val();
             category = $(data).closest('.add_question_type_select').siblings('.category-custom').find('select.categoryType')
@@ -4088,8 +4090,8 @@
                 key = parseInt(key);
 
                 let super_category = $(`#${disp_option}edit_super_category_${ans_col}_${key - 1}`).val();
-                let category_type = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
-                let question_type = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
+                let category_type  = $(`#${disp_option}edit_category_type_${ans_col}_${key - 1}`).val();
+                let question_type  = $(`#${disp_option}edit_search-input_${ans_col}_${key - 1}`).val();
 
                 if (super_category == '') {
                     toastr.error('Please select a Super Category!');
@@ -4131,6 +4133,7 @@
             html +=
                 `<select class="js-select2 select superCategory" id="${disp_option}edit_super_category_${ans_col}_${key}" name="${disp_option}edit_super_category_${ans_col}" onchange="insertSuperCategory(this)" multiple>`;
             // html += preGetSuperCategory;
+
             html += super_cat_option;
             html += `</select>`;
             html += `</div>`;
@@ -4141,6 +4144,7 @@
             html +=
                 `<select class="js-select2 select categoryType" id="${disp_option}edit_category_type_${ans_col}_${key}" name="${disp_option}edit_category_type_${ans_col}" data-id="${key}" onchange="insertCategoryType(this)" multiple>`;
             // html += preGetPracticeCategoryType;
+
             html += cat_type_option;
             html += `</select>`;
             html += `</div>`;
@@ -4150,6 +4154,7 @@
             html +=
                 `<select class="js-select2 select questionType" id="${disp_option}edit_search-input_${ans_col}_${key}" name="${disp_option}edit_search-input_${ans_col}" data-id="${key}" onchange="insertQuestionType(this)" multiple>`;
             // html += preGetPracticeQuestionType;
+
             html += question_type_option;
             html += `</select>`;
             html += `</div>`;
@@ -4196,8 +4201,8 @@
             button.attr('disabled', true);
 
             // console.log($(data).parent().parent().parent().find(".d-flex.input-field.align-items-center").length)
-
             // const key = $(data).parent().parent().parent().find(".d-flex.input-field.align-items-center").length;
+
             let key = $(data).attr('data-id');
             key = parseInt(key);
             key += 1;
@@ -4296,14 +4301,13 @@
             });
 
             button.attr('disabled', false);
-
             $(data).attr('data-id', key);
-
         }
 
         function dropdown_lists(url) {
             let site_url = $('#site_url').val();
             let option = ``;
+
             return $.ajax({
                 url: `${site_url}${url}`,
                 type: "GET",
@@ -4449,6 +4453,7 @@
                 dropdownParent: $('#editSectionModal'),
                 placeholder: "Select Section Type",
             });
+
             //new for edit
             $('input[name=questionTags]').tagify();
 
@@ -4487,6 +4492,7 @@
             const disp_sections = ['', 'oneInFiveOdd_', 'oneInFiveEven_', 'oneInFourOdd_', 'oneInFourEven_',
                 'oneInFourPassEven_', 'choiceMultInFourFill_', 'cb_choiceMultInFourFill_'
             ];
+
             const ans_choices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K'];
             disp_sections.forEach(disp_section => {
                 ans_choices.forEach(ans_choice => {
@@ -4510,8 +4516,6 @@
                         placeholder: "Select Question type",
                         maximumSelectionLength: 1
                     });
-
-
 
                     $(`#${disp_section}edit_super_category_${ans_choice}_0`).select2({
                         dropdownParent: $('#editQuestionMultiModal'),
@@ -4545,10 +4549,12 @@
         var myModal = new bootstrap.Modal(document.getElementById('dragModal'), {
             keyboard: false
         });
+
         var questionModal = new bootstrap.Modal(document.getElementById('dragModalQuestion'), {
             keyboard: false
         });
-        var allowedContent = true;
+
+        var allowedContent = true; 
 
         $('.preloader').css('display', 'block');
         $('textarea').each(function() {
@@ -4953,7 +4959,20 @@
             $(`#${modal} #${disp_section}questionTypeError_${choice}`).text('');
         };
 
+        // valudation test for all the number validation.
+        function testWholeNumber(number){
+            var regex = /^[0-9]+$/;
+            if (number.trim() === "") {
+                return false;
+            } else if (regex.test(number)) {
+               return true;
+            } else {
+                return false;
+            }
+        }
+
         $('.save_section').click(function() {
+
             var rHour = $('#regular_time_hour').val();
             var rMinute = $('#regular_time_minute').val();
             var rSecond = $('#regular_time_second').val();
@@ -4969,7 +4988,7 @@
             var fiftyExtended = ("0" + fiftyHour).slice(-2) + ":" + ("0" + fiftyMinute).slice(-2) + ":" + ("0" +
                 fiftySecond).slice(-2);
             var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + (
-                "0" + hundredSecond).slice(-2);
+                "0" + hundredSecond).slice(-2); 
 
             var whichModel = $(this).parent().find('.whichModel').val();
             let scoreClass = $(this).attr('data-class');
@@ -4994,24 +5013,39 @@
             var fillVals = [];
 
             var question_type = $('#format').val();
-
             if (whichModel == 'section') {
+                var test_type = $('#format').val();
+                if ((test_type == 'DSAT') || (test_type == 'DPSAT') ) {
+                    // this field is required - required_number_of_correct_answers
+                    var numberOfCorrectAnswers = $('#required_number_of_correct_answers').val();
+                    if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' || numberOfCorrectAnswers == '') {                   
+                        $('#sectionModal .validError').text('Below fields are required!');
+                        return false;
+                    }
 
-                if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
-                    $('#sectionModal .validError').text('Below fields are required!');
-                    return false;
-                } else {
-                    $('#sectionModal .validError').text('');
+                    if(testWholeNumber(numberOfCorrectAnswers) == false) {
+                        $('#sectionModal .validError').text('Only whole numbers are allowed.');
+                        return false;
+                    }
+                }else{
+                    if (format == '' || testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
+                        $('#sectionModal .validError').text('Below fields are required!');
+                        return false;
+                    } else {
+                        $('#sectionModal .validError').text('');
+                    }
                 }
+                
                 var get_test_id = jQuery('#get_question_id').val();
                 var required_number_of_correct_answers = jQuery('#required_number_of_correct_answers').val();
                 $('#sectionModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
+                
                 var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
                 sectionOrder++;
                 questionOrder = 0;
                 questionCount = 1;
-
+                // choiceMultInFourFill 
                 $.ajax({
                     data: {
                         'format': format,
@@ -5030,54 +5064,68 @@
                     method: 'post',
                     success: (result) => {
 
-                        $.each(result, function (key, res) {
-                            sectionOrder = currentModelId = key;
-                            sectionOrder++;
-                            let ScoreClass =
-                            `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
-                            $('.sectionContainerList').append(
-                                '<div class="sectionTypesFull ' + scoreClass + ' section_' + res +
-                                '" data-id=' + res + ' id="sectionDisplay_' + currentModelId +
-                                '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
-                                format +
-                                '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_' +
-                                res + '"><strong>' +
-                                capitalizeFirstLetter(sectionSelectedTxt) +
-                                '</strong><input type="hidden" name="selectedSecTxt" value="' +
-                                testSectionType +
-                                '" class="selectedSecTxt selectedSection_' + res +
-                                '" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="' +
-                                sectionOrder + '" id="order_' +
-                                res +
-                                '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
-                                res +
-                                '" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="' +
-                                res + '" data-section_type="' + testSectionType +
-                                '" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
-                                res +
-                                '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="' +
-                                currentModelId +
-                                '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
-                                res + '" data-section_type="' + testSectionType + '" data-test_id="' +
-                                get_test_id +
-                                '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+sectionOrder+'" id="order_' +
-                                res +
-                                '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
-                                res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                        $.each(result, function (i, v) {
+                            $.each(v, function (key, value) {
+                                let res = value['id'];
+                                let section = value['section'];
+                                section = section.replaceAll('_', ' ');
+                                sectionOrder = currentModelId = key;
+                                sectionOrder++;
 
-                            
+                                if ((testSectionType == 'Math') && (key == 0) ) {
+                                    testSectionType = 'Math_no_calculator';
+                                }else if ((testSectionType == 'Math') && (key == 1) ) {
+                                    testSectionType = 'Math_no_calculator';
+                                }else if((testSectionType == 'Math') && (key == 2)){
+                                    testSectionType = 'Math_with_calculator';
+                                }else{
+                                    // nothing, it'll be same.
+                                }
 
-                            $('.addQuestion').val('');
-                            $('.validError').text('');
-                            $('.sectionAddId').val(res);
+                                let ScoreClass =
+                                `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
+                                $('.sectionContainerList').append(
+                                    '<div class="sectionTypesFull ' + scoreClass + ' section_' + res +
+                                    '" data-id=' + res + ' id="sectionDisplay_' + currentModelId +
+                                    '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
+                                    format +
+                                    '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_' +
+                                    res + '"><strong>' +
+                                    capitalizeFirstLetter(section) +
+                                    '</strong><input type="hidden" name="selectedSecTxt" value="' +
+                                    testSectionType +
+                                    '" class="selectedSecTxt selectedSection_' + res +
+                                    '" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="' +
+                                    sectionOrder + '" id="order_' +
+                                    res +
+                                    '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
+                                    res +
+                                    '" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="' +
+                                    res + '" data-section_type="' + testSectionType +
+                                    '" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                                    res +
+                                    '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 ordermain"><button type="button" data-id="' +
+                                    currentModelId +
+                                    '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
+                                    res + '" data-section_type="' + testSectionType + '" data-test_id="' +
+                                    get_test_id +
+                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+sectionOrder+'" id="order_' +
+                                    res +
+                                    '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
+                                    res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
 
-                            $('#listWithHandle').append('<div class="list-group-item">\n' +
-                                '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                                '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                                '</span>\n' +
-                                '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
-                                format + ' ' + testSectionType + '</button>\n' +
-                                '</div>');
+                                $('.addQuestion').val('');
+                                $('.validError').text('');
+                                $('.sectionAddId').val(res);
+
+                                $('#listWithHandle').append('<div class="list-group-item">\n' +
+                                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                                    '</span>\n' +
+                                    '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
+                                    format + ' ' + testSectionType + '</button>\n' +
+                                    '</div>');
+                            });
                         });
 
                         /*
@@ -5194,6 +5242,15 @@
                         .get();
                 });
 
+                // const guessingValues = {};
+                // ans_choices.forEach(ans_choice => {
+                //     guessingValues[ans_choice] = $(`input[name="${disp_section}ct_checkbox_${ans_choice}"]`)
+                //         .map((i, v) => {
+                //             const val = $(v).val();
+                //             return val ? val : null;
+                //         }).get();
+                // });
+
                 const superCategoryValues = {};
                 ans_choices.forEach(ans_choice => {
                     superCategoryValues[ans_choice] = $(
@@ -5205,6 +5262,7 @@
                         .get()
                         .filter(value => value !== null);
                 });
+
                 const getCategoryTypeValues = {};
                 ans_choices.forEach(ans_choice => {
                     getCategoryTypeValues[ans_choice] = $(
@@ -5228,15 +5286,20 @@
                         .get()
                         .filter(value => value !== null);
                 });
+                
                 var pass = $('select[name="passagesType"] :selected').text();
                 var passNumber = $('#questionMultiModal .passNumber').val();
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
+                var diffValue = $("#diffValue").val();
+                var discValue = $("#discValue").val();
 
                 if ($('#passageRequired_1').is(':checked')) {
                     if (
                         question == '' ||
                         tags.length == 0 ||
+                        diffValue == '' ||
+                        discValue == '' ||
                         jQuery.type(passNumber) == "null" ||
                         passagesType == '' ||
                         format == '' ||
@@ -5254,6 +5317,13 @@
                     ) {
                         $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
                         $('#js-ckeditor-addQue').focus();
+                        
+                        $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                        $('#addTag').focus();
+
+                        $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
+                        $('#addTag').focus();
+
                         $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
                         $('#addTag').focus();
 
@@ -5296,6 +5366,8 @@
                 } else {
                     if (question == '' ||
                         tags.length == 0 ||
+                        diffValue == '' ||
+                        discValue == '' ||
                         format == '' ||
                         testSectionType == '' ||
                         ans_choices.some(choice => {
@@ -5312,6 +5384,12 @@
                         $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
                         $('#js-ckeditor-addQue').focus();
                         $('#questionMultiModal #tagError').text(tags.length == 0 ? 'Tag is required!' : '');
+                        $('#addTag').focus();
+
+                        $('#diff-value #diffValueError').text(diffValue == '' ? 'Diff Value is required!' : '');
+                        $('#addTag').focus();
+
+                        $('#disc-value #disc-valueError').text(discValue == '' ? 'Disc Value is required!' : '');
                         $('#addTag').focus();
 
                         ans_choices.forEach(choice => {
@@ -5335,7 +5413,7 @@
                         $('#questionMultiModal #tagError').text('');
 
                         ans_choices.forEach(choice => {
-                            emptyError('questionMultiModal', disp_section, choice);
+                            emptyError('questionMultiModal', disp_section, choice); 
                         });
                     }
                 }
@@ -5413,16 +5491,13 @@
                         if (answerMap != '') {
                             answerType = answerMap.substring(0, answerMap.length - 2);
                         }
-
                     }
-
                 } else {
                     answerType = $('#questionMultiModal ' + activeAnswerType + ' input[name="' + questionType +
                         '"]:checked').val();
                 }
 
                 /*answerContent = $('#questionMultiModal '+activeAnswerType+' input[name="answerContentOption[]"]').map(function(){return $(this).val();}).get();*/
-
                 var answerContentJson = getAnswerContent(questionType, fill);
                 var answerExpJson = getAnswerExpContent(questionType, fill);
 
@@ -5431,6 +5506,10 @@
 
                 questionOrder++;
                 var section_id = $('.sectionAddId').val();
+
+                // adding validations here.
+
+
 
                 $.ajax({
                     data: {
@@ -5511,7 +5590,7 @@
                             '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
                             '<i class="fa-solid fa-grip-vertical"></i>\n' +
                             '</span>\n' +
-                            '<button class="btn btn-primary" value="' + res.question_id + '">' +
+                            '<button class="btn btn-primary" value="' + res.question_id + '">' + 
                             question + '</button>\n' +
                             '</div>');
                         MathJax.Hub.Queue(["Typeset", MathJax.Hub, 'p']);
@@ -5531,7 +5610,6 @@
                 setTimeout(function() {
                     $(".sectionOrder").html(optionCount);
                 }, 1000);
-
             }
 
             return false;
@@ -5698,6 +5776,7 @@
                                 
                                 $('#diffValueEdit').val(result.diff_value);
                                 $('#discValueEdit').val(result.disc_value);
+
                                 $('#editQuestionOrder').val(result.question_order);
                                 $('#editCurrentModelQueId').val(result.id);
                                 $('#quesFormat').val(result.format);
@@ -5733,7 +5812,7 @@
                                     $('select[name="editPassagesType"]').prop("disabled", true);
                                 }
 
-                                // setTimeout(function(){
+                                // setTimeout(function(){ 
                                 //For checkbox
                                 for (let key in checkbox_values_Arr) {
                                     if (checkbox_values_Arr.hasOwnProperty(key)) {
@@ -5820,16 +5899,14 @@
                                 .prop('selected', true);
                         }
                     });
-                    //
                 }
             });
-
         }
-
 
         function getAnswerOptions(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, format, multiChoice) {
             answer_exp = JSON.parse(answer_exp);
             if (answerOpt == 'choiceOneInFour_Odd') {
+
                 $('#editSelectedAnswerType').val('choiceOneInFour_Odd');
                 $('.choiceOneInFour_Odd').show();
                 $('.choiceOneInFour_Even').hide();
@@ -5837,7 +5914,8 @@
                 $('.choiceOneInFive_Even').hide();
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').hide();
-                $('.choiceMultInFourFill').hide();
+                $('.choiceMultInFourFill').hide(); 
+
                 var optObj = ['a', 'b', 'c', 'd'];
                 var jsonConvert = [];
                 // if(isJson(answer_content)){
@@ -5864,9 +5942,8 @@
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
-
             }
+
             // new
             if (answerOpt == 'choiceOneInFour_Even') {
                 $('#editSelectedAnswerType').val('choiceOneInFour_Even');
@@ -5877,6 +5954,7 @@
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').hide();
                 $('.choiceMultInFourFill').hide();
+
                 var optObj = ['f', 'g', 'h', 'j'];
                 var jsonConvert = [];
                 // if(isJson(answer_content)){
@@ -5903,9 +5981,8 @@
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
-
             }
+
             if (answerOpt == 'choiceOneInFive_Odd') {
                 $('#editSelectedAnswerType').val('choiceOneInFive_Odd');
                 $('.choiceOneInFour_Odd').hide();
@@ -5915,6 +5992,7 @@
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').hide();
                 $('.choiceMultInFourFill').hide();
+
                 var optObj = ['a', 'b', 'c', 'd', 'e'];
                 var selHml = '';
                 var jsonConvert = [];
@@ -5941,8 +6019,8 @@
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
             }
+
             // new
             if (answerOpt == 'choiceOneInFive_Even') {
                 $('#editSelectedAnswerType').val('choiceOneInFive_Even');
@@ -5953,6 +6031,7 @@
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').hide();
                 $('.choiceMultInFourFill').hide();
+
                 var optObj = ['f', 'g', 'h', 'j', 'k'];
                 var selHml = '';
                 var jsonConvert = [];
@@ -5979,8 +6058,8 @@
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
             }
+
             if (answerOpt == 'choiceOneInFourPass_Odd') {
                 $('#editSelectedAnswerType').val('choiceOneInFourPass_Odd');
                 $('.choiceOneInFour_Odd').hide();
@@ -5990,6 +6069,7 @@
                 $('.choiceOneInFourPass_Odd').show();
                 $('.choiceOneInFourPass_Even').hide();
                 $('.choiceMultInFourFill').hide();
+
                 var optObj = ['a', 'b', 'c', 'd'];
                 var selHml = '';
                 var jsonConvert = [];
@@ -6017,9 +6097,8 @@
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
-
             }
+
             // new
             if (answerOpt == 'choiceOneInFourPass_Even') {
                 $('#editSelectedAnswerType').val('choiceOneInFourPass_Even');
@@ -6030,6 +6109,7 @@
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').show();
                 $('.choiceMultInFourFill').hide();
+
                 var optObj = ['f', 'g', 'h', 'j'];
                 var selHml = '';
                 var jsonConvert = [];
@@ -6057,11 +6137,9 @@
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
-
             }
-            if (answerOpt == 'choiceMultInFourFill') {
 
+            if (answerOpt == 'choiceMultInFourFill') {
                 $('#editSelectedAnswerType').val('choiceMultInFourFill');
                 $('.choiceOneInFour_Odd').hide();
                 $('.choiceOneInFour_Even').hide();
@@ -6070,6 +6148,7 @@
                 $('.choiceOneInFourPass_Odd').hide();
                 $('.choiceOneInFourPass_Even').hide();
                 $('.choiceMultInFourFill').show();
+
                 var optObj = ['a', 'b', 'c', 'd'];
                 var trimStr = selectedOpt.replace(/ /g, '');
                 var multiChecked = trimStr.split(",");
@@ -6090,7 +6169,6 @@
 
                             $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOptAnswer_' +
                                 arrIndex + ' input[type="radio"]').prop("checked", true);
-
                         }
                         if (jsonConvert.length > 0) {
                             var anwserInd = Number(i) - 1;
@@ -6128,7 +6206,6 @@
                             CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                         }
                     }
-
                 }
 
                 var arrFillType = ['number', 'decimal', 'fraction'];
@@ -6178,7 +6255,6 @@
                     '</label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="editMoreFillOption();" class="switchMulti">Add More Options</a></label></div>';
                 $('.withFillOpt').html(seletedLayout);
             }
-
         }
 
         $('.update_question_section').click(function() {
@@ -6199,8 +6275,6 @@
             // console.log('activeAnswerType>>'+activeAnswerType);
             var questionType = $('#editQuestionMultiModal ' + activeAnswerType + ' #editQuestionType').val();
             // console.log('questionType>>'+questionType);
-
-
 
             multiChoice = $('.editMultipleChoice option:selected').val();
 
@@ -6303,6 +6377,7 @@
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+
                         return (
                             (super_category_values && super_category_values?.length) === 0 ||
                             get_category_type_values.length === 0 ||
@@ -6494,6 +6569,7 @@
                 answerType = $('#editQuestionMultiModal  ' + activeAnswerType + ' input[name="' + questionType +
                     '"]:checked').val();
             }
+
             var answerContentJson = getEditAnswerContent(questionType, fill);
             var answerExpContentJson = getEditAnswerExpContent(questionType, fill);
 
@@ -6501,6 +6577,9 @@
             $('#editQuestionMultiModal').modal('hide');
             var questionOrderUpdated = $('#editQuestionOrder').val();
             var section_id = $('.sectionAddId').val();
+
+            var diff_value = $('#diff_value_edit').val();
+            var disc_value = $('#disc_value_edit').val();
 
             $.ajax({
                 data: {
@@ -6520,6 +6599,8 @@
                     'fill': fill,
                     'fillType': fillType,
                     'diff_rating': difficulty,
+                    'diff_value': diff_value,
+                    'disc_value': disc_value,
                     'multiChoice': multiChoice,
                     'section_id': section_id,
                     'tags': tags,
@@ -7534,12 +7615,34 @@
             var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + (
                 "0" + hundredSecond).slice(-2);
 
-            if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
-                $('#editSectionModal .validError').text('Below fields are required!');
-                return false;
-            } else {
-                $('#editSectionModal .validError').text('');
+            var test_type = $('#format').val();
+            if ((test_type == 'DSAT') || (test_type == 'DPSAT') ){
+                // this field is required - required_number_of_correct_answers
+                var numberOfCorrectAnswers = $('#edit_required_number_of_correct_answers').val();
+                if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0' || numberOfCorrectAnswers == '') {                   
+                    $('#editSectionModal .validError').text('Below fields are required!');
+                    return false;
+                }
+
+                if(testWholeNumber(numberOfCorrectAnswers) == false) {
+                    $('#editSectionModal .validError').text('Only whole numbers are allowed.');
+                    return false;
+                }
+            }else{
+                if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
+                    $('#editSectionModal .validError').text('Below fields are required!');
+                    return false;
+                } else {
+                    $('#editSectionModal .validError').text('');
+                }
             }
+
+            // if (testSectionType == '' || testSectionTitle == '' || regularTime == '0:0:0') {
+            //     $('#editSectionModal .validError').text('Below fields are required!');
+            //     return false;
+            // } else {
+            //     $('#editSectionModal .validError').text('');
+            // }
 
             $.ajax({
                 data: {

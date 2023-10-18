@@ -276,9 +276,9 @@ class PracticeQuestionController extends Controller
         $question->fillType = $request->fillType;
         $question->multiChoice = $request->multiChoice;
 
-        // $question->disc_value = $request->diffValue;
-        // $question->diff_value = $request->discValue;
-        // $question->guessing_value = $request->guessingValue;
+        $question->disc_value = $request->diffValue;
+        $question->diff_value = $request->discValue;
+        $question->guessing_value = $request->guessingValue;
 
         $rating_array = $request->diff_rating;
         foreach ($rating_array as $key => $value) {
@@ -531,7 +531,14 @@ class PracticeQuestionController extends Controller
         $practiceSection->hundred_per_extended = $request->hundred;
         $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
         $practiceSection->save();
-        array_push($practiceTestSection,$practiceSection->id);
+        $data[] = [
+            'id' => $practiceSection->id,
+            'section' => $practiceSection->practice_test_type,
+        ];
+        // array_push($practiceTestSection, $data);
+        // array_push($practiceTestSection,$practiceSection->id);
+
+
         DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
         if ($request->testSectionType == 'Math_with_calculator') {
             $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_no_calculator')->get();
@@ -578,8 +585,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    'section' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
 
                 $practiceSection = new PracticeTestSection();
                 $practiceSection->format = $request->format;
@@ -593,8 +604,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    'section' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
                 
             }elseif($request->testSectionType == 'Math') {
                 $practiceSection = new PracticeTestSection();
@@ -609,8 +624,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    'section' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
 
                 DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
 
@@ -640,8 +659,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    'section' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
 
                 DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
                 $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_with_calculator')->get();
@@ -678,7 +701,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    '' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
 
                 $practiceSection = new PracticeTestSection();
                 $practiceSection->format = $request->format;
@@ -692,7 +720,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    '' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
                 
             }elseif($request->testSectionType == 'Math') {
                 $practiceSection = new PracticeTestSection();
@@ -707,7 +740,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    '' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
 
                 DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
 
@@ -737,7 +775,12 @@ class PracticeQuestionController extends Controller
                 $practiceSection->hundred_per_extended = $request->hundred;
                 $practiceSection->required_number_of_correct_answers = $request->required_number_of_correct_answers;
                 $practiceSection->save();
-                array_push($practiceTestSection,$practiceSection->id);
+                $data[] = [
+                    'id' => $practiceSection->id,
+                    '' => $practiceSection->section_title,
+                ];
+                // array_push($practiceTestSection, $data);
+                // array_push($practiceTestSection,$practiceSection->id);
 
                 DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
                 $exist_section = Score::where('test_id', $request->get_test_id)->where('section_type', 'Math_with_calculator')->get();
@@ -760,6 +803,7 @@ class PracticeQuestionController extends Controller
         }else{
             // no such case.
         }
+        array_push($practiceTestSection, $data);
         return $practiceTestSection;
         // return $practiceSection->id;
     }
@@ -1031,7 +1075,6 @@ class PracticeQuestionController extends Controller
         ]);
 
         $updatedSection = PracticeTestSection::where('id', $request->sectionId)->first();
-
         return response()->json(['updatedSection' => $updatedSection]);
     }
 
