@@ -767,10 +767,12 @@
                         confirm(false);
                     }
                 }
-
             });
 
-            function confirm(flagTimeOut) {
+            function confirm(flagTimeOut,submit = false) {
+
+
+                let sectionID = '{{ $section_id }}';
 
                 var get_question_id = jQuery('#onload_question_id').val();
                 if ($(".flag").is(':checked')) {
@@ -924,6 +926,7 @@
                 });
 
                 const postData = {
+                    section_id: sectionID,
                     selected_answer: answer_details,
                     selected_gusess_details: guess_detail,
                     selected_flag_details: flag_detail,
@@ -938,15 +941,26 @@
                     method: 'post',
                     data: postData,
                     success: function(result) {
+                        console.log(result);
+                        // die;
                         if (count < result.total_question) {
                             window.alert(
                                 "Are you sure you want to submit this test? Make sure you have answered every question using the Review button."
                             );
                         }
 
+                        if (result.redirect_url != 0) {
+                            // only for DSAT, DPSAT
+                            var url = window.location.origin + result.redirect_url;
+                            console.log(url);
+                            window.location.href = url;
+                            return false;
+                        }
+
                         var url = "{{ url('') }}" + '/user/practice-tests/' + result
                             .get_test_name + '/' + result.section_id + '/review-page?test_id=' +
                             get_test_id + '&type=' + result.get_test_type;
+                    
 
                         if (window.location.href.indexOf("all") > -1) {
                             var url = window.location.href,
@@ -1017,7 +1031,7 @@
                                     get_test_id;
                             }
                         }
-                        window.location.href = url;
+                        window.location.href = url;                       
                     }
                 });
             }

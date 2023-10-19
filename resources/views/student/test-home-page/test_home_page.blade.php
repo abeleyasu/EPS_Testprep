@@ -162,6 +162,74 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="accordion-item">
+                                                                    <div class="border mb-2">
+                                                                        <h2 class="accordion-header" id="flush-headingFour">
+                                                                            <button
+                                                                                class="accordion-button collapsed border-0 fw-bold"
+                                                                                type="button" data-bs-toggle="collapse"
+                                                                                data-bs-target="#tabChiledFour"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="tabChiledFour">
+                                                                                DSAT
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="tabChiledFour"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="flush-headingFour"
+                                                                            data-bs-parent="#accordionFlushExample">
+                                                                            <div class="accordion-body">
+                                                                                @if (!$getOfficialPracticeTests['DSAT']->isEmpty())
+                                                                                    @foreach ($getOfficialPracticeTests['DSAT'] as $getOfficialPracticeTest)
+                                                                                        @if ($getOfficialPracticeTest->format == 'DSAT')
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <span class="text-danger">No any pending
+                                                                                        test!</span>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="accordion-item">
+                                                                    <div class="border mb-2">
+                                                                        <h2 class="accordion-header" id="flush-headingFive">
+                                                                            <button
+                                                                                class="accordion-button collapsed border-0 fw-bold"
+                                                                                type="button" data-bs-toggle="collapse"
+                                                                                data-bs-target="#tabChiledFive"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="tabChiledFive">
+                                                                                DPSAT
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="tabChiledFive"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="flush-headingFive"
+                                                                            data-bs-parent="#accordionFlushExample">
+                                                                            <div class="accordion-body">
+                                                                                @if (!$getOfficialPracticeTests['DPSAT']->isEmpty())
+                                                                                    @foreach ($getOfficialPracticeTests['DPSAT'] as $getOfficialPracticeTest)
+                                                                                        @if ($getOfficialPracticeTest->format == 'DPSAT')
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <span class="text-danger">No any pending
+                                                                                        test!</span>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -286,6 +354,74 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="accordion-item">
+                                                                    <div class="border mb-2">
+                                                                        <h2 class="accordion-header" id="flush-headingFour">
+                                                                            <button
+                                                                                class="accordion-button collapsed border-0 fw-bold"
+                                                                                type="button" data-bs-toggle="collapse"
+                                                                                data-bs-target="#collapsTabFour"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapsTabFour">
+                                                                                DSAT
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="collapsTabFour"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="flush-headingFour"
+                                                                            data-bs-parent="#accordionFlushExampleTwo">
+                                                                            <div class="accordion-body">
+                                                                                @if (!$getAllPracticeTests['DSAT']->isEmpty())
+                                                                                    @foreach ($getAllPracticeTests['DSAT'] as $test)
+                                                                                        @if ($test->format == 'DSAT')
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $test,
+                                                                                                'slug' => 'College Prep'
+                                                                                            ])
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <span class="text-danger">No any pending
+                                                                                        test!</span>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="accordion-item">
+                                                                    <div class="border mb-2">
+                                                                        <h2 class="accordion-header" id="flush-headingFive">
+                                                                            <button
+                                                                                class="accordion-button collapsed border-0 fw-bold"
+                                                                                type="button" data-bs-toggle="collapse"
+                                                                                data-bs-target="#collapsTabFive"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapsTabFive">
+                                                                                DPSAT
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="collapsTabFive"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="flush-headingFive"
+                                                                            data-bs-parent="#accordionFlushExampleTwo">
+                                                                            <div class="accordion-body">
+                                                                                @if (!$getAllPracticeTests['DPSAT']->isEmpty())
+                                                                                    @foreach ($getAllPracticeTests['DPSAT'] as $test)
+                                                                                        @if ($test->format == 'DPSAT')
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $test,
+                                                                                                'slug' => 'College Prep'
+                                                                                            ])
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <span class="text-danger">No any pending
+                                                                                        test!</span>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -396,6 +532,74 @@
                                                                                 @if (!$getAllProgressPracticeTests['PSAT']->isEmpty())
                                                                                     @foreach ($getAllProgressPracticeTests['PSAT'] as $getOfficialPracticeTest)
                                                                                         @if ($getOfficialPracticeTest->format == 'PSAT')
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <span class="text-danger">No any pending
+                                                                                        test!</span>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="accordion-item">
+                                                                    <div class="border mb-2">
+                                                                        <h2 class="accordion-header" id="flush-headingFour">
+                                                                            <button
+                                                                                class="accordion-button collapsed border-0 fw-bold"
+                                                                                type="button" data-bs-toggle="collapse"
+                                                                                data-bs-target="#tip_collapsTabFour"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="tip_collapsTabFour">
+                                                                                DSAT
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="tip_collapsTabFour"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="flush-headingFour"
+                                                                            data-bs-parent="#accordionFlushExampleThree">
+                                                                            <div class="accordion-body">
+                                                                                @if (!$getAllProgressPracticeTests['DSAT']->isEmpty())
+                                                                                    @foreach ($getAllProgressPracticeTests['DSAT'] as $getOfficialPracticeTest)
+                                                                                        @if ($getOfficialPracticeTest->format == 'DSAT')
+                                                                                            @include('student.test-home-page.components.test-button', [
+                                                                                                "test" => $getOfficialPracticeTest,
+                                                                                                'slug' => 'Official Released'
+                                                                                            ])
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @else
+                                                                                    <span class="text-danger">No any pending
+                                                                                        test!</span>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="accordion-item">
+                                                                    <div class="border mb-2">
+                                                                        <h2 class="accordion-header" id="flush-headingFive">
+                                                                            <button
+                                                                                class="accordion-button collapsed border-0 fw-bold"
+                                                                                type="button" data-bs-toggle="collapse"
+                                                                                data-bs-target="#tip_collapsTabFive"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="tip_collapsTabFive">
+                                                                                DPSAT
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="tip_collapsTabFive"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="flush-headingFive"
+                                                                            data-bs-parent="#accordionFlushExampleThree">
+                                                                            <div class="accordion-body">
+                                                                                @if (!$getAllProgressPracticeTests['DPSAT']->isEmpty())
+                                                                                    @foreach ($getAllProgressPracticeTests['DPSAT'] as $getOfficialPracticeTest)
+                                                                                        @if ($getOfficialPracticeTest->format == 'DPSAT')
                                                                                             @include('student.test-home-page.components.test-button', [
                                                                                                 "test" => $getOfficialPracticeTest,
                                                                                                 'slug' => 'Official Released'
@@ -1368,6 +1572,7 @@
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1375,6 +1580,636 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="accordion-item">
+                                            <div class="border mb-3">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button border-0 fw-bold" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#tabFour"
+                                                        aria-expanded="true" aria-controls="tabFour">
+                                                        DSAT
+                                                    </button>
+                                                </h2>
+                                                <div id="tabFour" class="accordion-collapse collapse "
+                                                    aria-labelledby="headingOne" data-bs-parent="#accordionExampleFour">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div class="block block-rounded border">
+                                                                <div class="block-header block-header-default">
+                                                                    <h3 class="block-title fw-bold ">DSAT TEST HISTORY</h3>
+                                                                    <button class="btn btn-success" id="sortable_psat_1">Sort
+                                                                        <i class="fa-solid fa-angle-down"></i></button>
+                                                                </div>
+                                                                <div class="block-content py-0">
+                                                                    <div class="table-responsive">
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter"
+                                                                            id="psat_table_1">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Test Form(Click “Button” below to
+                                                                                        Review)
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        DSAT Reading & Writing<span class="mt-2"> Score
+                                                                                            (Timing)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        DSAT Math<span class="mt-2"> Score
+                                                                                            (Timing)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        DSAT <span class="mt-2">
+                                                                                            (Combined
+                                                                                            Section 2 & 3)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Composite <span>(Total) Score</span>
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Date Taken</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach ($dsat_details_array as $psat_test)
+                                                                                    @if ($psat_test['date_taken'] !== '-')
+                                                                                        <tr>
+                                                                                            <td class="text-center">
+                                                                                                <a
+                                                                                                    href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
+                                                                                                        class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($psat_test['Reading_actual_time']) && $psat_test['Reading_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Reading_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $psat_test['Reading_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($psat_test['Writing_actual_time']) && $psat_test['Writing_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Writing_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $psat_test['Writing_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @php
+                                                                                                        $mathNoCalculatorActualTime = $psat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                                        $mathWithCalculatorActualTime = $psat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                                        $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                                    @endphp
+
+                                                                                                    @if ($totalTime !== '')
+                                                                                                        ({{ $totalTime }})
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) }}
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="block-header block-header-default px-0">
+                                                                        <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
+                                                                        </h3>
+                                                                        <button class="btn btn-success"
+                                                                            id="sortable_sat_2">Sort <i
+                                                                                class="fa-solid fa-angle-down"></i></button>
+                                                                    </div>
+                                                                    <div class="table-responsive">
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter"
+                                                                            id="sat_table_2">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Test Form(Click “Button” below to
+                                                                                        Review)
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Correct/Total</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Section</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Categories</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Question Types</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Date Taken</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach ($dsat_custom_details as $getTest)
+                                                                                    <tr>
+                                                                                        <?php $url = url('user/practice-test-sections/' . $getTest['id']); ?>
+                                                                                        <td class="text-center">
+                                                                                            <button
+                                                                                                onclick="openTestSection(this)"
+                                                                                                class="btn btn-success d-block btn_{{ $getTest['id'] }} mb-2 hover-btn button-text"
+                                                                                                data-id="{{ $getTest['id'] }}"
+                                                                                                data-url="<?php echo $url; ?>">
+                                                                                                {{ $getTest['test_name'] }}
+
+                                                                                            </button>
+                                                                                            <input type="text"
+                                                                                                class="form-control input_{{ $getTest['id'] }}"
+                                                                                                style="display: none"
+                                                                                                value="{{ $getTest['test_name'] }}"
+                                                                                                onblur="changeSectionName(this,{{ $getTest['id'] }})" />
+                                                                                            <button
+                                                                                                class="btn btn-transparent transparent-btn"
+                                                                                                data-id="{{ $getTest['id'] }}"
+                                                                                                onclick="editQuizName({{ $getTest['id'] }})">
+                                                                                                <i class="fa fa-pencil"></i>
+                                                                                            </button>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            @if (!@empty($getTest['total_question']))
+                                                                                                {{ $getTest['right_question'] ?? 0 }}/{{ $getTest['total_question'] }}
+                                                                                            @endif
+                                                                                            @php
+                                                                                                $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                            @endphp
+                                                                                            <br>
+                                                                                            <span class="custom-actual-time">
+                                                                                                @if ($sectionTypeActualTime !== '')
+                                                                                                    ({{ $sectionTypeActualTime }})
+                                                                                                @endif
+                                                                                            </span>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            {{ $getTest['section_type'] }}
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            -
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            -
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            {{ $getTest['date_taken'] }}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="block-header block-header-default px-0">
+                                                                        <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
+                                                                            HISTORY</h3>
+                                                                        <button class="btn btn-success"
+                                                                            id="sortable_sat_3">Sort <i
+                                                                                class="fa-solid fa-angle-down"></i></button>
+                                                                    </div>
+                                                                    <div class="table-responsive">
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter"
+                                                                            id="sat_table_3">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Test Form(Click “Button” below to
+                                                                                        Review)
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        SAT Reading</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        SAT Writing</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        SAT Math<span class="mt-2"> (Combined
+                                                                                            Section 3 & 4)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Composite <span>(Total) Score</span>
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Date Taken</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach ($all_dsat_details_array as $sat_test)
+                                                                                    @if ($sat_test['date_taken'] !== '-')
+                                                                                        <tr>
+                                                                                            <td class="text-center">
+                                                                                                <a
+                                                                                                    href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
+                                                                                                        class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($sat_test['Reading_actual_time']) && $sat_test['Reading_actual_time'] !== '')
+                                                                                                        ({{ $sat_test['Reading_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $sat_test['Reading_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($sat_test['Writing_actual_time']) && $sat_test['Writing_actual_time'] !== '')
+                                                                                                        ({{ $sat_test['Writing_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $sat_test['Writing_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{-- {{ (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
+                                                                                                {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @php
+                                                                                                        $mathNoCalculatorActualTime = $sat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                                        $mathWithCalculatorActualTime = $sat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                                        $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                                    @endphp
+
+                                                                                                    @if ($totalTime !== '')
+                                                                                                        ({{ $totalTime }})
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
+                                                                                                {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="accordion-item">
+                                            <div class="border mb-3">
+                                                <h2 class="accordion-header" id="headingOne">
+                                                    <button class="accordion-button border-0 fw-bold" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#tabFive"
+                                                        aria-expanded="true" aria-controls="tabFive">
+                                                        DPSAT
+                                                    </button>
+                                                </h2>
+                                                <div id="tabFive" class="accordion-collapse collapse "
+                                                    aria-labelledby="headingOne" data-bs-parent="#accordionExampleFive">
+                                                    <div class="accordion-body">
+                                                        <div>
+                                                            <div class="block block-rounded border">
+                                                                <div class="block-header block-header-default">
+                                                                    <h3 class="block-title fw-bold ">DPSAT TEST HISTORY</h3>
+                                                                    <button class="btn btn-success" id="sortable_psat_1">Sort
+                                                                        <i class="fa-solid fa-angle-down"></i></button>
+                                                                </div>
+                                                                <div class="block-content py-0">
+                                                                    <div class="table-responsive">
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter"
+                                                                            id="psat_table_1">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Test Form(Click “Button” below to
+                                                                                        Review)
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        DPSAT Reading & Writing<span class="mt-2"> Score
+                                                                                            (Timing)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        DPSAT WriMathting<span class="mt-2"> Score
+                                                                                            (Timing)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        PSAT <span class="mt-2">
+                                                                                            (Combined
+                                                                                            Section 2 & 3)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Composite <span>(Total) Score</span>
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Date Taken</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach ($dpsat_details_array as $psat_test)
+                                                                                    @if ($psat_test['date_taken'] !== '-')
+                                                                                        <tr>
+                                                                                            <td class="text-center">
+                                                                                                <a
+                                                                                                    href="{{ url('user/practice-test-sections/' . $psat_test['test_id']) }}"><button
+                                                                                                        class="btn btn-success d-block mb-2">{{ $psat_test['test_name'] }}</button></a>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['Reading']) ? $psat_test['Reading'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($psat_test['Reading_actual_time']) && $psat_test['Reading_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Reading_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $psat_test['Reading_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['Writing']) ? $psat_test['Writing'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($psat_test['Writing_actual_time']) && $psat_test['Writing_actual_time'] !== '')
+                                                                                                        ({{ $psat_test['Writing_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $psat_test['Writing_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{-- {{(isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') +  (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0')}} --}}
+                                                                                                {{ isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0) }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @php
+                                                                                                        $mathNoCalculatorActualTime = $psat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                                        $mathWithCalculatorActualTime = $psat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                                        $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                                    @endphp
+
+                                                                                                    @if ($totalTime !== '')
+                                                                                                        ({{ $totalTime }})
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{-- {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : '0') + (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : '0') }} --}}
+                                                                                                {{ (isset($psat_test['Reading']) ? $psat_test['Reading'] : '0') + (isset($psat_test['Writing']) ? $psat_test['Writing'] : '0') + (isset($psat_test['Math_no_calculator']) ? $psat_test['Math_no_calculator'] : (isset($psat_test['Math_with_calculator']) ? $psat_test['Math_with_calculator'] : 0)) }}
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($psat_test['date_taken']) ? $psat_test['date_taken'] : '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="block-header block-header-default px-0">
+                                                                        <h3 class="block-title fw-bold">SAT CUSTOM QUIZ HISTORY
+                                                                        </h3>
+                                                                        <button class="btn btn-success"
+                                                                            id="sortable_sat_2">Sort <i
+                                                                                class="fa-solid fa-angle-down"></i></button>
+                                                                    </div>
+                                                                    <div class="table-responsive">
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter"
+                                                                            id="sat_table_2">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Test Form(Click “Button” below to
+                                                                                        Review)
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Correct/Total</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Section</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Categories</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Question Types</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Date Taken</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach ($dpsat_custom_details as $getTest)
+                                                                                    <tr>
+                                                                                        <?php $url = url('user/practice-test-sections/' . $getTest['id']); ?>
+                                                                                        <td class="text-center">
+                                                                                            <button
+                                                                                                onclick="openTestSection(this)"
+                                                                                                class="btn btn-success d-block btn_{{ $getTest['id'] }} mb-2 hover-btn button-text"
+                                                                                                data-id="{{ $getTest['id'] }}"
+                                                                                                data-url="<?php echo $url; ?>">
+                                                                                                {{ $getTest['test_name'] }}
+
+                                                                                            </button>
+                                                                                            <input type="text"
+                                                                                                class="form-control input_{{ $getTest['id'] }}"
+                                                                                                style="display: none"
+                                                                                                value="{{ $getTest['test_name'] }}"
+                                                                                                onblur="changeSectionName(this,{{ $getTest['id'] }})" />
+                                                                                            <button
+                                                                                                class="btn btn-transparent transparent-btn"
+                                                                                                data-id="{{ $getTest['id'] }}"
+                                                                                                onclick="editQuizName({{ $getTest['id'] }})">
+                                                                                                <i class="fa fa-pencil"></i>
+                                                                                            </button>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            @if (!@empty($getTest['total_question']))
+                                                                                                {{ $getTest['right_question'] ?? 0 }}/{{ $getTest['total_question'] }}
+                                                                                            @endif
+                                                                                            @php
+                                                                                                $sectionTypeActualTime = $getTest[$getTest['section_type'] . '_actual_time'] ?? '';
+                                                                                            @endphp
+                                                                                            <br>
+                                                                                            <span class="custom-actual-time">
+                                                                                                @if ($sectionTypeActualTime !== '')
+                                                                                                    ({{ $sectionTypeActualTime }})
+                                                                                                @endif
+                                                                                            </span>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            {{ $getTest['section_type'] }}
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            -
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            -
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            {{ $getTest['date_taken'] }}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="block-header block-header-default px-0">
+                                                                        <h3 class="block-title fw-bold">ALL SAT TEST & QUIZ
+                                                                            HISTORY</h3>
+                                                                        <button class="btn btn-success"
+                                                                            id="sortable_sat_3">Sort <i
+                                                                                class="fa-solid fa-angle-down"></i></button>
+                                                                    </div>
+                                                                    <div class="table-responsive">
+                                                                        <table
+                                                                            class="table table-bordered table-striped table-vcenter"
+                                                                            id="sat_table_3">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Test Form(Click “Button” below to
+                                                                                        Review)
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        SAT Reading</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        SAT Writing</th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        SAT Math<span class="mt-2"> (Combined
+                                                                                            Section 3 & 4)</span></th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Composite <span>(Total) Score</span>
+                                                                                    </th>
+                                                                                    <th class="text-center"
+                                                                                        style="width: 100px;">
+                                                                                        Date Taken</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach ($all_dpsat_details_array as $sat_test)
+                                                                                    @if ($sat_test['date_taken'] !== '-')
+                                                                                        <tr>
+                                                                                            <td class="text-center">
+                                                                                                <a
+                                                                                                    href="{{ url('user/practice-test-sections/' . $sat_test['test_id']) }}"><button
+                                                                                                        class="btn btn-success d-block mb-2">{{ $sat_test['test_name'] }}</button></a>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($sat_test['Reading']) ? $sat_test['Reading'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($sat_test['Reading_actual_time']) && $sat_test['Reading_actual_time'] !== '')
+                                                                                                        ({{ $sat_test['Reading_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $sat_test['Reading_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($sat_test['Writing']) ? $sat_test['Writing'] : '0' }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @if (isset($sat_test['Writing_actual_time']) && $sat_test['Writing_actual_time'] !== '')
+                                                                                                        ({{ $sat_test['Writing_actual_time'] }})
+                                                                                                    @else
+                                                                                                        {{ $sat_test['Writing_actual_time'] ?? '' }}
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{-- {{ (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
+                                                                                                {{ isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0) }}
+                                                                                                <br>
+                                                                                                <span
+                                                                                                    class="custom-actual-time">
+                                                                                                    @php
+                                                                                                        $mathNoCalculatorActualTime = $sat_test['Math_no_calculator_actual_time'] ?? '';
+                                                                                                        $mathWithCalculatorActualTime = $sat_test['Math_with_calculator_actual_time'] ?? '';
+                                                                                                        $totalTime = addTimes($mathNoCalculatorActualTime, $mathWithCalculatorActualTime);
+                                                                                                    @endphp
+
+                                                                                                    @if ($totalTime !== '')
+                                                                                                        ({{ $totalTime }})
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{-- {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : '0') + (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : '0') }} --}}
+                                                                                                {{ (isset($sat_test['Reading']) ? $sat_test['Reading'] : '0') + (isset($sat_test['Writing']) ? $sat_test['Writing'] : '0') + (isset($sat_test['Math_no_calculator']) ? $sat_test['Math_no_calculator'] : (isset($sat_test['Math_with_calculator']) ? $sat_test['Math_with_calculator'] : 0)) }}
+                                                                                            </td>
+                                                                                            <td class="text-center">
+                                                                                                {{ isset($sat_test['date_taken']) ? $sat_test['date_taken'] : '-' }}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
