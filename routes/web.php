@@ -88,10 +88,6 @@ use App\Http\Controllers\HighSchoolResume\EmploymentCertificationController;
 //     Session::flush();
 //     return redirect('login');
 // })->name('home');
-Route::get('test',function(){
-    return PracticeTest::find(474)->practice_tests_products;
-});
-
 Route::group(['middleware' => ['auth', 'cors']], function () {
     //Admin Routes
     Route::group(['middleware' => ['role:super_admin', 'email_verification'], 'prefix' => 'admin'], function () {
