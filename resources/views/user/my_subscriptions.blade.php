@@ -51,7 +51,9 @@
                       <h3 class="block-title">Your Current Plan</h3>
                     </div>
                     <div class="col-8">
-                      ${{ number_format(isset($subscription->plan->amount)) }} For {{ isset($subscription->plan->interval_count) }} {{ isset($subscription->plan->interval) }}
+                      @if (isset($subscription->plan))
+                        ${{ $subscription->plan->amount }} For {{ $subscription->plan->interval_count }} {{ $subscription->plan->interval }}
+                      @endif
                     </div>
                   </div>
                   <div class="row subscription-item">
@@ -78,7 +80,11 @@
                     @if(!$subscription->is_auto_renewal)
                     <div class="col-8">
                       <div>
-                        You will be charged ${{ number_format($subscription->plan->amount) }} on {{ $subscription->next_billing_date }}
+                        You will be charged  
+                        @if(isset($subscription->plan->amount)) 
+                          ${{ number_format($subscription->plan->amount) }}  
+                        @endif 
+                        on {{ $subscription->next_billing_date }}
                       </div>
                       <div>
                         <input type="checkbox" class="form-check-input" name="renewval" id="renewval" data-subscription_id="{{ $subscription->stripe_id }}" @if(!$subscription->is_auto_renewal) checked @endif>
