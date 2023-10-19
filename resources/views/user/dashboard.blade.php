@@ -495,4 +495,53 @@
     })
   }
 </script>
+<script>
+  $(document).on('click', '.manage-deadline', function(e) {
+      $(".deadline-date").datepicker("setDate", e.target.dataset.deadLine);
+      $(".update-deadline").attr("data-id", e.target.dataset.deadlineId);
+      $(".update-deadline").attr("data-date", e.target.dataset.deadLine);
+  });
+  $('.deadline-date').datepicker({
+      format: 'mm-dd-yyyy',
+      // startDate: deadline,
+      autoclose: true
+  })
+  $(document).on('change', '.deadline-date', function(e) {
+      $(".update-deadline").attr("data-date", e.target.value);
+  })
+
+  function updateDeadline(deadlineId, deadlineDate) {
+      $.ajax({
+          url: "{{ route('admin-dashboard.college_application_save') }}",
+          type: 'POST',
+          data: {
+              college_detail_id: deadlineId,
+              admissions_deadline: deadlineDate
+          },
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+      }).done(async (response) => {
+          if (response.success) {
+              toastr.success(response.message);
+              if(response.daysleft === ""){
+                  $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', '');
+
+                  $(`#${deadlineId} .deadline-div`).empty();
+                  let html = `<span class="text-danger d-block">Not Published</span>`;
+                  $(`#${deadlineId} .deadline-div`).append(html);
+                  // $(`#${deadlineId} .dead-line`).attr('class','text-danger').text('Not Published');
+              }else{
+                  $(`#${deadlineId} .manage-deadline`).attr('data-dead-line', deadlineDate);
+
+                  $(`#${deadlineId} .deadline-div`).empty();
+                  let html = `<span class="text-dark d-block">${deadlineDate}</span><span class="text-dark d-block">${response.daysleft}</span>`
+                  $(`#${deadlineId} .deadline-div`).append(html);
+              }
+          } else {
+              toastr.error(response.message);
+          }
+      })
+  }
+</script>
 @endsection

@@ -28,7 +28,7 @@
                     <a href="{{route('admin.plan.create')}}" class="btn btn-sm btn-alt-success"><i class="fa fa-plus mr-1"></i> Add New Plan</a>
                 </div>
             </div>
-            <div class="block-content block-content-full">
+            <div class="table-responsive">
                 <table id="plan" class="table table-bordered table-striped table-vcenter">
                     <thead>
                         <tr>
@@ -42,7 +42,10 @@
                             <th>Total Amount</th>
                             <th>Cost per Interval</th>
                             <th>order</th>
-                            <th style="width: 10%;">Action</th>
+                            <th>Plan status</th>
+                            <th>Created at</th>
+                            <th>plan Inactivated</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                 </table>
@@ -84,6 +87,9 @@
                 { "data": "price", "name": "price", "orderable": false },
                 { "data": "amount", "name": "amount", "orderable": false },
                 { "data": "order_index", "name": "order_index", "orderable": false },
+                { "data": "plan_status", "name": "plan_status", "orderable": false },
+                { "data": "plan_created", "name": "plan_created", "orderable": false },
+                { "data": "plan_inactivated", "name": "plan_inactivated", "orderable": false },
                 { "data": "action", "name": "action", "orderable": false },
             ],
             rowReorder: {
@@ -135,7 +141,21 @@
                 }
             });
         });
-
         
+        function updateStatus(id){
+            $.ajax({
+                'url': "{{ route('admin.plan.changePlanStatus','') }}/"+id,
+            }).done(function(data){
+                if (data.success) {
+                    dataTable.ajax.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.message,
+                    })
+                }
+            });
+        }
     </script>
 @endsection

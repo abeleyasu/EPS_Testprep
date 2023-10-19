@@ -116,8 +116,7 @@ class CollegeApplicationDeadlineController extends Controller
         return $college_list;
     }
 
-    public function college_save(Request $request)
-    {
+    public function college_save(Request $request) {
         $id =  Auth::id();
         // Validate the input data
         $request->validate([
@@ -134,6 +133,7 @@ class CollegeApplicationDeadlineController extends Controller
     }
 
     public function create($request) {
+
         $data = $request->all();
         $data['user_id'] = Auth::id();
         $college = CollegeDetails::create($data);
@@ -141,6 +141,7 @@ class CollegeApplicationDeadlineController extends Controller
     }
 
     public function edit($request) {
+
         $data = [
             'type_of_application' => $request->type_of_application,
             'admission_option' => $request->admission_option,
@@ -186,18 +187,30 @@ class CollegeApplicationDeadlineController extends Controller
         $college = CollegeDetails::where('id', $request->college_detail_id)->update($data);
 
         $this->setReminderAndAddIntoCalendor($request->college_detail_id);
+
     }
 
-    public function college_application_save(Request $request)
-    {
+    public function college_application_save(Request $request) {
+
         if ($request->college_detail_id) {
             $this->edit($request);
         } else {
             $this->create($request);
         }
+        $days="";
+        if($request->admissions_deadline){
+            $deadline = $request->admissions_deadline;
+            try {
+                $date = Carbon::createFromFormat("m-d-Y", $deadline);
+            } catch (\Throwable $th) {
+                $date = Carbon::createFromFormat("Y-m-d", $deadline);
+            }
+            $days = 'Due in '. $date->diffInDays(Carbon::now()) . ' days';
+        }
         return [
             'success' => true,
             'message' => 'College application deadline saved successfully',
+            'daysleft' => $days
         ];
     }
 
