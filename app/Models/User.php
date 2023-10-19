@@ -80,15 +80,13 @@ class User extends Authenticatable
     }
 
     public function isUserSubscibedToTheProduct($products, $isWhichCalled = null) {
-        // dd($products);
         if (isset($products) && !empty($products) && count($products) == 0) return false;
         $subscription = $this->getUserStripeSubscription();
         if ($subscription && $subscription->valid()) {
-            $product = $subscription->plan->product;
-            if ($product) {
-                // dd(in_array($product->id, $products));
+            if(isset($subscription->plan->product)):
+                $product = $subscription->plan->product;
                 return in_array($product->id, $products);
-            }
+            endif;
         }
         return false;
     }
