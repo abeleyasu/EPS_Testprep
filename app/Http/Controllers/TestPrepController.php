@@ -1315,13 +1315,16 @@ class TestPrepController extends Controller
         return response()->json(['existingProgress' => $existingProgress ?? null, 'progressFlag' => $progressFlag]);
     }
 
+    // calc section score and redirect.
     public function set_answers(Request $request)
     {
+        // dd($request);
         $current_user_id = Auth::id();
         $get_section_id = $request->get_section_id;
         $get_question_type = $request->get_question_type;
         $get_practice_id = $request->get_practice_id;
         $actual_time = $request->actual_time;
+        
 
         if (isset($get_question_type) && !empty($get_question_type) && $get_question_type == 'single') {
             $get_question_title = DB::table('practice_tests')
@@ -1480,11 +1483,80 @@ class TestPrepController extends Controller
                 'is_submit' => 1,
             ]);
         }
+        $id = $request->section_id;
+
+        $testSection = DB::table('practice_test_sections')
+            ->where('practice_test_sections.id', $id)
+            ->get();
+        // dump($testSection);
+        $totalScore = 0;
+        $requiredScore = 0;
+        // $redirectUrl = '/user/practice-test/313?test_id=566&time=regular';
+        $redirectUrl = 0;
+        $answers = $request->selected_answer;
+
+        // lets calculate the score and redirect to other sections based on the required_number_of_correct_answers.
+        if(isset($testSection[0]->id))  {  
+            if(($testSection[0]->format == 'DSAT') ||  ($testSection[0]->format == 'DPSAT')) {
+                $currectSection = DB::table('practice_test_sections')
+                    ->where('id', $id)
+                    ->first('practice_test_type');
+                // dump($currectSection);
+                $requiredScore = $testSection[0]->required_number_of_correct_answers ? $testSection[0]->required_number_of_correct_answers : 0;
+                // dump($requiredScore);
+                if($answers) {
+                    foreach($answers as $key => $answer) {
+                        $is_correct = PracticeQuestion::where('practice_test_sections_id', $id)
+                            ->where('id',$key)
+                            ->where('answer',$answer)
+                            ->first('id');
+                        if($is_correct) {
+                            $totalScore++;
+                        }
+                    }
+                }
+
+                if(($totalScore >= $requiredScore) && ($totalScore > 0) ){
+                    $redirectUrl = '/user/practice-test/';
+                    // redirect to hard module
+                    $allTestSection = DB::table('practice_test_sections')
+                        ->where('practice_test_sections.testid', $testSection[0]->testid)
+                        ->where('practice_test_sections.practice_test_type','LIKE', '%hard%')
+                        ->first();
+                    // dump($allTestSection);
+                    if($allTestSection) {
+                        $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular';
+                    }else{
+                        $redirectUrl = 0;
+                    }
+                }else{
+                    $redirectUrl = '/user/practice-test/';
+                    // redirect to easy module
+                    $allTestSection = DB::table('practice_test_sections')
+                        ->where('practice_test_sections.testid', $testSection[0]->testid)
+                        ->where('practice_test_sections.section_title','LIKE', '%easy%')
+                        ->first();
+                    // dump($allTestSection);
+                    if($allTestSection) {
+                        $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular';
+                    }else{
+                        $redirectUrl = 0;
+                    }
+                }
+                if (strpos($currectSection->practice_test_type, 'easy') !== false) {
+                    $redirectUrl = 0;
+                }
+                if (strpos($currectSection->practice_test_type, 'hard') !== false) {
+                    $redirectUrl = 0;
+                }
+            }
+        }
 
         return response()->json(
             [
                 'success' => '0',
                 'section_id' => $get_section_id,
+                'redirect_url' => $redirectUrl,
                 'get_test_type' => $get_question_type,
                 'get_test_name' => $get_test_name,
                 'total_question' => $get_total_question
@@ -1607,7 +1679,7 @@ class TestPrepController extends Controller
     public function singleSection(Request $request, $id)
     {
         $set_offset = 0;
-
+        // dd($request);
         $test_id = $request->test_id ?? '';
 
         $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)
@@ -1618,7 +1690,27 @@ class TestPrepController extends Controller
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.id', $id)
             ->get();
-        // dd($total_questions);
+
+        // dump($total_questions);
+        // dump($testSection);
+
+        // lets calculate the score and redirect to other sections based on the required_number_of_correct_answers.
+        // if(isset($testSection[0]->id))  {  
+        //     if(($testSection[0]->format == 'DSAT') ||  ($testSection[0]->format == 'DPSAT')) {
+        //         $allTestSection = DB::table('practice_test_sections')
+        //             ->where('testid', $testSection[0]->testid)
+        //             ->get();
+                
+        //         $all_question_answers = PracticeQuestion::where('practice_test_sections_id', $id)
+        //             ->orderBy('question_order', 'ASC')
+        //             ->select('id','answer')
+        //             ->get();
+                
+        //         dump($allTestSection);
+        //         dump($all_question_answers);
+        //     }
+        // }
+
         $isSubmitted = 0;
         if (!empty($test_id)) {
             $testProgress = TestProgress::where(
@@ -1636,8 +1728,10 @@ class TestPrepController extends Controller
             }
         }
         if ($isSubmitted == 1) {
-            return back();
+            // dd('yes');
+            return redirect()->route('single_test',$test_id);
         }
+
 
         return view(
             'user.practice-test',
@@ -1682,9 +1776,9 @@ class TestPrepController extends Controller
             return redirect(route('test_home_page'))->with('error', 'Test not found');
         }
 
-        if ($practice_test->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($practice_test->practice_tests_products()->pluck('product_id')->toArray())) {
-            return redirect(route('test_home_page'))->with('error', 'You are not authorized to access this test');
-        }
+        // if ($practice_test->status == 'paid' && !auth()->user()->isUserSubscibedToTheProduct($practice_test->practice_tests_products()->pluck('product_id')->toArray())) {
+        //     return redirect(route('test_home_page'))->with('error', 'You are not authorized to access this test');
+        // }
 
         $current_user_id = Auth::id();
 
@@ -2056,6 +2150,26 @@ class TestPrepController extends Controller
             ->where('practice_tests.format', 'PSAT')
             ->whereNull('user_answers.user_id')
             ->get();
+        
+        $getAllPracticeTests['DSAT'] = PracticeTest::select('practice_tests.*')
+            ->leftJoin('user_answers', function ($join) use ($user_id) {
+                $join->on('practice_tests.id', '=', 'user_answers.test_id')
+                    ->where('user_answers.user_id', '=', $user_id);
+            })
+            ->where('practice_tests.test_source', 0)
+            ->where('practice_tests.format', 'DSAT')
+            ->whereNull('user_answers.user_id')
+            ->get();
+
+        $getAllPracticeTests['DPSAT'] = PracticeTest::select('practice_tests.*')
+            ->leftJoin('user_answers', function ($join) use ($user_id) {
+                $join->on('practice_tests.id', '=', 'user_answers.test_id')
+                    ->where('user_answers.user_id', '=', $user_id);
+            })
+            ->where('practice_tests.test_source', 0)
+            ->where('practice_tests.format', 'DPSAT')
+            ->whereNull('user_answers.user_id')
+            ->get();
 
         $getOfficialPracticeTests['ACT'] = PracticeTest::select('practice_tests.*')
             ->leftJoin('user_answers', function ($join) use ($user_id) {
@@ -2086,10 +2200,32 @@ class TestPrepController extends Controller
             ->where('practice_tests.format', 'PSAT')
             ->whereNull('user_answers.user_id')
             ->get();
+        
+        $getOfficialPracticeTests['DSAT'] = PracticeTest::select('practice_tests.*')
+            ->leftJoin('user_answers', function ($join) use ($user_id) {
+                $join->on('practice_tests.id', '=', 'user_answers.test_id')
+                    ->where('user_answers.user_id', '=', $user_id);
+            })
+            ->where('practice_tests.test_source', 1)
+            ->where('practice_tests.format', 'DSAT')
+            ->whereNull('user_answers.user_id')
+            ->get();
+        
+        $getOfficialPracticeTests['DPSAT'] = PracticeTest::select('practice_tests.*')
+            ->leftJoin('user_answers', function ($join) use ($user_id) {
+                $join->on('practice_tests.id', '=', 'user_answers.test_id')
+                    ->where('user_answers.user_id', '=', $user_id);
+            })
+            ->where('practice_tests.test_source', 1)
+            ->where('practice_tests.format', 'DPSAT')
+            ->whereNull('user_answers.user_id')
+            ->get();
 
         $getCustomQuiz['SAT'] = PracticeTest::where('user_id', $user_id)->where('format', 'SAT')->where('test_source', 2)->get();
         $getCustomQuiz['ACT'] = PracticeTest::where('user_id', $user_id)->where('format', 'ACT')->where('test_source', 2)->get();
         $getCustomQuiz['PSAT'] = PracticeTest::where('user_id', $user_id)->where('format', 'PSAT')->where('test_source', 2)->get();
+        $getCustomQuiz['DSAT'] = PracticeTest::where('user_id', $user_id)->where('format', 'DSAT')->where('test_source', 2)->get();
+        $getCustomQuiz['DPSAT'] = PracticeTest::where('user_id', $user_id)->where('format', 'DPSAT')->where('test_source', 2)->get();
 
         //SAT Custom Quiz
         $sat_custom_details = [];
@@ -2214,6 +2350,101 @@ class TestPrepController extends Controller
             }
         }
 
+        //DSAT Custom Quiz
+        $dsat_custom_details = [];
+        foreach ($getCustomQuiz['DSAT'] as $key => $value) {
+            $dsat_custom_details[$value['id']]['test_name'] = $value['title'];
+            $dsat_custom_details[$value['id']]['id'] = $value['id'];
+            $sections = PracticeTestSection::where('testid', $value['id'])->get();
+            foreach ($sections as $section) {
+                $dsat_custom_details[$value['id']]['section_type'] = $section['practice_test_type'];
+                $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
+                $answer_detail = UserAnswers::where('section_id', $section['id'])->where('user_id', $user_id)->get();
+                if (isset($answer_detail[0]['answer'])) {
+                    $dsat_custom_details[$value['id']]['date_taken'] = $answer_detail[0]['created_at']->format('m/d/y');
+                    $answer_data = json_decode($answer_detail[0]['answer'], true);
+                    $right = 0;
+                    $total = 0;
+                    foreach ($practice_questions as $practice_question) {
+                        if (isset($answer_data[$practice_question->id])) {
+                            if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
+                                $right++;
+                                $total++;
+                            } else {
+                                $total++;
+                            }
+                        }
+                    }
+                    $dsat_custom_details[$value['id']]['right_question'] = $right;
+                    $dsat_custom_details[$value['id']]['total_question'] = $total;
+                } else {
+                    $dsat_custom_details[$value['id']]['right_question'] = 0;
+                    $dsat_custom_details[$value['id']]['total_question'] = 0;
+                    $dsat_custom_details[$value['id']]['date_taken'] = '-';
+                }
+                if (isset($answer_detail[0]['actual_time'])) {
+                    $actual_time = $answer_detail[0]['actual_time'] ?? '';
+                } else {
+                    $actual_time = '';
+                }
+                $dsat_custom_details[$value['id']][$section['practice_test_type'] . "_actual_time"] = $actual_time;
+            }
+        }
+
+        //DPSAT Custom Quiz
+        $dpsat_custom_details = [];
+        foreach ($getCustomQuiz['DPSAT'] as $key => $value) {
+            $dpsat_custom_details[$value['id']]['test_name'] = $value['title'];
+            $dpsat_custom_details[$value['id']]['id'] = $value['id'];
+            $sections = PracticeTestSection::where('testid', $value['id'])->get();
+            foreach ($sections as $section) {
+                $dpsat_custom_details[$value['id']]['section_type'] = $section['practice_test_type'];
+                $practice_questions = PracticeQuestion::where('practice_test_sections_id', $section['id'])->get();
+                $answer_detail = UserAnswers::where('section_id', $section['id'])->where('user_id', $user_id)->get();
+                if (isset($answer_detail[0]['answer'])) {
+                    $dpsat_custom_details[$value['id']]['date_taken'] = $answer_detail[0]['created_at']->format('m/d/y');
+                    $answer_data = json_decode($answer_detail[0]['answer'], true);
+                    $right = 0;
+                    $total = 0;
+                    foreach ($practice_questions as $practice_question) {
+                        if (isset($answer_data[$practice_question->id])) {
+                            if (str_replace(' ', '', $practice_question->answer) == str_replace(' ', '', $answer_data[$practice_question->id])) {
+                                $right++;
+                                $total++;
+                            } else {
+                                $total++;
+                            }
+                        }
+                    }
+                    $dpsat_custom_details[$value['id']]['right_question'] = $right;
+                    $dpsat_custom_details[$value['id']]['total_question'] = $total;
+                } else {
+                    $dpsat_custom_details[$value['id']]['right_question'] = 0;
+                    $dpsat_custom_details[$value['id']]['total_question'] = 0;
+                    $dpsat_custom_details[$value['id']]['date_taken'] = '-';
+                }
+                if (isset($answer_detail[0]['actual_time'])) {
+                    $actual_time = $answer_detail[0]['actual_time'] ?? '';
+                } else {
+                    $actual_time = '';
+                }
+                $dpsat_custom_details[$value['id']][$section['practice_test_type'] . "_actual_time"] = $actual_time;
+            }
+        }
+
+        //DSAT
+        $dsat_test = PracticeTest::where('format', 'DSAT')->whereNotIn('test_source', [2])->get();
+        $dsat_details_array = $this->getActDetailsArray($dsat_test, $user_id);
+
+        $all_dsat_test = PracticeTest::where('format', 'DSAT')->get();
+        $all_dsat_details_array = $this->getActDetailsArray($all_dsat_test, $user_id);
+
+        //DPSAT
+        $dpsat_test = PracticeTest::where('format', 'DPSAT')->whereNotIn('test_source', [2])->get();
+        $dpsat_details_array = $this->getActDetailsArray($dpsat_test, $user_id);
+
+        $all_dpsat_test = PracticeTest::where('format', 'DPSAT')->get();
+        $all_dpsat_details_array = $this->getActDetailsArray($all_dpsat_test, $user_id);
 
         //ACT
         $act_test = PracticeTest::where('format', 'ACT')->whereNotIn('test_source', [2])->get();
@@ -2307,7 +2538,7 @@ class TestPrepController extends Controller
         $all_sat_details_array = $this->getSatDetailsArray($all_sat_test, $user_id, $helper);
 
         //Test in Progress
-        $formats = ['ACT', 'SAT', 'PSAT'];
+        $formats = ['ACT', 'SAT', 'PSAT','DSAT','DPSAT'];
         $getAllProgressPracticeTests = [];
         foreach ($formats as $format) {
             $getAllProgressPracticeTests[$format] = PracticeTest::select('practice_tests.*')
@@ -2329,7 +2560,32 @@ class TestPrepController extends Controller
                 ->get();
         }
 
-        return view('student.test-home-page.test_home_page', compact('getAllPracticeTests', 'getOfficialPracticeTests', 'act_details_array', 'all_act_details_array', 'sat_details_array', 'all_sat_details_array', 'psat_details_array', 'all_psat_details_array', 'sat_custom_details', 'psat_custom_details', 'act_custom_details', 'getAllProgressPracticeTests'));
+        // dump($dsat_details_array);
+        // dump($all_dsat_details_array);
+
+        // dump($dpsat_details_array);
+        // dump($all_dpsat_details_array);
+
+        return view('student.test-home-page.test_home_page', compact(
+            'getAllPracticeTests',
+            'getOfficialPracticeTests', 
+            'act_details_array', 
+            'all_act_details_array', 
+            'sat_details_array', 
+            'all_sat_details_array', 
+            'psat_details_array', 
+            'all_psat_details_array',
+            'dsat_details_array', 
+            'all_dsat_details_array',
+            'dpsat_details_array', 
+            'all_dpsat_details_array', 
+            'dsat_custom_details', 
+            'dpsat_custom_details', 
+            'sat_custom_details', 
+            'psat_custom_details', 
+            'act_custom_details', 
+            'getAllProgressPracticeTests'
+        ));
     }
 
     public function getActDetailsArray($act_test, $user_id)
