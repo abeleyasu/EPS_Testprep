@@ -29,7 +29,7 @@ class PlanController extends Controller
         $search =  isset($request->search['value']) ? $request->search['value'] : ""; 
         $start = isset($request->start) ? $request->start : 0;
 
-        $plans = Plan::with('product')->orderBy('order_index', 'asc');
+        $plans = Plan::with('product')->orderBy('order_index', 'asc')->orderBy('status','Desc');
         $totalPlanCount = Plan::get()->count();
 
         if (!empty($search)) {
@@ -45,9 +45,13 @@ class PlanController extends Controller
 
         $data = [];
         foreach ($plans as $plan) {
+            $check  =  '<div class="form-check form-switch"><input onclick="updateStatus(this.dataset.id)" class="form-check-input" type="checkbox" data-id="'.$plan['id'].'"'. ($plan['status'] == 1 ? "checked": "" ). "></div>";
             $data[] = [
                 'id' => $plan['id'],
                 'plan_id' => $plan['stripe_plan_id'],
+                'plan_status' => $check,
+                'plan_created' => $plan['created_at'] ? Carbon::parse($plan['created_at'])->format('Y-m-d') : '',
+                'plan_inactivated' => $plan['inactive_at'] ? Carbon::parse($plan['inactive_at'])->format('Y-m-d') : '',
                 'product' => $plan['product']['title'],
                 'category' => $plan['product']['product_category']['title'],
                 'interval' => $plan['interval'],
@@ -57,7 +61,7 @@ class PlanController extends Controller
                 'amount' => number_format($plan['display_amount']),
                 'order_index' => $plan['order_index'] + 1,
                 'action' => '<div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-alt-secondary delete-user" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Plan">
+                                <button type="button" class="btn btn-sm btn-alt-secondary update-plan-status" data-id="' . $plan['id'] . '" data-bs-toggle="tooltip" title="Delete Plan">
                                     <i class="fa fa-fw fa-times"></i>
                                 </button>
                             </div>'
@@ -69,6 +73,7 @@ class PlanController extends Controller
             "recordsFiltered" => $totalPlanCount,
             "data"            => $data
         ];
+        
         return response()->json($json_data);
     }
 
@@ -207,6 +212,24 @@ class PlanController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+    
+    public function changePlanStatus(Request $request) {
+        $plan = Plan::find($request->id);
+        if(Plan::where('id',$request->id)->update([
+            "status" => $plan->status ? 0 : 1,
+            'inactive_at' => $plan->status ? now() : null
+        ])):
+            return response()->json([
+                'success' => true, 
+                'message' => 'Plan deleted successfully'
+            ]);
+        else:
+            return response()->json([
+                'success' => false, 
+                'message' => $e->getMessage()
+            ]);
+        endif;
     }
 
     public function getUserPlan() {

@@ -41,7 +41,9 @@
                       <h3 class="block-title">Product</h3>
                     </div>
                     <div class="col-8">
-                      {{ $subscription->plan->product->title }}
+                      @if (isset($subscription->plan->product->title))
+                       {{ $subscription->plan->product->title }}
+                      @endif
                     </div>
                   </div>
                   <div class="row subscription-item">
@@ -49,7 +51,7 @@
                       <h3 class="block-title">Your Current Plan</h3>
                     </div>
                     <div class="col-8">
-                      ${{ number_format($subscription->plan->amount) }} For {{ $subscription->plan->interval_count }} {{ $subscription->plan->interval }}
+                      ${{ number_format(isset($subscription->plan->amount)) }} For {{ isset($subscription->plan->interval_count) }} {{ isset($subscription->plan->interval) }}
                     </div>
                   </div>
                   <div class="row subscription-item">
