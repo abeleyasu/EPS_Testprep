@@ -166,7 +166,9 @@
 
             {{-- start Description  --}}
             <h6 class="fs-6 mb-3 p-2 test-description text-muted mt-2">
-                {!! isset($testSection[0]->description) ? $testSection[0]->description : '' !!}
+                {{-- isset($testSection[0]->description) ? $testSection[0]->description : '' --}}
+                {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                                        questions
             </h6>
             {{-- end Description --}}
 

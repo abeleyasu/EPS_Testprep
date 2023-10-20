@@ -2560,12 +2560,6 @@ class TestPrepController extends Controller
                 ->get();
         }
 
-        // dump($dsat_details_array);
-        // dump($all_dsat_details_array);
-
-        // dump($dpsat_details_array);
-        // dump($all_dpsat_details_array);
-
         return view('student.test-home-page.test_home_page', compact(
             'getAllPracticeTests',
             'getOfficialPracticeTests', 
