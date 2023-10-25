@@ -949,6 +949,7 @@
                             );
                         }
 
+                        // redirect code here.
                         if (result.redirect_url != 0) {
                             // only for DSAT, DPSAT
                             var url = window.location.origin + result.redirect_url;

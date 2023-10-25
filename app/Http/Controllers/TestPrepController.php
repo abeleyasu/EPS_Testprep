@@ -1493,6 +1493,7 @@ class TestPrepController extends Controller
         $requiredScore = 0;
         // $redirectUrl = '/user/practice-test/313?test_id=566&time=regular';
         $redirectUrl = 0;
+        $redirectFromWhere = 0;
         $answers = $request->selected_answer;
 
         // lets calculate the score and redirect to other sections based on the required_number_of_correct_answers.
@@ -1690,6 +1691,10 @@ class TestPrepController extends Controller
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.id', $id)
             ->get();
+        
+        $testQuestion = DB::table('practice_tests')
+            ->where('id', $test_id)
+            ->first();
 
         // dump($total_questions);
         // dump($testSection);
@@ -1727,11 +1732,12 @@ class TestPrepController extends Controller
                 $testProgress->save();
             }
         }
-        if ($isSubmitted == 1) {
+        // if ($isSubmitted == 1) {
             // dd('yes');
-            return redirect()->route('single_test',$test_id);
-        }
-
+            // return redirect()->back();
+            //return redirect()->route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=all';
+            // return redirect()->route('single_test',$test_id);
+        // }
 
         return view(
             'user.practice-test',
