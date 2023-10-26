@@ -1517,7 +1517,7 @@ class TestPrepController extends Controller
                     }
                 }
 
-                if(($totalScore >= $requiredScore) && ($totalScore > 0) ){
+                if(($totalScore >= $requiredScore) && ($totalScore > 0)){
                     $redirectUrl = '/user/practice-test/';
                     // redirect to hard module
                     $allTestSection = DB::table('practice_test_sections')
@@ -1732,12 +1732,17 @@ class TestPrepController extends Controller
                 $testProgress->save();
             }
         }
-        // if ($isSubmitted == 1) {
+        if ($isSubmitted == 1) {
             // dd('yes');
+            // return back();
             // return redirect()->back();
-            //return redirect()->route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=all';
+            // http://127.0.0.1:8000/user/practice-test/358?test_id=581
+            // return redirect()->route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=all';
             // return redirect()->route('single_test',$test_id);
-        // }
+
+            $url = route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=single';
+            return redirect($url);
+        }
 
         return view(
             'user.practice-test',
