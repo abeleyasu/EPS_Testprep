@@ -5175,11 +5175,8 @@
                             format + ' ' + testSectionType + '</button>\n' +
                             '</div>');
                         */
-
-
                     }
                 });
-
 
             } else {
                 var test_source = $('#source option:selected').val();
