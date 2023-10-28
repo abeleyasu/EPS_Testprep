@@ -1680,7 +1680,6 @@ class TestPrepController extends Controller
     public function singleSection(Request $request, $id)
     {
         $set_offset = 0;
-        // dd($request);
         $test_id = $request->test_id ?? '';
 
         $total_questions = PracticeQuestion::where('practice_test_sections_id', $id)
@@ -1725,25 +1724,23 @@ class TestPrepController extends Controller
                     "user_id" => Auth::user()->id
                 ]
             )->first();
-
+            // dump($testProgress);
             if (!empty($testProgress)) {
                 $isSubmitted = $testProgress->is_submit;
                 $testProgress->question_id = json_encode($total_questions);
                 $testProgress->save();
             }
         }
+        // dd($isSubmitted);
+        // update this part.
         if ($isSubmitted == 1) {
-            // dd('yes');
+            
             // return back();
-            // return redirect()->back();
-            // http://127.0.0.1:8000/user/practice-test/358?test_id=581
-            // return redirect()->route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=all';
-            // return redirect()->route('single_test',$test_id);
-
-            $url = route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=single';
-            return redirect($url);
+            return redirect()->route('single_test',$test_id);
+            // $url = route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=single';
+            // return redirect($url);
         }
-
+        // dd($isSubmitted);
         return view(
             'user.practice-test',
             [
@@ -1818,12 +1815,12 @@ class TestPrepController extends Controller
             ->where('user_answers.test_id', $id)
             ->whereIn('user_answers.section_id', $get_all_sections_id)
             ->count();
-
+        // dump($get_all_section_id);
+        // dump($get_users_answers_section_id);
+        // dump($get_users_answers_section_id);
         if ($get_all_section_id === $get_users_answers_section_id) {
-
             $check_test_completed = 'yes';
         } else if ($get_all_section_id > $get_users_answers_section_id) {
-
             $check_test_completed = 'Yes';
         }
 
@@ -1976,7 +1973,8 @@ class TestPrepController extends Controller
             $total_score = $total_score;
         }
 
-
+        // dump($testSections);
+        // dump($check_test_completed);
         return view('user.practice-test-sections', [
             'selected_test_id' => $id,
             'testSections' => $testSections,
@@ -2022,6 +2020,7 @@ class TestPrepController extends Controller
 
     public function resetTest(Request $request, $id)
     {
+
         UserAnswers::where('user_id', Auth::id())->where('test_id', $request->test_id)->delete();
 
         $current_user_id = Auth::id();
@@ -2039,7 +2038,6 @@ class TestPrepController extends Controller
 
     public function resetSection($testId, $id)
     {
-
         $practiceTest = PracticeTest::where("id", $testId)->first(
             [
                 "title",
@@ -2053,13 +2051,10 @@ class TestPrepController extends Controller
         );
 
         if (!empty($practiceTest)) {
-
             $practiceTest = $practiceTest->toArray();
-
             $newPracticeTest = PracticeTest::create($practiceTest);
 
             if (!empty($newPracticeTest)) {
-
                 $allSections = PracticeTestSection::where(
                     [
                         ["testid", "=", $testId]
@@ -2080,11 +2075,8 @@ class TestPrepController extends Controller
 
                 foreach ($allSections as $section) {
                     $section_type = $section->toArray();
-
                     $section_type["testid"] = $newPracticeTest->id;
-
                     $newPracticeTestSection = PracticeTestSection::create($section_type);
-
                     $questions = PracticeQuestion::where("practice_test_sections_id", $id)->get([
                         'title',
                         'format',

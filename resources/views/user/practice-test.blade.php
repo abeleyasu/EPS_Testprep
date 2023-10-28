@@ -941,7 +941,8 @@
                     method: 'post',
                     data: postData,
                     success: function(result) {
-                        console.log(result);
+                        // console.log(result);
+                        // alert(result.redirect_url);
                         // die;
                         if (count < result.total_question) {
                             window.alert(
@@ -953,7 +954,7 @@
                         if (result.redirect_url != 0) {
                             // only for DSAT, DPSAT
                             var url = window.location.origin + result.redirect_url;
-                            console.log(url);
+                            // console.log(url);
                             window.location.href = url;
                             return false;
                         }
