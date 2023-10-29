@@ -1522,7 +1522,8 @@ class TestPrepController extends Controller
                     // redirect to hard module
                     $allTestSection = DB::table('practice_test_sections')
                         ->where('practice_test_sections.testid', $testSection[0]->testid)
-                        ->where('practice_test_sections.practice_test_type','LIKE', '%hard%')
+                        // ->where('practice_test_sections.practice_test_type','LIKE', '%hard%')
+                        ->where('practice_test_sections.section_title','LIKE', '%hard%')
                         ->first();
                     // dump($allTestSection);
                     if($allTestSection) {
@@ -1530,11 +1531,13 @@ class TestPrepController extends Controller
                     }else{
                         $redirectUrl = 0;
                     }
+                    // dump($redirectUrl);
                 }else{
                     $redirectUrl = '/user/practice-test/';
                     // redirect to easy module
                     $allTestSection = DB::table('practice_test_sections')
                         ->where('practice_test_sections.testid', $testSection[0]->testid)
+                        // ->where('practice_test_sections.practice_test_type','LIKE', '%easy%')
                         ->where('practice_test_sections.section_title','LIKE', '%easy%')
                         ->first();
                     // dump($allTestSection);
@@ -1552,7 +1555,8 @@ class TestPrepController extends Controller
                 }
             }
         }
-
+        // dump($totalScore);
+        // dd($redirectUrl);
         return response()->json(
             [
                 'success' => '0',
