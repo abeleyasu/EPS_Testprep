@@ -458,7 +458,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 						<div class="sectionTypesFullMutli firstRecord">
 							<ul class="sectionListtype">
 								<li>Type: &nbsp;<strong>{{ $testsection->format }}</strong></li>
-								<li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_{{$testsection->id}}"><strong>{{ $testsection->practice_test_type }}</strong>
+								<li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_{{$testsection->id}}"><strong>{{ $testsection->section_title }}</strong>
 								<input type="hidden" name="selectedSecTxt" value="{{ $testsection->practice_test_type }}" class="selectedSecTxt selectedSection_{{$testsection->id}}" >
                                 <input type="hidden" name="selectedQuesType" value="{{ $testsection->practice_test_type }}" class="selectedQuesType" >
                                 </span>
@@ -556,11 +556,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 placeholder="Enter Practice Section Title" class="form-control">
                                         </div>
 
-                                        <div class="mb-2 col-12">
-                                            <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
-                                            <select id="testSectionType" name="testSectionType" class="form-control js-select2 select" onchange="addClassScore(this)">
+                                        <div class="mb-2 row">
+                                            <div class="col-md-6">
+                                                <label class="form-label" style="font-size: 13px;">Practice Test Section Type:</label>
+                                                <select id="testSectionType" name="testSectionType" class="form-control js-select2 select" onchange="addClassScore(this)">
 
-                                            </select>
+                                                </select>
+                                                
+                                            </div>
+                                            <div class="col-md-6 for_digital_only">
+                                                <label class="form-label" style="font-size: 13px;">Required Number Of Correct Answers:<span
+                                                        class="text-danger">*</span></label>
+                                                <input id="required_number_of_correct_answers" 
+                                                    name="required_number_of_correct_answers" 
+                                                    class="form-control" type="number"
+                                                    
+                                                    placeholder="Enter Required Number Of Correct Answers" >
+                                            </div>
                                         </div>
 
                                         {{-- <div class="mb-2">
@@ -4065,6 +4077,9 @@ aria-hidden="true">
             clearModel();
             clearError();
             removeMoreFillOption();
+            $("input[name=diff_value]"). val("");
+            $("input[name=disc_value]"). val("");
+            $("input[name=guessing_value]"). val("");
             $('input[name="addChoiceMultInFourFill_fill[]"]').val('');
             $('.addChoiceMultInFourFill_filltype').val('');
             $('.addMultiChoice').val('');
@@ -4115,6 +4130,8 @@ aria-hidden="true">
         //new
         $(document).on('click','.add_score_btn', function(){
             $('.table_body').empty();
+            $("input[name=actualScore]"). val("");
+            $("input[name=convertedScore]"). val("");
             let section_id = $(this).attr('data-id');
             let section_types = $(this).attr('data-section_type');
             let test_ids = $(this).attr('data-test_id');
@@ -4184,6 +4201,8 @@ aria-hidden="true">
                                 }
                             }
                         }
+                        $("input[name=actualScore]"). val("");
+                        $("input[name=convertedScore]"). val("");
                     },
                     error: function(xhr, status, error) {
                         console.log(xhr.responseText);
@@ -4318,6 +4337,7 @@ aria-hidden="true">
                     $('#sectionModal .validError').text('');
                 }
                 var get_test_id = jQuery('#get_question_id').val();
+                var required_number_of_correct_answers = jQuery('#required_number_of_correct_answers').val();
                 $('#sectionModal').modal('hide');
                 $('#questionMultiModal').modal('hide');
                 var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
@@ -4331,6 +4351,7 @@ aria-hidden="true">
                         'testSectionTitle': testSectionTitle,
                         'testSectionType': testSectionType,
                         'get_test_id': get_test_id,
+                        'required_number_of_correct_answers': required_number_of_correct_answers,
                         'order': sectionOrder,
                         'regular': regularTime,
                         'fifty': fiftyExtended,
@@ -4339,43 +4360,117 @@ aria-hidden="true">
                     },
                     url: "{{ route('addPracticeTestSection') }}",
                     method: 'post',
-                    success: (res) => {
-                        let  ScoreClass = `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
-                        $('.sectionContainerList').append(
-                            '<div class="sectionTypesFull '+ScoreClass+' section_'+res+' " data-id="'+res+'" id="sectionDisplay_' + currentModelId +
-                            '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
-                            format +
-                            '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_'+res+'"><strong>' +
-                            capitalizeFirstLetter(sectionSelectedTxt) +
-                            '</strong><input type="hidden" name="selectedSecTxt" value="' +
-                            testSectionType +
-                            '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li><p class="mb-0 d-flex">Order:</p>&nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
-                            res +
-                            '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-section_type="'+testSectionType+'" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
-                            res +
-                            '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
-                            currentModelId +
-                            '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id='+res+' data-section_type="'+testSectionType+'" data-test_id="'+get_test_id+'" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
-                            res +
-                            '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
-                            res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                    success: (result) => {
+                        $.each(result, function (i, v) {
+                            $.each(v, function (key, value) {
+                                let res = value['id'];
+                                let section = value['section'];
+                                section = section.replaceAll('_', ' ');
+                                sectionOrder = currentModelId = key;
+                                sectionOrder++;
 
-                        $('.addQuestion').val('');
-                        $('.validError').text('');
-                        $('.sectionAddId').val(res);
+                                if ((testSectionType == 'Math') && (key == 0) ) {
+                                    testSectionType = 'Math_no_calculator';
+                                }else if ((testSectionType == 'Math') && (key == 1) ) {
+                                    testSectionType = 'Math_no_calculator';
+                                }else if((testSectionType == 'Math') && (key == 2)){
+                                    testSectionType = 'Math_with_calculator';
+                                }else{
+                                    // nothing, it'll be same.
+                                }
 
-                        $('#listWithHandle').append('<div class="list-group-item">\n' +
-                            '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
-                            '<i class="fa-solid fa-grip-vertical"></i>\n' +
-                            '</span>\n' +
-                            '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
-                            format + ' ' + testSectionType + '</button>\n' +
-                            '</div>');
+                                let ScoreClass = `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
+                                $('.sectionContainerList').append(
+                                    '<div class="sectionTypesFull ' + scoreClass + ' section_' + res +
+                                    '" data-id=' + res + ' id="sectionDisplay_' + currentModelId +
+                                    '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
+                                    format +
+                                    '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_' +
+                                    res + '"><strong>' +
+                                    capitalizeFirstLetter(section) +
+                                    '</strong><input type="hidden" name="selectedSecTxt" value="' +
+                                    testSectionType +
+                                    '" class="selectedSecTxt selectedSection_' + res +
+                                    '" ></span></li><li><p class="mb-0 d-flex">Order:</p>&nbsp;<input type="number" readonly class="form-control" name="order" value="'+
+                                    sectionOrder + '" id="order_' +
+                                    res +
+                                    '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
+                                    res +
+                                    '" data-bs-toggle="tooltip" onclick="editSection(this)" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-id="' +
+                                    res + '" data-section_type="' + testSectionType +
+                                    '" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                                    res +
+                                    '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
+                                    currentModelId +
+                                    '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
+                                    res + '" data-section_type="' + testSectionType + '" data-test_id="' +
+                                    get_test_id +
+                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="'+sectionOrder+'" id="order_' +
+                                    res +
+                                    '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
+                                    
+                                    res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
 
+                                /*
+                                    '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-section_type="'+testSectionType+'" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                                    res +
+                                    '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
+                                    currentModelId +
+                                    '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id='+
+                                    res+' data-section_type="'+testSectionType+'" data-test_id="'+get_test_id+
+                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
+                                    res +
+                                    '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
+                                    res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
+                                    */
+                                $('.addQuestion').val('');
+                                $('.validError').text('');
+                                $('.sectionAddId').val(res);
+
+                                $('#listWithHandle').append('<div class="list-group-item">\n' +
+                                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                                    '</span>\n' +
+                                    '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
+                                    format + ' ' + testSectionType + '</button>\n' +
+                                    '</div>');
+                            });
+                        });
                     }
                 });
+                /*
+                let  ScoreClass = `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
+                $('.sectionContainerList').append(
+                    '<div class="sectionTypesFull '+ScoreClass+' section_'+res+' " data-id="'+res+'" id="sectionDisplay_' + currentModelId +
+                    '" ><div class="mb-2 mb-4"><div class="sectionTypesFullMutli"> </div> <div class="sectionTypesFullMutli firstRecord"><ul class="sectionListtype"><li>Type: &nbsp;<strong>' +
+                    format +
+                    '</strong></li><li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_'+res+'"><strong>' +
+                    capitalizeFirstLetter(sectionSelectedTxt) +
+                    '</strong><input type="hidden" name="selectedSecTxt" value="' +
+                    testSectionType +
+                    '" class="selectedSecTxt selectedSection_'+res+'" ></span></li><li><p class="mb-0 d-flex">Order:</p>&nbsp;<input type="number" readonly class="form-control" name="order" value="'+sectionOrder+'" id="order_' +
+                    res +
+                    '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection" data-id="'+res+'" onclick="editSection(this)" data-bs-toggle="tooltip" title="Edit Section"><i class="fa fa-fw fa-pencil-alt"></i></button><button type="button" class="btn btn-sm btn-alt-secondary deleteSection" data-section_type="'+testSectionType+'" data-id="'+res+'" onclick="deleteSection(this)" data-bs-toggle="tooltip" title="Delete Section"><i class="fa fa-fw fa-times"></i></button></li></ul><ul class="sectionHeading"><li>Question</li><li>Answer</li> <li>Passage</li><li>Passage Number</li><li>Fill Answer</li><li class="' +
+                    res +
+                    '">Order</li><li>Action</li></ul></div></div><div class="mb-2 mb-4 partTestOrder"><button type="button" data-id="' +
+                    currentModelId +
+                    '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id='+res+' data-section_type="'+testSectionType+'" data-test_id="'+get_test_id+'" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="0" id="order_' +
+                    res +
+                    '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
+                    res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
 
+                $('.addQuestion').val('');
+                $('.validError').text('');
+                $('.sectionAddId').val(res);
 
+                $('#listWithHandle').append('<div class="list-group-item">\n' +
+                    '<span class="glyphicon glyphicon-move" aria-hidden="true">\n' +
+                    '<i class="fa-solid fa-grip-vertical"></i>\n' +
+                    '</span>\n' +
+                    '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
+                    format + ' ' + testSectionType + '</button>\n' +
+                    '</div>');
+                */
             } else {
                 var test_source = $('#source option:selected').val();
                 var testSectionType = $('#addTestSectionTypeRead').val();
@@ -6220,6 +6315,7 @@ Sortable.create(mainSectionContainer, {
 },);
 
 $('.add_section_modal_btn').click(function() {
+    $("input[name=required_number_of_correct_answers]").val("");
     var optionObj = [];
     var modelCount = $('.sectionTypesFull').length;
     $('#currentModelId').val(modelCount);
@@ -6227,6 +6323,8 @@ $('.add_section_modal_btn').click(function() {
     optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
     optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
     optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+    optionObj['DSAT'] = ['Reading And Writing', 'Math'];
+    optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
     var format = $('.ptype #format').val();
 
     $('#testSectionType').html('');
@@ -6251,6 +6349,8 @@ $(document).ready(function(){
     optionObj['ACT'] = ['English', 'Math', 'Reading', 'Science'];
     optionObj['SAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
     optionObj['PSAT'] = ['Reading', 'Writing', 'Math (no calculator)', 'Math (with calculator)'];
+    optionObj['DSAT'] = ['Reading And Writing', 'Math'];
+    optionObj['DPSAT'] = ['Reading And Writing', 'Math'];
     $('#editTestSectionType').html('');
     var opt = '<option value="">Select Section Type</option>';
     for (var i = 0; i < optionObj[format].length; i++) {

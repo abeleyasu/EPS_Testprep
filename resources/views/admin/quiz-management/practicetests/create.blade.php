@@ -4688,7 +4688,9 @@
             is_edit = false;
             clearModel();
             clearError();
-            $("input[type=number]"). val("");
+            $("input[name=diff_value]"). val("");
+            $("input[name=disc_value]"). val("");
+            $("input[name=guessing_value]"). val("");
             $('#passageRequired_1').prop('checked', true);
             $('#passage_number').prop('disabled', false);
             $('select[name="passagesType"]').prop('disabled', false);
@@ -4753,6 +4755,8 @@
         //new
         $(document).on('click', '.add_score_btn', function() {
             $('.table_body').empty();
+            $("input[name=actualScore]"). val("");
+            $("input[name=convertedScore]"). val("");
             let section_id = $(this).attr('data-id');
             let section_types = $(this).attr('data-section_type');
             let test_ids = $(this).attr('data-test_id');
@@ -4819,6 +4823,8 @@
                             }
                         }
                     }
+                    $("input[name=actualScore]"). val("");
+                        $("input[name=convertedScore]"). val("");
                 },
                 error: function(xhr, status, error) {
 
