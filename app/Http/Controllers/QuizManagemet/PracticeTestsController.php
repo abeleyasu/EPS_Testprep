@@ -249,7 +249,8 @@ class PracticeTestsController extends Controller
         UserAnswers::where('test_id',$id)->delete();
 		Score::where('test_id',$id)->delete();
         PracticeTestSection::where('testid',$id)->delete();
-		$practicetests = PracticeTest::find($id);
+		
+        $practicetests = PracticeTest::find($id);
         $practicetests->practice_tests_products()->detach();
         $practicetests->delete();
         return redirect()->route('practicetests.index')->with('message','Question deleted successfully');
