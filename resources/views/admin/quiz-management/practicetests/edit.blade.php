@@ -6560,6 +6560,8 @@ var test = Sortable.create(addListWithHandleQuestion, {
         let hundredMinute = $('#edit100extendedminute').val();
         let hundredSecond = $('#edit100extendedsecond').val();
 
+        let edit_required_number_of_correct_answers = $('#edit_required_number_of_correct_answers').val();
+
         var regularTime = ("0" + rHour).slice(-2) + ":" + ("0" + rMinute).slice(-2) + ":" + ("0" + rSecond).slice(-2);
         var fiftyExtended = ("0" + fiftyHour).slice(-2) + ":" + ("0" + fiftyMinute).slice(-2) + ":" + ("0" + fiftySecond).slice(-2);
         var hundredExtended = ("0" + hundredHour).slice(-2) + ":" + ("0" + hundredMinute).slice(-2) + ":" + ("0" + hundredSecond).slice(-2);
@@ -6572,6 +6574,7 @@ var test = Sortable.create(addListWithHandleQuestion, {
                 'regular': regularTime,
                 'fifty': fiftyExtended,
                 'hundred': hundredExtended,
+                'required_number_of_correct_answers': edit_required_number_of_correct_answers,
                 '_token': $('input[name="_token"]').val()
             },
             url: '{{ route("update_section") }}',
