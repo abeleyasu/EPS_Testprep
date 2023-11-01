@@ -2031,11 +2031,11 @@ class TestPrepController extends Controller
 
         $existingRecord = TestProgress::where('test_id', $request->test_id)
             ->where('user_id', $current_user_id)
-            ->first();
+            ->delete();
 
-        if ($existingRecord) {
-            $existingRecord->delete();
-        }
+        // if ($existingRecord) {
+        //     $existingRecord->delete();
+        // }
 
         return redirect(url('user/practice-test-sections/' . $request['test_id']));
     }
