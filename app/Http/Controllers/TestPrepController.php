@@ -1501,7 +1501,8 @@ class TestPrepController extends Controller
             if(($testSection[0]->format == 'DSAT') ||  ($testSection[0]->format == 'DPSAT')) {
                 $currectSection = DB::table('practice_test_sections')
                     ->where('id', $id)
-                    ->first('practice_test_type');
+                    ->first('section_title');
+                    // ->first('practice_test_type');
                 // dump($currectSection);
                 $requiredScore = $testSection[0]->required_number_of_correct_answers ? $testSection[0]->required_number_of_correct_answers : 0;
                 // dump($requiredScore);
@@ -1547,12 +1548,20 @@ class TestPrepController extends Controller
                         $redirectUrl = 0;
                     }
                 }
-                if (strpos($currectSection->practice_test_type, 'easy') !== false) {
+                $currectSection->section_title = strtolower($currectSection->section_title);
+                // here is the issue. 
+                // if (strpos($currectSection->practice_test_type, 'easy') !== false) {
+                if (strpos($currectSection->section_title, 'easy') == true) {
+                    // dump('easy');
                     $redirectUrl = 0;
                 }
-                if (strpos($currectSection->practice_test_type, 'hard') !== false) {
+
+                // if (strpos($currectSection->practice_test_type, 'hard') !== false) {
+                if (strpos($currectSection->section_title, 'hard') == true) {
+                    // dump('hard');
                     $redirectUrl = 0;
                 }
+
             }
         }
         // dump($totalScore);
