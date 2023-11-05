@@ -915,6 +915,11 @@
                     return element !== 'undefined';
                 });
                 skip_detail = skip_detail.associate(question_ids);
+                if (window.location.href.indexOf("all") !== -1) {
+                    var section_size = 'all';
+                }else{
+                    var section_size = 'single';
+                }
 
                 // let flag_details = selected_flag_details.associate(question_ids);
                 // let gusess_details = selected_gusess_details.associate(question_ids);
@@ -934,6 +939,7 @@
                     get_section_id: get_section_id,
                     get_practice_id: get_test_id,
                     get_question_type: get_question_type,
+                    section_size: section_size,
                     actual_time: actual_time
                 };
                 jQuery.ajax({
@@ -942,7 +948,8 @@
                     data: postData,
                     success: function(result) {
                         // console.log(result);
-                        // alert(result.redirect_url);
+                        alert('Break Time: '+result.break_time);
+                        alert('Redirect URL: '+result.redirect_url);
                         // die;
                         if (count < result.total_question) {
                             window.alert(
@@ -954,15 +961,27 @@
                         if (result.redirect_url != 0) {
                             // only for DSAT, DPSAT
                             var url = window.location.origin + result.redirect_url;
-                            // console.log(url);
+                            window.location.href = url;
+                            return false;
+                        }else{
+
+                            if (result.break_time != 0) {
+                                let next_section_id = result.next_section_id;
+                                var url = window.location.origin + '/user/test-break/' + next_section_id+'?test_id='+get_test_id;
+                                window.location.href = url;
+                                return false;
+                            }
+
+                            var url = window.location.origin + '/user/practice-test-sections/' + get_test_id;
                             window.location.href = url;
                             return false;
                         }
 
+                        // redirect to test break here.
+                        // this code below is not working anymore.
                         var url = "{{ url('') }}" + '/user/practice-tests/' + result
                             .get_test_name + '/' + result.section_id + '/review-page?test_id=' +
                             get_test_id + '&type=' + result.get_test_type;
-                    
 
                         if (window.location.href.indexOf("all") > -1) {
                             var url = window.location.href,

@@ -116,7 +116,7 @@
                                         </a>
                                     @endif
                                 @elseif($check_test_completed == 'Yes')
-                                    <a href="#" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
+                                    <a href="{{ route('all_section', ['id' => $selected_test_id]) }}" style="white-space: nowrap" data-test_id="{{ $selected_test_id }}"
                                         class="btn btn-alt-primary fs-8  ms-2 start_all_section">
                                         <i class="fa-solid fa-bolt" style='margin-right:5px'></i> Start All Sections
                                     </a>
@@ -211,7 +211,6 @@
                                                 Start
                                                 {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
                                                 Section Questions
-
                                             </div>
 
                                             @if (isset($singletestSections['Sections_question']))

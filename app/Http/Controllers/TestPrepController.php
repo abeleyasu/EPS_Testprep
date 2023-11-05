@@ -1478,30 +1478,33 @@ class TestPrepController extends Controller
         $existingRecord = TestProgress::where('section_id', $get_section_id)
             ->where('user_id', $current_user_id)
             ->first();
+
         if ($existingRecord) {
             $existingRecord->update([
                 'is_submit' => 1,
             ]);
         }
+        
         $id = $request->section_id;
 
         $testSection = DB::table('practice_test_sections')
             ->where('practice_test_sections.id', $id)
             ->get();
-        // dump($testSection);
+        
+        $breakTime = 0;
         $totalScore = 0;
         $requiredScore = 0;
-        // $redirectUrl = '/user/practice-test/313?test_id=566&time=regular';
+        $next_section_id = 0;
         $redirectUrl = 0;
         $redirectFromWhere = 0;
         $answers = $request->selected_answer;
-
+        
         // lets calculate the score and redirect to other sections based on the required_number_of_correct_answers.
         if(isset($testSection[0]->id))  {  
             if(($testSection[0]->format == 'DSAT') ||  ($testSection[0]->format == 'DPSAT')) {
                 $currectSection = DB::table('practice_test_sections')
                     ->where('id', $id)
-                    ->first('section_title');
+                    ->first();
                     // ->first('practice_test_type');
                 // dump($currectSection);
                 $requiredScore = $testSection[0]->required_number_of_correct_answers ? $testSection[0]->required_number_of_correct_answers : 0;
@@ -1517,8 +1520,7 @@ class TestPrepController extends Controller
                         }
                     }
                 }
-
-                if(($totalScore >= $requiredScore) && ($totalScore > 0)){
+                if($request->section_size == 'all' ) {
                     $redirectUrl = '/user/practice-test/';
                     // redirect to hard module
                     $allTestSection = DB::table('practice_test_sections')
@@ -1528,7 +1530,11 @@ class TestPrepController extends Controller
                         ->first();
                     // dump($allTestSection);
                     if($allTestSection) {
-                        $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular';
+                        if($request->section_size == 'all' ) {
+                            $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular&section=all';
+                        }else{
+                            $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular';
+                        }
                     }else{
                         $redirectUrl = 0;
                     }
@@ -1543,25 +1549,79 @@ class TestPrepController extends Controller
                         ->first();
                     // dump($allTestSection);
                     if($allTestSection) {
-                        $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular';
+                        // section=all
+                        if($request->section_size == 'all' ) {
+                            $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular&section=all';
+                        }else{
+                            $redirectUrl .= $allTestSection->id.'?test_id='.$testSection[0]->testid.'&time=regular';
+                        }
+
                     }else{
                         $redirectUrl = 0;
                     }
                 }
                 $currectSection->section_title = strtolower($currectSection->section_title);
-                // here is the issue. 
+
+                // check here the number of sections.
+                // then check if there are two module sections and then set the time break.
+                $sectionIds = DB::table('practice_test_sections')
+                        ->where('practice_test_sections.testid', $testSection[0]->testid)
+                        ->pluck('id');
+
                 // if (strpos($currectSection->practice_test_type, 'easy') !== false) {
                 if (strpos($currectSection->section_title, 'easy') == true) {
                     // dump('easy');
                     $redirectUrl = 0;
+
+                    // section=all
+                    if($request->section_size == 'all' ) {
+                        if(count($sectionIds) > 2) {
+                            $mathSectionId = DB::table('practice_test_sections')
+                                ->where('practice_test_sections.testid', $testSection[0]->testid)
+                                ->where('practice_test_sections.practice_test_type','Math')
+                                ->first();
+                    
+                            $rwSectionId = DB::table('practice_test_sections')
+                                ->where('practice_test_sections.testid', $testSection[0]->testid)
+                                ->where('practice_test_sections.practice_test_type','Reading_And_Writing')
+                                ->first();
+
+                            $breakTime = 1;
+                            if($currectSection->practice_test_type = 'Math_with_calculator') {
+                                $next_section_id = $mathSectionId->id;
+                            }else{
+                                $next_section_id = $rwSectionId->id;;
+                            }
+                        }
+                    }
                 }
 
                 // if (strpos($currectSection->practice_test_type, 'hard') !== false) {
                 if (strpos($currectSection->section_title, 'hard') == true) {
                     // dump('hard');
                     $redirectUrl = 0;
-                }
+                    // section=all
+                    if($request->section_size == 'all' ) {
+                        if(count($sectionIds) > 2) {
+                            $mathSectionId = DB::table('practice_test_sections')
+                                ->where('practice_test_sections.testid', $testSection[0]->testid)
+                                ->where('practice_test_sections.practice_test_type','Math')
+                                ->first();
+                    
+                            $rwSectionId = DB::table('practice_test_sections')
+                                ->where('practice_test_sections.testid', $testSection[0]->testid)
+                                ->where('practice_test_sections.practice_test_type','Reading_And_Writing')
+                                ->first();
 
+                            $breakTime = 1;
+                            if($currectSection->practice_test_type = 'Math_with_calculator') {
+                                $next_section_id = $mathSectionId->id;
+                            }else{
+                                $next_section_id = $rwSectionId->id;;
+                            }
+                        }
+                    }
+                }
             }
         }
         // dump($totalScore);
@@ -1569,6 +1629,8 @@ class TestPrepController extends Controller
         return response()->json(
             [
                 'success' => '0',
+                'break_time' => $breakTime,
+                'next_section_id' => $next_section_id,
                 'section_id' => $get_section_id,
                 'redirect_url' => $redirectUrl,
                 'get_test_type' => $get_question_type,
@@ -1745,11 +1807,15 @@ class TestPrepController extends Controller
             }
         }
         // dd($isSubmitted);
+
+        // check if this test is DSAT/DPSAT, then check if this section has 6 sections, 
+        // and then redirect to 10 minute break.
+        // also ask how break shoulb be imposed.
+
         // update this part.
         if ($isSubmitted == 1) {
-            
-            // return back();
             return redirect()->route('single_test',$test_id);
+            // return back();
             // $url = route('single_review',['test' => $testQuestion->title ,'id' => $id]). '?test_id=' . $test_id . '&type=single';
             // return redirect($url);
         }
@@ -1763,6 +1829,18 @@ class TestPrepController extends Controller
                 'total_questions' => $total_questions,
                 'testSection' => $testSection,
                 'isSubmitted' => $isSubmitted
+            ]
+        );
+    }
+    
+    public function testBreak(Request $request, $id) {
+        
+        return view(
+            'user.test-break',
+            [
+                // 'test_id' => $id,
+                'test_id' => $request->test_id,
+                'section_id' => $id,
             ]
         );
     }
