@@ -948,8 +948,8 @@
                     data: postData,
                     success: function(result) {
                         // console.log(result);
-                        alert('Break Time: '+result.break_time);
-                        alert('Redirect URL: '+result.redirect_url);
+                        // alert('Break Time: '+result.break_time);
+                        // alert('Redirect URL: '+result.redirect_url);
                         // die;
                         if (count < result.total_question) {
                             window.alert(
