@@ -1612,7 +1612,8 @@ class TestPrepController extends Controller
                                 ->where('practice_test_sections.testid', $testSection[0]->testid)
                                 ->where('practice_test_sections.practice_test_type','Reading_And_Writing')
                                 ->first();
-
+                            // dump($mathSectionId);
+                            // dd($rwSectionId);
                             $breakTime = 1;
                             if($currectSection->practice_test_type = 'Math_with_calculator') {
                                 $next_section_id = $mathSectionId->id;
@@ -2050,12 +2051,22 @@ class TestPrepController extends Controller
         $total_score = 0;
         $math_score = 0;
         foreach ($sections as $section) {
-            if ($section['practice_test_type'] == 'Math_no_calculator' || $section['practice_test_type'] == 'Math_with_calculator') {
+            if (
+                    $section['practice_test_type'] == 'Math_no_calculator' || 
+                    $section['practice_test_type'] == 'Math_with_calculator' || 
+                    $section['practice_test_type'] == 'Easy_Reading_And_Writing' || 
+                    $section['practice_test_type'] == 'Hard_Reading_And_Writing'
+
+
+                )
+            {
                 $math_score = $section_score[$section['id']];
             } else {
                 $total_score += $section_score[$section['id']];
             }
         }
+        // dump($total_score);
+        // dump($math_score);
         $total_score = $total_score + ($math_score);
 
         if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {

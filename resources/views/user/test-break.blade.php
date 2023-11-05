@@ -5,7 +5,7 @@
 @section('page-script')
     <script>
 
-        let time = 10;
+        let time = 600;
 
         const timer = '10:00';
         const updateTime = document.getElementById("timer_{{ $test_id }}");
@@ -24,10 +24,11 @@
             const seconds = time % 60;
             
             if (time < 0) {
+                time = 600;
+                clearInterval(timerInterval);
                 $(".time-div").html('<b>Break Time is over.</b>');
-                // clearInterval(timerInterval);
+                
                 const link = document.getElementById('my-link');
-
                 if (link) {
                     // Get the URL of the link
                     const linkUrl = link.getAttribute('href');
@@ -41,7 +42,6 @@
                     }
                 }
 
-                time = 0;
                 localStorage.setItem("startTime_{{ $test_id }}", time);
             } else {
                 updateTime.textContent = `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
