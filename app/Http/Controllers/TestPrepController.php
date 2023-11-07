@@ -1542,11 +1542,47 @@ class TestPrepController extends Controller
                 }else{
                     $redirectUrl = '/user/practice-test/';
                     // redirect to easy module
-                    $allTestSection = DB::table('practice_test_sections')
+                    if(in_array($currectSection->practice_test_type,['Math','Math_with_calculator','Math_no_calculator'])){
+                        // $practice_test_type = 'Math';
+                        // if($currectSection->practice_test_type == 'Math'){
+                        //     $practice_test_type = 'Math';
+                        // }
+                        // if($currectSection->practice_test_type == 'Math_with_calculator'){
+                        //     $practice_test_type = 'with_calculator';
+                        // }
+                        // if($currectSection->practice_test_type == 'Math_no_calculator'){
+                        //     $practice_test_type = 'no_calculator';
+                        // }
+
+                        $allTestSection = DB::table('practice_test_sections')
                         ->where('practice_test_sections.testid', $testSection[0]->testid)
-                        // ->where('practice_test_sections.practice_test_type','LIKE', '%easy%')
+                        ->where('practice_test_sections.practice_test_type','Math_with_calculator')
+                        // ->where('practice_test_sections.practice_test_type','LIKE', '%'.$practice_test_type.'%')
                         ->where('practice_test_sections.section_title','LIKE', '%easy%')
                         ->first();
+                    }
+
+                    if(in_array($currectSection->practice_test_type,['Reading_And_Writing','Easy_Reading_And_Writing','Hard_Reading_And_Writing'])){
+                        
+                        // $practice_test_type = 'Reading_And_Writing';
+                        // if($currectSection->practice_test_type == 'Easy_Reading_And_Writing'){
+                        //     $practice_test_type = 'Reading_And_Writing';
+                        // }
+                        // if($currectSection->practice_test_type == 'Reading_And_Writing'){
+                        //     $practice_test_type = 'Reading_And_Writing';
+                        // }
+                        // if($currectSection->practice_test_type == 'Reading_And_Writing'){
+                        //     $practice_test_type = 'Reading_And_Writing';
+                        // }
+
+                        $allTestSection = DB::table('practice_test_sections')
+                        ->where('practice_test_sections.testid', $testSection[0]->testid)
+                        ->where('practice_test_sections.practice_test_type','Easy_Reading_And_Writing')
+                        ->where('practice_test_sections.section_title','LIKE', '%easy%')
+                        ->first();
+                    }
+
+
                     // dump($allTestSection);
                     if($allTestSection) {
                         // section=all
