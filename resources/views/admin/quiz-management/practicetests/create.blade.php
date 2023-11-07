@@ -3910,6 +3910,7 @@
         var questionCount = 1;
         var questionOrder = 0;
         var sectionOrder = 0;
+        var newSectionOrder = 0;
 
         var preGetPracticeCategoryType = "";
         var preGetPracticeQuestionType = "";
@@ -4637,6 +4638,7 @@
         });
 
         function clearModel() {
+            // console.log('yes 1');
             $('input[name=tags]').val('');
             $('#passage_number').val(null).trigger("change");
 
@@ -4661,6 +4663,17 @@
             $('.getFilterChoice').val(null).trigger("change");
             $('.choiceMultInFourFill_filltype').val(null).trigger("change");
             $('input[name="choiceMultInFourFill_fill[]"]').val('');
+
+            $(".getFilterChoice").val('').trigger('change');
+
+            $(".superCategory").val("");
+            $(".superCategory").trigger("change");
+            
+            $(".categoryType").val("");
+            $(".categoryType").trigger("change");
+
+            $(".questionType").val("");
+            $(".questionType").trigger("change");
         }
 
         function clearError() {
@@ -4688,6 +4701,8 @@
             is_edit = false;
             clearModel();
             clearError();
+            // console.log('yes');
+            $(".getFilterChoice").val('').trigger('change');
             $("input[name=diff_value]"). val("");
             $("input[name=disc_value]"). val("");
             $("input[name=guessing_value]"). val("");
@@ -4725,6 +4740,7 @@
             whichModel = 'question';
             removeMoreFillOption();
             $('#questionMultiModal').modal('show');
+            clearModel();
         });
 
         // $(document).on('click','.add_score_btn',function(){
@@ -5049,6 +5065,8 @@
                 
                 var sectionSelectedTxt = testSectionType.replaceAll('_', ' ');
                 sectionOrder++;
+                newSectionOrder++;
+                
                 questionOrder = 0;
                 questionCount = 1;
                 // choiceMultInFourFill 
@@ -5059,7 +5077,8 @@
                         'testSectionType': testSectionType,
                         'required_number_of_correct_answers': required_number_of_correct_answers,
                         'get_test_id': get_test_id,
-                        'order': sectionOrder,
+                        // 'order': sectionOrder,
+                        'order': newSectionOrder,
                         'regular': regularTime,
                         'fifty': fiftyExtended,
                         'hundred': hundredExtended,
@@ -5069,14 +5088,18 @@
                     url: '{{ route('addPracticeTestSection') }}',
                     method: 'post',
                     success: (result) => {
-
+                        // console.log(result);
                         $.each(result, function (i, v) {
                             $.each(v, function (key, value) {
+                                // console.log(value);
                                 let res = value['id'];
+                                newSectionOrder = value['order'];
+                                
                                 let section = value['section'];
                                 section = section.replaceAll('_', ' ');
-                                sectionOrder = currentModelId = key;
-                                sectionOrder++;
+                                // sectionOrder = currentModelId = key;
+                                sectionOrder = currentModelId = newSectionOrder;
+                                // sectionOrder++;
 
                                 if ((testSectionType == 'Math') && (key == 0) ) {
                                     testSectionType = 'Math_no_calculator';
@@ -5102,7 +5125,8 @@
                                     testSectionType +
                                     '" class="selectedSecTxt selectedSection_' + res +
                                     '" ></span></li><li>Order: &nbsp;<input type="number" readonly class="form-control" name="order" value="' +
-                                    sectionOrder + '" id="order_' +
+                                    // sectionOrder + '" id="order_' +
+                                    newSectionOrder + '" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-field-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
                                     res +
@@ -5115,7 +5139,7 @@
                                     '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
                                     res + '" data-section_type="' + testSectionType + '" data-test_id="' +
                                     get_test_id +
-                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+sectionOrder+'" id="order_' +
+                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="opendialog"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-field-text" id="basic-addon2" onclick="openQuestionDialog(' +
                                     res + ')"><i class="fa-solid fa-check"></i></button></div></div></div>');
@@ -5131,9 +5155,10 @@
                                     '<button class="btn btn-primary" value="' + res + '">' + res + ':- ' +
                                     format + ' ' + testSectionType + '</button>\n' +
                                     '</div>');
+                                    
                             });
                         });
-
+                        
                         /*
                         let ScoreClass =
                             `${testSectionType == 'Math_no_calculator' || testSectionType == 'Math_with_calculator' ? scoreClass : '' }`;
@@ -5196,7 +5221,7 @@
                 // var super_category = $('#super_category_create').val();
                 var question_category_type_value = $('#category_type').val();
 
-                console.log(activeAnswerType);
+                // console.log(activeAnswerType);
                 // var questionType = $('#questionMultiModal ' + activeAnswerType + ' #questionType').val();
                 var questionType = $('#questionMultiModal ' + activeAnswerType + ' #questionType').val();
                 multiChoice = $('.getFilterChoice option:selected').val();

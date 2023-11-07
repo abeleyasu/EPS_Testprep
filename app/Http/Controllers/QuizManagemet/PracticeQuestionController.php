@@ -502,21 +502,7 @@ class PracticeQuestionController extends Controller
 
     public function addPracticeTestSection(Request $request)
     {
-        // if(isset($request->regular)){
-        // 	$regular = Helper::TimeChangeInMinutes($request->regular);
-        // } else {
-        // 	$regular = null;
-        // }
-        // if(isset($request->fifty)){
-        // 	$fifty_extended = Helper::TimeChangeInMinutes($request->fifty);
-        // } else {
-        // 	$fifty_extended = null;
-        // }
-        // if(isset($request->hundred)){
-        // 	$hundred_extended = Helper::TimeChangeInMinutes($request->hundred);
-        // } else {
-        // 	$hundred_extended = null;
-        // }
+
         $practiceTestSection = [];
         
         $practiceSection = new PracticeTestSection();
@@ -534,10 +520,8 @@ class PracticeQuestionController extends Controller
         $data[] = [
             'id' => $practiceSection->id,
             'section' => $practiceSection->practice_test_type,
+            'order' => $practiceSection->section_order,
         ];
-        // array_push($practiceTestSection, $data);
-        // array_push($practiceTestSection,$practiceSection->id);
-
 
         DB::select("DELETE FROM `user_answers` where section_id NOT in (select id from practice_test_sections)");
         if ($request->testSectionType == 'Math_with_calculator') {
@@ -578,7 +562,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Easy_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 2;
+                $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -588,6 +572,7 @@ class PracticeQuestionController extends Controller
                 $data[] = [
                     'id' => $practiceSection->id,
                     'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -597,7 +582,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Hard_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 3;
+                $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -607,6 +592,7 @@ class PracticeQuestionController extends Controller
                 $data[] = [
                     'id' => $practiceSection->id,
                     'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -617,7 +603,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Math';
                 $practiceSection->practice_test_type = 'Math_with_calculator';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 2;
+                $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -627,6 +613,7 @@ class PracticeQuestionController extends Controller
                 $data[] = [
                     'id' => $practiceSection->id,
                     'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -652,7 +639,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Math';
                 $practiceSection->practice_test_type = 'Math_no_calculator';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 3;
+                $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -662,6 +649,7 @@ class PracticeQuestionController extends Controller
                 $data[] = [
                     'id' => $practiceSection->id,
                     'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -694,7 +682,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Easy_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 2;
+                $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -703,7 +691,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
-                    '' => $practiceSection->section_title,
+                    'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -713,7 +702,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Reading & Writing';
                 $practiceSection->practice_test_type = 'Hard_Reading_And_Writing';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 3;
+                $practiceSection->section_order = $request->order+2;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -722,7 +711,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
-                    '' => $practiceSection->section_title,
+                    'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -733,7 +723,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2A (Easy) - Math';
                 $practiceSection->practice_test_type = 'Math_with_calculator';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 2;
+                $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -742,7 +732,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
-                    '' => $practiceSection->section_title,
+                    'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -768,7 +759,7 @@ class PracticeQuestionController extends Controller
                 $practiceSection->section_title = 'Module 2B (Hard) - Math';
                 $practiceSection->practice_test_type = 'Math_no_calculator';
                 $practiceSection->testid = $request->get_test_id;
-                $practiceSection->section_order = 3;
+                $practiceSection->section_order = $request->order+1;
                 $practiceSection->is_section_completed = '';
                 $practiceSection->regular_time = $request->regular;
                 $practiceSection->fifty_per_extended = $request->fifty;
@@ -777,7 +768,8 @@ class PracticeQuestionController extends Controller
                 $practiceSection->save();
                 $data[] = [
                     'id' => $practiceSection->id,
-                    '' => $practiceSection->section_title,
+                    'section' => $practiceSection->section_title,
+                    'order' => $practiceSection->section_order,
                 ];
                 // array_push($practiceTestSection, $data);
                 // array_push($practiceTestSection,$practiceSection->id);
@@ -1080,13 +1072,36 @@ class PracticeQuestionController extends Controller
 
     public function deleteSection(Request $request)
     {
+        // $testid = [];
         $testid = Score::where('section_id', $request->sectionId)->get('test_id');
-        $all_section = PracticeTestSection::where('testid', $testid[0]['test_id'])->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])->pluck('id')->toArray();
+        // dd($testid);
+        if(count($testid) == 0) {
+            $id = PracticeTestSection::where('id', $request->sectionId)->first('testid');
+            $all_section = PracticeTestSection::where('testid', $id->testid)
+                ->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])
+                ->pluck('id')->toArray();
+        }else{
+            $all_section = PracticeTestSection::where('testid', $testid[0]['test_id'])
+                ->whereIn('practice_test_type', ['Math_with_calculator', 'Math_no_calculator'])
+                ->pluck('id')->toArray();
+        }
+        // dd($all_section);
         $total_test_question = PracticeQuestion::whereIn('practice_test_sections_id', $all_section)->count();
         $count_section_questions = PracticeQuestion::where('practice_test_sections_id', $request->sectionId)->count();
         $final_count =  $total_test_question - $count_section_questions;
-        if ($request->sectionType == 'Math_with_calculator' || $request->sectionType == 'Math_no_calculator') {
-            Score::where('test_id', $testid[0]['test_id'])->whereNotIn('section_id', [$request->sectionId])->where('question_id', '>', $final_count)->delete();
+
+        if(count($testid) == 0) {
+            if ($request->sectionType == 'Math_with_calculator' || $request->sectionType == 'Math_no_calculator') {
+                Score::where('test_id', $id->testid)
+                ->whereNotIn('section_id', [$request->sectionId])
+                ->where('question_id', '>', $final_count)->delete();
+            }
+        }else{
+            if ($request->sectionType == 'Math_with_calculator' || $request->sectionType == 'Math_no_calculator') {
+                Score::where('test_id', $testid[0]['test_id'])
+                ->whereNotIn('section_id', [$request->sectionId])
+                ->where('question_id', '>', $final_count)->delete();
+            }
         }
         Score::where('section_id', $request->sectionId)->delete();
         PracticeTestSection::where('id', $request->sectionId)->delete();

@@ -2086,13 +2086,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                             </li>
                             <li>
-                                
-                                @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFiveOdd_'])
-
-                                <textarea id="choiceOneInFive_OddAnswer_3" name="choiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
-                            </li>
-                            <li>
-                            <div class="row">
+                                <div class="row">
                                     <div class="col-md-4">
                                         
                                     <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="addChoiceOneInFive"></label>
@@ -2111,6 +2105,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         </div>  
                                     </div>
                                 </div>
+                                @include('admin.quiz-management.practicetests.add-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFiveOdd_'])
+
+                                <textarea id="choiceOneInFive_OddAnswer_3" name="choiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
+                            </li>
+                            <li>
+                                
                                 <label class="form-label">Explanation Answer C</label>
                                 <textarea id="choiceOneInFive_Odd_explanation_answer_3" name="choiceOneInFive_explanation_answer_3"
                                     class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
@@ -3010,6 +3010,8 @@ aria-hidden="true">
         var preGetSuperCategory = "";
         var is_edit = false;
         $('.for_digital_only').hide();
+
+        var newSectionOrder = '{{ count($testsections) }}';
 
         function getMathDiv(){
             return $('.checkMathDiv').find('.firstRecord .sectionList');
@@ -4077,6 +4079,8 @@ aria-hidden="true">
             clearModel();
             clearError();
             removeMoreFillOption();
+            // console.log('yes 1');
+
             $("input[name=diff_value]"). val("");
             $("input[name=disc_value]"). val("");
             $("input[name=guessing_value]"). val("");
@@ -4327,6 +4331,7 @@ aria-hidden="true">
             var answerType ='N/A';
             var fillVals= [];
             var multiChoice = '';
+            var question_type = $('#format').val();
 
             if (whichModel == 'section') {
 
@@ -4344,6 +4349,7 @@ aria-hidden="true">
                 var currentModelId = $('#currentModelId').val();
                 sectionOrder++;
                 questionOrder = 0;
+                newSectionOrder++;
 
                 $.ajax({
                     data: {
@@ -4352,28 +4358,33 @@ aria-hidden="true">
                         'testSectionType': testSectionType,
                         'get_test_id': get_test_id,
                         'required_number_of_correct_answers': required_number_of_correct_answers,
-                        'order': sectionOrder,
+                        // 'order': sectionOrder,
+                        'order': newSectionOrder,
                         'regular': regularTime,
                         'fifty': fiftyExtended,
                         'hundred': hundredExtended,
+                        'question_type': question_type,
                         '_token': $('input[name="_token"]').val()
                     },
                     url: "{{ route('addPracticeTestSection') }}",
                     method: 'post',
                     success: (result) => {
+                        // console.log(result);
                         $.each(result, function (i, v) {
                             $.each(v, function (key, value) {
                                 let res = value['id'];
+                                newSectionOrder = value['order'];
                                 let section = value['section'];
                                 section = section.replaceAll('_', ' ');
-                                sectionOrder = currentModelId = key;
-                                sectionOrder++;
+                                // sectionOrder = currentModelId = key;
+                                sectionOrder = currentModelId = newSectionOrder;
+                                // sectionOrder++;
 
                                 if ((testSectionType == 'Math') && (key == 0) ) {
                                     testSectionType = 'Math_no_calculator';
                                 }else if ((testSectionType == 'Math') && (key == 1) ) {
                                     testSectionType = 'Math_no_calculator';
-                                }else if((testSectionType == 'Math') && (key == 2)){
+                                }else if((testSectionType == 'Math') && (key == 2)) {
                                     testSectionType = 'Math_with_calculator';
                                 }else{
                                     // nothing, it'll be same.
@@ -4392,7 +4403,7 @@ aria-hidden="true">
                                     testSectionType +
                                     '" class="selectedSecTxt selectedSection_' + res +
                                     '" ></span></li><li><p class="mb-0 d-flex">Order:</p>&nbsp;<input type="number" readonly class="form-control" name="order" value="'+
-                                    sectionOrder + '" id="order_' +
+                                    newSectionOrder + '" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-group-text d-none" id="basic-addon2" onclick="openOrderDialog()"><i class="fa-solid fa-check"></i></button></li><li class="edit-close-btn"><button type="button" class="btn btn-sm btn-alt-secondary editSection me-2" data-id="' +
                                     res +
@@ -4405,7 +4416,7 @@ aria-hidden="true">
                                     '" class="btn w-25 btn-alt-success me-2 add_question_modal_multi"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Question</button><button type="button" data-id="' +
                                     res + '" data-section_type="' + testSectionType + '" data-test_id="' +
                                     get_test_id +
-                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="'+sectionOrder+'" id="order_' +
+                                    '" class="btn w-25 btn-alt-success add_score_btn"><i class="fa fa-fw fa-plus me-1 opacity-50"></i> Add Score</button><div class="part_order"><input type="number" readonly class="form-control" name="question_order" value="'+newSectionOrder+'" id="order_' +
                                     res +
                                     '"/><button type="button" class="input-group-text" id="basic-addon2" onclick="openQuestionDialog(' +
                                     
@@ -5027,6 +5038,7 @@ function practQuestioDel(id){
 }
 
 function clearModel() {
+    // console.log('yes');
     $('input[name=tags]').val('');
     $('#passage_number').val(null).trigger("change");
     // $('#add_category_type_0').val(null).trigger("change");
@@ -5043,6 +5055,18 @@ function clearModel() {
     $('#passagesType').html('');
     CKEDITOR.instances['js-ckeditor-add-addQue'].setData('');
     $('#add_passage_number').val(null).trigger("change");
+
+
+    $(".getFilterChoice").val('').trigger('change');
+
+    $(".superCategory").val("");
+    $(".superCategory").trigger("change");
+
+    $(".categoryType").val("");
+    $(".categoryType").trigger("change");
+
+    $(".questionType").val("");
+    $(".questionType").trigger("change");
 }
 
 
