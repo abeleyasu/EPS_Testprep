@@ -1943,9 +1943,7 @@ class TestPrepController extends Controller
             ->where('user_answers.test_id', $id)
             ->whereIn('user_answers.section_id', $get_all_sections_id)
             ->count();
-        // dump($get_all_section_id);
-        // dump($get_users_answers_section_id);
-        // dump($get_users_answers_section_id);
+
         if ($get_all_section_id === $get_users_answers_section_id) {
             $check_test_completed = 'yes';
         } else if ($get_all_section_id > $get_users_answers_section_id) {
@@ -1972,7 +1970,7 @@ class TestPrepController extends Controller
             ->where('practice_test_sections.testid', $id)
             ->where('practice_test_sections.is_active', "1")
             ->count();
-
+    
         $testSection = DB::table('practice_tests')
             ->where('practice_tests.id', $id)
             ->get();
@@ -2101,14 +2099,40 @@ class TestPrepController extends Controller
                 $total_score += $section_score[$section['id']];
             }
         }
-        // dump($total_score);
-        // dump($math_score);
+        
         $total_score = $total_score + ($math_score);
 
         if (isset($sections[0]['format']) && $sections[0]['format'] == 'ACT') {
             $total_score = $total_score / ($sections->count());
         } else {
             $total_score = $total_score;
+        }
+
+        // also put this check for other tyep of tests.
+        $mainSectionsCount = 0;
+        foreach($store_sections_details as $sections) {
+            // if(isset($sections['Sections_question']) && (isset($sections['Sections']))) {
+            if(isset($sections['Sections_question'])) {
+                if($sections['Sections'][0]['practice_test_type'] == 'Math') {
+                    $mainSectionsCount++;
+                }
+
+                if($sections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing') {
+                    $mainSectionsCount++;
+                }
+
+                if($sections['Sections'][0]['format'] == 'ACT') {
+                    $mainSectionsCount++;
+                }
+
+                if($sections['Sections'][0]['format'] == 'SAT') {
+                    $mainSectionsCount++;
+                }
+
+                if($sections['Sections'][0]['format'] == 'PSAT') {
+                    $mainSectionsCount++;
+                }
+            }
         }
 
         // dump($testSections);
@@ -2120,6 +2144,7 @@ class TestPrepController extends Controller
             'testSection' => $testSection,
             'testSectionsDetails' => $store_sections_details,
             'get_total_sections' => $get_total_sections,
+            'mainSectionsCount' => $mainSectionsCount,
             'get_total_questions' => $get_total_questions,
             'check_test_completed' => $check_test_completed,
             'checkTestQuestion' => $checkTestQuestion,

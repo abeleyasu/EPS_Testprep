@@ -3513,25 +3513,25 @@
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceOneInFourPass_EvenAnswer_1">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                        <label class="form-label" style="font-size: 13px;"><span>G: </span><input
-                                                type="radio" value="g" name="choiceOneInFourPass"></label>
-                                        </div>
-                                        <div class="col-md-8 for_digital_only">
-                                            <div class="mb-2 ">
-                                                <label class="form-label" for="guessingValueError">Guessing Value<span
-                                                        class="text-danger">*</span>
-                                                        
-                                                    <div class="d-flex align-items-center">
-                                                        <input class="form-control" 
-                                                        placeholder="Guessing Value" type="number" 
-                                                        id="guessing_value_edit" name="guessing_value_edit">
-                                                    </div>
-                                                </label>
-                                                <span class="text-danger" id="guessingValueError"></span>
-                                            </div>  
-                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input
+                                                    type="radio" value="g" name="choiceOneInFourPass"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
                                         </div>
                                         
 
@@ -3643,9 +3643,28 @@
                                 <div class="multi_field withOutFillOpt" style="display: none">
                                     <ul class="answerOptionLsit">
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_0">
-                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
+                                            
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
                                                     type="checkbox" value="a"
                                                     name="choiceMultInFourFill[]"></label>
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3664,10 +3683,29 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_1">
-                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                     type="checkbox" value="b"
                                                     name="choiceMultInFourFill[]"></label>
-
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
                                                 [
@@ -3685,9 +3723,28 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_2">
-                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label" style="font-size: 13px;"><span>C: </span><input
                                                     type="checkbox" value="c"
                                                     name="choiceMultInFourFill[]"></label>
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3706,9 +3763,28 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptAnswer_3">
-                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input
                                                     type="checkbox" value="d"
                                                     name="choiceMultInFourFill[]"></label>
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3732,10 +3808,28 @@
                                 <div class="multiChoice_field withOutFillOptChoice" style="display:none">
                                     <ul class="answerOptionLsit">
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_0">
-                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label" style="font-size: 13px;"><span>A: </span> <input
                                                     type="radio" value="a"
                                                     name="editChoiceMultiChoiceInFourFill"></label>
-
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
                                                 ['ans_choices' => 'A', 'disp_section' => 'choiceMultInFourFill_']
@@ -3751,9 +3845,28 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_1">
-                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input
                                                     type="radio" value="b"
                                                     name="editChoiceMultiChoiceInFourFill"></label>
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3770,9 +3883,27 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_2">
-                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>C: </span><input
                                                     type="radio" value="c"
                                                     name="editChoiceMultiChoiceInFourFill"></label>
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -3789,9 +3920,28 @@
                                                 class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                         </li>
                                         <li class="choiceMultInFourFillwithOutFillOptChoiceAnswer_3">
-                                            <label class="form-label" style="font-size: 13px;"><span>D:</span><input
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input
                                                     type="radio" value="d"
                                                     name="editChoiceMultiChoiceInFourFill"></label>
+                                                </div>
+                                                <div class="col-md-8 for_digital_only">
+                                                    <div class="mb-2 ">
+                                                        <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                                class="text-danger">*</span>
+                                                                
+                                                            <div class="d-flex align-items-center">
+                                                                <input class="form-control" 
+                                                                placeholder="Guessing Value" type="number" 
+                                                                id="guessing_value_edit" name="guessing_value_edit">
+                                                            </div>
+                                                        </label>
+                                                        <span class="text-danger" id="guessingValueError"></span>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                            
 
                                             @include(
                                                 'admin.quiz-management.practicetests.edit-sc-ct-qt-block',
@@ -4674,6 +4824,17 @@
 
             $(".questionType").val("");
             $(".questionType").trigger("change");
+
+            $("#fc_add_category_type_A_0").val("");
+            $("#fc_add_category_type_A_0").trigger("change");
+
+            $("#fc_super_category_create_A_0").val("");
+            $("#fc_super_category_create_A_0").trigger("change");
+
+            $("#fc_add_search-input_A_0").val("");
+            $("#fc_add_search-input_A_0").trigger("change");
+
+            
         }
 
         function clearError() {
