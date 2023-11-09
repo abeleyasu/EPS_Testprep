@@ -459,7 +459,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 							<ul class="sectionListtype">
 								<li>Type: &nbsp;<strong>{{ $testsection->format }}</strong></li>
 								<li>Section Type:&nbsp;<span class="answerOption editedAnswerOption_{{$testsection->id}}"><strong>{{ $testsection->section_title }}</strong>
-								<input type="hidden" name="selectedSecTxt" value="{{ $testsection->practice_test_type }}" class="selectedSecTxt selectedSection_{{$testsection->id}}" >
+								<input type="hidden" name="selectedSecTxt" value="{{ ($testsection->practice_test_type == 'Math') ? 'Math_no_calculator' : $testsection->practice_test_type }}" class="selectedSecTxt selectedSection_{{$testsection->id}}" >
                                 <input type="hidden" name="selectedQuesType" value="{{ $testsection->practice_test_type }}" class="selectedQuesType" >
                                 </span>
 								</li>
@@ -1347,7 +1347,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <div class="multi_field withOutFillOpt" style="display: none">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceMultInFourFillwithOutFillOpt_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="checkbox" value="a" name="choiceMultInFourFill[]"></label>
+                                                </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'cb_choiceMultInFourFill_'])
 
@@ -1359,7 +1377,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOpt_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox"  value="b" name="choiceMultInFourFill[]"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="checkbox"  value="b" name="choiceMultInFourFill[]"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'cb_choiceMultInFourFill_'])
 
@@ -1371,7 +1407,26 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOpt_2">
-                                        <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox"  value="c" name="choiceMultInFourFill[]"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="checkbox"  value="c" name="choiceMultInFourFill[]"></label>
+
+                                                </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'cb_choiceMultInFourFill_'])
 
@@ -1383,7 +1438,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOpt_3">
-                                        <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="checkbox"  value="d" name="choiceMultInFourFill[]"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="checkbox"  value="d" name="choiceMultInFourFill[]"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'cb_choiceMultInFourFill_'])
 
@@ -1400,7 +1473,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <div class="multiChoice_field withOutFillOptChoice" style="display:none">
                                 <ul class="answerOptionLsit">
                                     <li class="choiceMultInFourFillwithOutFillOptChoice_0">
-                                        <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="editChoiceMultiChoiceInFourFill"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>A: </span> <input type="radio" value="a" name="editChoiceMultiChoiceInFourFill"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'choiceMultInFourFill_'])
 
@@ -1411,7 +1502,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOptChoice_1">
-                                        <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="editChoiceMultiChoiceInFourFill"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="editChoiceMultiChoiceInFourFill"></label>
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'choiceMultInFourFill_'])
 
@@ -1423,7 +1532,26 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOptChoice_2">
-                                        <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="editChoiceMultiChoiceInFourFill"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="editChoiceMultiChoiceInFourFill"></label>
+
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'choiceMultInFourFill_'])
 
@@ -1435,7 +1563,26 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                             class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                     </li>
                                     <li class="choiceMultInFourFillwithOutFillOptChoice_3">
-                                        <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio"  value="d" name="editChoiceMultiChoiceInFourFill"></label>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label" style="font-size: 13px;"><span>D:</span><input type="radio"  value="d" name="editChoiceMultiChoiceInFourFill"></label>
+
+                                            </div>
+                                            <div class="col-md-8 for_digital_only">
+                                                <div class="mb-2 ">
+                                                    <label class="form-label" for="guessingValueError">Guessing Value<span
+                                                            class="text-danger">*</span>
+                                                            
+                                                        <div class="d-flex align-items-center">
+                                                            <input class="form-control" 
+                                                            placeholder="Guessing Value" type="number" 
+                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                        </div>
+                                                    </label>
+                                                    <span class="text-danger" id="guessingValueError"></span>
+                                                </div>  
+                                            </div>
+                                        </div>
 
                                         @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'choiceMultInFourFill_'])
 
@@ -3400,7 +3547,11 @@ aria-hidden="true">
                 html += `</div>`;
 
             $(`#${disp_option}add_New_Types_${ans_col}`).append(html);
-
+            
+            $(`#${disp_option}super_category_create_${ans_col}_${key}`).select2();
+            $(`#${disp_option}add_category_type_${ans_col}_${key}`).select2();
+            $(`#${disp_option}add_search-input_${ans_col}_${key}`).select2();
+            
             $(`#${disp_option}super_category_create_${ans_col}_${key}`).select2({
                 dropdownParent: $('#addQuestionMultiModal'),
                 tags : true,
@@ -5067,6 +5218,15 @@ function clearModel() {
 
     $(".questionType").val("");
     $(".questionType").trigger("change");
+
+    $("#fc_add_category_type_A_0").val("");
+    $("#fc_add_category_type_A_0").trigger("change");
+
+    $("#fc_super_category_create_A_0").val("");
+    $("#fc_super_category_create_A_0").trigger("change");
+
+    $("#fc_add_search-input_A_0").val("");
+    $("#fc_add_search-input_A_0").trigger("change");
 }
 
 
