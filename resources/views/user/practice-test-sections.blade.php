@@ -151,10 +151,9 @@
         <!-- END Hero -->
 
         <?php
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        $link_array = explode('/', $url);
-        $current_section_id = end($link_array);
-        
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            $link_array = explode('/', $url);
+            $current_section_id = end($link_array);
         ?>
         <!-- Page Content -->
         <div class="content content-boxed">
@@ -164,7 +163,7 @@
             <h6 class="fs-6 mb-3 p-2 test-description text-muted mt-2">
                 {{-- isset($testSection[0]->description) ? $testSection[0]->description : '' --}}
                 {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
-                                        questions
+                questions
             </h6>
             {{-- end Description --}}
 
@@ -174,7 +173,7 @@
                         $sectionArray = [];
                         $key = 0;
                         $count = 0;
-                        //dump($testSectionsDetails);
+                        // dump($testSectionsDetails);
                     @endphp
                     @foreach ($testSectionsDetails as $singletestSections)
                        
@@ -191,6 +190,11 @@
                                                 {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
                                                 Section</h3>
                                             <div class="block-options">
+                                                <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                    {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                                                    Questions
+                                                </div>
+                                                {{--
                                                 @if (isset($singletestSections['Sections_question']))
                                                     <div class="timeline-event-time block-options-item fs-sm fw-semibold">
                                                         {{ count($singletestSections['Sections_question']) }} Questions
@@ -200,6 +204,7 @@
                                                         0 Questions
                                                     </div>
                                                 @endif
+                                                --}}
                                             </div>
                                         </div>
                                         <div class="block-content pb-3">
@@ -255,7 +260,6 @@
                                                         <i class="fa-solid fa-timer" style='margin-right:5px'></i> Start Section
                                                     </a>
                                                 @endif
-
                                             </div>
                                         </div>
                                     </div>
@@ -278,6 +282,11 @@
                                                     {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
                                                     Section</h3>
                                                 <div class="block-options">
+                                                    <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                        {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                                                        Questions
+                                                    </div>
+                                                    {{--
                                                     @if (isset($singletestSections['Sections_question']))
                                                         <div class="timeline-event-time block-options-item fs-sm fw-semibold">
                                                             {{ count($singletestSections['Sections_question']) }} Questions
@@ -287,6 +296,7 @@
                                                             0 Questions
                                                         </div>
                                                     @endif
+                                                    --}}
                                                 </div>
                                             </div>
                                             <div class="block-content pb-3">
@@ -302,12 +312,15 @@
                                                             class="btn btn-alt-success text-success 1">
                                                             {{ $score[$singletestSections['Sections'][0]['id']] }}
                                                         </a>
+                                                        {{--                                                        
                                                         <a href="{{ route('single_review', ['test' => $singletestSections['Sections'][0]['title'], 'id' => $singletestSections['Sections'][0]['id']]) . '?test_id=' . $current_section_id . '&type=single' }}"
                                                             style='padding: 5px 20px fs-5'
                                                             class="btn btn-alt-success text-success 2">
                                                             <i class="fa-solid fa-circle-check" style='margin-right:5px'></i>
                                                             Review Section
                                                         </a>
+                                                            --}}
+                                                        {!! $singletestSections['Sections'][0]['reviewUrls'] !!}
 
                                                         {{-- new  --}}
                                                         <a href="{{ route('reset_section', ['testId' => $singletestSections['Sections'][0]['testid'], 'id' => $singletestSections['Sections'][0]['id']]) }}"
@@ -342,6 +355,11 @@
                                                             {{ str_replace(['_'], [' '], $singletestSections['Sections'][0]['practice_test_type']) }}
                                                             Section</h3>
                                                         <div class="block-options">
+                                                            <div class="timeline-event-time block-options-item fs-sm fw-semibold">
+                                                                {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                                                                Questions
+                                                            </div>
+                                                            {{--
                                                             @if (isset($singletestSections['Sections_question']))
                                                                 <div class="timeline-event-time block-options-item fs-sm fw-semibold">
                                                                     {{ count($singletestSections['Sections_question']) }} Questions
@@ -351,6 +369,7 @@
                                                                     0 Questions
                                                                 </div>
                                                             @endif
+                                                            --}}
                                                         </div>
                                                     </div>
                                                     <div class="block-content pb-3">

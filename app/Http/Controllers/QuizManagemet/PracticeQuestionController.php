@@ -276,8 +276,8 @@ class PracticeQuestionController extends Controller
         $question->fillType = $request->fillType;
         $question->multiChoice = $request->multiChoice;
 
-        $question->disc_value = $request->diffValue;
-        $question->diff_value = $request->discValue;
+        $question->disc_value = $request->disc_value;
+        $question->diff_value = $request->diff_value;
         $question->guessing_value = $request->guessingValue;
 
         $rating_array = $request->diff_rating;
