@@ -940,7 +940,7 @@
                                                  min="0" max="100" type="number" 
                                                  oninput="validateInput(this)"
                                                  required
-                                                 type="number" id="disc-value" name="disc_value">
+                                                 type="number" id="discValue" name="disc_value">
                                     </div>
                                     <span class="text-danger" id="disc-valueError"></span>
                                 </div>
@@ -4834,6 +4834,27 @@
             $("#fc_add_search-input_A_0").val("");
             $("#fc_add_search-input_A_0").trigger("change");
 
+            $('#fc_super_category_create_A_0').select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                tags: true,
+                placeholder : "Select Super Category",
+                maximumSelectionLength: 1
+            });
+
+            $('#fc_add_category_type_A_0').select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                tags: true,
+                placeholder : "Select Category type",
+                maximumSelectionLength: 1
+            });
+
+            $('#fc_add_search-input_A_0').select2({
+                dropdownParent: $('#addQuestionMultiModal'),
+                tags: true,
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
+            });
+
             
         }
 
@@ -4902,6 +4923,8 @@
             removeMoreFillOption();
             $('#questionMultiModal').modal('show');
             clearModel();
+
+            
         });
 
         // $(document).on('click','.add_score_btn',function(){
@@ -5186,6 +5209,9 @@
             var diffValue = $('input[name="diff_value"]').val();
             var discValue = $('input[name="disc_value"]').val();
             var guessingValue = $('input[name="guessing_value"]').val();
+
+            var diffValue = $("#diffValue").val();
+            var discValue = $("#discValue").val();
 
             var tags = $('input[name="tags"]').val();
 
@@ -5480,8 +5506,7 @@
                 var passNumber = $('#questionMultiModal .passNumber').val();
                 var passagesType = $('.passagesType').val();
                 var passagesTypeTxt = $(".passagesType option:selected").text();
-                var diffValue = $("#diffValue").val();
-                var discValue = $("#discValue").val();
+
 
                 if ($('#passageRequired_1').is(':checked')) {
                     if (
@@ -5968,6 +5993,10 @@
 
                                 $('#editQuestionOrder').val(result.question_order);
                                 $('#editCurrentModelQueId').val(result.id);
+
+                                $('#diffValue').val(result.diff_value);
+                                $('#discValue').val(result.disc_value);
+
                                 $('#quesFormat').val(result.format);
                                 $('.sectionAddId').val(result.practice_test_sections_id);
                                 $('#edittestSectionTypeRead').val(result.type);
@@ -6008,6 +6037,16 @@
                                         $(checkbox_values_Arr[key]).each((i, v) => {
                                             $(`#${disp_section}edit_ct_checkbox_${key}_${i}`)
                                                 .prop('checked', v == 1);
+                                        });
+                                    }
+                                }
+
+
+                                //For guessing value
+                                for (let key in checkbox_values_Arr) {
+                                    if (checkbox_values_Arr.hasOwnProperty(key)) {
+                                        $(checkbox_values_Arr[key]).each((i,v) => {
+                                            $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
                                         });
                                     }
                                 }
@@ -6770,6 +6809,9 @@
             var diff_value = $('#diff_value_edit').val();
             var disc_value = $('#disc_value_edit').val();
 
+            var diffValue = $('#diffValueEdit').val();
+            var discValue =  $('#discValueEdit').val();
+
             $.ajax({
                 data: {
                     'id': currentModelQueId,
@@ -6788,8 +6830,8 @@
                     'fill': fill,
                     'fillType': fillType,
                     'diff_rating': difficulty,
-                    'diff_value': diff_value,
-                    'disc_value': disc_value,
+                    'diff_value': diffValue,
+                    'disc_value': discValue,
                     'multiChoice': multiChoice,
                     'section_id': section_id,
                     'tags': tags,

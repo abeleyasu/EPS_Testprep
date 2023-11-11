@@ -988,7 +988,27 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="choiceOneInFour_Odd"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFour_Odd">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFour_OddAnswer_0">
-                                    <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_A_0">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
 
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFourOdd_'])
 
@@ -1000,8 +1020,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFour_OddAnswer_1">
-                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFour"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFour"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_B_1">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFourOdd_'])
 
                                     <textarea id="editChoiceOneInFour_OddAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1012,8 +1052,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFour_OddAnswer_2">
-                                    <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFour"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFour"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_C_2">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFourOdd_'])
 
                                     <textarea id="editChoiceOneInFour_OddAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1024,8 +1084,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFour_OddAnswer_3">
-                                    <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFour"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            
+                                            <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFour"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_D_3">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'oneInFourOdd_'])
 
                                     <textarea id="editChoiceOneInFour_OddAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1042,8 +1123,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="choiceOneInFour_Even"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFour_Even">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFour_EvenAnswer_0">
-                                    <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFour"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            
+                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFour"></label>                                            
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_F_0">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFourEven_'])
 
                                     <textarea id="editChoiceOneInFour_EvenAnswer_1" name="editChoiceOneInFourAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1054,8 +1155,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFour_EvenAnswer_1">
-                                    <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFour"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_G_1">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourEven_'])
 
                                     <textarea id="editChoiceOneInFour_EvenAnswer_2" name="editChoiceOneInFourAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1066,8 +1187,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFour_EvenAnswer_2">
-                                    <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFour"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_H_2">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFourEven_'])
 
                                     <textarea id="editChoiceOneInFour_EvenAnswer_3" name="editChoiceOneInFourAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1078,8 +1219,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFour_EvenAnswer_3">
-                                    <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFour"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFour"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_J_3">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFourEven_'])
 
                                     <textarea id="editChoiceOneInFour_EvenAnswer_4" name="editChoiceOneInFourAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1095,8 +1256,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="choiceOneInFive_Odd"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFive_Odd">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFive_OddAnswer_0">
-                                    <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_A_0">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'oneInFiveOdd_'])
 
                                     <textarea id="editChoiceOneInFive_OddAnswer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1107,8 +1288,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_OddAnswer_1">
-                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFive"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_B_1">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => 'oneInFiveOdd_'])
 
                                     <textarea id="editChoiceOneInFive_OddAnswer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1119,8 +1320,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_OddAnswer_2">
-                                    <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFive"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>C:</span><input type="radio"  value="c" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_C_2">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => 'oneInFiveOdd_'])
 
                                     <textarea id="editChoiceOneInFive_OddAnswer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1131,8 +1352,28 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_OddAnswer_3">
-                                    <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFive"></label>
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFive"></label>
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_D_3">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => 'oneInFiveOdd_'])
 
                                     <textarea id="editChoiceOneInFive_OddAnswer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1143,8 +1384,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_OddAnswer_4">
-                                    <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="choiceOneInFive"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>E: </span><input type="radio"  value="e" name="choiceOneInFive"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_E_4">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'E', 'disp_section' => 'oneInFiveOdd_'])
 
                                     <textarea id="editChoiceOneInFive_OddAnswer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1161,8 +1423,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                         <div class="choiceOneInFive_Even"><input type="hidden" name="questionType" id="questionType" value="choiceOneInFive_Even">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFive_EvenAnswer_0">
-                                    <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFive"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFive"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_F_0">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFiveEven_'])
 
                                     <textarea id="editChoiceOneInFive_EvenAnswer_1" name="editChoiceOneInFiveAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1173,8 +1456,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_EvenAnswer_1">
-                                    <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFive"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFive"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_G_1">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFiveEven_'])
 
                                     <textarea id="editChoiceOneInFive_EvenAnswer_2" name="editChoiceOneInFiveAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1185,8 +1489,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_EvenAnswer_2">
-                                    <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFive"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>H:</span><input type="radio"  value="h" name="choiceOneInFive"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_H_2">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFiveEven_'])
 
                                     <textarea id="editChoiceOneInFive_EvenAnswer_3" name="editChoiceOneInFiveAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1197,8 +1522,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_EvenAnswer_3">
-                                    <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFive"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFive"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_J_3">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFiveEven_'])
 
                                     <textarea id="editChoiceOneInFive_EvenAnswer_4" name="editChoiceOneInFiveAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1209,8 +1555,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFive_EvenAnswer_4">
-                                    <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio"  value="k" name="choiceOneInFive"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>K: </span><input type="radio"  value="k" name="choiceOneInFive"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_K_4">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'K', 'disp_section' => 'oneInFiveEven_'])
 
                                     <textarea id="editChoiceOneInFive_EvenAnswer_5" name="editChoiceOneInFiveAnswer_5" class="form-control form-control-lg form-control-alt addQuestion" placeholder="add Question" ></textarea>
@@ -1227,8 +1594,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <input type="hidden" name="addQuestionType" id="questionType" value="choiceOneInFourPass_Odd">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFourPass_OddAnswer_0">
-                                    <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>A: </span><input type="radio" value="a" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_A_0">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => ''])
 
                                     <textarea id="editChoiceOneInFourPass_OddAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1239,8 +1627,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFourPass_OddAnswer_1">
-                                    <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>B: </span><input type="radio"  value="b" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_B_1">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'B', 'disp_section' => ''])
 
                                     <textarea id="editChoiceOneInFourPass_OddAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1251,8 +1660,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFourPass_OddAnswer_2">
-                                    <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>C: </span><input type="radio"  value="c" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_C_2">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'C', 'disp_section' => ''])
 
                                     <textarea id="editChoiceOneInFourPass_OddAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1263,8 +1693,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFourPass_OddAnswer_3">
-                                    <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>D: </span><input type="radio"  value="d" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_D_3">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'D', 'disp_section' => ''])
 
                                     <textarea id="editChoiceOneInFourPass_OddAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1282,8 +1733,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             <input type="hidden" name="addQuestionType" id="questionType" value="choiceOneInFourPass_Even">
                             <ul class="answerOptionLsit">
                                 <li class="choiceOneInFourPass_EvenAnswer_0">
-                                    <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>F: </span><input type="radio" value="f" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_F_0">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'F', 'disp_section' => 'oneInFourPassEven_'])
 
                                     <textarea id="editChoiceOneInFourPass_EvenAnswer_1" name="editChoiceOneInFourPassAnswer_1" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1294,8 +1766,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFourPass_EvenAnswer_1">
-                                    <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>G: </span><input type="radio"  value="g" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_G_1">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'G', 'disp_section' => 'oneInFourPassEven_'])
 
                                     <textarea id="editChoiceOneInFourPass_EvenAnswer_2" name="editChoiceOneInFourPassAnswer_2" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1306,8 +1799,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFourPass_EvenAnswer_2">
-                                    <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio"  value="h" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>H: </span><input type="radio"  value="h" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_H_2">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'H', 'disp_section' => 'oneInFourPassEven_'])
 
                                     <textarea id="editChoiceOneInFourPass_EvenAnswer_3" name="editChoiceOneInFourPassAnswer_3" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1318,8 +1832,29 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                         class="form-control form-control-lg form-control-alt" placeholder="add explanation"></textarea>
                                 </li>
                                 <li class="choiceOneInFourPass_EvenAnswer_3">
-                                    <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFourPass"></label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label" style="font-size: 13px;"><span>J: </span><input type="radio"  value="j" name="choiceOneInFourPass"></label>
 
+                                        </div>
+                                        <div class="col-md-8 for_digital_only">
+                                            <div class="mb-2  ">
+                                                <label class="form-label" for="guessing-value">Guessing Value<span
+                                                        class="text-danger">*</span>
+                                                        
+                                                    <div class="d-flex align-items-center">
+                                                        <input class="form-control" placeholder="Guessing Value" 
+                                                        min="0" max="100" type="number" 
+                                                        oninput="validateInput(this)"
+                                                        required 
+                                                        id="guessing-value" name="edit_guessing_value_J_3">
+                                                    </div>
+                                                </label>
+                                                <span class="text-danger" id="guessing-valueError"></span>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'J', 'disp_section' => 'oneInFourPassEven_'])
 
                                     <textarea id="editChoiceOneInFourPass_EvenAnswer_4" name="editChoiceOneInFourPassAnswer_4" class="form-control form-control-lg form-control-alt addQuestion" placeholder="Answer Content" ></textarea>
@@ -1359,7 +1894,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_A_0">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1389,7 +1924,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_B_1">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1420,7 +1955,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_C_2">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1450,7 +1985,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_D_3">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1485,7 +2020,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_A_0">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1514,7 +2049,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_B_1">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1545,7 +2080,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_C_2">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1576,7 +2111,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                         <div class="d-flex align-items-center">
                                                             <input class="form-control" 
                                                             placeholder="Guessing Value" type="number" 
-                                                            id="guessing_value_edit" name="guessing_value_edit">
+                                                            id="guessing_value_edit" name="edit_guessing_value_D_3">
                                                         </div>
                                                     </label>
                                                     <span class="text-danger" id="guessingValueError"></span>
@@ -1788,7 +2323,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                 min="0" max="100" type="number" 
                                                 oninput="validateInput(this)"
                                                 required
-                                                type="number" id="disc-value" name="disc_value">
+                                                type="number" id="discValue" name="disc_value">
                                 </div>
                                 <span class="text-danger" id="disc-valueError"></span>
                             </div>
@@ -1922,7 +2457,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -1952,7 +2487,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -1984,7 +2519,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2016,7 +2551,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2054,7 +2589,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_F">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2084,7 +2619,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_G">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2115,7 +2650,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_H">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2147,7 +2682,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_J">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2184,7 +2719,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2214,7 +2749,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2245,7 +2780,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2275,7 +2810,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2306,7 +2841,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_E">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2343,7 +2878,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_F">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2373,7 +2908,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_G">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2403,7 +2938,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_H">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2433,7 +2968,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_J">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2463,7 +2998,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_K">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2499,7 +3034,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2529,7 +3064,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2559,7 +3094,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2590,7 +3125,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2626,7 +3161,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_F">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2656,7 +3191,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_G">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2686,7 +3221,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_H">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2715,7 +3250,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_J">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2760,7 +3295,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2789,7 +3324,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2819,7 +3354,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2849,7 +3384,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2883,7 +3418,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_A">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2913,7 +3448,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_B">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2943,7 +3478,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_C">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -2973,7 +3508,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                                     class="text-danger">*</span>
                                                     
                                                 <div class="d-flex align-items-center">
-                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="guessing_value">
+                                                    <input class="form-control" placeholder="Guessing Value" type="number" id="guessing-value" name="add_guessing_value_D">
                                                 </div>
                                             </label>
                                             <span class="text-danger" id="guessing-valueError"></span>
@@ -3159,6 +3694,8 @@ aria-hidden="true">
         $('.for_digital_only').hide();
 
         var newSectionOrder = '{{ count($testsections) }}';
+
+        
 
         function getMathDiv(){
             return $('.checkMathDiv').find('.firstRecord .sectionList');
@@ -3473,6 +4010,7 @@ aria-hidden="true">
             }
         }
 
+        
         //new function for add category and question types
         async function addNewType(data, disp_option = '') {
             let button = $(data);
@@ -3576,6 +4114,7 @@ aria-hidden="true">
 
             $(data).attr('data-id', key + 1);
         }
+        
 
         function removeNewTypes(data) {
             $(data).parents('.removeNewTypes').remove();
@@ -3867,6 +4406,10 @@ aria-hidden="true">
             var answerType ='N/A';
             var fillVals =[];
             var multiChoice = '';
+
+            var diffValue = $('#diffValueEdit').val();
+            var discValue =  $('#discValueEdit').val();
+
             var tags = $('#question_tags_edit').val();
             // var super_category = $('#super_category_edit').val();
 
@@ -3914,6 +4457,17 @@ aria-hidden="true">
                         return $(v).is(':checked') ? 1 : 0;
                     })
                     .get();
+            });
+
+            //For Guessing Values
+            let guessing_value = ['A', 'B', 'C', 'D'];
+            const guessingValue = {};
+            guessing_value.forEach(guessing_value => {
+                guessingValue[ans_choice] = $(`input[name="edit_guessing_value_${ans_choice}"]`)
+                .map(function(i, v) {
+                    return $(v).val();
+                })
+                .get();
             });
 
             //For super category
@@ -4163,6 +4717,8 @@ aria-hidden="true">
 						'fill': fill,
                         'fillType': fillType,
                         'diff_rating': difficulty,
+                        'diff_value': diffValue,
+                        'disc_value': discValue,
 						'multiChoice':multiChoice,
                         'section_id':section_id,
                         'tags':tags,
@@ -4270,6 +4826,8 @@ aria-hidden="true">
                 $(this).attr('checked', false);
             });
             $('#addQuestionMultiModal').modal('show');
+
+            
         });
 
         function addClassScore(data){
@@ -4483,6 +5041,9 @@ aria-hidden="true">
             var fillVals= [];
             var multiChoice = '';
             var question_type = $('#format').val();
+
+            var diffValue = $('input[name="diff_value"]').val();
+            var discValue = $('input[name="disc_value"]').val();
 
             if (whichModel == 'section') {
 
@@ -4933,6 +5494,8 @@ aria-hidden="true">
                         'answer_content': answerContentJson,
                         'answer_exp' : answerExpJson,
                         'fill': fill,
+                        'diffValue': diffValue,
+                        'discValue': discValue,
                         'fillType': fillType,
                         'multiChoice': multiChoice,
                         'section_id':section_id,
@@ -5227,10 +5790,54 @@ function clearModel() {
 
     $("#fc_add_search-input_A_0").val("");
     $("#fc_add_search-input_A_0").trigger("change");
+
+    $('#fc_super_category_create_A_0').select2({
+        dropdownParent: $('#addQuestionMultiModal'),
+        tags: true,
+        placeholder : "Select Super Category",
+        maximumSelectionLength: 1
+    });
+
+    $('#fc_add_category_type_A_0').select2({
+        dropdownParent: $('#addQuestionMultiModal'),
+        tags: true,
+        placeholder : "Select Category type",
+        maximumSelectionLength: 1
+    });
+
+    $('#fc_add_search-input_A_0').select2({
+        dropdownParent: $('#addQuestionMultiModal'),
+        tags: true,
+        placeholder : "Select Question type",
+        maximumSelectionLength: 1
+    });
+
+    $('#fc_edit_super_category_A_0').select2({
+        dropdownParent: $('#addQuestionMultiModal'),
+        tags: true,
+        placeholder : "Select Super Category",
+        maximumSelectionLength: 1
+    });
+
+    $('#fc_edit_category_type_A_0').select2({
+        dropdownParent: $('#addQuestionMultiModal'),
+        tags: true,
+        placeholder : "Select Category type",
+        maximumSelectionLength: 1
+    });
+
+    $('#fc_edit_search-input_A_0').select2({
+        dropdownParent: $('#addQuestionMultiModal'),
+        tags: true,
+        placeholder : "Select Question type",
+        maximumSelectionLength: 1
+    });
+    $(".editMultipleChoice").trigger("change");
 }
 
 
 function practQuestioEdit(id){
+    
     is_edit = true;
     clearModel();
 
@@ -5334,6 +5941,10 @@ function practQuestioEdit(id){
 
                         $('#editQuestionOrder').val(result.question_order);
                         $('#currentModelQueId').val(result.id);
+
+                        $('#diffValueEdit').val(result.diff_value);
+                        $('#discValueEdit').val(result.disc_value);
+
                         $('#quesFormat').val(result.format);
                         $('.sectionAddId').val(result.practice_test_sections_id);
                         $('#testSectionTypeRead').val(result.type);
@@ -5371,6 +5982,15 @@ function practQuestioEdit(id){
                         // setTimeout(function(){
 
                             //For checkbox
+                            for (let key in checkbox_values_Arr) {
+                                if (checkbox_values_Arr.hasOwnProperty(key)) {
+                                    $(checkbox_values_Arr[key]).each((i,v) => {
+                                        $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
+                                    });
+                                }
+                            }
+
+                            //For guessing value
                             for (let key in checkbox_values_Arr) {
                                 if (checkbox_values_Arr.hasOwnProperty(key)) {
                                     $(checkbox_values_Arr[key]).each((i,v) => {
@@ -5432,7 +6052,7 @@ function practQuestioEdit(id){
                         $('#questionMultiModal').modal('show');
                     // }, 1000);
                     $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
-
+                    $(".editMultipleChoice").trigger("change");
                 }
             })
             //

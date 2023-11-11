@@ -117,7 +117,7 @@
 
                         </div>
                         <div>
-                            <a href="/user/practice-test/{{ $section_id }}?test_id={{ $test_id }}"
+                            <a href="/user/practice-test/{{ $section_id }}?test_id={{ $test_id }}&time=regular"
                                 style='display:none' id="my-link"></a>
                             <a href="#" style='padding: 5px 20px fs-5' class="btn btn-alt-success text-success 5"
                                 onclick="resumeTest()">
