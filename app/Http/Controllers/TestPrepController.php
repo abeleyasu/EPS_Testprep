@@ -1519,6 +1519,7 @@ class TestPrepController extends Controller
                         }
                     }
                 }
+
                 // dump($currectSection);
                 // dump('Total Score: '.$totalScore);
                 // dump('Required Score: '.$requiredScore);
@@ -1622,7 +1623,7 @@ class TestPrepController extends Controller
                                 $next_section_id = $rwSectionId->id;
                             }else{
                                 // $next_section_id = $mathSectionId->id;
-                                $next_section_id = $mathSectionId->id;;
+                                $next_section_id = $mathSectionId->id;
                             }
                         }
                     }
@@ -1650,7 +1651,7 @@ class TestPrepController extends Controller
                                 $next_section_id = $rwSectionId->id;
                             }else{
                                 // $next_section_id = $mathSectionId->id;
-                                $next_section_id = $mathSectionId->id;;
+                                $next_section_id = $mathSectionId->id;
                             }
                         }
                     }
@@ -2114,12 +2115,12 @@ class TestPrepController extends Controller
         $mathUrl = '';
 
         $readingSectionCount = 0;
+        $readingQuestCount = 0;
         $mathSectionCount = 0;
+        $mathQuestCount = 0;
+        // $sections_count[''] = [];
+        // $sections_count = [];
         foreach($store_sections_details as $key => $sections) {
-            if(isset($sections['Sections'])) {
-                
-            }
-
             if(isset($sections['Sections_question'])) {
 
                 if($sections['Sections'][0]['format'] == 'ACT') {
@@ -2153,7 +2154,7 @@ class TestPrepController extends Controller
                 // }
 
                 if($sections['Sections'][0]['format'] == 'DPSAT' || $sections['Sections'][0]['format'] == 'DSAT') {
-                    
+                    // update section count.
 
                     if ((isset($sections['check_if_section_completed'])) && ($sections['check_if_section_completed'][0] == 'yes') ) {
                         // working code for all review buttons.
@@ -2166,7 +2167,6 @@ class TestPrepController extends Controller
                             $store_sections_details[$rwSectionID]['Sections'][0]['reviewUrls'] = $rwUrl;
                             $store_sections_details[$rwSectionID]['Sections'][0]['sectionCount'] = $readingSectionCount;
                             $readingSectionCount = 0;
-                            
                         }
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
@@ -2178,23 +2178,27 @@ class TestPrepController extends Controller
                         }
                     }
 
-                    // update section count
-                    if (isset($sections['Sections_question'])) {
-                        if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
-                            $readingSectionCount = $readingSectionCount + count($sections['Sections_question']);
-                            $store_sections_details[$rwSectionID]['Sections'][0]['sectionCount'] = $readingSectionCount;
-                        }
-
-                        
-                        if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
-                            $mathSectionCount = $mathSectionCount + count($sections['Sections_question']);
-                            $store_sections_details[$mathSectionID]['Sections'][0]['sectionCount'] = $mathSectionCount;
-                        }
+                    if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
+                        // $count = count($sections['Sections_question']);
+                        // $readingSectionCount = ($readingSectionCount + $count);
+                        // dump($readingQuestCount);
+                        $readingQuestCount = (count($sections['Sections_question']) + $readingQuestCount);
+                        // dump($readingQuestCount);
+                        $store_sections_details[$rwSectionID]['Sections'][0]['sectionCount'] = $readingQuestCount;
+                    }
+                    
+                    if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
+                        $count = count($sections['Sections_question']);
+                        $mathQuestCount = ($mathQuestCount + $count);
+                        // $mathSectionCount = $mathSectionCount + count($sections['Sections_question']);
+                        $store_sections_details[$mathSectionID]['Sections'][0]['sectionCount'] = $mathQuestCount;
                     }
                 }
             }
         }
 
+        // dump($mathSectionCount);
+        // dump($readingSectionCount);
         // dump($store_sections_details);
         // dd($store_sections_details);
         return view('user.practice-test-sections', [
