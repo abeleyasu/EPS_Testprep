@@ -286,17 +286,7 @@
                                                         {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
                                                         Questions
                                                     </div>
-                                                    {{--
-                                                    @if (isset($singletestSections['Sections'][0]['sectionCount']))
-                                                        <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                            {{ $singletestSections['Sections'][0]['sectionCount'] }} Questions
-                                                        </div>
-                                                    @elseif(!isset($singletestSections['Sections_question']))
-                                                        <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                            0 Questions
-                                                        </div>
-                                                    @endif
-                                                    --}}
+                                                   
                                                 </div>
                                             </div>
                                             <div class="block-content pb-3">
@@ -356,20 +346,10 @@
                                                             Section</h3>
                                                         <div class="block-options">
                                                             <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                            {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
-                                                        Questions
-                                                    </div>
-                                                            {{--
-                                                            @if (isset($singletestSections['Sections_question']))
-                                                                <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                                    {{ count($singletestSections['Sections_question']) }} Questions
-                                                                </div>
-                                                            @elseif(!isset($singletestSections['Sections_question']))
-                                                                <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                                    0 Questions
-                                                                </div>
-                                                            @endif
-                                                            --}}
+                                                                    {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
+                                                                Questions
+                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                     <div class="block-content pb-3">
