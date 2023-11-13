@@ -283,13 +283,13 @@
                                                     Section</h3>
                                                 <div class="block-options">
                                                     <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                        {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
+                                                        {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
                                                         Questions
                                                     </div>
                                                     {{--
-                                                    @if (isset($singletestSections['Sections_question']))
+                                                    @if (isset($singletestSections['Sections'][0]['sectionCount']))
                                                         <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                            {{ count($singletestSections['Sections_question']) }} Questions
+                                                            {{ $singletestSections['Sections'][0]['sectionCount'] }} Questions
                                                         </div>
                                                     @elseif(!isset($singletestSections['Sections_question']))
                                                         <div class="timeline-event-time block-options-item fs-sm fw-semibold">
@@ -356,9 +356,9 @@
                                                             Section</h3>
                                                         <div class="block-options">
                                                             <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                                {{ isset($total_all_section_question) ? $total_all_section_question : '' }}
-                                                                Questions
-                                                            </div>
+                                                            {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
+                                                        Questions
+                                                    </div>
                                                             {{--
                                                             @if (isset($singletestSections['Sections_question']))
                                                                 <div class="timeline-event-time block-options-item fs-sm fw-semibold">
