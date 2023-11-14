@@ -283,7 +283,7 @@
                                                     Section</h3>
                                                 <div class="block-options">
                                                     <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                        {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
+                                                        {{ isset($singletestSections['Sections'][0]['yesSectionCount']) ? $singletestSections['Sections'][0]['yesSectionCount'] : '0' }}
                                                         Questions
                                                     </div>
                                                    
@@ -346,7 +346,7 @@
                                                             Section</h3>
                                                         <div class="block-options">
                                                             <div class="timeline-event-time block-options-item fs-sm fw-semibold">
-                                                                    {{ isset($singletestSections['Sections'][0]['sectionCount']) ? $singletestSections['Sections'][0]['sectionCount'] : '0' }}
+                                                                    {{ isset($singletestSections['Sections'][0]['noSectionCount']) ? $singletestSections['Sections'][0]['noSectionCount'] : '0' }}
                                                                 Questions
                                                             </div>
                                                             

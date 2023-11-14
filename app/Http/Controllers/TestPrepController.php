@@ -2120,8 +2120,7 @@ class TestPrepController extends Controller
         $mathQuestCount = 0;
         $mathValue = 1;
         $rwValue = 1;
-        // $sections_count[''] = [];
-        // $sections_count = [];
+
         foreach($store_sections_details as $key => $sections) {
             if(isset($sections['Sections_question'])) {
 
@@ -2147,33 +2146,16 @@ class TestPrepController extends Controller
                     $rwSectionID = $sections['Sections'][0]['id'];
                 }
 
-                // if($sections['Sections'][0]['practice_test_type'] == 'Math') {
-                //     $mainSectionsCount++;
-                // }
-
-                // if($sections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing') {
-                //     $mainSectionsCount++;
-                // }
-                // if($rwValue == 1) {
-                    if($sections['Sections'][0]['id'] == $rwSectionID){
-                        $rwValue = 1;
-                        // $mathValue = 2;
-                    }else{
-                        $rwValue = 2;
-                    }
-                    if($sections['Sections'][0]['id'] == $mathSectionID){
-                        $mathValue = 1;
-                        // $mathValue = 2;
-                    }else{
-                        $mathValue = 2;
-                    }
-                // }
-
-
-                // if($sections['Sections'][0]['id'] != $rwSectionID){
-                //     // $rwValue = 2;
-                //     $mathValue = 2;
-                // }
+                if($sections['Sections'][0]['id'] == $rwSectionID){
+                    $rwValue = 1;
+                }else{
+                    $rwValue = 2;
+                }
+                if($sections['Sections'][0]['id'] == $mathSectionID){
+                    $mathValue = 1;
+                }else{
+                    $mathValue = 2;
+                }
 
                 if($sections['Sections'][0]['format'] == 'DPSAT' || $sections['Sections'][0]['format'] == 'DSAT') {
                     // update section count.
@@ -2184,38 +2166,37 @@ class TestPrepController extends Controller
                         // $reviewUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Review Section </a> ";
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
-                            
                             $url = route('single_review', ['test' => $sections['Sections'][0]['title'], 'id' => $sections['Sections'][0]['id']]) . '?test_id=' . $id . '&type=single';
-                            $rwUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Module ".$rwValue." </a> ";
+                            $rwUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i>Review Module ".$rwValue." </a> ";
                             $store_sections_details[$rwSectionID]['Sections'][0]['reviewUrls'] = $rwUrl;
-                            $store_sections_details[$rwSectionID]['Sections'][0]['sectionCount'] = $readingSectionCount;
-                            $readingSectionCount = 0;
+                            
+                            $secCount = count($sections['Sections_question']);
+                            $readingSectionCount = ($readingSectionCount + $secCount);
+                            $store_sections_details[$rwSectionID]['Sections'][0]['yesSectionCount'] = $readingSectionCount;
+                            // $readingSectionCount = 0;
                         }
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
-                           
                             $url = route('single_review', ['test' => $sections['Sections'][0]['title'], 'id' => $sections['Sections'][0]['id']]) . '?test_id=' . $id . '&type=single';
-                            $mathUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Module ".$mathValue." </a> ";
+                            $mathUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i>Review Module ".$mathValue." </a> ";
                             $store_sections_details[$mathSectionID]['Sections'][0]['reviewUrls'] = $mathUrl;
-                            $store_sections_details[$mathSectionID]['Sections'][0]['sectionCount'] = $mathSectionCount;
-                            $mathSectionCount = 0;
+                            
+                            $secCount = count($sections['Sections_question']);
+                            $mathSectionCount = ($mathSectionCount + $secCount);
+                            $store_sections_details[$mathSectionID]['Sections'][0]['yesSectionCount'] = $mathSectionCount;
+                            // $mathSectionCount = 0;
                         }
                     }
 
                     if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
-                        // $count = count($sections['Sections_question']);
-                        // $readingSectionCount = ($readingSectionCount + $count);
-                        // dump($readingQuestCount);
                         $readingQuestCount = (count($sections['Sections_question']) + $readingQuestCount);
-                        // dump($readingQuestCount);
-                        $store_sections_details[$rwSectionID]['Sections'][0]['sectionCount'] = $readingQuestCount;
+                        $store_sections_details[$rwSectionID]['Sections'][0]['noSectionCount'] = $readingQuestCount;
                     }
                     
                     if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
                         $count = count($sections['Sections_question']);
                         $mathQuestCount = ($mathQuestCount + $count);
-                        // $mathSectionCount = $mathSectionCount + count($sections['Sections_question']);
-                        $store_sections_details[$mathSectionID]['Sections'][0]['sectionCount'] = $mathQuestCount;
+                        $store_sections_details[$mathSectionID]['Sections'][0]['noSectionCount'] = $mathQuestCount;
                     }
                 }
             }
@@ -2285,8 +2266,50 @@ class TestPrepController extends Controller
         return redirect(url('user/practice-test-sections/' . $request['test_id']));
     }
 
-    public function resetSection($testId, $id)
+    public function resetSection($testId, $sectionId) {
+        $current_sections = \DB::table('practice_test_sections')
+            ->where('id', $sectionId)
+            ->first();
+        
+        // test section not found
+        if($current_sections == null) {
+            return redirect(url('user/practice-test-sections/' . $testId));
+        }
+
+        if($current_sections->practice_test_type == 'Reading_And_Writing'){
+            $all_sections = \DB::table('practice_test_sections')
+                ->where('testid', $testId)
+                ->whereIn('practice_test_type',['Reading_And_Writing','Easy_Reading_And_Writing','Hard_Reading_And_Writing'])
+                ->pluck('id');
+
+        }elseif($current_sections->practice_test_type == 'Math'){
+            $all_sections = \DB::table('practice_test_sections')
+                ->where('testid', $testId)
+                ->whereIn('practice_test_type',['Math','Math_with_calculator','Math_no_calculator'])
+                ->pluck('id');
+        }else{
+            // no such case for now.
+            $all_sections  = [];
+        }
+        // dump($testId);
+        // dd($all_sections);
+        $user_id = Auth::id();
+        foreach($all_sections as $section_id){
+            $user_answers = UserAnswers::where('user_id', $user_id)
+                ->where('test_id', $testId)
+                ->where('section_id', $section_id)
+                ->delete();
+
+            $test_progress = TestProgress::where('user_id', $user_id)
+                ->where('test_id', $testId)
+                ->where('section_id', $section_id)
+                ->delete();
+        }
+        return redirect(url('user/practice-test-sections/' . $testId));
+    }
+    public function resetSectionBkp($testId, $id)
     {
+        dd('here');
         $practiceTest = PracticeTest::where("id", $testId)->first(
             [
                 "title",
