@@ -179,13 +179,18 @@
                                             <td>
                                                 @if (isset($user_selected_answers[0]['all_sections']) && !empty($user_selected_answers[0]['all_sections']))
                                                     @foreach ($user_selected_answers[0]['all_sections'] as $test_section)
-                                                        <li class="mt-3">{{ $test_section->practice_test_type }}
+                                                        <li class="mt-3">
+                                                            {{-- $test_section->practice_test_type --}}
+                                                            {{ $test_section->section_title }}
                                                         </li>
                                                     @endforeach
                                                 @endif
                                                 @if (isset($user_selected_answers[0]['sections']) && !empty($user_selected_answers[0]['sections']))
                                                     @foreach ($user_selected_answers[0]['sections'] as $test_section)
-                                                        <li>{{ $test_section->practice_test_type }}</li>
+                                                        <li>
+                                                        {{-- $test_section->practice_test_type --}}
+                                                            {{ $test_section->section_title }}
+                                                        </li>
                                                     @endforeach
                                                 @endif
                                             </td>

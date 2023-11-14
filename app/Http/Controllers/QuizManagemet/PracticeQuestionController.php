@@ -484,7 +484,6 @@ class PracticeQuestionController extends Controller
 
     public function getPracticeQuestionById(Request $request)
     {
-
         $question = PracticeQuestion::where('id', $request->question_id)->get();
         return response()->json(['question' => $question]);
     }
