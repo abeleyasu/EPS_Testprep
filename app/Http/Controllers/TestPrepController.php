@@ -2118,6 +2118,8 @@ class TestPrepController extends Controller
         $readingQuestCount = 0;
         $mathSectionCount = 0;
         $mathQuestCount = 0;
+        $mathValue = 1;
+        $rwValue = 1;
         // $sections_count[''] = [];
         // $sections_count = [];
         foreach($store_sections_details as $key => $sections) {
@@ -2152,6 +2154,26 @@ class TestPrepController extends Controller
                 // if($sections['Sections'][0]['practice_test_type'] == 'Reading_And_Writing') {
                 //     $mainSectionsCount++;
                 // }
+                // if($rwValue == 1) {
+                    if($sections['Sections'][0]['id'] == $rwSectionID){
+                        $rwValue = 1;
+                        // $mathValue = 2;
+                    }else{
+                        $rwValue = 2;
+                    }
+                    if($sections['Sections'][0]['id'] == $mathSectionID){
+                        $mathValue = 1;
+                        // $mathValue = 2;
+                    }else{
+                        $mathValue = 2;
+                    }
+                // }
+
+
+                // if($sections['Sections'][0]['id'] != $rwSectionID){
+                //     // $rwValue = 2;
+                //     $mathValue = 2;
+                // }
 
                 if($sections['Sections'][0]['format'] == 'DPSAT' || $sections['Sections'][0]['format'] == 'DSAT') {
                     // update section count.
@@ -2162,16 +2184,18 @@ class TestPrepController extends Controller
                         // $reviewUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Review Section </a> ";
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Reading') !== false) {
+                            
                             $url = route('single_review', ['test' => $sections['Sections'][0]['title'], 'id' => $sections['Sections'][0]['id']]) . '?test_id=' . $id . '&type=single';
-                            $rwUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Review Section </a> ";
+                            $rwUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Module ".$rwValue." </a> ";
                             $store_sections_details[$rwSectionID]['Sections'][0]['reviewUrls'] = $rwUrl;
                             $store_sections_details[$rwSectionID]['Sections'][0]['sectionCount'] = $readingSectionCount;
                             $readingSectionCount = 0;
                         }
 
                         if (strpos($sections['Sections'][0]['practice_test_type'], 'Math') !== false) {
+                           
                             $url = route('single_review', ['test' => $sections['Sections'][0]['title'], 'id' => $sections['Sections'][0]['id']]) . '?test_id=' . $id . '&type=single';
-                            $mathUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Review Section </a> ";
+                            $mathUrl .= "<a href='".$url."' style='padding: 5px 20px fs-5' class='btn btn-alt-success text-success 2'><i class='fa-solid fa-circle-check' style='margin-right:5px'></i> Module ".$mathValue." </a> ";
                             $store_sections_details[$mathSectionID]['Sections'][0]['reviewUrls'] = $mathUrl;
                             $store_sections_details[$mathSectionID]['Sections'][0]['sectionCount'] = $mathSectionCount;
                             $mathSectionCount = 0;
@@ -2248,11 +2272,8 @@ class TestPrepController extends Controller
 
     public function resetTest(Request $request, $id)
     {
-
         UserAnswers::where('user_id', Auth::id())->where('test_id', $request->test_id)->delete();
-
         $current_user_id = Auth::id();
-
         $existingRecord = TestProgress::where('test_id', $request->test_id)
             ->where('user_id', $current_user_id)
             ->delete();

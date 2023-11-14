@@ -2132,8 +2132,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                             </div>
 
                             <div class="fill_field withFillOpt " style="display:none">
-                                <div class="mb-2">
-                                    <label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="addChoiceMultInFourFill_filltype"  class="form-control addChoiceMultInFourFill_filltype"><option value="">Select Type</option><option value="number">Number</option><option value="decimal">Decimal</option><option value="fraction">Fraction</option></select></div><div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill:</label><input type="text" name="addChoiceMultInFourFill_fill[]"><label class="form-label extraFillOption" style="font-size: 13px;"></label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="addMoreFillOption();" class="switchMulti">Add More Options</a></label>
+                                <div class="withFillOptmb-2">
+                                    <div class="mb-2">
+                                        <label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="addChoiceMultInFourFill_filltype"  class="form-control addChoiceMultInFourFill_filltype"><option value="">Select Type</option><option value="number">Number</option><option value="decimal">Decimal</option><option value="fraction">Fraction</option></select></div><div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill:</label><input type="text" name="addChoiceMultInFourFill_fill[]"><label class="form-label extraFillOption" style="font-size: 13px;"></label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="addMoreFillOption();" class="switchMulti">Add More Options</a></label>
+                                    </div>
                                 </div>
 
                                 {{-- <div class="input-container" id="fc_addNewTypes_A">
@@ -2181,7 +2183,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                                 </div> --}}
 
                                 @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', ['ans_choices' => 'A', 'disp_section' => 'fc_'])
-
+                                
                             </div>
                         </div>
 
@@ -3722,6 +3724,8 @@ aria-hidden="true">
         });
 
         function insertSuperCategory(data) {
+            // console.log(data);
+
             let super_category_type = $(data).val();
                 super_category_type = super_category_type.join(" ");
             let section_type = $('#section_type').val();
@@ -3905,6 +3909,7 @@ aria-hidden="true">
 
         async function addNewTypes(ans_col, data, type, disp_option = '', super_cat_option = '', cat_type_option = '', question_type_option = '') {
             let key = null;
+            // console.log('yes here');
             if(type != 'null' && type == 'repet') {
                 key = parseInt(data);
             } else {
@@ -4009,7 +4014,6 @@ aria-hidden="true">
                 button.setAttribute(`${disp_option}data-id-${ans_col}`, key + 1);
             }
         }
-
         
         //new function for add category and question types
         async function addNewType(data, disp_option = '') {
@@ -4259,8 +4263,6 @@ aria-hidden="true">
                     maximumSelectionLength: 1
                 });
 
-
-
                 $(`#${disp_section}edit_super_category_${ans_choice}_0`).select2({
                     dropdownParent: $('#questionMultiModal'),
                     tags: true,
@@ -4438,11 +4440,22 @@ aria-hidden="true">
                 ans_choices = ['F', 'G', 'H', 'J'];
                 disp_section = 'oneInFourPassEven_';
             } else if(questionType == 'choiceMultInFourFill') {
-                ans_choices = ['A', 'B', 'C', 'D'];
-                if(multiChoice == '1') {
+                // ans_choices = ['A', 'B', 'C', 'D'];
+                // if(multiChoice == '1') {
+                //     disp_section = 'cb_choiceMultInFourFill_';
+                // } else if(multiChoice == '3') {
+                //     disp_section = 'choiceMultInFourFill_';
+                // }
+
+                if (multiChoice == '1') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
                     disp_section = 'cb_choiceMultInFourFill_';
-                } else if(multiChoice == '3') {
+                } else if (multiChoice == '3') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
                     disp_section = 'choiceMultInFourFill_';
+                } else if (multiChoice == '2') {
+                    ans_choices = ['A'];
+                    disp_section = 'fc_';
                 }
             } else {
                 ans_choices = ['A', 'B', 'C', 'D'];
@@ -4463,13 +4476,15 @@ aria-hidden="true">
             let guessing_value = ['A', 'B', 'C', 'D'];
             const guessingValue = {};
             guessing_value.forEach(guessing_value => {
-                guessingValue[ans_choice] = $(`input[name="edit_guessing_value_${ans_choice}"]`)
+                guessingValue[guessing_value] = $(`input[name="edit_guessing_value_${guessing_value}"]`)
                 .map(function(i, v) {
                     return $(v).val();
                 })
                 .get();
             });
 
+            // console.log(disp_section);
+            // console.log(ans_choices);
             //For super category
             const superCategoryValues = {};
             ans_choices.forEach(ans_choice => {
@@ -4480,7 +4495,6 @@ aria-hidden="true">
                 }).get().filter(value => value !== null);
                 superCategoryValues[ans_choice] = values;
             });
-
 
             //For category type
             const getCategoryTypeValues = {};
@@ -4504,6 +4518,9 @@ aria-hidden="true">
                 getQuestionTypeValues[ans_choice] = values;
             });
 
+            // console.log(superCategoryValues);
+            // console.log(getCategoryTypeValues);
+            // console.log(getQuestionTypeValues);
 
             var testSectionType = $('#testSectionTypeRead').val();
             var question = CKEDITOR.instances['js-ckeditor-addQue'].getData();
@@ -4513,17 +4530,23 @@ aria-hidden="true">
 			var passagesType = $('#questionMultiModal #passagesType').val();
             var passagesTypeTxt = $("#passagesType option:selected").text();
 
-            if($('#passageRequired_2').is(':checked')){
-                if(question =='' ||
-                    tags.length ==0 ||
+            // console.log('here 1');
+            if($('#passageRequired_2').is(':checked')) {
+                if(
+                    question == '' ||
+                    tags.length == 0 ||
                     jQuery.type(passNumber) == "null" ||
-                    passagesType =='' ||
-                    format =='' ||
-                    testSectionType =='' ||
+                    passagesType == '' ||
+                    format == '' ||
+                    testSectionType == '' ||
                     ans_choices.some(choice => {
                         const super_category_values = superCategoryValues[choice];
                         const get_category_type_values = getCategoryTypeValues[choice];
                         const get_question_type_values = getQuestionTypeValues[choice];
+                        // console.log(super_category_values);
+                        // console.log(get_category_type_values);
+                        // console.log(get_question_type_values);
+
                         return (
                             super_category_values.length === 0 ||
                             get_category_type_values.length === 0 ||
@@ -4531,6 +4554,7 @@ aria-hidden="true">
                         );
                     })
                 ) {
+                    // console.log('here 3');
                 // if(format =='' || testSectionType =='' || question =='' || questionType =='' || passagesType =='' || passNumber ==''){
                     // $('#questionMultiModal .validError').text('Below fields are required!');
                     $('#questionMultiModal #questionError').text(question == '' ? 'Question is required!' : '');
@@ -4551,10 +4575,12 @@ aria-hidden="true">
                         $(`#questionMultiModal #${disp_section}superCategoryError_${choice}`).text(super_category_values.length == 0 ? 'Super Category is required!' : '');
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${choice}`).text(get_category_type_values.length == 0 ? 'Category type is required!' : '');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${choice}`).text(get_question_type_values.length == 0 ? 'Question type is required!' : '');
+                    
                     });
 
                     return false;
                 }else{
+                    // console.log('here 4');
                     // $('#questionMultiModal .validError').text('');
                     $('#questionMultiModal #questionError').text('');
                     $('#questionMultiModal #tagError').text('');
@@ -4566,9 +4592,9 @@ aria-hidden="true">
                         $(`#questionMultiModal #${disp_section}categoryTypeError_${ans_choice}`).text('');
                         $(`#questionMultiModal #${disp_section}questionTypeError_${ans_choice}`).text('');
                     });
-
                 }
             } else {
+                // console.log('here 5');
                 if(question =='' ||
                     tags ==0 ||
                     format =='' ||
@@ -4584,6 +4610,7 @@ aria-hidden="true">
                         );
                     })
                 ){
+                    // console.log('here 6');
                 // if(format =='' || testSectionType =='' || question =='' || questionType ==''){
                     // $('#questionMultiModal .validError').text('Below fields are required!');
                     $('#questionMultiModal #questionError').text(question =='' ? 'Question is required!' : '');
@@ -4603,6 +4630,7 @@ aria-hidden="true">
 
                     return false;
                 }else{
+                    // console.log('here 7');
                     // $('#questionMultiModal .validError').text('');
                     $('#questionMultiModal #questionError').text('');
                     $('#questionMultiModal #tagError').text('');
@@ -4614,6 +4642,7 @@ aria-hidden="true">
                     });
                 }
             }
+            // console.log('here 8');
 
             if($('#passageRequired_2').is(':checked')){
                 var pass = $('select[name="passagesType"] :selected').text();
@@ -4699,6 +4728,7 @@ aria-hidden="true">
 
 				var section_id = $('.sectionAddId').val();
                 var questionOrderUpdated = $('#editQuestionOrder').val();
+                // console.log('at ajax');
 				$.ajax({
 					data:{
 						'id': currentModelQueId,
@@ -5766,7 +5796,7 @@ function clearModel() {
     });
     $(`.removeNewTypes, .removeNewType`).remove();
     $('#passagesType').val(null).trigger("change");
-    $('#passagesType').html('');
+    // $('#passagesType').html('');
     CKEDITOR.instances['js-ckeditor-add-addQue'].setData('');
     $('#add_passage_number').val(null).trigger("change");
 
@@ -5879,7 +5909,28 @@ function practQuestioEdit(id){
                 });
             });
 
-            //
+            // re initlize here.
+            // $('#fc_edit_super_category_A_0').select2({
+            //     dropdownParent: $('#questionMultiModal'),
+            //     tags: true,
+            //     placeholder : "Select Super Category",
+            //     maximumSelectionLength: 1
+            // });
+
+            // $('#fc_edit_category_type_A_0').select2({
+            //     dropdownParent: $('#questionMultiModal'),
+            //     tags: true,
+            //     placeholder : "Select Category type",
+            //     maximumSelectionLength: 1
+            // });
+
+            // $('#fc_edit_search-input_A_0').select2({
+            //     dropdownParent: $('#questionMultiModal'),
+            //     tags: true,
+            //     placeholder : "Select Question type",
+            //     maximumSelectionLength: 1
+            // });
+
             $.ajax({
                 data:{
                     'question_id':id,
@@ -5889,8 +5940,11 @@ function practQuestioEdit(id){
                 method: 'post',
                 async: false,
                 success: (res) => {
+                    // console.log(res);
                     if(res.question.length>0){
                         var result = res.question[0];
+                        // console.log(result);
+                        // console.log(result.answer);
                         // document.cookie = "format = " + result.format;
                         // let categorytypeArr = JSON.parse(result.category_type);
                         // let questiontypeArr = JSON.parse(result.question_type_id);
@@ -5936,9 +5990,7 @@ function practQuestioEdit(id){
                             }
                         }
 
-
                         // let checkedValuesArr = is_category_checkedArr.map(item => item.checked);
-
                         $('#editQuestionOrder').val(result.question_order);
                         $('#currentModelQueId').val(result.id);
 
@@ -5957,17 +6009,17 @@ function practQuestioEdit(id){
                         $('#section_type').val(section_type);
 
                         $('#question_tags_edit').val(result.tags).trigger('change');
-
                         // $('#question_tags_edit').val(result.tags).trigger('change');
 
                         $(".passNumber").val(result.passage_number).change();
                         $('#passagesType').val(result.passages_id).change();
+                        
                         // for (let index = 1; index < categorytypeArr.length; index++) {
                         //     addNewTypes(index,'repet');
                         // }
 
                         //new
-                        if(result.passages_id != null){
+                        if(result.passages_id != null) {
                             $('#passageRequired_2').prop('checked', true);
                             $('#passage_number').prop('disabled',false);
                             $('select[name="passagesType"]').prop('disabled',false);
@@ -5978,7 +6030,6 @@ function practQuestioEdit(id){
                         }
 
                         // $('.plus-button').attr('data-id', categorytypeArr && categorytypeArr.length ? categorytypeArr.length : 0);
-
                         // setTimeout(function(){
 
                             //For checkbox
@@ -5991,14 +6042,13 @@ function practQuestioEdit(id){
                             }
 
                             //For guessing value
-                            for (let key in checkbox_values_Arr) {
-                                if (checkbox_values_Arr.hasOwnProperty(key)) {
-                                    $(checkbox_values_Arr[key]).each((i,v) => {
-                                        $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
-                                    });
-                                }
-                            }
-
+                            // for (let key in checkbox_values_Arr) {
+                            //     if (checkbox_values_Arr.hasOwnProperty(key)) {
+                            //         $(checkbox_values_Arr[key]).each((i,v) => {
+                            //             $(`#${disp_section}edit_ct_checkbox_${key}_${i}`).prop('checked', v==1);
+                            //         });
+                            //     }
+                            // }
 
                             //For super category
                             for (let key in super_category_values_Arr) {
@@ -6054,17 +6104,16 @@ function practQuestioEdit(id){
                     $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`).prop('selected', true);
                     $(".editMultipleChoice").trigger("change");
                 }
-            })
-            //
-
+            });
         }
     });
-
-
 }
 
 async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_content, answer_exp, multiChoice, checkbox_values, super_category_values, category_type_values, question_type_values){
-        answer_exp = JSON.parse(answer_exp);
+    // console.log(answerOpt);
+    // console.log(selectedOpt);
+    // console.log(multiChoice);
+    answer_exp = JSON.parse(answer_exp);
         if(answerOpt == 'choiceOneInFour_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFour_Odd');
             $('.choiceOneInFour_Odd').show();
@@ -6099,9 +6148,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-
-
         }
+
         // new
         if(answerOpt == 'choiceOneInFour_Even'){
             $('#editSelectedAnswerType').val('choiceOneInFour_Even');
@@ -6137,9 +6185,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-
-
         }
+
         if(answerOpt =='choiceOneInFive_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFive_Odd');
             $('.choiceOneInFour_Odd').hide();
@@ -6174,7 +6221,6 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-
         }
         //new
         if(answerOpt =='choiceOneInFive_Even'){
@@ -6211,8 +6257,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-
         }
+
         if(answerOpt =='choiceOneInFourPass_Odd'){
             $('#editSelectedAnswerType').val('choiceOneInFourPass_Odd');
             $('.choiceOneInFour_Odd').hide();
@@ -6248,9 +6294,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-
-
         }
+
         // new
         if(answerOpt =='choiceOneInFourPass_Even'){
             $('#editSelectedAnswerType').val('choiceOneInFourPass_Even');
@@ -6287,11 +6332,9 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                 }
             }
-
-
         }
-        if(answerOpt == 'choiceMultInFourFill'){
 
+        if(answerOpt == 'choiceMultInFourFill'){
             $('#editSelectedAnswerType').val('choiceMultInFourFill');
             $('.choiceOneInFour_Odd').hide();
             $('.choiceOneInFour_Even').hide();
@@ -6300,9 +6343,18 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             $('.choiceOneInFourPass_Odd').hide();
             $('.choiceOneInFourPass_Even').hide();
             $('.choiceMultInFourFill').show();
-        	var optObj = ['a','b','c','d'];
+        	
+            var optObj = ['a','b','c','d'];
+            
+            if(selectedOpt) {
+                selectedOpt = selectedOpt;
+            }else{
+                selectedOpt = 'a';
+            }
+            // console.log(selectedOpt);
             var trimStr = selectedOpt.replace(/ /g,'');
-        	var multiChecked = trimStr.split(",");
+            var multiChecked = trimStr.split(",");
+        	
         	var selHml='';
             var jsonConvert = [];
 
@@ -6311,12 +6363,14 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             }
 
             var fillHtl = '<input type="text" name="choiceMultInFourFill_fill[]" value="">';
-
+            // console.log(multiChecked);
             if(multiChoice == 1){
-                for(var i=1; i<= optObj.length; i++){
+                // console.log('here multicheked 1');
+                for(var i=1; i<= optObj.length; i++) {
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
                     if(multiChecked.includes(optObj[arrIndex])){
+                        // console.log(selectedOpt);
                         $('.choiceMultInFourFill .withOutFillOpt ul li.choiceMultInFourFillwithOutFillOpt_'+arrIndex+' input[type="checkbox"][value="'+optObj[arrIndex]+'"]').prop("checked", true);
 
                     }
@@ -6326,6 +6380,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                         CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                     }
                 }
+
                 if(answer_exp && answer_exp.length != null) {
                     for (let index = 0; index < answer_exp.length; index++) {
                         let count = index + 1;
@@ -6333,13 +6388,14 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-            }else{
 
+            }else{
+                // console.log('here multicheked else');
                 for(var i=1; i<= optObj.length; i++){
                     var arrIndex = Number(i)-1;
                     var editInd = Number(i)+1;
                     if(selectedOpt == optObj[arrIndex]){
-
+                        console.log(selectedOpt);
                         $('.choiceMultInFourFill .withOutFillOptChoice ul li.choiceMultInFourFillwithOutFillOptChoice_'+arrIndex+' input[type="radio"]').prop("checked", true);
 
                     }
@@ -6349,6 +6405,7 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                         CKEDITOR.instances[dynIds].setData(jsonConvert[anwserInd]);
                     }
                 }
+
                 if(answer_exp && answer_exp.length != null) {
                     for (let index = 0; index < answer_exp.length; index++) {
                         let count = index + 1;
@@ -6356,7 +6413,6 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                         CKEDITOR.instances[answer_id].setData(answer_exp[index]);
                     }
                 }
-
             }
 
         	var arrFillType = ['number','decimal','fraction'];
@@ -6374,14 +6430,14 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
         	var fillTypeDiv ='none';
 
         	if(fill != null && fill !='' && fill != 'N/A'){
-                 var objFill = fill.split(',');
+                var objFill = fill.split(',');
 
-                 if(typeof objFill !== 'undefined' && objFill.length !== 0){
+                if(typeof objFill !== 'undefined' && objFill.length !== 0){
                     fillHtl = '';
                     for(var j=0; j<objFill.length; j++){
                         fillHtl += '<input type="text" name="choiceMultInFourFill_fill[]" value="'+objFill[j]+'">';
                     }
-                 }
+                }
         		$('.withOutFillOpt').hide();
                 $('.withOutFillOptChoice').hide();
                 $('.withFillOpt').show();
@@ -6397,11 +6453,9 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                     $('.withFillOpt').hide();
                 }
             }
-
-
+            // console.log('here at last');
             var seletedLayout = '<div class="mb-2"><label class="form-label" style="font-size: 13px;">Fill Type:</label><select name="choiceMultInFourFill_filltype"  class="form-control choiceMultInFourFill_filltype">'+optType+'</select> </div><div class="mb-2"> <label class="form-label" style="font-size: 13px;">Fill:</label> <label class="form-label editExtraFillOption" style="font-size: 13px;">'+fillHtl+'</label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="editMoreFillOption();" class="switchMulti">Add More Options</a></label></div>';
-
-
+            
             // let checkbox_values_Arr = JSON.parse(checkbox_values);
             // let super_category_values_Arr = JSON.parse(super_category_values);
             // let category_type_values_Arr = JSON.parse(category_type_values);
@@ -6439,9 +6493,29 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             //     }
             // }
 
+            $('.withFillOptmb-2').html(seletedLayout);
 
+            // re initlize here.
+            $('#fc_edit_super_category_A_0').select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Super Category",
+                maximumSelectionLength: 1
+            });
 
-            $('.withFillOpt').html(seletedLayout);
+            $('#fc_edit_category_type_A_0').select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Category type",
+                maximumSelectionLength: 1
+            });
+
+            $('#fc_edit_search-input_A_0').select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
+            });
 
             // for (let key in checkbox_values_Arr) {
             //     if (checkbox_values_Arr.hasOwnProperty(key)) {

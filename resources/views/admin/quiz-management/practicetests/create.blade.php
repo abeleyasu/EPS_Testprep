@@ -3960,6 +3960,7 @@
                                     </ul>
                                 </div>
                                 <div class="fill_field withFillOpt " style="display:none">
+                                    <div class="withFillOptmb-2">
                                     <div class="mb-2">
                                         <label class="form-label" style="font-size: 13px;">Fill Type:</label><select
                                             name="addChoiceMultInFourFill_filltype"
@@ -3977,6 +3978,7 @@
                                             class="form-label" style="font-size: 13px;"><a href="javascript:;"
                                                 onClick="addMoreFillOption();" class="switchMulti">Add More
                                                 Options</a></label>
+                                    </div>
                                     </div>
 
                                     @include('admin.quiz-management.practicetests.edit-sc-ct-qt-block', [
@@ -4089,6 +4091,7 @@
         });
 
         function insertSuperCategory(data) {
+            // console.log(data);
             let super_category_type = $(data).val();
             super_category_type = super_category_type.join(" ");
             let section_type = $('#section_type').val();
@@ -4359,7 +4362,7 @@
             key += 1;
             let ans_col = $(data).attr('ans_col');
 
-            console.log(ans_col, key);
+            // console.log(ans_col, key);
             let testType = $('#format').val();
             let super_category = $(`#${disp_option}super_category_create_${ans_col}_${key - 1}`).val();
             let category_type = $(`#${disp_option}add_category_type_${ans_col}_${key - 1}`).val();
@@ -4493,7 +4496,7 @@
         }
 
         function removeNewType(data) {
-            console.log($(data).parent().parent().parent());
+            // console.log($(data).parent().parent().parent());
             const addPlusButton = $(data).parent().parent().parent().find(
                 "button.add-plus-button");
             $(data).parents('.removeNewType').remove();
@@ -4804,8 +4807,6 @@
                 });
             });
 
-
-
             $(`.removeNewTypes`).remove();
             $(`.removeNewType`).remove();
             $('input[name=passagesType]').val(null).trigger("change");
@@ -4833,29 +4834,52 @@
 
             $("#fc_add_search-input_A_0").val("");
             $("#fc_add_search-input_A_0").trigger("change");
-
+            
             $('#fc_super_category_create_A_0').select2({
-                dropdownParent: $('#addQuestionMultiModal'),
+                dropdownParent: $('#questionMultiModal'),
                 tags: true,
                 placeholder : "Select Super Category",
                 maximumSelectionLength: 1
             });
 
             $('#fc_add_category_type_A_0').select2({
-                dropdownParent: $('#addQuestionMultiModal'),
+                dropdownParent: $('#questionMultiModal'),
                 tags: true,
                 placeholder : "Select Category type",
                 maximumSelectionLength: 1
             });
 
             $('#fc_add_search-input_A_0').select2({
-                dropdownParent: $('#addQuestionMultiModal'),
+                dropdownParent: $('#questionMultiModal'),
                 tags: true,
                 placeholder : "Select Question type",
                 maximumSelectionLength: 1
             });
 
+            $('#fc_super_category_create_A_0').select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Super Category",
+                maximumSelectionLength: 1
+            });
+
+            $('#fc_add_category_type_A_0').select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Category type",
+                maximumSelectionLength: 1
+            });
+
+            $('#fc_add_search-input_A_0').select2({
+                dropdownParent: $('#questionMultiModal'),
+                tags: true,
+                placeholder : "Select Question type",
+                maximumSelectionLength: 1
+            });
             
+            
+
+            $(".editMultipleChoice").trigger("change");
         }
 
         function clearError() {
@@ -4922,7 +4946,7 @@
             whichModel = 'question';
             removeMoreFillOption();
             $('#questionMultiModal').modal('show');
-            clearModel();
+            // clearModel();
 
             
         });
@@ -6011,14 +6035,11 @@
                                         `.selectedSection_${result.practice_test_sections_id}`)
                                     .val();
                                 $('#section_type').val(section_type);
-
                                 // $('#question_tags_edit').val(result.tags).trigger('change');
-
                                 $(".passNumber").val(result.passage_number).change();
                                 // for (let index = 1; index < categorytypeArr.length; index++) {
                                 //     addNewTypes(index,'repet');
                                 // }
-
                                 //new
                                 if (result.passages_id != null) {
                                     $('input[name="passageRequired_2"]').prop('checked', true);
@@ -6125,6 +6146,7 @@
                             $('#editQuestionMultiModal').modal('show');
                             $(`.editMultipleChoice option[value="${parseInt(result.multiChoice)}"]`)
                                 .prop('selected', true);
+                            $(".editMultipleChoice").trigger("change");
                         }
                     });
                 }
@@ -6481,7 +6503,28 @@
                     '</select> </div><div class="mb-2"> <label class="form-label" style="font-size: 13px;">Fill:</label> <label class="form-label editExtraFillOption" style="font-size: 13px;">' +
                     fillHtl +
                     '</label><label class="form-label" style="font-size: 13px;"><a href="javascript:;" onClick="editMoreFillOption();" class="switchMulti">Add More Options</a></label></div>';
-                $('.withFillOpt').html(seletedLayout);
+                $('.withFillOptmb2').html(seletedLayout);
+
+                $('#fc_edit_super_category_A_0').select2({
+                    dropdownParent: $('#editQuestionMultiModal'),
+                    tags: true,
+                    placeholder : "Select Super Category",
+                    maximumSelectionLength: 1
+                });
+
+                $('#fc_edit_category_type_A_0').select2({
+                    dropdownParent: $('#editQuestionMultiModal'),
+                    tags: true,
+                    placeholder : "Select Category type",
+                    maximumSelectionLength: 1
+                });
+
+                $('#fc_edit_search-input_A_0').select2({
+                    dropdownParent: $('#editQuestionMultiModal'),
+                    tags: true,
+                    placeholder : "Select Question type",
+                    maximumSelectionLength: 1
+                });
             }
         }
 
@@ -6527,11 +6570,22 @@
                 ans_choices = ['F', 'G', 'H', 'J'];
                 disp_section = 'oneInFourPassEven_';
             } else if (questionType == 'choiceMultInFourFill') {
-                ans_choices = ['A', 'B', 'C', 'D'];
+                // ans_choices = ['A', 'B', 'C', 'D'];
+                // if (multiChoice == '1') {
+                //     disp_section = 'cb_choiceMultInFourFill_';
+                // } else if (multiChoice == '3') {
+                //     disp_section = 'choiceMultInFourFill_';
+                // }
+
                 if (multiChoice == '1') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
                     disp_section = 'cb_choiceMultInFourFill_';
                 } else if (multiChoice == '3') {
+                    ans_choices = ['A', 'B', 'C', 'D'];
                     disp_section = 'choiceMultInFourFill_';
+                } else if (multiChoice == '2') {
+                    ans_choices = ['A'];
+                    disp_section = 'fc_';
                 }
             } else {
                 ans_choices = ['A', 'B', 'C', 'D'];
