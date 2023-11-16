@@ -4813,9 +4813,9 @@ aria-hidden="true">
 
         $(document).on('click','.add_question_modal_multi',function(){
             is_edit = false;
+
             clearModel();
             clearError();
-            removeMoreFillOption();
             // console.log('yes 1');
 
             $("input[name=diff_value]"). val("");
@@ -4824,18 +4824,24 @@ aria-hidden="true">
             $('input[name="addChoiceMultInFourFill_fill[]"]').val('');
             $('.addChoiceMultInFourFill_filltype').val('');
             $('.addMultiChoice').val('');
+
             // count++;
+
+            // $(".getFilterChoice").val('').trigger('change');
+
             $('#passageRequired_1').prop('checked',true);
             $('#add_passage_number').prop('disabled',false);
             $('select[name="addPassagesType"]').prop('disabled',false);
             $('#addQuestionMultiModal #diff_rating_create').val('').trigger('change');
             $('#addQuestionMultiModal #question_tags_create').val('').trigger('change');
             $('#addQuestionMultiModal #super_category_create').val('').trigger('change');
+
             let section_id = $(this).parents('.sectionTypesFull').attr('data-id');
             let section_type = $(`.selectedSection_${section_id}`).val();
+
             $('#section_type').val(section_type);
 
-            if($(`.section_${section_id} .firstRecord .sectionList`).length >= 0){
+            if($(`.section_${section_id} .firstRecord .sectionList`).length >= 0) {
                 questionOrder = $(`.section_${section_id} .firstRecord .sectionList`).length;
             } else {
                 questionOrder = 0;
@@ -4850,14 +4856,21 @@ aria-hidden="true">
             $('#addTestSectionTypeRead').val(AnuserOpts);
             $('#addCurrentModelQueId').val(dataId);
             // $('.addSectionAddId').val(dataId);
-            appendAnswerOption(AnuserOpts,format);
-            getPassages(format);
-            $(".addchoiceMultInFourFill input[type=checkbox]").each(function(){
+            $(".addchoiceMultInFourFill input[type=checkbox]").each(function() {
                 $(this).attr('checked', false);
             });
-            $('#addQuestionMultiModal').modal('show');
+            // console.log(AnuserOpts);
+            // console.log(format);
+            appendAnswerOption(AnuserOpts,format);
+            getPassages(format);
 
+
+            whichModel = 'question';
+            removeMoreFillOption();
             
+            // addMultiChoice();
+            // editMultiChoice();
+            $('#addQuestionMultiModal').modal('show');
         });
 
         function addClassScore(data){
@@ -6765,6 +6778,9 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
                 English:'choiceOneInFourPass',
                 Math:'choiceOneInFive',
                 Reading:'choiceOneInFourPass',
+                Reading_And_Writing:'choiceOneInFourPass',
+                Easy_Reading_And_Writing:'choiceOneInFourPass',
+                Hard_Reading_And_Writing:'choiceOneInFourPass',
                 Writing:'choiceOneInFourPass',
                 Science:'choiceOneInFour',
                 Math_no_calculator:'choiceMultInFourFill',
