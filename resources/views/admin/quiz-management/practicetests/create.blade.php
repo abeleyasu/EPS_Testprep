@@ -6941,7 +6941,8 @@
         function getAnswerOption(answerOpt, format) {
             var questionAnsComb = {
                 English: 'choiceOneInFourPass',
-                Math: 'choiceOneInFive',
+                Math: 'choiceMultInFourFill',
+                // Math: 'choiceOneInFive',
                 Reading: 'choiceOneInFourPass',
                 Reading_And_Writing: 'choiceOneInFourPass',
                 Reading_And_Writing:'choiceOneInFourPass',
