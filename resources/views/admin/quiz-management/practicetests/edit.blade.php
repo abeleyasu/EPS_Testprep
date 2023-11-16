@@ -6776,7 +6776,8 @@ async function getAnswerOption(answerOpt, selectedOpt, fill, fillType, answer_co
             var questionAnsComb =
             {
                 English:'choiceOneInFourPass',
-                Math:'choiceOneInFive',
+                // Math:'choiceOneInFive',
+                Math:'choiceMultInFourFill',
                 Reading:'choiceOneInFourPass',
                 Reading_And_Writing:'choiceOneInFourPass',
                 Easy_Reading_And_Writing:'choiceOneInFourPass',
